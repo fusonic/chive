@@ -7,73 +7,326 @@
 <!-- (en) Add your meta data here -->
 <!-- (de) Fuegen Sie hier ihre Meta-Daten ein -->
 <link rel="stylesheet" type="text/css" href="<% echo Yii::app()->request->baseUrl; %>/css/main.css" />
+<link rel="stylesheet" type="text/css" href="<% echo Yii::app()->theme->getBaseUrl(); %>/css/style.css" />
 <!--[if lte IE 7]>
 <link href="css/patches/patch_my_layout.css" rel="stylesheet" type="text/css" />
 <![endif]-->
+
+<?php Yii::app()->clientScript->registerCoreScript('jquery'); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.layout.js', CClientScript::POS_HEAD); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery-ui-1.7.1.custom.js', CClientScript::POS_HEAD); ?>
+
+<script type="text/javascript">
+
+function checkLocation() {
+
+	if(window.location.href != currentLocation) {
+		currentLocation = window.location.href;
+		$('div.ui-layout-center').load(window.location.href.substr(window.location.href.indexOf('#')+1));
+	}
+
+}
+
+$(document).ready(function() {
+	$('body').layout({
+		// General
+		applyDefaultStyles: true,
+
+		north__size: 42,
+		north__resizable: false,
+		north__closable: false,
+		north__spacing_open: 1,
+
+		// West
+		west__size: 250,
+		west__onresize_end: function () { myAccordion.accordion('resize'); alert($('.ui-layout-west').width()); return; },
+		west__onclose_end: function () { alert("sidepane is now closed"); return; },
+		west__onopen_end: function () { alert("sidepane is now open"); return; },
+	});
+
+	// ACCORDION - inside the West pane
+	var myAccordion = $("#MainMenu").accordion({
+		selectedClass: "active",
+		navigation: true,
+		fillSpace: true,
+		autoHeight: true,
+		collapsible: false,
+		animated: "slide",
+	});
+
+	var currentLocation = window.location.href;
+
+	setInterval(checkLocation, 100);
+
+	$('div.ui-layout-center').load(window.location.href.substr(window.location.href.indexOf('#')+1));
+
+});
+
+</script>
+
 </head>
 <body>
-<div class="page_margins">
-	<div class="page">
-		<div id="header">
-			<div id="topnav">
-				<!-- start: skip link navigation -->
-				<a class="skip" href="#navigation" title="skip link">Skip to the navigation</a><span class="hideme">.</span>
-				<a class="skip" href="#content" title="skip link">Skip to the content</a><span class="hideme">.</span>
-				<!-- end: skip link navigation -->
-				<span><a href="#">Login</a> | <a href="#">Contact</a> | <a href="#">Imprint</a></span> </div>
-			<h1><% echo CHtml::encode(Yii::app()->name); %></h1>
-			<span>Database management on the <em>professional</em> level.</span></div>
-		<!-- begin: main navigation #nav -->
-		<div id="nav"> <a id="navigation" name="navigation"></a>
-			<!-- skiplink anchor: navigation -->
-			<div class="hlist">
-				<?php $this->widget('application.components.MainMenu',array(
-					'items'=>array(
-						array('label'=>'Home', 'url'=>array('/site/index')),
-						array('label'=>'Databases', 'url'=>array('/database'), 'visible'=>!Yii::app()->user->isGuest),
-						array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
-						array('label'=>'Logout', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
-					),
-				)); ?>
-			</div>
-		</div>
-		<!-- end: main navigation -->
-		<!-- begin: main content area #main -->
-		<div id="main">
-			<!-- begin: #col1 - first float column -->
-			<div id="col1">
-				<div id="col1_content" class="clearfix">
-					<h2>Databases</h2>
-					<% if(!Yii::app()->user->isGuest) { %>
-						<com:DatabaseTreeView />
-					<% } %>
-				</div>
-			</div>
-			<!-- end: #col1 -->
-			<!-- begin: #col2 second float column -->
-			<div id="col2">
-				<div id="col2_content" class="clearfix">
 
-				</div>
-			</div>
-			<!-- end: #col2 -->
-			<!-- begin: #col3 static column -->
-			<div id="col3">
-				<div id="col3_content" class="clearfix"> <a id="content" name="content"></a>
-					<!-- skiplink anchor: Content -->
-					<% echo $content %>
-				</div>
-				<div id="ie_clearing">&nbsp;</div>
-				<!-- End: IE Column Clearing -->
-			</div>
-			<!-- end: #col3 -->
+  <div class="ui-layout-north">
+	<div id="header">
+		<div id="headerLeft">
+			<img src="<% echo Yii::app()->request->baseUrl . "/images/logo.png"; %>" />
 		</div>
-		<!-- end: #main -->
-		<!-- begin: #footer -->
-		<div id="footer">Copyright &copy; 2009 by Fusonic.<br/>
-All Rights Reserved.<br/></div>
-		<!-- end: #footer -->
+		<div id="headerLogo">
+		</div>
+		<div id="headerRight">
+			<?php $this->widget('application.components.MainMenu',array(
+				'items'=>array(
+					array('label'=>'Home', 'url'=>array('/site/index'), 'visible'=>!Yii::app()->user->isGuest),
+					array('label'=>'Databases', 'url'=>array('/database'), 'visible'=>!Yii::app()->user->isGuest),
+					array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
+					array('label'=>'Logout', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
+				),
+			)); ?>
+		</div>
 	</div>
-</div>
+  </div>
+  <div class="ui-layout-west">
+
+  <div class="basic" id="MainMenu">
+  		<div class="sidebarHeader">
+			<a class="icon">
+				<img src="images/icons/table_24.png" />
+				<span>Tables</span>
+			</a>
+		</div>
+		<div class="sidebarContent">
+			<a href="#site/index">ctd1_acc_account</a><br/>
+			<a href="#site/login">ctd1_acc_account</a><br/>
+			ctd1_acc_payment<br/>
+			ctd1_acc_transaction<br/>
+			ctd1_acp_group<br/>
+			ctd1_acp_link<br/>
+			ctd1_acp_subgroup<br/>
+			ctd1_adm_admedia<br/>
+			ctd1_adm_admedia2campaign<br/>
+			ctd1_aff_website<br/>
+			ctd1_cat_category<br/>
+			ctd1_cat_category2module<br/>
+			ctd1_cmm_commissionmodel<br/>
+			ctd1_cmm_objective<br/>
+			ctd1_cmp_campaign<br/>
+			ctd1_cmp_campaign2object<br/>
+			ctd1_com_mail<br/>
+			ctd1_com_mailqueue<br/>
+			ctd1_com_mailvariable<br/>
+			ctd1_com_notification<br/>
+			ctd1_com_notificationsetting<br/>
+			ctd1_com_notificationvariable<br/>
+			ctd1_frp_request<br/>
+			ctd1_frp_visitor<br/>
+			ctd1_lng_pack<br/>
+			ctd1_lng_value<br/>
+			ctd1_nav_link<br/>
+			ctd1_nav_navigation<br/>
+			ctd1_nwl_newsletter<br/>
+			ctd1_pcr_page<br/>
+			ctd1_pcr_page2object<br/>
+			ctd1_reg_invitation<br/>
+			ctd1_reg_term<br/>
+			ctd1_rep_report<br/>
+			ctd1_shp_integration<br/>
+			ctd1_sty_attribute2color<br/>
+			ctd1_sty_attribute2style<br/>
+			ctd1_sty_box<br/>
+			ctd1_sty_box2layout<br/>
+			ctd1_sty_box2object<br/>
+			ctd1_sty_boxclose<br/>
+			ctd1_sty_boxtab<br/>
+			ctd1_sty_layout<br/>
+			ctd1_sty_predefboxtab<br/>
+			ctd1_sty_predefboxtabsetting<br/>
+			ctd1_sty_predefboxtabsetting2boxtab<br/>
+			ctd1_sys_accesscontrol<br/>
+			ctd1_sys_country<br/>
+			ctd1_sys_forgotpw<br/>
+			ctd1_sys_group<br/>
+		</div>
+  		<div class="sidebarHeader">
+			<a class="icon">
+				<img src="images/icons/table_24.png" />
+				<span>Views</span>
+			</a>
+		</div>
+		<div class="sidebarContent">
+			ctd1_acc_account<br/>
+			ctd1_acc_bonuspayment<br/>
+			ctd1_acc_payment<br/>
+			ctd1_acc_transaction<br/>
+			ctd1_acp_group<br/>
+			ctd1_acp_link<br/>
+			ctd1_acp_subgroup<br/>
+			ctd1_adm_admedia<br/>
+			ctd1_adm_admedia2campaign<br/>
+			ctd1_aff_website<br/>
+			ctd1_cat_category<br/>
+			ctd1_cat_category2module<br/>
+			ctd1_cmm_commissionmodel<br/>
+			ctd1_cmm_objective<br/>
+			ctd1_cmp_campaign<br/>
+			ctd1_cmp_campaign2object<br/>
+			ctd1_com_mail<br/>
+			ctd1_com_mailqueue<br/>
+			ctd1_com_mailvariable<br/>
+			ctd1_com_notification<br/>
+			ctd1_com_notificationsetting<br/>
+			ctd1_com_notificationvariable<br/>
+			ctd1_frp_request<br/>
+			ctd1_frp_visitor<br/>
+			ctd1_lng_pack<br/>
+			ctd1_lng_value<br/>
+			ctd1_nav_link<br/>
+			ctd1_nav_navigation<br/>
+			ctd1_nwl_newsletter<br/>
+			ctd1_pcr_page<br/>
+			ctd1_pcr_page2object<br/>
+			ctd1_reg_invitation<br/>
+			ctd1_reg_term<br/>
+			ctd1_rep_report<br/>
+			ctd1_shp_integration<br/>
+			ctd1_sty_attribute2color<br/>
+			ctd1_sty_attribute2style<br/>
+			ctd1_sty_box<br/>
+			ctd1_sty_box2layout<br/>
+			ctd1_sty_box2object<br/>
+			ctd1_sty_boxclose<br/>
+			ctd1_sty_boxtab<br/>
+			ctd1_sty_layout<br/>
+			ctd1_sty_predefboxtab<br/>
+			ctd1_sty_predefboxtabsetting<br/>
+			ctd1_sty_predefboxtabsetting2boxtab<br/>
+			ctd1_sys_accesscontrol<br/>
+			ctd1_sys_country<br/>
+			ctd1_sys_forgotpw<br/>
+			ctd1_sys_group<br/>
+		</div>
+  		<div class="sidebarHeader">
+			<a class="icon">
+				<img src="images/icons/table_24.png" />
+				<span>Procedures</span>
+			</a>
+		</div>
+		<div class="sidebarContent">
+			ctd1_acc_account<br/>
+			ctd1_acc_bonuspayment<br/>
+			ctd1_acc_payment<br/>
+			ctd1_acc_transaction<br/>
+			ctd1_acp_group<br/>
+			ctd1_acp_link<br/>
+			ctd1_acp_subgroup<br/>
+			ctd1_adm_admedia<br/>
+			ctd1_adm_admedia2campaign<br/>
+			ctd1_aff_website<br/>
+			ctd1_cat_category<br/>
+			ctd1_cat_category2module<br/>
+			ctd1_cmm_commissionmodel<br/>
+			ctd1_cmm_objective<br/>
+			ctd1_cmp_campaign<br/>
+			ctd1_cmp_campaign2object<br/>
+			ctd1_com_mail<br/>
+			ctd1_com_mailqueue<br/>
+			ctd1_com_mailvariable<br/>
+			ctd1_com_notification<br/>
+			ctd1_com_notificationsetting<br/>
+			ctd1_com_notificationvariable<br/>
+			ctd1_frp_request<br/>
+			ctd1_frp_visitor<br/>
+			ctd1_lng_pack<br/>
+			ctd1_lng_value<br/>
+			ctd1_nav_link<br/>
+			ctd1_nav_navigation<br/>
+			ctd1_nwl_newsletter<br/>
+			ctd1_pcr_page<br/>
+			ctd1_pcr_page2object<br/>
+			ctd1_reg_invitation<br/>
+			ctd1_reg_term<br/>
+			ctd1_rep_report<br/>
+			ctd1_shp_integration<br/>
+			ctd1_sty_attribute2color<br/>
+			ctd1_sty_attribute2style<br/>
+			ctd1_sty_box<br/>
+			ctd1_sty_box2layout<br/>
+			ctd1_sty_box2object<br/>
+			ctd1_sty_boxclose<br/>
+			ctd1_sty_boxtab<br/>
+			ctd1_sty_layout<br/>
+			ctd1_sty_predefboxtab<br/>
+			ctd1_sty_predefboxtabsetting<br/>
+			ctd1_sty_predefboxtabsetting2boxtab<br/>
+			ctd1_sys_accesscontrol<br/>
+			ctd1_sys_country<br/>
+			ctd1_sys_forgotpw<br/>
+			ctd1_sys_group<br/>
+		</div>
+  		<div class="sidebarHeader">
+			<a class="icon">
+				<img src="images/icons/script_fav_24.png" />
+				<span>Triggers</span>
+			</a>
+		</div>
+		<div class="sidebarContent">
+			ctd1_acc_account<br/>
+			ctd1_acc_bonuspayment<br/>
+			ctd1_acc_payment<br/>
+			ctd1_acc_transaction<br/>
+			ctd1_acp_group<br/>
+			ctd1_acp_link<br/>
+			ctd1_acp_subgroup<br/>
+			ctd1_adm_admedia<br/>
+			ctd1_adm_admedia2campaign<br/>
+			ctd1_aff_website<br/>
+			ctd1_cat_category<br/>
+			ctd1_cat_category2module<br/>
+			ctd1_cmm_commissionmodel<br/>
+			ctd1_cmm_objective<br/>
+			ctd1_cmp_campaign<br/>
+			ctd1_cmp_campaign2object<br/>
+			ctd1_com_mail<br/>
+			ctd1_com_mailqueue<br/>
+			ctd1_com_mailvariable<br/>
+			ctd1_com_notification<br/>
+			ctd1_com_notificationsetting<br/>
+			ctd1_com_notificationvariable<br/>
+			ctd1_frp_request<br/>
+			ctd1_frp_visitor<br/>
+			ctd1_lng_pack<br/>
+			ctd1_lng_value<br/>
+			ctd1_nav_link<br/>
+			ctd1_nav_navigation<br/>
+			ctd1_nwl_newsletter<br/>
+			ctd1_pcr_page<br/>
+			ctd1_pcr_page2object<br/>
+			ctd1_reg_invitation<br/>
+			ctd1_reg_term<br/>
+			ctd1_rep_report<br/>
+			ctd1_shp_integration<br/>
+			ctd1_sty_attribute2color<br/>
+			ctd1_sty_attribute2style<br/>
+			ctd1_sty_box<br/>
+			ctd1_sty_box2layout<br/>
+			ctd1_sty_box2object<br/>
+			ctd1_sty_boxclose<br/>
+			ctd1_sty_boxtab<br/>
+			ctd1_sty_layout<br/>
+			ctd1_sty_predefboxtab<br/>
+			ctd1_sty_predefboxtabsetting<br/>
+			ctd1_sty_predefboxtabsetting2boxtab<br/>
+			ctd1_sys_accesscontrol<br/>
+			ctd1_sys_country<br/>
+			ctd1_sys_forgotpw<br/>
+			ctd1_sys_group<br/>
+		</div>
+
+	</div>
+  </div>
+  <div class="ui-layout-center">
+  	<% echo $content; %>
+  </div>
+
 </body>
 </html>

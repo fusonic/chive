@@ -25,6 +25,7 @@ class CXmlMessageSource extends CMessageSource {
 		parent::init();
 		if($this->basePath===null)
 			$this->basePath=Yii::getPathOfAlias('application.messages');
+
 	}
 
 	public function loadMessages($category, $language) {

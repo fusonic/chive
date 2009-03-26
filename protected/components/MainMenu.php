@@ -40,7 +40,12 @@ class MainMenu extends CWidget
 			else
 				$item2['url']=$item['url'];
 			$pattern=isset($item['pattern'])?$item['pattern']:$item['url'];
-			$item2['active']=$this->isActive($pattern,$controller->uniqueID,$action->id);
+
+			$item2['htmlOptions'] = isset($item['htmlOptions']) ? $item['htmlOptions'] : array();
+
+			if($active = $this->isActive($pattern,$controller->uniqueID,$action->id))
+				$item2['htmlOptions']['class'] = "active";
+
 			$items[]=$item2;
 		}
 		$this->render('mainMenu',array('items'=>$items));

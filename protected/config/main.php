@@ -8,6 +8,7 @@
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'Dublin - database management',
+	'theme'=>'standard',
 
 	// preloading 'log' component
 	'preload'=>array('log'),
@@ -31,7 +32,7 @@ return array(
 				),
 				array(
 					'class'=>'CWebLogRoute',
-					'levels'=>'error, warning, info, trace',
+					'levels'=>'error', //, warning, info, trace',
 					'categories'=>'system.db.*'
 				),
 			),
@@ -56,7 +57,7 @@ return array(
 
 		'messages'=>array(
 		    'class'=>'application.components.messages.CXmlMessageSource',
-			'cachingDuration' => 1000
+			'cachingDuration' => 0,
 		),
 
 		// URL - Manager (for SEO-friendly URLs)
@@ -64,6 +65,7 @@ return array(
             'urlFormat'=>'path',
 			'showScriptName' => false,
             'rules'=>array(
+                'login'=>'site/login',
                 'database'=>'database/list',
                 'database/show/<id:(.*)>'=>'database/show',
             ),
@@ -97,5 +99,5 @@ return array(
 		'adminEmail'=>'webmaster@example.com',
 	),
 
-	'language' => 'de'
+	'language' => substr(Yii::app()->request->getPreferredLanguage(), 0, 2),
 );

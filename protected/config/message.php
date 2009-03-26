@@ -1,10 +1,10 @@
 <?php
 
 return array(
-	'sourcePath' => "/var/www/testing/php/framework/yii/dublin",
-	'messagePath' => "/var/www/testing/php/framework/yii/dublin/protected/messages",
+	'sourcePath' => "/var/www/dublin/trunk",
+	'messagePath' => "/var/www/dublin/trunk/protected/messages",
 	'languages' => array("de", "en"),
-	'fileTypes' => "xml",
+	'fileTypes' => "php",
 );
 
 ?>

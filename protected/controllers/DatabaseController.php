@@ -14,6 +14,15 @@ class DatabaseController extends CController
 	 */
 	private $_database;
 
+	public function __construct($id, $module=null) {
+
+		if(Yii::app()->request->isAjaxRequest)
+			$this->layout = false;
+
+		parent::__construct($id, $module);
+
+	}
+
 	/**
 	 * @return array action filters
 	 */

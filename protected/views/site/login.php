@@ -1,29 +1,41 @@
-<?php $this->pageTitle=Yii::app()->name . ' - Login'; ?>
+<com:Select items={$languages} htmlOptions={array('style'=>'display: none;', 'class'=>'dropdown', 'id'=>'languageSelect',)} />
 
-<h1>Login</h1>
+<div id="login">
+	<h1>Login</h1>
 
-<div class="yiiForm">
-<?php echo CHtml::form(); ?>
+	<?php echo CHtml::form(); ?>
 
-<?php echo CHtml::errorSummary($form); ?>
+	<?php echo CHtml::errorSummary($form); ?>
 
-<div class="simple">
-<?php echo CHtml::activeLabel($form,'username'); ?>
-<?php echo CHtml::activeTextField($form,'username') ?>
+	<div class="formItems">
+		<div class="row item1">
+			<div class="left">
+				<?php echo CHtml::activeLabel($form,'username'); ?>
+			</div>
+			<div class="right">
+				<?php echo CHtml::activeTextField($form,'username') ?>
+			</div>
+		</div>
+		<div class="row item2">
+			<div class="left">
+				<?php echo CHtml::activeLabel($form,'password'); ?>
+			</div>
+			<div class="right">
+				<?php echo CHtml::activePasswordField($form,'password'); ?>
+			</div>
+		</div>
+		<div class="row item2">
+			<div class="left">
+			</div>
+			<div class="right">
+				<?php echo CHtml::activeCheckBox($form,'rememberMe'); ?>
+				<?php echo CHtml::activeLabel($form,'rememberMe'); ?>
+			</div>
+		</div>
+	</div>
+	<div class="buttons">
+		<?php echo CHtml::submitButton('Login'); ?>
+	</div>
+
+	<?php echo "<?php echo CHtml::closeTag('form'); ?>\n"; ?>
 </div>
-
-<div class="simple">
-<?php echo CHtml::activeLabel($form,'password'); ?>
-<?php echo CHtml::activePasswordField($form,'password') ?>
-</div>
-
-<div class="action">
-<?php echo CHtml::activeCheckBox($form,'rememberMe'); ?>
-<?php echo CHtml::activeLabel($form,'rememberMe'); ?>
-<br/>
-<?php echo CHtml::submitButton('Login'); ?>
-</div>
-
-<?php echo "<?php echo CHtml::closeTag('form'); ?>\n"; ?>
-
-</div><!-- yiiForm -->

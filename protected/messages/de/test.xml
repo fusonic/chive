@@ -1,6 +1,10 @@
 <package>
 	<entry>
 		<lvaId>global.w.book</lvaId>
-		<value>#1Buch|#>1Bücher</value>
+		<value>Büchekr</value>
+	</entry>
+	<entry>
+		<lvaId>en</lvaId>
+		<value>English</value>
 	</entry>
 </package>

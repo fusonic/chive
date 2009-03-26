@@ -2,6 +2,16 @@
 
 class SiteController extends CController
 {
+
+	public function __construct($id, $module=null) {
+
+		if(Yii::app()->request->isAjaxRequest)
+			$this->layout = false;
+
+		parent::__construct($id, $module);
+
+	}
+
 	/**
 	 * @return array action filters
 	 */
@@ -21,7 +31,7 @@ class SiteController extends CController
 	{
 		return array(
 			array('allow',
-				'actions' => array('login', 'index')
+				'actions' => array('login')
 			),
 			array('allow',  // allow all users to perform 'list' and 'show' actions
 				'expression' => !Yii::app()->user->isGuest,
@@ -30,6 +40,7 @@ class SiteController extends CController
 				'users'=>array('*'),
 			),
 		);
+
 	}
 
 	/**
@@ -43,6 +54,7 @@ class SiteController extends CController
 
 		$this->render('index');
 
+
 	}
 
 	/**
@@ -50,6 +62,26 @@ class SiteController extends CController
 	 */
 	public function actionLogin()
 	{
+		$this->layout = "login";
+
+		$availableLanguages = array(
+			'de'=>'Deutsch',
+			'en'=>'English',
+			'nl'=>'Dutch',
+		);
+
+		$languages = array();
+		foreach($availableLanguages AS $key=>$language) {
+
+			$languages[] = array(
+				'label'=>Yii::t('language', $language),
+				'icon'=>'images/country/' . $key . '.png',
+				'url'=>Yii::app()->request->baseUrl . '/language/' . $key,
+				'htmlOptions'=>array('class'=>'icon'),
+			);
+
+		}
+
 		$form=new LoginForm;
 		// collect user input data
 		if(isset($_POST['LoginForm']))
@@ -60,7 +92,11 @@ class SiteController extends CController
 				$this->redirect(Yii::app()->user->returnUrl);
 		}
 		// display the login form
-		$this->render('login',array('form'=>$form));
+
+		$this->render('login',array(
+			'form'=>$form,
+			'languages'=>$languages,
+		));
 	}
 
 	/**
