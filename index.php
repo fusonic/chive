@@ -1,7 +1,7 @@
 <?php
 
 // change the following paths if necessary
-$yii='/var/www/testing/php/framework/yii/yii/framework/yii.php';
+$yii='yii/yii.php';
 $config=dirname(__FILE__).'/protected/config/main.php';
 
 function pre($_value) {
