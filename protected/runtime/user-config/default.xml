@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+	<theme>Standard</theme>
+	<language>en_US</language>
+	<sidebarState>open</sidebarState>
+	<sidebarWidth>250</sidebarWidth>
+	<entriesPerPage scope="databases.tables">200</entriesPerPage>
+	<entriesPerPage scope="databases.tables.browse">30</entriesPerPage>
+	<hello>test</hello>
+</settings>
