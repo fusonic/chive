@@ -32,7 +32,10 @@ class UserIdentity extends CUserIdentity
 			$this->errorCode = self::ERROR_NONE;
 
 			// Store password in UserIdentity
-			$this->setState("password", $this->password);
+			$this->setState('password', $this->password);
+
+			// Create settings array
+			$this->setState('settings', new UserSettingsManager('web', $this->username));
 
 		} catch (Exception $ex) {
 

@@ -12,57 +12,13 @@
 <link href="css/patches/patch_my_layout.css" rel="stylesheet" type="text/css" />
 <![endif]-->
 
+<?php Yii::app()->clientScript->registerScript('userSettings', Yii::app()->user->settings->getJsObject(), CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerCoreScript('jquery'); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/main.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.layout.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery-ui-1.7.1.custom.js', CClientScript::POS_HEAD); ?>
 
-<script type="text/javascript">
-
-function checkLocation() {
-
-	if(window.location.href != currentLocation) {
-		currentLocation = window.location.href;
-		$('div.ui-layout-center').load(window.location.href.substr(window.location.href.indexOf('#')+1));
-	}
-
-}
-
-$(document).ready(function() {
-	$('body').layout({
-		// General
-		applyDefaultStyles: true,
-
-		north__size: 42,
-		north__resizable: false,
-		north__closable: false,
-		north__spacing_open: 1,
-
-		// West
-		west__size: 250,
-		west__onresize_end: function () { myAccordion.accordion('resize'); alert($('.ui-layout-west').width()); return; },
-		west__onclose_end: function () { alert("sidepane is now closed"); return; },
-		west__onopen_end: function () { alert("sidepane is now open"); return; },
-	});
-
-	// ACCORDION - inside the West pane
-	var myAccordion = $("#MainMenu").accordion({
-		selectedClass: "active",
-		navigation: true,
-		fillSpace: true,
-		autoHeight: true,
-		collapsible: false,
-		animated: "slide",
-	});
-
-	var currentLocation = window.location.href;
-
-	setInterval(checkLocation, 100);
-
-	$('div.ui-layout-center').load(window.location.href.substr(window.location.href.indexOf('#')+1));
-
-});
-
-</script>
+<script type="text/javascript"> </script>
 
 </head>
 <body>

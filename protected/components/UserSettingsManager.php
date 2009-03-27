@@ -22,10 +22,22 @@ class UserSettingsManager
 
 	}
 
+	public function getJsObject()
+	{
+		$jsSettings = 'var userSettings = {};' . "\n";
+		foreach($this->defaultSettings AS $key => $value) {
+			if(isset($this->userSettings[$key]))
+			{
+				$value = $this->userSettings[$key];
+			}
+			$jsSettings .= 'userSettings.' . $key . ' = "' . str_replace('"', '\"', $value) . '";' . "\n";
+		}
+		return $jsSettings;
+	}
+
 	public function get($name, $scope = null)
 	{
 		$id = $this->getSettingId($name, $scope);
-
 		if(isset($this->userSettings[$id]))
 		{
 			return $this->userSettings[$id];
@@ -106,14 +118,15 @@ class UserSettingsManager
 
 	private function getSettingId($name, $scope)
 	{
-		return $name . ($scope ? '|' . $scope : '');
+		return $name . ($scope ? '__' . str_replace(".", "_", $scope) : '');
 	}
 
 	private function getSettingNameScope($id)
 	{
-		$return = explode('|', $id);
+		$return = explode('_', $id);
 		if(is_array($return))
 		{
+			$return[1] = str_replace("__", ".", $return[1]);
 			return $return;
 		}
 		else
