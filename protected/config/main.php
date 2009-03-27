@@ -49,9 +49,9 @@ return array(
 			'class' => 'CDbConnection',
 			'connectionString' => 'mysql:host=web;dbname=information_schema',
 			'charset' => 'utf8',
-			'autoConnect' => Yii::app()->user->isGuest ? false : true,
-			'username' => !Yii::app()->user->isGuest ? Yii::app()->user->getName() : false,
-			'password' => !Yii::app()->user->isGuest ? Yii::app()->user->password : false,
+			'autoConnect' => false,
+			#'username' => !Yii::app()->user->isGuest ? Yii::app()->user->getName() : false,
+			#'password' => !Yii::app()->user->isGuest ? Yii::app()->user->password : false,
 			'schemaCachingDuration'=>3600,
 		),
 
@@ -99,5 +99,6 @@ return array(
 		'adminEmail'=>'webmaster@example.com',
 	),
 
-	'language' => substr(Yii::app()->request->getPreferredLanguage(), 0, 2),
+	'sourceLanguage'=>'asdf',
+	#'language' => substr(Yii::app()->request->getPreferredLanguage(), 0, 2),
 );

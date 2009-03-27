@@ -10,6 +10,7 @@ class LoginForm extends CFormModel
 	public $username;
 	public $password;
 	public $rememberMe;
+	public $host;
 
 	/**
 	 * Declares the validation rules.
@@ -20,7 +21,7 @@ class LoginForm extends CFormModel
 	{
 		return array(
 			// username and password are required
-			array('username, password', 'required'),
+			array('username, password, host', 'required'),
 			// password needs to be authenticated
 			array('password', 'authenticate'),
 		);
@@ -32,7 +33,9 @@ class LoginForm extends CFormModel
 	public function attributeLabels()
 	{
 		return array(
-			'rememberMe'=>'Remember me next time',
+			'host'=>Yii::t('core','host'),
+			'username'=>Yii::t('core','username'),
+			'password'=>Yii::t('core','password'),
 		);
 	}
 
@@ -44,23 +47,15 @@ class LoginForm extends CFormModel
 	{
 		if(!$this->hasErrors())  // we only want to authenticate when no input errors
 		{
-			$identity=new UserIdentity($this->username,$this->password);
+			$identity=new UserIdentity($this->username,$this->password, $this->host);
 			$identity->authenticate();
 			switch($identity->errorCode)
 			{
 				case UserIdentity::ERROR_NONE:
-					$duration=$this->rememberMe ? 3600*24*30 : 0; // 30 days
-					Yii::app()->user->allowAutoLogin = true;
-					Yii::app()->user->login($identity,$duration);
-					break;
-				case UserIdentity::ERROR_USERNAME_INVALID:
-					$this->addError('username','Username is incorrect.');
+					Yii::app()->user->login($identity);
 					break;
 				case UserIdentity::ERROR_AUTHENTICATION_FAILED:
-					$this->addError(null, Yii::t('test', 'failure'));
-					break;
-				default: // UserIdentity::ERROR_PASSWORD_INVALID
-					$this->addError('password','Password is incorrect.');
+					$this->addError(null, $identity->errorMessage);
 					break;
 			}
 		}

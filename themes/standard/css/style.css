@@ -175,7 +175,20 @@
   }
   
   #login {
-  	background: #fff;
+  	background: #3a68a0 url(../images/login-bg.png) repeat-x;
+	border: 10px solid #FFF;
+	-moz-border-radius: 20px;
   }
+  
+  input {
+  	border-color: #CCC;
+	color: #333;
+  }
+  
+  #login div.formItems.non-floated div.left {
+  	font-weight: bold;
+	color: #CCC;
+  }
+  
   
 }

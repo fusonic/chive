@@ -30,6 +30,12 @@ class CXmlMessageSource extends CMessageSource {
 
 	public function loadMessages($category, $language) {
 
+		$parentMessages = array();
+
+		if(strlen($language) == 5) {
+			$parentMessages = self::loadMessages($category, substr($language,0,2));
+		}
+
 		$messageFile=$this->basePath.DIRECTORY_SEPARATOR.$language.DIRECTORY_SEPARATOR.$category.'.xml';
 
 		$key=self::CACHE_KEY_PREFIX . $messageFile;
@@ -44,10 +50,13 @@ class CXmlMessageSource extends CMessageSource {
 		if(is_file($messageFile))
 		{
 			$xml = simplexml_load_file($messageFile);
+
 			$messages = array();
 			foreach($xml AS $entry) {
-				$messages[(string)$entry->lvaId] = (string)$entry->value;
+				$messages[(string)$entry->attributes()->id] = (string)$entry;
 			}
+
+			$messages = array_merge($parentMessages, $messages);
 
 			if(isset($cache))
 			{

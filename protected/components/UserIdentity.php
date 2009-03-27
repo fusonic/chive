@@ -17,6 +17,23 @@ class UserIdentity extends CUserIdentity
 	 */
 	const ERROR_AUTHENTICATION_FAILED = 3;
 
+	/**
+	 * @var string host
+	 */
+	public $host;
+
+	/**
+	 * Constructor.
+	 * @param string username
+	 * @param string password
+	 */
+	public function __construct($username,$password,$host)
+	{
+		$this->username=$username;
+		$this->password=$password;
+		$this->host=$host;
+	}
+
 	public function authenticate()
 	{
 
@@ -25,6 +42,7 @@ class UserIdentity extends CUserIdentity
 		// Set username and password
 		$db->username = $this->username;
 		$db->password = $this->password;
+		$db->connectionString = 'mysql:host=' . $this->host . ';dbname=information_schema';
 
 		try {
 
@@ -36,6 +54,7 @@ class UserIdentity extends CUserIdentity
 
 			// Create settings array
 			$this->setState('settings', new UserSettingsManager('web', $this->username));
+			$this->setState("host", $this->host);
 
 		} catch (Exception $ex) {
 

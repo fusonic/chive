@@ -24,4 +24,15 @@ if($console == true)
 	$config = dirname(__FILE__).'/protected/config/dev.php';
 
 require_once($yii);
-Yii::createWebApplication($config)->run();
+$app = Yii::createWebApplication($config);
+
+if(!$app->user->isGuest) {
+	$app->db->connectionString = 'mysql:host=' . $app->user->host . ';dbname=information_schema';
+	$app->db->username= $app->user->name;
+    $app->db->password= $app->user->password;
+    $app->db->autoConnect = true;
+}
+
+$app->setLanguage($app->request->getPreferredLanguage());
+
+$app->run();

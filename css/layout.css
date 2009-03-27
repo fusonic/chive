@@ -205,10 +205,23 @@
   input {
   	border: 1px solid;
 	padding: 3px;
-	margin: 3px;
   }
   
-  div.formItems div.row {
+  select {
+  	border: 1px solid;
+	padding: 2px;
+  }
+
+  div.formItems.non-floated div.item {
+  	margin-bottom: 10px;
+  } 
+   
+  div.formItems.non-floated div.item div.left, div.formItems.non-floated div.item div.right {
+  	float: none;
+	margin-bottom: 3px;
+  }
+  
+  div.formItems div.item {
   	clear: both;
 	float: none;
 	padding: 3px;
@@ -219,12 +232,16 @@
 	float: left;
   }
   
+  div.formItems div.item.short div.left {
+  	width: 80px;
+  }
+  
   div.formItems div.right {
 	float: left;
   }
   
   input[type="text"], input[type="password"] {
-  	width: 100%;
+  	width: 95%;
   }
   
   input.text.tiny {
@@ -269,12 +286,10 @@
   	position: absolute; 
 	left: 50%; 
 	top: 50%; 
-	margin: -200px auto auto -150px; 
+	margin: -250px auto auto -150px; 
 	width: 300px; 
-	height: 200px; 
-	border: 10px solid #CCC;
+	height: 300px; 
 	padding: 10px;
-	-moz-border-radius: 10px;
   }
   
   #languageSelect {
@@ -289,6 +304,23 @@
   	line-height: 20px;
   	height: 20px;
   }
+  
+  div.errorSummary ul, div.errorSummary ul li {
+  	list-style-type: none;
+	margin: 0px;
+  }
+  
+  div.errorMessage {
+  	background: url(../images/icons/del_10.png) no-repeat 5px 5px;
+	padding: 3px 0px 0px 20px;
+	color: #CCC;
+	font-weight: bold;
+  }
+  
+  #login div.errorSummary {
+  	font-size: 90%;
+  }
+  
   
   ul.select, ul.select li {
   	list-style-type: none;

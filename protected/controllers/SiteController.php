@@ -64,6 +64,8 @@ class SiteController extends CController
 	{
 		$this->layout = "login";
 
+
+		// Languages
 		$availableLanguages = array(
 			'de'=>'Deutsch',
 			'en'=>'English',
@@ -82,6 +84,14 @@ class SiteController extends CController
 
 		}
 
+		// Hosts
+		$hosts = array(
+			'web'=>'web',
+			'localhost'=>'localhost',
+			'127.0.0.1'=>'127.0.0.1',
+		);
+
+
 		$form=new LoginForm;
 		// collect user input data
 		if(isset($_POST['LoginForm']))
@@ -96,6 +106,7 @@ class SiteController extends CController
 		$this->render('login',array(
 			'form'=>$form,
 			'languages'=>$languages,
+			'hosts'=>$hosts,
 		));
 	}
 
