@@ -1,0 +1,14 @@
+@CHARSET "UTF-8";
+
+@media screen, projection
+{
+
+	table.list tr.even {
+		background-color: red;
+	}
+	
+	table.list tr.odd {
+		tackground-color: green;
+	}
+
+}

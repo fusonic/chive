@@ -4,6 +4,24 @@ class Collation extends CActiveRecord
 {
 	public $collationGroup;
 
+	public function __construct($attributes=array(), $scenario='') {
+
+		if($attributes===null)
+		 {
+		      $tableName=$this->tableName();
+		      if(($table=$this->getDbConnection()->getSchema()->getTable($tableName))===null)
+		         throw new CDbException(Yii::t('yii','The table "{table}" for active record class "{class}" cannot be found in the database.',
+		            array('{class}'=>get_class($model),'{table}'=>$tableName)));
+
+		      $table->primaryKey=$this->primaryKey();
+		      $table->columns[$table->primaryKey]->isPrimaryKey=true;
+
+		   }
+
+		   parent::__construct($attributes,$scenario);
+
+	}
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return CActiveRecord the static model class
@@ -41,6 +59,7 @@ class Collation extends CActiveRecord
 	public function relations()
 	{
 		return array(
+			'database' => array(self::HAS_MANY, 'Database', 'DEFAULT_COLLATION_NAME'),
 		);
 	}
 
@@ -52,4 +71,18 @@ class Collation extends CActiveRecord
 		return array(
 		);
 	}
+
+	/*
+	 * @return string primary key column
+	 */
+	public function primaryKey()
+	{
+		return 'COLLATION_NAME';
+	}
+
+	public function getDefinition()
+	{
+		return 'Definition not implemented (' . $this->COLLATION_NAME . ').';
+	}
+
 }

@@ -1,6 +1,8 @@
 @CHARSET "UTF-8";
 
-@charset "UTF-8";
+@import "style_icon.css";
+@import "style_list.css";
+
 /**
  * "Yet Another Multicolumn Layout" - (X)HTML/CSS Framework
  *
@@ -190,5 +192,8 @@
 	color: #CCC;
   }
   
+  dfn {
+  	cursor: help;
+  }
   
 }

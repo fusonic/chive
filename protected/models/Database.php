@@ -60,7 +60,8 @@ class Database extends CActiveRecord
 	public function relations()
 	{
 		return array(
-			'table' => array(self::HAS_MANY, 'Table', 'TABLE_SCHEMA', 'joinType'=>'INNER JOIN')
+			'table' => array(self::HAS_MANY, 'Table', 'TABLE_SCHEMA', 'joinType'=>'INNER JOIN'),
+			'collation' => array(self::BELONGS_TO, 'Collation', 'DEFAULT_COLLATION_NAME'),
 		);
 	}
 
@@ -77,6 +78,9 @@ class Database extends CActiveRecord
 		return $this->SCHEMA_NAME;
 	}
 
+	/*
+	 * @return string primary key column
+	 */
 	public function primaryKey() {
 		return 'SCHEMA_NAME';
 	}
