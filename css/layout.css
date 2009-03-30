@@ -54,14 +54,14 @@
 
   /* --- Lists | Listen  -------------------------------------------------------------------------------- */
 
-  ul, ol, dl { line-height: 1.5em; margin: 0 0 1em 1em; }
+  ul, ol, dl { line-height: 1.5em; }
   ul li { list-style-type: disc; }
   ul ul li { list-style-type: circle; }
 
   ol li { list-style-type: decimal; }
   ol ol li { list-style-type: lower-latin; }
 
-  li { margin-left: 0.8em; line-height: 1.5em; }
+  li { line-height: 1.5em; }
 
   dt { font-weight: bold; }
   dd { margin: 0 0 1em 0.8em; }
@@ -115,6 +115,7 @@
   a.icon {
   	text-decoration: none !important;
 	margin: auto;
+	white-space: nowrap;
   }
   
   a.icon img {
@@ -246,6 +247,10 @@
 	overflow: hidden !important;	
   }
   
+  div.ui-layout-north {
+  	border: none !important;
+  }
+  
   div.sidebarHeader {
 	height: 25px;
 	cursor: pointer;
@@ -269,15 +274,16 @@
   
   #languageSelect {
   	position: absolute;
-	top: -3px;
+	top: -2px;
 	right: 0px;
-	width: 165px;
-	border: 3px solid #CCC;
+	width: 172px;
   }
   
-  #languageSelect ul.select li {
-  	line-height: 20px;
-  	height: 20px;
+  #languageSelect ul.select li a {
+  	display: block;
+  	line-height: 30px;
+  	height: 30px;
+	padding: 5px 20px;
   }
   
   div.errorSummary ul, div.errorSummary ul li {
@@ -296,9 +302,12 @@
   	font-size: 90%;
   }
   
-  
   ul.select, ul.select li {
   	list-style-type: none;
+  }
+
+  .nowrap {
+  	white-space: nowrap;
   }
 
  /**

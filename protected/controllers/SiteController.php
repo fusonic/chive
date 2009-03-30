@@ -31,7 +31,7 @@ class SiteController extends CController
 	{
 		return array(
 			array('allow',
-				'actions' => array('login')
+				'actions' => array('login', 'changeLanguage', 'changeTheme')
 			),
 			array('allow',  // allow all users to perform 'list' and 'show' actions
 				'expression' => !Yii::app()->user->isGuest,
@@ -52,7 +52,7 @@ class SiteController extends CController
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
 
-		$this->render('index');
+		$this->render('index', array('tables'=>$tables));
 
 
 	}
@@ -69,7 +69,6 @@ class SiteController extends CController
 		$availableLanguages = array(
 			'de'=>'Deutsch',
 			'en'=>'English',
-			'nl'=>'Dutch',
 		);
 
 		$languages = array();
@@ -78,7 +77,7 @@ class SiteController extends CController
 			$languages[] = array(
 				'label'=>Yii::t('language', $language),
 				'icon'=>'images/country/' . $key . '.png',
-				'url'=>Yii::app()->request->baseUrl . '/language/' . $key,
+				'url'=>Yii::app()->request->baseUrl . '/site/changeLanguage/' . $key,
 				'htmlOptions'=>array('class'=>'icon'),
 			);
 
@@ -108,6 +107,23 @@ class SiteController extends CController
 			'languages'=>$languages,
 			'hosts'=>$hosts,
 		));
+	}
+
+	/**
+	 * Change the language
+	 */
+	public function actionChangeLanguage()
+	{
+		Yii::app()->session->add('language', $_GET['id']);
+		$this->redirect(Yii::app()->homeUrl);
+	}
+	/**
+	 * Change the theme
+	 */
+	public function actionChangeTheme()
+	{
+		Yii::app()->session->add('theme', $_GET['id']);
+		$this->redirect(Yii::app()->homeUrl);
 	}
 
 	/**

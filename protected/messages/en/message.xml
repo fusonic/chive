@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<category id="message">
+	<entry id="authenticationFailed">Connection could not be established:&lt;br/&gt;{message}</entry>
+	<entry id="test">test123</entry>
+</category>

@@ -26,6 +26,7 @@ if($console == true)
 require_once($yii);
 $app = Yii::createWebApplication($config);
 
+
 if(!$app->user->isGuest) {
 	$app->db->connectionString = 'mysql:host=' . $app->user->host . ';dbname=information_schema';
 	$app->db->username= $app->user->name;
@@ -33,6 +34,13 @@ if(!$app->user->isGuest) {
     $app->db->autoConnect = true;
 }
 
-$app->setLanguage($app->request->getPreferredLanguage());
+$session = Yii::app()->session;
+$request = Yii::app()->request;
+
+$language = $session->itemAt('language') ? $session->itemAt('language') : $request->getPreferredLanguage();
+$theme = $session->itemAt('theme') ? $session->itemAt('theme') : 'standard';
+
+$app->setLanguage($language);
+$app->setTheme($theme);
 
 $app->run();

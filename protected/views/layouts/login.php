@@ -27,14 +27,17 @@ $(document).ready(function() {
 		north__size: 42,
 		north__resizable: false,
 		north__closable: false,
-		north__spacing_open: 1,
+		north__spacing_open: 1
 
 	});
 
+});
+
+$(document).ready(function() {
 	$('body').click(function() {
-		$('.dropdown').slideUp();
-	});
-
+		$('#languageSelect').slideUp();
+		$('#themeSelect').slideUp();
+	});;
 });
 
 </script>
@@ -44,7 +47,9 @@ $(document).ready(function() {
   <div class="ui-layout-north">
 	<div id="header">
 		<div id="headerLeft">
-
+			<a href="http://www.example.com/dublin">
+				<img src="<% echo Yii::app()->request->baseUrl . "/images/logo.png"; %>" />
+			</a>
 		</div>
 		<div id="headerLogo">
 		</div>
@@ -52,12 +57,21 @@ $(document).ready(function() {
 			<?php $this->widget('application.components.MainMenu',array(
 				'items'=>array(
 						array(
-							'label'=>'<img src="images/country/' . substr(Yii::app()->request->getPreferredLanguage(), 0, 2) . '.png" alt="" title="" /><span>' . Yii::t('language', substr(Yii::app()->request->getPreferredLanguage(), 0, 2)) . "</span>",
+							'label'=>'<img src="themes/' . Yii::app()->getTheme()->name . '/images/icon.png" alt="" title="" /><span>' . ucfirst(Yii::app()->getTheme()->name) . "</span>",
 							'url'=>array('#'),
 							'htmlOptions' => array(
 								'style'=>'width: 150px;',
 								'class'=>'icon',
-									'onclick'=>'$("#languageSelect").slideDown(); return false;'
+									'onclick'=>'$("#themeSelect").slideDown(); var dontHideBox = true; event.stopPropagation(); return false;',
+							),
+						),
+						array(
+							'label'=>'<img src="images/country/' . substr(Yii::app()->getLanguage(),0,2) . '.png" alt="" title="" /><span>' . Yii::t('language', Yii::app()->getLanguage()) . "</span>",
+							'url'=>array('#'),
+							'htmlOptions' => array(
+								'style'=>'width: 150px;',
+								'class'=>'icon',
+									'onclick'=>'$("#languageSelect").slideDown(); var dontHideBox = true; event.stopPropagation(); return false;',
 							),
 						),
 				),

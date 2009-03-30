@@ -1,9 +1,16 @@
-<com:Select items={$languages} htmlOptions={array('style'=>'display: none;', 'class'=>'dropdown', 'id'=>'languageSelect',)} />
-
+<div id="languageSelect" style="display: none;" class="dropdown">
+	<com:Select items={$languages} />
+</div>
+<div id="themeSelect" style="display: none;" class="dropdown">
+	<com:Select items={$languages} />
+</div>
 <div id="login">
+	<div style="text-align: center; margin-bottom: 10px;">
+	<img src="<% echo Yii::app()->request->baseUrl . "/images/logo.png"; %>" />
+	</div>
 	<?php echo CHtml::form(); ?>
 
-	<div class="formItems non-floated">
+	<div class="formItems non-floated" style="text-align: left;">
 		<div class="item row1">
 			<div class="left">
 				<?php echo CHtml::activeLabel($form,'host'); ?>
@@ -34,8 +41,6 @@
 			</div>
 		</div>
 	</div>
-
-	<?php echo CHtml::errorSummary($form, ''); ?>
 
 	<div class="buttons" style="position: absolute; bottom: 20px; width: 300px; ">
 		<?php echo CHtml::submitButton('Login'); ?>

@@ -30,7 +30,7 @@
 
   /* (en) Marginal areas & page background */
   /* (de) Randbereiche & Seitenhintergrund */
-  body { background: #efefef; }
+  body { background: #e0e0e0; }
 
   /* (en) Centering layout in old IE-versions */
   /* (de) Zentrierung des Layouts in alten IE-versionen */
@@ -198,8 +198,16 @@
 	color: #CCC;
   }
   
-  dfn {
-  	cursor: help;
+
+  #languageSelect ul li a {
+  	background: url(../images/header-bg.png) repeat-x;
+  }
+
+  #languageSelect ul li a:hover {
+  	background: url(../images/header-hover-bg.png) repeat-x;
   }
   
+  dfn {
+  	cursor: help;
+  }    
 }

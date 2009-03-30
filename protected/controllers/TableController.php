@@ -1,6 +1,6 @@
 <?php
 
-class DatabaseController extends CController
+class TableController extends CController
 {
 	const PAGE_SIZE=10;
 
@@ -12,7 +12,7 @@ class DatabaseController extends CController
 	/**
 	 * @var CActiveRecord the currently loaded data model instance.
 	 */
-	private $_database;
+	private $_table;
 
 	/**
 	 * @var Default layout for this controller
@@ -58,9 +58,42 @@ class DatabaseController extends CController
 	/**
 	 * Shows a particular user.
 	 */
-	public function actionShow()
+	public function actionStructure()
 	{
-		$this->render('show',array('database'=>$this->loadDatabase()));
+		$this->render('structure',array('table'=>$this->loadTable()));
+	}
+
+	/**
+	 * Shows a particular user.
+	 */
+	public function actionBrowse()
+	{
+
+		$db = new CDbConnection('mysql:host=web;dbname=' . $_GET['schema'], Yii::app()->user->name, Yii::app()->user->password);
+		$db->charset='utf8';
+		$db->active = true;
+
+		// Total count of entries
+		$count = $db->createCommand('SELECT COUNT(*) FROM '.$_GET['table'])->queryScalar();
+
+		$pages=new CPagination($count);
+		$pages->pageSize=self::PAGE_SIZE;
+
+		$dc=$db->createCommand('SELECT * FROM '.$_GET['table'].' LIMIT '.$pages->getCurrentPage()*self::PAGE_SIZE.','.self::PAGE_SIZE);
+		$data=$dc->queryAll();
+
+		// Fetch column headers
+		$columns=array();
+		foreach($data[0] AS $key=>$value) {
+			$columns[] = $key;
+		}
+
+		$this->render('browse',array(
+			'data'=>$data,
+			'columns'=>$columns,
+			'pages'=>$pages,
+		));
+
 	}
 
 	/**
@@ -122,9 +155,6 @@ class DatabaseController extends CController
 	 */
 	public function actionList()
 	{
-
-		$collations = Collation::model()->findAll(array('order' => 'COLLATION_NAME', 'select'=>'COLLATION_NAME, CHARACTER_SET_NAME AS collationGroup'));
-
 		$criteria=new CDbCriteria;
 
 		$pages=new CPagination(Database::model()->count($criteria));
@@ -135,14 +165,12 @@ class DatabaseController extends CController
 		$criteria->select = 'COUNT(*) AS tableCount';
 
 		$databaseList = Database::model()->with(array(
-#			"table" => array('select'=>'COUNT(*) AS tableCount'),
-#			"collation"
+			"table" => array('select'=>'COUNT(*) AS tableCount')
 		))->together()->findAll($criteria);
 
 		$this->render('list',array(
 			'databaseList'=>$databaseList,
 			'pages'=>$pages,
-			'collations'=>$collations
 		));
 	}
 
@@ -176,17 +204,28 @@ class DatabaseController extends CController
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the primary key value. Defaults to null, meaning using the 'id' GET variable
 	 */
-	public function loadDatabase($id=null)
+	public function loadTable($id=null)
 	{
-		if($this->_database===null)
-		{
-			if($id!==null || isset($_GET['schema']))
-			$this->_database = Database::model()->find("SCHEMA_NAME = '" . $_GET['schema'] . "'");
 
-			if($this->_database===null)
-				throw new CHttpException(500,'The requested database does not exist.');
+		if($this->_table===null)
+		{
+			if($id!==null || isset($_GET['schema'], $_GET['table']))
+			{
+				$criteria = new CDbCriteria;
+				$criteria->params = array(
+					':schema'=>$_GET['schema'],
+					':table'=>$_GET['table'],
+				);
+				$criteria->condition = 'TABLE_SCHEMA = :schema AND TABLE_NAME = :table';
+
+				$this->_table = Table::model()->find($criteria);
+
+			}
+
+			if($this->_table===null)
+				throw new CHttpException(500,'The requested table does not exist.');
 		}
-		return $this->_database;
+		return $this->_table;
 	}
 
 	/**

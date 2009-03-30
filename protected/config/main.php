@@ -5,6 +5,9 @@
 
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
+
+define('URL_MATCH', '([^\/]*)');
+
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'Dublin - database management',
@@ -34,7 +37,6 @@ return array(
 				array(
 					'class'=>'CWebLogRoute',
 					'levels'=>'error', //, warning, info, trace',
-					'categories'=>'system.db.*'
 				),
 			),
 		),
@@ -51,8 +53,6 @@ return array(
 			'connectionString' => 'mysql:host=web;dbname=information_schema',
 			'charset' => 'utf8',
 			'autoConnect' => false,
-			#'username' => !Yii::app()->user->isGuest ? Yii::app()->user->getName() : false,
-			#'password' => !Yii::app()->user->isGuest ? Yii::app()->user->password : false,
 			'schemaCachingDuration'=>3600,
 		),
 
@@ -66,9 +66,20 @@ return array(
             'urlFormat'=>'path',
 			'showScriptName' => false,
             'rules'=>array(
+				// Login
                 'login'=>'site/login',
-                'database'=>'database/list',
-                'database/show/<id:(.*)>'=>'database/show',
+
+				// Site
+                'site/changeLanguage/<id:(.*)>'=>'site/changeLanguage',
+                'site/changeTheme/<id:(.*)>'=>'site/changeTheme',
+
+				// Database
+               	'database'=>'database/list',
+                'database/<schema:'.URL_MATCH.'>'=>'database/show',
+
+					// Table
+					'database/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/browse'=>'table/browse',
+					'database/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/structure'=>'table/structure',
             ),
         ),
 
