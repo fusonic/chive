@@ -117,6 +117,9 @@ class DatabaseController extends CController
 	 */
 	public function actionList()
 	{
+
+		$collations = Collation::model()->findAll(array('order' => 'COLLATION_NAME', 'select'=>'COLLATION_NAME, CHARACTER_SET_NAME AS collationGroup'));
+
 		$criteria=new CDbCriteria;
 
 		$pages=new CPagination(Database::model()->count($criteria));
@@ -127,12 +130,14 @@ class DatabaseController extends CController
 		$criteria->select = 'COUNT(*) AS tableCount';
 
 		$databaseList = Database::model()->with(array(
-			"table" => array('select'=>'COUNT(*) AS tableCount')
+#			"table" => array('select'=>'COUNT(*) AS tableCount'),
+#			"collation"
 		))->together()->findAll($criteria);
 
 		$this->render('list',array(
 			'databaseList'=>$databaseList,
 			'pages'=>$pages,
+			'collations'=>$collations
 		));
 	}
 

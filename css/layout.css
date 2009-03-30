@@ -174,22 +174,11 @@
   * @section content-tables
   */
 
-  table { width: auto; border-collapse:collapse; margin-bottom: 0.5em; border-top: 2px #888 solid; border-bottom: 2px #888 solid; }
+  table { width: auto; border-collapse:collapse; margin-bottom: 0.5em; }
   table caption { font-variant:small-caps; }
   table.full { width: 100%; }
   table.fixed { table-layout:fixed; }
 
-  th,td { padding: 0.5em; }
-  thead th { color: #000; border-bottom: 2px #800 solid; }
-  tbody th { background: #e0e0e0; color: #333; }
-  tbody th[scope="row"], tbody th.sub { background: #f0f0f0; }
-
-  tbody th { border-bottom: 1px solid #fff; text-align: left; }
-  tbody td { border-bottom: 1px solid #eee; }
-
-  tbody tr:hover th[scope="row"],
-  tbody tr:hover tbody th.sub { background: #f0e8e8; }
-  tbody tr:hover td { background: #fff8f8; }
 
  /**
   * ------------------------------------------------------------------------------------------------- #
@@ -201,16 +190,6 @@
   *
   * @section content-forms
   */
-
-  input {
-  	border: 1px solid;
-	padding: 3px;
-  }
-  
-  select {
-  	border: 1px solid;
-	padding: 2px;
-  }
 
   div.formItems.non-floated div.item {
   	margin-bottom: 10px;
@@ -246,10 +225,6 @@
   
   input.text.tiny {
   	width: 25%;
-  }
-  
-  input[type="submit"] {
-  	padding: 5px 20px;
   }
   
   div.buttons {

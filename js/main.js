@@ -4,13 +4,18 @@ function checkLocation() {
 
 	if(window.location.href != currentLocation) {
 		currentLocation = window.location.href;
-		$('div.ui-layout-center').load(window.location.href.substr(window.location.href.indexOf('#')+1), function() {
-			alert("test");
-			$('table.list tbody tr:even').addClass('even');
-			$('table.list tbody tr:odd').addClass('odd');
-		});
+		$('div.ui-layout-center').load(window.location.href.substr(window.location.href.indexOf('#')+1), {}, setupListTables);
 	}
 
+}
+
+function setupListTables() {
+	
+	$('table.list tbody tr:even').addClass('even');
+	$('table.list tbody tr:odd').addClass('odd');
+	
+	$('table.addCheckboxes').addCheckboxes().removeClass('addCheckboxes');
+	
 }
 
 $(document).ready(function()
@@ -71,7 +76,6 @@ $(document).ready(function()
 	});
 
 	setInterval(checkLocation, 100);
-	$('div.ui-layout-center').load(window.location.href.substr(window.location.href.indexOf('#')+1));
-	$('table.list tbody tr:even').addClass('even');
-			$('table.list tbody tr:odd').addClass('odd');
+	$('div.ui-layout-center').load(window.location.href.substr(window.location.href.indexOf('#')+1), {}, setupListTables);
+	
 });

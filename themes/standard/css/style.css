@@ -183,8 +183,14 @@
   }
   
   input {
-  	border-color: #CCC;
+  	border: solid 1px #CCC;
 	color: #333;
+	padding: 2px;
+  }
+  
+  select {
+  	border: solid 1px #CCC;
+	padding-top: 2px;
   }
   
   #login div.formItems.non-floated div.left {

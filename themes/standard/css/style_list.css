@@ -2,13 +2,113 @@
 
 @media screen, projection
 {
-
-	table.list tr.even {
-		background-color: red;
+	
+	/*
+	 * Pager
+	 */
+	
+	div.list div.pager.top {
+		margin-bottom: 10px;
 	}
 	
-	table.list tr.odd {
-		tackground-color: green;
+	div.list div.pager.bottom {
+		margin-top: 10px;
+	}
+	
+	
+	/*
+	 * Table
+	 */
+	
+	table.list {
+		border: none;
+		border-spacing: 0px;
+		margin: 0px;
+		width: 100%;
+	}
+	
+	table.list td, table.list th {
+		border: solid 1px #FFFFFF;
+		padding: 3px 5px;
+	}
+	
+	table.list td.nodecoration, table.list th.nodecoration {
+		background: none;
+	}
+	
+	table.list td.count {
+		text-align: right;
+	}
+	
+	
+	/*
+	 * ColGroup
+	 */
+	
+	table.list col.action,
+	table.list col.checkbox {
+		width: 16px;
+	}
+	
+	table.list col.collation {
+		width: 130px;
+	}
+	
+	
+	/*
+	 * THead
+	 */
+	
+	table.list thead th {
+		background: #2D83D0 url(../../../images/header-bg.png) repeat-x scroll left center;
+		color: #FFFFFF;
+		font-weight: bold;
+	}
+	
+	
+	/*
+	 * TBody
+	 */
+
+	table.list tbody tr {
+		background-color: #F0F0F0;
+	}
+	
+	table.list tbody tr.odd {
+		background-color: #E0E0E0;
+	}
+	
+	table.list tbody tr.selected {
+		background-color: #E3EE93;		
+	}
+	
+	table.list tbody tr:hover {
+		background-color: #D3E73B;
+	}
+	
+	
+	/*
+	 * TFoot
+	 */
+	
+	table.list tfoot th {
+		background: #2D83D0 url(../../../images/header-bg.png) repeat-x scroll left center;
+		color: #FFFFFF;
+		font-weight: bold;
+	}
+	
+	/*
+	 * Form
+	 */
+	
+	table.list tr.form td {
+		padding: 0px;
+	}
+	
+	table.list form {
+		border: solid 4px #D3E73B;
+		background: #e8edc2;
+		padding: 5px;
 	}
 
 }

@@ -29,6 +29,7 @@ return array(
 				array(
 					'class'=>'CFileLogRoute',
 					'levels'=>'error, warning, info, trace',
+					'categories'=>'system.db.*'
 				),
 				array(
 					'class'=>'CWebLogRoute',
