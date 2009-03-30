@@ -4,7 +4,7 @@ function checkLocation() {
 
 	if(window.location.href != currentLocation) {
 		currentLocation = window.location.href;
-		$('div.ui-layout-center').load(window.location.href.substr(window.location.href.indexOf('#')+1), {}, setupListTables);
+		$('div.ui-layout-center').load(currentLocation.replace(/#/, '/'), {}, setupListTables);
 	}
 
 }
@@ -25,7 +25,7 @@ $(document).ready(function()
 		// General
 		applyDefaultStyles: true,
 
-		north__size: 42,
+		north__size: 40,
 		north__resizable: false,
 		north__closable: false,
 		north__spacing_open: 1,
@@ -36,7 +36,7 @@ $(document).ready(function()
 		west__onresize_end: function () {
 			myAccordion.accordion('resize');
 			// Save
-			$.post('ajaxSettings/set', {
+			$.post(baseUrl + '/ajaxSettings/set', {
 					name: 'sidebarWidth',
 					value: $('.ui-layout-west').width()
 				}
@@ -46,7 +46,7 @@ $(document).ready(function()
 		west__onclose_end: function () {
 			myAccordion.accordion('resize');
 			// Save
-			$.post('ajaxSettings/set', {
+			$.post(baseUrl + '/ajaxSettings/set', {
 					name: 'sidebarState',
 					value: 'closed'
 				}
@@ -56,7 +56,7 @@ $(document).ready(function()
 		west__onopen_end: function () {
 			myAccordion.accordion('resize');
 			// Save
-			$.post('ajaxSettings/set', {
+			$.post(baseUrl + '/ajaxSettings/set', {
 					name: 'sidebarState',
 					value: 'open'
 				}
@@ -76,6 +76,6 @@ $(document).ready(function()
 	});
 
 	setInterval(checkLocation, 100);
-	$('div.ui-layout-center').load(window.location.href.substr(window.location.href.indexOf('#')+1), {}, setupListTables);
-	
+	$('div.ui-layout-center').load(currentLocation.replace(/#/, '/'), {}, setupListTables);
+
 });

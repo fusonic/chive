@@ -47,7 +47,9 @@ class Column extends CActiveRecord
 	 */
 	public function relations()
 	{
-
+		return array(
+			'table' => array(self::BELONGS_TO, 'Table', 'TABLE_NAME'),
+		);
 	}
 
 	/**
