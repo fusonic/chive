@@ -46,10 +46,11 @@ class Database extends CActiveRecord
 	public function rules()
 	{
 		return array(
-			array('CATALOG_NAME','length','max'=>512),
-			array('SCHEMA_NAME','length','max'=>64),
-			array('DEFAULT_CHARACTER_SET_NAME','length','max'=>64),
-			array('DEFAULT_COLLATION_NAME','length','max'=>64),
+			array('CATALOG_NAME', 'length', 'max'=>512),
+			array('SCHEMA_NAME', 'required'),
+			array('SCHEMA_NAME', 'length', 'max'=>64),
+			array('DEFAULT_CHARACTER_SET_NAME', 'length', 'max'=>64),
+			array('DEFAULT_COLLATION_NAME', 'length', 'max'=>64),
 			array('SQL_PATH','length','max'=>512),
 		);
 	}
@@ -71,17 +72,27 @@ class Database extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
+			'SCHEMA_NAME' => Yii::t('core', 'name'),
+			'COLLATION_NAME' => Yii::t('database', 'collation'),
 		);
 	}
 
-	public function getName() {
+	public function getName()
+	{
 		return $this->SCHEMA_NAME;
 	}
 
 	/*
 	 * @return string primary key column
 	 */
-	public function primaryKey() {
+	public function primaryKey()
+	{
 		return 'SCHEMA_NAME';
 	}
+
+#	public function save()
+#	{
+#		return false;
+#	}
+
 }

@@ -110,5 +110,10 @@
 		background: #e8edc2;
 		padding: 5px;
 	}
+	
+	table.list form h1 {
+		font-size: 110%;
+		font-weight: bold;
+	}
 
 }

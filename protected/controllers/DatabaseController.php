@@ -70,16 +70,16 @@ class DatabaseController extends CController
 	public function actionCreate()
 	{
 		$database = new Database;
-		if(isset($_POST['User']))
+		if(isset($_POST['Database']))
 		{
-			$user->attributes=$_POST['User'];
-			if($user->save())
-			$this->redirect(array('show','id'=>$user->id));
+			$database->attributes = $_POST['Database'];
+			if($database->save())
+				die("saved");
 		}
 
 		$collations = Collation::model()->findAll(array('order' => 'COLLATION_NAME', 'select'=>'COLLATION_NAME, CHARACTER_SET_NAME AS collationGroup'));
 
-		$this->render('create',array(
+		$this->render('form',array(
 			'database'=>$database,
 			'collations'=>$collations,
 		));
@@ -135,8 +135,8 @@ class DatabaseController extends CController
 		$criteria->select = 'COUNT(*) AS tableCount';
 
 		$databaseList = Database::model()->with(array(
-#			"table" => array('select'=>'COUNT(*) AS tableCount'),
-#			"collation"
+			"table" => array('select'=>'COUNT(*) AS tableCount'),
+			"collation"
 		))->together()->findAll($criteria);
 
 		$this->render('list',array(
@@ -181,10 +181,14 @@ class DatabaseController extends CController
 		if($this->_database===null)
 		{
 			if($id!==null || isset($_GET['schema']))
-			$this->_database = Database::model()->find("SCHEMA_NAME = '" . $_GET['schema'] . "'");
+			{
+				$this->_database = Database::model()->find("SCHEMA_NAME = '" . $_GET['schema'] . "'");
+			}
 
 			if($this->_database===null)
+			{
 				throw new CHttpException(500,'The requested database does not exist.');
+			}
 		}
 		return $this->_database;
 	}

@@ -76,6 +76,11 @@ $(document).ready(function()
 	});
 
 	setInterval(checkLocation, 100);
-	$('div.ui-layout-center').load(currentLocation.replace(/#/, '/'), {}, setupListTables);
+	if(currentLocation.indexOf('#') > -1)
+	{
+		$('div.ui-layout-center').load(currentLocation.replace(/#/, '/'), {}, setupListTables);
+	}
 
 });
+
+

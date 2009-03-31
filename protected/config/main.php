@@ -73,6 +73,11 @@ return array(
                 'site/changeLanguage/<id:(.*)>'=>'site/changeLanguage',
                 'site/changeTheme/<id:(.*)>'=>'site/changeTheme',
 
+				// Databases
+				'databases'=>'database/list',
+				'databases/create'=>'database/create',
+				'databases/edit'=>'database/edit',
+
 				// Database
                	'database'=>'database/list',
                 'database/<schema:'.URL_MATCH.'>'=>'database/show',
