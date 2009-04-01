@@ -2,6 +2,24 @@
 
 class Column extends CActiveRecord
 {
+	public function __construct($attributes=array(), $scenario='') {
+
+		if($attributes===null)
+		 {
+		      $tableName=$this->tableName();
+		      if(($table=$this->getDbConnection()->getSchema()->getTable($tableName))===null)
+		         throw new CDbException(Yii::t('yii','The table "{table}" for active record class "{class}" cannot be found in the database.',
+		            array('{class}'=>get_class($model),'{table}'=>$tableName)));
+
+		      $table->primaryKey=$this->primaryKey();
+		      $table->columns[$table->primaryKey]->isPrimaryKey=true;
+
+		   }
+
+		   parent::__construct($attributes,$scenario);
+
+	}
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return CActiveRecord the static model class
@@ -59,5 +77,9 @@ class Column extends CActiveRecord
 	{
 		return array(
 		);
+	}
+
+	public function primaryKey() {
+		return 'COLUMN_NAME';
 	}
 }

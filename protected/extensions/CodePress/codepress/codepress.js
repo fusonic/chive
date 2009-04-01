@@ -119,12 +119,7 @@ CodePress.languages = {
 
 
 CodePress.run = function() {
-	s = document.getElementsByTagName('script');
-	for(var i=0,n=s.length;i<n;i++) {
-		if(s[i].src.match('codepress.js')) {
-			CodePress.path = s[i].src.replace('codepress.js','');
-		}
-	}
+	CodePress.path = codePressPath;
 	t = document.getElementsByTagName('textarea');
 	for(var i=0,n=t.length;i<n;i++) {
 		if(t[i].className.match('codepress')) {
@@ -136,5 +131,8 @@ CodePress.run = function() {
 	}
 }
 
-if(window.attachEvent) window.attachEvent('onload',CodePress.run);
-else window.addEventListener('DOMContentLoaded',CodePress.run,false);
+/*
+ * @todo (rponudic) Check if there is a better method to prevent execution before script is ready (like document.ready())
+ */
+
+setTimeout(CodePress.run, 100);

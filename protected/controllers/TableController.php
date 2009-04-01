@@ -2,7 +2,7 @@
 
 class TableController extends CController
 {
-	const PAGE_SIZE=10;
+	const PAGE_SIZE=20;
 
 	/**
 	 * @var string specifies the default action to be 'list'.
@@ -13,6 +13,10 @@ class TableController extends CController
 	 * @var CActiveRecord the currently loaded data model instance.
 	 */
 	private $_table;
+	private $_db;
+
+	public $tableName;
+	public $schemaName;
 
 	/**
 	 * @var Default layout for this controller
@@ -21,8 +25,16 @@ class TableController extends CController
 
 	public function __construct($id, $module=null) {
 
-		if(Yii::app()->request->isAjaxRequest)
-			$this->layout = false;
+		$this->_db = new CDbConnection('mysql:host=web;dbname=' . $_GET['schema'], Yii::app()->user->name, Yii::app()->user->password);
+		$this->_db->charset='utf8';
+		$this->_db->active = true;
+
+		$this->tableName = $_GET['table'];
+		$this->schemaName = $_GET['schema'];
+
+		if(Yii::app()->request->isAjaxRequest) {
+			$this->layout = "table";
+		}
 
 		parent::__construct($id, $module);
 
@@ -60,26 +72,34 @@ class TableController extends CController
 	 */
 	public function actionStructure()
 	{
-		$this->render('structure',array('table'=>$this->loadTable()));
+
+		$criteria = new CDbCriteria;
+		$criteria->condition = 'TABLE_SCHEMA = :schema AND TABLE_NAME = :table';
+		$criteria->params = array(
+			'schema'=>$this->schemaName,
+			'table'=>$this->tableName,
+		);
+
+		$columns = Column::model()->findAll($criteria);
+
+		$this->render('structure',array(
+			'columns'=>$columns,
+		));
 	}
 
 	/**
 	 * Shows a particular user.
 	 */
-	public function actionBrowse()
+	public function actionBrowse($_sql)
 	{
 
-		$db = new CDbConnection('mysql:host=web;dbname=' . $_GET['schema'], Yii::app()->user->name, Yii::app()->user->password);
-		$db->charset='utf8';
-		$db->active = true;
-
 		// Total count of entries
-		$count = $db->createCommand('SELECT COUNT(*) FROM '.$_GET['table'])->queryScalar();
+		$count = $this->_db->createCommand('SELECT COUNT(*) FROM '.$_GET['table'])->queryScalar();
 
 		$pages=new CPagination($count);
 		$pages->pageSize=self::PAGE_SIZE;
 
-		$dc=$db->createCommand('SELECT * FROM '.$_GET['table'].' LIMIT '.$pages->getCurrentPage()*self::PAGE_SIZE.','.self::PAGE_SIZE);
+		$dc=$this->_db->createCommand('SELECT * FROM '.$_GET['table'].' LIMIT '.$pages->getCurrentPage()*self::PAGE_SIZE.','.self::PAGE_SIZE);
 		$data=$dc->queryAll();
 
 		// Fetch column headers
@@ -96,26 +116,22 @@ class TableController extends CController
 
 	}
 
+	public function actionSql() {
+
+		predie($_POST);
+
+		$sql = $_POST['sql'];
+
+		self::actionBrowse($sql);
+
+	}
+
 	/**
 	 * Creates a new user.
 	 * If creation is successful, the browser will be redirected to the 'show' page.
 	 */
 	public function actionCreate()
 	{
-		$database = new Database;
-		if(isset($_POST['User']))
-		{
-			$user->attributes=$_POST['User'];
-			if($user->save())
-			$this->redirect(array('show','id'=>$user->id));
-		}
-
-		$collations = Collation::model()->findAll(array('order' => 'COLLATION_NAME', 'select'=>'COLLATION_NAME, CHARACTER_SET_NAME AS collationGroup'));
-
-		$this->render('create',array(
-			'database'=>$database,
-			'collations'=>$collations,
-		));
 	}
 
 	/**
@@ -124,14 +140,6 @@ class TableController extends CController
 	 */
 	public function actionUpdate()
 	{
-		$user=$this->loadUser();
-		if(isset($_POST['User']))
-		{
-			$user->attributes=$_POST['User'];
-			if($user->save())
-			$this->redirect(array('show','id'=>$user->id));
-		}
-		$this->render('update',array('user'=>$user));
 	}
 
 	/**
@@ -140,14 +148,6 @@ class TableController extends CController
 	 */
 	public function actionDelete()
 	{
-		if(Yii::app()->request->isPostRequest)
-		{
-			// we only allow deletion via POST request
-			$this->loadUser()->delete();
-			$this->redirect(array('list'));
-		}
-		else
-		throw new CHttpException(500,'Invalid request. Please do not repeat this request again.');
 	}
 
 	/**
@@ -213,8 +213,8 @@ class TableController extends CController
 			{
 				$criteria = new CDbCriteria;
 				$criteria->params = array(
-					':schema'=>$_GET['schema'],
-					':table'=>$_GET['table'],
+					':schema'=>$this->schemaName,
+					':table'=>$this->tableName,
 				);
 				$criteria->condition = 'TABLE_SCHEMA = :schema AND TABLE_NAME = :table';
 

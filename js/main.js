@@ -2,17 +2,29 @@ var currentLocation = window.location.href;
 
 function checkLocation() {
 
-	if(window.location.href != currentLocation) {
-		currentLocation = window.location.href;
-		$('div.ui-layout-center').load(currentLocation.replace(/#/, '/'), {}, setupListTables);
+	if(window.location.href != currentLocation) 
+	{
+		reload();
 	}
 
+}
+
+function reload() {
+	currentLocation = window.location.href;
+	$('div.ui-layout-center').load(currentLocation.replace(/#/, '/'), {}, setupListTables);
+	return false;
 }
 
 function setupListTables() {
 	
 	$('table.list tbody tr:even').addClass('even');
 	$('table.list tbody tr:odd').addClass('odd');
+	return;
+	if(currentLocation.match(/tables\/(\w+)\//))
+	{
+		alert(RegExp.$1);
+		setBreadCrumbTable(RegExp.$1);
+	}
 	
 	$('table.addCheckboxes').addCheckboxes().removeClass('addCheckboxes');
 	
@@ -68,11 +80,18 @@ $(document).ready(function()
 	// ACCORDION - inside the West pane
 	var myAccordion = $("#MainMenu").accordion({
 		selectedClass: "active",
-		navigation: true,
 		fillSpace: true,
 		autoHeight: true,
 		collapsible: false,
 		animated: "slide"
+	});
+	
+	$(document).ajaxStart(function() {
+		$('#loading').css({'background': '#FF0000'}).fadeIn();
+	});
+	
+	$(document).ajaxStop(function() {
+		$('#loading').css({'background': '#009900'}).fadeOut();
 	});
 
 	setInterval(checkLocation, 100);

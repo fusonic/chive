@@ -3,7 +3,7 @@
  * By Merlin Moncure
  */
 
-var Language = new object();
+var Language = {};
  
 // SQL
 Language.syntax = [

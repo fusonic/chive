@@ -64,7 +64,7 @@ class Table extends CActiveRecord
 	{
 		return array(
 			'database' => array(self::BELONGS_TO, 'Database', 'TABLE_SCHEMA'),
-			'columns' => array(self::HAS_MANY, 'Column', 'COLUMN_NAME'),
+			'columns' => array(self::HAS_MANY, 'Column', 'COLUMN_NAME', 'order'=>'??.ORDINAL_POSITION ASC'),
 		);
 	}
 
@@ -83,5 +83,13 @@ class Table extends CActiveRecord
 
 	public function getName() {
 		return $this->TABLE_NAME;
+	}
+
+	public function getRowCount() {
+		return $this->TABLE_ROWS;
+	}
+
+	public function isEmpty() {
+		return (bool)!$this->getRowCount();
 	}
 }

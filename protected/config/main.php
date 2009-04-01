@@ -85,6 +85,7 @@ return array(
 					// Table
 					'database/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/browse'=>'table/browse',
 					'database/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/structure'=>'table/structure',
+					'database/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/sql'=>'table/sql',
             ),
         ),
 
@@ -117,6 +118,5 @@ return array(
 		'iconpack'=>'images/icons/pma',
 	),
 
-	'sourceLanguage'=>'asdf',
-	#'language' => substr(Yii::app()->request->getPreferredLanguage(), 0, 2),
+	'sourceLanguage'=>'xxx',
 );

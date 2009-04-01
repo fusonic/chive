@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<category id="database">
+<category id="core">
 	<entry id="tables">Tabellen</entry>
 	<entry id="views">Views</entry>
 	<entry id="amountRows">{amount} rows</entry>

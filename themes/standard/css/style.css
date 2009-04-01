@@ -1,5 +1,6 @@
 @CHARSET "UTF-8";
 
+@import "style_component.css";
 @import "style_icon.css";
 @import "style_list.css";
 
@@ -60,6 +61,11 @@
 	margin-left: 10px;
   }
   
+  #headerLeft, #headerLeft a span {
+  	color: #FFF;
+	text-decoration: none !important;
+  }
+  
   #headerLogo {
 	margin: 0px auto;
 	width: 100px;
@@ -83,7 +89,7 @@
   
   #headerRight ul li a {
   	display: block;
-  	width: 60px;
+  	width: 90px;
 	height: 40px;
 	line-height: 40px;
 	border-left: 1px solid #BBB;
@@ -93,7 +99,7 @@
   #headerRight ul li a:hover {
   	background: url(../../../images/header-hover-bg.png);
   }
-
+  
   #topnav { color: #aaa; background: transparent; }
 
   /* (en) adjustment of main navigation */

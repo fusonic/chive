@@ -26,7 +26,7 @@
 			<% foreach($databaseList as $n=>$model): %>
 				<tr>
 					<td>
-						<% echo CHtml::link($model->SCHEMA_NAME,array('show','id'=>$model->SCHEMA_NAME)); %>
+						<% echo CHtml::link($model->SCHEMA_NAME,array($model->SCHEMA_NAME)); %>
 					</td>
 					<td class="count">
 						<% echo $model->tableCount; %>

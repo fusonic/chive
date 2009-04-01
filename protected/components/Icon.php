@@ -8,6 +8,7 @@ class Icon extends CWidget
 	public $name;
 	public $text = "core.unknown";
 	public $disabled = false;
+	public $title;
 
 	public function run() {
 
@@ -22,6 +23,9 @@ class Icon extends CWidget
 		{
 			$this->htmlOptions['class'] = $classes;
 		}
+
+		if($this->title)
+			$this->htmlOptions['title'] = $this->title;
 
 		echo CHtml::image(Yii::app()->baseUrl . DIRECTORY_SEPARATOR . Yii::app()->params->iconpack . DIRECTORY_SEPARATOR . $this->size . DIRECTORY_SEPARATOR . $this->name . ".png", Yii::t($category, $var), $this->htmlOptions);
 

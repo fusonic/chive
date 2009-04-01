@@ -40,7 +40,9 @@ $request = Yii::app()->request;
 $language = $session->itemAt('language') ? $session->itemAt('language') : $request->getPreferredLanguage();
 $theme = $session->itemAt('theme') ? $session->itemAt('theme') : 'standard';
 
-$app->setLanguage("en");
+$language = "en";
+
+$app->setLanguage($language);
 $app->setTheme($theme);
 
 $app->run();

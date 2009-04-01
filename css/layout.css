@@ -124,7 +124,7 @@
   }
   
   a.icon span {
-  	margin-left: 5px;
+  	margin-left: 2px;
   	text-decoration: underline;
 	vertical-align: middle;
   }
@@ -162,7 +162,6 @@
 
   .float_left { float: left; display:inline; margin-right: 1em; margin-bottom: 0.15em; }
   .float_right { float: right; display:inline; margin-left: 1em; margin-bottom: 0.15em; }
-  .center { display:block; text-align:center; margin: 0.5em auto; }
 
  /**
   * ------------------------------------------------------------------------------------------------- #
@@ -179,6 +178,10 @@
   table caption { font-variant:small-caps; }
   table.full { width: 100%; }
   table.fixed { table-layout:fixed; }
+  
+  table.list td.center {
+  	text-align: center;
+  }
 
 
  /**
@@ -259,7 +262,17 @@
   }
   
   div.sidebarContent {
-  	padding: 5px 0px 0px 20px;
+  	padding: 5px 0px 0px 10px;
+  }
+  
+  #loading {
+  	position: absolute; 
+	top: 45px; 
+	z-index: 9999999 !important; 
+	right: 20px; 
+	font-weight: bold; 
+	padding: 3px;
+	color: #FFFFFF;
   }
   
   #login {
@@ -309,7 +322,52 @@
   .nowrap {
   	white-space: nowrap;
   }
+  
+  /*
+   * List 
+   */
+  
+  ul.list li {
+  	list-style-type: none;
+  }
+  
+  ul.list li a img {
+  	position: relative;
+	top: 2px;
+  }
 
+  #headerLeft {
+  	font-size: 140%;
+  }
+
+  /*
+   * Tab menu
+   */
+
+  ul.tabMenu {
+	position: relative;
+	top: -10px;
+  }
+  
+  ul.tabMenu li {
+  	list-style-type: none;
+	float: left;
+	font-size: 120%;
+  }
+  
+  ul.tabMenu li a {
+  	display: block;
+	text-align: center;
+  }
+  
+  /*
+   * CodePress
+   */
+  
+  iframe.codepress {
+  	margin-bottom: 10px;
+  }
+  
  /**
   * (en) Emphasizing external Hyperlinks via CSS
   * (de) Hervorhebung externer Hyperlinks mit CSS

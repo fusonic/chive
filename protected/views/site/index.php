@@ -1,3 +1,1 @@
-<?php foreach($tables AS $table) { ?>
-	<?php echo $table; ?>
-<?php } ?>
+This is the index page!

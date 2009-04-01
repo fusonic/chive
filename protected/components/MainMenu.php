@@ -46,6 +46,23 @@ class MainMenu extends CWidget
 			if($active = $this->isActive($pattern,$controller->uniqueID,$action->id))
 				$item2['htmlOptions']['class'] = "active";
 
+			if(isset($item['icon']))
+			{
+				$item2['icon']=$item['icon'];
+
+				if($item2['htmlOptions']['class'])
+				{
+					$item2['htmlOptions']['class'].=' icon';
+				}
+				else
+				{
+					$item2['htmlOptions']['class']=' icon';
+				}
+
+			}
+			$item2['icon'] = isset($item['icon']) ? $item['icon'] : null;
+			$item2['htmlOptions']['href'] = $item2['url'];
+
 			$items[]=$item2;
 		}
 		$this->render('mainMenu',array('items'=>$items));
