@@ -226,5 +226,18 @@
   
   dfn {
   	cursor: help;
-  }    
+  }
+  
+  div.errorSummary {
+  	color: #D00;
+  }
+  
+  span.sql, div.sql, p.sql {
+  	font-family: monospace,fixed;
+  }
+  
+  div.errorSummary span.sql {
+  	font-size: 80%;
+  }
+   
 }

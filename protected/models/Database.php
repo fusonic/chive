@@ -3,25 +3,11 @@
 class Database extends CActiveRecord
 {
 
+	public $originalSchemaName;
+
 	public $tableCount;
-
-	public function __construct($attributes=array(), $scenario='') {
-
-		if($attributes===null)
-		 {
-		      $tableName=$this->tableName();
-		      if(($table=$this->getDbConnection()->getSchema()->getTable($tableName))===null)
-		         throw new CDbException(Yii::t('yii','The table "{table}" for active record class "{class}" cannot be found in the database.',
-		            array('{class}'=>get_class($model),'{table}'=>$tableName)));
-
-		      $table->primaryKey=$this->primaryKey();
-		      $table->columns[$table->primaryKey]->isPrimaryKey=true;
-
-		   }
-
-		   parent::__construct($attributes,$scenario);
-
-	}
+	public $DEFAULT_CHARACTER_SET_NAME = 'utf8';
+	public $DEFAULT_COLLATION_NAME = 'utf8_general_ci';
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -30,6 +16,16 @@ class Database extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+
+	public function instantiate($attributes)
+	{
+		$res = parent::instantiate($attributes);
+		if(isset($attributes['SCHEMA_NAME']))
+		{
+			$res->originalSchemaName = $attributes['SCHEMA_NAME'];
+		}
+		return $res;
 	}
 
 	/**
@@ -48,10 +44,22 @@ class Database extends CActiveRecord
 		return array(
 			array('CATALOG_NAME', 'length', 'max'=>512),
 			array('SCHEMA_NAME', 'required'),
-			array('SCHEMA_NAME', 'length', 'max'=>64),
+			array('SCHEMA_NAME', 'length', 'min'=>1, 'max'=>64),
 			array('DEFAULT_CHARACTER_SET_NAME', 'length', 'max'=>64),
+			array('DEFAULT_COLLATION_NAME', 'required'),
 			array('DEFAULT_COLLATION_NAME', 'length', 'max'=>64),
 			array('SQL_PATH','length','max'=>512),
+		);
+	}
+
+	/**
+	 * @return array attributes that can be massively assigned
+	 */
+	public function safeAttributes()
+	{
+		return array(
+			'SCHEMA_NAME',
+			'DEFAULT_COLLATION_NAME',
 		);
 	}
 
@@ -90,9 +98,69 @@ class Database extends CActiveRecord
 		return 'SCHEMA_NAME';
 	}
 
-#	public function save()
-#	{
-#		return false;
-#	}
+	public function insert()
+	{
+
+		if(!$this->getIsNewRecord())
+		{
+			throw new CDbException(Yii::t('yii','The active record cannot be inserted to database because it is not new.'));
+		}
+		if($this->beforeSave())
+		{
+			// @todo(mburtscher): Work with parameters!
+			$cmd = Yii::app()->db->createCommand('CREATE DATABASE ' . $this->SCHEMA_NAME
+				. ' DEFAULT COLLATE = ' . $this->DEFAULT_COLLATION_NAME);
+			try
+			{
+				$cmd->prepare();
+				$cmd->execute();
+				$this->afterSave();
+				return true;
+			}
+			catch(CDbException $ex)
+			{
+				$errorInfo = $cmd->getPdoStatement()->errorInfo();
+				$this->addError('SCHEMA_NAME', Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
+				$this->afterSave();
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	public function update()
+	{
+		if($this->getIsNewRecord())
+		{
+			throw new CDbException(Yii::t('yii','The active record cannot be updated because it is new.'));
+		}
+		if($this->beforeSave())
+		{
+			// @todo(mburtscher): Work with parameters!
+			$cmd = Yii::app()->db->createCommand('ALTER DATABASE ' . $this->SCHEMA_NAME
+				. ' DEFAULT COLLATE = ' . $this->DEFAULT_COLLATION_NAME);
+			try
+			{
+				$cmd->prepare();
+				$cmd->execute();
+				$this->afterSave();
+				return true;
+			}
+			catch(CDbException $ex)
+			{
+				$errorInfo = $cmd->getPdoStatement()->errorInfo();
+				$this->addError('SCHEMA_NAME', Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
+				$this->afterSave();
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
 
 }

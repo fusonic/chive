@@ -76,7 +76,7 @@ return array(
 				// Databases
 				'databases'=>'database/list',
 				'databases/create'=>'database/create',
-				'databases/edit'=>'database/edit',
+				'databases/update'=>'database/update',
 
 				// Database
                	'database'=>'database/list',

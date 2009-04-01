@@ -57,11 +57,28 @@
 			 * Fetch contents
 			 */
 			
-			tdObj.load(url, function() {
+			var setAjaxForms = function() {
+				divObj.children("form").ajaxForm({
+					success: function(responseText, statusText) {
+						if(responseText.match(/redirect:(.*)/))
+						{
+							window.location.href = RegExp.$1;
+						}
+						else
+						{
+							divObj.html(responseText);
+							setAjaxForms();
+						}
+					}
+				});
+			};
+			
+			divObj.load(url, function() {
 				divObj.slideDown();
 				$('div.ui-layout-center').animate({
 					scrollTop: trObj.offset().top + $('div.ui-layout-center').scrollTop() - $('div.ui-layout-north').outerHeight()
-				}, 1000);
+				}, 500);
+				setAjaxForms();
 			});
 			
 			

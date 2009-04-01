@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <category id="message">
 	<entry id="authenticationFailed">Connection could not be established:&lt;br/&gt;{message}</entry>
-	<entry id="test">test123</entry>
+	<entry id="sqlErrorOccured">A SQL error occured ({errno}): &lt;span class="sql"&gt;{errmsg}&lt;/span&gt;</entry>
 </category>

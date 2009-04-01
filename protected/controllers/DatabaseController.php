@@ -74,14 +74,17 @@ class DatabaseController extends CController
 		{
 			$database->attributes = $_POST['Database'];
 			if($database->save())
-				die("saved");
+			{
+				echo 'redirect:database/' . $database->SCHEMA_NAME;
+				Yii::app()->end();
+			}
 		}
 
 		$collations = Collation::model()->findAll(array('order' => 'COLLATION_NAME', 'select'=>'COLLATION_NAME, CHARACTER_SET_NAME AS collationGroup'));
 
-		$this->render('form',array(
-			'database'=>$database,
-			'collations'=>$collations,
+		$this->render('form', array(
+			'database' => $database,
+			'collations' => $collations,
 		));
 	}
 
@@ -91,14 +94,28 @@ class DatabaseController extends CController
 	 */
 	public function actionUpdate()
 	{
-		$user=$this->loadUser();
-		if(isset($_POST['User']))
+		$database = $this->loadDatabase();
+		if(isset($_POST['Database']))
 		{
-			$user->attributes=$_POST['User'];
-			if($user->save())
-			$this->redirect(array('show','id'=>$user->id));
+			$database->attributes = $_POST['Database'];
+			if($database->save())
+			{
+				$helperId = "helper_" . mt_rand(1000, 9999);
+				echo '<span id="' . $helperId . '" />'
+					. '<script type="text/javascript">'
+					. '$("#' . $helperId . '").parents("tr").prev().children("td").effect("highlight", {}, 2000);'
+					. '$("#' . $helperId . '").parents("tr").remove();'
+					. '</script>';
+				Yii::app()->end();
+			}
 		}
-		$this->render('update',array('user'=>$user));
+
+		$collations = Collation::model()->findAll(array('order' => 'COLLATION_NAME', 'select'=>'COLLATION_NAME, CHARACTER_SET_NAME AS collationGroup'));
+
+		$this->render('form', array(
+			'database' => $database,
+			'collations' => $collations,
+		));
 	}
 
 	/**

@@ -4,4 +4,5 @@
 	<entry id="password">Password</entry>
 	<entry id="host">Host</entry>
 	<entry id="authenticationFailed">Connection could not be established:&lt;br/&gt;{message}</entry>
+	<entry id="name">Name</entry>
 </category>

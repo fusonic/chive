@@ -42,7 +42,7 @@
 						</a>
 					</td>
 					<td>
-						<a href="javascript:void(0)" onclick="$(this).parent().parent().appendForm('http://localhost/dublin/trunk/_form.html?id=<%= $model->SCHEMA_NAME %>');" class="icon">
+						<a href="javascript:void(0)" onclick="$(this).parent().parent().appendForm('databases/update?schema=<%= $model->SCHEMA_NAME %>');" class="icon">
 							<com:Icon name="edit" size="16" />
 						</a>
 					</td>
@@ -53,27 +53,6 @@
 					</td>
 				</tr>
 			<% endforeach; %>
-<!---
-			<tr id="addDatabaseFormContainer" class="noCheckboxes form">
-				<td colspan="5">
-					<form id="addDatabaseForm" style="display: none">
-						<h1>Add a new database</h1>
-						<fieldset style="float: left; width: 200px">
-							<legend>Name</legend>
-							<% echo CHtml::textField("name") %>
-						</fieldset>
-						<fieldset style="float: left; width: 200px">
-							<legend>Collation</legend>
-							<% echo CHtml::dropDownList('test', null, CHtml::listData($collations, 'COLLATION_NAME', 'COLLATION_NAME', 'collationGroup')) %>
-						</fieldset>
-						<div style="clear: left; padding-top: 5px">
-							<?php echo CHtml::submitButton('Create', array('class'=>'icon save')); ?>
-							<?php echo CHtml::button('Cancel', array('class'=>'icon delete', 'onclick'=>'$("#addDatabaseForm").slideUp(function() {$("#addDatabaseForm")[0].reset();});')); ?>
-						</div>
-					</form>
-				</td>
-			</tr>
---->
 		</tbody>
 		<tfoot>
 			<tr>
