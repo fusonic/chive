@@ -27,8 +27,6 @@ if($console == true) {
 
 $app = Yii::createWebApplication($config);
 
-die();
-
 if(!$app->user->isGuest) {
 	$app->db->connectionString = 'mysql:host=' . $app->user->host . ';dbname=information_schema';
 	$app->db->username= $app->user->name;
