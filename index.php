@@ -12,20 +12,22 @@ function pre($_value) {
 
 function predie($_value) {
 	pre($_value);
-	CApplication::end();
+	Yii::app()->end();
 }
 
 // remove the following line when in production mode
 defined('YII_DEBUG') or define('YII_DEBUG',true);
-
-$console = false;
-
-if($console == true)
-	$config = dirname(__FILE__).'/protected/config/dev.php';
-
 require_once($yii);
+
+$console = true;
+
+if($console == true) {
+	$config = dirname(__FILE__).'/protected/config/dev.php';
+}
+
 $app = Yii::createWebApplication($config);
 
+die();
 
 if(!$app->user->isGuest) {
 	$app->db->connectionString = 'mysql:host=' . $app->user->host . ';dbname=information_schema';

@@ -36,22 +36,29 @@
   <div class="ui-layout-north">
 	<div id="header">
 		<div id="headerLeft">
-			<a href="http://www.example.com/dublin" style="float:left;">
-				<img src="<%= Yii::app()->baseUrl . "/images/logo.png"; %>" />
-			</a>
-			<?php if(isset($_GET['schema'])) { ?>
-				&raquo;
-				<a class="icon" href="<%= Yii::app()->baseUrl %>/database/<%= $_GET['schema'] %>">
-					<com:Icon name="database" size="24" />
-					<span><?php echo $_GET['schema']; ?></span>
-				</a>
-				<?php if (isset($_GET['table'])) {?>
-				<span style="font-size: 150%; float: left; padding-left: 10px;color:white;">&raquo;
-					<com:Icon name="table" size="24" />
-					<span>&nbsp;<?php echo $_GET['table']; ?></span>
-				</span>
+			<ul class="breadCrumb">
+				<li id="bc_root">
+					<a href="http://www.example.com/dublin" style="float:left; margin-right: 5px;">
+						<img src="<%= Yii::app()->baseUrl . "/images/logo.png"; %>" />
+					</a>
+				</li>
+				<?php if(isset($_GET['schema'])) { ?>
+					<li id="bc_schema">
+						<span>&raquo;</span>
+						<a class="icon" href="<%= Yii::app()->baseUrl %>/database/<%= $_GET['schema'] %>">
+							<com:Icon name="database" size="24" />
+							<span><?php echo $_GET['schema']; ?></span>
+						</a>
+					</li>
 				<?php } ?>
-			<?php } ?>
+				<li id="bc_table" style="display: none;">
+					<span>&raquo;</span>
+					<a class="icon" href="<%= Yii::app()->baseUrl %>/database/<%= $_GET['schema'] %>">
+						<com:Icon name="table" size="24" />
+						<span>test</span>
+					</a>
+				</li>
+			</ul>
 		</div>
 		<div id="headerLogo">
 		</div>
@@ -74,7 +81,7 @@
   		<div class="sidebarHeader">
 			<a class="icon">
 				<com:Icon name="table" size="24" text="database.tables" />
-				<span><%= Yii::t('database', 'tables'); %></span>
+				<span><?php echo Yii::t('database', 'tables'); ?></span>
 			</a>
 		</div>
 		<div class="sidebarContent">

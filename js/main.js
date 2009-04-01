@@ -11,32 +11,60 @@ function checkLocation() {
 
 function reload() {
 	currentLocation = window.location.href;
-	$('div.ui-layout-center').load(currentLocation.replace(/#/, '/'), {}, setupListTables);
+	$('div.ui-layout-center').load(currentLocation.replace(/#/, '/'), {}, init);
 	return false;
 }
 
-function setupListTables() {
+function init() {
 	
 	$('table.list tbody tr:even').addClass('even');
 	$('table.list tbody tr:odd').addClass('odd');
-	return;
-	if(currentLocation.match(/tables\/(\w+)\//))
+	
+	$('div.ui-layout-center form').ajaxForm({
+		success: function(responseText, statusText) {
+			if(responseText.match(/redirect:(.*)/))
+			{
+				window.location.href = RegExp.$1;
+			}
+			else
+			{
+				$('div.ui-layout-center').html(responseText);
+				setupListTables();
+			}
+		}
+	});
+
+	if(currentLocation.match(/database\/(\w+)#tables\/(\w+)\//))
 	{
-		alert(RegExp.$1);
-		setBreadCrumbTable(RegExp.$1);
+		schema = RegExp.$1.toString();
+		table = RegExp.$2.toString();
+		
+		$('#bc_table a span').text(table);
+		$('#bc_table a').attr('href', baseUrl + '/database/' + schema + '#tables/' + table + '/structure');
+		$('#bc_table').show();
+	}
+	else 
+	{
+		$('bc_table').hide();
 	}
 	
-	$('table.addCheckboxes').addCheckboxes().removeClass('addCheckboxes');
-	
+	// Add checkboxes to respective tables
+	try 
+	{
+		$('table.addCheckboxes').addCheckboxes().removeClass('addCheckboxes');
+	}
+	catch(exception) {}
 }
 
 $(document).ready(function()
 {
 
 	$('body').layout({
+		
 		// General
 		applyDefaultStyles: true,
 
+		// North
 		north__size: 40,
 		north__resizable: false,
 		north__closable: false,
@@ -86,6 +114,7 @@ $(document).ready(function()
 		animated: "slide"
 	});
 	
+	// Ajax loader 
 	$(document).ajaxStart(function() {
 		$('#loading').css({'background': '#FF0000'}).fadeIn();
 	});
@@ -95,9 +124,10 @@ $(document).ready(function()
 	});
 
 	setInterval(checkLocation, 100);
+	
 	if(currentLocation.indexOf('#') > -1)
 	{
-		$('div.ui-layout-center').load(currentLocation.replace(/#/, '/'), {}, setupListTables);
+		$('div.ui-layout-center').load(currentLocation.replace(/#/, '/'), {}, init);
 	}
 
 });

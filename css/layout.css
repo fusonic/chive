@@ -39,9 +39,8 @@
   /*--- Headings | Überschriften ------------------------------------------------------------------------*/
 
   h1,h2,h3,h4,h5,h6 {
-    font-family: Arial, "Times New Roman", Times, serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-weight:normal;
-    color:#222;
     margin: 0 0 0.25em 0;
   }
 
@@ -52,29 +51,9 @@
   h5 { font-size: 116.67%; }                    /* 14px */
   h6 { font-size: 116.67%; }                    /* 14px */
 
-  /* --- Lists | Listen  -------------------------------------------------------------------------------- */
-
-  ul, ol, dl { line-height: 1.5em; }
-  ul li { list-style-type: disc; }
-  ul ul li { list-style-type: circle; }
-
-  ol li { list-style-type: decimal; }
-  ol ol li { list-style-type: lower-latin; }
-
-  li { line-height: 1.5em; }
-
-  dt { font-weight: bold; }
-  dd { margin: 0 0 1em 0.8em; }
-
   /* --- general text formatting | Allgemeine Textauszeichnung ------------------------------------------ */
 
   p { line-height: 1.5em; margin: 0 0 1em 0; }
-
-  blockquote, cite,q {
-    font-family: Georgia, "Times New Roman", Times, serif;
-    font-style:italic;
-  }
-  blockquote { margin: 0 0 1em 1.6em; color: #666; }
 
   strong,b { font-weight: bold; }
   em,i { font-style: italic; }
@@ -128,40 +107,6 @@
   	text-decoration: underline;
 	vertical-align: middle;
   }
-
-  /* --- images (with optional captions) | Bilder (mit optionaler Bildunterschrift) ------------------ */
-
-  p.icaption_left { float:left; display:inline; margin: 0 1em 0.15em 0; }
-  p.icaption_right { float:right; display:inline; margin: 0 0 0.15em 1em; }
-
-  p.icaption_left img,
-  p.icaption_right img { padding:0; border: 1px #888 solid; }
-
-  p.icaption_left strong,
-  p.icaption_right strong { display:block; overflow:hidden; margin-top: 2px; padding: 0.3em 0.5em; background: #eee; font-weight: normal; font-size: 91.667%; }
-
- /**
-  * ------------------------------------------------------------------------------------------------- #
-  *
-  * Generic Content Classes
-  *
-  * (en) standard classes for positioning and highlighting
-  * (de) Standardklassen zur Positionierung und Hervorhebung
-  *
-  * @section content-generic-classes
-  */
-
-  .highlight { color: #f60; }
-  .dimmed { color: #888; }
-
-  .info { background: #f8f8f8; color: #666; padding: 10px; margin-bottom: 0.5em; font-size: 91.7%; }
-
-  .note { background: #efe; color: #040; border: 2px #484 solid; padding: 10px; margin-bottom: 1em; }
-  .important { background: #ffe; color: #440; border: 2px #884 solid; padding: 10px; margin-bottom: 1em; }
-  .warning { background: #fee; color: #400; border: 2px #844 solid; padding: 10px; margin-bottom: 1em; }
-
-  .float_left { float: left; display:inline; margin-right: 1em; margin-bottom: 0.15em; }
-  .float_right { float: right; display:inline; margin-left: 1em; margin-bottom: 0.15em; }
 
  /**
   * ------------------------------------------------------------------------------------------------- #
@@ -237,22 +182,32 @@
 	text-align: center;
   }
 
- /**
-  * ------------------------------------------------------------------------------------------------- #
-  *
-  * Miscellaneous | Sonstiges
-  *
-  * @section content-misc
-  */
+  /*
+   * Layout
+   */
 
   div.ui-layout-west {
   	padding: 0px !important;
-	overflow: hidden !important;	
+	overflow: hidden !important;
+	text-align-left;
+	margin-top: 30px;
+	padding-top: 10px;	
   }
   
   div.ui-layout-north {
   	border: none !important;
+	overflow: hidden !important;
   }
+  
+  div.ui-layout-center { 
+  	text-align: left; 
+	margin-top: 30px; 
+	padding-top: 10px;
+  }
+  
+  /*
+   * Header
+   */
   
   div.sidebarHeader {
 	height: 25px;
@@ -261,9 +216,22 @@
 	padding: 5px;
   }
   
+  #header ul, #header ul li {
+  	list-style-type: none;
+	text-align: center;
+  }
+  
+  /*
+   * Sidebar (accordion)
+   */
+  
   div.sidebarContent {
   	padding: 5px 0px 0px 10px;
   }
+  
+  /*
+   * Loading - indicator
+   */
   
   #loading {
   	position: absolute; 
@@ -275,6 +243,10 @@
 	color: #FFFFFF;
   }
   
+  /*
+   * Login form
+   */
+  
   #login {
   	position: absolute; 
 	left: 50%; 
@@ -284,6 +256,10 @@
 	height: 300px; 
 	padding: 10px;
   }
+  
+  /*
+   * Language select
+   */
   
   #languageSelect {
   	position: absolute;
@@ -368,24 +344,16 @@
   	margin-bottom: 10px;
   }
   
- /**
-  * (en) Emphasizing external Hyperlinks via CSS
-  * (de) Hervorhebung externer Hyperlinks mit CSS
-  *
-  * @section             content-external-links
-  * @app-yaml-default    disabled
-  */
-
   /*
-  #main a[href^="http://www.my-domain.com"],
-  #main a[href^="https://www.my-domain.com"]
-  {
-    padding-left: 12px;
-    background-image: url('your_image.gif');
-    background-repeat: no-repeat;
-    background-position: 0 0.45em;
+   * Breadcrumb
+   */
+  
+  ul.breadCrumb li {
+  	float: left;
+	margin: 0px 10px 0px 0px;
+	height: 40px;
+	line-height: 40px;
+	
   }
-  */	
-	
-	
+  
 }

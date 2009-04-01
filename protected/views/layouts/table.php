@@ -44,6 +44,8 @@
 </ul>
 <div style="clear: both;"></div>
 
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.form.js', CClientScript::POS_HEAD); ?>
+
 <div id="content">
 	<?php echo $content; ?>
 </div>

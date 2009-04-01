@@ -4,51 +4,24 @@
 @import "style_icon.css";
 @import "style_list.css";
 
-/**
- * "Yet Another Multicolumn Layout" - (X)HTML/CSS Framework
- *
- * (en) Screen layout for YAML examples
- * (de) Bildschirmlayout für YAML-Beispiele
- *
- * @copyright       Copyright 2005-2009, Dirk Jesse
- * @license         CC-A 2.0 (http://creativecommons.org/licenses/by/2.0/),
- *                  YAML-C (http://www.yaml.de/en/license/license-conditions.html)
- * @link            http://www.yaml.de
- * @package         yaml
- * @version         3.1
- * @revision        $Revision: 343 $
- * @lastmodified    $Date: 2009-01-19 23:41:32 +0100 (Mo, 19. Jan 2009) $
- */
-
 @media screen, projection
 {
-  /**
-   * (en) Formatting YAML's  basic layout elements
-   * (de) Gestaltung des YAML Basis-Layouts
-   */
 
   html { margin: 0px; }
 
-  /* (en) Marginal areas & page background */
-  /* (de) Randbereiche & Seitenhintergrund */
+  /*
+   * Body
+   */
   body { background: #e0e0e0; }
 
-  /* (en) Centering layout in old IE-versions */
-  /* (de) Zentrierung des Layouts in alten IE-versionen */
-  body { text-align: center; }
-  .page_margins { text-align:left; margin: 0 auto; }
 
-  /* (en) Layout: width, background, borders */
-  /* (de) Layout: Breite, Hintergrund, Rahmen */
-  .page_margins { min-width: 740px; max-width: 80em; background: #fff; }
-  .page { }
-
-  /* (en) Designing main layout elements */
-  /* (de) Gestaltung der Hauptelemente des Layouts */
+  /*
+   * Header
+   */
 
   #header {
     color: #000;
-    background: #fff url(../../../images/header-bg.png) repeat-x top left;
+    background: #fff url(../images/header-bg.png) repeat-x top left;
 	height: 40px;
 	line-height: 40px;
 	position: absolute;
@@ -58,18 +31,12 @@
   
   #headerLeft {
   	float: left;
-	margin-left: 10px;
+	margin: 0px 0px 0px 5px;
   }
   
   #headerLeft, #headerLeft a span {
   	color: #FFF;
 	text-decoration: none !important;
-  }
-  
-  #headerLogo {
-	margin: 0px auto;
-	width: 100px;
-	float: left;
   }
   
   #headerRight {
@@ -94,53 +61,13 @@
 	line-height: 40px;
 	border-left: 1px solid #BBB;
 	padding: 0px 10px;
+	color: white;
   }
   
   #headerRight ul li a:hover {
-  	background: url(../../../images/header-hover-bg.png);
-  }
-  
-  #topnav { color: #aaa; background: transparent; }
-
-  /* (en) adjustment of main navigation */
-  /* (de) Anpassung der Hauptnavigation */
-  #nav ul { margin-left: 20px; }
-
-  div.ui-layout-north { overflow: hidden !important; }		/* Remove scrollbars */
-  div.ui-layout-west { text-align: left; margin-top: 30px; padding-top: 10px;}
- 
-  div.ui-layout-center { text-align: left; margin-top: 30px; padding-top: 10px;}
-
-  #footer {
-    color:#666;
-    background: #f9f9f9;
-    padding: 10px 20px;
-    border-top: 5px #efefef solid;
-    line-height: 1.5em;
+  	background: url(../images/header-hover-bg.png);
   }
 
-  /*------------------------------------------------------------------------------------------------------*/
-
-  /**
-   * (en) Formatting content container
-   * (de) Formatierung der Inhalts-Container
-   *
-   * |-------------------------------|
-   * | #header                       |
-   * |-------------------------------|
-   * | #col1   | #col3     | #col2   |
-   * | 25%     | flexible  | 25%     |
-   * |-------------------------------|
-   * | #footer                       |
-   * |-------------------------------|
-   */
-
-
-  #col1 { float: left; width: 200px; overflow: hidden; }
-  #col2 { display:none}
-  #col3 { width: auto; margin: 0 0 0 200px }
-  #col1_content { padding: 0 10px 0 20px; }
-  #col3_content { padding: 0 20px 0 10px }
 
   /*------------------------------------------------------------------------------------------------------*/
 
@@ -204,9 +131,11 @@
     background-position: 3px center;
     padding-left: 20px;
   }
+  
   input.icon.save {
     background-image: url('../../../images/icons/pma/16/save.png');
   }
+  
   input.icon.delete {
     background-image: url('../../../images/icons/pma/16/delete.png');
   }

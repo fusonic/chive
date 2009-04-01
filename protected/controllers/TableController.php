@@ -81,26 +81,39 @@ class TableController extends CController
 		);
 
 		$columns = Column::model()->findAll($criteria);
+		$constraints = Constraint::model()->findAll($criteria);
 
 		$this->render('structure',array(
 			'columns'=>$columns,
+			'constraints'=>$constraints,
 		));
 	}
 
 	/**
 	 * Shows a particular user.
 	 */
-	public function actionBrowse($_sql)
+	public function actionBrowse($_sql = false)
 	{
 
-		// Total count of entries
-		$count = $this->_db->createCommand('SELECT COUNT(*) FROM '.$_GET['table'])->queryScalar();
+		if(!$_sql)
+		{
+			$count = $this->_db->createCommand('SELECT COUNT(*) FROM '.$this->tableName)->queryScalar();
+		}
+		else
+		{
+			$count = $this->_db->createCommand($_sql)->queryScalar();
+		}
 
-		$pages=new CPagination($count);
-		$pages->pageSize=self::PAGE_SIZE;
+		$pages = new CPagination($count);
+		$pages->pageSize = self::PAGE_SIZE;
 
-		$dc=$this->_db->createCommand('SELECT * FROM '.$_GET['table'].' LIMIT '.$pages->getCurrentPage()*self::PAGE_SIZE.','.self::PAGE_SIZE);
-		$data=$dc->queryAll();
+		if(!$_sql)
+		{
+			$_sql = 'SELECT * FROM '.$this->tableName.' LIMIT '.$pages->getCurrentPage()*self::PAGE_SIZE.','.self::PAGE_SIZE;
+		}
+
+		$dc=$this->_db->createCommand($_sql);
+		$data = $dc->queryAll();
 
 		// Fetch column headers
 		$columns=array();
@@ -112,16 +125,14 @@ class TableController extends CController
 			'data'=>$data,
 			'columns'=>$columns,
 			'pages'=>$pages,
+			'sql'=>$_sql,
 		));
 
 	}
 
 	public function actionSql() {
 
-		predie($_POST);
-
 		$sql = $_POST['sql'];
-
 		self::actionBrowse($sql);
 
 	}
