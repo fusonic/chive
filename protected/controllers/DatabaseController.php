@@ -2,12 +2,12 @@
 
 class DatabaseController extends CController
 {
-	const PAGE_SIZE=10;
+	const PAGE_SIZE = 50;
 
 	/**
 	 * @var string specifies the default action to be 'list'.
 	 */
-	public $defaultAction='list';
+	public $defaultAction = 'list';
 
 	/**
 	 * @var CActiveRecord the currently loaded data model instance.
@@ -17,7 +17,7 @@ class DatabaseController extends CController
 	/**
 	 * @var Default layout for this controller
 	 */
-	public $layout = "database";
+	public $layout = 'main';
 
 	public function __construct($id, $module=null) {
 
@@ -94,19 +94,14 @@ class DatabaseController extends CController
 	 */
 	public function actionUpdate()
 	{
+		$isSubmitted = false;
 		$database = $this->loadDatabase();
 		if(isset($_POST['Database']))
 		{
 			$database->attributes = $_POST['Database'];
 			if($database->save())
 			{
-				$helperId = "helper_" . mt_rand(1000, 9999);
-				echo '<span id="' . $helperId . '" />'
-					. '<script type="text/javascript">'
-					. '$("#' . $helperId . '").parents("tr").prev().children("td").effect("highlight", {}, 2000);'
-					. '$("#' . $helperId . '").parents("tr").remove();'
-					. '</script>';
-				Yii::app()->end();
+				$isSubmitted = true;
 			}
 		}
 
@@ -115,6 +110,8 @@ class DatabaseController extends CController
 		$this->render('form', array(
 			'database' => $database,
 			'collations' => $collations,
+			'helperId' => 'helper_' . mt_rand(1000, 9999),
+			'isSubmitted' => $isSubmitted,
 		));
 	}
 
@@ -122,16 +119,18 @@ class DatabaseController extends CController
 	 * Deletes a particular user.
 	 * If deletion is successful, the browser will be redirected to the 'list' page.
 	 */
-	public function actionDelete()
+	public function actionDrop()
 	{
-		if(Yii::app()->request->isPostRequest)
+		foreach($_POST['schema'] AS $schema)
 		{
-			// we only allow deletion via POST request
-			$this->loadUser()->delete();
-			$this->redirect(array('list'));
+			try
+			{
+				$database = Database::model()->findByPk($schema);
+				$database->delete();
+			}
+			catch(Exception $ex) { }
 		}
-		else
-		throw new CHttpException(500,'Invalid request. Please do not repeat this request again.');
+		Yii::app()->end();
 	}
 
 	/**
@@ -140,26 +139,26 @@ class DatabaseController extends CController
 	public function actionList()
 	{
 
-		$collations = Collation::model()->findAll(array('order' => 'COLLATION_NAME', 'select'=>'COLLATION_NAME, CHARACTER_SET_NAME AS collationGroup'));
-
 		$criteria=new CDbCriteria;
 
 		$pages=new CPagination(Database::model()->count($criteria));
 		$pages->pageSize=self::PAGE_SIZE;
 		$pages->applyLimit($criteria);
+		$pages->route = "/#databases";
 
 		$criteria->group = 'SCHEMA_NAME';
 		$criteria->select = 'COUNT(*) AS tableCount';
 
 		$databaseList = Database::model()->with(array(
-			"table" => array('select'=>'COUNT(*) AS tableCount'),
+			"table" => array('select' => 'COUNT(??.TABLE_NAME) AS tableCount'),
 			"collation"
 		))->together()->findAll($criteria);
 
 		$this->render('list',array(
-			'databaseList'=>$databaseList,
-			'pages'=>$pages,
-			'collations'=>$collations
+			'databaseList' => $databaseList,
+			'databaseCount' => $pages->getItemCount(),
+			'databaseCountThisPage' => min($pages->getPageSize(), $pages->getItemCount() - $pages->getCurrentPage() * $pages->getPageSize()),
+			'pages' => $pages,
 		));
 	}
 

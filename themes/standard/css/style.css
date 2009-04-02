@@ -3,6 +3,7 @@
 @import "style_component.css";
 @import "style_icon.css";
 @import "style_list.css";
+@import "../jquery-ui/start.css";
 
 @media screen, projection
 {

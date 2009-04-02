@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<category id="action">
+	<entry id="save">Save</entry>
+	<entry id="create">Create</entry>
+	<entry id="cancel">Cancel</entry>
+</category>

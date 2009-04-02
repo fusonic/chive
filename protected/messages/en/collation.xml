@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<category id="collation">
+	<entry id="bin">Binary</entry>
+	<entry id="czech">Czech</entry>
+	<entry id="danish">Danish</entry>
+	<entry id="esperanto">Esperanto</entry>
+	<entry id="estonian">Estonian</entry>
+	<entry id="general">General</entry>
+	<entry id="hungarian">Hungarian</entry>
+	<entry id="icelandic">Icelandic</entry>
+	<entry id="latvian">Latvian</entry>
+	<entry id="lithuanian">Lithuanian</entry>
+	<entry id="persian">Persian</entry>
+	<entry id="polish">Polish</entry>
+	<entry id="romanian">Romanian</entry>
+	<entry id="roman">Roman</entry>
+	<entry id="slovak">Slovak</entry>
+	<entry id="slovenian">Slovenian</entry>
+	<entry id="spanish2">Spanish</entry>
+	<entry id="spanish">Spanish</entry>
+	<entry id="swedish">Swedish</entry>
+	<entry id="turkish">Turkish</entry>
+	<entry id="unicode">Unicode</entry>
+</category>

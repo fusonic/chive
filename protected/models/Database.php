@@ -69,7 +69,7 @@ class Database extends CActiveRecord
 	public function relations()
 	{
 		return array(
-			'table' => array(self::HAS_MANY, 'Table', 'TABLE_SCHEMA', 'joinType'=>'INNER JOIN'),
+			'table' => array(self::HAS_MANY, 'Table', 'TABLE_SCHEMA', 'joinType' => 'LEFT JOIN'),
 			'collation' => array(self::BELONGS_TO, 'Collation', 'DEFAULT_COLLATION_NAME'),
 		);
 	}
@@ -100,33 +100,30 @@ class Database extends CActiveRecord
 
 	public function insert()
 	{
-
 		if(!$this->getIsNewRecord())
 		{
 			throw new CDbException(Yii::t('yii','The active record cannot be inserted to database because it is not new.'));
 		}
-		if($this->beforeSave())
+		if(!$this->beforeSave())
 		{
-			// @todo(mburtscher): Work with parameters!
-			$cmd = Yii::app()->db->createCommand('CREATE DATABASE ' . $this->SCHEMA_NAME
-				. ' DEFAULT COLLATE = ' . $this->DEFAULT_COLLATION_NAME);
-			try
-			{
-				$cmd->prepare();
-				$cmd->execute();
-				$this->afterSave();
-				return true;
-			}
-			catch(CDbException $ex)
-			{
-				$errorInfo = $cmd->getPdoStatement()->errorInfo();
-				$this->addError('SCHEMA_NAME', Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
-				$this->afterSave();
-				return false;
-			}
+			return false;
 		}
-		else
+
+		// @todo(mburtscher): Work with parameters!
+		$cmd = Yii::app()->db->createCommand('CREATE DATABASE ' . $this->SCHEMA_NAME
+			. ' DEFAULT COLLATE = ' . $this->DEFAULT_COLLATION_NAME);
+		try
 		{
+			$cmd->prepare();
+			$cmd->execute();
+			$this->afterSave();
+			return true;
+		}
+		catch(CDbException $ex)
+		{
+			$errorInfo = $cmd->getPdoStatement()->errorInfo();
+			$this->addError('SCHEMA_NAME', Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
+			$this->afterSave();
 			return false;
 		}
 	}
@@ -137,28 +134,53 @@ class Database extends CActiveRecord
 		{
 			throw new CDbException(Yii::t('yii','The active record cannot be updated because it is new.'));
 		}
-		if($this->beforeSave())
+		if(!$this->beforeSave())
 		{
-			// @todo(mburtscher): Work with parameters!
-			$cmd = Yii::app()->db->createCommand('ALTER DATABASE ' . $this->SCHEMA_NAME
-				. ' DEFAULT COLLATE = ' . $this->DEFAULT_COLLATION_NAME);
-			try
-			{
-				$cmd->prepare();
-				$cmd->execute();
-				$this->afterSave();
-				return true;
-			}
-			catch(CDbException $ex)
-			{
-				$errorInfo = $cmd->getPdoStatement()->errorInfo();
-				$this->addError('SCHEMA_NAME', Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
-				$this->afterSave();
-				return false;
-			}
+			return false;
 		}
-		else
+
+		// @todo(mburtscher): Work with parameters!
+		$cmd = Yii::app()->db->createCommand('ALTER DATABASE ' . $this->SCHEMA_NAME
+			. ' DEFAULT COLLATE = ' . $this->DEFAULT_COLLATION_NAME);
+		try
 		{
+			$cmd->prepare();
+			$cmd->execute();
+			$this->afterSave();
+			return true;
+		}
+		catch(CDbException $ex)
+		{
+			$errorInfo = $cmd->getPdoStatement()->errorInfo();
+			$this->addError('SCHEMA_NAME', Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
+			$this->afterSave();
+			return false;
+		}
+	}
+
+	public function delete()
+	{
+		if($this->getIsNewRecord())
+		{
+			throw new CDbException(Yii::t('yii','The active record cannot be deleted because it is new.'));
+		}
+		if(!$this->beforeDelete())
+		{
+			return false;
+		}
+
+		// @todo(mburtscher): Work with parameters!
+		$cmd = Yii::app()->db->createCommand('DROP DATABASE ' . $this->SCHEMA_NAME);
+		try
+		{
+			$cmd->prepare();
+			$cmd->execute();
+			$this->afterDelete();
+			return true;
+		}
+		catch(CDbException $ex)
+		{
+			$this->afterDelete();
 			return false;
 		}
 	}

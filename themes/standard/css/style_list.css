@@ -59,7 +59,7 @@
 	 * THead
 	 */
 	
-	table.list thead th {
+	table.list thead tr {
 		background: #2D83D0 url(../../../images/header-bg.png) repeat-x scroll left center;
 		color: #FFFFFF;
 		font-weight: bold;

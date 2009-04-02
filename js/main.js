@@ -29,7 +29,7 @@ function init() {
 			else
 			{
 				$('div.ui-layout-center').html(responseText);
-				setupListTables();
+				init();
 			}
 		}
 	});
@@ -51,7 +51,9 @@ function init() {
 	// Add checkboxes to respective tables
 	try 
 	{
-		$('table.addCheckboxes').addCheckboxes().removeClass('addCheckboxes');
+		$('table.addCheckboxes').each(function() {
+			$(this).addCheckboxes(this.id).removeClass('addCheckboxes');
+		});
 	}
 	catch(exception) {}
 }
@@ -128,6 +130,10 @@ $(document).ready(function()
 	if(currentLocation.indexOf('#') > -1)
 	{
 		$('div.ui-layout-center').load(currentLocation.replace(/#/, '/'), {}, init);
+	}
+	else
+	{
+		init();
 	}
 
 });

@@ -1,10 +1,16 @@
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/views/database/list.js', CClientScript::POS_HEAD); ?>
+
 <h2>Database List</h2>
+
+<div id="dropDatabasesDialog" title="<?php echo Yii::t('database', 'dropDatabases') ?>" style="display: none">
+	<?php echo Yii::t('database', 'doYouReallyWantToDropDatabases') ?>
+</div>
 
 <div class="list">
 	<div class="pager top">
 		<?php $this->widget('CLinkPager',array('pages'=>$pages, 'nextPageLabel'=>'&raquo;', 'prevPageLabel'=>'&laquo;')); ?>
 	</div>
-	<table id="databaseList" class="list addCheckboxes">
+	<table id="databases" class="list addCheckboxes">
 		<colgroup>
 			<col />
 			<col style="width: 80px" />
@@ -15,25 +21,25 @@
 		</colgroup>
 		<thead>
 			<tr>
-				<th>Name</th>
-				<th>Tables</th>
-				<th>Collation</th>
-				<th class="nodecoration" colspan="2"></th>
+				<th><?php echo Yii::t('core', 'name') ?></th>
+				<th><?php echo Yii::t('database', 'tables') ?></th>
+				<th><?php echo Yii::t('database', 'collation') ?></th>
+				<th colspan="3"></th>
 			</tr>
 		</thead>
 		<tbody>
 
-			<% foreach($databaseList as $n=>$model): %>
-				<tr>
+			<?php foreach($databaseList as $n=>$model): ?>
+				<tr id="databases_<?php echo $model->SCHEMA_NAME ?>">
 					<td>
-						<% echo CHtml::link($model->SCHEMA_NAME,array($model->SCHEMA_NAME)); %>
+						<?php echo CHtml::link($model->SCHEMA_NAME, 'database/' . $model->SCHEMA_NAME) ?>
 					</td>
 					<td class="count">
-						<% echo $model->tableCount; %>
+						<?php echo $model->tableCount ?>
 					</td>
 					<td>
-						<dfn class="collation" title="<% echo $model->collation->definition; %>">
-							<% echo $model->collation->COLLATION_NAME; %>
+						<dfn class="collation" title="<?php echo $model->collation->definition ?>">
+							<?php echo $model->collation->COLLATION_NAME ?>
 						</dfn>
 					</td>
 					<td>
@@ -42,23 +48,23 @@
 						</a>
 					</td>
 					<td>
-						<a href="javascript:void(0)" onclick="$(this).parent().parent().appendForm('databases/update?schema=<%= $model->SCHEMA_NAME %>');" class="icon">
+						<a href="javascript:void(0)" onclick="editDatabase('<?php echo $model->SCHEMA_NAME ?>')" class="icon">
 							<com:Icon name="edit" size="16" />
 						</a>
 					</td>
 					<td>
-						<a href="#" class="icon">
+						<a href="javascript:void(0)" onclick="dropDatabase('<?php echo $model->SCHEMA_NAME ?>')" class="icon">
 							<com:Icon name="delete" size="16" />
 						</a>
 					</td>
 				</tr>
-			<% endforeach; %>
+			<?php endforeach; ?>
 		</tbody>
 		<tfoot>
 			<tr>
-				<th colspan="5">10 Databases</th>
+				<th colspan="5"><?php echo Yii::t('database', 'showingXDatabases', array('{count}' => $databaseCountThisPage, '{total}' => $databaseCount)) ?></th>
 				<th>
-					<a href="#" class="icon">
+					<a href="javascript:void(0)" class="icon" onclick="dropDatabases()">
 						<com:Icon name="delete" size="16" />
 					</a>
 				</th>
@@ -66,16 +72,9 @@
 		</tfoot>
 	</table>
 	<div style="float: right">
-		<a href="javascript:void(0)" onclick="$('#databaseList').appendForm('http://localhost/dublin/trunk/databases/create')">Add a new database (real)</a>
+		<a href="javascript:void(0)" onclick="$('#databases').appendForm(baseUrl + '/databases/create')">Add a new database (real)</a>
 	</div>
 	<div class="pager bottom">
 		<?php $this->widget('CLinkPager',array('pages'=>$pages, 'nextPageLabel'=>'&raquo;', 'prevPageLabel'=>'&laquo;')); ?>
 	</div>
 </div>
-
-<!---
-<div class="actionBar">
-[<?php echo CHtml::link('New User',array('create')); ?>]
-[<?php echo CHtml::link('Manage User',array('admin')); ?>]
-</div>
---->

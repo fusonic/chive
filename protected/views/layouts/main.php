@@ -12,12 +12,17 @@
 <link href="css/patches/patch_my_layout.css" rel="stylesheet" type="text/css" />
 <![endif]-->
 
+<script type="text/javascript">
+	// Set global javascript variables
+	var baseUrl = '<%= Yii::app()->baseUrl; %>';
+</script>
+
 <?php Yii::app()->clientScript->registerScript('userSettings', Yii::app()->user->settings->getJsObject(), CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerCoreScript('jquery'); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/main.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.layout.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.tableForm.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery-ui-1.7.1.custom.js', CClientScript::POS_HEAD); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery-ui-1.7.1.custom.min.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.checkboxTable.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.form.js', CClientScript::POS_HEAD); ?>
 
@@ -25,6 +30,8 @@
 
 </head>
 <body>
+
+  <div id="loading"><%= Yii::t('core', 'loading'); %>...</div>
 
   <div class="ui-layout-north">
 	<div id="header">
@@ -37,7 +44,7 @@
 			<?php $this->widget('application.components.MainMenu',array(
 				'items'=>array(
 					array('label'=>'Home', 'url'=>array('/site/index'), 'visible'=>!Yii::app()->user->isGuest),
-					array('label'=>'Databases', 'url'=>array('/database'), 'visible'=>!Yii::app()->user->isGuest),
+					array('label'=>'Databases', 'url'=>array('/#databases'), 'visible'=>!Yii::app()->user->isGuest),
 					array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
 					array('label'=>'Logout', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
 				),
