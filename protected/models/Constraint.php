@@ -2,6 +2,26 @@
 
 class Constraint extends CActiveRecord
 {
+	public function __construct($attributes=array(), $scenario='') {
+
+		if($attributes===null)
+		 {
+		      $tableName=$this->tableName();
+		      if(($table=$this->getDbConnection()->getSchema()->getTable($tableName))===null)
+		         throw new CDbException(Yii::t('yii','The table "{table}" for active record class "{class}" cannot be found in the database.',
+		            array('{class}'=>get_class($model),'{table}'=>$tableName)));
+
+		      $table->primaryKey=$this->primaryKey();
+		      foreach($table->columns AS $key=>$column) {
+		      	$table->columns[$key]->isPrimaryKey = true;
+		      }
+
+		   }
+
+		   parent::__construct($attributes,$scenario);
+
+	}
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return CActiveRecord the static model class
@@ -40,6 +60,8 @@ class Constraint extends CActiveRecord
 	public function relations()
 	{
 		return array(
+			'table' => array(self::BELONGS_TO, 'Table', 'TABLE_NAME'),
+			'keys' => array(self::HAS_MANY, 'Key', 'CONSTRAINT_SCHEMA, CONSTRAINT_NAME, TABLE_SCHEMA, TABLE_NAME'),
 		);
 	}
 
@@ -49,6 +71,17 @@ class Constraint extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
+		);
+	}
+
+	public function primaryKey()
+	{
+		return array(
+			'CONSTRAINT_SCHEMA',
+			'CONSTRAINT_NAME',
+			'TABLE_SCHEMA',
+			'TABLE_NAME',
+			'CONSTRAINT_TYPE',
 		);
 	}
 }

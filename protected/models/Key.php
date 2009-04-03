@@ -1,6 +1,6 @@
 <?php
 
-class Column extends CActiveRecord
+class Key extends CActiveRecord
 {
 	public function __construct($attributes=array(), $scenario='') {
 
@@ -36,7 +36,7 @@ class Column extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'COLUMNS';
+		return 'KEY_COLUMN_USAGE';
 	}
 
 	/**
@@ -45,21 +45,19 @@ class Column extends CActiveRecord
 	public function rules()
 	{
 		return array(
+			array('CONSTRAINT_CATALOG','length','max'=>512),
+			array('CONSTRAINT_SCHEMA','required','length','max'=>64),
+			array('CONSTRAINT_NAME','required','length','max'=>64),
 			array('TABLE_CATALOG','length','max'=>512),
-			array('TABLE_SCHEMA','length','max'=>64),
-			array('TABLE_NAME','length','max'=>64),
-			array('COLUMN_NAME','length','max'=>64),
-			array('IS_NULLABLE','length','max'=>3),
-			array('DATA_TYPE','length','max'=>64),
-			array('CHARACTER_SET_NAME','length','max'=>64),
-			array('COLLATION_NAME','length','max'=>64),
-			array('COLUMN_KEY','length','max'=>3),
-			array('EXTRA','length','max'=>20),
-			array('PRIVILEGES','length','max'=>80),
-			array('COLUMN_COMMENT','length','max'=>255),
-			array('COLUMN_TYPE', 'required'),
-			array('ORDINAL_POSITION, CHARACTER_MAXIMUM_LENGTH, CHARACTER_OCTET_LENGTH, NUMERIC_PRECISION, NUMERIC_SCALE', 'numerical'),
+			array('TABLE_SCHEMA','required','length','max'=>64),
+			array('TABLE_NAME','required','length','max'=>64),
+			array('COLUMN_NAME','required','length','max'=>64),
+			array('ORDINAL_POSITION, POSITION_IN_UNIQUE_CONSTRAINT', 'numerical'),
+			array('REFERENCED_TABLE_SCHEMA','length','max'=>64),
+			array('REFERENCED_TABLE_NAME','length','max'=>64),
+			array('REFERENCED_COLUMN_NAME','length','max'=>64),
 		);
+
 	}
 
 	/**
@@ -68,10 +66,9 @@ class Column extends CActiveRecord
 	public function relations()
 	{
 		return array(
-			'table' => array(self::BELONGS_TO, 'Table', 'TABLE_NAME'),
-			'indezes' => array(self::HAS_MANY, 'Index', 'TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME'),
-			#'constraint' => array(self::MANY_MANY, 'Constraint', 'COLUMN_NAME'),
+			'constraint' => array(self::BELONGS_TO, 'Constraint', 'CONSTRAINT_NAME'),
 		);
+
 	}
 
 	/**
@@ -83,11 +80,15 @@ class Column extends CActiveRecord
 		);
 	}
 
-	public function primaryKey() {
+	public function primaryKey()
+	{
 		return array(
+			'CONSTRAINT_SCHEMA',
+			'CONSTRAINT_NAME',
 			'TABLE_SCHEMA',
 			'TABLE_NAME',
 			'COLUMN_NAME',
 		);
 	}
+
 }

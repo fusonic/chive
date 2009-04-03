@@ -12,7 +12,7 @@ function pre($_value) {
 
 function predie($_value) {
 	pre($_value);
-	CApplication::end();
+	Yii::app()->end();
 }
 
 // remove the following line when in production mode

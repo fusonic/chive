@@ -1,6 +1,6 @@
 <?php
 
-class Column extends CActiveRecord
+class Index extends CActiveRecord
 {
 	public function __construct($attributes=array(), $scenario='') {
 
@@ -36,7 +36,7 @@ class Column extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'COLUMNS';
+		return 'STATISTICS';
 	}
 
 	/**
@@ -46,20 +46,18 @@ class Column extends CActiveRecord
 	{
 		return array(
 			array('TABLE_CATALOG','length','max'=>512),
-			array('TABLE_SCHEMA','length','max'=>64),
-			array('TABLE_NAME','length','max'=>64),
-			array('COLUMN_NAME','length','max'=>64),
-			array('IS_NULLABLE','length','max'=>3),
-			array('DATA_TYPE','length','max'=>64),
-			array('CHARACTER_SET_NAME','length','max'=>64),
-			array('COLLATION_NAME','length','max'=>64),
-			array('COLUMN_KEY','length','max'=>3),
-			array('EXTRA','length','max'=>20),
-			array('PRIVILEGES','length','max'=>80),
-			array('COLUMN_COMMENT','length','max'=>255),
-			array('COLUMN_TYPE', 'required'),
-			array('ORDINAL_POSITION, CHARACTER_MAXIMUM_LENGTH, CHARACTER_OCTET_LENGTH, NUMERIC_PRECISION, NUMERIC_SCALE', 'numerical'),
+			array('TABLE_SCHEMA','required','length','max'=>64),
+			array('TABLE_NAME','required','length','max'=>64),
+			array('INDEX_SCHEMA','required','length','max'=>64),
+			array('INDEX_NAME','required','length','max'=>64),
+			array('COLLATION','length','max'=>1),
+			array('PACKED','length','max'=>10),
+			array('NULLABLE','required','length','max'=>3),
+			array('INDEX_TYPE','required','length','max'=>16),
+			array('COMMENT','length','max'=>16),
+			array('NON_UNIQUE, SEQ_IN_INDEX, CARDINALITY, SUB_PART', 'numerical'),
 		);
+
 	}
 
 	/**
@@ -68,10 +66,10 @@ class Column extends CActiveRecord
 	public function relations()
 	{
 		return array(
-			'table' => array(self::BELONGS_TO, 'Table', 'TABLE_NAME'),
-			'indezes' => array(self::HAS_MANY, 'Index', 'TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME'),
-			#'constraint' => array(self::MANY_MANY, 'Constraint', 'COLUMN_NAME'),
+			'table' => array(self::BELONGS_TO, 'Table', 'TABLE_SCHEMA, TABLE_NAME'),
+			'column' => array(self::BELONGS_TO, 'Column', 'TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME'),
 		);
+
 	}
 
 	/**
@@ -83,11 +81,37 @@ class Column extends CActiveRecord
 		);
 	}
 
-	public function primaryKey() {
+	public function primaryKey()
+	{
 		return array(
 			'TABLE_SCHEMA',
 			'TABLE_NAME',
 			'COLUMN_NAME',
+			'INDEX_NAME',
 		);
 	}
+
+	/*
+	 * @return string type
+	 */
+	public function getType() {
+
+		if($this->INDEX_NAME == 'PRIMARY')
+		{
+			return 'PRIMARY';
+		}
+		elseif($this->INDEX_TYPE == 'FULLTEXT')
+		{
+			return 'FULLTEXT';
+		}
+		elseif($this->NON_UNIQUE == 0)
+		{
+			return 'UNIQUE';
+		}
+		else {
+			return 'INDEX';
+		}
+
+	}
+
 }

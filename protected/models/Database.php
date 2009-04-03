@@ -69,7 +69,7 @@ class Database extends CActiveRecord
 	public function relations()
 	{
 		return array(
-			'table' => array(self::HAS_MANY, 'Table', 'TABLE_SCHEMA', 'joinType' => 'LEFT JOIN'),
+			'table' => array(self::HAS_MANY, 'Table', 'TABLE_SCHEMA'),
 			'collation' => array(self::BELONGS_TO, 'Collation', 'DEFAULT_COLLATION_NAME'),
 		);
 	}

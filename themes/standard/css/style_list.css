@@ -50,6 +50,10 @@
 		width: 16px;
 	}
 	
+	table.list col.type {
+		width: 160px;
+	}
+	
 	table.list col.collation {
 		width: 130px;
 	}

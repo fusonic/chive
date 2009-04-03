@@ -89,10 +89,13 @@
 				<?php foreach(Table::model()->findAll(array('select'=>'TABLE_NAME, TABLE_ROWS', 'condition'=>'TABLE_SCHEMA=:schema', 'params'=>array(':schema'=>$_GET['schema']), 'order'=>'TABLE_NAME ASC')) AS $table) { ?>
 					<li class="nowrap">
 						<a href="#tables/<%= $table->getName(); %>/<?php echo ($table->getRowCount() ? 'browse' : 'structure'); ?>">
-							<?php $this->widget('Icon', array('name'=>'browse', 'size'=>16, 'disabled'=>!$table->getRowCount(), 'title'=>Yii::t('database', 'amountRows', array('{amount}'=>$table->getRowCount() ? $table->getRowCount() : 0)))); ?>
+							<?php $this->widget('Icon', array('name'=>'browse', 'size'=>16, 'disabled'=>!$table->getRowCount(), 'title'=>Yii::t('database', 'Xrows', array('{amount}'=>$table->getRowCount() ? $table->getRowCount() : 0)))); ?>
 						</a>
 						<a href="#tables/<%= $table->getName(); %>/structure">
 							<span><?php echo $table->getName(); ?></span>
+						</a>
+						<a href="#tables/<%= $table->getName(); %>/insert">
+							<?php $this->widget('Icon', array('name'=>'add', 'size'=>10, 'disabled'=>'true')); ?>
 						</a>
 					</li>
 				<?php } ?>

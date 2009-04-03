@@ -17,7 +17,7 @@ class DatabaseController extends CController
 	/**
 	 * @var Default layout for this controller
 	 */
-	public $layout = 'main';
+	public $layout = 'database';
 
 	public function __construct($id, $module=null) {
 

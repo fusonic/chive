@@ -116,8 +116,8 @@
 	-moz-border-radius: 20px;
   }
   
-  input {
-  	background: #EEE;
+  input, textarea {
+  	background: #F7F7F7;
   	border: solid 1px #CCC;
 	color: #333;
 	padding: 2px;

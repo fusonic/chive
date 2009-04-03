@@ -2,10 +2,11 @@
 <category id="database">
 	<entry id="tables">Tables</entry>
 	<entry id="views">Views</entry>
-	<entry id="amountRows">{amount} rows</entry>
+	<entry id="Xrows">{amount} rows</entry>
 	
 	<entry id="field">Field</entry>
 	<entry id="type">Type</entry>
+	<entry id="function">Function</entry>
 	<entry id="collation">Collation</entry>
 	<entry id="null">Null</entry>
 	<entry id="default">Default</entry>
@@ -17,11 +18,24 @@
 	<entry id="browse">Browse</entry>
 	<entry id="structure">Structure</entry>
 	<entry id="sql">SQL</entry>
+
 	<entry id="insert">Insert</entry>
 	<entry id="operations">Operations</entry>
 	<entry id="truncate">Truncate</entry>
 	<entry id="drop">Drop</entry>
 	
+	<entry id="indices">Indices</entry>
+	<entry id="action">Aktion</entry>
+	<entry id="cardinality">Cardinality</entry>
+	<entry id="usage">Usage</entry>
+	<entry id="spaceUsage">Space usage</entry>
+	
+	<entry id="format">Format</entry>
+	<entry id="rows">Rows</entry>
+	<entry id="averageRowLength">Average row length</entry>
+	<entry id="averageRowSize">Average row size</entry>
+	<entry id="nextAutoincrementValue">Next autoincrement value</entry>
+
 	<entry id="dropDatabases">Drop databases</entry>
 	<entry id="doYouReallyWantToDropDatabases">Do you really want to drop the selected databases?</entry>
 	

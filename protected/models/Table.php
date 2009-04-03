@@ -3,24 +3,6 @@
 class Table extends CActiveRecord
 {
 
-	public function __construct($attributes=array(), $scenario='') {
-
-		if($attributes===null)
-		 {
-		      $tableName=$this->tableName();
-		      if(($table=$this->getDbConnection()->getSchema()->getTable($tableName))===null)
-		         throw new CDbException(Yii::t('yii','The table "{table}" for active record class "{class}" cannot be found in the database.',
-		            array('{class}'=>get_class($model),'{table}'=>$tableName)));
-
-		      $table->primaryKey=$this->primaryKey();
-		      $table->columns[$table->primaryKey]->isPrimaryKey=true;
-
-		   }
-
-		   parent::__construct($attributes,$scenario);
-
-	}
-
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return CActiveRecord the static model class
@@ -64,7 +46,9 @@ class Table extends CActiveRecord
 	{
 		return array(
 			'database' => array(self::BELONGS_TO, 'Database', 'TABLE_SCHEMA'),
-			'columns' => array(self::HAS_MANY, 'Column', 'COLUMN_NAME', 'order'=>'??.ORDINAL_POSITION ASC'),
+			'columns' => array(self::HAS_MANY, 'Column', 'TABLE_SCHEMA, TABLE_NAME', 'order'=>'??.ORDINAL_POSITION ASC', 'alias'=>'TableColumn'),
+			'indices' => array(self::HAS_MANY, 'Index', 'TABLE_SCHEMA, TABLE_NAME', 'alias'=>'TableIndex'),
+			#'constraints' => array(self::HAS_MANY, 'Constraint', 'TABLE_SCHEMA, TABLE_NAME', 'alias'=>'TableConstraint'),
 		);
 	}
 
@@ -77,8 +61,12 @@ class Table extends CActiveRecord
 		);
 	}
 
-	public function primaryKey() {
-		return 'TABLE_SCHEMA';
+	public function primaryKey()
+	{
+		return array(
+			'TABLE_SCHEMA',
+			'TABLE_NAME',
+		);
 	}
 
 	public function getName() {
@@ -86,10 +74,14 @@ class Table extends CActiveRecord
 	}
 
 	public function getRowCount() {
-		return $this->TABLE_ROWS;
+		return (int)$this->TABLE_ROWS;
 	}
 
-	public function isEmpty() {
-		return (bool)!$this->getRowCount();
+	public function getAverageRowSize() {
+		if($rowCount = $this->getRowCount() > 0)
+			return $this->DATA_LENGTH / $rowCount;
+		else
+			return '-';
 	}
+
 }

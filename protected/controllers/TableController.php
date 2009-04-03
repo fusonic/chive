@@ -58,7 +58,7 @@ class TableController extends CController
 	public function accessRules()
 	{
 		return array(
-			array('allow',  // allow all users to perform 'list' and 'show' actions
+			array('allow',
 					'expression' => !Yii::app()->user->isGuest,
 			),
 			array('deny',  // deny all users
@@ -68,29 +68,18 @@ class TableController extends CController
 	}
 
 	/**
-	 * Shows a particular user.
+	 * Shows the table structure
 	 */
 	public function actionStructure()
 	{
 
-		$criteria = new CDbCriteria;
-		$criteria->condition = 'TABLE_SCHEMA = :schema AND TABLE_NAME = :table';
-		$criteria->params = array(
-			'schema'=>$this->schemaName,
-			'table'=>$this->tableName,
-		);
-
-		$columns = Column::model()->findAll($criteria);
-		$constraints = Constraint::model()->findAll($criteria);
-
 		$this->render('structure',array(
-			'columns'=>$columns,
-			'constraints'=>$constraints,
+			'table'=>$this->loadTable(),
 		));
 	}
 
 	/**
-	 * Shows a particular user.
+	 * Browse the rows of a table
 	 */
 	public function actionBrowse($_sql = false)
 	{
@@ -130,6 +119,9 @@ class TableController extends CController
 
 	}
 
+	/*
+	 * Execute Sql
+	 */
 	public function actionSql() {
 
 		$sql = $_POST['sql'];
@@ -138,11 +130,105 @@ class TableController extends CController
 	}
 
 	/**
-	 * Creates a new user.
-	 * If creation is successful, the browser will be redirected to the 'show' page.
+	 * Insert a new row
+	 * If creation is successful, the browser will be redirected to the 'browse' page.
 	 */
-	public function actionCreate()
+	public function actionInsert()
 	{
+
+		$row = new Row;
+		if(isset($_POST['Row']))
+		{
+			$row->attributes=$_POST['Row'];
+
+			if(isset($_POST['submitRow']) && $row->save())
+				Yii::app()->end('redirect:' . $this->schemaName . '#tables/' . $this->tableName . '/browse');
+		}
+
+		/*
+		$table = $this->loadTable();
+
+		if(isset($_POST['sent'])) {
+
+			$builder = $this->_db->getCommandBuilder();
+
+			$data = array();
+			foreach($table->columns AS $column) {
+				$data[$column->COLUMN_NAME] = $_POST[$column->COLUMN_NAME];
+			}
+
+			$cmd = $builder->createInsertCommand($this->tableName, $data);
+
+			try
+			{
+				$cmd->prepare();
+				$cmd->execute();
+				Yii::app()->end('redirect:' . $this->schemaName . '#tables/' . $this->tableName . '/browse');
+			}
+			catch(CDbException $ex)
+			{
+				$errorInfo = $cmd->getPdoStatement()->errorInfo();
+				//$this->addError('SCHEMA_NAME', Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
+				return false;
+			}
+
+		}
+		*/
+
+		$functions = array(
+			'',
+			'ASCII',
+			'CHAR',
+			'MD5',
+			'SHA1',
+			'ENCRYPT',
+			'RAND',
+			'LAST_INSERT_ID',
+			'UNIX_TIMESTAMP',
+			'COUNT',
+			'AVG',
+			'SUM',
+			'SOUNDEX',
+			'LCASE',
+			'UCASE',
+			'NOW',
+			'PASSWORD',
+			'OLD_PASSWORD',
+			'COMPRESS',
+			'UNCOMPRESS',
+			'CURDATE',
+			'CURTIME',
+			'UTC_DATE',
+			'UTC_TIME',
+			'UTC_TIMESTAMP',
+			'FROM_DAYS',
+			'FROM_UNIXTIME',
+			'PERIOD_ADD',
+			'PERIOD_DIFF',
+			'TO_DAYS',
+			'USER',
+			'WEEKDAY',
+			'CONCAT',
+			'HEX',
+			'UNHEX',
+		);
+
+		$this->render('insert',array(
+			'row'=>$row,
+			//'table'=>$table,
+			'functions'=>$functions,
+		));
+
+
+
+	}
+
+	/*
+	 * Truncates the table
+	 */
+	public function actionTruncate()
+	{
+
 	}
 
 	/**
@@ -217,20 +303,22 @@ class TableController extends CController
 	 */
 	public function loadTable($id=null)
 	{
-
 		if($this->_table===null)
 		{
-			if($id!==null || isset($_GET['schema'], $_GET['table']))
+			if($id!==null || ($this->tableName && $this->schemaName))
 			{
 				$criteria = new CDbCriteria;
-				$criteria->params = array(
-					':schema'=>$this->schemaName,
-					':table'=>$this->tableName,
-				);
 				$criteria->condition = 'TABLE_SCHEMA = :schema AND TABLE_NAME = :table';
+				$criteria->params = array(
+					'schema'=>$this->schemaName,
+					'table'=>$this->tableName,
+				);
 
-				$this->_table = Table::model()->find($criteria);
+				$table = Table::model()->find($criteria);
+				$table->columns = Column::model()->findAll($criteria);
+				$table->indices = Index::model()->findAll($criteria);
 
+				$this->_table = $table;
 			}
 
 			if($this->_table===null)

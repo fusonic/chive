@@ -168,8 +168,18 @@
 	float: left;
   }
   
+  input.text, input.password {
+  	width: 99%;
+  }
+  
   input[type="text"], input[type="password"] {
-  	width: 95%;
+  	max-width: 99%;
+  }
+  
+  textarea {
+  	width: 99%;
+	min-height: 50px;
+	border: 1px solid;
   }
   
   input.text.tiny {

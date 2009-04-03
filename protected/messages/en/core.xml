@@ -7,4 +7,10 @@
 	<entry id="delete">Delete</entry>
 	<entry id="loading">Loading</entry>
 	<entry id="name">Name</entry>
+	<entry id="value">Value</entry>
+	
+	<entry id="informations">Informations</entry>
+	<entry id="creationDate">Creation date</entry>
+	<entry id="lastUpdateDate">Last update date</entry>
+	<entry id="lastCheckDate">Last check date</entry>
 </category>

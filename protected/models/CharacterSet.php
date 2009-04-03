@@ -1,5 +1,6 @@
 <?php
 
+die("OK");
 class CharacterSet extends CActiveRecord
 {
 	/**

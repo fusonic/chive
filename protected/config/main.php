@@ -35,6 +35,11 @@ return array(
 					'categories'=>'system.db.*'
 				),
 				array(
+					'class'=>'CProfileLogRoute',
+					'levels'=>'error, warning, info, trace',
+					'showInFireBug'=>true,
+				),
+				array(
 					'class'=>'CWebLogRoute',
 					'levels'=>'error', //, warning, info, trace',
 				),
@@ -88,6 +93,7 @@ return array(
 					'database/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/browse'=>'table/browse',
 					'database/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/structure'=>'table/structure',
 					'database/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/sql'=>'table/sql',
+					'database/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/insert'=>'table/insert',
             ),
         ),
 
