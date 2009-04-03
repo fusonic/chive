@@ -48,6 +48,12 @@ function init() {
 		$('bc_table').hide();
 	}
 	
+	// Change ajax links
+	var locationWithoutAnchor = location.href.substr(0, location.href.indexOf('#')) + '/';
+	$('div.ui-layout-center a[rel!="no-ajax"]').each(function() {
+		this.href = this.href.replace(locationWithoutAnchor, '#');
+	});
+	
 	// Add checkboxes to respective tables
 	try 
 	{

@@ -81,7 +81,8 @@ class Database extends CActiveRecord
 	{
 		return array(
 			'SCHEMA_NAME' => Yii::t('core', 'name'),
-			'COLLATION_NAME' => Yii::t('database', 'collation'),
+			'DEFAULT_COLLATION_NAME' => Yii::t('database', 'collation'),
+			'tableCount' => Yii::t('database', 'tables'),
 		);
 	}
 

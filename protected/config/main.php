@@ -80,7 +80,6 @@ return array(
 
 				// Databases
 				'databases'=>'database/list',
-				'databases/page/<page:(\d+)>'=>'database/list',
 				'databases/create'=>'database/create',
 				'databases/update'=>'database/update',
 				'databases/drop'=>'database/drop',

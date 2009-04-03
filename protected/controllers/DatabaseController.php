@@ -2,7 +2,7 @@
 
 class DatabaseController extends CController
 {
-	const PAGE_SIZE = 50;
+	const PAGE_SIZE = 10;
 
 	/**
 	 * @var string specifies the default action to be 'list'.
@@ -139,12 +139,22 @@ class DatabaseController extends CController
 	public function actionList()
 	{
 
-		$criteria=new CDbCriteria;
+		$criteria = new CDbCriteria();
 
-		$pages=new CPagination(Database::model()->count($criteria));
-		$pages->pageSize=self::PAGE_SIZE;
+		// Pagination
+		$pages = new CPagination(Database::model()->count($criteria));
+		$pages->pageSize = self::PAGE_SIZE;
 		$pages->applyLimit($criteria);
-		$pages->route = "/#databases";
+
+		// Sort
+		$sort = new CSort('Database');
+		$sort->attributes = array(
+			'SCHEMA_NAME' => 'name',
+			'tableCount' => 'tableCount',
+			'DEFAULT_COLLATION_NAME' => 'collation',
+		);
+		$sort->defaultOrder = 'SCHEMA_NAME ASC';
+		$sort->applyOrder($criteria);
 
 		$criteria->group = 'SCHEMA_NAME';
 		$criteria->select = 'COUNT(*) AS tableCount';
@@ -159,6 +169,7 @@ class DatabaseController extends CController
 			'databaseCount' => $pages->getItemCount(),
 			'databaseCountThisPage' => min($pages->getPageSize(), $pages->getItemCount() - $pages->getCurrentPage() * $pages->getPageSize()),
 			'pages' => $pages,
+			'sort' => $sort,
 		));
 	}
 
@@ -221,4 +232,17 @@ class DatabaseController extends CController
 			$this->refresh();
 		}
 	}
+
+/*	public function createUrl($route,$params=array(),$ampersand='&')
+	{
+		if($route==='')
+			$route=$this->getId() . '/' . $this->getAction()->getId();
+		else if(strpos($route,'/') === false)
+			$route=$this->getId() . '/' . $route;
+		if($route[0]!=='/' && ($module=$this->getModule())!==null)
+			$route=$module->getId().'/'.$route;
+
+		return Yii::app()->createUrl(trim($route,'/'),$params,$ampersand);
+	}*/
+
 }
