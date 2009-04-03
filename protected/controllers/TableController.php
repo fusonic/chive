@@ -25,7 +25,7 @@ class TableController extends CController
 
 	public function __construct($id, $module=null) {
 
-		$this->_db = new CDbConnection('mysql:host=web;dbname=' . $_GET['schema'], Yii::app()->user->name, Yii::app()->user->password);
+		$this->_db = new CDbConnection('mysql:host='.Yii::app()->user->host.';dbname=' . $_GET['schema'], Yii::app()->user->name, Yii::app()->user->password);
 		$this->_db->charset='utf8';
 		$this->_db->active = true;
 
@@ -140,9 +140,11 @@ class TableController extends CController
 		if(isset($_POST['Row']))
 		{
 			$row->attributes=$_POST['Row'];
+			$row->isNewRecord = true;
 
 			if(isset($_POST['submitRow']) && $row->save())
 				Yii::app()->end('redirect:' . $this->schemaName . '#tables/' . $this->tableName . '/browse');
+
 		}
 
 		/*

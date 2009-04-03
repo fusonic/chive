@@ -10,7 +10,7 @@ class Row extends CActiveRecord
 
 	public function __construct($attributes=array(),$scenario='') {
 
-		$this->_db = new CDbConnection('mysql:host=web;dbname=' . $_GET['schema'], Yii::app()->user->name, Yii::app()->user->password);
+		$this->_db = new CDbConnection('mysql:host='.Yii::app()->user->host.';dbname=' . $_GET['schema'], Yii::app()->user->name, Yii::app()->user->password);
 		$this->_db->charset='utf8';
 		$this->_db->active = true;
 

@@ -40,7 +40,7 @@
 				</td>
 				<?php foreach($row AS $cell) { ?>
 					<td>
-						<?php echo substr(str_replace(array('<','>'),array('&lt;','&gt;'),$cell), 0, 100); ?>
+						<?php echo (is_null($cell) ? '<i>NULL</i>' : substr(str_replace(array('<','>'),array('&lt;','&gt;'),$cell), 0, 100)); ?>
 					</td>
 				<?php } ?>
 			</tr>
