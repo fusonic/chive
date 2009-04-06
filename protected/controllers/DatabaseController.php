@@ -14,6 +14,8 @@ class DatabaseController extends CController
 	 */
 	private $_database;
 
+	public $schema;
+
 	/**
 	 * @var Default layout for this controller
 	 */
@@ -23,6 +25,9 @@ class DatabaseController extends CController
 
 		if(Yii::app()->request->isAjaxRequest)
 			$this->layout = false;
+
+		$request = Yii::app()->getRequest();
+		$this->schema = $request->getParam('schema');
 
 		parent::__construct($id, $module);
 
@@ -60,7 +65,34 @@ class DatabaseController extends CController
 	 */
 	public function actionShow()
 	{
-		$this->render('show',array('database'=>$this->loadDatabase()));
+
+		$database = $this->loadDatabase();
+
+		$criteria = new CDbCriteria;
+		$criteria->condition = 'TABLE_SCHEMA = :schema';
+		$criteria->params = array(
+			':schema' => $this->schema,
+		);
+
+		// Sort
+		$sort = new CSort('Table');
+		$sort->attributes = array(
+			'TABLE_NAME' => 'name',
+			'TABLE_ROWS' => 'rows',
+			'TABLE_COLLATION' => 'collation',
+			'ENGINE' => 'engine',
+			'DATA_LENGTH' => 'datalength',
+			'DATA_FREE' => 'datafree',
+		);
+		$sort->applyOrder($criteria);
+
+		$this->_database->tables = Table::model()->findAll($criteria);
+		$this->_database->tableCount = Table::model()->count($criteria);
+
+		$this->render('show',array(
+			'database' => $database,
+			'sort' => $sort,
+		));
 	}
 
 	/**
@@ -75,12 +107,14 @@ class DatabaseController extends CController
 			$database->attributes = $_POST['Database'];
 			if($database->save())
 			{
-				echo 'redirect:database/' . $database->SCHEMA_NAME;
-				Yii::app()->end();
+				Yii::app()->end('redirect:database/' . $database->SCHEMA_NAME);
 			}
 		}
 
-		$collations = Collation::model()->findAll(array('order' => 'COLLATION_NAME', 'select'=>'COLLATION_NAME, CHARACTER_SET_NAME AS collationGroup'));
+		$collations = Collation::model()->findAll(array(
+			'order' => 'COLLATION_NAME',
+			'select'=> 'COLLATION_NAME, CHARACTER_SET_NAME AS collationGroup'
+		));
 
 		$this->render('form', array(
 			'database' => $database,
@@ -105,7 +139,10 @@ class DatabaseController extends CController
 			}
 		}
 
-		$collations = Collation::model()->findAll(array('order' => 'COLLATION_NAME', 'select'=>'COLLATION_NAME, CHARACTER_SET_NAME AS collationGroup'));
+		$collations = Collation::model()->findAll(array(
+			'order' => 'COLLATION_NAME',
+			'select'=>'COLLATION_NAME, CHARACTER_SET_NAME AS collationGroup'
+		));
 
 		$this->render('form', array(
 			'database' => $database,
@@ -209,7 +246,14 @@ class DatabaseController extends CController
 		{
 			if($id!==null || isset($_GET['schema']))
 			{
-				$this->_database = Database::model()->find("SCHEMA_NAME = '" . $_GET['schema'] . "'");
+				$criteria = new CDbCriteria;
+				$criteria->condition = 'SCHEMA_NAME = :schema';
+				$criteria->params = array(
+					':schema' => $this->schema,
+				);
+
+				$this->_database = Database::model()->find($criteria);
+
 			}
 
 			if($this->_database===null)

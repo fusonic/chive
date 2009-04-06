@@ -9,6 +9,8 @@ class Database extends CActiveRecord
 	public $DEFAULT_CHARACTER_SET_NAME = 'utf8';
 	public $DEFAULT_COLLATION_NAME = 'utf8_general_ci';
 
+	public $tables;
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return CActiveRecord the static model class
@@ -84,11 +86,6 @@ class Database extends CActiveRecord
 			'DEFAULT_COLLATION_NAME' => Yii::t('database', 'collation'),
 			'tableCount' => Yii::t('database', 'tables'),
 		);
-	}
-
-	public function getName()
-	{
-		return $this->SCHEMA_NAME;
 	}
 
 	/*

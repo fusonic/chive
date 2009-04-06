@@ -36,9 +36,14 @@
 	<entry id="averageRowSize">Average row size</entry>
 	<entry id="nextAutoincrementValue">Next autoincrement value</entry>
 
+	<entry id="table">Table</entry>
+	<entry id="engine">Engine</entry>
+	<entry id="dataSize">Size (data)</entry>
+	<entry id="free">Free</entry>
+
 	<entry id="dropDatabases">Drop databases</entry>
 	<entry id="doYouReallyWantToDropDatabases">Do you really want to drop the selected databases?</entry>
-	
 	<entry id="showingXDatabases">{count} Databases</entry>
+	<entry id="amountTables">1#{amount}  Table|n>1#{amount}  Tables</entry>
 	
 </category>

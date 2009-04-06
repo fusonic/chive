@@ -11,7 +11,9 @@ function checkLocation() {
 
 function reload() {
 	currentLocation = window.location.href;
-	$('div.ui-layout-center').load(currentLocation.replace(/#/, '/'), {}, init);
+	newLocation = currentLocation.replace(/\?(.+)#/, '');
+	newLocation = newLocation.replace(/#/, '/');
+	$('div.ui-layout-center').load(newLocation, {}, init);
 	return false;
 }
 

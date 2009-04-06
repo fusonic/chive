@@ -58,6 +58,14 @@
 		width: 130px;
 	}
 	
+	table.list col.filesize {
+		width: 80px;
+	}
+	
+	table.list col.engine {
+		width: 100px;
+	}
+	
 	
 	/*
 	 * THead

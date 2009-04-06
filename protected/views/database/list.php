@@ -2,10 +2,6 @@
 
 <h2>Database List</h2>
 
-<div id="dropDatabasesDialog" title="<?php echo Yii::t('database', 'dropDatabases'); ?>" style="display: none">
-	<?php echo Yii::t('database', 'doYouReallyWantToDropDatabases'); ?>
-</div>
-
 <div class="list">
 	<div class="pager top">
 		<?php $this->widget('CLinkPager',array('pages'=>$pages, 'nextPageLabel'=>'&raquo;', 'prevPageLabel'=>'&laquo;')); ?>

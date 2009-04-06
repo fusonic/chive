@@ -84,4 +84,47 @@ class Table extends CActiveRecord
 			return '-';
 	}
 
+	/*
+	 * Truncate the table (delete all values)
+	 */
+	public function truncate() {
+
+		// @todo(rponudic): Work with parameters!
+		$db = Yii::app()->getDb();
+		$cmd = $db->createCommand('TRUNCATE TABLE ' . $db->quoteTableName($this->TABLE_SCHEMA) . '.' . $db->quoteTableName($this->TABLE_NAME));
+		try
+		{
+			$cmd->prepare();
+			$cmd->execute();
+			return true;
+		}
+		catch(CDbException $ex)
+		{
+			return false;
+		}
+
+	}
+
+	/*
+	 * Drop table (delete structure and containing data)
+	 */
+	public function drop() {
+
+		// @todo(rponudic): Work with parameters!
+		$db = Yii::app()->getDb();
+		$cmd = $db->createCommand('DROP TABLE ' . $db->quoteTableName($this->TABLE_SCHEMA) . '.' . $db->quoteTableName($this->TABLE_NAME));
+
+		try
+		{
+			$cmd->prepare();
+			$cmd->execute();
+			return true;
+		}
+		catch(CDbException $ex)
+		{
+			return false;
+		}
+
+	}
+
 }

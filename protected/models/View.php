@@ -53,4 +53,8 @@ class View extends CActiveRecord
 		return array(
 		);
 	}
+
+	public function getName() {
+		return $this->TABLE_NAME;
+	}
 }

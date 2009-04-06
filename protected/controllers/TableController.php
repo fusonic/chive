@@ -25,12 +25,15 @@ class TableController extends CController
 
 	public function __construct($id, $module=null) {
 
-		$this->_db = new CDbConnection('mysql:host='.Yii::app()->user->host.';dbname=' . $_GET['schema'], Yii::app()->user->name, Yii::app()->user->password);
+		$request = Yii::app()->getRequest();
+
+		$this->tableName = $request->getParam('table');
+		$this->schemaName = $request->getParam('schema');
+
+		// @todo (rponudic) work with parameters!
+		$this->_db = new CDbConnection('mysql:host='.Yii::app()->user->host.';dbname=' . $this->schemaName, Yii::app()->user->name, Yii::app()->user->password);
 		$this->_db->charset='utf8';
 		$this->_db->active = true;
-
-		$this->tableName = $_GET['table'];
-		$this->schemaName = $_GET['schema'];
 
 		if(Yii::app()->request->isAjaxRequest) {
 			$this->layout = "table";
@@ -84,6 +87,55 @@ class TableController extends CController
 	public function actionBrowse($_sql = false)
 	{
 
+		/*
+		$criteria = new CDbCriteria;
+
+		Row::$db = $this->_db;
+
+		$count = Row::model()->count($criteria);
+
+		$pages = new CPagination;
+		$pages->setItemCount($count);
+		$pages->setPageSize(self::PAGE_SIZE);
+		$pages->applyLimit($criteria);
+
+		$sort = new CSort('Row');
+		$sort->applyOrder($criteria);
+
+		$data = Row::model()->findAll($criteria);
+
+		*/
+
+		$db = $this->_db;
+
+		$cb = new CDbCommandBuilder($db->getSchema());
+		#$cmd = $cb->createCommand('SELECT * FROM ' . $db->quoteTableName($this->tableName));
+
+		// Pagination
+		$pages = new CPagination($count);
+		$pages->pageSize = self::PAGE_SIZE;
+
+		$criteria = new CDbCriteria;
+		$pages->applyLimit($criteria);
+
+
+		$sort = new CSort();
+
+
+		$cmd = $cb->createFindCommand($this->tableName, $criteria);
+
+		predie($cmd);
+
+
+
+
+		$result = $cmd->queryAll();
+		predie($result);
+
+		predie($command->getPdoStatement());
+
+
+		/*
 		if(!$_sql)
 		{
 			$count = $this->_db->createCommand('SELECT COUNT(*) FROM '.$this->tableName)->queryScalar();
@@ -104,16 +156,23 @@ class TableController extends CController
 		$dc=$this->_db->createCommand($_sql);
 		$data = $dc->queryAll();
 
+
+		$sort = new CSort('Row');
+		$sort->applyOrder($c)
+
+
 		// Fetch column headers
 		$columns=array();
 		foreach($data[0] AS $key=>$value) {
 			$columns[] = $key;
 		}
+		*/
 
 		$this->render('browse',array(
 			'data'=>$data,
-			'columns'=>$columns,
+			'columns'=>Row::model()->getMetaData()->columns,
 			'pages'=>$pages,
+			'sort'=>$sort,
 			'sql'=>$_sql,
 		));
 
@@ -136,7 +195,9 @@ class TableController extends CController
 	public function actionInsert()
 	{
 
+		Row::$db = $this->_db;
 		$row = new Row;
+
 		if(isset($_POST['Row']))
 		{
 			$row->attributes=$_POST['Row'];
@@ -230,6 +291,38 @@ class TableController extends CController
 	 */
 	public function actionTruncate()
 	{
+
+		try
+		{
+			$table = Table::model()->findByPk(array(
+				'TABLE_SCHEMA' => $this->schemaName,
+				'TABLE_NAME' => $this->tableName
+			));
+			$table->truncate();
+		}
+		catch(Exception $ex) {}
+
+		Yii::app()->end();
+
+	}
+
+	/*
+	 * Truncates the table
+	 */
+	public function actionDrop()
+	{
+
+		try
+		{
+			$table = Table::model()->findByPk(array(
+				'TABLE_SCHEMA' => $this->schemaName,
+				'TABLE_NAME' => $this->tableName
+			));
+			$table->drop();
+		}
+		catch(Exception $ex) {}
+
+		Yii::app()->end();
 
 	}
 

@@ -20,6 +20,7 @@ return array(
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
+		'application.components.helpers.*',
 	),
 
 	// application components
@@ -32,7 +33,6 @@ return array(
 				array(
 					'class'=>'CFileLogRoute',
 					'levels'=>'error, warning, info, trace',
-					'categories'=>'system.db.*'
 				),
 				array(
 					'class'=>'CProfileLogRoute',
@@ -93,6 +93,8 @@ return array(
 					'database/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/structure'=>'table/structure',
 					'database/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/sql'=>'table/sql',
 					'database/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/insert'=>'table/insert',
+					'database/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/truncate'=>'table/truncate',
+					'database/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/drop'=>'table/drop',
             ),
         ),
 

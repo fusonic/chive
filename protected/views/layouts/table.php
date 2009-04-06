@@ -1,3 +1,5 @@
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/views/table/general.js', CClientScript::POS_HEAD); ?>
+
 <ul class="tabMenu">
 	<li <%= $this->getAction()->getId() == 'browse' ? 'class="active"' : '' %>>
 		<a href="<?php echo Yii::app()->baseUrl; ?>/database/<?php echo $this->schemaName; ?>/tables/<?php echo $this->tableName; ?>/browse" class="icon">
@@ -30,19 +32,26 @@
 		</a>
 	</li>
 	<li <%= $this->getAction()->getId() == 'xxx' ? 'class="active"' : '' %>>
-		<a href="<?php echo Yii::app()->baseUrl; ?>/database/<?php echo $this->schemaName; ?>#tables/<?php echo $this->tableName; ?>/insert" class="icon">
+		<a href="javascript:void(0);" onclick="truncateTable('<?php echo $this->schemaName; ?>','<?php echo $this->tableName?>');" class="icon">
 			<com:Icon size="16" name="truncate" text="database.truncate" />
 			<span><%= Yii::t('database','truncate') %></span>
 		</a>
 	</li>
 	<li <%= $this->getAction()->getId() == 'xxx' ? 'class="active"' : '' %>>
-		<a href="<?php echo Yii::app()->baseUrl; ?>/database/<?php echo $this->schemaName; ?>#tables/<?php echo $this->tableName; ?>/insert" class="icon">
+		<a href="javascript:void(0);" onclick="dropTable('<?php echo $this->schemaName; ?>','<?php echo $this->tableName?>');" class="icon">
 			<com:Icon size="16" name="drop" text="database.drop" />
 			<span><%= Yii::t('database','drop') %></span>
 		</a>
 	</li>
 </ul>
 <div style="clear: both;"></div>
+
+<div id="truncateTableDialog" title="<?php echo Yii::t('database', 'truncateTable'); ?>" style="display: none">
+	<?php echo Yii::t('database', 'doYouReallyWantToTruncateTable', array('{table}'=>$this->tableName)); ?>
+</div>
+<div id="dropTableDialog" title="<?php echo Yii::t('database', 'dropTable'); ?>" style="display: none">
+	<?php echo Yii::t('database', 'doYouReallyWantToDropTable', array('{table}'=>$this->tableName)); ?>
+</div>
 
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.form.js', CClientScript::POS_HEAD); ?>
 
