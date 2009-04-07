@@ -16,7 +16,11 @@ class ColumnTest extends TestCase
 
 		//$col = Column::model()->findByPk(array('TABLE_SCHEMA' => 'testing_ptd1', 'TABLE_NAME' => 'ctd1_sys_user', 'COLUMN_NAME' => 'username'));
 
+		$this->assertEquals(true, false);
+		
 		$this->assertEquals(true, true);
+		
+		sleep(3);
 
 	}
 
