@@ -2,26 +2,6 @@
 
 class Index extends CActiveRecord
 {
-	public function __construct($attributes=array(), $scenario='') {
-
-		if($attributes===null)
-		 {
-		      $tableName=$this->tableName();
-		      if(($table=$this->getDbConnection()->getSchema()->getTable($tableName))===null)
-		         throw new CDbException(Yii::t('yii','The table "{table}" for active record class "{class}" cannot be found in the database.',
-		            array('{class}'=>get_class($model),'{table}'=>$tableName)));
-
-		      $table->primaryKey=$this->primaryKey();
-		      foreach($table->columns AS $key=>$column) {
-		      	$table->columns[$key]->isPrimaryKey = true;
-		      }
-
-		   }
-
-		   parent::__construct($attributes,$scenario);
-
-	}
-
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return CActiveRecord the static model class
@@ -67,7 +47,7 @@ class Index extends CActiveRecord
 	{
 		return array(
 			'table' => array(self::BELONGS_TO, 'Table', 'TABLE_SCHEMA, TABLE_NAME'),
-			'column' => array(self::BELONGS_TO, 'Column', 'TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME'),
+			'column' => array(self::HAS_ONE, 'Column', 'TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME', 'alias'=>'IndexColumn'),
 		);
 
 	}

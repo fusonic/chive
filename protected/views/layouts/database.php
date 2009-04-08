@@ -4,17 +4,19 @@
 <head>
 <title><% echo $this->pageTitle; %></title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<!-- (en) Add your meta data here -->
-<!-- (de) Fuegen Sie hier ihre Meta-Daten ein -->
+
 <link rel="stylesheet" type="text/css" href="<% echo Yii::app()->request->baseUrl; %>/css/main.css" />
 <link rel="stylesheet" type="text/css" href="<% echo Yii::app()->theme->getBaseUrl(); %>/css/style.css" />
+
 <!--[if lte IE 7]>
 <link href="css/patches/patch_my_layout.css" rel="stylesheet" type="text/css" />
 <![endif]-->
 
+<link rel="shortcut icon" href="<?php echo Yii::app()->baseUrl; ?>/images/favicon.ico">
+
 <script type="text/javascript">
 	// Set global javascript variables
-	var baseUrl = '<%= Yii::app()->baseUrl; %>';
+	var baseUrl = '<?php echo Yii::app()->baseUrl; ?>';
 </script>
 
 <?php Yii::app()->clientScript->registerScript('userSettings', Yii::app()->user->settings->getJsObject(), CClientScript::POS_HEAD); ?>
@@ -91,11 +93,9 @@
 						<a href="#tables/<%= $table->getName(); %>/<?php echo ($table->getRowCount() ? 'browse' : 'structure'); ?>">
 							<?php $this->widget('Icon', array('name'=>'browse', 'size'=>16, 'disabled'=>!$table->getRowCount(), 'title'=>Yii::t('database', 'Xrows', array('{amount}'=>$table->getRowCount() ? $table->getRowCount() : 0)))); ?>
 						</a>
-						<a href="#tables/<%= $table->getName(); %>/structure">
-							<span><?php echo $table->getName(); ?></span>
-						</a>
-						<a href="#tables/<%= $table->getName(); %>/insert">
-							<?php $this->widget('Icon', array('name'=>'add', 'size'=>10, 'disabled'=>'true')); ?>
+						<a href="#tables/<%= $table->getName(); %>/structure"><?php echo $table->getName(); ?></a>
+						<a href="#tables/<%= $table->getName(); %>/insert" class="icon10" style="display: none;">
+							<?php $this->widget('Icon', array('name'=>'add', 'size'=>10)); ?>
 						</a>
 					</li>
 				<?php } ?>
@@ -113,7 +113,7 @@
 				<?php foreach(View::model()->findAll(array('select'=>'TABLE_NAME','condition'=>'TABLE_SCHEMA=:schema', 'params'=>array(':schema'=>$_GET['schema']), 'order'=>'TABLE_NAME ASC')) AS $table) { ?>
 					<li class="nowrap">
 						<%= CHtml::openTag('a', array('href'=>'#tables/'.$table->getName().'/browse')); %>
-							<com:Icon name="browse" size="16" text="core.username" />
+							<com:Icon name="view" size="16" text="core.username" />
 						<%= CHtml::closeTag('a'); %>
 						<%= CHtml::openTag('a', array('href'=>'#tables/'.$table->getName().'/structure')); %>
 							<span><?php echo $table->getName(); ?></span>

@@ -85,6 +85,18 @@
     color:#000;
   }
 
+  #MainMenu ul li 
+  {
+  	cursor: pointer;
+	line-height: 20px;
+	height: 20px;
+  }
+
+  #MainMenu ul li:hover 
+  {
+  	background: #EFEFEF;
+  }
+
   #topnav a { color: #999; font-weight: normal; background:transparent; text-decoration:none; }
   #topnav a:focus,
   #topnav a:hover,

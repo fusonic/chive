@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <category id="database">
+	
+	<entry id="databases">Databases</entry>
 	<entry id="tables">Tables</entry>
 	<entry id="views">Views</entry>
 	<entry id="Xrows">{amount} rows</entry>
@@ -40,6 +42,8 @@
 	<entry id="engine">Engine</entry>
 	<entry id="dataSize">Size (data)</entry>
 	<entry id="free">Free</entry>
+	<entry id="data">Data</entry>
+	<entry id="index">Index</entry>
 
 	<entry id="dropDatabases">Drop databases</entry>
 	<entry id="doYouReallyWantToDropDatabases">Do you really want to drop the selected databases?</entry>

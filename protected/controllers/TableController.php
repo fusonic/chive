@@ -76,104 +76,81 @@ class TableController extends CController
 	public function actionStructure()
 	{
 
+		$table = $this->loadTable();
+
+		$indices = array();
+		foreach($table->indices AS $index) {
+			$indices[$index->INDEX_NAME][] = $index;
+		}
+
 		$this->render('structure',array(
-			'table'=>$this->loadTable(),
+			'table' => $table,
+			'indices'=>$indices,
 		));
 	}
 
 	/**
 	 * Browse the rows of a table
 	 */
-	public function actionBrowse($_sql = false)
+	public function actionBrowse($_query = false)
 	{
-
-		/*
-		$criteria = new CDbCriteria;
-
-		Row::$db = $this->_db;
-
-		$count = Row::model()->count($criteria);
-
-		$pages = new CPagination;
-		$pages->setItemCount($count);
-		$pages->setPageSize(self::PAGE_SIZE);
-		$pages->applyLimit($criteria);
-
-		$sort = new CSort('Row');
-		$sort->applyOrder($criteria);
-
-		$data = Row::model()->findAll($criteria);
-
-		*/
 
 		$db = $this->_db;
 
-		$cb = new CDbCommandBuilder($db->getSchema());
-		#$cmd = $cb->createCommand('SELECT * FROM ' . $db->quoteTableName($this->tableName));
+		if(!$_query)
+			$_query = 'SELECT * FROM ' . $db->quoteTableName($this->tableName);
 
-		// Pagination
-		$pages = new CPagination($count);
-		$pages->pageSize = self::PAGE_SIZE;
+		$oSql = new Sql($_query);
+		$oSql->applyCalculateFoundRows();
 
-		$criteria = new CDbCriteria;
-		$pages->applyLimit($criteria);
-
-
-		$sort = new CSort();
+		$pages = new CPagination;
+		$pages->setPageSize(self::PAGE_SIZE);
 
 
-		$cmd = $cb->createFindCommand($this->tableName, $criteria);
-
-		predie($cmd);
-
-
-
-
-		$result = $cmd->queryAll();
-		predie($result);
-
-		predie($command->getPdoStatement());
-
-
-		/*
-		if(!$_sql)
+		if(!$oSql->hasLimit)
 		{
-			$count = $this->_db->createCommand('SELECT COUNT(*) FROM '.$this->tableName)->queryScalar();
+			$offset = (isset($_GET['page']) ? (int)$_GET['page'] : 1) * self::PAGE_SIZE - self::PAGE_SIZE;
+			$oSql->applyLimit(self::PAGE_SIZE, $offset, true);
 		}
-		else
+
+
+		$sort = new Sort($db);
+		$sort->multiSort = false;
+
+		$oSql->applySort($sort->getOrder(), true);
+
+		$cmd = $db->createCommand($oSql->getQuery());
+		$cmd->prepare();
+
+
+		try
 		{
-			$count = $this->_db->createCommand($_sql)->queryScalar();
+			// Fetch data
+			$data = $cmd->queryAll();
+
+			if(!count($data))
+				// @todo (rponudic) add redirect
+				die("redirect");
+
+			$total = $db->createCommand('SELECT FOUND_ROWS()')->queryScalar();
+			$pages->setItemCount($total);
+
+			// Fetch column headers
+			$columns = array_keys($data[0]);
+
 		}
-
-		$pages = new CPagination($count);
-		$pages->pageSize = self::PAGE_SIZE;
-
-		if(!$_sql)
+		catch (Exception $ex)
 		{
-			$_sql = 'SELECT * FROM '.$this->tableName.' LIMIT '.$pages->getCurrentPage()*self::PAGE_SIZE.','.self::PAGE_SIZE;
+			$error = $ex->getMessage();
 		}
-
-		$dc=$this->_db->createCommand($_sql);
-		$data = $dc->queryAll();
-
-
-		$sort = new CSort('Row');
-		$sort->applyOrder($c)
-
-
-		// Fetch column headers
-		$columns=array();
-		foreach($data[0] AS $key=>$value) {
-			$columns[] = $key;
-		}
-		*/
 
 		$this->render('browse',array(
-			'data'=>$data,
-			'columns'=>Row::model()->getMetaData()->columns,
-			'pages'=>$pages,
-			'sort'=>$sort,
-			'sql'=>$_sql,
+			'data' => $data,
+			'columns' => $columns,
+			'query' => $oSql->getOriginalQuery(),
+			'pages' => $pages,
+			'sort' => $sort,
+			'error' => $error,
 		));
 
 	}
@@ -183,8 +160,17 @@ class TableController extends CController
 	 */
 	public function actionSql() {
 
-		$sql = $_POST['sql'];
-		self::actionBrowse($sql);
+		$query = Yii::app()->getRequest()->getParam('query');
+
+		if(!$query)
+		{
+			$this->render('browse',array(
+				'data' => array(),
+				'query' => self::getDefaultQuery(),
+			));
+		}
+		else
+			self::actionBrowse($query);
 
 	}
 
@@ -433,5 +419,11 @@ class TableController extends CController
 			// reload the current page to avoid duplicated delete actions
 			$this->refresh();
 		}
+	}
+
+	private function getDefaultQuery()
+	{
+		return 'SELECT * FROM ' . $this->_db->quoteTableName($this->tableName) . "\n\t"
+				. 'WHERE 1';
 	}
 }

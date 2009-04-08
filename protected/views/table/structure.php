@@ -79,7 +79,7 @@
 </table>
 <br/>
 
-<table class="list" style="width: 30%; float: left;margin-right: 10px;">
+<table class="list" style="width: 42%; float: left;margin-right: 10px;">
 	<colgroup>
 		<col />
 		<col />
@@ -101,21 +101,23 @@
 		</tr>
 	</thead>
 	<tbody>
-		<?php foreach($table->indices AS $index) { ?>
+		<?php foreach($indices AS $key=>$index) { ?>
 			<tr>
-				<td><?php echo $index->INDEX_NAME; ?></td>
-				<td><?php echo $index->getType(); ?></td>
-				<td><?php echo $index->CARDINALITY; ?></td>
+				<td><?php echo $index[0]->INDEX_NAME; ?></td>
+				<td><?php echo $index[0]->getType(); ?></td>
+				<td><?php echo $index[0]->CARDINALITY; ?></td>
 				<td><com:Icon name="edit" size="16" text="core.edit" /></td>
 				<td><com:Icon name="delete" size="16" text="core.delete" /></td>
 				<td>
-					<?php echo $index->COLUMN_NAME; ?>
+					<?php foreach($index AS $column) {?>
+						<?php echo $column->COLUMN_NAME; ?><br/>
+					<?php } ?>
 				</td>
 			</tr>
 		<?php } ?>
 	</tbody>
 </table>
-<table class="list" style="width: 30%; float: left;margin-right: 10px;">
+<table class="list" style="width: 25%; float: left; margin-right: 10px;">
 	<colgroup>
 		<col />
 		<col />
@@ -131,21 +133,21 @@
 	</thead>
 	<tbody>
 		<tr>
-			<td><?php echo Yii::t('core', 'data'); ?></td>
-			<td><?php echo $table->INDEX_LENGTH; ?></td>
+			<td><?php echo Yii::t('database', 'data'); ?></td>
+			<td class="right"><?php echo Formatter::fileSize($table->DATA_LENGTH); ?></td>
 		</tr>
 		<tr>
-			<td><?php echo Yii::t('core', 'index'); ?></td>
-			<td><?php echo $table->DATA_LENGTH; ?></td>
+			<td><?php echo Yii::t('database', 'index'); ?></td>
+			<td class="right"><?php echo Formatter::fileSize($table->INDEX_LENGTH); ?></td>
 		</tr>
 		<tr>
-			<td class="bold"><?php echo Yii::t('core', 'total'); ?></td>
-			<td class="bold"><?php echo $table->INDEX_LENGTH + $table->DATA_LENGTH; ?></td>
+			<td><?php echo Yii::t('core', 'total'); ?></td>
+			<td class="right"><?php echo Formatter::fileSize($table->INDEX_LENGTH + $table->DATA_LENGTH); ?></td>
 		</tr>
 	</tbody>
 </table>
 
-<table class="list" style="width: 30%; float: left;margin-right: 10px;">
+<table class="list" style="width: 30%; float: right;">
 	<colgroup>
 		<col />
 		<col />
@@ -153,10 +155,13 @@
 	<thead>
 		<tr>
 			<th colspan="2">
+
+				<?php echo Yii::t('core', 'information'); ?>
 				<span class="icon">
 					<com:Icon name="edit" size="16" text="core.information" />
 					<span><?php echo Yii::t('core', 'information'); ?></span>
 				</span>
+
 			</th>
 		</tr>
 	</thead>
@@ -179,23 +184,27 @@
 		</tr>
 		<tr>
 			<td><?php echo Yii::t('database', 'averageRowSize'); ?></td>
-			<td><?php echo $table->getAverageRowSize(); ?></td>
+			<td><?php echo Formatter::fileSize($table->getAverageRowSize()); ?></td>
 		</tr>
-		<tr>
-			<td><?php echo Yii::t('database', 'nextAutoincrementValue'); ?></td>
-			<td><?php echo $table->AUTO_INCREMENT; ?></td>
-		</tr>
+		<?php if ($table->AUTO_INCREMENT) { ?>
+			<tr>
+				<td><?php echo Yii::t('database', 'nextAutoincrementValue'); ?></td>
+				<td><?php echo $table->AUTO_INCREMENT; ?></td>
+			</tr>
+		<?php } ?>
 		<tr>
 			<td><?php echo Yii::t('core', 'creationDate'); ?></td>
-			<td><?php echo Yii::app()->getDateFormatter()->formatDateTime($table->CREATE_TIME); ?></td>
+			<td><?php echo Yii::app()->getDateFormatter()->formatDateTime($table->CREATE_TIME, 'short', 'short'); ?></td>
 		</tr>
 		<tr>
 			<td><?php echo Yii::t('core', 'lastUpdateDate'); ?></td>
-			<td><?php echo Yii::app()->getDateFormatter()->formatDateTime($table->UPDATE_TIME); ?></td>
+			<td><?php echo Yii::app()->getDateFormatter()->formatDateTime($table->UPDATE_TIME, 'short', 'short'); ?></td>
 		</tr>
 		<tr>
 			<td><?php echo Yii::t('core', 'lastCheckDate'); ?></td>
-			<td><?php echo Yii::app()->getDateFormatter()->formatDateTime($table->CHECK_TIME); ?></td>
+			<td>
+				<?php echo ($table->CHECK_TIME ? Yii::app()->getDateFormatter()->formatDateTime($table->CHECK_TIME, 'short', 'short') : '-'); ?>
+			</td>
 		</tr>
 	</tbody>
 </table>

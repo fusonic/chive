@@ -124,6 +124,15 @@ $(document).ready(function()
 		animated: "slide"
 	});
 	
+	// Mouseover buttons
+	$('#MainMenu li').mouseover(function() {
+		$(this).children('a.icon10').show();
+	});	
+	
+	$('#MainMenu li').mouseout(function() {
+		$(this).children('a.icon10').hide();
+	});	
+	
 	// Ajax loader 
 	$(document).ajaxStart(function() {
 		$('#loading').css({'background': '#FF0000'}).fadeIn();
@@ -141,7 +150,7 @@ $(document).ready(function()
 	}
 	else
 	{
-		init();
+		//init();
 	}
 
 });

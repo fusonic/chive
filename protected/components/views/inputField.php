@@ -18,4 +18,8 @@ switch($this->getType()) {
 		echo CHtml::activeTextArea($row, $column->name, array('maxlength'=>$column->size, 'size'=>$column->size));
 		break;
 
+	case 'datetime':
+		echo '<div id="test"></div><script type="text/javascript">$("#test").datepicker();</script>';
+		break;
+
  } ?>

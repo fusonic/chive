@@ -52,7 +52,7 @@
  * @package system.web
  * @since 1.0.1
  */
-class CSort extends CComponent
+class Sort extends CComponent
 {
 	/**
 	 * @var boolean whether the sorting can be applied to multiple attributes simultaneously.
@@ -99,6 +99,8 @@ class CSort extends CComponent
 	 */
 	public $separators=array('-','.');
 
+	private $_db;
+
 	private $_directions;
 
 	/**
@@ -106,24 +108,25 @@ class CSort extends CComponent
 	 * @param string the class name of data models that need to be sorted.
 	 * This should be a child class of {@link CActiveRecord}.
 	 */
-	public function __construct()
+	public function __construct($_db)
 	{
-		$this->modelClass=$modelClass;
+		$this->_db = $_db;
 	}
 
 	/**
 	 * Modifies the query criteria by changing its ORDER BY property.
 	 * @param CDbCriteria the query criteria
 	 */
-	public function applyOrder($criteria)
+	public function getOrder()
 	{
+
 		$directions=$this->getDirections();
 		if(empty($directions))
 			$order=$this->defaultOrder;
 		else
 		{
-			$schema=CActiveRecord::model($this->modelClass)->getDbConnection()->getSchema();
 			$orders=array();
+			$schema = $this->_db->getSchema();
 			foreach($directions as $attribute=>$descending)
 			{
 				if(($pos=strpos($attribute,'.'))!==false)
@@ -133,14 +136,10 @@ class CSort extends CComponent
 				$orders[]=$descending?$attribute.' DESC':$attribute;
 			}
 			$order=implode(', ',$orders);
+			return ' ORDER BY ' . $order;
 		}
 
-		if(!empty($order))
-		{
-			if(!empty($criteria->order))
-				$criteria->order.=', ';
-			$criteria->order.=$order;
-		}
+
 	}
 
 	/**
@@ -169,29 +168,11 @@ class CSort extends CComponent
 			$directions=array($attribute=>$descending);
 
 		if($label===null)
-			$label=$this->resolveLabel($attribute);
+			$label = $attribute;
+
 		$url=$this->createUrl(Yii::app()->getController(),$directions);
 
 		return $this->createLink($attribute,$label,$url,$htmlOptions);
-	}
-
-	/**
-	 * Resolves the attribute label based on label definition in the AR class.
-	 * @param string the attribute name.
-	 * @return string the attribute label
-	 * @since 1.0.2
-	 */
-	protected function resolveLabel($attribute)
-	{
-		if(($pos=strpos($attribute,'.'))!==false)
-		{
-			$baseModel=CActiveRecord::model($this->modelClass);
-			if(($relation=$baseModel->getActiveRelation(substr($attribute,0,$pos)))!==null)
-				return CActiveRecord::model($relation->className)->getAttributeLabel(substr($attribute,$pos+1));
-			else
-				return $baseModel->getAttributeLabel(substr($attribute,$pos+1));
-		}
-		return CActiveRecord::model($this->modelClass)->getAttributeLabel($attribute);
 	}
 
 	/**
@@ -218,8 +199,9 @@ class CSort extends CComponent
 					else
 						$descending=false;
 
-					if(($attribute=$this->validateAttribute($attribute))!==false)
+					if(($this->validateAttribute($attribute))!==false) {
 						$this->_directions[$attribute]=$descending;
+					}
 				}
 				if(!$this->multiSort)
 				{
@@ -228,6 +210,7 @@ class CSort extends CComponent
 				}
 			}
 		}
+
 		return $this->_directions;
 	}
 
@@ -264,6 +247,8 @@ class CSort extends CComponent
 	 */
 	protected function validateAttribute($attribute)
 	{
+		return true;
+
 		if(empty($this->attributes))
 			$attributes=CActiveRecord::model($this->modelClass)->attributeNames();
 		else

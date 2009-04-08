@@ -89,7 +89,7 @@
 		</tbody>
 		<tfoot>
 			<tr>
-				<th><?php echo Yii::t('database', 'amountTables', array(1, '{amount} '=> $database->tableCount)); ?></th>
+				<th><?php echo Yii::t('database', 'amountTables', array($database->tableCount, '{amount} '=> $database->tableCount)); ?></th>
 				<th colspan="6"></th>
 				<th><?php echo $totalRowCount; ?></th>
 				<th></th>

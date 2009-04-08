@@ -15,7 +15,7 @@
 	<entry id="creationDate">Creation date</entry>
 	<entry id="lastUpdateDate">Last update date</entry>
 	<entry id="lastCheckDate">Last check date</entry>
-	
+	<entry id="total">Total</entry>
 	<entry id="yes">Yes</entry>
 	<entry id="no">No</entry>
 </category>
