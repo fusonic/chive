@@ -57,8 +57,8 @@
   <div class="basic" id="MainMenu">
   		<div class="sidebarHeader">
 			<a class="icon">
-				<img src="images/icons/table_24.png" />
-				<span>Tables</span>
+				<com:Icon name="database" size="24" text="database.databases" />
+				<span><?php echo Yii::t('database','databases'); ?></span>
 			</a>
 		</div>
 		<div class="sidebarContent">
