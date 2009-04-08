@@ -182,7 +182,7 @@
 		</div>
 	</div>
   </div>
-  <div class="ui-layout-center">
+  <div class="ui-layout-center" id="content">
   	<% echo $content; %>
   </div>
 

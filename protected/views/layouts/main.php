@@ -58,7 +58,7 @@
   		<div class="sidebarHeader">
 			<a class="icon">
 				<com:Icon name="database" size="24" text="database.databases" />
-				<span><?php echo Yii::t('schema','databases'); ?></span>
+				<span><?php echo Yii::t('schema','schemas'); ?></span>
 			</a>
 		</div>
 		<div class="sidebarContent">
