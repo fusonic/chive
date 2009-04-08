@@ -71,10 +71,8 @@ class Column extends CActiveRecord
 			'COLUMN_NAME',
 			'COLUMN_DEFAULT',
 			'isNullable',
-			'DATA_TYPE',
-			'CHARACTER_MAXIMUM_LENGTH',
-			'NUMERIC_PRECISION',
-			'NUMERIC_SCALE',
+			'dataType',
+			'precision',
 			'collation',
 			'autoIncrement',
 			'COLUMN_COMMENT',
@@ -144,6 +142,30 @@ class Column extends CActiveRecord
 		$this->COLLATION_NAME = $value;
 		$data = explode('_', $value);
 		$this->CHARACTER_SET_NAME = $data[0];
+	}
+
+	public function getPrecision()
+	{
+		if(preg_match('/^\w+\((\d+)\)$/', $this->COLUMN_TYPE, $res))
+		{
+			return $res[1];
+		}
+	}
+
+	public function setPrecision($value)
+	{
+		$this->COLUMN_TYPE = $this->DATA_TYPE . '(' . $value . ')';
+	}
+
+	public function getDataType()
+	{
+		return $this->DATA_TYPE;
+	}
+
+	public function setDataType($value)
+	{
+		$precision = $this->precision;
+		$this->COLUMN_TYPE = $value . ($this->precision ? '(' . $this->precision . ')' : '');
 	}
 
 	public function getIsPartOfPrimaryKey($indices = null)

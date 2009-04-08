@@ -26,6 +26,8 @@ class ColumnController extends CController
 		$this->_db->charset='utf8';
 		$this->_db->active = true;
 
+		var_dump($this->_db->getSchema()->getTable($this->table)->getColumn('order'));
+
 		parent::__construct($id, $module);
 
 	}
