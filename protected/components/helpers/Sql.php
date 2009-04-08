@@ -116,13 +116,24 @@ class Sql {
 
 	}
 
+	private function stripEmptyLines(&$_string)
+	{
+		$_string = preg_replace('/\n\s*\n/', "\n", $_string);
+	}
+
 	/*
 	 * Returns parsed query
 	 */
-	public function getQuery() {
-
+	public function getQuery()
+	{
+		self::stripEmptyLines($this->query);
 		return $this->query;
+	}
 
+	public function getOriginalQuery()
+	{
+		self::stripEmptyLines($this->originalQuery);
+		return $this->originalQuery;
 	}
 
 

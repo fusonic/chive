@@ -130,9 +130,3 @@ CodePress.run = function() {
 		} 
 	}
 }
-
-/*
- * @todo (rponudic) Check if there is a better method to prevent execution before script is ready (like document.ready())
- */
-
-setTimeout(CodePress.run, 100);

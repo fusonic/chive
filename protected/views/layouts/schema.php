@@ -82,7 +82,7 @@
   		<div class="sidebarHeader">
 			<a class="icon">
 				<com:Icon name="table" size="24" text="database.tables" />
-				<span><?php echo Yii::t('database', 'tables'); ?></span>
+				<span><?php echo Yii::t('schema', 'tables'); ?></span>
 			</a>
 		</div>
 		<div class="sidebarContent">
@@ -91,7 +91,7 @@
 				<?php foreach(Table::model()->findAll(array('select'=>'TABLE_NAME, TABLE_ROWS', 'condition'=>'TABLE_SCHEMA=:schema', 'params'=>array(':schema'=>$_GET['schema']), 'order'=>'TABLE_NAME ASC')) AS $table) { ?>
 					<li class="nowrap">
 						<a href="#tables/<%= $table->getName(); %>/<?php echo ($table->getRowCount() ? 'browse' : 'structure'); ?>">
-							<?php $this->widget('Icon', array('name'=>'browse', 'size'=>16, 'disabled'=>!$table->getRowCount(), 'title'=>Yii::t('database', 'Xrows', array('{amount}'=>$table->getRowCount() ? $table->getRowCount() : 0)))); ?>
+							<?php $this->widget('Icon', array('name'=>'browse', 'size'=>16, 'disabled'=>!$table->getRowCount(), 'title'=>Yii::t('schema', 'Xrows', array('{amount}'=>$table->getRowCount() ? $table->getRowCount() : 0)))); ?>
 						</a>
 						<a href="#tables/<%= $table->getName(); %>/structure"><?php echo $table->getName(); ?></a>
 						<a href="#tables/<%= $table->getName(); %>/insert" class="icon10" style="display: none;">
@@ -105,7 +105,7 @@
   		<div class="sidebarHeader">
 			<a class="icon">
 				<com:Icon name="view" size="24" text="database.views" />
-				<span><%= Yii::t('database', 'views') %></span>
+				<span><%= Yii::t('schema', 'views') %></span>
 			</a>
 		</div>
 		<div class="sidebarContent">

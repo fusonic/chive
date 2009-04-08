@@ -1,6 +1,6 @@
 <?php
 
-class Database extends CActiveRecord
+class Schema extends CActiveRecord
 {
 
 	public $originalSchemaName;
@@ -83,8 +83,8 @@ class Database extends CActiveRecord
 	{
 		return array(
 			'SCHEMA_NAME' => Yii::t('core', 'name'),
-			'DEFAULT_COLLATION_NAME' => Yii::t('database', 'collation'),
-			'tableCount' => Yii::t('database', 'tables'),
+			'DEFAULT_COLLATION_NAME' => Yii::t('schema', 'collation'),
+			'tableCount' => Yii::t('schema', 'tables'),
 		);
 	}
 

@@ -46,5 +46,5 @@
 		<?php echo CHtml::submitButton('Login'); ?>
 	</div>
 
-	<?php echo "<?php echo CHtml::closeTag('form'); ?>\n"; ?>
+	<?php echo CHtml::closeTag('form'); ?>
 </div>

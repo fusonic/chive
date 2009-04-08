@@ -1,6 +1,6 @@
 <?php
 
-class DatabaseController extends CController
+class SchemaController extends CController
 {
 	const PAGE_SIZE = 10;
 
@@ -12,14 +12,14 @@ class DatabaseController extends CController
 	/**
 	 * @var CActiveRecord the currently loaded data model instance.
 	 */
-	private $_database;
+	private $_schema;
 
 	public $schema;
 
 	/**
 	 * @var Default layout for this controller
 	 */
-	public $layout = 'database';
+	public $layout = 'schema';
 
 	public function __construct($id, $module=null) {
 
@@ -66,7 +66,7 @@ class DatabaseController extends CController
 	public function actionShow()
 	{
 
-		$database = $this->loadDatabase();
+		$schema = $this->loadSchema();
 
 		$criteria = new CDbCriteria;
 		$criteria->condition = 'TABLE_SCHEMA = :schema';
@@ -86,11 +86,11 @@ class DatabaseController extends CController
 		);
 		$sort->applyOrder($criteria);
 
-		$this->_database->tables = Table::model()->findAll($criteria);
-		$this->_database->tableCount = Table::model()->count($criteria);
+		$this->_schema->tables = Table::model()->findAll($criteria);
+		$this->_schema->tableCount = Table::model()->count($criteria);
 
 		$this->render('show',array(
-			'database' => $database,
+			'schema' => $schema,
 			'sort' => $sort,
 		));
 	}
@@ -101,13 +101,13 @@ class DatabaseController extends CController
 	 */
 	public function actionCreate()
 	{
-		$database = new Database;
-		if(isset($_POST['Database']))
+		$schema = new Schema;
+		if(isset($_POST['Schema']))
 		{
-			$database->attributes = $_POST['Database'];
-			if($database->save())
+			$schema->attributes = $_POST['Schema'];
+			if($schema->save())
 			{
-				Yii::app()->end('redirect:database/' . $database->SCHEMA_NAME);
+				Yii::app()->end('redirect:schema/' . $schema->SCHEMA_NAME);
 			}
 		}
 
@@ -117,7 +117,7 @@ class DatabaseController extends CController
 		));
 
 		$this->render('form', array(
-			'database' => $database,
+			'schema' => $schema,
 			'collations' => $collations,
 		));
 	}
@@ -129,11 +129,11 @@ class DatabaseController extends CController
 	public function actionUpdate()
 	{
 		$isSubmitted = false;
-		$database = $this->loadDatabase();
-		if(isset($_POST['Database']))
+		$schema = $this->loadSchema();
+		if(isset($_POST['Schema']))
 		{
-			$database->attributes = $_POST['Database'];
-			if($database->save())
+			$schema->attributes = $_POST['Schema'];
+			if($schema->save())
 			{
 				$isSubmitted = true;
 			}
@@ -145,7 +145,7 @@ class DatabaseController extends CController
 		));
 
 		$this->render('form', array(
-			'database' => $database,
+			'schema' => $schema,
 			'collations' => $collations,
 			'helperId' => 'helper_' . mt_rand(1000, 9999),
 			'isSubmitted' => $isSubmitted,
@@ -162,8 +162,8 @@ class DatabaseController extends CController
 		{
 			try
 			{
-				$database = Database::model()->findByPk($schema);
-				$database->delete();
+				$schema = Schema::model()->findByPk($schema);
+				$schema->delete();
 			}
 			catch(Exception $ex) { }
 		}
@@ -179,12 +179,12 @@ class DatabaseController extends CController
 		$criteria = new CDbCriteria();
 
 		// Pagination
-		$pages = new CPagination(Database::model()->count($criteria));
+		$pages = new CPagination(Schema::model()->count($criteria));
 		$pages->pageSize = self::PAGE_SIZE;
 		$pages->applyLimit($criteria);
 
 		// Sort
-		$sort = new CSort('Database');
+		$sort = new CSort('Schema');
 		$sort->attributes = array(
 			'SCHEMA_NAME' => 'name',
 			'tableCount' => 'tableCount',
@@ -196,14 +196,14 @@ class DatabaseController extends CController
 		$criteria->group = 'SCHEMA_NAME';
 		$criteria->select = 'COUNT(*) AS tableCount';
 
-		$databaseList = Database::model()->with(array(
+		$schemaList = Schema::model()->with(array(
 			'table' => array('select' => 'COUNT(??.TABLE_NAME) AS tableCount'),
 		))->together()->findAll($criteria);
 
 		$this->render('list',array(
-			'databaseList' => $databaseList,
-			'databaseCount' => $pages->getItemCount(),
-			'databaseCountThisPage' => min($pages->getPageSize(), $pages->getItemCount() - $pages->getCurrentPage() * $pages->getPageSize()),
+			'schemaList' => $schemaList,
+			'schemaCount' => $pages->getItemCount(),
+			'schemaCountThisPage' => min($pages->getPageSize(), $pages->getItemCount() - $pages->getCurrentPage() * $pages->getPageSize()),
 			'pages' => $pages,
 			'sort' => $sort,
 		));
@@ -239,9 +239,9 @@ class DatabaseController extends CController
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the primary key value. Defaults to null, meaning using the 'id' GET variable
 	 */
-	public function loadDatabase($id=null)
+	public function loadSchema($id=null)
 	{
-		if($this->_database===null)
+		if($this->_schema===null)
 		{
 			if($id!==null || isset($_GET['schema']))
 			{
@@ -251,16 +251,16 @@ class DatabaseController extends CController
 					':schema' => $this->schema,
 				);
 
-				$this->_database = Database::model()->find($criteria);
+				$this->_schema = Schema::model()->find($criteria);
 
 			}
 
-			if($this->_database===null)
+			if($this->_schema===null)
 			{
-				throw new CHttpException(500,'The requested database does not exist.');
+				throw new CHttpException(500,'The requested schema does not exist.');
 			}
 		}
-		return $this->_database;
+		return $this->_schema;
 	}
 
 	/**

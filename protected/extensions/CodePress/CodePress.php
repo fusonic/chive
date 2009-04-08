@@ -24,8 +24,7 @@ class CodePress extends CInputWidget
 		$cs->registerScriptFile($this->_codePressPath . DIRECTORY_SEPARATOR . "codepress.js");
 		$jsSubmit = 'jQuery(jQuery("#' . $id . '").get(0).form).submit(function() { jQuery("#' . $id . '_cp").val(' . $id . '.getCode()); jQuery("#' . $id . '_cp").attr("disabled", false); });';
 		$cs->registerScript('Yii.SqlEditor#' . $id, $jsSubmit);
-
-		$cs->registerScript('Yii.SqlEditor.Path', 'var codePressPath = "' . $this->_codePressPath .  '/";');
+		$cs->registerScript('Yii.SqlEditor.Path', 'var codePressPath = "' . $this->_codePressPath .  '/"; CodePress.run();');
 
 		parent::init();
 

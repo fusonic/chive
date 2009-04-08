@@ -79,27 +79,27 @@ return array(
                 'site/changeLanguage/<id:(.*)>'=>'site/changeLanguage',
                 'site/changeTheme/<id:(.*)>'=>'site/changeTheme',
 
-				// Databases
-				'databases'=>'database/list',
-				'databases/create'=>'database/create',
-				'databases/update'=>'database/update',
-				'databases/drop'=>'database/drop',
+				// schemas
+				'schemas'=>'schema/list',
+				'schemas/create'=>'schema/create',
+				'schemas/update'=>'schema/update',
+				'schemas/drop'=>'schema/drop',
 
-				// Database
-               	'database'=>'database/list',
-                'database/<schema:'.URL_MATCH.'>'=>'database/show',
+				// schema
+               	'schema'=>'schema/list',
+                'schema/<schema:'.URL_MATCH.'>'=>'schema/show',
 
 					// Table
-					'database/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/browse'=>'table/browse',
-					'database/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/structure'=>'table/structure',
-					'database/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/sql'=>'table/sql',
-					'database/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/insert'=>'table/insert',
-					'database/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/truncate'=>'table/truncate',
-					'database/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/drop'=>'table/drop',
+					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/browse'=>'table/browse',
+					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/structure'=>'table/structure',
+					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/sql'=>'table/sql',
+					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/insert'=>'table/insert',
+					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/truncate'=>'table/truncate',
+					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/drop'=>'table/drop',
 
 					// Column
-					'database/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columns/move'=>'column/move',
-					'database/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columns/update'=>'column/update',
+					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columns/move'=>'column/move',
+					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columns/update'=>'column/update',
             ),
         ),
 

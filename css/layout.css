@@ -81,6 +81,10 @@
     border:0;
     border-bottom: 1px #eee solid;
   }
+  
+  div.clear {
+  	clear: both;
+  }
 
   /*--- Links ----------------------------------------------------------------------------------------- */
 
@@ -127,7 +131,14 @@
   table.list td.center {
   	text-align: center;
   }
+  
+  table.list td.right {
+  	text-align: right;
+  }
 
+  table.list thead > tr:first-child th {
+  	font-weight: bold;
+  }
 
  /**
   * ------------------------------------------------------------------------------------------------- #

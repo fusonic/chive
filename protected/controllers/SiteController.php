@@ -52,6 +52,8 @@ class SiteController extends CController
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
 
+		$tables = array();
+
 		$this->render('index', array('tables'=>$tables));
 
 

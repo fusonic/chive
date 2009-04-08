@@ -3,7 +3,7 @@
 
 <?php $this->widget('TabMenu', array(
 		'items'=>array(
-			array(	'label'=> Yii::t('database','browse'),
+			array(	'label'=> Yii::t('schema','browse'),
 					'icon'=>'browse',
 					'link'=>array(
 						'url'=> '/database/' . $this->schemaName . '/tables/' . $this->tableName . '/browse',
@@ -11,7 +11,7 @@
 					),
 					'visible'=>true,
 			),
-			array(	'label'=>Yii::t('database','structure'),
+			array(	'label'=>Yii::t('schema','structure'),
 					'icon'=>'structure',
 					'link'=>array(
 						'url'=> '/database/' . $this->schemaName . '/tables/' . $this->tableName . '/structure',
@@ -19,7 +19,7 @@
 					),
 					'visible'=>true,
 			),
-			array(	'label'=>Yii::t('database','insert'),
+			array(	'label'=>Yii::t('schema','insert'),
 					'icon'=>'insert',
 					'link'=>array(
 						'url'=> '/database/' . $this->schemaName . '/tables/' . $this->tableName . '/insert',
@@ -27,7 +27,7 @@
 					),
 					'visible'=>true,
 			),
-			array(	'label'=>Yii::t('database','truncate'),
+			array(	'label'=>Yii::t('schema','truncate'),
 					'icon'=>'truncate',
 					'link'=>array(
 						'url'=> '/database/' . $this->schemaName . '/tables/' . $this->tableName . '/truncate',
@@ -35,7 +35,7 @@
 					),
 					'visible'=>true,
 			),
-			array(	'label'=>Yii::t('database','drop'),
+			array(	'label'=>Yii::t('schema','drop'),
 					'icon'=>'drop',
 					'link'=>array(
 						'url'=> '/database/' . $this->schemaName . '/tables/' . $this->tableName . '/drop',
@@ -47,11 +47,11 @@
 	));
 ?>
 
-<div id="truncateTableDialog" title="<?php echo Yii::t('database', 'truncateTable'); ?>" style="display: none">
-	<?php echo Yii::t('database', 'doYouReallyWantToTruncateTable', array('{table}'=>$this->tableName)); ?>
+<div id="truncateTableDialog" title="<?php echo Yii::t('schema', 'truncateTable'); ?>" style="display: none">
+	<?php echo Yii::t('schema', 'doYouReallyWantToTruncateTable', array('{table}'=>$this->tableName)); ?>
 </div>
-<div id="dropTableDialog" title="<?php echo Yii::t('database', 'dropTable'); ?>" style="display: none">
-	<?php echo Yii::t('database', 'doYouReallyWantToDropTable', array('{table}'=>$this->tableName)); ?>
+<div id="dropTableDialog" title="<?php echo Yii::t('schema', 'dropTable'); ?>" style="display: none">
+	<?php echo Yii::t('schema', 'doYouReallyWantToDropTable', array('{table}'=>$this->tableName)); ?>
 </div>
 
 <div id="content">
