@@ -60,6 +60,7 @@ class Collation extends CActiveRecord
 	{
 		return array(
 			'database' => array(self::HAS_MANY, 'Database', 'DEFAULT_COLLATION_NAME'),
+			'characterSet' => array(self::BELONGS_TO, 'CharacterSet', 'CHARACTER_SET_NAME'),
 		);
 	}
 
@@ -80,9 +81,15 @@ class Collation extends CActiveRecord
 		return 'COLLATION_NAME';
 	}
 
-	public function getDefinition()
+	public static function getDefinition($collation)
 	{
-		return 'Definition not implemented (' . $this->COLLATION_NAME . ').';
+		$data = explode('_', $collation);
+		$text = Yii::t('collation', $data[0]) . ', ' . Yii::t('collation', $data[1]);
+		if(count($data) == 3)
+		{
+			$text .= ' (' . Yii::t('collation', $data[2]) . ')';
+		}
+		return $text;
 	}
 
 }

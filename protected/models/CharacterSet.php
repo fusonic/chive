@@ -1,6 +1,5 @@
 <?php
 
-die("OK");
 class CharacterSet extends CActiveRecord
 {
 	/**
@@ -39,6 +38,7 @@ class CharacterSet extends CActiveRecord
 	public function relations()
 	{
 		return array(
+			'collations' => array(self::HAS_MANY, 'Collation', 'CHARACTER_SET_NAME'),
 		);
 	}
 
@@ -49,5 +49,10 @@ class CharacterSet extends CActiveRecord
 	{
 		return array(
 		);
+	}
+
+	public function primaryKey()
+	{
+		return 'CHARACTER_SET_NAME';
 	}
 }

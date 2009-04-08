@@ -175,5 +175,13 @@
   div.errorSummary span.sql {
   	font-size: 80%;
   }
+  
+  span.null {
+  	font-style: italic;
+  }
+  
+  span.primaryKey {
+  	border-bottom: dotted 1px;
+  }
    
 }

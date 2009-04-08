@@ -46,4 +46,7 @@
 	<entry id="showingXDatabases">{count} Databases</entry>
 	<entry id="amountTables">1#{amount}  Table|n>1#{amount}  Tables</entry>
 	
+	<entry id="addColumn">Add new column</entry>
+	<entry id="editColumn">Edit column</entry>
+	
 </category>

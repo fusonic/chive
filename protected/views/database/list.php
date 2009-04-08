@@ -34,8 +34,8 @@
 						<?php echo $model->tableCount; ?>
 					</td>
 					<td>
-						<dfn class="collation" title="<?php echo $model->collation->definition; ?>">
-							<?php echo $model->collation->COLLATION_NAME; ?>
+						<dfn class="collation" title="<?php echo Collation::getDefinition($model->DEFAULT_COLLATION_NAME); ?>">
+							<?php echo $model->DEFAULT_COLLATION_NAME; ?>
 						</dfn>
 					</td>
 					<td>

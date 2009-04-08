@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<category id="dataTypes">
+	
+	<!-- Groups -->
+	<entry id="numeric">Numeric</entry>
+	<entry id="strings">Strings</entry>
+	<entry id="dateAndTime">Date and Time</entry>
+	
+</category>

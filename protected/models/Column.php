@@ -2,6 +2,9 @@
 
 class Column extends CActiveRecord
 {
+
+	public static $db;
+
 	public function __construct($attributes=array(), $scenario='') {
 
 		if($attributes===null)
@@ -62,6 +65,22 @@ class Column extends CActiveRecord
 		);
 	}
 
+	public function safeAttributes()
+	{
+		return array(
+			'COLUMN_NAME',
+			'COLUMN_DEFAULT',
+			'isNullable',
+			'DATA_TYPE',
+			'CHARACTER_MAXIMUM_LENGTH',
+			'NUMERIC_PRECISION',
+			'NUMERIC_SCALE',
+			'collation',
+			'autoIncrement',
+			'COLUMN_COMMENT',
+		);
+	}
+
 	/**
 	 * @return array relational rules.
 	 */
@@ -69,7 +88,8 @@ class Column extends CActiveRecord
 	{
 		return array(
 			'table' => array(self::BELONGS_TO, 'Table', 'TABLE_NAME'),
-			'indezes' => array(self::HAS_MANY, 'Index', 'TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME'),
+			'indices' => array(self::HAS_MANY, 'Index', 'TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME'),
+			'collation' => array(self::BELONGS_TO, 'Collation', 'COLLATION_NAME'),
 			#'constraint' => array(self::MANY_MANY, 'Constraint', 'COLUMN_NAME'),
 		);
 	}
@@ -80,6 +100,9 @@ class Column extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
+			'COLUMN_NAME' => Yii::t('core', 'name'),
+			'COLLATION_NAME' => Yii::t('database', 'collation'),
+			'COLUMN_COMMENT' => Yii::t('core', 'comment'),
 		);
 	}
 
@@ -90,4 +113,128 @@ class Column extends CActiveRecord
 			'COLUMN_NAME',
 		);
 	}
+
+	public function getAutoIncrement()
+	{
+		return $this->EXTRA == 'auto_increment';
+	}
+
+	public function setAutoIncrement($value)
+	{
+		$this->EXTRA = ($value ? 'auto_increment' : null);
+	}
+
+	public function getIsNullable()
+	{
+		return $this->IS_NULLABLE == 'YES';
+	}
+
+	public function setIsNullable($value)
+	{
+		$this->IS_NULLABLE = ($value ? 'YES' : 'NO');
+	}
+
+	public function getCollation()
+	{
+		return $this->COLLATION_NAME;
+	}
+
+	public function setCollation($value)
+	{
+		$this->COLLATION_NAME = $value;
+		$data = explode('_', $value);
+		$this->CHARACTER_SET_NAME = $data[0];
+	}
+
+	public function getIsPartOfPrimaryKey($indices = null)
+	{
+		$res = false;
+		if(is_null($indices))
+		{
+			$indices = $this->indices;
+		}
+		foreach($indices AS $index)
+		{
+			if($index->INDEX_NAME == 'PRIMARY' && $index->COLUMN_NAME == $this->COLUMN_NAME)
+			{
+				$res = true;
+				break;
+			}
+		}
+		return $res;
+	}
+
+	public function move($command)
+	{
+
+		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME)
+			. ' MODIFY ' . self::$db->quoteColumnName($this->COLUMN_NAME)
+			. ' ' . $this->COLUMN_TYPE
+			. ' ' . ($this->IS_NULLABLE == 'YES' ? 'NULL' : 'NOT NULL')
+			. ' ' . ($this->COLUMN_DEFAULT || $this->IS_NULLABLE ? 'DEFAULT :defaultValue' : '')
+			. ' ' . ($this->EXTRA == 'auto_increment' ? 'AUTO_INCREMENT' : '')
+			. ' ' . (strlen($this->COLUMN_COMMENT) ? 'COMMENT :comment' : '')
+			. ' ' . (substr($command, 0, 6) == 'AFTER ' ? 'AFTER ' . self::$db->quoteColumnName(substr($command, 6)) : 'FIRST');
+
+		$sql = new CDbCommand(self::$db, $sql);
+		if($this->COLUMN_DEFAULT || $this->IS_NULLABLE)
+		{
+			$sql->bindParam('defaultValue', $this->COLUMN_DEFAULT, PDO::PARAM_STR);
+		}
+		if(strlen($this->COLUMN_COMMENT))
+		{
+			$sql->bindParam('comment', $this->COLUMN_COMMENT, PDO::PARAM_STR);
+		}
+		return $sql->execute();
+
+	}
+
+	public static function getDataTypes()
+	{
+
+		$types = array();
+
+		// Numeric
+		$types[Yii::t('dataTypes', 'numeric')] =  array(
+			'bit' => 'bit',
+			'tinyint' => 'tinyint',
+			'bool' => 'bool',
+			'smallint' => 'smallint',
+			'mediumint' => 'mediumint',
+			'int' => 'int',
+			'bigint' => 'bigint',
+			'float' => 'float',
+			'double' => 'double',
+			'decimal' => 'decimal',
+		);
+
+		// Strings
+		$types[Yii::t('dataTypes', 'strings')] = array(
+			'char' => 'char',
+			'varchar' => 'varchar',
+			'tinytext' => 'tinytext',
+			'text' => 'text',
+			'mediumtext' => 'mediumtext',
+			'longtext' => 'longtext',
+			'tinyblob' => 'tinyblob',
+			'blob' => 'blob',
+			'mediumblob' => 'mediumblob',
+			'longblob' => 'longblob',
+			'binary' => 'binary',
+			'varbinary' => 'varbinary',
+		);
+
+		// Date and time
+		$types[Yii::t('dataTypes', 'dateAndTime')] = array(
+			'date' => 'date',
+			'datetime' => 'datetime',
+			'timestamp' => 'timestamp',
+			'time' => 'time',
+			'year' => 'year',
+		);
+
+		return $types;
+
+	}
+
 }

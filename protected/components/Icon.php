@@ -14,7 +14,7 @@ class Icon extends CWidget
 
 		list($category, $var) = explode(".", $this->text);
 
-		$classes = "icon icon" . $this->size . ($this->disabled ? " disabled" : "");
+		$classes = "icon icon" . $this->size . " icon_" . $this->name . ($this->disabled ? " disabled" : "");
 		if(isset($this->htmlOptions['class']))
 		{
 			$this->htmlOptions['class'] .= " " . $classes;

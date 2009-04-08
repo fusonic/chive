@@ -1,15 +1,14 @@
-<div class="pager top">
-<?php $this->widget('CLinkPager',array('pages'=>$pages)); ?>
-</div>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl . '/js/views/table/structure.js', CClientScript::POS_HEAD); ?>
 
-<table class="list addCheckboxes">
+<table id="columns" class="list addCheckboxes">
 	<colgroup>
 		<col />
-		<col />
+		<col class="type" />
 		<col class="collation" />
+		<col class="null" />
 		<col />
 		<col />
-		<col />
+		<col class="action" />
 		<col class="action" />
 		<col class="action" />
 		<col class="action" />
@@ -26,26 +25,49 @@
 			<th><%= Yii::t('database','null'); %></th>
 			<th><%= Yii::t('database','default'); %></th>
 			<th><%= Yii::t('database','extra'); %></th>
-			<th colspan="7"><%= Yii::t('database','actions'); %></th>
+			<th colspan="8" />
 		</tr>
 	</thead>
 	<tbody>
 		<?php foreach ($table->columns AS $column) { ?>
-			<tr>
-				<td><%= $column->COLUMN_NAME %></td>
-				<td><%= $column->COLUMN_TYPE %></td>
-				<td><%= $column->COLLATION_NAME %></td>
-				<td><%= $column->IS_NULLABLE %></td>
+			<tr id="columns_<?php echo $column->COLUMN_NAME; ?>">
 				<td>
-					<%= (is_null($column->COLUMN_DEFAULT) && $column->IS_NULLABLE == 'YES' ? 'NULL' : $column->COLUMN_DEFAULT) %>
+					<?php if($column->getIsPartOfPrimaryKey($table->indices)): ?>
+						<span class="primaryKey"><?php echo $column->COLUMN_NAME; ?></span>
+					<?php else: ?>
+						<?php echo $column->COLUMN_NAME; ?>
+					<?php endif; ?>
 				</td>
-				<td><%= $column->EXTRA %></td>
+				<td><%= $column->COLUMN_TYPE %></td>
+				<td>
+					<?php if(!is_null($column->COLLATION_NAME)): ?>
+						<dfn class="collation" title="<?php echo Collation::getDefinition($column->COLLATION_NAME); ?>">
+							<?php echo $column->COLLATION_NAME; ?>
+						</dfn>
+					<?php endif; ?>
+				</td>
+				<td>
+					<?php echo Yii::t('core', strtolower($column->IS_NULLABLE)); ?>
+				</td>
+				<td>
+					<?php if(is_null($column->COLUMN_DEFAULT) && $column->IS_NULLABLE == 'YES'): ?>
+						<span class="null">NULL</span>
+					<?php else: ?>
+						<?php echo $column->COLUMN_DEFAULT; ?>
+					<?php endif; ?>
+				</td>
+				<td><?php echo $column->EXTRA; ?></td>
 				<td class="center">
 					<a href="#sql-query">
 						<com:Icon name="browse" size="16" text="database.browseDistinctValues" title={Yii::t('database','browseDistinctValues')} />
 					</a>
 				</td>
-				<td><com:Icon name="edit" size="16" text="core.edit"/></td>
+				<td><com:Icon name="arrow_updown" size="16" text="core.move" /></td>
+				<td>
+					<a href="javascript:void(0)" onclick="editColumn('<?php echo $column->COLUMN_NAME; ?>')" class="icon">
+						<com:Icon name="edit" size="16" text="core.edit"/>
+					</a>
+				</td>
 				<td><com:Icon name="delete" size="16" text="core.delete"/></td>
 				<td><com:Icon name="key_primary" size="16" text="database.primaryKey"/></td>
 				<td><com:Icon name="key_unique" size="16" text="database.uniqueKey"/></td>
@@ -133,7 +155,7 @@
 			<th colspan="2">
 				<span class="icon">
 					<com:Icon name="edit" size="16" text="core.information" />
-					<span><?php echo Yii::t('core', 'informations'); ?></span>
+					<span><?php echo Yii::t('core', 'information'); ?></span>
 				</span>
 			</th>
 		</tr>
@@ -177,7 +199,3 @@
 		</tr>
 	</tbody>
 </table>
-
-<div class="pager bottom">
-<?php $this->widget('CLinkPager',array('pages'=>$pages)); ?>
-</div>

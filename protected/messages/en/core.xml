@@ -8,9 +8,14 @@
 	<entry id="loading">Loading</entry>
 	<entry id="name">Name</entry>
 	<entry id="value">Value</entry>
+	<entry id="options">Options</entry>
+	<entry id="comment">Comment</entry>
 	
-	<entry id="informations">Informations</entry>
+	<entry id="information">Information</entry>
 	<entry id="creationDate">Creation date</entry>
 	<entry id="lastUpdateDate">Last update date</entry>
 	<entry id="lastCheckDate">Last check date</entry>
+	
+	<entry id="yes">Yes</entry>
+	<entry id="no">No</entry>
 </category>

@@ -41,7 +41,8 @@ return array(
 				),
 				array(
 					'class'=>'CWebLogRoute',
-					'levels'=>'error', //, warning, info, trace',
+					'levels'=>'error, warning', //, warning, info, trace',
+					'showInFireBug'=>true,
 				),
 			),
 		),
@@ -95,6 +96,10 @@ return array(
 					'database/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/insert'=>'table/insert',
 					'database/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/truncate'=>'table/truncate',
 					'database/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/drop'=>'table/drop',
+
+					// Column
+					'database/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columns/move'=>'column/move',
+					'database/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columns/update'=>'column/update',
             ),
         ),
 

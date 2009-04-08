@@ -197,8 +197,7 @@ class DatabaseController extends CController
 		$criteria->select = 'COUNT(*) AS tableCount';
 
 		$databaseList = Database::model()->with(array(
-			"table" => array('select' => 'COUNT(??.TABLE_NAME) AS tableCount'),
-			"collation"
+			'table' => array('select' => 'COUNT(??.TABLE_NAME) AS tableCount'),
 		))->together()->findAll($criteria);
 
 		$this->render('list',array(

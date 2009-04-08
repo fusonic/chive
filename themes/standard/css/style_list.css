@@ -58,6 +58,10 @@
 		width: 130px;
 	}
 	
+	table.list col.null {
+		width: 50px;
+	}
+	
 	table.list col.filesize {
 		width: 80px;
 	}

@@ -1,5 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <category id="collation">
+	
+	<!-- Character sets -->
+	<entry id="big5">Big5 Traditional Chinese</entry>
+	<entry id="dec8">DEC West European</entry>
+	<entry id="cp850">DOS West European</entry>
+	<entry id="hp8">HP West European</entry>
+	<entry id="koi8r">KOI8-R Relcom Russian</entry>
+	<entry id="latin1">cp1252 West European</entry>
+	<entry id="latin2">ISO 8859-2 Central European</entry>
+	<entry id="swe7">7bit Swedish</entry>
+	<entry id="ascii">US ASCII</entry>
+	<entry id="ujis">EUC-JP Japanese</entry>
+	<entry id="sjis">Shift-JIS Japanese</entry>
+	<entry id="hebrew">ISO 8859-8 Hebrew</entry>
+	<entry id="tis620">TIS620 Thai</entry>
+	<entry id="euckr">EUC-KR Korean</entry>
+	<entry id="koi8u">KOI8-U Ukrainian</entry>
+	<entry id="gb2312">GB2312 Simplified Chinese</entry>
+	<entry id="greek">ISO 8859-7 Greek</entry>
+	<entry id="cp1250">Windows Central European</entry>
+	<entry id="gbk">GBK Simplified Chinese</entry>
+	<entry id="latin5">ISO 8859-9 Turkish</entry>
+	<entry id="armscii8">ARMSCII-8 Armenian</entry>
+	<entry id="utf8">UTF-8 Unicode</entry>
+	<entry id="ucs2">UCS-2 Unicode</entry>
+	<entry id="cp866">DOS Russian</entry>
+	<entry id="keybcs2"></entry>
+	<entry id="DOS Kamenicky Czech-Slovak"></entry>
+	<entry id="macce">Mac Central European</entry>
+	<entry id="macroman">Mac West European</entry>
+	<entry id="cp852">DOS Central European</entry>
+	<entry id="latin7">ISO 8859-13 Baltic</entry>
+	<entry id="cp1251">Windows Cyrillic</entry>
+	<entry id="cp1256">Windows Arabic</entry>
+	<entry id="cp1257">Windows Baltic</entry>
+	<entry id="binary">Binary pseudo charset</entry>
+	<entry id="geostd8">GEOSTD8 Georgian</entry>
+	<entry id="cp932">SJIS for Windows Japanese</entry>
+	<entry id="eucjpms">UJIS for Windows Japanese</entry>
+	
+	<!-- Languages -->
 	<entry id="bin">Binary</entry>
 	<entry id="czech">Czech</entry>
 	<entry id="danish">Danish</entry>
@@ -21,4 +62,9 @@
 	<entry id="swedish">Swedish</entry>
 	<entry id="turkish">Turkish</entry>
 	<entry id="unicode">Unicode</entry>
+	
+	<!-- Case sensitivity -->
+	<entry id="ci">Case-Insensitive</entry>
+	<entry id="cs">Case-Sensitive</entry>
+	
 </category>
