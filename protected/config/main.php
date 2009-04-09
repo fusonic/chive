@@ -88,7 +88,8 @@ return array(
 
 				// schema
                	'schema'=>'schema/list',
-                'schema/<schema:'.URL_MATCH.'>'=>'schema/show',
+                'schema/<schema:'.URL_MATCH.'>'=>'schema/index',
+				'schema/<schema:'.URL_MATCH.'>/tables'=>'schema/show',
 
 					// Table
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/browse'=>'table/browse',

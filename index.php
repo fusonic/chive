@@ -35,7 +35,7 @@ if(!$app->user->isGuest) {
 }
 
 $session = Yii::app()->session;
-$request = Yii::app()->request;
+$request = Yii::app()->getRequest();
 
 $language = $session->itemAt('language') ? $session->itemAt('language') : $request->getPreferredLanguage();
 $theme = $session->itemAt('theme') ? $session->itemAt('theme') : 'standard';
@@ -44,5 +44,11 @@ $language = "en";
 
 $app->setLanguage($language);
 $app->setTheme($theme);
+
+// Unset jQuery in Ajax requests
+if($request->isAjaxRequest)
+{
+	$app->clientScript->scriptMap['jquery.js'] = false;
+}
 
 $app->run();

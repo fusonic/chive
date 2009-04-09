@@ -11,8 +11,10 @@ function checkLocation() {
 
 function reload() {
 	currentLocation = window.location.href;
-	newLocation = currentLocation.replace(/\?(.+)#/, '');
-	newLocation = newLocation.replace(/#/, '/');
+	newLocation = currentLocation
+		.replace(/\?(.+)#/, '')
+		.replace('#', '/')					// Replace # with /
+		.replace(/([^:])\/+/g, '$1/');		// Remove multiple slashes
 	$('div.ui-layout-center').load(newLocation, {}, init);
 	return false;
 }
@@ -63,7 +65,9 @@ function init() {
 			$(this).addCheckboxes(this.id).removeClass('addCheckboxes');
 		});
 	}
-	catch(exception) {}
+	catch(exception) {
+		alert(exception);
+	}
 }
 
 $(document).ready(function()
@@ -149,7 +153,8 @@ $(document).ready(function()
 	
 	if(currentLocation.indexOf('#') > -1)
 	{
-		$('div.ui-layout-center').load(currentLocation.replace(/#/, '/'), {}, init);
+		reload();
+		//$('div.ui-layout-center').load(currentLocation.replace(/#/, '/'), {}, init);
 	}
 	else
 	{

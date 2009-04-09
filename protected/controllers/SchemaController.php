@@ -60,6 +60,11 @@ class SchemaController extends CController
 		);
 	}
 
+	public function actionIndex()
+	{
+		$this->render('index');
+	}
+
 	/**
 	 * Shows a particular user.
 	 */

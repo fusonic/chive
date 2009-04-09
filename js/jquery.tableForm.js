@@ -75,9 +75,6 @@
 			
 			divObj.load(url, function() {
 				divObj.slideDown(500);
-				$('div.ui-layout-center').animate({
-					scrollTop: trObj.offset().top + $('div.ui-layout-center').scrollTop() - $('div.ui-layout-north').outerHeight()
-				}, 500);
 				setAjaxForms();
 			});
 			

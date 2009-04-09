@@ -9,8 +9,6 @@ class CodePress extends CInputWidget
 	public $autogrow = false;
 	public $language = "text";
 
-
-
 	public function init()
 	{
 

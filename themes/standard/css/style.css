@@ -107,7 +107,7 @@
   ul.treeview li a {position: relative; top: -2px;}
   
   ul.treeview li, ul.treeview li.last {
-  	background: url(../../../images/icons/pma/16/database.png) no-repeat;
+  	background: url(../../../images/icons/fugue/16/database.png) no-repeat;
   }  
   
   ul.treeview li.closed {
@@ -150,11 +150,11 @@
   }
   
   input.icon.save {
-    background-image: url('../../../images/icons/pma/16/save.png');
+    background-image: url('../../../images/icons/fugue/16/save.png');
   }
   
   input.icon.delete {
-    background-image: url('../../../images/icons/pma/16/delete.png');
+    background-image: url('../../../images/icons/fugue/16/delete.png');
   }
   
   select {
