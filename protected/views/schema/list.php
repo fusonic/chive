@@ -1,5 +1,9 @@
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/views/schema/list.js', CClientScript::POS_HEAD); ?>
 
+<div id="dropSchemataDialog" title="<?php echo Yii::t('database', 'dropSchemata'); ?>" style="display: none">
+	<?php echo Yii::t('database', 'doYouReallyWantToDropSchemata'); ?>
+</div>
+
 <h2>Schema List</h2>
 
 <div class="list">

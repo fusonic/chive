@@ -1,5 +1,9 @@
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl . '/js/views/table/structure.js', CClientScript::POS_HEAD); ?>
 
+<div id="dropColumnsDialog" title="<?php echo Yii::t('database', 'dropColumns'); ?>" style="display: none">
+	<?php echo Yii::t('database', 'doYouReallyWantToDropColumns'); ?>
+</div>
+
 <table id="columns" class="list addCheckboxes">
 	<colgroup>
 		<col />
@@ -68,7 +72,11 @@
 						<com:Icon name="edit" size="16" text="core.edit"/>
 					</a>
 				</td>
-				<td><com:Icon name="delete" size="16" text="core.delete"/></td>
+				<td>
+					<a href="javascript:void(0)" onclick="dropColumn('<?php echo $column->COLUMN_NAME; ?>')" class="icon">
+						<com:Icon name="delete" size="16" />
+					</a>
+				</td>
 				<td><com:Icon name="key_primary" size="16" text="schema.primaryKey"/></td>
 				<td><com:Icon name="key_unique" size="16" text="schema.uniqueKey"/></td>
 				<td><com:Icon name="key_index" size="16" text="schema.index"/></td>

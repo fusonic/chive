@@ -1,5 +1,8 @@
 <?php CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3); ?>
-<span id="<%= $helperId %>" />
+<script type="text/javascript">
+var idPrefix = '<?php echo CHtml::$idPrefix; ?>';
+</script>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/views/column/form.js', CClientScript::POS_END); ?>
 
 <?php if($isSubmitted && !$column->isNewRecord): ?>
 	<script type="text/javascript">
@@ -14,36 +17,6 @@
 	</script>
 <?php endif; ?>
 
-<script type="text/javascript">
-$(document).ready(function() {
-	var idPrefix = '<?php echo CHtml::$idPrefix; ?>';
-	var types = {
-		numeric: ['bit', 'tinyint', 'bool', 'smallint', 'mediumint', 'int', 'bigint', 'float', 'double', 'decimal'],
-		strings: ['char', 'varchar', 'tinytext', 'text', 'mediumtext', 'longtext', 'tinyblob', 'blob', 'mediumblob', 'longblob', 'binary', 'varbinary']
-	};
-	$('#' + idPrefix + 'Column_DATA_TYPE').change(function() {
-		var type = $(this).val();
-		var isNumeric = $.inArray(type, types.numeric) > -1;
-		var isString = $.inArray(type, types.strings) > -1;
-
-		// Hide all datatype fieldsets
-		$('#' + idPrefix + 'dataTypeSet fieldset.datatypeSetting').hide();
-
-		// Show datatype fieldsets
-		if(isString)
-		{
-			$('#' + idPrefix + 'dataTypeSet fieldset.stringSetting').show();
-		}
-		if(isNumeric)
-		{
-			$('#' + idPrefix + 'dataTypeSet fieldset.numericSetting').show();
-		}
-		$('#' + idPrefix + 'dataTypeSet fieldset.' + type + 'Setting').show();
-
-	});
-	$('#<?php echo CHtml::$idPrefix; ?>Column_DATA_TYPE').change();
-});
-</script>
 
 <?php echo CHtml::form('', 'post'); ?>
 	<h1>

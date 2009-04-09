@@ -2,9 +2,9 @@
  * Edit database
  */
 
-function editDatabase(db)
+function editSchema(db)
 {
-	$('#databases_' + db).appendForm('databases/update?schema=' + db);
+	$('#schemata_' + db).appendForm('schemata/update?schema=' + db);
 }
 
 
@@ -12,19 +12,19 @@ function editDatabase(db)
  * Drop database
  */
 
-function dropDatabases() 
+function dropSchemata() 
 {
-	if($('#databases input[name="databases[]"]:checked').length > 0) 
+	if($('#schemata input[name="schemata[]"]:checked').length > 0) 
 	{
-		$('#dropDatabasesDialog').dialog("open");
+		$('#dropSchemataDialog').dialog("open");
 	}
 }
 
-function dropDatabase(db)
+function dropSchema(db)
 {
-	$('#databases input[type="checkbox"]').attr('checked', false).change();
-	$('#databases input[type="checkbox"][value="' + db + '"]').attr('checked', true).change();
-	dropDatabases();
+	$('#schemata input[type="checkbox"]').attr('checked', false).change();
+	$('#schemata input[type="checkbox"][value="' + db + '"]').attr('checked', true).change();
+	dropSchemata();
 }
 
 
@@ -34,7 +34,7 @@ function dropDatabase(db)
 	
 $(document).ready(function() {
 	
-	$('#dropDatabasesDialog').dialog({
+	$('#dropSchemataDialog').dialog({
 		modal: true,
 		resizable: false,
 		autoOpen: false,
@@ -46,12 +46,12 @@ $(document).ready(function() {
 				
 				// Collect ids
 				var ids = [];
-				$('#databases input[name="databases[]"]:checked').each(function() {
+				$('#schemata input[name="schemata[]"]:checked').each(function() {
 					ids.push($(this).val());
 				});
 				
 				// Do drop request
-				$.post(baseUrl + '/databases/drop', {
+				$.post(baseUrl + '/schemata/drop', {
 					'schema[]': ids
 				}, function() {
 					window.location.reload();

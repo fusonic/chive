@@ -48,10 +48,13 @@
 	<entry id="data">Data</entry>
 	<entry id="index">Index</entry>
 
-	<entry id="dropDatabases">Drop databases</entry>
-	<entry id="doYouReallyWantToDropDatabases">Do you really want to drop the selected databases?</entry>
+	<entry id="dropSchemata">Drop databases</entry>
+	<entry id="doYouReallyWantToDropSchemata">Do you really want to drop the selected databases?</entry>
 	<entry id="showingXSchemata">{count} Schemata</entry>
 	<entry id="amountTables">1#{amount}  Table|n>1#{amount}  Tables</entry>
+	
+	<entry id="dropColumns">Drop columns</entry>
+	<entry id="doYouReallyWantToDropColumns">Do you really want to drop the selected columns?</entry>
 	
 	<entry id="addColumn">Add new column</entry>
 	<entry id="editColumn">Edit column</entry>
