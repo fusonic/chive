@@ -96,31 +96,51 @@ class TableController extends CController
 	{
 
 		$db = $this->_db;
-
-		if(!$_query)
-			$_query = 'SELECT * FROM ' . $db->quoteTableName($this->tableName);
-
-		$oSql = new Sql($_query);
-		$oSql->applyCalculateFoundRows();
+		$error = false;
 
 		$pages = new CPagination;
 		$pages->setPageSize(self::PAGE_SIZE);
 
-
-		if(!$oSql->hasLimit)
-		{
-			$offset = (isset($_GET['page']) ? (int)$_GET['page'] : 1) * self::PAGE_SIZE - self::PAGE_SIZE;
-			$oSql->applyLimit(self::PAGE_SIZE, $offset, true);
-		}
-
-
 		$sort = new Sort($db);
 		$sort->multiSort = false;
 
-		$oSql->applySort($sort->getOrder(), true);
 
-		$cmd = $db->createCommand($oSql->getQuery());
-		$cmd->prepare();
+
+		if($_query instanceof CDbCriteria)
+		{
+
+			$criteria = $_query;
+			$criteria->limit = self::PAGE_SIZE;
+
+			$cmd = $db->getCommandBuilder()->createFindCommand($this->tableName, $criteria);
+
+			$sql = $cmd->getText();
+
+		}
+		else
+		{
+
+			if(!$_query)
+				$_query = 'SELECT * FROM ' . $db->quoteTableName($this->tableName);
+
+			$oSql = new Sql($_query);
+			$oSql->applyCalculateFoundRows();
+
+			if(!$oSql->hasLimit)
+			{
+				$offset = (isset($_GET['page']) ? (int)$_GET['page'] : 1) * self::PAGE_SIZE - self::PAGE_SIZE;
+				$oSql->applyLimit(self::PAGE_SIZE, $offset, true);
+			}
+
+			$oSql->applySort($sort->getOrder(), true);
+
+			$cmd = $db->createCommand($oSql->getQuery());
+			$cmd->prepare();
+
+			$sql = $oSql->getOriginalQuery();
+
+		}
+
 
 
 		try
@@ -147,7 +167,7 @@ class TableController extends CController
 		$this->render('browse',array(
 			'data' => $data,
 			'columns' => $columns,
-			'query' => $oSql->getOriginalQuery(),
+			'query' => $sql,
 			'pages' => $pages,
 			'sort' => $sort,
 			'error' => $error,
@@ -197,6 +217,7 @@ class TableController extends CController
 		{
 
 			$criteria = new CDbCriteria;
+			$criteria->select = 'SQL_CALC_FOUND_ROWS *';
 
 			$i = 0;
 			foreach($_POST['Row'] AS $column=>$value) {
@@ -212,15 +233,16 @@ class TableController extends CController
 
 			}
 
-			$cmd = $commandBuilder->createFindCommand($this->tableName, $criteria);
-			var_dump($cmd);
+			self::actionBrowse($criteria);
 
 		}
-
-		$this->render('search', array(
-			'row' => $row,
-			'operators'=>$operators,
-		));
+		else
+		{
+			$this->render('search', array(
+				'row' => $row,
+				'operators'=>$operators,
+			));
+		}
 
 	}
 
@@ -338,7 +360,7 @@ class TableController extends CController
 		}
 		catch(Exception $ex) {}
 
-		Yii::app()->end();
+		Yii::app()->end('redirect(url); ');
 
 	}
 

@@ -29,7 +29,7 @@ class Sql {
 		$comments = array();
 
 		// Inline comments
-		preg_match_all('/(#|--)(.*)($|\n)/i', $this->query, $single);
+		preg_match_all('/(#|--\40)(.*)($|\n)/i', $this->query, $single);
 		$comments = $single[0];
 
 		// Other comments
