@@ -64,10 +64,10 @@
 ?>
 
 <div id="truncateTableDialog" title="<?php echo Yii::t('database', 'truncateTable'); ?>" style="display: none">
-	<?php echo Yii::t('database', 'doYouReallyWantToTruncateTable', array('{table}'=>$this->tableName)); ?>
+	<?php echo Yii::t('message', 'doYouReallyWantToTruncateTable'); ?>
 </div>
 <div id="dropTableDialog" title="<?php echo Yii::t('database', 'dropTable'); ?>" style="display: none">
-	<?php echo Yii::t('database', 'doYouReallyWantToDropTable', array('{table}'=>$this->tableName)); ?>
+	<?php echo Yii::t('message', 'doYouReallyWantToDropTable'); ?>
 </div>
 
 <div id="content">

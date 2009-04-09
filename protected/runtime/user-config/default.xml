@@ -6,5 +6,5 @@
 	<sidebarWidth>250</sidebarWidth>
 	<entriesPerPage scope="databases.tables">200</entriesPerPage>
 	<entriesPerPage scope="databases.tables.browse">30</entriesPerPage>
-	<hello>test</hello>
+	<bookmarks scope="database"></bookmarks>
 </settings>

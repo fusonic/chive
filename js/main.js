@@ -117,11 +117,12 @@ $(document).ready(function()
 
 	// ACCORDION - inside the West pane
 	var myAccordion = $("#MainMenu").accordion({
-		selectedClass: "active",
-		fillSpace: true,
+		animated: "slide",
+		addClasses: false,
 		autoHeight: true,
 		collapsible: false,
-		animated: "slide"
+		fillSpace: true,
+		selectedClass: "active"
 	});
 	
 	// Mouseover buttons

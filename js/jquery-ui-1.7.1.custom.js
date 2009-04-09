@@ -3677,35 +3677,43 @@ $.widget("ui.accordion", {
 					this.active = current;
 				} else {
 					this.active = current.parent().parent().prev();
-					current.addClass("ui-accordion-content-active");
+					if(o.addClasses)
+						current.addClass("ui-accordion-content-active");
 				}
 			}
 		}
 
-		this.element.addClass("ui-accordion ui-widget ui-helper-reset");
+		if(o.addClasses)
+			this.element.addClass("ui-accordion ui-widget ui-helper-reset");
 		
 		// in lack of child-selectors in CSS we need to mark top-LIs in a UL-accordion for some IE-fix
-		if (this.element[0].nodeName == "UL") {
+		if (this.element[0].nodeName == "UL" && o.addClasses) {
 			this.element.children("li").addClass("ui-accordion-li-fix");
 		}
 
-		this.headers = this.element.find(o.header).addClass("ui-accordion-header ui-helper-reset ui-state-default ui-corner-all")
-			.bind("mouseenter.accordion", function(){ $(this).addClass('ui-state-hover'); })
-			.bind("mouseleave.accordion", function(){ $(this).removeClass('ui-state-hover'); })
-			.bind("focus.accordion", function(){ $(this).addClass('ui-state-focus'); })
-			.bind("blur.accordion", function(){ $(this).removeClass('ui-state-focus'); });
-
-		this.headers
-			.next()
-				.addClass("ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom");
-
-		this.active = this._findActive(this.active || o.active).toggleClass("ui-state-default").toggleClass("ui-state-active").toggleClass("ui-corner-all").toggleClass("ui-corner-top");
-		this.active.next().addClass('ui-accordion-content-active');
+		if(o.addClasses) {
+			this.headers = this.element.find(o.header).addClass("ui-accordion-header ui-helper-reset ui-state-default ui-corner-all")
+				.bind("mouseenter.accordion", function(){ $(this).addClass('ui-state-hover'); })
+				.bind("mouseleave.accordion", function(){ $(this).removeClass('ui-state-hover'); })
+				.bind("focus.accordion", function(){ $(this).addClass('ui-state-focus'); })
+				.bind("blur.accordion", function(){ $(this).removeClass('ui-state-focus'); });
+	
+			this.headers
+				.next()
+					.addClass("ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom");
+	
+			this.active = this._findActive(this.active || o.active).toggleClass("ui-state-default").toggleClass("ui-state-active").toggleClass("ui-corner-all").toggleClass("ui-corner-top");
+			this.active.next().addClass('ui-accordion-content-active');
+		} else {
+			this.headers = this.element.find(o.header);
+			this.active = this._findActive(this.active || o.active);
+		}
 
 		//Append icon elements
-		$("<span/>").addClass("ui-icon " + o.icons.header).prependTo(this.headers);
-		this.active.find(".ui-icon").toggleClass(o.icons.header).toggleClass(o.icons.headerSelected);
-
+		if(o.addClasses) {
+			$("<span/>").addClass("ui-icon " + o.icons.header).prependTo(this.headers);
+			this.active.find(".ui-icon").toggleClass(o.icons.header).toggleClass(o.icons.headerSelected);
+		}
 		// IE7-/Win - Extra vertical space in lists fixed
 		if ($.browser.msie) {
 			this.element.find('a').css('zoom', '1');
@@ -3881,9 +3889,10 @@ $.widget("ui.accordion", {
 
 		// called only when using activate(false) to close all parts programmatically
 		if (!event.target && o.collapsible) {
-			this.active.removeClass("ui-state-active ui-corner-top").addClass("ui-state-default ui-corner-all")
-				.find(".ui-icon").removeClass(o.icons.headerSelected).addClass(o.icons.header);
-			this.active.next().addClass('ui-accordion-content-active');
+			if (o.addClasses) {
+				this.active.removeClass("ui-state-active ui-corner-top").addClass("ui-state-default ui-corner-all").find(".ui-icon").removeClass(o.icons.headerSelected).addClass(o.icons.header);
+				this.active.next().addClass('ui-accordion-content-active');
+			}
 			var toHide = this.active.next(),
 				data = {
 					options: o,
@@ -3907,13 +3916,13 @@ $.widget("ui.accordion", {
 		}
 
 		// switch classes
-		this.active.removeClass("ui-state-active ui-corner-top").addClass("ui-state-default ui-corner-all")
-			.find(".ui-icon").removeClass(o.icons.headerSelected).addClass(o.icons.header);
-		this.active.next().addClass('ui-accordion-content-active');
-		if (!clickedIsActive) {
-			clicked.removeClass("ui-state-default ui-corner-all").addClass("ui-state-active ui-corner-top")
-				.find(".ui-icon").removeClass(o.icons.header).addClass(o.icons.headerSelected);
-			clicked.next().addClass('ui-accordion-content-active');
+		if (o.addClasses) {
+			this.active.removeClass("ui-state-active ui-corner-top").addClass("ui-state-default ui-corner-all").find(".ui-icon").removeClass(o.icons.headerSelected).addClass(o.icons.header);
+			this.active.next().addClass('ui-accordion-content-active');
+			if (!clickedIsActive) {
+				clicked.removeClass("ui-state-default ui-corner-all").addClass("ui-state-active ui-corner-top").find(".ui-icon").removeClass(o.icons.header).addClass(o.icons.headerSelected);
+				clicked.next().addClass('ui-accordion-content-active');
+			}
 		}
 
 		// find elements to show and hide
@@ -4044,6 +4053,7 @@ $.extend($.ui.accordion, {
 	version: "1.7.1",
 	defaults: {
 		active: null,
+		addClasses: true,
 		alwaysOpen: true, //deprecated, use collapsible
 		animated: 'slide',
 		autoHeight: true,

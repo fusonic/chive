@@ -27,7 +27,8 @@
 	<entry id="drop">Drop</entry>
 	
 	<entry id="indices">Indices</entry>
-	<entry id="action">Aktion</entry>
+	<entry id="key">Key</entry>
+	<entry id="action">Action</entry>
 	<entry id="cardinality">Cardinality</entry>
 	<entry id="usage">Usage</entry>
 	<entry id="spaceUsage">Space usage</entry>

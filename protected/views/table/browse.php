@@ -8,6 +8,20 @@
 
 <com:application.extensions.CodePress.CodePress language="sql" name="query" width="100%" height="80px" autogrow="true" value={$query} />
 
+<a class="icon" href="javascript:void(0);">
+	<?php $this->widget('Icon', array(
+		'name'=>'bookmark',
+		'size'=>24,
+		'htmlOptions'=>array(
+			'onclick'=>'$.post(baseUrl + "/ajaxSettings/set", {
+					name: "bookmarks",
+					value: query.getCode()
+				}
+			);',
+		),
+	)); ?>
+</a>
+
 <div class="buttons">
 	<?php echo CHtml::submitButton('Execute'); ?>
 </div>

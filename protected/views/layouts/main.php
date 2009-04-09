@@ -22,7 +22,7 @@
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/main.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.layout.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.tableForm.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery-ui-1.7.1.custom.js', CClientScript::POS_HEAD); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery-ui-1.7.1.custom.min.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.checkboxTable.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.form.js', CClientScript::POS_HEAD); ?>
 
@@ -92,56 +92,7 @@
 			</a>
 		</div>
 		<div class="sidebarContent">
-			ctd1_acc_account<br/>
-			ctd1_acc_bonuspayment<br/>
-			ctd1_acc_payment<br/>
-			ctd1_acc_transaction<br/>
-			ctd1_acp_group<br/>
-			ctd1_acp_link<br/>
-			ctd1_acp_subgroup<br/>
-			ctd1_adm_admedia<br/>
-			ctd1_adm_admedia2campaign<br/>
-			ctd1_aff_website<br/>
-			ctd1_cat_category<br/>
-			ctd1_cat_category2module<br/>
-			ctd1_cmm_commissionmodel<br/>
-			ctd1_cmm_objective<br/>
-			ctd1_cmp_campaign<br/>
-			ctd1_cmp_campaign2object<br/>
-			ctd1_com_mail<br/>
-			ctd1_com_mailqueue<br/>
-			ctd1_com_mailvariable<br/>
-			ctd1_com_notification<br/>
-			ctd1_com_notificationsetting<br/>
-			ctd1_com_notificationvariable<br/>
-			ctd1_frp_request<br/>
-			ctd1_frp_visitor<br/>
-			ctd1_lng_pack<br/>
-			ctd1_lng_value<br/>
-			ctd1_nav_link<br/>
-			ctd1_nav_navigation<br/>
-			ctd1_nwl_newsletter<br/>
-			ctd1_pcr_page<br/>
-			ctd1_pcr_page2object<br/>
-			ctd1_reg_invitation<br/>
-			ctd1_reg_term<br/>
-			ctd1_rep_report<br/>
-			ctd1_shp_integration<br/>
-			ctd1_sty_attribute2color<br/>
-			ctd1_sty_attribute2style<br/>
-			ctd1_sty_box<br/>
-			ctd1_sty_box2layout<br/>
-			ctd1_sty_box2object<br/>
-			ctd1_sty_boxclose<br/>
-			ctd1_sty_boxtab<br/>
-			ctd1_sty_layout<br/>
-			ctd1_sty_predefboxtab<br/>
-			ctd1_sty_predefboxtabsetting<br/>
-			ctd1_sty_predefboxtabsetting2boxtab<br/>
-			ctd1_sys_accesscontrol<br/>
-			ctd1_sys_country<br/>
-			ctd1_sys_forgotpw<br/>
-			ctd1_sys_group<br/>
+			routines
 		</div>
   		<div class="sidebarHeader">
 			<a class="icon">
@@ -150,56 +101,7 @@
 			</a>
 		</div>
 		<div class="sidebarContent">
-			ctd1_acc_account<br/>
-			ctd1_acc_bonuspayment<br/>
-			ctd1_acc_payment<br/>
-			ctd1_acc_transaction<br/>
-			ctd1_acp_group<br/>
-			ctd1_acp_link<br/>
-			ctd1_acp_subgroup<br/>
-			ctd1_adm_admedia<br/>
-			ctd1_adm_admedia2campaign<br/>
-			ctd1_aff_website<br/>
-			ctd1_cat_category<br/>
-			ctd1_cat_category2module<br/>
-			ctd1_cmm_commissionmodel<br/>
-			ctd1_cmm_objective<br/>
-			ctd1_cmp_campaign<br/>
-			ctd1_cmp_campaign2object<br/>
-			ctd1_com_mail<br/>
-			ctd1_com_mailqueue<br/>
-			ctd1_com_mailvariable<br/>
-			ctd1_com_notification<br/>
-			ctd1_com_notificationsetting<br/>
-			ctd1_com_notificationvariable<br/>
-			ctd1_frp_request<br/>
-			ctd1_frp_visitor<br/>
-			ctd1_lng_pack<br/>
-			ctd1_lng_value<br/>
-			ctd1_nav_link<br/>
-			ctd1_nav_navigation<br/>
-			ctd1_nwl_newsletter<br/>
-			ctd1_pcr_page<br/>
-			ctd1_pcr_page2object<br/>
-			ctd1_reg_invitation<br/>
-			ctd1_reg_term<br/>
-			ctd1_rep_report<br/>
-			ctd1_shp_integration<br/>
-			ctd1_sty_attribute2color<br/>
-			ctd1_sty_attribute2style<br/>
-			ctd1_sty_box<br/>
-			ctd1_sty_box2layout<br/>
-			ctd1_sty_box2object<br/>
-			ctd1_sty_boxclose<br/>
-			ctd1_sty_boxtab<br/>
-			ctd1_sty_layout<br/>
-			ctd1_sty_predefboxtab<br/>
-			ctd1_sty_predefboxtabsetting<br/>
-			ctd1_sty_predefboxtabsetting2boxtab<br/>
-			ctd1_sys_accesscontrol<br/>
-			ctd1_sys_country<br/>
-			ctd1_sys_forgotpw<br/>
-			ctd1_sys_group<br/>
+			triggers
 		</div>
 
 	</div>

@@ -2,4 +2,9 @@
 <category id="message">
 	<entry id="authenticationFailed">Connection could not be established:&lt;br/&gt;{message}</entry>
 	<entry id="sqlErrorOccured">A SQL error occured ({errno}): &lt;span class="sql"&gt;{errmsg}&lt;/span&gt;</entry>
+	
+	<entry id="dropTable">Drop table</entry>
+	<entry id="doYouReallyWantToDropTable">Do you really want to drop the table?</entry>
+	<entry id="truncateTable">Truncate table</entry>
+	<entry id="doYouReallyWantToTruncateTable">Do you really want to truncate the table?</entry>
 </category>

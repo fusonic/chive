@@ -174,6 +174,56 @@ class TableController extends CController
 
 	}
 
+	public function actionSearch() {
+
+		$operators = array(
+			'LIKE',
+			'NOT LIKE',
+			'=',
+			'!=',
+			'REGEXP',
+			'NOT REGEXP',
+			'IS NULL',
+			'IS NOT NULL',
+		);
+
+		Row::$db = $this->_db;
+		$row = new Row;
+
+		$db = $this->_db;
+		$commandBuilder = $this->_db->getCommandBuilder();
+
+		if(isset($_POST['Row']))
+		{
+
+			$criteria = new CDbCriteria;
+
+			$i = 0;
+			foreach($_POST['Row'] AS $column=>$value) {
+
+				if($value)
+				{
+					$operator = $operators[$_POST['operator'][$column]];
+					$criteria->condition .= ($i>0 ? ' AND ' : '') . $db->quoteColumnName($column) . ' ' . $operator . ' :' . $column;
+					$criteria->params[$column] = $value;
+
+					$i++;
+				}
+
+			}
+
+			$cmd = $commandBuilder->createFindCommand($this->tableName, $criteria);
+			var_dump($cmd);
+
+		}
+
+		$this->render('search', array(
+			'row' => $row,
+			'operators'=>$operators,
+		));
+
+	}
+
 	/**
 	 * Insert a new row
 	 * If creation is successful, the browser will be redirected to the 'browse' page.
