@@ -1,6 +1,6 @@
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->getRequest()->baseUrl.'/js/views/table/general.js', CClientScript::POS_HEAD); ?>
 
-<h2><?php echo $database->SCHEMA_NAME; ?></h2>
+<h2><?php echo $schema->SCHEMA_NAME; ?></h2>
 
 <div id="truncateTableDialog" title="<?php echo Yii::t('database', 'truncateTable'); ?>" style="display: none">
 	<?php echo Yii::t('database', 'doYouReallyWantToTruncateTable'); ?>
@@ -39,41 +39,41 @@
 		</thead>
 		<tbody>
 			<?php $totalRowCount = $totalDataLength = $totalDataFree = 0;?>
-			<?php foreach($database->tables AS $table) { ?>
+			<?php foreach($schema->tables AS $table) { ?>
 				<tr>
 					<td>
-						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/structure" class="icon" rel="no-ajax">
+						<a href="<?php echo Yii::app()->baseUrl; ?>/schema/<?php echo $schema->SCHEMA_NAME; ?>/tables/<?php echo $table->TABLE_NAME; ?>/structure" class="icon">
 							<?php echo $table->TABLE_NAME; ?>
 						</a>
 					</td>
 					<td>
 						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/browse" class="icon" rel="no-ajax">
-							<com:Icon name="browse" size="16" text="database.browse" />
+							<com:Icon name="browse" size="16" text="schema.browse" />
 						</a>
 					</td>
 					<td>
 						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/structure" class="icon" rel="no-ajax">
-							<com:Icon name="structure" size="16" text="database.structure" />
+							<com:Icon name="structure" size="16" text="schema.structure" />
 						</a>
 					</td>
 					<td>
 						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/search" class="icon" rel="no-ajax">
-							<com:Icon name="search" size="16" text="database.search" />
+							<com:Icon name="search" size="16" text="schema.search" />
 						</a>
 					</td>
 					<td>
 						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/insert" class="icon" rel="no-ajax">
-							<com:Icon name="insert" size="16" text="database.insert" />
+							<com:Icon name="insert" size="16" text="schema.insert" />
 						</a>
 					</td>
 					<td>
-						<a href="javascript:void(0);" onclick="truncateTable('<?php echo $database->SCHEMA_NAME; ?>', '<?php echo $table->TABLE_NAME; ?>')" class="icon" rel="no-ajax">
-							<com:Icon name="truncate" size="16" text="database.truncate" />
+						<a href="javascript:void(0);" onclick="truncateTable('<?php echo $schema->SCHEMA_NAME; ?>', '<?php echo $table->TABLE_NAME; ?>')" class="icon" rel="no-ajax">
+							<com:Icon name="truncate" size="16" text="schema.truncate" />
 						</a>
 					</td>
 					<td>
-						<a href="javascript:void(0);" onclick="dropTable('<?php echo $database->SCHEMA_NAME; ?>', '<?php echo $table->TABLE_NAME; ?>')" class="icon" rel="no-ajax">
-							<com:Icon name="drop" size="16" text="database.drop" />
+						<a href="javascript:void(0);" onclick="dropTable('<?php echo $schema->SCHEMA_NAME; ?>', '<?php echo $table->TABLE_NAME; ?>')" class="icon" rel="no-ajax">
+							<com:Icon name="drop" size="16" text="schema.drop" />
 						</a>
 					</td>
 					<td><?php echo $table->getRowCount(); ?></td>
@@ -89,7 +89,7 @@
 		</tbody>
 		<tfoot>
 			<tr>
-				<th><?php echo Yii::t('database', 'amountTables', array($database->tableCount, '{amount} '=> $database->tableCount)); ?></th>
+				<th><?php echo Yii::t('database', 'amountTables', array($schema->tableCount, '{amount} '=> $schema->tableCount)); ?></th>
 				<th colspan="6"></th>
 				<th><?php echo $totalRowCount; ?></th>
 				<th></th>

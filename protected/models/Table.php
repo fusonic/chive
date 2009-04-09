@@ -45,7 +45,7 @@ class Table extends CActiveRecord
 	public function relations()
 	{
 		return array(
-			'database' => array(self::BELONGS_TO, 'Database', 'TABLE_SCHEMA'),
+			'schema' => array(self::BELONGS_TO, 'Schema', 'TABLE_SCHEMA'),
 			'columns' => array(self::HAS_MANY, 'Column', 'TABLE_SCHEMA, TABLE_NAME', 'order'=>'??.ORDINAL_POSITION ASC', 'alias'=>'TableColumn'),
 			'indices' => array(self::HAS_MANY, 'Index', 'TABLE_SCHEMA, TABLE_NAME', 'alias'=>'TableIndex'),
 			#'constraints' => array(self::HAS_MANY, 'Constraint', 'TABLE_SCHEMA, TABLE_NAME', 'alias'=>'TableConstraint'),

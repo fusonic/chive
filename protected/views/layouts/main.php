@@ -2,19 +2,19 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title><% echo $this->pageTitle; %></title>
+<title><?php echo $this->pageTitle; ?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <!-- (en) Add your meta data here -->
 <!-- (de) Fuegen Sie hier ihre Meta-Daten ein -->
-<link rel="stylesheet" type="text/css" href="<% echo Yii::app()->request->baseUrl; %>/css/main.css" />
-<link rel="stylesheet" type="text/css" href="<% echo Yii::app()->theme->getBaseUrl(); %>/css/style.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->getBaseUrl(); ?>/css/style.css" />
 <!--[if lte IE 7]>
 <link href="css/patches/patch_my_layout.css" rel="stylesheet" type="text/css" />
 <![endif]-->
 
 <script type="text/javascript">
 	// Set global javascript variables
-	var baseUrl = '<%= Yii::app()->baseUrl; %>';
+	var baseUrl = '<?php echo Yii::app()->baseUrl; ?>';
 </script>
 
 <?php Yii::app()->clientScript->registerScript('userSettings', Yii::app()->user->settings->getJsObject(), CClientScript::POS_HEAD); ?>
@@ -22,7 +22,7 @@
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/main.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.layout.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.tableForm.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery-ui-1.7.1.custom.min.js', CClientScript::POS_HEAD); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery-ui-1.7.1.custom.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.checkboxTable.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.form.js', CClientScript::POS_HEAD); ?>
 
@@ -31,22 +31,19 @@
 </head>
 <body>
 
-  <div id="loading"><%= Yii::t('core', 'loading'); %>...</div>
+  <div id="loading"><?php echo Yii::t('core', 'loading'); ?>...</div>
 
   <div class="ui-layout-north">
 	<div id="header">
 		<div id="headerLeft">
-			<img src="<% echo Yii::app()->request->baseUrl . "/images/logo.png"; %>" />
-		</div>
-		<div id="headerLogo">
+			<img src="<?php echo Yii::app()->request->baseUrl . "/images/logo.png"; ?>" />
 		</div>
 		<div id="headerRight">
 			<?php $this->widget('application.components.MainMenu',array(
 				'items'=>array(
-					array('label'=>'Home', 'url'=>array('/site/index'), 'visible'=>!Yii::app()->user->isGuest),
-					array('label'=>'Databases', 'url'=>array('/#databases'), 'visible'=>!Yii::app()->user->isGuest),
+					array('label'=>'Home', 'icon'=>'home', 'url'=>array('/site/index'), 'visible'=>!Yii::app()->user->isGuest),
 					array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
-					array('label'=>'Logout', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
+					array('label'=>'Logout', 'icon'=>'logout', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
 				),
 			)); ?>
 		</div>
@@ -57,86 +54,41 @@
   <div class="basic" id="MainMenu">
   		<div class="sidebarHeader">
 			<a class="icon">
-				<com:Icon name="database" size="24" text="database.databases" />
-				<span><?php echo Yii::t('schema','schemas'); ?></span>
+				<com:Icon name="database" size="24" text="database.schemata" />
+				<span><?php echo Yii::t('database','schemata'); ?></span>
 			</a>
 		</div>
 		<div class="sidebarContent">
-
+			<!---
 			<ul class="list icon">
 				<?php foreach(Schema::model()->findAll(array('order'=>'SCHEMA_NAME ASC')) AS $schema) { ?>
 					<li class="nowrap">
 						<a href="<?php echo $schema->SCHEMA_NAME ?>">
 							<com:Icon name="database" size="16" />
 						</a>
-						<a href="#tables/<%= $schema->SCHEMA_NAME; %>/structure"><?php echo $schema->SCHEMA_NAME; ?></a>
+						<a href="<?php echo Yii::app()->baseUrl; ?>/schema/<?php echo $schema->SCHEMA_NAME; ?>" rel="no-ajax">
+							<?php echo $schema->SCHEMA_NAME; ?>
+						</a>
 					</li>
 				<?php } ?>
 			</ul>
+			 --->
+
+			<com:SchemaTreeView />
 
 		</div>
   		<div class="sidebarHeader">
 			<a class="icon">
-				<img src="images/icons/table_24.png" />
-				<span>Views</span>
+				<com:Icon name="privilege" size="24" />
+				<span>Privileges</span>
 			</a>
 		</div>
 		<div class="sidebarContent">
-			ctd1_acc_account<br/>
-			ctd1_acc_bonuspayment<br/>
-			ctd1_acc_payment<br/>
-			ctd1_acc_transaction<br/>
-			ctd1_acp_group<br/>
-			ctd1_acp_link<br/>
-			ctd1_acp_subgroup<br/>
-			ctd1_adm_admedia<br/>
-			ctd1_adm_admedia2campaign<br/>
-			ctd1_aff_website<br/>
-			ctd1_cat_category<br/>
-			ctd1_cat_category2module<br/>
-			ctd1_cmm_commissionmodel<br/>
-			ctd1_cmm_objective<br/>
-			ctd1_cmp_campaign<br/>
-			ctd1_cmp_campaign2object<br/>
-			ctd1_com_mail<br/>
-			ctd1_com_mailqueue<br/>
-			ctd1_com_mailvariable<br/>
-			ctd1_com_notification<br/>
-			ctd1_com_notificationsetting<br/>
-			ctd1_com_notificationvariable<br/>
-			ctd1_frp_request<br/>
-			ctd1_frp_visitor<br/>
-			ctd1_lng_pack<br/>
-			ctd1_lng_value<br/>
-			ctd1_nav_link<br/>
-			ctd1_nav_navigation<br/>
-			ctd1_nwl_newsletter<br/>
-			ctd1_pcr_page<br/>
-			ctd1_pcr_page2object<br/>
-			ctd1_reg_invitation<br/>
-			ctd1_reg_term<br/>
-			ctd1_rep_report<br/>
-			ctd1_shp_integration<br/>
-			ctd1_sty_attribute2color<br/>
-			ctd1_sty_attribute2style<br/>
-			ctd1_sty_box<br/>
-			ctd1_sty_box2layout<br/>
-			ctd1_sty_box2object<br/>
-			ctd1_sty_boxclose<br/>
-			ctd1_sty_boxtab<br/>
-			ctd1_sty_layout<br/>
-			ctd1_sty_predefboxtab<br/>
-			ctd1_sty_predefboxtabsetting<br/>
-			ctd1_sty_predefboxtabsetting2boxtab<br/>
-			ctd1_sys_accesscontrol<br/>
-			ctd1_sys_country<br/>
-			ctd1_sys_forgotpw<br/>
-			ctd1_sys_group<br/>
 		</div>
   		<div class="sidebarHeader">
 			<a class="icon">
-				<img src="images/icons/table_24.png" />
-				<span>Procedures</span>
+				<com:Icon name="routine" size="24" />
+				<span>Routines</span>
 			</a>
 		</div>
 		<div class="sidebarContent">
@@ -253,7 +205,7 @@
 	</div>
   </div>
   <div class="ui-layout-center">
-  	<% echo $content; %>
+  	<?php echo $content; ?>
   </div>
 
 </body>

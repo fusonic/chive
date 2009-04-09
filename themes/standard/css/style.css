@@ -85,18 +85,6 @@
     color:#000;
   }
 
-  #MainMenu ul li 
-  {
-  	cursor: pointer;
-	line-height: 20px;
-	height: 20px;
-  }
-
-  #MainMenu ul li:hover 
-  {
-  	background: #EFEFEF;
-  }
-
   #topnav a { color: #999; font-weight: normal; background:transparent; text-decoration:none; }
   #topnav a:focus,
   #topnav a:hover,
@@ -117,6 +105,18 @@
   /* TreeView */
   ul.treeview, ul.treeview li {list-style-type: none;}
   ul.treeview li a {position: relative; top: -2px;}
+  
+  ul.treeview li, ul.treeview li.last {
+  	background: url(../../../images/icons/pma/16/database.png) no-repeat;
+  }  
+  
+  ul.treeview li.closed {
+  	font-weight: bold;
+  }
+  
+  ul.treeview li.closed li {
+  	font-weight: normal;
+  }
   
   div.sidebarHeader {
   	background: url(../images/sidenav-bg.png) repeat-x;

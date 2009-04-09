@@ -28,7 +28,7 @@
 			<col class="action" />
 			<col class="action" />
 			<?php foreach ($columns AS $column) { ?>
-				<?php echo '<col />'; ?>
+				<?php echo '<col class="date" />'; ?>
 			<?php } ?>
 		</colgroup>
 		<thead>

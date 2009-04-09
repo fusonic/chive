@@ -39,7 +39,7 @@ function dropTable(_schema, _table)
  */
 	
 $(document).ready(function() {
-	
+
 	$('#truncateTableDialog').dialog({
 		modal: true,
 		resizable: false,

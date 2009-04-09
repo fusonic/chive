@@ -21,7 +21,7 @@ class TableController extends CController
 	/**
 	 * @var Default layout for this controller
 	 */
-	public $layout = "database";
+	public $layout = 'schema';
 
 	public function __construct($id, $module=null) {
 
@@ -335,19 +335,19 @@ class TableController extends CController
 	{
 		$criteria=new CDbCriteria;
 
-		$pages=new CPagination(Database::model()->count($criteria));
+		$pages=new CPagination(Schema::model()->count($criteria));
 		$pages->pageSize=self::PAGE_SIZE;
 		$pages->applyLimit($criteria);
 
 		$criteria->group = 'SCHEMA_NAME';
 		$criteria->select = 'COUNT(*) AS tableCount';
 
-		$databaseList = Database::model()->with(array(
+		$schemaList = Schema::model()->with(array(
 			"table" => array('select'=>'COUNT(*) AS tableCount')
 		))->together()->findAll($criteria);
 
 		$this->render('list',array(
-			'databaseList'=>$databaseList,
+			'schemaList'=>$schemaList,
 			'pages'=>$pages,
 		));
 	}

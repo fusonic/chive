@@ -99,7 +99,7 @@ class Column extends CActiveRecord
 	{
 		return array(
 			'COLUMN_NAME' => Yii::t('core', 'name'),
-			'COLLATION_NAME' => Yii::t('schema', 'collation'),
+			'COLLATION_NAME' => Yii::t('database', 'collation'),
 			'COLUMN_COMMENT' => Yii::t('core', 'comment'),
 		);
 	}

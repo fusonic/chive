@@ -10,7 +10,7 @@ class ColumnController extends CController
 	/**
 	 * @var Default layout for this controller
 	 */
-	public $layout = 'database';
+	public $layout = 'schema';
 
 	public function __construct($id, $module=null) {
 

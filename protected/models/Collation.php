@@ -59,7 +59,7 @@ class Collation extends CActiveRecord
 	public function relations()
 	{
 		return array(
-			'database' => array(self::HAS_MANY, 'Database', 'DEFAULT_COLLATION_NAME'),
+			'schema' => array(self::HAS_MANY, 'Schema', 'DEFAULT_COLLATION_NAME'),
 			'characterSet' => array(self::BELONGS_TO, 'CharacterSet', 'CHARACTER_SET_NAME'),
 		);
 	}

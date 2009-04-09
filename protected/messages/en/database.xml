@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <category id="database">
 	
-	<entry id="databases">Databases</entry>
+	<entry id="schemata">Schemata</entry>
 	<entry id="tables">Tables</entry>
 	<entry id="views">Views</entry>
 	<entry id="Xrows">{amount} rows</entry>
@@ -47,7 +47,7 @@
 
 	<entry id="dropDatabases">Drop databases</entry>
 	<entry id="doYouReallyWantToDropDatabases">Do you really want to drop the selected databases?</entry>
-	<entry id="showingXDatabases">{count} Databases</entry>
+	<entry id="showingXSchemata">{count} Schemata</entry>
 	<entry id="amountTables">1#{amount}  Table|n>1#{amount}  Tables</entry>
 	
 	<entry id="addColumn">Add new column</entry>

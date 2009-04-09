@@ -1,12 +1,12 @@
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/views/database/list.js', CClientScript::POS_HEAD); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/views/schema/list.js', CClientScript::POS_HEAD); ?>
 
-<h2>Database List</h2>
+<h2>Schema List</h2>
 
 <div class="list">
 	<div class="pager top">
 		<?php $this->widget('CLinkPager',array('pages'=>$pages, 'nextPageLabel'=>'&raquo;', 'prevPageLabel'=>'&laquo;')); ?>
 	</div>
-	<table id="databases" class="list addCheckboxes">
+	<table id="schemata" class="list addCheckboxes">
 		<colgroup>
 			<col />
 			<col style="width: 80px" />
@@ -25,10 +25,10 @@
 		</thead>
 		<tbody>
 
-			<?php foreach($databaseList as $n=>$model): ?>
-				<tr id="databases_<?php echo $model->SCHEMA_NAME; ?>">
+			<?php foreach($schemaList as $n=>$model): ?>
+				<tr id="schemata_<?php echo $model->SCHEMA_NAME; ?>">
 					<td>
-						<?php echo CHtml::link($model->SCHEMA_NAME, 'database/' . $model->SCHEMA_NAME, array('rel' => 'no-ajax')); ?>
+						<?php echo CHtml::link($model->SCHEMA_NAME, 'schema/' . $model->SCHEMA_NAME, array('rel' => 'no-ajax')); ?>
 					</td>
 					<td class="count">
 						<?php echo $model->tableCount; ?>
@@ -44,12 +44,12 @@
 						</a>
 					</td>
 					<td>
-						<a href="javascript:void(0)" onclick="editDatabase('<?php echo $model->SCHEMA_NAME; ?>')" class="icon">
+						<a href="javascript:void(0)" onclick="editSchema('<?php echo $model->SCHEMA_NAME; ?>')" class="icon">
 							<com:Icon name="edit" size="16" />
 						</a>
 					</td>
 					<td>
-						<a href="javascript:void(0)" onclick="dropDatabase('<?php echo $model->SCHEMA_NAME; ?>')" class="icon">
+						<a href="javascript:void(0)" onclick="dropSchema('<?php echo $model->SCHEMA_NAME; ?>')" class="icon">
 							<com:Icon name="delete" size="16" />
 						</a>
 					</td>
@@ -58,9 +58,9 @@
 		</tbody>
 		<tfoot>
 			<tr>
-				<th colspan="5"><?php echo Yii::t('database', 'showingXDatabases', array('{count}' => $databaseCountThisPage, '{total}' => $databaseCount)); ?></th>
+				<th colspan="5"><?php echo Yii::t('database', 'showingXSchemata', array('{count}' => $schemaCountThisPage, '{total}' => $schemaCount)); ?></th>
 				<th>
-					<a href="javascript:void(0)" class="icon" onclick="dropDatabases()">
+					<a href="javascript:void(0)" class="icon" onclick="dropSchemata()">
 						<com:Icon name="delete" size="16" />
 					</a>
 				</th>
@@ -68,8 +68,8 @@
 		</tfoot>
 	</table>
 	<div style="float: right">
-		<a href="javascript:void(0)" onclick="$('#databases').appendForm(baseUrl + '/databases/create')">
-			Add a new database (real)
+		<a href="javascript:void(0)" onclick="$('#schemata').appendForm(baseUrl + '/schemata/create')">
+			Add a new schema (real)
 		</a>
 	</div>
 	<div class="pager bottom">

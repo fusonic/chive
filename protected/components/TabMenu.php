@@ -51,6 +51,8 @@ class TabMenu extends CWidget
 			}
 
 			$item2['a']['htmlOptions'] = array();
+			$item2['a']['htmlOptions'] = $item['link']['htmlOptions'];
+
 
 			if(isset($item['icon']))
 			{
@@ -64,7 +66,7 @@ class TabMenu extends CWidget
 			}
 
 			$item2['icon'] = isset($item['icon']) ? $item['icon'] : null;
-			$item2['a']['htmlOptions']['href'] = Yii::app()->baseUrl .  $item['link']['url'];
+			$item2['a']['htmlOptions']['href'] = $item['link']['url'];
 
 			$items[]=$item2;
 		}

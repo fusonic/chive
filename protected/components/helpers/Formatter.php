@@ -7,7 +7,7 @@ class Formatter {
 	 */
 	public static function fileSize($_size) {
 
-		$s = array('B', 'kiB', 'MiB', 'GiB', 'TiB', 'PiB');
+		$s = array('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB');
 		$e = floor(log($_size)/log(1024));
 
 		if(!$_size || !pow(1000, floor($e)))

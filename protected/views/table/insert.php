@@ -1,3 +1,5 @@
+<h2>Insert new row</h2>
+
 <div class="form">
 <?php echo CHtml::form(); ?>
 
@@ -13,10 +15,10 @@
 	</colgroup>
 	<thead>
 		<tr>
-			<th><?php echo Yii::t('schema', 'field'); ?></th>
-			<th><?php echo Yii::t('schema', 'type'); ?></th>
-			<th><?php echo Yii::t('schema', 'function'); ?></th>
-			<th><?php echo Yii::t('schema', 'null'); ?></th>
+			<th><?php echo Yii::t('database', 'field'); ?></th>
+			<th><?php echo Yii::t('database', 'type'); ?></th>
+			<th><?php echo Yii::t('database', 'function'); ?></th>
+			<th><?php echo Yii::t('database', 'null'); ?></th>
 			<th><?php echo Yii::t('core', 'value'); ?></th>
 		</tr>
 	</thead>

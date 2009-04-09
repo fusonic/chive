@@ -21,6 +21,7 @@ return array(
 		'application.models.*',
 		'application.components.*',
 		'application.components.helpers.*',
+		'application.controllers.*',
 	),
 
 	// application components
@@ -80,10 +81,10 @@ return array(
                 'site/changeTheme/<id:(.*)>'=>'site/changeTheme',
 
 				// schemas
-				'schemas'=>'schema/list',
-				'schemas/create'=>'schema/create',
-				'schemas/update'=>'schema/update',
-				'schemas/drop'=>'schema/drop',
+				'schemata'=>'schema/list',
+				'schemata/create'=>'schema/create',
+				'schemata/update'=>'schema/update',
+				'schemata/drop'=>'schema/drop',
 
 				// schema
                	'schema'=>'schema/list',

@@ -3,43 +3,59 @@
 
 <?php $this->widget('TabMenu', array(
 		'items'=>array(
-			array(	'label'=> Yii::t('schema','browse'),
+			array(	'label'=> Yii::t('database','browse'),
 					'icon'=>'browse',
 					'link'=>array(
-						'url'=> '/database/' . $this->schemaName . '/tables/' . $this->tableName . '/browse',
+						'url'=> Yii::app()->baseUrl .  '/schema/' . $this->schemaName . '/tables/' . $this->tableName . '/browse',
 						'htmlOptions'=> array('class'=>'icon'),
 					),
 					'visible'=>true,
 			),
-			array(	'label'=>Yii::t('schema','structure'),
+			array(	'label'=>Yii::t('database','structure'),
 					'icon'=>'structure',
 					'link'=>array(
-						'url'=> '/database/' . $this->schemaName . '/tables/' . $this->tableName . '/structure',
+						'url'=> Yii::app()->baseUrl .  '/schema/' . $this->schemaName . '/tables/' . $this->tableName . '/structure',
 						'htmlOptions'=> array('class'=>'icon'),
 					),
 					'visible'=>true,
 			),
-			array(	'label'=>Yii::t('schema','insert'),
+			array(	'label'=>Yii::t('database','sql'),
+					'icon'=>'structure',
+					'link'=>array(
+						'url'=> Yii::app()->baseUrl .  '/schema/' . $this->schemaName . '/tables/' . $this->tableName . '/sql',
+						'htmlOptions'=> array('class'=>'icon'),
+					),
+					'visible'=>true,
+			),
+			array(	'label'=>Yii::t('database','search'),
+					'icon'=>'search',
+					'link'=>array(
+						'url'=> Yii::app()->baseUrl .  '/schema/' . $this->schemaName . '/tables/' . $this->tableName . '/search',
+						'htmlOptions'=> array('class'=>'icon'),
+					),
+					'visible'=>true,
+			),
+			array(	'label'=>Yii::t('database','insert'),
 					'icon'=>'insert',
 					'link'=>array(
-						'url'=> '/database/' . $this->schemaName . '/tables/' . $this->tableName . '/insert',
+						'url'=> Yii::app()->baseUrl .  '/schema/' . $this->schemaName . '/tables/' . $this->tableName . '/insert',
 						'htmlOptions'=> array('class'=>'icon'),
 					),
 					'visible'=>true,
 			),
-			array(	'label'=>Yii::t('schema','truncate'),
+			array(	'label'=>Yii::t('database','truncate'),
 					'icon'=>'truncate',
 					'link'=>array(
-						'url'=> '/database/' . $this->schemaName . '/tables/' . $this->tableName . '/truncate',
-						'htmlOptions'=> array('class'=>'icon'),
+						'url'=> 'javascript:void(0)',
+						'htmlOptions'=> array('class'=>'icon', 'onclick'=>'truncateTable("'.$this->schemaName.'","'.$this->tableName.'");'),
 					),
 					'visible'=>true,
 			),
-			array(	'label'=>Yii::t('schema','drop'),
+			array(	'label'=>Yii::t('database','drop'),
 					'icon'=>'drop',
 					'link'=>array(
-						'url'=> '/database/' . $this->schemaName . '/tables/' . $this->tableName . '/drop',
-						'htmlOptions'=> array('class'=>'icon'),
+						'url'=> 'javascript:void(0)',
+						'htmlOptions'=> array('class'=>'icon', 'onclick'=>'dropTable("'.$this->schemaName.'","'.$this->tableName.'");'),
 					),
 					'visible'=>true,
 			),
@@ -47,11 +63,11 @@
 	));
 ?>
 
-<div id="truncateTableDialog" title="<?php echo Yii::t('schema', 'truncateTable'); ?>" style="display: none">
-	<?php echo Yii::t('schema', 'doYouReallyWantToTruncateTable', array('{table}'=>$this->tableName)); ?>
+<div id="truncateTableDialog" title="<?php echo Yii::t('database', 'truncateTable'); ?>" style="display: none">
+	<?php echo Yii::t('database', 'doYouReallyWantToTruncateTable', array('{table}'=>$this->tableName)); ?>
 </div>
-<div id="dropTableDialog" title="<?php echo Yii::t('schema', 'dropTable'); ?>" style="display: none">
-	<?php echo Yii::t('schema', 'doYouReallyWantToDropTable', array('{table}'=>$this->tableName)); ?>
+<div id="dropTableDialog" title="<?php echo Yii::t('database', 'dropTable'); ?>" style="display: none">
+	<?php echo Yii::t('database', 'doYouReallyWantToDropTable', array('{table}'=>$this->tableName)); ?>
 </div>
 
 <div id="content">

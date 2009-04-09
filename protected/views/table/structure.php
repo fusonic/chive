@@ -19,12 +19,12 @@
 	</colgroup>
 	<thead>
 		<tr>
-			<th><%= Yii::t('schema','field'); %></th>
-			<th><%= Yii::t('schema','type'); %></th>
-			<th><%= Yii::t('schema','collation'); %></th>
-			<th><%= Yii::t('schema','null'); %></th>
-			<th><%= Yii::t('schema','default'); %></th>
-			<th><%= Yii::t('schema','extra'); %></th>
+			<th><%= Yii::t('database','field'); %></th>
+			<th><%= Yii::t('database','type'); %></th>
+			<th><%= Yii::t('database','collation'); %></th>
+			<th><%= Yii::t('database','null'); %></th>
+			<th><%= Yii::t('database','default'); %></th>
+			<th><%= Yii::t('database','extra'); %></th>
 			<th colspan="8" />
 		</tr>
 	</thead>
@@ -59,7 +59,7 @@
 				<td><?php echo $column->EXTRA; ?></td>
 				<td class="center">
 					<a href="#sql-query">
-						<com:Icon name="browse" size="16" text="database.browseDistinctValues" title={Yii::t('schema','browseDistinctValues')} />
+						<com:Icon name="browse" size="16" text="schema.browseDistinctValues" title={Yii::t('database','browseDistinctValues')} />
 					</a>
 				</td>
 				<td><com:Icon name="arrow_updown" size="16" text="core.move" /></td>
@@ -69,10 +69,10 @@
 					</a>
 				</td>
 				<td><com:Icon name="delete" size="16" text="core.delete"/></td>
-				<td><com:Icon name="key_primary" size="16" text="database.primaryKey"/></td>
-				<td><com:Icon name="key_unique" size="16" text="database.uniqueKey"/></td>
-				<td><com:Icon name="key_index" size="16" text="database.index"/></td>
-				<td><com:Icon name="key_fulltext" size="16" text="database.fulltextIndex"/></td>
+				<td><com:Icon name="key_primary" size="16" text="schema.primaryKey"/></td>
+				<td><com:Icon name="key_unique" size="16" text="schema.uniqueKey"/></td>
+				<td><com:Icon name="key_index" size="16" text="schema.index"/></td>
+				<td><com:Icon name="key_fulltext" size="16" text="schema.fulltextIndex"/></td>
 			</tr>
 		<?php } ?>
 	</tbody>
@@ -90,14 +90,14 @@
 	</colgroup>
 	<thead>
 		<tr>
-			<th colspan="6"><?php echo Yii::t('schema', 'indices'); ?></th>
+			<th colspan="6"><?php echo Yii::t('database', 'indices'); ?></th>
 		</tr>
 		<tr>
-			<th><?php echo Yii::t('schema', 'key'); ?></th>
-			<th><?php echo Yii::t('schema', 'type'); ?></th>
-			<th><?php echo Yii::t('schema', 'cardinality'); ?></th>
-			<th colspan="2"><?php echo Yii::t('schema', 'action'); ?></th>
-			<th><?php echo Yii::t('schema', 'field'); ?></th>
+			<th><?php echo Yii::t('database', 'key'); ?></th>
+			<th><?php echo Yii::t('database', 'type'); ?></th>
+			<th><?php echo Yii::t('database', 'cardinality'); ?></th>
+			<th colspan="2"><?php echo Yii::t('database', 'action'); ?></th>
+			<th><?php echo Yii::t('database', 'field'); ?></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -124,20 +124,20 @@
 	</colgroup>
 	<thead>
 		<tr>
-			<th colspan="2"><?php echo Yii::t('schema', 'spaceUsage'); ?></th>
+			<th colspan="2"><?php echo Yii::t('database', 'spaceUsage'); ?></th>
 		</tr>
 		<tr>
-			<th><?php echo Yii::t('schema', 'type'); ?></th>
-			<th><?php echo Yii::t('schema', 'usage'); ?></th>
+			<th><?php echo Yii::t('database', 'type'); ?></th>
+			<th><?php echo Yii::t('database', 'usage'); ?></th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td><?php echo Yii::t('schema', 'data'); ?></td>
+			<td><?php echo Yii::t('database', 'data'); ?></td>
 			<td class="right"><?php echo Formatter::fileSize($table->DATA_LENGTH); ?></td>
 		</tr>
 		<tr>
-			<td><?php echo Yii::t('schema', 'index'); ?></td>
+			<td><?php echo Yii::t('database', 'index'); ?></td>
 			<td class="right"><?php echo Formatter::fileSize($table->INDEX_LENGTH); ?></td>
 		</tr>
 		<tr>
@@ -167,28 +167,28 @@
 	</thead>
 	<tbody>
 		<tr>
-			<td><?php echo Yii::t('schema', 'format'); ?></td>
+			<td><?php echo Yii::t('database', 'format'); ?></td>
 			<td><?php echo $table->ROW_FORMAT; ?></td>
 		</tr>
 		<tr>
-			<td><?php echo Yii::t('schema', 'collation'); ?></td>
+			<td><?php echo Yii::t('database', 'collation'); ?></td>
 			<td><?php echo $table->TABLE_COLLATION; ?></td>
 		</tr>
 		<tr>
-			<td><?php echo Yii::t('schema', 'rows'); ?></td>
+			<td><?php echo Yii::t('database', 'rows'); ?></td>
 			<td><?php echo $table->getRowCount(); ?></td>
 		</tr>
 		<tr>
-			<td><?php echo Yii::t('schema', 'averageRowLength'); ?></td>
+			<td><?php echo Yii::t('database', 'averageRowLength'); ?></td>
 			<td><?php echo $table->AVG_ROW_LENGTH; ?></td>
 		</tr>
 		<tr>
-			<td><?php echo Yii::t('schema', 'averageRowSize'); ?></td>
+			<td><?php echo Yii::t('database', 'averageRowSize'); ?></td>
 			<td><?php echo Formatter::fileSize($table->getAverageRowSize()); ?></td>
 		</tr>
 		<?php if ($table->AUTO_INCREMENT) { ?>
 			<tr>
-				<td><?php echo Yii::t('schema', 'nextAutoincrementValue'); ?></td>
+				<td><?php echo Yii::t('database', 'nextAutoincrementValue'); ?></td>
 				<td><?php echo $table->AUTO_INCREMENT; ?></td>
 			</tr>
 		<?php } ?>
