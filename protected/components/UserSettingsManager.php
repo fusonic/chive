@@ -22,13 +22,37 @@ class UserSettingsManager
 
 	}
 
+	/**
+	 * Creates JavaScript representation of settings.
+	 * @todo(mburtscher): Support arrays.
+	 * @return	string
+	 */
 	public function getJsObject()
 	{
 		$jsSettings = 'var userSettings = {};' . "\n";
 		foreach($this->defaultSettings AS $key => $value) {
+			$value = $value[null];
+			if(is_array($value))
+			{
+				continue;
+			}
 			if(isset($this->userSettings[$key]))
 			{
-				$value = $this->userSettings[$key];
+				foreach($this->userSettings[$key] AS $key2 => $value2)
+				{
+					if(is_array($value2))
+					{
+						continue;
+					}
+					if(!$key2)
+					{
+						$value = $value2;
+					}
+					else
+					{
+						$jsSettings .= 'userSettings.' . $key . '__' . $key2 . ' = "' . str_replace('"', '\"', $value2) . '";' . "\n";
+					}
+				}
 			}
 			$jsSettings .= 'userSettings.' . $key . ' = "' . str_replace('"', '\"', $value) . '";' . "\n";
 		}
@@ -91,7 +115,7 @@ class UserSettingsManager
 		foreach($defaultXml->children() AS $setting)
 		{
 			$name = $setting->getName();
-			$value = (string)$setting;
+			$value = unserialize((string)$setting);
 			$scope = (isset($setting['scope']) ? $setting['scope'] : null);
 			$object = (isset($settings['object']) ? $settings['object'] : null);
 
@@ -112,7 +136,7 @@ class UserSettingsManager
 				list($name, $scope) = $this->getSettingNameScope($key);
 				foreach($values AS $object => $value)
 				{
-					$settingXml = $xml->addChild($name, $value);
+					$settingXml = $xml->addChild($name, (is_array($value) ? serialize($vaule) : $value));
 					if($scope)
 					{
 						$settingXml['scope'] = $scope;

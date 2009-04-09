@@ -131,7 +131,7 @@ return array(
 	'params'=>array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@example.com',
-		'iconpack'=>'images/icons/pma',
+		'iconpack'=>'images/icons/fugue',
 	),
 
 	'sourceLanguage'=>'xxx',

@@ -90,7 +90,7 @@ class Column extends CActiveRecord
 			'collation' => array(self::BELONGS_TO, 'Collation', 'COLLATION_NAME'),
 			#'constraint' => array(self::MANY_MANY, 'Constraint', 'COLUMN_NAME'),
 		);
-	}
+    }
 
 	/**
 	 * @return array customized attribute labels (name=>label)

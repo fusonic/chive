@@ -134,8 +134,8 @@
 		</div>
   		<div class="sidebarHeader">
 			<a class="icon">
-				<img src="images/icons/table_24.png" />
-				<span>Procedures</span>
+				<com:Icon name="routine" size="24" text="core.procedures" />
+				<span><?php echo Yii::t('core', 'procedures') ?></span>
 			</a>
 		</div>
 		<div class="sidebarContent">

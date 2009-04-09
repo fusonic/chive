@@ -5,7 +5,7 @@ $(document).ready(function() {
 	 */
 	
 	$('#columns tbody').sortable({
-		handle: 'img.icon_arrow_updown',
+		handle: 'img.icon_arrow_move',
 		update: function(event, ui) {
 			
 			// Fix even/odd classes

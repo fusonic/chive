@@ -62,7 +62,7 @@
 						<com:Icon name="browse" size="16" text="schema.browseDistinctValues" title={Yii::t('database','browseDistinctValues')} />
 					</a>
 				</td>
-				<td><com:Icon name="arrow_updown" size="16" text="core.move" /></td>
+				<td><com:Icon name="arrow_move" size="16" text="core.move" /></td>
 				<td>
 					<a href="javascript:void(0)" onclick="editColumn('<?php echo $column->COLUMN_NAME; ?>')" class="icon">
 						<com:Icon name="edit" size="16" text="core.edit"/>
