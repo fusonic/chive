@@ -2,8 +2,8 @@
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/views/table/general.js', CClientScript::POS_HEAD); ?>
 
 <script type="text/javascript">
-var schema = '<?php echo $this->schemaName; ?>';
-var table = '<?php echo $this->tableName; ?>';
+var schema = '<?php echo $this->schema; ?>';
+var table = '<?php echo $this->table; ?>';
 </script>
 
 
@@ -12,7 +12,7 @@ var table = '<?php echo $this->tableName; ?>';
 			array(	'label'=> Yii::t('database','browse'),
 					'icon'=>'browse',
 					'link'=>array(
-						'url'=> Yii::app()->baseUrl .  '/schema/' . $this->schemaName . '/tables/' . $this->tableName . '/browse',
+						'url'=> Yii::app()->baseUrl .  '/schema/' . $this->schema . '/tables/' . $this->table . '/browse',
 						'htmlOptions'=> array('class'=>'icon'),
 					),
 					'visible'=>true,
@@ -20,7 +20,7 @@ var table = '<?php echo $this->tableName; ?>';
 			array(	'label'=>Yii::t('database','structure'),
 					'icon'=>'structure',
 					'link'=>array(
-						'url'=> Yii::app()->baseUrl .  '/schema/' . $this->schemaName . '/tables/' . $this->tableName . '/structure',
+						'url'=> Yii::app()->baseUrl .  '/schema/' . $this->schema . '/tables/' . $this->table . '/structure',
 						'htmlOptions'=> array('class'=>'icon'),
 					),
 					'visible'=>true,
@@ -28,15 +28,15 @@ var table = '<?php echo $this->tableName; ?>';
 			array(	'label'=>Yii::t('database','sql'),
 					'icon'=>'structure',
 					'link'=>array(
-						'url'=> Yii::app()->baseUrl .  '/schema/' . $this->schemaName . '/tables/' . $this->tableName . '/sql',
+						'url'=> Yii::app()->baseUrl .  '/schema/' . $this->schema . '/tables/' . $this->table . '/sql',
 						'htmlOptions'=> array('class'=>'icon'),
 					),
 					'visible'=>true,
 			),
-			array(	'label'=>Yii::t('database','search'),
+			array(	'label'=>Yii::t('core','search'),
 					'icon'=>'search',
 					'link'=>array(
-						'url'=> Yii::app()->baseUrl .  '/schema/' . $this->schemaName . '/tables/' . $this->tableName . '/search',
+						'url'=> Yii::app()->baseUrl .  '/schema/' . $this->schema . '/tables/' . $this->table . '/search',
 						'htmlOptions'=> array('class'=>'icon'),
 					),
 					'visible'=>true,
@@ -44,7 +44,7 @@ var table = '<?php echo $this->tableName; ?>';
 			array(	'label'=>Yii::t('database','insert'),
 					'icon'=>'insert',
 					'link'=>array(
-						'url'=> Yii::app()->baseUrl .  '/schema/' . $this->schemaName . '/tables/' . $this->tableName . '/insert',
+						'url'=> Yii::app()->baseUrl .  '/schema/' . $this->schema . '/tables/' . $this->table . '/insert',
 						'htmlOptions'=> array('class'=>'icon'),
 					),
 					'visible'=>true,
@@ -53,7 +53,7 @@ var table = '<?php echo $this->tableName; ?>';
 					'icon'=>'truncate',
 					'link'=>array(
 						'url'=> 'javascript:void(0)',
-						'htmlOptions'=> array('class'=>'icon', 'onclick'=>'truncateTable("'.$this->schemaName.'","'.$this->tableName.'");'),
+						'htmlOptions'=> array('class'=>'icon', 'onclick'=>'truncateTable("'.$this->schema.'","'.$this->table.'");'),
 					),
 					'visible'=>true,
 			),
@@ -61,7 +61,7 @@ var table = '<?php echo $this->tableName; ?>';
 					'icon'=>'drop',
 					'link'=>array(
 						'url'=> 'javascript:void(0)',
-						'htmlOptions'=> array('class'=>'icon', 'onclick'=>'dropTable("'.$this->schemaName.'","'.$this->tableName.'");'),
+						'htmlOptions'=> array('class'=>'icon', 'onclick'=>'dropTable("'.$this->schema.'","'.$this->table.'");'),
 					),
 					'visible'=>true,
 			),
@@ -69,10 +69,10 @@ var table = '<?php echo $this->tableName; ?>';
 	));
 ?>
 
-<div id="truncateTableDialog" title="<?php echo Yii::t('database', 'truncateTable'); ?>" style="display: none">
+<div id="truncateTableDialog" title="<?php echo Yii::t('core', 'confirm'); ?>" style="display: none">
 	<?php echo Yii::t('message', 'doYouReallyWantToTruncateTable'); ?>
 </div>
-<div id="dropTableDialog" title="<?php echo Yii::t('database', 'dropTable'); ?>" style="display: none">
+<div id="dropTableDialog" title="<?php echo Yii::t('core', 'confirm'); ?>" style="display: none">
 	<?php echo Yii::t('message', 'doYouReallyWantToDropTable'); ?>
 </div>
 

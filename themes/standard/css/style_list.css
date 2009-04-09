@@ -70,6 +70,10 @@
 		width: 100px;
 	}
 	
+	table.list col.operator {
+		width: 120px;
+	}
+	
 	/*
 	 * THead
 	 */

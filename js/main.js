@@ -36,7 +36,7 @@ function init() {
 		}
 	});
 
-	if(currentLocation.match(/database\/(\w+)#tables\/(\w+)\//))
+	if(currentLocation.match(/schema\/(\w+)#tables\/(\w+)\//))
 	{
 		schema = RegExp.$1.toString();
 		table = RegExp.$2.toString();
@@ -124,6 +124,8 @@ $(document).ready(function()
 		fillSpace: true,
 		selectedClass: "active"
 	});
+	
+	$('#tableList').setupListFilter($('#tableSearch'));
 	
 	// Mouseover buttons
 	$('#MainMenu li').mouseover(function() {

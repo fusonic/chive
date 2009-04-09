@@ -19,7 +19,7 @@
 				<% if(!true) { %>
 					<?php echo CHtml::activeDropDownList($form,'host',$hosts); ?>
 				<% } else { %>
-					<?php echo CHtml::activeTextField($form, 'host', array('value'=>'localhost')); ?>
+					<?php echo CHtml::activeTextField($form, 'host', array('value'=>'localhost', 'class'=>'text')); ?>
 				<% } %>
 			</div>
 		</div>
@@ -28,7 +28,7 @@
 				<?php echo CHtml::activeLabel($form,'username'); ?>
 			</div>
 			<div class="right">
-				<?php echo CHtml::activeTextField($form,'username') ?>
+				<?php echo CHtml::activeTextField($form,'username', array('class'=>'text')) ?>
 				<?php echo CHtml::error($form, 'username'); ?>
 			</div>
 		</div>
@@ -37,7 +37,7 @@
 				<?php echo CHtml::activeLabel($form,'password'); ?>
 			</div>
 			<div class="right">
-				<?php echo CHtml::activePasswordField($form,'password'); ?>
+				<?php echo CHtml::activePasswordField($form,'password', array('class'=>'text')); ?>
 			</div>
 		</div>
 	</div>

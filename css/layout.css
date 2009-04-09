@@ -325,6 +325,18 @@
   	position: relative;
 	top: 2px;
   }
+  
+  div.listIconContainer {
+  	float: right;
+	position: relative;
+	top: -18px;
+	display: none;
+	padding-right: 5px;
+  }
+  
+  ul.list li:hover div.listIconContainer {
+  	display: inline;
+  }
 
   #headerLeft {
   	font-size: 140%;

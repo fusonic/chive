@@ -7,14 +7,14 @@
 	<colgroup>
 		<col />
 		<col class="type" />
-		<col />
+		<col class="operator" />
 		<col />
 	</colgroup>
 	<thead>
 		<tr>
 			<th><?php echo Yii::t('database', 'field'); ?></th>
 			<th><?php echo Yii::t('database', 'type'); ?></th>
-			<th><?php echo Yii::t('database', 'function'); ?></th>
+			<th><?php echo Yii::t('database', 'operator'); ?></th>
 			<th><?php echo Yii::t('core', 'value'); ?></th>
 		</tr>
 	</thead>
@@ -25,13 +25,13 @@
 				<td><?php echo $column->dbType; ?></td>
 				<td><?php echo CHtml::dropDownList('operator['.$column->name.']','', $operators); ?></td>
 				<td>
-					<com:InputField row={$row} column={$column} />
+					<?php echo CHtml::activeTextField($row, $column->name, array('class'=>'text')); ?>
 				</td>
 			</tr>
 		<?php } ?>
 	</tbody>
 </table>
 
-<?php echo CHtml::submitButton(Yii::t('core', 'serach'), array('name'=>'submitSearch')); ?>
+<?php echo CHtml::submitButton(Yii::t('core', 'search'), array('name'=>'submitSearch')); ?>
 
 <?php echo CHtml::endForm(); ?>

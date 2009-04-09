@@ -23,6 +23,7 @@
 <?php Yii::app()->clientScript->registerCoreScript('jquery'); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/main.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.layout.js', CClientScript::POS_HEAD); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.listFilter.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.tableForm.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery-ui-1.7.1.custom.min.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.checkboxTable.js', CClientScript::POS_HEAD); ?>
@@ -56,7 +57,7 @@
 					<span>&raquo;</span>
 					<a class="icon" href="<?php echo Yii::app()->baseUrl ?>/database/<?php echo $_GET['schema'] ?>">
 						<com:Icon name="table" size="24" />
-						<span>test</span>
+						<span></span>
 					</a>
 				</li>
 			</ul>
@@ -86,16 +87,20 @@
 		</div>
 		<div class="sidebarContent">
 
-			<ul class="list icon">
+			<input type="text" id="tableSearch" class="text" />
+
+			<ul class="list icon" id="tableList">
 				<?php foreach(Table::model()->findAll(array('select'=>'TABLE_NAME, TABLE_ROWS', 'condition'=>'TABLE_SCHEMA=:schema', 'params'=>array(':schema'=>$_GET['schema']), 'order'=>'TABLE_NAME ASC')) AS $table) { ?>
-					<li class="nowrap">
+					<li class="nowrap" style="display: block">
 						<a href="#tables/<?php echo $table->getName(); ?>/<?php echo ($table->getRowCount() ? 'browse' : 'structure'); ?>">
 							<?php $this->widget('Icon', array('name'=>'browse', 'size'=>16, 'disabled'=>!$table->getRowCount(), 'title'=>Yii::t('database', 'Xrows', array('{amount}'=>$table->getRowCount() ? $table->getRowCount() : 0)))); ?>
 						</a>
 						<a href="#tables/<?php echo $table->getName(); ?>/structure"><?php echo $table->getName(); ?></a>
-						<a href="#tables/<?php echo $table->getName(); ?>/insert" class="icon10" style="display: none;">
-							<?php $this->widget('Icon', array('name'=>'add', 'size'=>10)); ?>
-						</a>
+						<div class="listIconContainer">
+							<a href="#tables/<?php echo $table->getName(); ?>/insert" class="icon10">
+								<?php $this->widget('Icon', array('name'=>'add', 'size'=>16)); ?>
+							</a>
+						</div>
 					</li>
 				<?php } ?>
 			</ul>

@@ -33,6 +33,8 @@
 	<entry id="usage">Usage</entry>
 	<entry id="spaceUsage">Space usage</entry>
 	
+	<entry id="operator">Operator</entry>
+	
 	<entry id="format">Format</entry>
 	<entry id="rows">Rows</entry>
 	<entry id="averageRowLength">Average row length</entry>

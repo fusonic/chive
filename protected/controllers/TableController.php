@@ -2,7 +2,7 @@
 
 class TableController extends CController
 {
-	const PAGE_SIZE=20;
+	const PAGE_SIZE=10;
 
 	/**
 	 * @var string specifies the default action to be 'list'.
@@ -15,8 +15,10 @@ class TableController extends CController
 	private $_table;
 	private $_db;
 
-	public $tableName;
-	public $schemaName;
+	public $table;
+	public $schema;
+
+	public $isSent = false;
 
 	/**
 	 * @var Default layout for this controller
@@ -27,11 +29,11 @@ class TableController extends CController
 
 		$request = Yii::app()->getRequest();
 
-		$this->tableName = $request->getParam('table');
-		$this->schemaName = $request->getParam('schema');
+		$this->table = $request->getParam('table');
+		$this->schema = $request->getParam('schema');
 
 		// @todo (rponudic) work with parameters!
-		$this->_db = new CDbConnection('mysql:host='.Yii::app()->user->host.';dbname=' . $this->schemaName, Yii::app()->user->name, Yii::app()->user->password);
+		$this->_db = new CDbConnection('mysql:host='.Yii::app()->user->host.';dbname=' . $this->schema, Yii::app()->user->name, Yii::app()->user->password);
 		$this->_db->charset='utf8';
 		$this->_db->active = true;
 
@@ -104,59 +106,40 @@ class TableController extends CController
 		$sort = new Sort($db);
 		$sort->multiSort = false;
 
+		$sort->route = '/table/sql';
 
+		if(!$_query)
+			$_query = 'SELECT * FROM ' . $db->quoteTableName($this->table);
 
-		if($_query instanceof CDbCriteria)
+		$oSql = new Sql($_query);
+		$oSql->applyCalculateFoundRows();
+
+		if(!$oSql->hasLimit)
 		{
-
-			$criteria = $_query;
-			$criteria->limit = self::PAGE_SIZE;
-
-			$cmd = $db->getCommandBuilder()->createFindCommand($this->tableName, $criteria);
-
-			$sql = $cmd->getText();
-
-		}
-		else
-		{
-
-			if(!$_query)
-				$_query = 'SELECT * FROM ' . $db->quoteTableName($this->tableName);
-
-			$oSql = new Sql($_query);
-			$oSql->applyCalculateFoundRows();
-
-			if(!$oSql->hasLimit)
-			{
-				$offset = (isset($_GET['page']) ? (int)$_GET['page'] : 1) * self::PAGE_SIZE - self::PAGE_SIZE;
-				$oSql->applyLimit(self::PAGE_SIZE, $offset, true);
-			}
-
-			$oSql->applySort($sort->getOrder(), true);
-
-			$cmd = $db->createCommand($oSql->getQuery());
-			$cmd->prepare();
-
-			$sql = $oSql->getOriginalQuery();
-
+			$offset = (isset($_GET['page']) ? (int)$_GET['page'] : 1) * self::PAGE_SIZE - self::PAGE_SIZE;
+			$oSql->applyLimit(self::PAGE_SIZE, $offset, true);
 		}
 
+		$oSql->applySort($sort->getOrder(), true);
 
+		$cmd = $db->createCommand($oSql->getQuery());
+		$cmd->prepare();
 
 		try
 		{
 			// Fetch data
 			$data = $cmd->queryAll();
 
-			if(!count($data))
-				// @todo (rponudic) add redirect
-				die("redirect");
-
-			$total = $db->createCommand('SELECT FOUND_ROWS()')->queryScalar();
+			$total = (int)$db->createCommand('SELECT FOUND_ROWS()')->queryScalar();
 			$pages->setItemCount($total);
 
+			$columns = array();
+
 			// Fetch column headers
-			$columns = array_keys($data[0]);
+			if($total > 0) {
+				$columns = array_keys($data[0]);
+			}
+
 
 		}
 		catch (Exception $ex)
@@ -167,7 +150,7 @@ class TableController extends CController
 		$this->render('browse',array(
 			'data' => $data,
 			'columns' => $columns,
-			'query' => $sql,
+			'query' => $oSql->getOriginalQuery(),
 			'pages' => $pages,
 			'sort' => $sort,
 			'error' => $error,
@@ -184,6 +167,8 @@ class TableController extends CController
 
 		if(!$query)
 		{
+			$this->isSent = true;
+
 			$this->render('browse',array(
 				'data' => array(),
 				'query' => self::getDefaultQuery(),
@@ -216,8 +201,9 @@ class TableController extends CController
 		if(isset($_POST['Row']))
 		{
 
+			$this->isSent = true;
+
 			$criteria = new CDbCriteria;
-			$criteria->select = 'SQL_CALC_FOUND_ROWS *';
 
 			$i = 0;
 			foreach($_POST['Row'] AS $column=>$value) {
@@ -225,15 +211,16 @@ class TableController extends CController
 				if($value)
 				{
 					$operator = $operators[$_POST['operator'][$column]];
-					$criteria->condition .= ($i>0 ? ' AND ' : '') . $db->quoteColumnName($column) . ' ' . $operator . ' :' . $column;
-					$criteria->params[$column] = $value;
+					$criteria->condition .= ($i>0 ? ' AND ' : ' ') . $db->quoteColumnName($column) . ' ' . $operator . ' ' . $db->quoteValue($value);
 
 					$i++;
 				}
 
 			}
 
-			self::actionBrowse($criteria);
+			$query = $db->getCommandBuilder()->createFindCommand($this->table, $criteria)->getText();
+
+			self::actionBrowse($query);
 
 		}
 		else
@@ -262,7 +249,7 @@ class TableController extends CController
 			$row->isNewRecord = true;
 
 			if(isset($_POST['submitRow']) && $row->save())
-				Yii::app()->end('redirect:' . $this->schemaName . '#tables/' . $this->tableName . '/browse');
+				Yii::app()->end('redirect:' . $this->schema . '#tables/' . $this->table . '/browse');
 
 		}
 
@@ -278,13 +265,13 @@ class TableController extends CController
 				$data[$column->COLUMN_NAME] = $_POST[$column->COLUMN_NAME];
 			}
 
-			$cmd = $builder->createInsertCommand($this->tableName, $data);
+			$cmd = $builder->createInsertCommand($this->table, $data);
 
 			try
 			{
 				$cmd->prepare();
 				$cmd->execute();
-				Yii::app()->end('redirect:' . $this->schemaName . '#tables/' . $this->tableName . '/browse');
+				Yii::app()->end('redirect:' . $this->schema . '#tables/' . $this->table . '/browse');
 			}
 			catch(CDbException $ex)
 			{
@@ -353,8 +340,8 @@ class TableController extends CController
 		try
 		{
 			$table = Table::model()->findByPk(array(
-				'TABLE_SCHEMA' => $this->schemaName,
-				'TABLE_NAME' => $this->tableName
+				'TABLE_SCHEMA' => $this->schema,
+				'TABLE_NAME' => $this->table
 			));
 			$table->truncate();
 		}
@@ -373,8 +360,8 @@ class TableController extends CController
 		try
 		{
 			$table = Table::model()->findByPk(array(
-				'TABLE_SCHEMA' => $this->schemaName,
-				'TABLE_NAME' => $this->tableName
+				'TABLE_SCHEMA' => $this->schema,
+				'TABLE_NAME' => $this->table
 			));
 			$table->drop();
 		}
@@ -458,13 +445,13 @@ class TableController extends CController
 	{
 		if($this->_table===null)
 		{
-			if($id!==null || ($this->tableName && $this->schemaName))
+			if($id!==null || ($this->table && $this->schema))
 			{
 				$criteria = new CDbCriteria;
 				$criteria->condition = 'TABLE_SCHEMA = :schema AND TABLE_NAME = :table';
 				$criteria->params = array(
-					'schema'=>$this->schemaName,
-					'table'=>$this->tableName,
+					'schema'=>$this->schema,
+					'table'=>$this->table,
 				);
 
 				$table = Table::model()->find($criteria);
@@ -495,7 +482,7 @@ class TableController extends CController
 
 	private function getDefaultQuery()
 	{
-		return 'SELECT * FROM ' . $this->_db->quoteTableName($this->tableName) . "\n\t"
+		return 'SELECT * FROM ' . $this->_db->quoteTableName($this->table) . "\n\t"
 				. 'WHERE 1';
 	}
 }

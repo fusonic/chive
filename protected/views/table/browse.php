@@ -80,4 +80,7 @@
 	<div class="pager bottom">
 	<?php $this->widget('CLinkPager',array('pages'=>$pages)); ?>
 	</div>
+
+<?php }  elseif($this->isSent) { ?>
+	Es wurden keine Enträge gefunden!
 <?php } ?>

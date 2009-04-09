@@ -63,6 +63,7 @@ class CXmlMessageSource extends CMessageSource {
 				$dependency=new CFileCacheDependency($messageFile);
 				$cache->set($key,serialize($messages),$this->cachingDuration);
 			}
+
 			return $messages;
 		}
 		else
