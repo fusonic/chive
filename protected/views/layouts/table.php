@@ -1,6 +1,12 @@
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.form.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/views/table/general.js', CClientScript::POS_HEAD); ?>
 
+<script type="text/javascript">
+var schema = '<?php echo $this->schemaName; ?>';
+var table = '<?php echo $this->tableName; ?>';
+</script>
+
+
 <?php $this->widget('TabMenu', array(
 		'items'=>array(
 			array(	'label'=> Yii::t('database','browse'),

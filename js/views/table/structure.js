@@ -1,5 +1,3 @@
-var testui;
-
 $(document).ready(function() {
 	
 	/*
@@ -29,13 +27,11 @@ $(document).ready(function() {
 			}
 			
 			// Do AJAX request
-			$.post(baseUrl + '/database/' + schema + '/tables/' + table + '/columns/move', {
+			$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/columns/move', {
 					command: command,
 					column: id
 				}
 			);
-			
-			alert(id + ' ' + command);
 			
 		}
 	});
@@ -49,5 +45,5 @@ $(document).ready(function() {
 
 function editColumn(col)
 {
-	$('#columns_' + col).appendForm(baseUrl + '/database/' + schema + '/tables/' + table + '/columns/update?col=' + col);
+	$('#columns_' + col).appendForm(baseUrl + '/schema/' + schema + '/tables/' + table + '/columns/update?col=' + col);
 }

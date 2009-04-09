@@ -5,12 +5,6 @@ require_once('PHPUnit/Framework.php');
 class TestCase extends PHPUnit_Framework_TestCase
 {
 
-	protected function setUp()
-	{
-		$app = new TestWebApplication(dirname(__FILE__) . '/../protected/config/tests.php');
-		parent::setUp();
-	}
-
 	protected function executeSqlFile($file)
 	{
 		//echo 'cat "' . $file . '">`mysql -h' . DB_HOST . ' -u' . DB_USER . (DB_PASSWORD ? ' -p' . DB_PASSWORD : '') . ' ' . DB_NAME . '`';

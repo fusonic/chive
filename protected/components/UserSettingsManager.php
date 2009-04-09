@@ -35,30 +35,37 @@ class UserSettingsManager
 		return $jsSettings;
 	}
 
-	public function get($name, $scope = null)
+	public function get($name, $scope = null, $object = null)
 	{
 		$id = $this->getSettingId($name, $scope);
 		if(isset($this->userSettings[$id]))
 		{
-			return $this->userSettings[$id];
+			if(isset($this->userSettings[$id][$object]))
+			{
+				return $this->userSettings[$id][$object];
+			}
+			elseif(isset($this->userSettings[$id][null]))
+			{
+				return $this->userSettings[$id][null];
+			}
 		}
 		elseif(isset($this->defaultSettings[$id]))
 		{
-			return $this->defaultSettings[$id];
+			return $this->defaultSettings[$id][null];
 		}
 		else
 		{
 			throw new CException(Yii::t('yii','The setting {setting} does not exist.',
-				array('{setting}'=>$id)));
+				array('{setting}' => $id)));
 		}
 	}
 
-	public function set($name, $value, $scope = null)
+	public function set($name, $value, $scope = null, $object = null)
 	{
 		$id = $this->getSettingId($name, $scope);
 		if(isset($this->defaultSettings[$id]))
 		{
-			$this->userSettings[$id] = $value;
+			$this->userSettings[$id][$object] = $value;
 		}
 		else
 		{
@@ -86,10 +93,11 @@ class UserSettingsManager
 			$name = $setting->getName();
 			$value = (string)$setting;
 			$scope = (isset($setting['scope']) ? $setting['scope'] : null);
+			$object = (isset($settings['object']) ? $settings['object'] : null);
 
 			$id = $this->getSettingId($name, $scope);
 
-			$settings[$id] = $value;
+			$settings[$id][$object] = $value;
 		}
 		return $settings;
 	}
@@ -99,13 +107,20 @@ class UserSettingsManager
 		if(count($this->userSettings) > 0)
 		{
 			$xml = new SimpleXmlElement('<settings host="' . $this->host . '" user="' . $this->user . '" />');
-			foreach($this->userSettings AS $key => $value)
+			foreach($this->userSettings AS $key => $values)
 			{
 				list($name, $scope) = $this->getSettingNameScope($key);
-				$settingXml = $xml->addChild($name, $value);
-				if($scope)
+				foreach($values AS $object => $value)
 				{
-					$settingXml['scope'] = $scope;
+					$settingXml = $xml->addChild($name, $value);
+					if($scope)
+					{
+						$settingXml['scope'] = $scope;
+					}
+					if($object)
+					{
+						$settingXml['object'] = $object;
+					}
 				}
 			}
 		}
