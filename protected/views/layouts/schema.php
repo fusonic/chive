@@ -20,14 +20,16 @@
 </script>
 
 <?php Yii::app()->clientScript->registerScript('userSettings', Yii::app()->user->settings->getJsObject(), CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.js', CClientScript::POS_HEAD); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/main.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.layout.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.listFilter.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.tableForm.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery-ui-1.7.1.custom.min.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.checkboxTable.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.form.js', CClientScript::POS_HEAD); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/bookmark.js', CClientScript::POS_HEAD); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/profiling.js', CClientScript::POS_HEAD); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.layout.js', CClientScript::POS_HEAD); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.listFilter.js', CClientScript::POS_HEAD); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.tableForm.js', CClientScript::POS_HEAD); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery-ui-1.7.1.custom.min.js', CClientScript::POS_HEAD); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.checkboxTable.js', CClientScript::POS_HEAD); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.form.js', CClientScript::POS_HEAD); ?>
 
 
 </head>
@@ -44,10 +46,10 @@
 						<img src="<?php echo Yii::app()->baseUrl . "/images/logo.png"; ?>" />
 					</a>
 				</li>
-				<?php if(isset($_GET['schema'])) { ?>
+				<?php if($this->schema) { ?>
 					<li id="bc_schema">
 						<span>&raquo;</span>
-						<a class="icon" href="<?php echo Yii::app()->baseUrl ?>/database/<?php echo $_GET['schema'] ?>">
+						<a class="icon" href="<?php echo Yii::app()->baseUrl; ?>/schema/<?php echo $this->schema; ?>">
 							<com:Icon name="database" size="24" />
 							<span><?php echo $_GET['schema']; ?></span>
 						</a>
@@ -55,7 +57,7 @@
 				<?php } ?>
 				<li id="bc_table" style="display: none;">
 					<span>&raquo;</span>
-					<a class="icon" href="<?php echo Yii::app()->baseUrl ?>/database/<?php echo $_GET['schema'] ?>">
+					<a class="icon" href="<?php echo Yii::app()->baseUrl; ?>/database/<?php $this->schema; ?>">
 						<com:Icon name="table" size="24" />
 						<span></span>
 					</a>
@@ -87,18 +89,18 @@
 		</div>
 		<div class="sidebarContent">
 
-			<input type="text" id="tableSearch" class="text" />
+			<input type="text" id="tableSearch" class="search text" />
 
-			<ul class="list icon" id="tableList">
+			<ul class="list icon nowrap" id="tableList">
 				<?php foreach(Table::model()->findAll(array('select'=>'TABLE_NAME, TABLE_ROWS', 'condition'=>'TABLE_SCHEMA=:schema', 'params'=>array(':schema'=>$_GET['schema']), 'order'=>'TABLE_NAME ASC')) AS $table) { ?>
-					<li class="nowrap" style="display: block">
+					<li>
 						<a href="#tables/<?php echo $table->getName(); ?>/<?php echo ($table->getRowCount() ? 'browse' : 'structure'); ?>">
 							<?php $this->widget('Icon', array('name'=>'browse', 'size'=>16, 'disabled'=>!$table->getRowCount(), 'title'=>Yii::t('database', 'Xrows', array('{amount}'=>$table->getRowCount() ? $table->getRowCount() : 0)))); ?>
 						</a>
 						<a href="#tables/<?php echo $table->getName(); ?>/structure"><?php echo $table->getName(); ?></a>
 						<div class="listIconContainer">
-							<a href="#tables/<?php echo $table->getName(); ?>/insert" class="icon10">
-								<?php $this->widget('Icon', array('name'=>'add', 'size'=>16)); ?>
+							<a href="#tables/<?php echo $table->getName(); ?>/insert">
+								<com:Icon name="add" size="16" />
 							</a>
 						</div>
 					</li>
@@ -113,15 +115,15 @@
 			</a>
 		</div>
 		<div class="sidebarContent">
-			<ul class="select">
+			<ul class="list icon nowrap">
 				<?php foreach(View::model()->findAll(array('select'=>'TABLE_NAME','condition'=>'TABLE_SCHEMA=:schema', 'params'=>array(':schema'=>$_GET['schema']), 'order'=>'TABLE_NAME ASC')) AS $table) { ?>
-					<li class="nowrap">
-						<?php echo CHtml::openTag('a', array('href'=>'#tables/'.$table->getName().'/browse')); ?>
+					<li>
+						<a href="'#tables/<?php echo $table->getName() ?>/browse">
 							<com:Icon name="view" size="16" text="core.username" />
-						<?php echo CHtml::closeTag('a'); ?>
-						<?php echo CHtml::openTag('a', array('href'=>'#tables/'.$table->getName().'/structure')); ?>
+						</a>
+						<a href="'#tables/<?php echo $table->getName() ?>/browse">
 							<span><?php echo $table->getName(); ?></span>
-						<?php echo CHtml::closeTag('a'); ?>
+						</a>
 					</li>
 				<?php } ?>
 			</ul>
@@ -133,8 +135,25 @@
 			</a>
 		</div>
 		<div class="sidebarContent">
-			<ul class="select">
-				<li>test</li>
+			<ul class="list icon nowrap" id="bookmarkList">
+			<?php if(Yii::app()->user->settings->get('bookmarks', 'database', $this->schema)) { ?>
+				<?php foreach(Yii::app()->user->settings->get('bookmarks', 'database', $this->schema) AS $setting) { ?>
+					<li>
+						<a href="" class="icon">
+							<com:Icon size="16" name="bookmark" />
+							<span><?php echo Yii::t('core', 'bookmark'); ?></span>
+						</a>
+						<div class="listIconContainer">
+							<a href="javascript:void(0);" onclick="$.post('<?php echo Yii::app()->baseUrl; ?>/schema/<?php echo $this->schema; ?>/bookmark', {
+									schema: '<?php echo $this->schema; ?>',
+									id: 0
+								});">
+								<com:Icon name="add" size="16" />
+							</a>
+						</div>
+					</li>
+				<?php } ?>
+			<?php } ?>
 			</ul>
 		</div>
   		<div class="sidebarHeader">

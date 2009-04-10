@@ -3,4 +3,9 @@
 	<entry id="save">Save</entry>
 	<entry id="create">Create</entry>
 	<entry id="cancel">Cancel</entry>
+	<entry id="drop">Drop</entry>
+	<entry id="truncate">Truncate</entry>
+	<entry id="operations">Operations</entry>
+	<entry id="export">Export</entry>
+	<entry id="import">Import</entry>
 </category>

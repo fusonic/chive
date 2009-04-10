@@ -82,6 +82,8 @@ class Sql {
 
 	public function applyLimit($limit, $offset=0, $_applyToOriginal = false) {
 
+		return;
+
 		$this->query .= "\n\t" . 'LIMIT ' . $offset . ', ' . $limit;
 
 		if($_applyToOriginal)

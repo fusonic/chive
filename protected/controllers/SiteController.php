@@ -31,13 +31,11 @@ class SiteController extends CController
 	{
 		return array(
 			array('allow',
-				'actions' => array('login', 'changeLanguage', 'changeTheme')
-			),
-			array('allow',  // allow all users to perform 'list' and 'show' actions
-				'expression' => !Yii::app()->user->isGuest,
-			),
-			array('deny',  // deny all users
+				'actions' => array('login', 'changeLanguage', 'changeTheme'),
 				'users'=>array('*'),
+			),
+			array('deny',  // deny authenticated users
+				'users'=>array('?'),
 			),
 		);
 
@@ -66,23 +64,40 @@ class SiteController extends CController
 	{
 		$this->layout = "login";
 
-
 		// Languages
-		$availableLanguages = array(
-			'de'=>'Deutsch',
-			'en'=>'English',
-		);
+		$availableLanguages = FileHelper::readDirectory('protected/messages', false, 'dir');
+
+		$currentLanguage = Yii::app()->getLanguage();
 
 		$languages = array();
 		foreach($availableLanguages AS $key=>$language) {
 
+			$full = substr($language, strrpos($language, '/')+1);
+			$short = substr($full, 0, 2);
+
+			// Don't display containers
+			if($short == $full || $full == $currentLanguage)
+				continue;
+
 			$languages[] = array(
-				'label'=>Yii::t('language', $language),
-				'icon'=>'images/country/' . $key . '.png',
-				'url'=>Yii::app()->request->baseUrl . '/site/changeLanguage/' . $key,
+				'label'=>Yii::t('language', $full),
+				'icon'=>'images/country/' . $short . '.png',
+				'url'=>Yii::app()->request->baseUrl . '/site/changeLanguage/' . $full,
 				'htmlOptions'=>array('class'=>'icon'),
 			);
 
+		}
+
+		$availableThemes = Yii::app()->getThemeManager()->getThemeNames();
+
+		$themes = array();
+		foreach($availableThemes AS $theme) {
+			$themes[] = array(
+				'label'=> ucfirst($theme),
+				'icon'=> 'themes/' . $theme . '/images/icon.png',
+				'url'=>Yii::app()->request->baseUrl . '/site/changeTheme/' . $theme,
+				'htmlOptions'=>array('class'=>'icon'),
+			);
 		}
 
 		// Hosts
@@ -91,7 +106,6 @@ class SiteController extends CController
 			'localhost'=>'localhost',
 			'127.0.0.1'=>'127.0.0.1',
 		);
-
 
 		$form=new LoginForm;
 		// collect user input data
@@ -102,12 +116,12 @@ class SiteController extends CController
 			if($form->validate())
 				$this->redirect(Yii::app()->user->returnUrl);
 		}
-		// display the login form
 
 		$this->render('login',array(
 			'form'=>$form,
 			'languages'=>$languages,
 			'hosts'=>$hosts,
+			'themes'=>$themes,
 		));
 	}
 

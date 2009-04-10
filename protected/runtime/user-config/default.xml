@@ -4,6 +4,7 @@
 	<language>en_US</language>
 	<sidebarState>open</sidebarState>
 	<sidebarWidth>250</sidebarWidth>
+	<profiling>0</profiling>
 	<entriesPerPage scope="databases.tables">200</entriesPerPage>
 	<entriesPerPage scope="databases.tables.browse">30</entriesPerPage>
 	<bookmarks scope="database"></bookmarks>

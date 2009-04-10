@@ -57,8 +57,9 @@ $(document).ready(function() {
 			<?php $this->widget('application.components.MainMenu',array(
 				'items'=>array(
 						array(
-							'label'=>'<img src="themes/' . Yii::app()->getTheme()->name . '/images/icon.png" alt="" title="" /><span>' . ucfirst(Yii::app()->getTheme()->name) . "</span>",
-							'url'=>array('#'),
+							'label' => ucfirst(Yii::app()->getTheme()->name),
+							'icon' => '../../../../themes/' . Yii::app()->getTheme()->name . '/images/icon',
+							'url' => 'javascript:void(0);',
 							'htmlOptions' => array(
 								'style'=>'width: 150px;',
 								'class'=>'icon',
@@ -66,7 +67,8 @@ $(document).ready(function() {
 							),
 						),
 						array(
-							'label'=>'<img src="images/country/' . substr(Yii::app()->getLanguage(),0,2) . '.png" alt="" title="" /><span>' . Yii::t('language', Yii::app()->getLanguage()) . "</span>",
+							'label' => Yii::t('language', Yii::app()->getLanguage()),
+							'icon' => '../../../country/' . substr(Yii::app()->getLanguage(),0,2),
 							'url'=>array('#'),
 							'htmlOptions' => array(
 								'style'=>'width: 150px;',
@@ -81,7 +83,6 @@ $(document).ready(function() {
   </div>
 
   <div class="ui-layout-center">
-
   		<% echo $content; %>
   </div>
 

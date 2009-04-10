@@ -1,9 +1,15 @@
-<div id="languageSelect" style="display: none;" class="dropdown">
-	<com:Select items={$languages} />
-</div>
-<div id="themeSelect" style="display: none;" class="dropdown">
-	<com:Select items={$languages} />
-</div>
+<?php if(count($languages) > 0) {?>
+	<div id="languageSelect" style="display: none;" class="dropdown">
+		<com:Dropdown items={$languages} />
+	</div>
+<?php } ?>
+
+<?php if(count($themes) > 0) { ?>
+	<div id="themeSelect" style="display: none;" class="dropdown">
+		<com:Dropdown items={$themes} />
+	</div>
+<?php } ?>
+
 <div id="login">
 	<div style="text-align: center; margin-bottom: 10px;">
 	<img src="<% echo Yii::app()->request->baseUrl . "/images/logo.png"; %>" />

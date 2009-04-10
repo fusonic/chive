@@ -27,6 +27,7 @@
 	<entry id="drop">Drop</entry>
 	
 	<entry id="indices">Indices</entry>
+	<entry id="noIndicesAvailable">No indices available</entry>
 	<entry id="key">Key</entry>
 	<entry id="action">Action</entry>
 	<entry id="cardinality">Cardinality</entry>

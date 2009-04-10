@@ -43,21 +43,21 @@
 				</td>
 				<td><%= $column->COLUMN_TYPE %></td>
 				<td>
-					<?php if(!is_null($column->COLLATION_NAME)): ?>
+					<?php if(!is_null($column->COLLATION_NAME)) { ?>
 						<dfn class="collation" title="<?php echo Collation::getDefinition($column->COLLATION_NAME); ?>">
 							<?php echo $column->COLLATION_NAME; ?>
 						</dfn>
-					<?php endif; ?>
+					<?php } ?>
 				</td>
 				<td>
 					<?php echo Yii::t('core', strtolower($column->IS_NULLABLE)); ?>
 				</td>
 				<td>
-					<?php if(is_null($column->COLUMN_DEFAULT) && $column->IS_NULLABLE == 'YES'): ?>
+					<?php if(is_null($column->COLUMN_DEFAULT) && $column->IS_NULLABLE == 'YES') { ?>
 						<span class="null">NULL</span>
-					<?php else: ?>
+					<?php } else { ?>
 						<?php echo $column->COLUMN_DEFAULT; ?>
-					<?php endif; ?>
+					<?php } ?>
 				</td>
 				<td><?php echo $column->EXTRA; ?></td>
 				<td class="center">
@@ -65,7 +65,7 @@
 						<com:Icon name="browse" size="16" text="schema.browseDistinctValues" title={Yii::t('database','browseDistinctValues')} />
 					</a>
 				</td>
-				<td><com:Icon name="arrow_move" size="16" text="core.move" /></td>
+				<td><com:Icon name="arrow_move" size="16" text="core.move" htmlOptions={array('style'=>'cursor: pointer;')} /></td>
 				<td>
 					<a href="javascript:void(0)" onclick="editColumn('<?php echo $column->COLUMN_NAME; ?>')" class="icon">
 						<com:Icon name="edit" size="16" text="core.edit"/>
@@ -125,22 +125,29 @@
 		</tr>
 	</thead>
 	<tbody>
-		<?php foreach($indices AS $key=>$index) { ?>
+		<?php if(count($indices) > 0) { ?>
+			<?php foreach($indices AS $key=>$index) { ?>
+				<tr>
+					<td><?php echo $index[0]->INDEX_NAME; ?></td>
+					<td><?php echo $index[0]->getType(); ?></td>
+					<td><?php echo $index[0]->CARDINALITY; ?></td>
+					<td><com:Icon name="edit" size="16" text="core.edit" /></td>
+					<td><com:Icon name="delete" size="16" text="core.delete" /></td>
+					<td>
+						<?php foreach($index AS $column) {?>
+							<?php echo $column->COLUMN_NAME; ?><br/>
+						<?php } ?>
+					</td>
+				</tr>
+			<?php } ?>
+		<?php } else { ?>
 			<tr>
-				<td><?php echo $index[0]->INDEX_NAME; ?></td>
-				<td><?php echo $index[0]->getType(); ?></td>
-				<td><?php echo $index[0]->CARDINALITY; ?></td>
-				<td><com:Icon name="edit" size="16" text="core.edit" /></td>
-				<td><com:Icon name="delete" size="16" text="core.delete" /></td>
-				<td>
-					<?php foreach($index AS $column) {?>
-						<?php echo $column->COLUMN_NAME; ?><br/>
-					<?php } ?>
-				</td>
+				<td colspan="6"><?php Yii::t('database', 'noIndicesAvailable')?></td>
 			</tr>
 		<?php } ?>
 	</tbody>
 </table>
+
 <table class="list" style="width: 25%; float: left; margin-right: 10px;">
 	<colgroup>
 		<col />
@@ -190,7 +197,11 @@
 		</tr>
 		<tr>
 			<td><?php echo Yii::t('database', 'collation'); ?></td>
-			<td><?php echo $table->TABLE_COLLATION; ?></td>
+			<td>
+				<dfn class="collation" title="<?php echo Collation::getDefinition($table->TABLE_COLLATION); ?>">
+					<?php echo $table->TABLE_COLLATION; ?>
+				</dfn>
+			</td>
 		</tr>
 		<tr>
 			<td><?php echo Yii::t('database', 'rows'); ?></td>
@@ -212,11 +223,11 @@
 		<?php } ?>
 		<tr>
 			<td><?php echo Yii::t('core', 'creationDate'); ?></td>
-			<td><?php echo Yii::app()->getDateFormatter()->formatDateTime($table->CREATE_TIME, 'short', 'short'); ?></td>
+			<td><?php echo ($table->CREATE_TIME ? Yii::app()->getDateFormatter()->formatDateTime($table->CREATE_TIME, 'short', 'short') : '-'); ?></td>
 		</tr>
 		<tr>
 			<td><?php echo Yii::t('core', 'lastUpdateDate'); ?></td>
-			<td><?php echo Yii::app()->getDateFormatter()->formatDateTime($table->UPDATE_TIME, 'short', 'short'); ?></td>
+			<td><?php echo ($table->UPDATE_TIME ? Yii::app()->getDateFormatter()->formatDateTime($table->UPDATE_TIME, 'short', 'short') : '-'); ?></td>
 		</tr>
 		<tr>
 			<td><?php echo Yii::t('core', 'lastCheckDate'); ?></td>

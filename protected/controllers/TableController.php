@@ -23,7 +23,7 @@ class TableController extends CController
 	/**
 	 * @var Default layout for this controller
 	 */
-	public $layout = 'schema';
+	public $layout = '_table';
 
 	public function __construct($id, $module=null) {
 
@@ -36,10 +36,6 @@ class TableController extends CController
 		$this->_db = new CDbConnection('mysql:host='.Yii::app()->user->host.';dbname=' . $this->schema, Yii::app()->user->name, Yii::app()->user->password);
 		$this->_db->charset='utf8';
 		$this->_db->active = true;
-
-		if(Yii::app()->request->isAjaxRequest) {
-			$this->layout = "table";
-		}
 
 		parent::__construct($id, $module);
 
@@ -129,6 +125,9 @@ class TableController extends CController
 		{
 			// Fetch data
 			$data = $cmd->queryAll();
+
+			#$data=array();
+			#$cmd->execute();
 
 			$total = (int)$db->createCommand('SELECT FOUND_ROWS()')->queryScalar();
 			$pages->setItemCount($total);

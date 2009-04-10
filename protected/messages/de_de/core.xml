@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<category id="core">
+	<entry id="username">Benutzrnama</entry>
+	<entry id="password">Din Key..</entry>
+	<entry id="host">WO?</entry>
+	<entry id="edit">Edit</entry>
+	<entry id="delete">Delete</entry>
+	<entry id="loading">Loading</entry>
+</category>

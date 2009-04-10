@@ -1,0 +1,10 @@
+@CHARSET "UTF-8";
+
+@media screen, projection
+{
+  
+  img.icon.disabled {
+  	opacity: 0.4;
+  }
+  
+}

@@ -1,17 +1,4 @@
 /*
- * Edit database
- */
-
-function editDatabase(db)
-{
-	return;
-	$('#databases_' + db).appendForm('databases/update?schema=' + db);
-}
-
-var schema = '';
-var table = '';
-
-/*
  * Truncate table
  */
 
@@ -76,6 +63,7 @@ $(document).ready(function() {
 					table: table,
 					schema: schema,
 				}, function() {
+					handleAjaxRequest(responseText);
 					window.location.href = baseUrl + '/database/' + schema;
 				});
 				
@@ -85,3 +73,4 @@ $(document).ready(function() {
 	});
 	
 });
+

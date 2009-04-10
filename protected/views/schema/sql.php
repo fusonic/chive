@@ -6,36 +6,23 @@
 	</div>
 <?php } ?>
 
-<table style="width: 100%;">
-	<tr>
-		<td style="width: 80%;">
-			<com:application.extensions.CodePress.CodePress language="sql" name="query" width="100%" height="80px" autogrow="true" value={$query} />
-		</td>
-		<td style="vertical-align: top; padding: 10px;">
-			<a class="icon" href="javascript:void(0);">
-				<?php $this->widget('Icon', array(
-					'name'=>'bookmark',
-					'size'=>16,
-					'htmlOptions'=>array(
-						'onclick'=>'addBookmark("' . $this->schema . '", query.getCode());'
-					),
-				)); ?>
-				<span><?php echo Yii::t('core', 'bookmark'); ?></span>
-			</a>
-			<br/><br/>
-			<a class="icon" href="javascript:void(0);">
-				<?php $this->widget('Icon', array(
-					'name'=>'chart',
-					'size'=>16,
-					'htmlOptions'=>array(
-						'onclick'=>'toggleProfiling();'
-					),
-				)); ?>
-				<span><?php echo Yii::t('database', 'profiling'); ?></span>
-			</a>
-		</td>
-	</tr>
-</table>
+<com:application.extensions.CodePress.CodePress language="sql" name="query" width="100%" height="80px" autogrow="true" value={$query} />
+
+<a class="icon" href="javascript:void(0);">
+	<?php $this->widget('Icon', array(
+		'name'=>'bookmark',
+		'size'=>24,
+		'htmlOptions'=>array(
+			'onclick'=>'$.post(baseUrl + "/ajaxSettings/add", {
+					name: "bookmarks",
+					value: query.getCode(),
+					scope: "database",
+					object: "' . $this->schema . '"
+				}
+			);',
+		),
+	)); ?>
+</a>
 
 <div class="buttons">
 	<?php echo CHtml::submitButton('Execute'); ?>

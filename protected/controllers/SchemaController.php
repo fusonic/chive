@@ -13,8 +13,10 @@ class SchemaController extends CController
 	 * @var CActiveRecord the currently loaded data model instance.
 	 */
 	private $_schema;
+	private $_db;
 
 	public $schema;
+	public $isSent;
 
 	/**
 	 * @var Default layout for this controller
@@ -23,11 +25,18 @@ class SchemaController extends CController
 
 	public function __construct($id, $module=null) {
 
-		if(Yii::app()->request->isAjaxRequest)
-			$this->layout = false;
-
 		$request = Yii::app()->getRequest();
 		$this->schema = $request->getParam('schema');
+
+		if($request->isAjaxRequest && $this->schema)
+			$this->layout = '_schema';
+
+		elseif($request->isAjaxRequest)
+			$this->layout = false;
+
+		$this->_db = new CDbConnection('mysql:host='.Yii::app()->user->host.';dbname=' . $this->schema, Yii::app()->user->name, Yii::app()->user->password);
+		$this->_db->charset='utf8';
+		$this->_db->active = true;
 
 		parent::__construct($id, $module);
 
@@ -100,6 +109,82 @@ class SchemaController extends CController
 		));
 	}
 
+	public function actionSql() {
+
+		$db = $this->_db;
+
+		$request = Yii::app()->getRequest();
+
+		if($query = $request->getParam('query')) {
+
+			$pages = new CPagination;
+			$pages->setPageSize(self::PAGE_SIZE);
+
+			$sort = new Sort($db);
+			$sort->multiSort = false;
+
+			$sort->route = '/schema/sql';
+
+			$oSql = new Sql($query);
+			$oSql->applyCalculateFoundRows();
+
+			if(!$oSql->hasLimit)
+			{
+				$offset = (isset($_GET['page']) ? (int)$_GET['page'] : 1) * self::PAGE_SIZE - self::PAGE_SIZE;
+				$oSql->applyLimit(self::PAGE_SIZE, $offset, true);
+			}
+
+			$oSql->applySort($sort->getOrder(), true);
+
+			$query = $oSql->getOriginalQuery();
+
+			$cmd = $db->createCommand($oSql->getQuery());
+			$cmd->prepare();
+
+			try
+			{
+				// Fetch data
+				$data = $cmd->queryAll();
+
+				$total = (int)$db->createCommand('SELECT FOUND_ROWS()')->queryScalar();
+				$pages->setItemCount($total);
+
+				$columns = array();
+
+				// Fetch column headers
+				if($total > 0) {
+					$columns = array_keys($data[0]);
+				}
+
+
+			}
+			catch (Exception $ex)
+			{
+				$error = $ex->getMessage();
+			}
+
+		}
+
+		$this->render('sql', array(
+			'data' => $data,
+			'columns' => $columns,
+			'query' => $query,
+			'pages' => $pages,
+			'sort' => $sort,
+			'error' => $error,
+		));
+
+	}
+
+	public function actionBookmark() {
+
+		$bookmarks = Yii::app()->user->settings->get('bookmarks', 'database', $this->schema);
+
+		$cmd = new CDbCommand($this->_db, $bookmarks[Yii::app()->getRequest()->getParam('id')]);
+		$cmd->execute();
+
+	}
+
 	/**
 	 * Creates a new user.
 	 * If creation is successful, the browser will be redirected to the 'show' page.
@@ -163,7 +248,9 @@ class SchemaController extends CController
 	 */
 	public function actionDrop()
 	{
-		foreach($_POST['schema'] AS $schema)
+		$schemata = (array)$_POST['schema'];
+
+		foreach($schemata AS $schema)
 		{
 			try
 			{

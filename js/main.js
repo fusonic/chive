@@ -1,4 +1,6 @@
 var currentLocation = window.location.href;
+var mainMenu;
+var profiling;
 
 function checkLocation() {
 
@@ -124,7 +126,7 @@ $(document).ready(function()
 	});
 
 	// ACCORDION - inside the West pane
-	var myAccordion = $("#MainMenu").accordion({
+	mainMenu = $("#MainMenu").accordion({
 		animated: "slide",
 		addClasses: false,
 		autoHeight: true,

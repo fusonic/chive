@@ -1,0 +1,14 @@
+@CHARSET "UTF-8";
+
+@media screen, projection
+{
+
+	/*
+	 * Search field
+	 */	
+	input.search {
+		background: url(../../../images/icons/fugue/16/search.png) 2px 3px no-repeat;
+		padding-left: 22px;
+	}
+	
+}

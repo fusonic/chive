@@ -66,8 +66,14 @@ class CXmlMessageSource extends CMessageSource {
 
 			return $messages;
 		}
+		elseif(count($parentMessages) > 0)
+		{
+			return $parentMessages;
+		}
 		else
+		{
 			return array();
+		}
 
 	}
 
