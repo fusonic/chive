@@ -78,7 +78,7 @@
 						</a>
 					</td>
 					<td>
-						<a href="" class="icon">
+						<a href="javascript:void(0);" class="icon" onclick="deleteRow($(this).parent().parent());">
 							<com:Icon name="delete" size="16" text="core.edit" />
 						</a>
 					</td>
