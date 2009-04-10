@@ -48,7 +48,7 @@ class SchemaController extends CController
 	public function filters()
 	{
 		return array(
-			'accessControl', // perform access control for CRUD operations
+			'accessControl',
 		);
 	}
 
@@ -60,11 +60,8 @@ class SchemaController extends CController
 	public function accessRules()
 	{
 		return array(
-			array('allow',  // allow all users to perform 'list' and 'show' actions
-					'expression' => !Yii::app()->user->isGuest,
-			),
-			array('deny',  // deny all users
-					'users'=>array('*'),
+			array('deny',
+					'users'=>array('?'),
 			),
 		);
 	}

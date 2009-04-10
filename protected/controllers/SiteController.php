@@ -34,7 +34,7 @@ class SiteController extends CController
 				'actions' => array('login', 'changeLanguage', 'changeTheme'),
 				'users'=>array('*'),
 			),
-			array('deny',  // deny authenticated users
+			array('deny',
 				'users'=>array('?'),
 			),
 		);
