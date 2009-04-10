@@ -3,6 +3,8 @@
 class Column extends CActiveRecord
 {
 
+	public $COLLATION_NAME = Collation::DEFAULT_COLLATION;
+
 	public static $db;
 
 	public function __construct($attributes=array(), $scenario='') {
@@ -72,10 +74,12 @@ class Column extends CActiveRecord
 			'COLUMN_DEFAULT',
 			'isNullable',
 			'dataType',
-			'precision',
+			'size',
+			'scale',
 			'collation',
 			'autoIncrement',
 			'COLUMN_COMMENT',
+			'COLLATION_NAME',
 		);
 	}
 
@@ -101,6 +105,7 @@ class Column extends CActiveRecord
 			'COLUMN_NAME' => Yii::t('core', 'name'),
 			'COLLATION_NAME' => Yii::t('database', 'collation'),
 			'COLUMN_COMMENT' => Yii::t('core', 'comment'),
+			'size' => Yii::t('core', 'size'),
 		);
 	}
 
@@ -144,17 +149,37 @@ class Column extends CActiveRecord
 		$this->CHARACTER_SET_NAME = $data[0];
 	}
 
-	public function getPrecision()
+	public function getSize()
 	{
-		if(preg_match('/^\w+\((\d+)\)$/', $this->COLUMN_TYPE, $res))
+		if(preg_match('/^\w+\((\d+)(,\d+)?\)$/', $this->COLUMN_TYPE, $res))
 		{
 			return $res[1];
 		}
 	}
 
-	public function setPrecision($value)
+	public function setSize($value)
 	{
-		$this->COLUMN_TYPE = $this->DATA_TYPE . '(' . $value . ')';
+		$this->COLUMN_TYPE = $this->DATA_TYPE . ($value ? '(' . $value . ')' : '');
+	}
+
+	public function getScale()
+	{
+		if(preg_match('/^\w+\((\d+)(,\d+)?\)$/', $this->COLUMN_TYPE, $res))
+		{
+			if(isset($res[2]))
+			{
+				return substr($res[2], 1);
+			}
+			else
+			{
+				return 0;
+			}
+		}
+	}
+
+	public function setScale($value)
+	{
+		$this->COLUMN_TYPE = $this->DATA_TYPE . ($this->size ? '(' . $this->size . (!is_null($value) ? ',' . $value : '') . ')' : '');
 	}
 
 	public function getDataType()
@@ -164,8 +189,10 @@ class Column extends CActiveRecord
 
 	public function setDataType($value)
 	{
-		$precision = $this->precision;
-		$this->COLUMN_TYPE = $value . ($this->precision ? '(' . $this->precision . ')' : '');
+		$size = $this->getSize();
+		$scale = $this->getScale();
+		$this->DATA_TYPE = $value;
+		$this->COLUMN_TYPE = $value . ($size ? '(' . $size . ($scale ? ',' . $scale : '') . ')' : '');
 	}
 
 	public function getIsPartOfPrimaryKey($indices = null)
@@ -186,20 +213,28 @@ class Column extends CActiveRecord
 		return $res;
 	}
 
-	public function move($command)
+	public function getColumnDefinition()
 	{
+		if(DataType::supportsCollation($this->DATA_TYPE))
+		{
+			$collate = ' CHARACTER SET ' . Collation::getCharacterSet($this->COLLATION_NAME) . ' COLLATE ' . $this->COLLATION_NAME;
+		}
+		else
+		{
+			$collate = '';
+		}
 
-		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME)
-			. ' MODIFY ' . self::$db->quoteColumnName($this->COLUMN_NAME)
-			. ' ' . $this->COLUMN_TYPE
+		return self::$db->quoteColumnName($this->COLUMN_NAME)
+			. ' ' . $this->COLUMN_TYPE . $collate
 			. ' ' . ($this->IS_NULLABLE == 'YES' ? 'NULL' : 'NOT NULL')
-			. ' ' . ($this->COLUMN_DEFAULT || $this->IS_NULLABLE ? 'DEFAULT :defaultValue' : '')
+			. ' ' . ($this->COLUMN_DEFAULT ? 'DEFAULT :defaultValue' : ($this->getIsNullable() ? 'DEFAULT NULL' : ''))
 			. ' ' . ($this->EXTRA == 'auto_increment' ? 'AUTO_INCREMENT' : '')
-			. ' ' . (strlen($this->COLUMN_COMMENT) ? 'COMMENT :comment' : '')
-			. ' ' . (substr($command, 0, 6) == 'AFTER ' ? 'AFTER ' . self::$db->quoteColumnName(substr($command, 6)) : 'FIRST');
+			. ' ' . (strlen($this->COLUMN_COMMENT) ? 'COMMENT :comment' : '');
+	}
 
-		$sql = new CDbCommand(self::$db, $sql);
-		if($this->COLUMN_DEFAULT || $this->IS_NULLABLE)
+	protected function bindColumnDefinitionValues($sql)
+	{
+		if($this->COLUMN_DEFAULT)
 		{
 			$sql->bindParam('defaultValue', $this->COLUMN_DEFAULT, PDO::PARAM_STR);
 		}
@@ -207,8 +242,58 @@ class Column extends CActiveRecord
 		{
 			$sql->bindParam('comment', $this->COLUMN_COMMENT, PDO::PARAM_STR);
 		}
-		return $sql->execute();
+	}
 
+	public function move($command)
+	{
+
+		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME)
+			. ' MODIFY ' . $this->getColumnDefinition()
+			. ' ' . (substr($command, 0, 6) == 'AFTER ' ? 'AFTER ' . self::$db->quoteColumnName(substr($command, 6)) : 'FIRST');
+
+		$cmd = new CDbCommand(self::$db, $sql);
+		$this->bindColumnDefinitionValues($cmd);
+		return $cmd->execute();
+
+	}
+
+	public function update()
+	{
+		if($this->getIsNewRecord())
+		{
+			throw new CDbException(Yii::t('yii','The active record cannot be updated because it is new.'));
+		}
+		if(!$this->beforeSave())
+		{
+			return false;
+		}
+
+		// @todo(mburtscher): Work with parameters!
+		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME)
+			. ' MODIFY ' . $this->getColumnDefinition();
+
+		$cmd = new CDbCommand(self::$db, $sql);
+		$this->bindColumnDefinitionValues($cmd);
+		try
+		{
+			$cmd->prepare();
+			$cmd->execute();
+			$this->afterSave();
+			return true;
+		}
+		catch(CDbException $ex)
+		{
+			$errorInfo = $cmd->getPdoStatement()->errorInfo();
+			$this->addError('COLUMN_NAME', Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
+			$this->afterSave();
+			return false;
+		}
+	}
+
+	public function afterSave()
+	{
+		$this->refresh();
+		parent::afterSave();
 	}
 
 	public static function getDataTypes()

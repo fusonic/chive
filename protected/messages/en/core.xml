@@ -21,5 +21,7 @@
 	<entry id="yes">Yes</entry>
 	<entry id="no">No</entry>
 	
+	<entry id="withSelected">With selected: </entry>
+	
 	<entry id="bookmarks">Bookmarks</entry>
 </category>

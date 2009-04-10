@@ -28,8 +28,7 @@
 			<th><%= Yii::t('database','collation'); %></th>
 			<th><%= Yii::t('database','null'); %></th>
 			<th><%= Yii::t('database','default'); %></th>
-			<th><%= Yii::t('database','extra'); %></th>
-			<th colspan="8" />
+			<th colspan="9"><%= Yii::t('database','extra'); %></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -84,7 +83,24 @@
 			</tr>
 		<?php } ?>
 	</tbody>
+	<tfoot>
+		<tr>
+			<th colspan="14"><?php echo Yii::t('database', 'XColumns', array('{count}' => count($table->columns))); ?></th>
+		</tr>
+	</tfoot>
 </table>
+<div class="withSelected">
+	<span class="icon">
+		<com:Icon name="arrow_turn_090" size="16" />
+		<span><?php echo Yii::t('core', 'withSelected'); ?></span>
+	</span>
+	<a class="icon" href="#">
+		<com:Icon name="delete" size="16" />
+		<span><?php echo Yii::t('database', 'drop'); ?></span>
+	</a>
+</div>
+
+
 <br/>
 
 <table class="list" style="width: 42%; float: left;margin-right: 10px;">
@@ -163,13 +179,7 @@
 	<thead>
 		<tr>
 			<th colspan="2">
-
 				<?php echo Yii::t('core', 'information'); ?>
-				<span class="icon">
-					<com:Icon name="edit" size="16" text="core.information" />
-					<span><?php echo Yii::t('core', 'information'); ?></span>
-				</span>
-
 			</th>
 		</tr>
 	</thead>

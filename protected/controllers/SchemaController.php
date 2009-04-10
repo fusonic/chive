@@ -281,16 +281,4 @@ class SchemaController extends CController
 		}
 	}
 
-/*	public function createUrl($route,$params=array(),$ampersand='&')
-	{
-		if($route==='')
-			$route=$this->getId() . '/' . $this->getAction()->getId();
-		else if(strpos($route,'/') === false)
-			$route=$this->getId() . '/' . $route;
-		if($route[0]!=='/' && ($module=$this->getModule())!==null)
-			$route=$module->getId().'/'.$route;
-
-		return Yii::app()->createUrl(trim($route,'/'),$params,$ampersand);
-	}*/
-
 }

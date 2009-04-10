@@ -2,6 +2,9 @@
 
 class Collation extends CActiveRecord
 {
+	const DEFAULT_CHARACTER_SET = 'utf8';
+	const DEFAULT_COLLATION = 'utf8_general_ci';
+
 	public $collationGroup;
 
 	public function __construct($attributes=array(), $scenario='') {
@@ -90,6 +93,12 @@ class Collation extends CActiveRecord
 			$text .= ' (' . Yii::t('collation', $data[2]) . ')';
 		}
 		return $text;
+	}
+
+	public static function getCharacterSet($collation)
+	{
+		$data = explode('_', $collation);
+		return $data[0];
 	}
 
 }

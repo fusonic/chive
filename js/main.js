@@ -89,12 +89,16 @@ $(document).ready(function()
 		west__initClosed: userSettings.sidebarState == 'closed',
 		west__onresize_end: function () {
 			myAccordion.accordion('resize');
-			// Save
-			$.post(baseUrl + '/ajaxSettings/set', {
-					name: 'sidebarWidth',
-					value: $('.ui-layout-west').width()
-				}
-			);
+			if($('.ui-layout-west').width() != userSettings.sidebarWidth)
+			{
+				// Save
+				userSettings.sidebarWidth = $('.ui-layout-west').width(); 
+				$.post(baseUrl + '/ajaxSettings/set', {
+						name: 'sidebarWidth',
+						value: $('.ui-layout-west').width()
+					}
+				);
+			}
 			return;
 		},
 		west__onclose_end: function () {

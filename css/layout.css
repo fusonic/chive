@@ -94,23 +94,7 @@
   a:focus,
   a:hover,
   a:active { color:#000; text-decoration:underline; }
-  
-  a.icon {
-  	text-decoration: none !important;
-	margin: auto;
-	white-space: nowrap;
-  }
-  
-  a.icon img {
-	border: none;
-	vertical-align: middle;	
-  }
-  
-  a.icon span {
-  	margin-left: 2px;
-  	text-decoration: underline;
-	vertical-align: middle;
-  }
+ 
 
  /**
   * ------------------------------------------------------------------------------------------------- #

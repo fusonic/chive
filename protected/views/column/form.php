@@ -6,19 +6,19 @@ var idPrefix = '<?php echo CHtml::$idPrefix; ?>';
 
 <?php if($isSubmitted && !$column->isNewRecord): ?>
 	<script type="text/javascript">
-	/*
-	$("#<%= $helperId %>").parents("tr").prev().effect("highlight", {}, 2000);
-	$("#<%= $helperId %>").parents("tr").prev().find("td dfn.collation").html("<%= $database->DEFAULT_COLLATION_NAME %>");
-	$("#<%= $helperId %>").parents("tr").prev().find("td dfn.collation").attr("title", "<%= $database->collation->definition %>");
-	$("#<%= $helperId %>").parent().slideUp(500, function() {
-		$("#<%= $helperId %>").parents("tr").remove();
+	var row = $('#' + idPrefix).parents("tr").prev();
+	row.children('td:eq(1)').html('<?php echo $column->COLUMN_NAME; ?>');
+	row.children('td:eq(2)').html('<?php echo $column->COLUMN_TYPE; ?>');
+	row.children('td:eq(3)').html('<?php echo ($column->COLLATION_NAME ? '<dfn class="collation" title="' . Collation::getDefinition($column->COLLATION_NAME) . '">' . $column->COLLATION_NAME . '</dfn>' : ''); ?>');
+	row.children('td:eq(4)').html('<?php echo Yii::t('core', ($column->isNullable ? 'yes' : 'no')); ?>');
+	row.children('td:eq(5)').html('<?php echo ($column->COLUMN_DEFAULT ? $column->COLUMN_DEFAULT : ($column->isNullable ? '<span class="null">NULL</span>' : '')); ?>');
+	$('#' + idPrefix).parent().slideUp(500, function() {
+		$('#' + idPrefix).parents("tr").remove();
 	});
-	*/
 	</script>
 <?php endif; ?>
 
-
-<?php echo CHtml::form('', 'post'); ?>
+<?php echo CHtml::form('', 'post', array('id' => CHtml::$idPrefix)); ?>
 	<h1>
 		<?php echo Yii::t('database', ($column->isNewRecord ? 'addColumn' : 'editColumn')); ?>
 	</h1>
@@ -29,15 +29,23 @@ var idPrefix = '<?php echo CHtml::$idPrefix; ?>';
 			<?php echo CHtml::activeTextField($column, 'COLUMN_NAME'); ?>
 		</fieldset>
 		<fieldset id="<?php echo CHtml::$idPrefix; ?>dataTypeSet">
-			<legend><?php echo CHtml::activeLabel($column,'DATA_TYPE'); ?></legend>
-			<?php echo CHtml::activeDropDownList($column, 'DATA_TYPE', Column::getDataTypes()); ?>
-			<fieldset class="datatypeSetting stringSetting">
+			<legend><?php echo CHtml::activeLabel($column,'dataType'); ?></legend>
+			<?php echo CHtml::activeDropDownList($column, 'dataType', Column::getDataTypes()); ?>
+			<fieldset class="datatypeSetting char varchar binary varbinary blob text bit tinyint smallint mediumint int bigint float double decimal year">
+				<legend><?php echo CHtml::activeLabel($column,'size'); ?></legend>
+				<?php echo CHtml::activeTextField($column, 'size'); ?>
+			</fieldset>
+			<fieldset class="datatypeSetting float double decimal">
+				<legend><?php echo CHtml::activeLabel($column,'scale'); ?></legend>
+				<?php echo CHtml::activeTextField($column, 'scale'); ?>
+			</fieldset>
+			<fieldset class="datatypeSetting char varchar tinytext smalltext text mediumtext longtext enum set">
 				<legend><?php echo CHtml::activeLabel($column,'COLLATION_NAME'); ?></legend>
 				<?php echo CHtml::activeDropDownList($column, 'COLLATION_NAME', CHtml::listData($collations, 'COLLATION_NAME', 'COLLATION_NAME', 'collationGroup'), array('onchange'=>'dataTypeChanged()')); ?>
 			</fieldset>
-			<fieldset class="datatypeSetting numericSetting charSetting varcharSetting">
-				<legend><?php echo CHtml::activeLabel($column,'precision'); ?></legend>
-				<?php echo CHtml::activeTextField($column, 'precision'); ?>
+			<fieldset class="datatypeSetting all">
+				<legend><?php echo CHtml::activeLabel($column,'COLUMN_DEFAULT'); ?></legend>
+				<?php echo CHtml::activeTextField($column, 'COLUMN_DEFAULT'); ?>
 			</fieldset>
 		</fieldset>
 	</div>

@@ -1,10 +1,10 @@
-<span id="<%= $helperId %>" />
+<span id="<?php echo $helperId; ?>" />
 
 <?php if($isSubmitted && !$schema->isNewRecord): ?>
 	<script type="text/javascript">
 	$("#<%= $helperId %>").parents("tr").prev().effect("highlight", {}, 2000);
-	$("#<%= $helperId %>").parents("tr").prev().find("td dfn.collation").html("<%= $schema->DEFAULT_COLLATION_NAME %>");
-	$("#<%= $helperId %>").parents("tr").prev().find("td dfn.collation").attr("title", "<%= $schema->collation->definition %>");
+	$("#<%= $helperId %>").parents("tr").prev().find("td dfn.collation").html("<?php echo $schema->DEFAULT_COLLATION_NAME; ?>");
+	$("#<%= $helperId %>").parents("tr").prev().find("td dfn.collation").attr("title", "<?php echo Collation::getDefinition($schema->DEFAULT_COLLATION_NAME); ?>");
 	$("#<%= $helperId %>").parent().slideUp(500, function() {
 		$("#<%= $helperId %>").parents("tr").remove();
 	});

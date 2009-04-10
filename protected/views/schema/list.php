@@ -62,15 +62,22 @@
 		</tbody>
 		<tfoot>
 			<tr>
-				<th colspan="5"><?php echo Yii::t('database', 'showingXSchemata', array('{count}' => $schemaCountThisPage, '{total}' => $schemaCount)); ?></th>
-				<th>
-					<a href="javascript:void(0)" class="icon" onclick="dropSchemata()">
-						<com:Icon name="delete" size="16" />
-					</a>
+				<th colspan="6">
+					<?php echo Yii::t('database', 'showingXSchemata', array('{count}' => $schemaCountThisPage, '{total}' => $schemaCount)); ?>
 				</th>
 			</tr>
 		</tfoot>
 	</table>
+	<div class="withSelected">
+		<span class="icon">
+			<com:Icon name="arrow_turn_090" size="16" />
+			<span><?php echo Yii::t('core', 'withSelected'); ?></span>
+		</span>
+		<a class="icon" href="javascript:void(0)" onclick="dropSchemata()">
+			<com:Icon name="delete" size="16" />
+			<span><?php echo Yii::t('database', 'drop'); ?></span>
+		</a>
+	</div>
 	<div style="float: right">
 		<a href="javascript:void(0)" onclick="$('#schemata').appendForm(baseUrl + '/schemata/create')">
 			Add a new schema (real)

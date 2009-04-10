@@ -32,6 +32,8 @@ class ColumnController extends CController
 
 	public function actionUpdate()
 	{
+		Column::$db = $this->_db;
+
 		$isSubmitted = false;
 		$column = Column::model()->findByPk(array('TABLE_SCHEMA' => $this->schema, 'TABLE_NAME' => $this->table, 'COLUMN_NAME' => $_GET['col']));
 		if(isset($_POST['Column']))
@@ -58,7 +60,6 @@ class ColumnController extends CController
 
 	public function actionMove()
 	{
-
 		Column::$db = $this->_db;
 
 		$pk = array(
@@ -69,7 +70,6 @@ class ColumnController extends CController
 		$column = Column::model()->findByPk($pk);
 
 		$column->move($_POST['command']);
-
 	}
 
 }

@@ -115,7 +115,14 @@ class UserSettingsManager
 		foreach($defaultXml->children() AS $setting)
 		{
 			$name = $setting->getName();
-			$value = unserialize((string)$setting);
+			if(isset($setting['serialized']))
+			{
+				$value = unserialize((string)$setting);
+			}
+			else
+			{
+				$value = (string)$setting;
+			}
 			$scope = (isset($setting['scope']) ? $setting['scope'] : null);
 			$object = (isset($settings['object']) ? $settings['object'] : null);
 
@@ -136,7 +143,20 @@ class UserSettingsManager
 				list($name, $scope) = $this->getSettingNameScope($key);
 				foreach($values AS $object => $value)
 				{
-					$settingXml = $xml->addChild($name, (is_array($value) ? serialize($vaule) : $value));
+					if(is_array($value))
+					{
+						$value = serialize($value);
+						$setSerialized = true;
+					}
+					else
+					{
+						$setSerialized = false;
+					}
+					$settingXml = $xml->addChild($name, $value);
+					if($setSerialized)
+					{
+						$settingXml['serialized'] = true;
+					}
 					if($scope)
 					{
 						$settingXml['scope'] = $scope;

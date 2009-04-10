@@ -7,4 +7,21 @@
   	opacity: 0.4;
   }
   
+  a.icon {
+  	text-decoration: none !important;
+	margin: auto;
+	white-space: nowrap;
+  }
+  
+  a.icon span {
+  	text-decoration: underline;
+  }
+  
+  div.ui-layout-center span.icon img.icon,
+  div.ui-layout-center a.icon img.icon {
+  	border: none;
+	position: relative;
+	top: 3px;
+  }
+  
 }
