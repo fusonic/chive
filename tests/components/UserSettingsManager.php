@@ -23,6 +23,8 @@ class UserSettingsManagerTest extends TestCase
 	{
 		$rand = mt_rand(0, 300);
 
+		$this->assertEquals(true, false);
+
 		// Set setting which has no scope/object
 		$this->mgr->set('sidebarWidth', $rand);
 		$this->assertEquals($rand, $this->mgr->get('sidebarWidth'));
