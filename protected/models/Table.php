@@ -3,6 +3,8 @@
 class Table extends CActiveRecord
 {
 
+	public static $db;
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return CActiveRecord the static model class
@@ -125,6 +127,48 @@ class Table extends CActiveRecord
 			return false;
 		}
 
+	}
+
+	public function dropIndex($index, $type)
+	{
+		$cmd = self::$db->createCommand('ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME)
+			. ' DROP INDEX ' . self::$db->quoteColumnName($index));
+		try
+		{
+			$cmd->prepare();
+			$cmd->execute();
+			return true;
+		}
+		catch(CDbException $ex)
+		{
+			throw $ex;
+			return false;
+		}
+	}
+
+	public function createIndex($index, $type, array $columns)
+	{
+		$columns = implode(', ', $columns);
+		if(strtolower($type) == 'primary')
+		{
+			$cmd = self::$db->createCommand('ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME)
+				. ' ADD PRIMARY KEY (' . $columns . ')');
+		}
+		else
+		{
+			$cmd = self::$db->createCommand('ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME)
+				. ' ADD ' . $type . ' ' . self::$db->quoteColumnName($index) . ' (' . $columns . ')');
+		}
+		try
+		{
+			$cmd->prepare();
+			$cmd->execute();
+			return true;
+		}
+		catch(CDbException $ex)
+		{
+			return false;
+		}
 	}
 
 }

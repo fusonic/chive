@@ -74,6 +74,39 @@ $(document).ready(function() {
 	});
 	
 	/*
+	 * Setup sortable indices
+	 */
+	
+	$('#indices ul').sortable({
+		update: function(event, ui) {
+			var tr = $(this).closest('tr');
+			var ul = $(this).closest('ul');
+			var indexName = tr.attr('id').substr(8);
+			var indexType = tr.children('td:eq(1)').text().trim();
+			
+			var columns = new Array();
+			ul.children('li').each(function() {
+				columns.push(this.id.replace(tr.attr('id') + '_', ''));
+			});
+			
+			// Do AJAX requests
+			$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/dropIndex', {
+					index: indexName,
+					type: indexType
+				}, function() {
+					$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/createIndex', {
+						index: indexName,
+						type: indexType,
+						'columns[]': columns
+					});
+				}
+			);
+			
+		} 
+	}).css('cursor', 'move');
+	
+	
+	/*
 	 * Setup dialog
 	 */
 	

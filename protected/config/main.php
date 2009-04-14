@@ -101,6 +101,8 @@ return array(
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/insert'=>'table/insert',
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/truncate'=>'table/truncate',
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/drop'=>'table/drop',
+					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/dropIndex'=>'table/dropIndex',
+					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/createIndex'=>'table/createIndex',
 
 					// Row
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/row/delete'=>'row/delete',

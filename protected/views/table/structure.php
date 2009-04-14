@@ -34,7 +34,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<?php foreach ($table->columns AS $column) { ?>
+			<?php foreach($table->columns AS $column) { ?>
 				<tr id="columns_<?php echo $column->COLUMN_NAME; ?>">
 					<td>
 						<?php if($column->getIsPartOfPrimaryKey($table->indices)): ?>
@@ -63,7 +63,9 @@
 					</td>
 					<td><?php echo $column->EXTRA; ?></td>
 					<td class="center"><com:Icon disabled="true" name="browse" size="16" text="schema.browseDistinctValues" title={Yii::t('database','browseDistinctValues')} /></td>
-					<td><com:Icon name="arrow_move" size="16" text="core.move" htmlOptions={array('style'=>'cursor: pointer;')} /></td>
+					<td>
+						<com:Icon name="arrow_move" size="16" text="core.move" htmlOptions={array('style'=>'cursor: pointer;')} />
+					</td>
 					<td>
 						<a href="javascript:void(0)" onclick="tableStructure.editColumn('<?php echo $column->COLUMN_NAME; ?>')" class="icon">
 							<com:Icon name="edit" size="16" text="core.edit" />
@@ -111,7 +113,7 @@
 
 <br/>
 
-<table class="list" style="width: 42%; float: left;margin-right: 10px;">
+<table id="indices" class="list" style="width: 42%; float: left;margin-right: 10px;">
 	<colgroup>
 		<col />
 		<col />
@@ -134,14 +136,18 @@
 	<tbody>
 		<?php if(count($indices) > 0) { ?>
 			<?php foreach($indices AS $key=>$index) { ?>
-				<tr>
+				<tr id="indices_<?php echo $key; ?>">
 					<td><?php echo $index[0]->INDEX_NAME; ?></td>
 					<td><?php echo $index[0]->getType(); ?></td>
 					<td><?php echo $index[0]->CARDINALITY; ?></td>
 					<td>
-						<?php foreach($index AS $column) {?>
-							<?php echo $column->COLUMN_NAME; ?><br/>
-						<?php } ?>
+						<ul>
+							<?php foreach($index AS $column) {?>
+								<li id="indices_<?php echo $key; ?>_<?php echo $column->COLUMN_NAME; ?>">
+									<?php echo $column->COLUMN_NAME; ?>
+								</li>
+							<?php } ?>
+						</ul>
 					</td>
 					<td><com:Icon name="edit" size="16" text="core.edit" /></td>
 					<td><com:Icon name="delete" size="16" text="core.delete" /></td>
@@ -149,7 +155,7 @@
 			<?php } ?>
 		<?php } else { ?>
 			<tr>
-				<td colspan="6"><?php Yii::t('database', 'noIndicesAvailable')?></td>
+				<td colspan="6"><?php echo Yii::t('database', 'noIndicesAvailable'); ?></td>
 			</tr>
 		<?php } ?>
 	</tbody>

@@ -347,6 +347,20 @@ class TableController extends CController
 
 	}
 
+	public function actionDropIndex()
+	{
+		Table::$db = $this->_db;
+		$table = $this->loadTable();
+		$table->dropIndex($_POST['index'], $_POST['type']);
+	}
+
+	public function actionCreateIndex()
+	{
+		Table::$db = $this->_db;
+		$table = $this->loadTable();
+		$table->createIndex($_POST['index'], $_POST['type'], (array)$_POST['columns']);
+	}
+
 	/*
 	 * Truncates the table
 	 */
@@ -404,31 +418,6 @@ class TableController extends CController
 		$this->render('list',array(
 			'schemaList'=>$schemaList,
 			'pages'=>$pages,
-		));
-	}
-
-	/**
-	 * Manages all users.
-	 */
-	public function actionAdmin()
-	{
-		$this->processAdminCommand();
-
-		$criteria=new CDbCriteria;
-
-		$pages=new CPagination(User::model()->count($criteria));
-		$pages->pageSize=self::PAGE_SIZE;
-		$pages->applyLimit($criteria);
-
-		$sort=new CSort('User');
-		$sort->applyOrder($criteria);
-
-		$userList=User::model()->findAll($criteria);
-
-		$this->render('admin',array(
-			'userList'=>$userList,
-			'pages'=>$pages,
-			'sort'=>$sort,
 		));
 	}
 
