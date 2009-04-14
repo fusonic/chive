@@ -22,6 +22,10 @@ class UserSettingsManagerTest extends TestCase
 	public function testSettings()
 	{
 		$rand = mt_rand(0, 300);
+		$rand2 = mt_rand(0, 300);
+
+		// Read default setting
+		$this->assertEquals(250, $this->mgr->get('sidebarWidth'));
 
 		// Set setting which has no scope/object
 		$this->mgr->set('sidebarWidth', $rand);
@@ -30,10 +34,15 @@ class UserSettingsManagerTest extends TestCase
 		// Set setting with scope
 		$this->mgr->set('entriesPerPage', $rand, 'databases.tables');
 		$this->assertEquals($rand, $this->mgr->get('entriesPerPage', 'databases.tables'));
+		$this->assertEquals($rand, $this->mgr->get('entriesPerPage', 'databases.tables', $rand));
 
 		// Set setting with scope and object
 		$this->mgr->set('entriesPerPage', $rand, 'databases.tables', 'project_com2date');
 		$this->assertEquals($rand, $this->mgr->get('entriesPerPage', 'databases.tables', 'project_com2date'));
+
+		// Set array
+		$this->mgr->set('entriesPerPage', array($rand, $rand2), 'databases.tables');
+		$this->assertEquals('a:2:{i:0;i:' . $rand . ';i:1;i:' . $rand2 . ';}', serialize($this->mgr->get('entriesPerPage', 'databases.tables')));
 	}
 
 	/**
@@ -88,9 +97,12 @@ class UserSettingsManagerTest extends TestCase
 	{
 		// Create random value
 		$random = md5(microtime());
+		$rand = mt_rand(0, 300);
+		$rand2 = mt_rand(0, 300);
 
 		// Set value and save settings
 		$this->mgr->set('sidebarState', $random);
+		$this->mgr->set('entriesPerPage', array($rand, $rand2), 'databases.tables');
 		$this->mgr->saveSettings();
 
 		// Create another manager instance
@@ -98,6 +110,7 @@ class UserSettingsManagerTest extends TestCase
 
 		// Compare values
 		$this->assertEquals($random, $mgr->get('sidebarState'));
+		$this->assertEquals('a:2:{i:0;i:' . $rand . ';i:1;i:' . $rand2 . ';}', serialize($this->mgr->get('entriesPerPage', 'databases.tables')));
 	}
 
 }
