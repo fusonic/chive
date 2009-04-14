@@ -7,7 +7,7 @@ function addBookmark(_schema, _query)
 					object: _schema
 	}, function(data, _query) {
 		
-		mainMenu.accordion('activate', 2);
+		sideBar.accordion('activate', 2);
 		$('#bookmarkList').append('<li id="bookmark_1">asdf</li>');
 		$('#bookmark_1').effect('highlight', {}, 2000);
 		

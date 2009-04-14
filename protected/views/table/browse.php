@@ -1,4 +1,9 @@
 <?php echo CHtml::form(Yii::app()->baseUrl . '/' . str_replace('browse', 'sql', Yii::app()->getRequest()->pathInfo), 'post'); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/views/table/browse.js', CClientScript::POS_HEAD); ?>
+
+<div id="deleteRowDialog" title="<?php echo Yii::t('core', 'confirm'); ?>" style="display: none">
+	<?php echo Yii::t('message', 'doYouReallyWantToDeleteRow'); ?>
+</div>
 
 <?php if($error) { ?>
 	<div class="errorSummary">
@@ -79,7 +84,7 @@
 					</td>
 					<td>
 						<a href="javascript:void(0);" class="icon" onclick="deleteRow($(this).parent().parent());">
-							<com:Icon name="delete" size="16" text="core.edit" />
+							<com:Icon name="delete" size="16" text="core.delete" />
 						</a>
 					</td>
 					<?php foreach($row AS $key=>$value) { ?>

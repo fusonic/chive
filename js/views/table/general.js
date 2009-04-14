@@ -37,7 +37,7 @@ $(document).ready(function() {
 			},
 			'Yes': function() {
 				// Do truncate request
-				$.post(baseUrl + '/database/' + schema + '/tables/' + table + '/truncate', {
+				$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/truncate', {
 					table: table,
 					schema: schema,
 				}, function() {
@@ -59,7 +59,7 @@ $(document).ready(function() {
 			},
 			'Yes': function() {
 				// Do drop request
-				$.post(baseUrl + '/database/' + schema + '/tables/' + table + '/drop', {
+				$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/drop', {
 					table: table,
 					schema: schema,
 				}, function() {

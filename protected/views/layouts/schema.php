@@ -31,7 +31,6 @@
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.checkboxTable.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.form.js', CClientScript::POS_HEAD); ?>
 
-
 </head>
 <body>
 
@@ -80,7 +79,7 @@
   </div>
   <div class="ui-layout-west">
 
-  <div class="basic" id="MainMenu">
+  <div id="sideBar">
   		<div class="sidebarHeader">
 			<a class="icon">
 				<com:Icon name="table" size="24" text="database.tables" />
