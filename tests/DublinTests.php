@@ -18,7 +18,8 @@ class DublinTests extends PHPUnit_Framework_TestSuite
 		{
 			require_once($file);
 			$info = pathinfo($file);
-			$suite->addTestSuite($info['filename'] . 'Test');
+			$class = $info['filename'] . 'Test';
+			$suite->addTestSuite($class);
 		}
 
 		return $suite;
