@@ -7,7 +7,7 @@
 			
 			if(this.tagName == "TABLE")
 			{
-				return $(this).children("tbody tr:last").appendForm(url);
+				return $(this).find("tbody tr:last").appendForm(url);
 			}
 			else if(this.tagName != "TR")
 			{
@@ -60,7 +60,11 @@
 			var setAjaxForms = function() {
 				divObj.children("form").ajaxForm({
 					success: function(responseText, statusText) {
-						if(responseText.match(/redirect:(.*)/))
+						if(responseText == 'reload')
+						{
+							reload();
+						}
+						else if(responseText.match(/redirect:(.*)/))
 						{
 							window.location.href = RegExp.$1;
 						}

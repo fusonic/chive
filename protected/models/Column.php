@@ -268,10 +268,8 @@ class Column extends CActiveRecord
 			return false;
 		}
 
-		// @todo(mburtscher): Work with parameters!
 		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME)
 			. ' MODIFY ' . $this->getColumnDefinition();
-
 		$cmd = new CDbCommand(self::$db, $sql);
 		$this->bindColumnDefinitionValues($cmd);
 		try
@@ -288,6 +286,65 @@ class Column extends CActiveRecord
 			$this->afterSave();
 			return false;
 		}
+	}
+
+	public function insert()
+	{
+		if(!$this->getIsNewRecord())
+		{
+			throw new CDbException(Yii::t('yii','The active record cannot be inserted to database because it is not new.'));
+		}
+		if(!$this->beforeSave())
+		{
+			return false;
+		}
+
+		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME)
+			. ' ADD ' . $this->getColumnDefinition();
+		$cmd = new CDbCommand(self::$db, $sql);
+		$this->bindColumnDefinitionValues($cmd);
+		try
+		{
+			$cmd->prepare();
+			$cmd->execute();
+			$this->afterSave();
+			return true;
+		}
+		catch(CDbException $ex)
+		{
+			$errorInfo = $cmd->getPdoStatement()->errorInfo();
+			$this->addError('COLUMN_NAME', Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
+			$this->afterSave();
+			return false;
+		}
+	}
+
+	public function delete()
+	{
+		if($this->getIsNewRecord())
+		{
+			throw new CDbException(Yii::t('yii','The active record cannot be deleted because it is new.'));
+		}
+		if(!$this->beforeDelete())
+		{
+			return false;
+		}
+
+		$cmd = self::$db->createCommand('ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME)
+			. ' DROP ' . self::$db->quoteColumnName($this->COLUMN_NAME));
+		try
+		{
+			$cmd->prepare();
+			$cmd->execute();
+			$this->afterDelete();
+			return true;
+		}
+		catch(CDbException $ex)
+		{
+			$this->afterDelete();
+			return false;
+		}
+		Yii::app()->end();
 	}
 
 	public function afterSave()

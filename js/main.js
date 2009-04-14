@@ -58,8 +58,10 @@ function reload() {
 
 function init() {
 	
-	$('table.list tbody tr:even').addClass('even');
-	$('table.list tbody tr:odd').addClass('odd');
+	$('table.list tbody').each(function() {
+		$(this).children('tr:even').addClass('even');
+		$(this).children('tr:odd').addClass('odd');
+	});
 	
 	$('div.ui-layout-center form').ajaxForm({
 		success: function(responseText, statusText) {

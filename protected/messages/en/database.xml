@@ -60,5 +60,7 @@
 	
 	<entry id="addColumn">Add new column</entry>
 	<entry id="editColumn">Edit column</entry>
+	<entry id="addSchema">Add schema</entry>
+	<entry id="editSchema">Edit schema</entry>
 	
 </category>

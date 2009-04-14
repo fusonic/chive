@@ -4,100 +4,108 @@
 	<?php echo Yii::t('database', 'doYouReallyWantToDropColumns'); ?>
 </div>
 
-<table id="columns" class="list addCheckboxes">
-	<colgroup>
-		<col />
-		<col class="type" />
-		<col class="collation" />
-		<col class="null" />
-		<col />
-		<col />
-		<col class="action" />
-		<col class="action" />
-		<col class="action" />
-		<col class="action" />
-		<col class="action" />
-		<col class="action" />
-		<col class="action" />
-		<col class="action" />
-	</colgroup>
-	<thead>
-		<tr>
-			<th><%= Yii::t('database','field'); %></th>
-			<th><%= Yii::t('database','type'); %></th>
-			<th><%= Yii::t('database','collation'); %></th>
-			<th><%= Yii::t('database','null'); %></th>
-			<th><%= Yii::t('database','default'); %></th>
-			<th colspan="9"><%= Yii::t('database','extra'); %></th>
-		</tr>
-	</thead>
-	<tbody>
-		<?php foreach ($table->columns AS $column) { ?>
-			<tr id="columns_<?php echo $column->COLUMN_NAME; ?>">
-				<td>
-					<?php if($column->getIsPartOfPrimaryKey($table->indices)): ?>
-						<span class="primaryKey"><?php echo $column->COLUMN_NAME; ?></span>
-					<?php else: ?>
-						<?php echo $column->COLUMN_NAME; ?>
-					<?php endif; ?>
-				</td>
-				<td><%= $column->COLUMN_TYPE %></td>
-				<td>
-					<?php if(!is_null($column->COLLATION_NAME)) { ?>
-						<dfn class="collation" title="<?php echo Collation::getDefinition($column->COLLATION_NAME); ?>">
-							<?php echo $column->COLLATION_NAME; ?>
-						</dfn>
-					<?php } ?>
-				</td>
-				<td>
-					<?php echo Yii::t('core', strtolower($column->IS_NULLABLE)); ?>
-				</td>
-				<td>
-					<?php if(is_null($column->COLUMN_DEFAULT) && $column->IS_NULLABLE == 'YES') { ?>
-						<span class="null">NULL</span>
-					<?php } else { ?>
-						<?php echo $column->COLUMN_DEFAULT; ?>
-					<?php } ?>
-				</td>
-				<td><?php echo $column->EXTRA; ?></td>
-				<td class="center">
-					<a href="#sql-query">
-						<com:Icon name="browse" size="16" text="schema.browseDistinctValues" title={Yii::t('database','browseDistinctValues')} />
-					</a>
-				</td>
-				<td><com:Icon name="arrow_move" size="16" text="core.move" htmlOptions={array('style'=>'cursor: pointer;')} /></td>
-				<td>
-					<a href="javascript:void(0)" onclick="editColumn('<?php echo $column->COLUMN_NAME; ?>')" class="icon">
-						<com:Icon name="edit" size="16" text="core.edit"/>
-					</a>
-				</td>
-				<td>
-					<a href="javascript:void(0)" onclick="dropColumn('<?php echo $column->COLUMN_NAME; ?>')" class="icon">
-						<com:Icon name="delete" size="16" />
-					</a>
-				</td>
-				<td><com:Icon name="key_primary" size="16" text="schema.primaryKey"/></td>
-				<td><com:Icon name="key_unique" size="16" text="schema.uniqueKey"/></td>
-				<td><com:Icon name="key_index" size="16" text="schema.index"/></td>
-				<td><com:Icon name="key_fulltext" size="16" text="schema.fulltextIndex"/></td>
+<div class="list">
+
+	<table id="columns" class="list addCheckboxes">
+		<colgroup>
+			<col />
+			<col class="type" />
+			<col class="collation" />
+			<col class="null" />
+			<col />
+			<col />
+			<col class="action" />
+			<col class="action" />
+			<col class="action" />
+			<col class="action" />
+			<col class="action" />
+			<col class="action" />
+			<col class="action" />
+			<col class="action" />
+		</colgroup>
+		<thead>
+			<tr>
+				<th><%= Yii::t('database','field'); %></th>
+				<th><%= Yii::t('database','type'); %></th>
+				<th><%= Yii::t('database','collation'); %></th>
+				<th><%= Yii::t('database','null'); %></th>
+				<th><%= Yii::t('database','default'); %></th>
+				<th colspan="9"><%= Yii::t('database','extra'); %></th>
 			</tr>
-		<?php } ?>
-	</tbody>
-	<tfoot>
-		<tr>
-			<th colspan="14"><?php echo Yii::t('database', 'XColumns', array('{count}' => count($table->columns))); ?></th>
-		</tr>
-	</tfoot>
-</table>
-<div class="withSelected">
-	<span class="icon">
-		<com:Icon name="arrow_turn_090" size="16" />
-		<span><?php echo Yii::t('core', 'withSelected'); ?></span>
-	</span>
-	<a class="icon" href="#">
-		<com:Icon name="delete" size="16" />
-		<span><?php echo Yii::t('database', 'drop'); ?></span>
-	</a>
+		</thead>
+		<tbody>
+			<?php foreach ($table->columns AS $column) { ?>
+				<tr id="columns_<?php echo $column->COLUMN_NAME; ?>">
+					<td>
+						<?php if($column->getIsPartOfPrimaryKey($table->indices)): ?>
+							<span class="primaryKey"><?php echo $column->COLUMN_NAME; ?></span>
+						<?php else: ?>
+							<?php echo $column->COLUMN_NAME; ?>
+						<?php endif; ?>
+					</td>
+					<td><%= $column->COLUMN_TYPE %></td>
+					<td>
+						<?php if(!is_null($column->COLLATION_NAME)) { ?>
+							<dfn class="collation" title="<?php echo Collation::getDefinition($column->COLLATION_NAME); ?>">
+								<?php echo $column->COLLATION_NAME; ?>
+							</dfn>
+						<?php } ?>
+					</td>
+					<td>
+						<?php echo Yii::t('core', strtolower($column->IS_NULLABLE)); ?>
+					</td>
+					<td>
+						<?php if(is_null($column->COLUMN_DEFAULT) && $column->IS_NULLABLE == 'YES') { ?>
+							<span class="null">NULL</span>
+						<?php } else { ?>
+							<?php echo $column->COLUMN_DEFAULT; ?>
+						<?php } ?>
+					</td>
+					<td><?php echo $column->EXTRA; ?></td>
+					<td class="center"><com:Icon disabled="true" name="browse" size="16" text="schema.browseDistinctValues" title={Yii::t('database','browseDistinctValues')} /></td>
+					<td><com:Icon name="arrow_move" size="16" text="core.move" htmlOptions={array('style'=>'cursor: pointer;')} /></td>
+					<td>
+						<a href="javascript:void(0)" onclick="tableStructure.editColumn('<?php echo $column->COLUMN_NAME; ?>')" class="icon">
+							<com:Icon name="edit" size="16" text="core.edit" />
+						</a>
+					</td>
+					<td>
+						<a href="javascript:void(0)" onclick="tableStructure.dropColumn('<?php echo $column->COLUMN_NAME; ?>')" class="icon">
+							<com:Icon name="delete" size="16" />
+						</a>
+					</td>
+					<td><com:Icon disabled="true" name="key_primary" size="16" text="schema.primaryKey" /></td>
+					<td><com:Icon disabled="true" name="key_unique" size="16" text="schema.uniqueKey" /></td>
+					<td><com:Icon disabled="true" name="key_index" size="16" text="schema.index" /></td>
+					<td><com:Icon disabled="true" name="key_fulltext" size="16" text="schema.fulltextIndex" /></td>
+				</tr>
+			<?php } ?>
+		</tbody>
+		<tfoot>
+			<tr>
+				<th colspan="14"><?php echo Yii::t('database', 'XColumns', array('{count}' => count($table->columns))); ?></th>
+			</tr>
+		</tfoot>
+	</table>
+
+	<div class="rightLinks">
+		<a href="javascript:void(0)" onclick="tableStructure.addColumn()" class="icon">
+			<com:Icon name="add" size="16" />
+			<span><?php echo Yii::t('database', 'addColumn'); ?></span>
+		</a>
+	</div>
+
+	<div class="withSelected">
+		<span class="icon">
+			<com:Icon name="arrow_turn_090" size="16" />
+			<span><?php echo Yii::t('core', 'withSelected'); ?></span>
+		</span>
+		<a href="javascript:void(0)" onclick="tableStructure.dropColumns()" class="icon">
+			<com:Icon name="delete" size="16" />
+			<span><?php echo Yii::t('database', 'drop'); ?></span>
+		</a>
+	</div>
+
 </div>
 
 
@@ -108,9 +116,9 @@
 		<col />
 		<col />
 		<col />
-		<col class="action" />
-		<col class="action" />
 		<col />
+		<col class="action" />
+		<col class="action" />
 	</colgroup>
 	<thead>
 		<tr>
@@ -120,8 +128,7 @@
 			<th><?php echo Yii::t('database', 'key'); ?></th>
 			<th><?php echo Yii::t('database', 'type'); ?></th>
 			<th><?php echo Yii::t('database', 'cardinality'); ?></th>
-			<th colspan="2"><?php echo Yii::t('database', 'action'); ?></th>
-			<th><?php echo Yii::t('database', 'field'); ?></th>
+			<th colspan="3"><?php echo Yii::t('database', 'field'); ?></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -131,13 +138,13 @@
 					<td><?php echo $index[0]->INDEX_NAME; ?></td>
 					<td><?php echo $index[0]->getType(); ?></td>
 					<td><?php echo $index[0]->CARDINALITY; ?></td>
-					<td><com:Icon name="edit" size="16" text="core.edit" /></td>
-					<td><com:Icon name="delete" size="16" text="core.delete" /></td>
 					<td>
 						<?php foreach($index AS $column) {?>
 							<?php echo $column->COLUMN_NAME; ?><br/>
 						<?php } ?>
 					</td>
+					<td><com:Icon name="edit" size="16" text="core.edit" /></td>
+					<td><com:Icon name="delete" size="16" text="core.delete" /></td>
 				</tr>
 			<?php } ?>
 		<?php } else { ?>

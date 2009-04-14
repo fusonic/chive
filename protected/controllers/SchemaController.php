@@ -28,7 +28,7 @@ class SchemaController extends CController
 		$request = Yii::app()->getRequest();
 		$this->schema = $request->getParam('schema');
 
-		if($request->isAjaxRequest && $this->schema)
+		if($request->isAjaxRequest && $this->schema && $request->pathInfo != 'schemata/update')
 			$this->layout = '_schema';
 
 		elseif($request->isAjaxRequest)

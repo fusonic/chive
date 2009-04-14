@@ -42,7 +42,7 @@
 			<?php foreach($schema->tables AS $table) { ?>
 				<tr>
 					<td>
-						<a href="<?php echo Yii::app()->baseUrl; ?>/schema/<?php echo $schema->SCHEMA_NAME; ?>/tables/<?php echo $table->TABLE_NAME; ?>/structure" class="icon">
+						<a href="<?php echo Yii::app()->baseUrl; ?>/schema/<?php echo $schema->SCHEMA_NAME; ?>/tables/<?php echo $table->TABLE_NAME; ?>/structure">
 							<?php echo $table->TABLE_NAME; ?>
 						</a>
 					</td>

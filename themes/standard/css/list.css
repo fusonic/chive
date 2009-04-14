@@ -142,12 +142,20 @@
 	 * With selected
 	 */
 	
-	div.withSelected {
+	div.list div.withSelected {
 		margin: 3px 0px 0px 6px;
 	}
 	
-	div.withSelected img.icon_arrow_turn_090 {
+	div.list div.withSelected img.icon_arrow_turn_090 {
 		top: 0px !important;
+	}
+	
+	/*
+	 * Right links
+	 */
+	
+	div.list div.rightLinks {
+		float: right;
 	}
 
 }

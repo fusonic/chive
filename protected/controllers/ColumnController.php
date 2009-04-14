@@ -54,6 +54,32 @@ class ColumnController extends CController
 		);
 	}
 
+	public function actionCreate()
+	{
+		Column::$db = $this->_db;
+
+		$column = new Column();
+		if(isset($_POST['Column']))
+		{
+			$column->attributes = $_POST['Column'];
+			$column->TABLE_NAME = $this->table;
+			if($column->save())
+			{
+				Yii::app()->end('reload');
+			}
+		}
+
+		$collations = Collation::model()->findAll(array(
+			'order' => 'COLLATION_NAME',
+			'select'=>'COLLATION_NAME, CHARACTER_SET_NAME AS collationGroup'
+		));
+
+		$this->render('form', array(
+			'column' => $column,
+			'collations' => $collations,
+		));
+	}
+
 	public function actionUpdate()
 	{
 		Column::$db = $this->_db;
@@ -94,6 +120,27 @@ class ColumnController extends CController
 		$column = Column::model()->findByPk($pk);
 
 		$column->move($_POST['command']);
+	}
+
+	public function actionDrop()
+	{
+		Column::$db = $this->_db;
+
+		$columns = (array)$_POST['column'];
+		foreach($columns AS $column)
+		{
+			$pk = array(
+				'TABLE_SCHEMA' => $this->schema,
+				'TABLE_NAME' => $this->table,
+				'COLUMN_NAME' => $column,
+			);
+			try
+			{
+				$column = Column::model()->findByPk($pk);
+				$column->delete();
+			}
+			catch(Exception $ex) { }
+		}
 	}
 
 }

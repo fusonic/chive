@@ -7,9 +7,11 @@
 <h2>Schema List</h2>
 
 <div class="list">
+
 	<div class="pager top">
 		<?php $this->widget('CLinkPager',array('pages'=>$pages, 'nextPageLabel'=>'&raquo;', 'prevPageLabel'=>'&laquo;')); ?>
 	</div>
+
 	<table id="schemata" class="list addCheckboxes">
 		<colgroup>
 			<col />
@@ -68,6 +70,14 @@
 			</tr>
 		</tfoot>
 	</table>
+
+	<div class="rightLinks">
+		<a href="javascript:void(0)" onclick="$('#schemata').appendForm(baseUrl + '/schemata/create')" class="icon">
+			<com:Icon name="add" size="16" />
+			<span><?php echo Yii::t('database', 'addSchema'); ?></span>
+		</a>
+	</div>
+
 	<div class="withSelected">
 		<span class="icon">
 			<com:Icon name="arrow_turn_090" size="16" />
@@ -78,12 +88,9 @@
 			<span><?php echo Yii::t('database', 'drop'); ?></span>
 		</a>
 	</div>
-	<div style="float: right">
-		<a href="javascript:void(0)" onclick="$('#schemata').appendForm(baseUrl + '/schemata/create')">
-			Add a new schema (real)
-		</a>
-	</div>
+
 	<div class="pager bottom">
 		<?php $this->widget('CLinkPager',array('pages'=>$pages, 'nextPageLabel'=>'&raquo;', 'prevPageLabel'=>'&laquo;')); ?>
 	</div>
+
 </div>

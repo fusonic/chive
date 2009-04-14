@@ -107,7 +107,9 @@ return array(
 
 					// Column
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columns/move'=>'column/move',
+					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columns/create'=>'column/create',
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columns/update'=>'column/update',
+					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columns/drop'=>'column/drop',
             ),
         ),
 

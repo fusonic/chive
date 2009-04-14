@@ -1,3 +1,40 @@
+/*
+ * View functions
+ */
+var tableStructure = {
+	
+	// Add column
+	addColumn: function()
+	{
+		$('#columns').appendForm(baseUrl + '/schema/' + schema + '/tables/' + table + '/columns/create');
+	},
+	
+	// Edit column
+	editColumn: function(col)
+	{
+		$('#columns_' + col).appendForm(baseUrl + '/schema/' + schema + '/tables/' + table + '/columns/update?col=' + col);
+	},
+	
+	// Drop column
+	dropColumn: function(col)
+	{
+		$('#columns input[type="checkbox"]').attr('checked', false).change();
+		$('#columns input[type="checkbox"][value="' + col + '"]').attr('checked', true).change();
+		tableStructure.dropColumns();
+	},
+	dropColumns: function()
+	{
+		if($('#columns input[name="columns[]"]:checked').length > 0) 
+		{
+			$('#dropColumnsDialog').dialog("open");
+		}
+	}
+	
+};
+
+/*
+ * OnLoad
+ */
 $(document).ready(function() {
 	
 	/*
@@ -57,12 +94,15 @@ $(document).ready(function() {
 				});
 				
 				// Do drop request
-				$.post(baseUrl + '/columns/drop', {
+				$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/columns/drop', {
 					'schema': schema,
 					'table': table,
 					'column[]': ids
 				}, function() {
-					window.location.reload();
+					for(var i = 0; i < ids.length; i++)
+					{
+						$('#columns_' + ids[i]).remove();
+					}
 				});
 				
 				$(this).dialog('close');
@@ -71,33 +111,3 @@ $(document).ready(function() {
 	});
 	
 });
-
-
-/*
- * Edit column
- */
-
-function editColumn(col)
-{
-	$('#columns_' + col).appendForm(baseUrl + '/schema/' + schema + '/tables/' + table + '/columns/update?col=' + col);
-}
-
-
-/*
- * Drop column
- */
-
-function dropColumns() 
-{
-	if($('#columns input[name="columns[]"]:checked').length > 0) 
-	{
-		$('#dropColumnsDialog').dialog("open");
-	}
-}
-
-function dropColumn(col)
-{
-	$('#columns input[type="checkbox"]').attr('checked', false).change();
-	$('#columns input[type="checkbox"][value="' + col + '"]').attr('checked', true).change();
-	dropColumns();
-}
