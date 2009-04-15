@@ -111,7 +111,6 @@ function init() {
 
 $(document).ready(function()
 {
-
 	$('body').layout({
 		
 		// General
@@ -174,28 +173,68 @@ $(document).ready(function()
 	
 	$('#tableList').setupListFilter($('#tableSearch'));
 	
-	// Ajax loader 
+	
+	/*
+	 * Ajax functions
+	 */ 
+	
+	// START
 	$(document).ajaxStart(function() {
 		$('#loading').css({'background': '#FF0000'}).fadeIn();
 	});
 	
+	// STOP
 	$(document).ajaxStop(function() {
 		$('#loading').css({'background': '#009900'}).fadeOut();
 	});
+	
+	// ERROR
+	$(document).ajaxError(function() {
+		Notification.add('warning', 'Ajax reques t failed, click <a href="">here</a> to reload site.', 'Warning', null, {
+			isSticky: true
+		});
+	});
 
+
+	/*
+	 * Misc
+	 */
 	setInterval(checkLocation, 100);
 	
 	if(currentLocation.indexOf('#') > -1)
 	{
 		reload();
-		//$('div.ui-layout-center').load(currentLocation.replace(/#/, '/'), {}, init);
-	}
-	else
-	{
-		//init();
 	}
 
 });
+
+var AjaxResponse = {
+	
+	handle: function(data) 
+	{
+		data = JSON.parse(data);
+		
+		if(data.redirect) 
+		{
+			console.log('redirect');
+		}
+		
+		if(data.reload)
+		{
+			console.log('reload');
+		}
+		
+		if(data.notifications.length > 0) 
+		{
+			$.each(data.notifications, function() {
+				
+				Notification.add(this.type, this.message, this.header, this.code, this.options);
+				
+			});
+		}
+	}
+	
+};
 
 
 String.prototype.trim = function () {

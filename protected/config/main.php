@@ -107,7 +107,9 @@ return array(
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/alterIndex'=>'table/alterIndex',
 
 					// Row
-					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/row/delete'=>'row/delete',
+					#'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/row/load'=>'row/load',
+					#'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/row/update'=>'row/update',
+					#'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/row/delete'=>'row/delete',
 
 					// Column
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columns/move'=>'column/move',

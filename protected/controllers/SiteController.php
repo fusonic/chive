@@ -8,6 +8,9 @@ class SiteController extends CController
 		if(Yii::app()->request->isAjaxRequest)
 			$this->layout = false;
 
+		sleep(20);
+		die();
+
 		parent::__construct($id, $module);
 
 	}

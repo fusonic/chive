@@ -150,6 +150,7 @@ class TableController extends CController
 			'pages' => $pages,
 			'sort' => $sort,
 			'error' => $error,
+			'table' => $this->_db->getSchema()->getTable($this->table),
 		));
 
 	}

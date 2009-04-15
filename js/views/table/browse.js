@@ -1,22 +1,35 @@
-var row;
-
-function deleteRow(_row) 
-{
-	row = _row;
-	$('#deleteRowDialog').dialog('open');
-}
-
-function strip_tags(_text){
- return _text.replace(/<\/?[^>]+>/gi, '');
-}
-
+/*
+ * View functions
+ */
+var tableBrowse = {
+	
+	// Add column
+	deleteRow: function(row)
+	{
+		$('#browse input[type="checkbox"]').attr('checked', false).change();
+		$('#browse input[type="checkbox"]').eq(row).attr('checked', true).change();
+		tableBrowse.deleteRows();
+	},
+	
+	deleteRows: function()
+	{
+		if($('#browse input[name="browse[]"]:checked').length > 0) 
+		{
+			$('#deleteRowDialog').dialog("open");
+		}
+	}
+	
+};
 
 /*
- * Setup dialogs
+ * Setup page
  */
 	
 $(document).ready(function() {
 
+	/*
+	 * Setup dialog
+	 */
 	$('#deleteRowDialog').dialog({
 		modal: true,
 		resizable: false,
@@ -27,30 +40,19 @@ $(document).ready(function() {
 			},
 			'Yes': function() {
 				
-				/*
-				headers = new Array();
-				$('#browse thead tr th').each(function(i, o) {
-					headers[i] = $.trim(strip_tags($(o).html()));
-				});
-				*/
-				data = new Object();
-
-				row.children().each(function(i, o) {
-					
-					if(i > 2) {
-						eval('data.attr_' +i + ' = $.trim($(o).html());');
+				// Collect ids
+				var data = [];
+				$('#browse input[name="browse[]"]').each(function(i,o) {
+					if($(this).attr('checked')) {
+						data.push(rowData[i]);
 					}
-						
-						
 				});
 				
 				// Do truncate request
-				$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/row/delete', {
-					table: table,
-					schema: schema,
-					row: data
-				}, function() {
-					row.hide();
+				$.post(baseUrl + '/row/delete', {
+					data	: 	JSON.stringify(data),
+					schema	: 	schema,
+					table	: 	table
 				});
 				
 				$(this).dialog('close');
@@ -58,4 +60,54 @@ $(document).ready(function() {
 		}		
 	});
 	
+	/*
+	 * Setup inline editing
+	 */
+	
+	$('#browse tbody tr td').editable(function(value, settings) {
+		
+		container = this.getContainer();
+		
+		index = container.parent().attr('id').match(/\d/);
+		attribute = container.attr('class');
+		
+		$.ajax({
+			type: 		"POST",
+			url: 		baseUrl + '/row/update',
+			dataType: 	"html",
+			success:	function(response) {
+				
+				responseObject = JSON.parse(response);
+								  
+				container.text(responseObject.data);
+				AjaxResponse.handle(response);
+			},
+			data: {
+				
+				data: 		JSON.stringify(rowData[index]),
+				value: 		value,
+				attribute:	attribute,
+				
+				// General information
+				table: 		table,
+				schema: 	schema
+				
+			},
+			cache:		false
+		});
+		
+	}, {
+         indicator : 'Saving...',
+		 onblur    : 'ignore',
+         tooltip   : 'Click to edit...',
+		 event	   : 'dblclick',
+		 data	   : function(value) {
+		 	index = this.getContainer().parent().attr('id').match(/\d/);
+			column = this.getContainer().attr('class');
+			value = eval('rowData[index].' + column);
+			return value;
+		 }
+	
+	});
+
 });

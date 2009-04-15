@@ -18,10 +18,14 @@
   }
   
   div.ui-layout-center span.icon img.icon,
-  div.ui-layout-center a.icon img.icon {
+  div.ui-layout-center a.icon img.icon,
+  #purr-container a.icon img.icon,
+  #purr-container span.icon img.icon 
+  {
   	border: none;
 	position: relative;
 	top: 3px;
+	margin-right: 2px;
   }
   
 }

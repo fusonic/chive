@@ -58,9 +58,9 @@
   strong,b { font-weight: bold; }
   em,i { font-style: italic; }
 
-  pre, code, kbd, tt, samp, var { font-size: 100%; }
-  pre, code { color: #800; }
-  pre { line-height: 1.5em; margin: 0 0 1em 0; }
+  code, kbd, tt, samp, var { font-size: 100%; }
+
+  pre { line-height: 1.5em; font-size: 90%; }
   kbd, samp, var { color: #666; }
   var { font-style: italic; }
 
@@ -380,7 +380,48 @@
 	margin: 0px 10px 0px 0px;
 	height: 40px;
 	line-height: 40px;
-	
   }
   
+  /*
+   * Purr (notifications)
+   */
+  
+  #purr-container {
+  	position: fixed;
+	bottom: 10px;
+	right: 0px;
+	z-index: 99999999 !important;
+  }
+  
+  .notification {
+  	position: relative;
+	width: 324px;
+  }
+  
+  .notification-body {
+  	min-height: 50px;
+	padding: 22px 22px 0px 22px;
+	background: url(../themes/standard/images/notification/top.png);
+	color: #F9F9F9;
+  }
+  
+  .notification-header {
+  	font-weight: bold;
+	margin-bottom: 5px;
+  }
+  
+  .notification-bottom {
+  	background: url(../themes/standard/images/notification/bottom.png);
+	height: 10px;
+  }
+  
+  .notification .close {
+    position: absolute;
+    top: 18px; 
+    right: 18px; 
+    width: 16px; 
+    height: 16px; 
+    background: url(../images/icons/fugue/16/delete.png) no-repeat 0 0px;
+  }
+    
 }

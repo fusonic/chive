@@ -1,9 +1,16 @@
 <?php echo CHtml::form(Yii::app()->baseUrl . '/' . str_replace('browse', 'sql', Yii::app()->getRequest()->pathInfo), 'post'); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.jeditable.js', CClientScript::POS_HEAD); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.purr.js', CClientScript::POS_HEAD); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.jgrowl.js', CClientScript::POS_HEAD); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/lib/json.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/views/table/browse.js', CClientScript::POS_HEAD); ?>
 
 <div id="deleteRowDialog" title="<?php echo Yii::t('core', 'confirm'); ?>" style="display: none">
 	<?php echo Yii::t('message', 'doYouReallyWantToDeleteRow'); ?>
 </div>
+
+<com:Notification id="databaseError" type="error" message={Yii::t('core','edit')} />
+<com:Notification id="databaseError2" type="success" message={Yii::t('core','edit')} />
 
 <?php if($error) { ?>
 	<div class="errorSummary">
@@ -49,7 +56,7 @@
 
 <?php echo CHtml::endForm(); ?>
 
-<?php if(count($data)) { ?>
+<?php if(count($data) > 0) { ?>
 
 	<div class="pager top">
 	<?php $this->widget('CLinkPager',array('pages'=>$pages)); ?>
@@ -57,9 +64,10 @@
 
 	<br/>
 
-	<table class="list" style="width: auto;" id="browse">
+	<?php $i = 0; ?>
+	<table class="list addCheckboxes" style="width: auto;" id="browse">
 		<colgroup>
-			<col class="action" />
+			<!---<col class="action" /> --->
 			<col class="action" />
 			<?php foreach ($columns AS $column) { ?>
 				<?php echo '<col class="date" />'; ?>
@@ -67,7 +75,7 @@
 		</colgroup>
 		<thead>
 			<tr>
-				<th></th>
+				<!---<th></th> --->
 				<th></th>
 				<?php foreach ($columns AS $column) { ?>
 					<th><?php echo $sort->link($column); ?></th>
@@ -76,26 +84,60 @@
 		</thead>
 		<tbody>
 			<?php foreach($data AS $row) { ?>
-				<tr>
+				<tr id="row_<?php echo $i; ?>">
+					<!---
 					<td>
 						<a href="" class="icon">
 							<com:Icon name="edit" size="16" text="core.edit" />
 						</a>
 					</td>
+					--->
 					<td>
-						<a href="javascript:void(0);" class="icon" onclick="deleteRow($(this).parent().parent());">
+						<a href="javascript:void(0);" class="icon" onclick="tableBrowse.deleteRow(<?php echo $i; ?>);">
 							<com:Icon name="delete" size="16" text="core.delete" />
 						</a>
 					</td>
 					<?php foreach($row AS $key=>$value) { ?>
-						<td>
-							<?php echo (is_null($value) ? '<i>NULL</i>' : substr(str_replace(array('<','>'),array('&lt;','&gt;'),$value), 0, 100)); ?>
-						</td>
+						<td class="<?php echo $key; ?>"><?php echo (is_null($value) ? '<i>NULL</i>' : substr(str_replace(array('<','>'),array('&lt;','&gt;'),$value), 0, 100)); ?></td>
 					<?php } ?>
 				</tr>
+				<?php $i++; ?>
 			<?php } ?>
 		</tbody>
 	</table>
+	<div class="withSelected">
+		<span class="icon">
+			<com:Icon name="arrow_turn_090" size="16" />
+			<span><?php echo Yii::t('core', 'withSelected'); ?></span>
+		</span>
+		<a class="icon" href="javascript:void(0)" onclick="tableBrowse.deleteRows()">
+			<com:Icon name="delete" size="16" />
+			<span><?php echo Yii::t('core', 'delete'); ?></span>
+		</a>
+	</div>
+	<script type="text/javascript">
+
+		var keyData = new Array();
+
+		<?php foreach($data AS $row) { ?>
+			keyData.push({
+			<?php foreach((array)$table->primaryKey AS $primaryKey) { ?>
+				<?php echo $primaryKey; ?>: '<?php echo $row[$primaryKey]; ?>',
+			<?php } ?>
+			});
+		<?php } ?>
+
+		var rowData = new Array();
+
+		<?php foreach($data AS $row) { ?>
+			rowData.push({
+			<?php foreach($row AS $key=>$value) { ?>
+				<?php echo $key; ?>: '<?php echo $value; ?>',
+			<?php } ?>
+			});
+		<?php } ?>
+
+	</script>
 
 	<div class="pager bottom">
 	<?php $this->widget('CLinkPager',array('pages'=>$pages)); ?>

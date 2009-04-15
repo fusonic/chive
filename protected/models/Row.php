@@ -3,15 +3,17 @@
 class Row extends CActiveRecord
 {
 
-	public $schemaName;
-	public $tableName;
+	public $schema;
+	public $table;
 
 	public static $db;
 
 	public function __construct($attributes=array(),$scenario='') {
 
-		$this->schemaName = $_GET['schema'];
-		$this->tableName = $_GET['table'];
+		$request = Yii::app()->getRequest();
+
+		$this->schema = $request->getParam('schema');
+		$this->table = $request->getParam('table');
 
 	}
 
@@ -29,7 +31,7 @@ class Row extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return $this->tableName;
+		return $this->table;
 	}
 
 	/**
@@ -55,16 +57,16 @@ class Row extends CActiveRecord
 	 */
 	public function attributeLabels()
 	{
-		return self::$db->getSchema()->getTable($this->tableName)->getColumnNames();
+		return self::$db->getSchema()->getTable($this->table)->getColumnNames();
 	}
 
 	public function attributeNames()
 	{
-		return self::$db->getSchema()->getTable($this->tableName)->getColumnNames();
+		return self::$db->getSchema()->getTable($this->table)->getColumnNames();
 	}
 
 	public function safeAttributes() {
-		return self::$db->getSchema()->getTable($this->tableName)->getColumnNames();
+		return self::$db->getSchema()->getTable($this->table)->getColumnNames();
 	}
 
 	public function getDbConnection() {

@@ -14,6 +14,11 @@
 	<entry id="confirm">Confirm</entry>
 	<entry id="action">Action</entry>
 	
+	<entry id="error">Error</entry>
+	<entry id="warning">Warning</entry>
+	<entry id="information">Information</entry>
+	<entry id="success">Success</entry>
+	
 	<entry id="information">Information</entry>
 	<entry id="creationDate">Creation date</entry>
 	<entry id="lastUpdateDate">Last update date</entry>

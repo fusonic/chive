@@ -21,10 +21,14 @@ class RowController extends CController
 		$this->schema = $request->getParam('schema');
 		$this->table = $request->getParam('table');
 
+
 		// @todo (rponudic) work with parameters!
 		$this->_db = new CDbConnection('mysql:host='.Yii::app()->user->host.';dbname=' . $this->schema, Yii::app()->user->name, Yii::app()->user->password);
 		$this->_db->charset='utf8';
 		$this->_db->active = true;
+
+		// Assign database connection to row model
+		Row::$db = $this->_db;
 
 		parent::__construct($id, $module);
 
@@ -54,9 +58,84 @@ class RowController extends CController
 		);
 	}
 
+	public function actionUpdate()
+	{
+
+		$db = $this->_db;
+
+		$attributes = json_decode($_POST['data'], true);
+		$attributesCount = count($attributes);
+
+		$response = new AjaxResponse();
+		$response->addData(null, $_POST['value']);
+
+		try
+		{
+
+			$commandBuilder = $this->_db->getCommandBuilder();
+
+			$sql = 'UPDATE ' . $db->quoteTableName($this->table) . ' SET ' . "\n";
+			$sql .= "\t" . $db->quoteColumnName($_POST['attribute']) . ' = ' . $db->quoteValue($_POST['value']) . ' ' . "\n";
+			$sql .= ' WHERE ' . "\n";
+
+			$i = 0;
+			foreach($attributes AS $name=>$value) {
+
+				$sql .= "\t" . $db->quoteColumnName($name) . ' = ' . $db->quoteValue($value) . ' ';
+				$i++;
+
+				if($i < $attributesCount)
+					$sql .= 'AND ' . "\n";
+
+			}
+
+			$cmd = $commandBuilder->createSqlCommand($sql);
+			$cmd->execute();
+
+			$response->addNotification('success', 'Row was successfully updated', $sql, array('isSticky'=>true));
+
+		}
+		catch (Exception $ex)
+		{
+			$response->addNotification('error', Yii::t('core', 'error'), $ex->getMessage(), array('isSticky'=>true));
+		}
+
+		//$row = Row::model()->findByPk($pk);
+		//$row->setAttribute($_POST['attribute'], $_POST['value']);
+
+
+		//$row->updateByPk($pk, array('value'=>$_POST['value']));
+
+		Yii::app()->end($response);
+
+
+	}
+
+	public function actionGetColumnValue()
+	{
+
+		// @todo (rponudic) remove this section if not needed anymore
+		$pk = json_decode($_POST['data'], true);
+		$row = Row::model()->findByPk($pk);
+
+		return $row->getAttribute($_POST['attribute']);
+
+	}
+
 	public function actionDelete()
 	{
-		predie($_POST);
+
+		$data = json_decode($_POST['data'], true);
+
+		foreach($data AS $attributes) {
+
+			$row = new Row;
+			$row->attributes = $attributes;
+			$row->delete();
+
+		}
+
+		Yii::app()->end('redirect: xyz.com');
 	}
 
 }
