@@ -22,6 +22,7 @@ return array(
 		'application.components.*',
 		'application.components.helpers.*',
 		'application.controllers.*',
+		'application.db.*',
 	),
 
 	// application components
@@ -103,6 +104,7 @@ return array(
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/drop'=>'table/drop',
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/dropIndex'=>'table/dropIndex',
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/createIndex'=>'table/createIndex',
+					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/alterIndex'=>'table/alterIndex',
 
 					// Row
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/row/delete'=>'row/delete',

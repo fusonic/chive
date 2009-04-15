@@ -7,26 +7,6 @@ class Column extends CActiveRecord
 
 	public static $db;
 
-	public function __construct($attributes=array(), $scenario='') {
-
-		if($attributes===null)
-		 {
-		      $tableName=$this->tableName();
-		      if(($table=$this->getDbConnection()->getSchema()->getTable($tableName))===null)
-		         throw new CDbException(Yii::t('yii','The table "{table}" for active record class "{class}" cannot be found in the database.',
-		            array('{class}'=>get_class($model),'{table}'=>$tableName)));
-
-		      $table->primaryKey=$this->primaryKey();
-		      foreach($table->columns AS $key=>$column) {
-		      	$table->columns[$key]->isPrimaryKey = true;
-		      }
-
-		   }
-
-		   parent::__construct($attributes,$scenario);
-
-	}
-
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return CActiveRecord the static model class
@@ -347,7 +327,7 @@ class Column extends CActiveRecord
 		Yii::app()->end();
 	}
 
-	public function afterSave()
+	protected function afterSave()
 	{
 		$this->refresh();
 		parent::afterSave();

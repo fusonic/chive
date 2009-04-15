@@ -33,6 +33,8 @@
 	<entry id="cardinality">Cardinality</entry>
 	<entry id="usage">Usage</entry>
 	<entry id="spaceUsage">Space usage</entry>
+	<entry id="addIndex">Add index</entry>
+	<entry id="pleaseEnterNameForNewIndex">Please enter a name for the new index:</entry>
 	
 	<entry id="operator">Operator</entry>
 	
@@ -62,5 +64,10 @@
 	<entry id="editColumn">Edit column</entry>
 	<entry id="addSchema">Add schema</entry>
 	<entry id="editSchema">Edit schema</entry>
+	
+	<entry id="uniqueKey">Unique key</entry>
+	<entry id="fulltextIndex">Fulltext index</entry>
+	<entry id="dropIndex">Drop index</entry>
+	<entry id="doYouReallyWantToDropIndex">Do you really want to drop the index?</entry>
 	
 </category>

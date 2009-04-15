@@ -91,7 +91,7 @@ class Table extends CActiveRecord
 	 */
 	public function truncate() {
 
-		// @todo(rponudic): Work with parameters!
+		// @todo(rponudic): Work with parameters! Use correct DB connection.
 		$db = Yii::app()->getDb();
 		$cmd = $db->createCommand('TRUNCATE TABLE ' . $db->quoteTableName($this->TABLE_SCHEMA) . '.' . $db->quoteTableName($this->TABLE_NAME));
 		try
@@ -112,7 +112,7 @@ class Table extends CActiveRecord
 	 */
 	public function drop() {
 
-		// @todo(rponudic): Work with parameters!
+		// @todo(rponudic): Work with parameters! Use correct DB connection.
 		$db = Yii::app()->getDb();
 		$cmd = $db->createCommand('DROP TABLE ' . $db->quoteTableName($this->TABLE_SCHEMA) . '.' . $db->quoteTableName($this->TABLE_NAME));
 
@@ -129,45 +129,77 @@ class Table extends CActiveRecord
 
 	}
 
+	/**
+	 * Drops an index from this table.
+	 *
+	 * @param	string			name of the index
+	 * @param	string			type of the index (index/unique/fulltext/primary)
+	 * @return	string			sql statement
+	 * @throws	DbException		If sql statement fails.
+	 */
 	public function dropIndex($index, $type)
 	{
-		$cmd = self::$db->createCommand('ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME)
-			. ' DROP INDEX ' . self::$db->quoteColumnName($index));
+		// Create command
+		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME)
+			. ' DROP INDEX ' . self::$db->quoteColumnName($index);
+		$cmd = self::$db->createCommand($sql);
+
+		// Execute
 		try
 		{
 			$cmd->prepare();
 			$cmd->execute();
-			return true;
+			return $sql;
 		}
 		catch(CDbException $ex)
 		{
-			throw $ex;
-			return false;
+			$errorInfo = $cmd->getPdoStatement()->errorInfo();
+			throw new DbException($sql, $errorInfo[1], $errorInfo[2]);
 		}
 	}
 
+	/**
+	 * Creates an index in this table.
+	 *
+	 * @param	string			name of the index
+	 * @param	string			type of the index (index/unique/fulltext/primary)
+	 * @param	array			array of columns
+	 * @return	string			sql statement
+	 * @throws	DbException		If sql statement fails.
+	 */
 	public function createIndex($index, $type, array $columns)
 	{
-		$columns = implode(', ', $columns);
+		// Prepare columns
+		foreach($columns AS $key => $value)
+		{
+			$columns[$key] = self::$db->quoteColumnName($value);
+		}
+		$columns = implode(',', $columns);
+
+		// Create command
 		if(strtolower($type) == 'primary')
 		{
-			$cmd = self::$db->createCommand('ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME)
-				. ' ADD PRIMARY KEY (' . $columns . ')');
+			$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME)
+				. ' ADD PRIMARY KEY (' . $columns . ')';
 		}
 		else
 		{
-			$cmd = self::$db->createCommand('ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME)
-				. ' ADD ' . $type . ' ' . self::$db->quoteColumnName($index) . ' (' . $columns . ')');
+			$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME)
+				. ' ADD ' . $type . ' ' . self::$db->quoteColumnName($index) . ' (' . $columns . ')';
 		}
+		$cmd = self::$db->createCommand($sql);
+
+		// Execute
 		try
 		{
 			$cmd->prepare();
 			$cmd->execute();
-			return true;
+			return $sql;
 		}
 		catch(CDbException $ex)
 		{
-			return false;
+			$errorInfo = $cmd->getPdoStatement()->errorInfo();
+			throw new DbException($sql, $errorInfo[1], $errorInfo[2]);
 		}
 	}
 

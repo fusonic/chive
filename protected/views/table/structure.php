@@ -3,6 +3,14 @@
 <div id="dropColumnsDialog" title="<?php echo Yii::t('database', 'dropColumns'); ?>" style="display: none">
 	<?php echo Yii::t('database', 'doYouReallyWantToDropColumns'); ?>
 </div>
+<div id="addIndexDialog" title="<?php echo Yii::t('database', 'addIndex'); ?>" style="display: none">
+	<?php echo Yii::t('database', 'pleaseEnterNameForNewIndex'); ?><br />
+	<?php echo Yii::t('core', 'type'); ?>: <span id="newIndexType" /><br />
+	<input type="text" id="newIndexName" name="newIndexName" />
+</div>
+<div id="dropIndexDialog" title="<?php echo Yii::t('database', 'dropIndex'); ?>" style="display: none">
+	<?php echo Yii::t('database', 'doYouReallyWantToDropIndex'); ?>
+</div>
 
 <div class="list">
 
@@ -62,7 +70,9 @@
 						<?php } ?>
 					</td>
 					<td><?php echo $column->EXTRA; ?></td>
-					<td class="center"><com:Icon disabled="true" name="browse" size="16" text="schema.browseDistinctValues" title={Yii::t('database','browseDistinctValues')} /></td>
+					<td>
+						<com:Icon disabled="true" name="browse" size="16" text="schema.browseDistinctValues" title={Yii::t('database','browseDistinctValues')} />
+					</td>
 					<td>
 						<com:Icon name="arrow_move" size="16" text="core.move" htmlOptions={array('style'=>'cursor: pointer;')} />
 					</td>
@@ -76,10 +86,24 @@
 							<com:Icon name="delete" size="16" />
 						</a>
 					</td>
-					<td><com:Icon disabled="true" name="key_primary" size="16" text="schema.primaryKey" /></td>
-					<td><com:Icon disabled="true" name="key_unique" size="16" text="schema.uniqueKey" /></td>
-					<td><com:Icon disabled="true" name="key_index" size="16" text="schema.index" /></td>
-					<td><com:Icon disabled="true" name="key_fulltext" size="16" text="schema.fulltextIndex" /></td>
+					<td>
+						<com:Icon disabled="true" name="key_primary" size="16" text="schema.primaryKey" />
+					</td>
+					<td>
+						<a href="javascript:void(0)" onclick="tableStructure.addIndex1('unique', '<?php echo $column->COLUMN_NAME; ?>')" class="icon">
+							<com:Icon name="key_unique" size="16" text="database.uniqueKey" />
+						</a>
+					</td>
+					<td>
+						<a href="javascript:void(0)" onclick="tableStructure.addIndex1('index', '<?php echo $column->COLUMN_NAME; ?>')" class="icon">
+							<com:Icon name="key_index" size="16" text="database.index" />
+						</a>
+					</td>
+					<td>
+						<a href="javascript:void(0)" onclick="tableStructure.addIndex1('fulltext', '<?php echo $column->COLUMN_NAME; ?>')" class="icon">
+							<com:Icon name="key_fulltext" size="16" text="database.fulltextIndex" />
+						</a>
+					</td>
 				</tr>
 			<?php } ?>
 		</tbody>
@@ -105,6 +129,18 @@
 		<a href="javascript:void(0)" onclick="tableStructure.dropColumns()" class="icon">
 			<com:Icon name="delete" size="16" />
 			<span><?php echo Yii::t('database', 'drop'); ?></span>
+		</a>
+		<a href="javascript:void(0)" onclick="tableStructure.addIndex('unique')" class="icon">
+			<com:Icon name="key_unique" size="16" text="database.uniqueKey" />
+			<span><?php echo Yii::t('database', 'uniqueKey'); ?></span>
+		</a>
+		<a href="javascript:void(0)" onclick="tableStructure.addIndex('index')" class="icon">
+			<com:Icon name="key_index" size="16" text="database.index" />
+			<span><?php echo Yii::t('database', 'index'); ?></span>
+		</a>
+		<a href="javascript:void(0)" onclick="tableStructure.addIndex('fulltext')" class="icon">
+			<com:Icon name="key_fulltext" size="16" text="database.fulltextIndex" />
+			<span><?php echo Yii::t('database', 'fulltextIndex'); ?></span>
 		</a>
 	</div>
 
@@ -149,8 +185,14 @@
 							<?php } ?>
 						</ul>
 					</td>
-					<td><com:Icon name="edit" size="16" text="core.edit" /></td>
-					<td><com:Icon name="delete" size="16" text="core.delete" /></td>
+					<td>
+						<com:Icon name="edit" size="16" text="core.edit" disabled="true" />
+					</td>
+					<td>
+						<a href="javascript:void(0)" onclick="tableStructure.dropIndex('<?php echo $index[0]->INDEX_NAME; ?>')" class="icon">
+							<com:Icon name="delete" size="16" text="database.drop" />
+						</a>
+					</td>
 				</tr>
 			<?php } ?>
 		<?php } else { ?>

@@ -150,6 +150,10 @@
 		top: 0px !important;
 	}
 	
+	div.list div.withSelected a {
+		margin: 0px 5px;
+	}
+	
 	/*
 	 * Right links
 	 */

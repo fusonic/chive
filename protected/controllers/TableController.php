@@ -361,6 +361,14 @@ class TableController extends CController
 		$table->createIndex($_POST['index'], $_POST['type'], (array)$_POST['columns']);
 	}
 
+	public function actionAlterIndex()
+	{
+		Table::$db = $this->_db;
+		$table = $this->loadTable();
+		$table->dropIndex($_POST['index'], $_POST['type']);
+		$table->createIndex($_POST['index'], $_POST['type'], (array)$_POST['columns']);
+	}
+
 	/*
 	 * Truncates the table
 	 */

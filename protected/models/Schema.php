@@ -137,7 +137,6 @@ class Schema extends CActiveRecord
 			return false;
 		}
 
-		// @todo(mburtscher): Work with parameters!
 		$cmd = Yii::app()->db->createCommand('ALTER DATABASE ' . $this->SCHEMA_NAME
 			. ' DEFAULT COLLATE = ' . $this->DEFAULT_COLLATION_NAME);
 		try
