@@ -69,5 +69,5 @@
 	<entry id="fulltextIndex">Fulltext index</entry>
 	<entry id="dropIndex">Drop index</entry>
 	<entry id="doYouReallyWantToDropIndex">Do you really want to drop the index?</entry>
-	
+	<entry id="primaryKey">Primary key</entry>
 </category>

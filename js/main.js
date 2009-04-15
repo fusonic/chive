@@ -240,3 +240,29 @@ var AjaxResponse = {
 String.prototype.trim = function () {
     return this.replace(/^\s*/, "").replace(/\s*$/, "");
 }
+
+
+/*
+ * Language things
+ */
+
+var lang = {
+	
+	get: function(category, variable, parameters) 
+	{
+		eval('var package = lang.' + category);
+		if(package && package[variable])
+		{
+			variable = package[variable];
+			if(parameters)
+			{
+				for(var key in parameters)
+				{
+					variable = variable.replace(key, parameters[key]);
+				}
+			}
+		}
+		return variable;
+	}
+	
+};

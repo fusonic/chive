@@ -83,16 +83,11 @@
 					</td>
 					<td>
 						<a href="javascript:void(0)" onclick="tableStructure.dropColumn('<?php echo $column->COLUMN_NAME; ?>')" class="icon">
-							<com:Icon name="delete" size="16" />
+							<com:Icon name="delete" size="16" text="database.drop" />
 						</a>
 					</td>
 					<td>
-						<com:Icon disabled="true" name="key_primary" size="16" text="schema.primaryKey" />
-					</td>
-					<td>
-						<a href="javascript:void(0)" onclick="tableStructure.addIndex1('unique', '<?php echo $column->COLUMN_NAME; ?>')" class="icon">
-							<com:Icon name="key_unique" size="16" text="database.uniqueKey" />
-						</a>
+						<com:Icon disabled="true" name="key_primary" size="16" text="database.primaryKey" />
 					</td>
 					<td>
 						<a href="javascript:void(0)" onclick="tableStructure.addIndex1('index', '<?php echo $column->COLUMN_NAME; ?>')" class="icon">
@@ -100,9 +95,18 @@
 						</a>
 					</td>
 					<td>
-						<a href="javascript:void(0)" onclick="tableStructure.addIndex1('fulltext', '<?php echo $column->COLUMN_NAME; ?>')" class="icon">
-							<com:Icon name="key_fulltext" size="16" text="database.fulltextIndex" />
+						<a href="javascript:void(0)" onclick="tableStructure.addIndex1('unique', '<?php echo $column->COLUMN_NAME; ?>')" class="icon">
+							<com:Icon name="key_unique" size="16" text="database.uniqueKey" />
 						</a>
+					</td>
+					<td>
+						<?php if(DataType::supportsFulltext($column->DATA_TYPE)) { ?>
+							<a href="javascript:void(0)" onclick="tableStructure.addIndex1('fulltext', '<?php echo $column->COLUMN_NAME; ?>')" class="icon">
+								<com:Icon name="key_fulltext" size="16" text="database.fulltextIndex" />
+							</a>
+						<?php } else { ?>
+							<com:Icon name="key_fulltext" size="16" text="database.fulltextIndex" disabled="true" />
+						<?php }?>
 					</td>
 				</tr>
 			<?php } ?>
@@ -130,13 +134,13 @@
 			<com:Icon name="delete" size="16" />
 			<span><?php echo Yii::t('database', 'drop'); ?></span>
 		</a>
-		<a href="javascript:void(0)" onclick="tableStructure.addIndex('unique')" class="icon">
-			<com:Icon name="key_unique" size="16" text="database.uniqueKey" />
-			<span><?php echo Yii::t('database', 'uniqueKey'); ?></span>
-		</a>
 		<a href="javascript:void(0)" onclick="tableStructure.addIndex('index')" class="icon">
 			<com:Icon name="key_index" size="16" text="database.index" />
 			<span><?php echo Yii::t('database', 'index'); ?></span>
+		</a>
+		<a href="javascript:void(0)" onclick="tableStructure.addIndex('unique')" class="icon">
+			<com:Icon name="key_unique" size="16" text="database.uniqueKey" />
+			<span><?php echo Yii::t('database', 'uniqueKey'); ?></span>
 		</a>
 		<a href="javascript:void(0)" onclick="tableStructure.addIndex('fulltext')" class="icon">
 			<com:Icon name="key_fulltext" size="16" text="database.fulltextIndex" />

@@ -9,9 +9,11 @@
 			var tableObj = $(this);
 			
 			if(!this.rows)
+			{
 				return tableObj;
+			}
 				
-			tableObj.find("colGroup").prepend("<col class=\"checkbox\" />");
+			tableObj.children("colGroup").prepend("<col class=\"checkbox\" />");
 			
 			tableObj.find("tr").each(function() {
 				
@@ -24,7 +26,7 @@
 				}
 				
 				// Find first cell in this row
-				var firstCellElement = $(this).find("th, td")[0];
+				var firstCellElement = $(this).children("th, td")[0];
 				var firstCellObject = $(firstCellElement);
 				
 				// Detect wether we are in the head or not
@@ -71,28 +73,34 @@
 						
 						// Set row class
 						if(this.checked)
-							$(this).parents("tr").addClass("selected");
+							$(this).closest("tr").addClass("selected");
 						else
-							$(this).parents("tr").removeClass("selected");
+							$(this).closest("tr").removeClass("selected");
 							
 						if(options.selectableRows)
+						{
 							event.stopPropagation();
+						}
 						
 					});
 					
 					if(options.selectableRows)
+					{
 						rowObject.find("a").click(function(event) {
 							event.stopPropagation();
 						});
+					}
 					
 				}
 
 				// Add row click action
 				if(options.selectableRows)
+				{
 					rowObject.find("td").click(function() {
 						checkboxObject.click();
 						checkboxObject.change();
 					});
+				}
 				
 				// Append checkbox to cell
 				cellObject.append(checkboxObject);

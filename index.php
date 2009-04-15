@@ -26,6 +26,8 @@ if($console == true)
 require_once($yii);
 $app = Yii::createWebApplication($config);
 
+// Define icon path
+define('ICONPATH', Yii::app()->baseUrl . DIRECTORY_SEPARATOR . Yii::app()->params->iconpack . DIRECTORY_SEPARATOR);
 
 if(!$app->user->isGuest) {
 	$app->db->connectionString = 'mysql:host=' . $app->user->host . ';dbname=information_schema';
@@ -48,5 +50,7 @@ if($request->isAjaxRequest)
 {
 	$app->clientScript->scriptMap['jquery.js'] = false;
 }
+
+Yii::app()->getComponent('messages')->publishJavaScriptMessages();
 
 $app->run();

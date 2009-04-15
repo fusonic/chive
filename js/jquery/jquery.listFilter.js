@@ -14,7 +14,9 @@
 			{
 				list.children("li").removeClass("listFilterSelected");
 				if(element)
+				{
 					element.addClass("listFilterSelected");
+				}
 			}
 			
 			function keyDown(e)
@@ -85,9 +87,7 @@
 			
 			function doFilter() 
 			{
-				
 				var searchString = input.val().toLowerCase();
-					
 				var selectedResult = $(list.children("li.listFilterSelected:visible")[0]);
 				
 				// Do filtering
@@ -117,7 +117,6 @@
 					}
 				}
 				selectResult(selectedNow);
-				
 			}
 			
 			
