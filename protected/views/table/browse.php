@@ -9,9 +9,6 @@
 	<?php echo Yii::t('message', 'doYouReallyWantToDeleteRow'); ?>
 </div>
 
-<com:Notification id="databaseError" type="error" message={Yii::t('core','edit')} />
-<com:Notification id="databaseError2" type="success" message={Yii::t('core','edit')} />
-
 <?php if($error) { ?>
 	<div class="errorSummary">
 		<?php echo $error; ?>
