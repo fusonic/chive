@@ -14,4 +14,10 @@
 	<entry id="doYouReallyWantToDeleteBookmark">Do you really want to delete this bookmark?</entry>
 	<entry id="errorBookmarkWithThisNameAlreadyExists">There is already a bookmark with the same name.</entry>
 	<entry id="enterAName">Enter a name</entry>
+	
+	<!-- Columns -->
+	<entry id="successMoveColumn">Moved column {col}</entry>
+	<entry id="errorMoveColumn">Moving column {col} failed</entry>
+	<entry id="successAddColumn">Added column {col}</entry>
+	<entry id="successEditColumn">Saved column {col}</entry>
 </category>

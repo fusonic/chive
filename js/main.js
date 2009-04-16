@@ -236,7 +236,7 @@ var AjaxResponse = {
 		{
 			$.each(data.notifications, function() {
 				
-				Notification.add(this.type, this.message, this.header, this.code, this.options);
+				Notification.add(this.type, this.title, this.message, this.code, this.options);
 				
 			});
 		}

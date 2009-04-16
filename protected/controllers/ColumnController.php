@@ -63,9 +63,15 @@ class ColumnController extends CController
 		{
 			$column->attributes = $_POST['Column'];
 			$column->TABLE_NAME = $this->table;
-			if($column->save())
+			if($sql = $column->save())
 			{
-				Yii::app()->end('reload');
+				$response = new AjaxResponse();
+				$response->addNotification('success',
+					Yii::t('message', 'successAddColumn', array('{col}' => $column->COLUMN_NAME)),
+					null,
+					$sql);
+				$response->reload = true;
+				$response->send();
 			}
 		}
 
@@ -85,11 +91,13 @@ class ColumnController extends CController
 		Column::$db = $this->_db;
 
 		$isSubmitted = false;
+		$sql = false;
 		$column = Column::model()->findByPk(array('TABLE_SCHEMA' => $this->schema, 'TABLE_NAME' => $this->table, 'COLUMN_NAME' => $_GET['col']));
 		if(isset($_POST['Column']))
 		{
 			$column->attributes = $_POST['Column'];
-			if($column->save())
+			$sql = $column->save();
+			if($sql)
 			{
 				$isSubmitted = true;
 			}
@@ -105,6 +113,7 @@ class ColumnController extends CController
 			'collations' => $collations,
 			'helperId' => 'helper_' . mt_rand(1000, 9999),
 			'isSubmitted' => $isSubmitted,
+			'sql' => $sql,
 		));
 	}
 
@@ -119,7 +128,24 @@ class ColumnController extends CController
 		);
 		$column = Column::model()->findByPk($pk);
 
-		$column->move($_POST['command']);
+		$response = new AjaxResponse();
+		try
+		{
+			$command = $column->move($_POST['command']);
+			$response->addNotification('success',
+				Yii::t('message', 'successMoveColumn', array('{col}' => $_POST['column'])),
+				null,
+				$command);
+		}
+		catch(DbException $ex)
+		{
+			$response->addNotification('error',
+				Yii::t('message', 'errorMoveColumn', array('{col}' => $_POST['column'])),
+				$ex->getText(),
+				$ex->getSql());
+			$response->reload = true;
+		}
+		$response->send();
 	}
 
 	public function actionDrop()

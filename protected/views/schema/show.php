@@ -28,8 +28,7 @@
 		</colgroup>
 		<thead>
 			<tr>
-				<th><?php echo $sort->link('TABLE_NAME', Yii::t('database', 'table'), array('rel'=>'no-ajax')); ?></th>
-				<th colspan="6"><?php echo Yii::t('core', 'action'); ?></th>
+				<th colspan="7"><?php echo $sort->link('TABLE_NAME', Yii::t('database', 'table'), array('rel'=>'no-ajax')); ?></th>
 				<th><?php echo $sort->link('TABLE_ROWS', Yii::t('database', 'rows'), array('rel'=>'no-ajax')); ?></th>
 				<th><?php echo $sort->link('ENGINE', Yii::t('database', 'engine'), array('rel'=>'no-ajax')); ?></th>
 				<th><?php echo $sort->link('TABLE_COLLATION', Yii::t('database', 'collation'), array('rel'=>'no-ajax')); ?></th>
@@ -89,8 +88,7 @@
 		</tbody>
 		<tfoot>
 			<tr>
-				<th><?php echo Yii::t('database', 'amountTables', array($schema->tableCount, '{amount} '=> $schema->tableCount)); ?></th>
-				<th colspan="6"></th>
+				<th colspan="7"><?php echo Yii::t('database', 'amountTables', array($schema->tableCount, '{amount} '=> $schema->tableCount)); ?></th>
 				<th><?php echo $totalRowCount; ?></th>
 				<th></th>
 				<th></th>

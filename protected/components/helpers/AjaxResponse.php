@@ -20,16 +20,15 @@ class AjaxResponse
 	/*
 	 * Notifications
 	 */
-	public function addNotification($type, $message, $code = false, $options = false)
+	public function addNotification($type, $title, $message, $code = false, $options = false)
 	{
 		$this->notifications[] = array(
 			'type' => $type,
+			'title' => ($title ? $title : Yii::t('core', $type)),
 			'message' => $message,
 			'code' => $code,
-			'header' => ($header ? $header : Yii::t('core', $type)),
 			'options' => $options,
 		);
-
 	}
 
 	/*
@@ -38,12 +37,14 @@ class AjaxResponse
 
 	public function addData($name, $value)
 	{
-
 		if($name != null)
+		{
 			$this->data[$name] = $value;
+		}
 		else
+		{
 			$this->data = $value;
-
+		}
 	}
 
 	public function send()

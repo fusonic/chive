@@ -108,7 +108,7 @@ $(document).ready(function() {
 			$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/columns/move', {
 					command: command,
 					column: id
-				}
+				}, AjaxResponse.handle
 			);
 			
 		}

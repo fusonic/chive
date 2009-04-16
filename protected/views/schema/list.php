@@ -46,17 +46,17 @@
 					</td>
 					<td>
 						<a href="#" class="icon">
-							<com:Icon name="privileges" size="16" />
+							<com:Icon name="privileges" size="16" text="core.privileges" />
 						</a>
 					</td>
 					<td>
 						<a href="javascript:void(0)" onclick="editSchema('<?php echo $model->SCHEMA_NAME; ?>')" class="icon">
-							<com:Icon name="edit" size="16" />
+							<com:Icon name="edit" size="16" text="core.edit" />
 						</a>
 					</td>
 					<td>
 						<a href="javascript:void(0)" onclick="dropSchema('<?php echo $model->SCHEMA_NAME; ?>')" class="icon">
-							<com:Icon name="delete" size="16" />
+							<com:Icon name="delete" size="16" text="database.drop" />
 						</a>
 					</td>
 				</tr>

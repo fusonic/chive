@@ -226,15 +226,22 @@ class Column extends CActiveRecord
 
 	public function move($command)
 	{
-
 		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME)
 			. ' MODIFY ' . $this->getColumnDefinition()
 			. ' ' . (substr($command, 0, 6) == 'AFTER ' ? 'AFTER ' . self::$db->quoteColumnName(substr($command, 6)) : 'FIRST');
-
 		$cmd = new CDbCommand(self::$db, $sql);
 		$this->bindColumnDefinitionValues($cmd);
-		return $cmd->execute();
-
+		try
+		{
+			$cmd->prepare();
+			$cmd->execute();
+			return $sql;
+		}
+		catch(CDbException $ex)
+		{
+			$errorInfo = $cmd->getPdoStatement()->errorInfo();
+			throw new DbException($sql, $errorInfo[1], $errorInfo[2]);
+		}
 	}
 
 	public function update()
@@ -257,7 +264,7 @@ class Column extends CActiveRecord
 			$cmd->prepare();
 			$cmd->execute();
 			$this->afterSave();
-			return true;
+			return $sql;
 		}
 		catch(CDbException $ex)
 		{
@@ -288,7 +295,7 @@ class Column extends CActiveRecord
 			$cmd->prepare();
 			$cmd->execute();
 			$this->afterSave();
-			return true;
+			return $sql;
 		}
 		catch(CDbException $ex)
 		{

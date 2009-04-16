@@ -60,18 +60,15 @@
 			var setAjaxForms = function() {
 				divObj.children("form").ajaxForm({
 					success: function(responseText, statusText) {
-						if(responseText == 'reload')
+						try 
 						{
-							reload();
+							JSON.parse(responseText);
+							AjaxResponse.handle(responseText, statusText);
 						}
-						else if(responseText.match(/redirect:(.*)/))
-						{
-							window.location.href = RegExp.$1;
-						}
-						else
+						catch(ex) 
 						{
 							divObj.html(responseText);
-							setAjaxForms();
+							setAjaxForms();	
 						}
 					}
 				});

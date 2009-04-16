@@ -5,7 +5,7 @@
 var Notification = {
 	
 	// Add column
-	add: function(type, message, header, code, options)
+	add: function(type, header, message, code, options)
 	{
 		$('<div class="notification" style="display: none;" onmouseover="window.clearTimeout($(this).data(\'timeout\'));">' + 
 			'<div class="notification-body">' +
@@ -16,7 +16,7 @@ var Notification = {
 					'</span>' +
 				'</div>' +
 			'<div>' +
-				message + 
+				(message ? message : '') + 
 				(code ? 
 				'<a href="javascript:void(0);" style="display: block;" onclick="$(this).next().toggle(1000);" alt="show code">Show code</a>' +
 				'<pre style="display: none;">' + code + '</pre>' : '') +

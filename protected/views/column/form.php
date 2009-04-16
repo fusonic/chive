@@ -15,6 +15,7 @@ var idPrefix = '<?php echo CHtml::$idPrefix; ?>';
 	$('#' + idPrefix).parent().slideUp(500, function() {
 		$('#' + idPrefix).parents("tr").remove();
 	});
+	Notification.add('success', '<?php echo Yii::t('message', 'successEditColumn', array('{col}' => $column->COLUMN_NAME)); ?>', null, '<?php echo $sql; ?>');
 	</script>
 <?php endif; ?>
 
@@ -26,7 +27,7 @@ var idPrefix = '<?php echo CHtml::$idPrefix; ?>';
 	<div style="float: left; width: 200px">
 		<fieldset>
 			<legend><?php echo CHtml::activeLabel($column,'COLUMN_NAME'); ?></legend>
-			<?php echo CHtml::activeTextField($column, 'COLUMN_NAME'); ?>
+			<?php echo CHtml::activeTextField($column, 'COLUMN_NAME', ($column->isNewRecord ? array() : array('disabled' =>  true))); ?>
 		</fieldset>
 		<fieldset id="<?php echo CHtml::$idPrefix; ?>dataTypeSet">
 			<legend><?php echo CHtml::activeLabel($column,'dataType'); ?></legend>
