@@ -19,7 +19,11 @@ class DublinTests extends PHPUnit_Framework_TestSuite
 			require_once($file);
 			$info = pathinfo($file);
 			$class = $info['filename'] . 'Test';
-			$suite->addTestSuite($class);
+			eval('$enabled = ' . $class . '::$enabled;');
+			if($enabled)
+			{
+				$suite->addTestSuite($class);
+			}
 		}
 
 		return $suite;

@@ -3,9 +3,6 @@
 class SchemaTest extends TestCase
 {
 
-	/**
-	 * Setup test databases.
-	 */
 	protected function setUp()
 	{
 		$this->executeSqlFile('models/Schema.sql');

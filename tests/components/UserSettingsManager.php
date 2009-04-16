@@ -1,7 +1,5 @@
 <?php
 
-require_once('yii.php');
-
 class UserSettingsManagerTest extends TestCase
 {
 
@@ -12,7 +10,6 @@ class UserSettingsManagerTest extends TestCase
 
 	protected function setUp()
 	{
-		parent::setUp();
 		$this->mgr = new UserSettingsManager(self::$host, self::$user);
 	}
 

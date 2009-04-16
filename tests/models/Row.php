@@ -3,6 +3,8 @@
 class RowTest extends TestCase
 {
 
+	public static $enabled = false;
+
 	/**
 	 * Setup test databases.
 	 */
