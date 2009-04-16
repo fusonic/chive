@@ -98,11 +98,11 @@
 						clearInterval( topSpotInt );
 						
 						// Call the close action after the timeout set in options
-						setTimeout( function ()
+						notice.data('timeout', setTimeout( function ()
 							{
 								removeNotice();
 							}, options.removeTimer
-						);
+						));
 					}
 				}, 200 );	
 			}

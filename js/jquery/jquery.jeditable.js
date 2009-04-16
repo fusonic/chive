@@ -137,7 +137,7 @@
             $(this).data('event.editable', settings.event);
             
             /* if element is empty add something clickable (if requested) */
-            if (!$.trim($(this).html())) {
+            if (!$.trim($(this).html()) && $(this).get(0).tagName != 'TD') {
                 $(this).html(settings.placeholder);
             }
             

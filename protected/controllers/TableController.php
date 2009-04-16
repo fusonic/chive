@@ -102,7 +102,7 @@ class TableController extends CController
 		$sort->route = '/table/sql';
 
 		if(!$_query)
-			$_query = 'SELECT * FROM ' . $db->quoteTableName($this->table);
+			$_query = self::getDefaultQuery();
 
 		$oSql = new Sql($_query);
 		$oSql->applyCalculateFoundRows();
@@ -142,6 +142,7 @@ class TableController extends CController
 		{
 			$error = $ex->getMessage();
 		}
+
 
 		$this->render('browse',array(
 			'data' => $data,
@@ -237,11 +238,31 @@ class TableController extends CController
 	public function actionInsert()
 	{
 
+		$db = $this->_db;
+
 		Row::$db = $this->_db;
 		$row = new Row;
 
 		if(isset($_POST['Row']))
 		{
+
+			$sql = 'INSERT INTO ' . $db->quoteTableName($this->table) . ' (';
+
+			$attributesCount = count($row->getAttributes());
+
+			$i = 0;
+			foreach($row->getAttributes() AS $attribute=>$value)
+			{
+				$sql .= "\n\t" . $attribute;
+
+				$i++;
+
+				if($i < $attributesCount)
+					$sql .= ', ';
+			}
+
+			predie($sql);
+
 			$row->attributes=$_POST['Row'];
 			$row->isNewRecord = true;
 
@@ -461,19 +482,9 @@ class TableController extends CController
 		return $this->_table;
 	}
 
-	/**
-	 * Executes any command triggered on the admin page.
+	/*
+	 * Private functions
 	 */
-	protected function processAdminCommand()
-	{
-		if(isset($_POST['command'], $_POST['id']) && $_POST['command']==='delete')
-		{
-			$this->loadUser($_POST['id'])->delete();
-			// reload the current page to avoid duplicated delete actions
-			$this->refresh();
-		}
-	}
-
 	private function getDefaultQuery()
 	{
 		return 'SELECT * FROM ' . $this->_db->quoteTableName($this->table) . "\n\t"

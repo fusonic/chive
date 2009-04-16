@@ -92,7 +92,9 @@ return array(
                 'schema/<schema:'.URL_MATCH.'>'=>'schema/index',
 				'schema/<schema:'.URL_MATCH.'>/tables'=>'schema/show',
 				'schema/<schema:'.URL_MATCH.'>/sql'=>'schema/sql',
-				'schema/<schema:'.URL_MATCH.'>/bookmark'=>'schema/bookmark',
+
+				//Bookmarks
+				'schema/<schema:'.URL_MATCH.'>/bookmark/show/<id:(.+)>'=>'schema/showBookmark',
 
 					// Table
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/browse'=>'table/browse',

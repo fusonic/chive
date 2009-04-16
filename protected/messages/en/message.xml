@@ -7,4 +7,11 @@
 	<entry id="doYouReallyWantToDropTable">Do you really want to drop the table?</entry>
 	<entry id="truncateTable">Truncate table</entry>
 	<entry id="doYouReallyWantToTruncateTable">Do you really want to truncate the table?</entry>
+	
+	<entry id="successAddBookmark">The bookmark has been saved successfully.</entry>
+	<entry id="successExecuteBookmark">The bookmark has been executed successfully.</entry>
+	<entry id="successDeleteBookmark">The bookmark has been deleted successfully.</entry>
+	<entry id="doYouReallyWantToDeleteBookmark">Do you really want to delete this bookmark?</entry>
+	<entry id="errorBookmarkWithThisNameAlreadyExists">There is already a bookmark with the same name.</entry>
+	<entry id="enterAName">Enter a name</entry>
 </category>

@@ -106,13 +106,14 @@ class SchemaController extends CController
 		));
 	}
 
-	public function actionSql() {
+	public function actionSql($_query = false, $_execute = true) {
 
 		$db = $this->_db;
 
 		$request = Yii::app()->getRequest();
+		$query = $_query ? $_query : $request->getParam('query');
 
-		if($query = $request->getParam('query')) {
+		if($query) {
 
 			$pages = new CPagination;
 			$pages->setPageSize(self::PAGE_SIZE);
@@ -135,30 +136,35 @@ class SchemaController extends CController
 
 			$query = $oSql->getOriginalQuery();
 
-			$cmd = $db->createCommand($oSql->getQuery());
-			$cmd->prepare();
-
-			try
+			if($_execute)
 			{
-				// Fetch data
-				$data = $cmd->queryAll();
 
-				$total = (int)$db->createCommand('SELECT FOUND_ROWS()')->queryScalar();
-				$pages->setItemCount($total);
+				$cmd = $db->createCommand($oSql->getQuery());
 
-				$columns = array();
+				try
+				{
+					// Fetch data
+					$data = $cmd->queryAll();
 
-				// Fetch column headers
-				if($total > 0) {
-					$columns = array_keys($data[0]);
+					$total = (int)$db->createCommand('SELECT FOUND_ROWS()')->queryScalar();
+					$pages->setItemCount($total);
+
+					$columns = array();
+
+					// Fetch column headers
+					if($total > 0) {
+						$columns = array_keys($data[0]);
+					}
+
+
+				}
+				catch (Exception $ex)
+				{
+					$error = $ex->getMessage();
 				}
 
+			}
 
-			}
-			catch (Exception $ex)
-			{
-				$error = $ex->getMessage();
-			}
 
 		}
 
@@ -170,15 +176,6 @@ class SchemaController extends CController
 			'sort' => $sort,
 			'error' => $error,
 		));
-
-	}
-
-	public function actionBookmark() {
-
-		$bookmarks = Yii::app()->user->settings->get('bookmarks', 'database', $this->schema);
-
-		$cmd = new CDbCommand($this->_db, $bookmarks[Yii::app()->getRequest()->getParam('id')]);
-		$cmd->execute();
 
 	}
 
@@ -352,17 +349,19 @@ class SchemaController extends CController
 		return $this->_schema;
 	}
 
-	/**
-	 * Executes any command triggered on the admin page.
+
+	/*
+	 * Bookmark actions
 	 */
-	protected function processAdminCommand()
+
+	public function actionShowBookmark()
 	{
-		if(isset($_POST['command'], $_POST['id']) && $_POST['command']==='delete')
-		{
-			$this->loadUser($_POST['id'])->delete();
-			// reload the current page to avoid duplicated delete actions
-			$this->refresh();
-		}
+
+		$id = Yii::app()->getRequest()->getParam('id');
+		$bookmark = Yii::app()->user->settings->get('bookmarks', 'database', $this->schema, 'id', $id);
+
+		self::actionSql($bookmark['query'], false);
+
 	}
 
 }

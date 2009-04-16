@@ -30,5 +30,8 @@
 	<entry id="withSelected">With selected: </entry>
 	
 	<entry id="bookmarks">Bookmarks</entry>
+	<entry id="bookmark">Bookmark</entry>
+	<entry id="addBookmark">Add bookmark</entry>
+	<entry id="deleteBookmark">Delete bookmark</entry>
 	<entry id="type">Type</entry>
 </category>

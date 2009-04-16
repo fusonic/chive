@@ -92,7 +92,7 @@ class RowController extends CController
 			$cmd = $commandBuilder->createSqlCommand($sql);
 			$cmd->execute();
 
-			$response->addNotification('success', 'Row was successfully updated', $sql, array('isSticky'=>true));
+			$response->addNotification('success', 'Row was successfully updated', $sql);
 
 		}
 		catch (Exception $ex)
@@ -100,14 +100,7 @@ class RowController extends CController
 			$response->addNotification('error', Yii::t('core', 'error'), $ex->getMessage(), array('isSticky'=>true));
 		}
 
-		//$row = Row::model()->findByPk($pk);
-		//$row->setAttribute($_POST['attribute'], $_POST['value']);
-
-
-		//$row->updateByPk($pk, array('value'=>$_POST['value']));
-
-		Yii::app()->end($response);
-
+		$response->send();
 
 	}
 

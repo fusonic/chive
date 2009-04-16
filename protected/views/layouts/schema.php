@@ -24,6 +24,7 @@
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.purr.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/notification.js', CClientScript::POS_HEAD); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/bookmark.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/lib/json.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/main.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.layout.js', CClientScript::POS_HEAD); ?>
@@ -38,6 +39,15 @@
 <body>
 
   <div id="loading"><?php echo Yii::t('core', 'loading'); ?>...</div>
+
+  <div id="addBookmarkDialog" title="<?php echo Yii::t('core', 'addBookmark'); ?>" style="display: none">
+	<?php echo Yii::t('message', 'enterAName'); ?><br />
+	<input type="text" id="newBookmarkName" name="newBookmarkName" />
+  </div>
+
+  <div id="deleteBookmarkDialog" title="<?php echo Yii::t('core', 'deleteBookmark'); ?>" style="display: none">
+  	<?php echo Yii::t('message', 'doYouReallyWantToDeleteBookmark'); ?>
+  </div>
 
   <div class="ui-layout-north">
 	<div id="header">
@@ -139,18 +149,18 @@
 		<div class="sidebarContent">
 			<ul class="list icon nowrap" id="bookmarkList">
 			<?php if(Yii::app()->user->settings->get('bookmarks', 'database', $this->schema)) { ?>
-				<?php foreach(Yii::app()->user->settings->get('bookmarks', 'database', $this->schema) AS $setting) { ?>
-					<li>
-						<a href="" class="icon">
+				<?php foreach(Yii::app()->user->settings->get('bookmarks', 'database', $this->schema) AS $key=>$bookmark) { ?>
+					<li id="bookmark_<?php echo $bookmark['id']; ?>">
+						<a href="#bookmark/show/<?php echo $bookmark['id']; ?>" class="icon" title="<?php echo $bookmark['query']; ?>">
 							<com:Icon size="16" name="bookmark" />
-							<span><?php echo Yii::t('core', 'bookmark'); ?></span>
+							<span><?php echo $bookmark['name']; ?></span>
 						</a>
 						<div class="listIconContainer">
-							<a href="javascript:void(0);" onclick="$.post('<?php echo Yii::app()->baseUrl; ?>/schema/<?php echo $this->schema; ?>/bookmark', {
-									schema: '<?php echo $this->schema; ?>',
-									id: 0
-								});">
-								<com:Icon name="add" size="16" />
+							<a href="javascript:void(0);" onclick="Bookmark.delete('<?php echo $this->schema; ?>', '<?php echo $bookmark['id']; ?>');">
+								<com:Icon name="delete" size="16" title="core.delete" disabled={true} />
+							</a>
+							<a href="javascript:void(0);" onclick="Bookmark.execute('<?php echo $this->schema; ?>', '<?php echo $bookmark['id']; ?>');">
+								<com:Icon name="execute" size="16" title="action.execute" />
 							</a>
 						</div>
 					</li>

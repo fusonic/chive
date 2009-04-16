@@ -1,8 +1,5 @@
 <?php echo CHtml::form(Yii::app()->baseUrl . '/' . str_replace('browse', 'sql', Yii::app()->getRequest()->pathInfo), 'post'); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.jeditable.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.purr.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.jgrowl.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/lib/json.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/views/table/browse.js', CClientScript::POS_HEAD); ?>
 
 <div id="deleteRowDialog" title="<?php echo Yii::t('core', 'confirm'); ?>" style="display: none">
@@ -21,25 +18,13 @@
 			<com:application.extensions.CodePress.CodePress language="sql" name="query" width="100%" height="80px" autogrow="true" value={$query} />
 		</td>
 		<td style="vertical-align: top; padding: 10px;">
-			<a class="icon" href="javascript:void(0);">
-				<?php $this->widget('Icon', array(
-					'name'=>'bookmark',
-					'size'=>16,
-					'htmlOptions'=>array(
-						'onclick'=>'addBookmark("' . $this->schema . '", query.getCode());'
-					),
-				)); ?>
+			<a class="icon" href="javascript:void(0);" onclick="Bookmark.add('<?php echo $this->schema; ?>', query.getCode());">
+				<com:Icon size="16" name="bookmark_add" />
 				<span><?php echo Yii::t('core', 'bookmark'); ?></span>
 			</a>
 			<br/><br/>
-			<a class="icon" href="javascript:void(0);">
-				<?php $this->widget('Icon', array(
-					'name'=>'chart',
-					'size'=>16,
-					'htmlOptions'=>array(
-						'onclick'=>'toggleProfiling();'
-					),
-				)); ?>
+			<a class="icon" href="javascript:void(0);" onclick="">
+				<com:Icon size="16" name="chart" />
 				<span><?php echo Yii::t('database', 'profiling'); ?></span>
 			</a>
 		</td>

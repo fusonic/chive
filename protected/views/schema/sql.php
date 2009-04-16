@@ -1,4 +1,4 @@
-<?php echo CHtml::form(Yii::app()->baseUrl . '/' . str_replace('browse', 'sql', Yii::app()->getRequest()->pathInfo), 'post'); ?>
+<?php echo CHtml::form(Yii::app()->baseUrl . '/schema/' . $this->schema . '/sql' , 'post'); ?>
 
 <?php if($error) { ?>
 	<div class="errorSummary">

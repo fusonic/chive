@@ -59,23 +59,45 @@ class UserSettingsManager
 		return $jsSettings;
 	}
 
-	public function get($name, $scope = null, $object = null)
+	public function get($name, $scope = null, $object = null, $attribute = null, $value = null)
 	{
 		$id = $this->getSettingId($name, $scope);
 		if(isset($this->userSettings[$id]))
 		{
 			if(isset($this->userSettings[$id][$object]))
 			{
-				return $this->userSettings[$id][$object];
+				if($attribute && $value)
+				{
+					return self::findByAttributeValue($this->userSettings[$id][$object], $attribute, $value);
+				}
+				else
+				{
+					return $this->userSettings[$id][$object];
+				}
 			}
 			elseif(isset($this->userSettings[$id][null]))
 			{
-				return $this->userSettings[$id][null];
+				if($attribute && $value)
+				{
+					return self::findByAttributeValue($this->userSettings[$id][null], $attribute, $value);
+				}
+				else
+				{
+					return $this->userSettings[$id][null];
+				}
+
 			}
 		}
 		elseif(isset($this->defaultSettings[$id]))
 		{
-			return $this->defaultSettings[$id][null];
+			if($attribute && $value)
+			{
+				return self::findByAttributeValue($this->defaultSettings[$id][null], $attribute, $value);
+			}
+			else
+			{
+				return $this->defaultSettings[$id][null];
+			}
 		}
 		else
 		{
@@ -192,6 +214,19 @@ class UserSettingsManager
 		{
 			return array($return, null);
 		}
+	}
+
+	private function findByAttributeValue($array, $attribute, $value)
+	{
+		$array = CPropertyValue::ensureArray($array);
+
+		foreach($array AS $key=>$entry)
+		{
+			if($entry[$attribute] == $value)
+				return $entry;
+		}
+
+		return false;
 	}
 
 }

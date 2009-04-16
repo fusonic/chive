@@ -52,7 +52,10 @@ function reload() {
 		.replace(/\?(.+)#/, '')
 		.replace('#', '/')					// Replace # with /
 		.replace(/([^:])\/+/g, '$1/');		// Remove multiple slashes
-	$('div.ui-layout-center').load(newLocation, {}, init);
+	$('div.ui-layout-center').load(newLocation, {}, function(response) {
+		init();
+		AjaxResponse.handle(response);
+	});
 	return false;
 }
 
@@ -210,21 +213,26 @@ $(document).ready(function()
 
 var AjaxResponse = {
 	
-	handle: function(data) 
+	handle: function(data)
 	{
-		data = JSON.parse(data);
 		
-		if(data.redirect) 
+		try 
 		{
-			console.log('redirect');
+			data = JSON.parse(data);
+		}
+		catch(Exception) {}
+		
+		if(data.redirectUrl) 
+		{
+			window.location.href = data.redirectUrl;
 		}
 		
 		if(data.reload)
 		{
-			console.log('reload');
+			reload();
 		}
 		
-		if(data.notifications.length > 0) 
+		if(data.notifications && data.notifications.length > 0) 
 		{
 			$.each(data.notifications, function() {
 				

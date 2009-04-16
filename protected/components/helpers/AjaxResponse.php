@@ -46,10 +46,15 @@ class AjaxResponse
 
 	}
 
+	public function send()
+	{
+		Yii::app()->end($this);
+	}
+
 	public function __toString() {
 
 		$data = array(
-			'redirect'=>$this->redirect,
+			'redirectUrl'=>$this->redirectUrl,
 			'reload'=>$this->reload,
 			'notifications'=>$this->notifications,
 			'data' => $this->data,
