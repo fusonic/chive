@@ -153,8 +153,7 @@ class Table extends CActiveRecord
 		}
 		catch(CDbException $ex)
 		{
-			$errorInfo = $cmd->getPdoStatement()->errorInfo();
-			throw new DbException($sql, $errorInfo[1], $errorInfo[2]);
+			throw new DbException($cmd);
 		}
 	}
 
@@ -198,8 +197,7 @@ class Table extends CActiveRecord
 		}
 		catch(CDbException $ex)
 		{
-			$errorInfo = $cmd->getPdoStatement()->errorInfo();
-			throw new DbException($sql, $errorInfo[1], $errorInfo[2]);
+			throw new DbException($cmd);
 		}
 	}
 

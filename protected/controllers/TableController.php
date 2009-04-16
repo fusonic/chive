@@ -373,14 +373,51 @@ class TableController extends CController
 	{
 		Table::$db = $this->_db;
 		$table = $this->loadTable();
-		$table->dropIndex($_POST['index'], $_POST['type']);
+
+		$response = new AjaxResponse();
+		try
+		{
+			$sql = $table->dropIndex($_POST['index'], $_POST['type']);
+			$response->addNotification('success',
+				Yii::t('message', 'successDropIndex', array('{index}' => $_POST['index'])),
+				null,
+				$sql);
+			$response->addData('success', true);
+		}
+		catch(DbException $ex)
+		{
+			$response->addNotification('error',
+				Yii::t('message', 'errorDropIndex', array('{index}' => $_POST['index'])),
+				$ex->getText(),
+				$ex->getSql());
+			$response->addData('success', false);
+		}
+		$response->send();
 	}
 
 	public function actionCreateIndex()
 	{
 		Table::$db = $this->_db;
 		$table = $this->loadTable();
-		$table->createIndex($_POST['index'], $_POST['type'], (array)$_POST['columns']);
+
+		$response = new AjaxResponse();
+		try
+		{
+			$sql = $table->createIndex($_POST['index'], $_POST['type'], (array)$_POST['columns']);
+			$response->addNotification('success',
+				Yii::t('message', 'successCreateIndex', array('{index}' => $_POST['index'])),
+				null,
+				$sql);
+			$response->reload = true;
+		}
+		catch(DbException $ex)
+		{
+			$response->addNotification('error',
+				Yii::t('message', 'errorCreateIndex', array('{index}' => $_POST['index'])),
+				$ex->getText(),
+				$ex->getSql());
+		}
+		$response->send();
 	}
 
 	public function actionAlterIndex()

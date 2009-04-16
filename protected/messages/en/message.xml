@@ -16,8 +16,16 @@
 	<entry id="enterAName">Enter a name</entry>
 	
 	<!-- Columns -->
-	<entry id="successMoveColumn">Moved column {col}</entry>
-	<entry id="errorMoveColumn">Moving column {col} failed</entry>
-	<entry id="successAddColumn">Added column {col}</entry>
-	<entry id="successEditColumn">Saved column {col}</entry>
+	<entry id="successMoveColumn">Moved column »{col}«</entry>
+	<entry id="errorMoveColumn">Moving column »{col}« failed</entry>
+	<entry id="successAddColumn">Added column »{col}«</entry>
+	<entry id="successEditColumn">Saved column »{col}«</entry>
+	<entry id="successDropColumn">Dropped column »{col}«</entry>
+	<entry id="errorDropColumn">Dropping column »{col}« failed</entry>
+	
+	<!-- Indices -->
+	<entry id="successCreateIndex">Created index »{index}«</entry>
+	<entry id="errorCreateIndex">Creating index »{index}« failed</entry>
+	<entry id="successDropIndex">Dropped index »{index}«</entry>
+	<entry id="errorDropIndex">Dropping index »{index}« failed</entry>
 </category>

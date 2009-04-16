@@ -171,11 +171,15 @@ $(document).ready(function() {
 					'schema': schema,
 					'table': table,
 					'column[]': ids
-				}, function() {
+				}, function(responseText) {
+					AjaxResponse.handle(responseText);
 					for(var i = 0; i < ids.length; i++)
 					{
 						$('#columns_' + ids[i]).remove();
 					}
+					$('#columns tr').removeClass('even').removeClass('odd');
+					$('#columns tbody tr:even').addClass('even');
+					$('#columns tbody tr:odd').addClass('odd');
 				});
 				
 				$(this).dialog('close');
@@ -204,10 +208,7 @@ $(document).ready(function() {
 					index: $('#newIndexName').get(0).value,
 					type: tableStructure.newIndexType,
 					'columns[]': ids
-				}, function() {
-					reload();
-				});
-				
+				}, AjaxResponse.handle);	
 				$(this).dialog('close');
 			},
 			'Cancel': function() {
@@ -234,11 +235,16 @@ $(document).ready(function() {
 				$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/dropIndex', {
 					index: tableStructure.dropIndexName,
 					type: tableStructure.dropIndexType
-				}, function() {
-					$('#indices_' + tableStructure.dropIndexName).remove();
-					$('#indices tr').removeClass('even').removeClass('odd');
-					$('#indices tbody tr:even').addClass('even');
-					$('#indices tbody tr:odd').addClass('odd');
+				}, function(responseText) {
+					var response = JSON.parse(responseText);
+					AjaxResponse.handle(response);
+					if(response.data.success)
+					{
+						$('#indices_' + tableStructure.dropIndexName).remove();
+						$('#indices tr').removeClass('even').removeClass('odd');
+						$('#indices tbody tr:even').addClass('even');
+						$('#indices tbody tr:odd').addClass('odd');
+					}
 				});
 				
 				$(this).dialog('close');

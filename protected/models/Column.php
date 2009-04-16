@@ -239,8 +239,7 @@ class Column extends CActiveRecord
 		}
 		catch(CDbException $ex)
 		{
-			$errorInfo = $cmd->getPdoStatement()->errorInfo();
-			throw new DbException($sql, $errorInfo[1], $errorInfo[2]);
+			throw new DbException($cmd);
 		}
 	}
 
@@ -317,21 +316,21 @@ class Column extends CActiveRecord
 			return false;
 		}
 
-		$cmd = self::$db->createCommand('ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME)
-			. ' DROP ' . self::$db->quoteColumnName($this->COLUMN_NAME));
+		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME)
+			. ' DROP ' . self::$db->quoteColumnName($this->COLUMN_NAME);
+		$cmd = self::$db->createCommand($sql);
 		try
 		{
 			$cmd->prepare();
 			$cmd->execute();
 			$this->afterDelete();
-			return true;
+			return $sql;
 		}
 		catch(CDbException $ex)
 		{
 			$this->afterDelete();
-			return false;
+			throw new DbException($cmd);
 		}
-		Yii::app()->end();
 	}
 
 	protected function afterSave()

@@ -153,6 +153,7 @@ class ColumnController extends CController
 		Column::$db = $this->_db;
 
 		$columns = (array)$_POST['column'];
+		$response = new AjaxResponse();
 		foreach($columns AS $column)
 		{
 			$pk = array(
@@ -160,13 +161,25 @@ class ColumnController extends CController
 				'TABLE_NAME' => $this->table,
 				'COLUMN_NAME' => $column,
 			);
+			$column = Column::model()->findByPk($pk);
 			try
 			{
-				$column = Column::model()->findByPk($pk);
-				$column->delete();
+				$sql = $column->delete();
+				$response->addNotification('success',
+					Yii::t('message', 'successDropColumn', array('{col}' => $column->COLUMN_NAME)),
+					null,
+					$sql);
 			}
-			catch(Exception $ex) { }
+			catch(DbException $ex)
+			{
+				$response->addNotification('error',
+					Yii::t('message', 'errorDropColumn', array('{col}' => $column->COLUMN_NAME)),
+					null,
+					$ex->getText());
+				$response->reload = true;
+			}
 		}
+		$response->send();
 	}
 
 }

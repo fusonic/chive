@@ -16,9 +16,19 @@ class DbException extends CDbException {
 	 */
 	public function __construct($sql = null, $number = null, $text = null)
 	{
-		$this->sql = $sql;
-		$this->number = $number;
-		$this->text = $text;
+		if($sql instanceof CDbCommand)
+		{
+			$this->sql = $sql->getText();
+			$errorInfo = $sql->getPdoStatement()->errorInfo();
+			$this->number = $errorInfo[1];
+			$this->text = $errorInfo[2];
+		}
+		else
+		{
+			$this->sql = $sql;
+			$this->number = $number;
+			$this->text = $text;
+		}
 		parent::__construct();
 	}
 
