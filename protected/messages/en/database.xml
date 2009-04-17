@@ -33,8 +33,6 @@
 	<entry id="cardinality">Cardinality</entry>
 	<entry id="usage">Usage</entry>
 	<entry id="spaceUsage">Space usage</entry>
-	<entry id="addIndex">Add index</entry>
-	<entry id="pleaseEnterNameForNewIndex">Please enter a name for the new index:</entry>
 	
 	<entry id="operator">Operator</entry>
 	
@@ -49,7 +47,6 @@
 	<entry id="dataSize">Size (data)</entry>
 	<entry id="free">Free</entry>
 	<entry id="data">Data</entry>
-	<entry id="index">Index</entry>
 
 	<entry id="dropSchemata">Drop databases</entry>
 	<entry id="doYouReallyWantToDropSchemata">Do you really want to drop the selected databases?</entry>
@@ -65,9 +62,28 @@
 	<entry id="addSchema">Add schema</entry>
 	<entry id="editSchema">Edit schema</entry>
 	
-	<entry id="uniqueKey">Unique key</entry>
-	<entry id="fulltextIndex">Fulltext index</entry>
+	<!-- Indices -->
+	<entry id="index">Index</entry>
+	<entry id="addIndex">Add index</entry>
+	<entry id="enterNameForNewIndex">Please enter a name for the new index:</entry>
 	<entry id="dropIndex">Drop index</entry>
-	<entry id="doYouReallyWantToDropIndex">Do you really want to drop the index?</entry>
+	<entry id="doYouReallyWantToDropIndex">Do you really want to drop the index »{index}«?</entry>
+
+	<!-- Fulltext indices -->	
+	<entry id="fulltextIndex">Fulltext index</entry>
+	<entry id="addFulltextIndex">Add fulltext index</entry>
+	<entry id="enterNameForNewFulltextIndex">Please enter a name for the new fulltext index:</entry>
+	<entry id="dropFulltextIndex">Drop fulltext index</entry>
+	<entry id="doYouReallyWantToDropFulltextIndex">Do you really want to drop the fulltext index »{index}«?</entry>
+	
+	<!-- Unique keys -->
+	<entry id="uniqueKey">Unique key</entry>
+	<entry id="addUniqueKey">Add unique key</entry>
+	<entry id="enterNameForNewUniqueKey">Please enter a name for the new unique key:</entry>
+	<entry id="dropUniqueKey">Drop unique key</entry>
+	<entry id="doYouReallyWantToDropUniqueKey">Do you really want to drop the unique key »{index}«?</entry>
+	
+	<!-- Primary keys -->
 	<entry id="primaryKey">Primary key</entry>
+	<entry id="addPrimaryKey">Add primary key</entry>
 </category>

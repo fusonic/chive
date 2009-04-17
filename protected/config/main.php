@@ -107,6 +107,7 @@ return array(
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/dropIndex'=>'table/dropIndex',
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/createIndex'=>'table/createIndex',
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/alterIndex'=>'table/alterIndex',
+					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/renameIndex'=>'table/renameIndex',
 
 					// Row
 					#'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/row/load'=>'row/load',

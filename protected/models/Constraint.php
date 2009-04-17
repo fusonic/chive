@@ -58,11 +58,9 @@ class Constraint extends CActiveRecord
 	public function primaryKey()
 	{
 		return array(
-			'CONSTRAINT_SCHEMA',
 			'CONSTRAINT_NAME',
 			'TABLE_SCHEMA',
 			'TABLE_NAME',
-			'CONSTRAINT_TYPE',
 		);
 	}
 }

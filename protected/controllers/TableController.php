@@ -464,8 +464,76 @@ class TableController extends CController
 	{
 		Table::$db = $this->_db;
 		$table = $this->loadTable();
-		$table->dropIndex($_POST['index'], $_POST['type']);
-		$table->createIndex($_POST['index'], $_POST['type'], (array)$_POST['columns']);
+
+		$response = new AjaxResponse();
+		try
+		{
+			$sql = $table->dropIndex($_POST['index'], $_POST['type']);
+			$sql .= "\n\n" . $table->createIndex($_POST['index'], $_POST['type'], (array)$_POST['columns']);
+			$response->addNotification('success',
+				Yii::t('message', 'successAlterIndex', array('{index}' => $_POST['index'])),
+				null,
+				$sql);
+		}
+		catch(DbException $ex)
+		{
+			$response->addNotification('error',
+				Yii::t('message', 'errorAlterIndex', array('{index}' => $_POST['index'])),
+				$ex->getText(),
+				$ex->getSql());
+			$response->reload = true;
+		}
+		$response->send();
+	}
+
+	public function actionRenameIndex()
+	{
+		Table::$db = $this->_db;
+		$table = $this->loadTable();
+
+		$criteria = new CDbCriteria;
+		$criteria->condition = 'TABLE_SCHEMA = :schema AND TABLE_NAME = :table AND INDEX_NAME = :index';
+		$criteria->params = array(
+			':schema' => $table->TABLE_SCHEMA,
+			':table' => $table->TABLE_NAME,
+			':index' => $_POST['oldName']
+		);
+		$indices = Index::model()->findAll($criteria);
+
+		$columns = array();
+		$type = 'index';
+		foreach($indices AS $index)
+		{
+			$columns[] = $index->COLUMN_NAME;
+			if($index->INDEX_TYPE == 'FULLTEXT')
+			{
+				$type = 'fulltext';
+			}
+			elseif($index->NON_UNIQUE)
+			{
+				$type = 'unique';
+			}
+		}
+
+		$response = new AjaxResponse();
+		try
+		{
+			$sql = $table->dropIndex($_POST['oldName'], $_POST['type']);
+			$sql .= "\n\n" . $table->createIndex($_POST['newName'], $type, $columns);
+			$response->addNotification('success',
+				Yii::t('message', 'successRenameIndex', array('{index}' => $_POST['newName'])),
+				null,
+				$sql);
+		}
+		catch(DbException $ex)
+		{
+			$response->addNotification('error',
+				Yii::t('message', 'errorRenameIndex', array('{index}' => $_POST['oldName'])),
+				$ex->getText(),
+				$ex->getSql());
+			$response->reload = true;
+		}
+		$response->send();
 	}
 
 	/*

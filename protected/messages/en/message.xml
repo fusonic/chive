@@ -29,6 +29,10 @@
 	<entry id="errorCreateIndex">Creating index »{index}« failed</entry>
 	<entry id="successDropIndex">Dropped index »{index}«</entry>
 	<entry id="errorDropIndex">Dropping index »{index}« failed</entry>
+	<entry id="successAlterIndex">Altered index »{index}«</entry>
+	<entry id="errorAlterIndex">Altering index »{index}« failed</entry>
+	<entry id="successRenameIndex">Renamed index to »{index}«</entry>
+	<entry id="errorRenameIndex">Renaming index »{index}« failed</entry>
 	
 	<!-- Rows -->
 	<entry id="successUpdateRow">Updated row</entry>

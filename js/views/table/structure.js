@@ -45,10 +45,26 @@ var tableStructure = {
 		{
 			// Set default name
 			$('#newIndexName').val(tableStructure.getSelectedIds().join('_'));
-			// Set type in dialog
-			$('#newIndexType').html(type);
+			
+			// Set title/text in dialog
+			switch(type)
+			{
+				case 'fulltext':
+					var dialogTitle = lang.get('database', 'addFulltextIndex');
+					$('#addIndexDialog div').html(lang.get('database', 'enterNameForNewFulltextIndex'));
+					break;
+				case 'unique':
+					var dialogTitle = lang.get('database', 'addUniqueKey');
+					$('#addIndexDialog div').html(lang.get('database', 'enterNameForNewUniqueKey'));
+					break;
+				default:
+					var dialogTitle = lang.get('database', 'addIndex');
+					$('#addIndexDialog div').html(lang.get('database', 'enterNameForNewIndex'));
+					break;
+			}
+			
 			// Show dialog
-			$('#addIndexDialog').dialog('open');
+			$('#addIndexDialog').dialog('option', 'title', dialogTitle).dialog('open');
 		}
 	},
 	
@@ -59,6 +75,25 @@ var tableStructure = {
 	{
 		tableStructure.dropIndexName = name;
 		tableStructure.dropIndexType = $('#indices_' + name).children('td:eq(1)').html().trim();
+			
+		// Set title/text in dialog
+		switch(tableStructure.dropIndexType.toLowerCase())
+		{
+			case 'fulltext':
+				var dialogTitle = lang.get('database', 'dropFulltextIndex');
+				$('#dropIndexDialog').html(lang.get('database', 'doYouReallyWantToDropFulltextIndex', {'{index}' : name}));
+				break;
+			case 'unique':
+				var dialogTitle = lang.get('database', 'dropUniqueKey');
+				$('#dropIndexDialog').html(lang.get('database', 'doYouReallyWantToDropUniqueKey', {'{index}' : name}));
+				break;
+			default:
+				var dialogTitle = lang.get('database', 'dropIndex');
+				$('#dropIndexDialog').html(lang.get('database', 'doYouReallyWantToDropIndex', {'{index}' : name}));
+				break;
+		}
+		
+		$('#dropIndexDialog').dialog('option', 'title', dialogTitle);
 		$('#dropIndexDialog').dialog('open');
 	},
 	
@@ -141,7 +176,7 @@ $(document).ready(function() {
 					index: indexName,
 					type: indexType,
 					'columns[]': columns
-				});
+				}, AjaxResponse.handle);
 				
 			}
 		}).css('cursor', 'move');
@@ -252,4 +287,31 @@ $(document).ready(function() {
 		}		
 	});
 	
+	/*
+	 * Setup editable indices
+	 */
+	$('#indices tbody tr').each(function() {
+		
+		var tr = this;
+		
+		$(this).children('td:first').editable(
+			function(value, settings) {
+				if(tr.id.substr(8) == value)
+				{
+					return value;
+				}
+				$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/renameIndex', {
+					oldName: tr.id.substr(8),
+					newName: value
+				}, AjaxResponse.handle);
+				tr.id = 'indices_' + value;
+				return value;
+			},
+			{
+				event: 'dblclick',
+				onblur: 'submit'
+			}
+		);
+		
+	});
 });

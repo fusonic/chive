@@ -1,11 +1,11 @@
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.jeditable.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl . '/js/views/table/structure.js', CClientScript::POS_HEAD); ?>
 
 <div id="dropColumnsDialog" title="<?php echo Yii::t('database', 'dropColumns'); ?>" style="display: none">
 	<?php echo Yii::t('database', 'doYouReallyWantToDropColumns'); ?>
 </div>
 <div id="addIndexDialog" title="<?php echo Yii::t('database', 'addIndex'); ?>" style="display: none">
-	<?php echo Yii::t('database', 'pleaseEnterNameForNewIndex'); ?><br />
-	<?php echo Yii::t('core', 'type'); ?>: <span id="newIndexType" /><br />
+	<div><?php echo Yii::t('database', 'enterNameForNewIndex'); ?></div>
 	<input type="text" id="newIndexName" name="newIndexName" />
 </div>
 <div id="dropIndexDialog" title="<?php echo Yii::t('database', 'dropIndex'); ?>" style="display: none">
@@ -190,7 +190,13 @@
 						</ul>
 					</td>
 					<td>
-						<com:Icon name="edit" size="16" text="core.edit" disabled="true" />
+						<?php if($index[0]->getType() == 'PRIMARY') { ?>
+							<com:Icon name="edit" size="16" text="core.edit" disabled="true" />
+						<?php } else { ?>
+							<a href="javascript:void(0)" onclick="$(this).closest('tr').children('td:first').dblclick()" class="icon">
+								<com:Icon name="edit" size="16" text="core.edit" />
+							</a>
+						<?php } ?>
 					</td>
 					<td>
 						<a href="javascript:void(0)" onclick="tableStructure.dropIndex('<?php echo $index[0]->INDEX_NAME; ?>')" class="icon">
