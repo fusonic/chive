@@ -86,7 +86,7 @@ class BookmarkController extends CController
 		Yii::app()->user->settings->set('bookmarks', $oldValue, 'database', $schema);
 		Yii::app()->user->settings->saveSettings();
 
-		$response->addNotification('success', Yii::t('message', 'successAddBookmark'));
+		$response->addNotification('success', Yii::t('message', 'successAddBookmark', array('{name}'=>$name)));
 
 		$response->addData(null, array(
 			'id' => $id,
@@ -114,14 +114,16 @@ class BookmarkController extends CController
 
 		foreach($bookmarks AS $key=>$bookmark)
 		{
-			if($bookmark['id'] == $id)
+			if($bookmark['id'] == $id) {
+				$name = $bookmark['name'];
 				unset($bookmarks[$key]);
+			}
 		}
 
 		Yii::app()->user->settings->set('bookmarks', $bookmarks, 'database', $schema);
 		Yii::app()->user->settings->saveSettings();
 
-		$response->addNotification('success', Yii::t('message', 'successDeleteBookmark'));
+		$response->addNotification('success', Yii::t('message', 'successDeleteBookmark', array('{name}'=>$name)));
 		$response->send();
 
 	}
@@ -143,6 +145,7 @@ class BookmarkController extends CController
 		{
 			$cmd = new CDbCommand($this->_db, $bookmark['query']);
 			$cmd->execute();
+			$response->addNotification('success', Yii::t('message', 'successExecuteBookmark', array('{name}'=>$bookmark['name'])), null, $bookmark['query']);
 		}
 		catch (Exception $ex)
 		{
@@ -150,7 +153,6 @@ class BookmarkController extends CController
 			Yii::app()->end($response);
 		}
 
-		$response->addNotification('success', Yii::t('message', 'successExecuteBookmark'), $bookmark['query']);
 		Yii::app()->end($response);
 
 	}

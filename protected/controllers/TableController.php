@@ -246,6 +246,9 @@ class TableController extends CController
 		if(isset($_POST['Row']))
 		{
 
+			$row->isNewRecord = true;
+			$row->attributes = $_POST['Row'];
+
 			$sql = 'INSERT INTO ' . $db->quoteTableName($this->table) . ' (';
 
 			$attributesCount = count($row->getAttributes());
@@ -261,13 +264,42 @@ class TableController extends CController
 					$sql .= ', ';
 			}
 
-			predie($sql);
+			$sql .= "\n" . ') VALUES (';
 
-			$row->attributes=$_POST['Row'];
-			$row->isNewRecord = true;
+			$i = 0;
+			foreach($row->getAttributes() AS $attribute=>$value)
+			{
+				$sql .= "\n\t" . $db->quoteValue($value);
 
-			if(isset($_POST['submitRow']) && $row->save())
-				Yii::app()->end('redirect:' . $this->schema . '#tables/' . $this->table . '/browse');
+				$i++;
+
+				if($i < $attributesCount)
+					$sql .= ', ';
+
+
+			}
+
+			$sql .= "\n" . ')';
+
+			$cmd = $db->createCommand($sql);
+
+			$response = new AjaxResponse();
+
+			try
+			{
+				$cmd->prepare();
+				$cmd->execute();
+
+				$response->addNotification('success', Yii::t('message', 'insertedNewRow'));
+				$response->redirectUrl = '#tables/' . $this->table . '/browse';
+
+			}
+			catch (CDbException $ex)
+			{
+				$response->addNotification('error', Yii::t('message', 'insertingNewRowFailed'), $sql);
+			}
+
+			$response->send();
 
 		}
 
@@ -355,17 +387,25 @@ class TableController extends CController
 	public function actionTruncate()
 	{
 
+		$response = new AjaxResponse();
+
 		try
 		{
 			$table = Table::model()->findByPk(array(
 				'TABLE_SCHEMA' => $this->schema,
 				'TABLE_NAME' => $this->table
 			));
-			$table->truncate();
-		}
-		catch(Exception $ex) {}
 
-		Yii::app()->end('redirect(url); ');
+			$sql = $table->truncate();
+
+			$response->addNotification('success', Yii::t('message', 'successTruncateTable', array('{tableName}'=>$this->table)), null, $sql);
+		}
+		catch(DbException $ex)
+		{
+			$response->addNotification('error', Yii::t('message', 'errorTruncateTable', array('{tableName}'=>$this->table)), $ex->getMessage(), $ex->getSql());
+		}
+
+		$response->send();
 
 	}
 

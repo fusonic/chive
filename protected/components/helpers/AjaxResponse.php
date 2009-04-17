@@ -20,7 +20,7 @@ class AjaxResponse
 	/*
 	 * Notifications
 	 */
-	public function addNotification($type, $title, $message, $code = false, $options = false)
+	public function addNotification($type, $title, $message = false, $code = false, $options = false)
 	{
 		$this->notifications[] = array(
 			'type' => $type,

@@ -68,15 +68,9 @@ function init() {
 	
 	$('div.ui-layout-center form').ajaxForm({
 		success: function(responseText, statusText) {
-			if(responseText.match(/redirect:(.*)/))
-			{
-				window.location.href = RegExp.$1;
-			}
-			else
-			{
-				$('div.ui-layout-center').html(responseText);
-				init();
-			}
+			AjaxResponse.handle(responseText);
+			$('div.ui-layout-center').html(responseText);
+			init();
 		}
 	});
 
@@ -215,7 +209,6 @@ var AjaxResponse = {
 	
 	handle: function(data)
 	{
-		
 		try 
 		{
 			data = JSON.parse(data);

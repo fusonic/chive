@@ -67,7 +67,11 @@ class RowController extends CController
 		$attributesCount = count($attributes);
 
 		$response = new AjaxResponse();
-		$response->addData(null, $_POST['value']);
+
+		$response->addData(null, array(
+			'value' => $_POST['value'],
+			'attribute' => $_POST['attribute'],
+		));
 
 		try
 		{
@@ -90,14 +94,17 @@ class RowController extends CController
 			}
 
 			$cmd = $commandBuilder->createSqlCommand($sql);
+
+			$cmd->prepare();
 			$cmd->execute();
 
-			$response->addNotification('success', 'Row was successfully updated', $sql);
+			$response->addNotification('success', Yii::t('message', 'successUpdateRow'), null, $sql);
 
 		}
-		catch (Exception $ex)
+		catch (CDbException $ex)
 		{
-			$response->addNotification('error', Yii::t('core', 'error'), $ex->getMessage(), array('isSticky'=>true));
+			$ex = new DbException($cmd);
+			$response->addNotification('error', Yii::t('message', 'errorUpdateRow'), $ex->getText(), $sql, array('isSticky'=>true));
 		}
 
 		$response->send();

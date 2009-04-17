@@ -77,14 +77,18 @@ $(document).ready(function() {
 			dataType: 	"html",
 			success:	function(response) {
 				
-				responseObject = JSON.parse(response);
-								  
-				container.text(responseObject.data);
+				response = JSON.parse(response);
+				
+				container.text(response.data.value);
+				
+				rowData[]
+				
 				AjaxResponse.handle(response);
+				
 			},
 			data: {
 				
-				data: 		JSON.stringify(rowData[index]),
+				data: 		JSON.stringify(keyData[index]),
 				value: 		value,
 				attribute:	attribute,
 				
@@ -102,10 +106,12 @@ $(document).ready(function() {
          tooltip   : 'Click to edit...',
 		 event	   : 'dblclick',
 		 data	   : function(value) {
+		 	
 		 	index = this.getContainer().parent().attr('id').match(/\d/);
 			column = this.getContainer().attr('class');
 			value = eval('rowData[index].' + column);
 			return value;
+			
 		 }
 	
 	});

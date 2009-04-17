@@ -98,11 +98,12 @@ class Table extends CActiveRecord
 		{
 			$cmd->prepare();
 			$cmd->execute();
-			return true;
+			return $cmd->getPdoStatement();
 		}
 		catch(CDbException $ex)
 		{
-			return false;
+			$errorInfo = $cmd->getPdoStatement()->errorInfo();
+			throw new DbException($sql, $errorInfo[1], $errorInfo[2]);
 		}
 
 	}
