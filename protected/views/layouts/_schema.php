@@ -47,7 +47,7 @@ var schema = '<?php echo $this->schema; ?>';
 					'visible'=>true,
 			),
 			array(	'label'=>Yii::t('action','drop'),
-					'icon'=>'drop',
+					'icon'=>'delete',
 					'link'=>array(
 						'url'=> 'javascript:void(0)',
 						'htmlOptions'=> array('class'=>'icon', 'onclick'=>'dropSchema("'.$this->schema.'");'),
