@@ -1,17 +1,17 @@
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->getRequest()->baseUrl.'/js/views/table/general.js', CClientScript::POS_HEAD); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->getRequest()->baseUrl.'/js/views/schema/show.js', CClientScript::POS_HEAD); ?>
 
 <h2><?php echo $schema->SCHEMA_NAME; ?></h2>
 
-<div id="truncateTableDialog" title="<?php echo Yii::t('database', 'truncateTable'); ?>" style="display: none">
-	<?php echo Yii::t('database', 'doYouReallyWantToTruncateTable'); ?>
+<div id="truncateTablesDialog" title="<?php echo Yii::t('database', 'truncateTables'); ?>" style="display: none">
+	<?php echo Yii::t('database', 'doYouReallyWantToTruncateTables'); ?>
 </div>
-<div id="dropTableDialog" title="<?php echo Yii::t('database', 'dropTable'); ?>" style="display: none">
-	<?php echo Yii::t('database', 'doYouReallyWantToDropTable'); ?>
+<div id="dropTablesDialog" title="<?php echo Yii::t('database', 'dropTables'); ?>" style="display: none">
+	<?php echo Yii::t('database', 'doYouReallyWantToDropTables'); ?>
 </div>
 
 <div class="list">
 
-	<table class="list addCheckboxes">
+	<table class="list addCheckboxes" id="tables">
 		<colgroup>
 			<col />
 			<col class="action" />
@@ -20,7 +20,8 @@
 			<col class="action" />
 			<col class="action" />
 			<col class="action" />
-			<col class="number" />
+			<col class="action" />
+			<col class="count" />
 			<col class="engine" />
 			<col class="collation" />
 			<col class="filesize" />
@@ -28,58 +29,73 @@
 		</colgroup>
 		<thead>
 			<tr>
-				<th colspan="7"><?php echo $sort->link('TABLE_NAME', Yii::t('database', 'table'), array('rel'=>'no-ajax')); ?></th>
-				<th><?php echo $sort->link('TABLE_ROWS', Yii::t('database', 'rows'), array('rel'=>'no-ajax')); ?></th>
-				<th><?php echo $sort->link('ENGINE', Yii::t('database', 'engine'), array('rel'=>'no-ajax')); ?></th>
-				<th><?php echo $sort->link('TABLE_COLLATION', Yii::t('database', 'collation'), array('rel'=>'no-ajax')); ?></th>
-				<th><?php echo $sort->link('DATA_LENGTH', Yii::t('database', 'dataSize'), array('rel'=>'no-ajax')); ?></th>
-				<th><?php echo $sort->link('DATA_FREE', Yii::t('database', 'free'), array('rel'=>'no-ajax')); ?></th>
+				<th colspan="8"><?php echo $sort->link('TABLE_NAME', Yii::t('database', 'table')); ?></th>
+				<th><?php echo $sort->link('TABLE_ROWS', Yii::t('database', 'rows')); ?></th>
+				<th><?php echo $sort->link('ENGINE', Yii::t('database', 'engine')); ?></th>
+				<th><?php echo $sort->link('TABLE_COLLATION', Yii::t('database', 'collation')); ?></th>
+				<th><?php echo $sort->link('DATA_LENGTH', Yii::t('core', 'size')); ?></th>
+				<th><?php echo $sort->link('DATA_FREE', Yii::t('database', 'overhead')); ?></th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php $totalRowCount = $totalDataLength = $totalDataFree = 0;?>
 			<?php foreach($schema->tables AS $table) { ?>
-				<tr>
+				<tr id="tables_<?php echo $table->TABLE_NAME; ?>">
 					<td>
 						<a href="<?php echo Yii::app()->baseUrl; ?>/schema/<?php echo $schema->SCHEMA_NAME; ?>/tables/<?php echo $table->TABLE_NAME; ?>/structure">
 							<?php echo $table->TABLE_NAME; ?>
 						</a>
 					</td>
 					<td>
-						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/browse" class="icon" rel="no-ajax">
-							<com:Icon name="browse" size="16" text="schema.browse" />
+						<a href="<?php echo Yii::app()->baseUrl; ?>/schema/<?php echo $schema->SCHEMA_NAME; ?>/tables/<?php echo $table->TABLE_NAME; ?>/browse" class="icon">
+							<com:Icon name="browse" size="16" text="database.browse" />
 						</a>
 					</td>
 					<td>
-						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/structure" class="icon" rel="no-ajax">
-							<com:Icon name="structure" size="16" text="schema.structure" />
+						<a href="<?php echo Yii::app()->baseUrl; ?>/schema/<?php echo $schema->SCHEMA_NAME; ?>/tables/<?php echo $table->TABLE_NAME; ?>/structure" class="icon">
+							<com:Icon name="structure" size="16" text="database.structure" />
 						</a>
 					</td>
 					<td>
-						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/search" class="icon" rel="no-ajax">
-							<com:Icon name="search" size="16" text="schema.search" />
+						<a href="<?php echo Yii::app()->baseUrl; ?>/schema/<?php echo $schema->SCHEMA_NAME; ?>/tables/<?php echo $table->TABLE_NAME; ?>/search" class="icon">
+							<com:Icon name="search" size="16" text="core.search" />
 						</a>
 					</td>
 					<td>
-						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/insert" class="icon" rel="no-ajax">
-							<com:Icon name="insert" size="16" text="schema.insert" />
+						<a href="<?php echo Yii::app()->baseUrl; ?>/schema/<?php echo $schema->SCHEMA_NAME; ?>/tables/<?php echo $table->TABLE_NAME; ?>/insert" class="icon">
+							<com:Icon name="insert" size="16" text="database.insert" />
 						</a>
 					</td>
 					<td>
-						<a href="javascript:void(0);" onclick="truncateTable('<?php echo $schema->SCHEMA_NAME; ?>', '<?php echo $table->TABLE_NAME; ?>')" class="icon" rel="no-ajax">
-							<com:Icon name="truncate" size="16" text="schema.truncate" />
+						<span class="icon">
+							<com:Icon name="edit" size="16" text="core.edit" disabled="true" />
+						</span>
+					</td>
+					<td>
+						<a href="javascript:void(0);" onclick="schemaShow.truncateTable('<?php echo $table->TABLE_NAME; ?>')" class="icon">
+							<com:Icon name="truncate" size="16" text="database.truncate" />
 						</a>
 					</td>
 					<td>
-						<a href="javascript:void(0);" onclick="dropTable('<?php echo $schema->SCHEMA_NAME; ?>', '<?php echo $table->TABLE_NAME; ?>')" class="icon" rel="no-ajax">
-							<com:Icon name="drop" size="16" text="schema.drop" />
+						<a href="javascript:void(0);" onclick="schemaShow.dropTable('<?php echo $table->TABLE_NAME; ?>')" class="icon">
+							<com:Icon name="delete" size="16" text="database.drop" />
 						</a>
 					</td>
-					<td><?php echo $table->getRowCount(); ?></td>
-					<td><?php echo $table->ENGINE; ?></td>
-					<td><?php echo $table->TABLE_COLLATION; ?></td>
-					<td><?php echo Formatter::fileSize($table->DATA_LENGTH); //@todo (rponudic) display real size here, check if this usage is correct ?></td>
-					<td><?php echo Formatter::fileSize($table->DATA_FREE); //@todo (rponudic) display overhead here ?></td>
+					<td>
+						<?php echo $table->getRowCount(); ?>
+					</td>
+					<td>
+						<?php echo $table->ENGINE; ?>
+					</td>
+					<td>
+						<dfn title="<?php echo Collation::getDefinition($table->TABLE_COLLATION); ?>"><?php echo $table->TABLE_COLLATION; ?></dfn>
+					</td>
+					<td style="text-align: right">
+						<?php echo Formatter::fileSize($table->DATA_LENGTH + $table->INDEX_LENGTH); ?>
+					</td>
+					<td style="text-align: right">
+						<?php echo Formatter::fileSize($table->DATA_FREE); ?>
+					</td>
 				</tr>
 			<?php $totalRowCount += $table->getRowCount(); ?>
 			<?php $totalDataLength += $table->DATA_LENGTH; ?>
@@ -88,14 +104,36 @@
 		</tbody>
 		<tfoot>
 			<tr>
-				<th colspan="7"><?php echo Yii::t('database', 'amountTables', array($schema->tableCount, '{amount} '=> $schema->tableCount)); ?></th>
+				<th colspan="8"><?php echo Yii::t('database', 'amountTables', array($schema->tableCount, '{amount} '=> $schema->tableCount)); ?></th>
 				<th><?php echo $totalRowCount; ?></th>
 				<th></th>
 				<th></th>
-				<th><?php echo Formatter::fileSize($totalDataLength); ?></th>
-				<th><?php echo Formatter::fileSize($totalDataFree); ?></th>
+				<th style="text-align: right"><?php echo Formatter::fileSize($totalDataLength); ?></th>
+				<th style="text-align: right"><?php echo Formatter::fileSize($totalDataFree); ?></th>
 			</tr>
 		</tfoot>
 	</table>
+
+	<div class="rightLinks">
+		<a href="javascript:void(0)" class="icon">
+			<com:Icon name="add" size="16" />
+			<span><?php echo Yii::t('database', 'addTable'); ?></span>
+		</a>
+	</div>
+
+	<div class="withSelected">
+		<span class="icon">
+			<com:Icon name="arrow_turn_090" size="16" />
+			<span><?php echo Yii::t('core', 'withSelected'); ?></span>
+		</span>
+		<a href="javascript:void(0)" onclick="schemaShow.dropTables()" class="icon">
+			<com:Icon name="delete" size="16" />
+			<span><?php echo Yii::t('database', 'drop'); ?></span>
+		</a>
+		<a href="javascript:void(0)" onclick="schemaShow.truncateTables()" class="icon">
+			<com:Icon name="truncate" size="16" />
+			<span><?php echo Yii::t('database', 'truncate'); ?></span>
+		</a>
+	</div>
 
 </div>

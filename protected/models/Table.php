@@ -86,48 +86,64 @@ class Table extends CActiveRecord
 			return '-';
 	}
 
-	/*
-	 * Truncate the table (delete all values)
-	 */
-	public function truncate() {
-
-		// @todo(rponudic): Work with parameters! Use correct DB connection.
-		$db = Yii::app()->getDb();
-		$cmd = $db->createCommand('TRUNCATE TABLE ' . $db->quoteTableName($this->TABLE_SCHEMA) . '.' . $db->quoteTableName($this->TABLE_NAME));
-		try
+	public function getHasPrimaryKey()
+	{
+		foreach($this->indices AS $index)
 		{
-			$cmd->prepare();
-			$cmd->execute();
-			return $cmd->getPdoStatement();
+			if($index->INDEX_NAME == 'PRIMARY')
+			{
+				return true;
+			}
 		}
-		catch(CDbException $ex)
-		{
-			$errorInfo = $cmd->getPdoStatement()->errorInfo();
-			throw new DbException($sql, $errorInfo[1], $errorInfo[2]);
-		}
-
+		return false;
 	}
 
-	/*
-	 * Drop table (delete structure and containing data)
+	/**
+	 * Truncate the table (delete all values)
+	 *
+	 * @return	string
 	 */
-	public function drop() {
+	public function truncate()
+	{
+		// Create command
+		$sql = 'TRUNCATE TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . ';';
+		$cmd = self::$db->createCommand($sql);
 
-		// @todo(rponudic): Work with parameters! Use correct DB connection.
-		$db = Yii::app()->getDb();
-		$cmd = $db->createCommand('DROP TABLE ' . $db->quoteTableName($this->TABLE_SCHEMA) . '.' . $db->quoteTableName($this->TABLE_NAME));
-
+		// Execute
 		try
 		{
 			$cmd->prepare();
 			$cmd->execute();
-			return true;
+			return $sql;
 		}
 		catch(CDbException $ex)
 		{
-			return false;
+			throw new DbException($cmd);
 		}
+	}
 
+	/**
+	 * Drop table (delete structure and containing data)
+	 *
+	 * @return	string
+	 */
+	public function drop()
+	{
+		// Create command
+		$sql = 'DROP TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . ';';
+		$cmd = self::$db->createCommand($sql);
+
+		// Execute
+		try
+		{
+			$cmd->prepare();
+			$cmd->execute();
+			return $sql;
+		}
+		catch(CDbException $ex)
+		{
+			throw new DbException($cmd);
+		}
 	}
 
 	/**
@@ -141,8 +157,8 @@ class Table extends CActiveRecord
 	public function dropIndex($index, $type)
 	{
 		// Create command
-		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME)
-			. ' DROP INDEX ' . self::$db->quoteColumnName($index);
+		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
+			. "\t" . 'DROP INDEX ' . self::$db->quoteColumnName($index) . ';';
 		$cmd = self::$db->createCommand($sql);
 
 		// Execute
@@ -179,13 +195,13 @@ class Table extends CActiveRecord
 		// Create command
 		if(strtolower($type) == 'primary')
 		{
-			$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME)
-				. ' ADD PRIMARY KEY (' . $columns . ')';
+			$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
+				. "\t" . 'ADD PRIMARY KEY (' . $columns . ');';
 		}
 		else
 		{
-			$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME)
-				. ' ADD ' . $type . ' ' . self::$db->quoteColumnName($index) . ' (' . $columns . ')';
+			$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
+				. "\t" . 'ADD ' . $type . ' ' . self::$db->quoteColumnName($index) . ' (' . $columns . ');';
 		}
 		$cmd = self::$db->createCommand($sql);
 

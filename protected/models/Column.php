@@ -4,6 +4,8 @@ class Column extends CActiveRecord
 {
 
 	public $COLLATION_NAME = Collation::DEFAULT_COLLATION;
+	public $scale = 0, $size = 0;
+	public $_values = array();
 
 	public static $db;
 
@@ -14,6 +16,35 @@ class Column extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+
+	public function instantiate($attributes)
+	{
+		$res = parent::instantiate($attributes);
+
+		/*
+		 * We have to set size/scale by hand
+		 */
+		if(isset($attributes['COLUMN_TYPE']) && DataType::supportsSize($attributes['DATA_TYPE']))
+		{
+			if(preg_match('/^\w+\((\d+)(,\d+)?\)$/', $attributes['COLUMN_TYPE'], $result))
+			{
+				$res->size = (int)$result[1];
+				if(isset($result[2]) && DataType::supportsScale($attributes['COLUMN_TYPE']))
+				{
+					$res->scale = (int)substr($result[2], 1);
+				}
+			}
+		}
+		elseif(isset($attributes['COLUMN_TYPE']) && DataType::supportsValues($attributes['DATA_TYPE']))
+		{
+			if(preg_match('/^\w+\(\'([^\)]+)\'\)$/', $attributes['COLUMN_TYPE'], $result))
+			{
+				$res->setValues(implode("\n", (array)explode("','", $result[1])));
+			}
+		}
+
+		return $res;
 	}
 
 	/**
@@ -56,6 +87,7 @@ class Column extends CActiveRecord
 			'dataType',
 			'size',
 			'scale',
+			'values',
 			'collation',
 			'autoIncrement',
 			'COLUMN_COMMENT',
@@ -129,39 +161,6 @@ class Column extends CActiveRecord
 		$this->CHARACTER_SET_NAME = $data[0];
 	}
 
-	public function getSize()
-	{
-		if(preg_match('/^\w+\((\d+)(,\d+)?\)$/', $this->COLUMN_TYPE, $res))
-		{
-			return $res[1];
-		}
-	}
-
-	public function setSize($value)
-	{
-		$this->COLUMN_TYPE = $this->DATA_TYPE . ($value ? '(' . $value . ')' : '');
-	}
-
-	public function getScale()
-	{
-		if(preg_match('/^\w+\((\d+)(,\d+)?\)$/', $this->COLUMN_TYPE, $res))
-		{
-			if(isset($res[2]))
-			{
-				return substr($res[2], 1);
-			}
-			else
-			{
-				return 0;
-			}
-		}
-	}
-
-	public function setScale($value)
-	{
-		$this->COLUMN_TYPE = $this->DATA_TYPE . ($this->size ? '(' . $this->size . (!is_null($value) ? ',' . $value : '') . ')' : '');
-	}
-
 	public function getDataType()
 	{
 		return $this->DATA_TYPE;
@@ -169,10 +168,44 @@ class Column extends CActiveRecord
 
 	public function setDataType($value)
 	{
-		$size = $this->getSize();
-		$scale = $this->getScale();
 		$this->DATA_TYPE = $value;
-		$this->COLUMN_TYPE = $value . ($size ? '(' . $size . ($scale ? ',' . $scale : '') . ')' : '');
+		$this->COLUMN_TYPE = $value . ($this->size ? '(' . $this->size . ($this->scale ? ',' . $this->scale : '') . ')' : '');
+	}
+
+	public function getColumnType()
+	{
+		$return = $this->DATA_TYPE;
+		if(DataType::supportsSize($this->DATA_TYPE))
+		{
+			$return .= '(' . (int)$this->size;
+			if(DataType::supportsScale($this->DATA_TYPE))
+			{
+				$return .= ', ' . (int)$this->scale;
+			}
+			$return .= ')';
+		}
+		elseif(DataType::supportsValues($this->DATA_TYPE) && count((array)$this->_values) > 0)
+		{
+			$return .= '(\'' . implode('\',\'', $this->_values) . '\')';
+		}
+		return $return;
+	}
+
+	public function getValues()
+	{
+		return implode("\n", $this->_values);
+	}
+
+	public function setValues($values)
+	{
+		if(is_array($values))
+		{
+			$this->_values = $values;
+		}
+		else
+		{
+			$this->_values = (array)explode("\n", $values);
+		}
 	}
 
 	public function getIsPartOfPrimaryKey($indices = null)
@@ -204,17 +237,26 @@ class Column extends CActiveRecord
 			$collate = '';
 		}
 
+		if(is_null($this->COLUMN_DEFAULT) || $this->EXTRA == 'auto_increment')
+		{
+			$default = '';
+		}
+		else
+		{
+			$default = (!is_null($this->COLUMN_DEFAULT) ? 'DEFAULT :defaultValue' : ($this->getIsNullable() ? 'DEFAULT NULL' : ''));
+		}
+
 		return self::$db->quoteColumnName($this->COLUMN_NAME)
-			. ' ' . $this->COLUMN_TYPE . $collate
-			. ' ' . ($this->IS_NULLABLE == 'YES' ? 'NULL' : 'NOT NULL')
-			. ' ' . ($this->COLUMN_DEFAULT ? 'DEFAULT :defaultValue' : ($this->getIsNullable() ? 'DEFAULT NULL' : ''))
+			. ' ' . $this->getColumnType() . $collate
+			. ' ' . ($this->getIsNullable() ? 'NULL' : 'NOT NULL')
+			. ' ' . $default
 			. ' ' . ($this->EXTRA == 'auto_increment' ? 'AUTO_INCREMENT' : '')
 			. ' ' . (strlen($this->COLUMN_COMMENT) ? 'COMMENT :comment' : '');
 	}
 
 	protected function bindColumnDefinitionValues($sql)
 	{
-		if($this->COLUMN_DEFAULT)
+		if(!is_null($this->COLUMN_DEFAULT) && $ths->EXTRA != 'auto_increment')
 		{
 			$sql->bindParam('defaultValue', $this->COLUMN_DEFAULT, PDO::PARAM_STR);
 		}
@@ -226,9 +268,9 @@ class Column extends CActiveRecord
 
 	public function move($command)
 	{
-		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME)
-			. ' MODIFY ' . $this->getColumnDefinition()
-			. ' ' . (substr($command, 0, 6) == 'AFTER ' ? 'AFTER ' . self::$db->quoteColumnName(substr($command, 6)) : 'FIRST');
+		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
+			. "\t" . 'MODIFY ' . $this->getColumnDefinition()
+			. ' ' . (substr($command, 0, 6) == 'AFTER ' ? 'AFTER ' . self::$db->quoteColumnName(substr($command, 6)) : 'FIRST') . ';';
 		$cmd = new CDbCommand(self::$db, $sql);
 		$this->bindColumnDefinitionValues($cmd);
 		try
@@ -254,8 +296,8 @@ class Column extends CActiveRecord
 			return false;
 		}
 
-		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME)
-			. ' MODIFY ' . $this->getColumnDefinition();
+		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
+			. "\t" . 'MODIFY ' . $this->getColumnDefinition() . ';';
 		$cmd = new CDbCommand(self::$db, $sql);
 		$this->bindColumnDefinitionValues($cmd);
 		try
@@ -263,12 +305,13 @@ class Column extends CActiveRecord
 			$cmd->prepare();
 			$cmd->execute();
 			$this->afterSave();
+			$this->refresh();
 			return $sql;
 		}
 		catch(CDbException $ex)
 		{
 			$errorInfo = $cmd->getPdoStatement()->errorInfo();
-			$this->addError('COLUMN_NAME', Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
+			$this->addError(null, Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
 			$this->afterSave();
 			return false;
 		}
@@ -285,8 +328,8 @@ class Column extends CActiveRecord
 			return false;
 		}
 
-		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME)
-			. ' ADD ' . $this->getColumnDefinition();
+		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
+			. "\t" . 'ADD ' . $this->getColumnDefinition() . ';';
 		$cmd = new CDbCommand(self::$db, $sql);
 		$this->bindColumnDefinitionValues($cmd);
 		try
@@ -294,6 +337,7 @@ class Column extends CActiveRecord
 			$cmd->prepare();
 			$cmd->execute();
 			$this->afterSave();
+			$this->refresh();
 			return $sql;
 		}
 		catch(CDbException $ex)
@@ -316,14 +360,15 @@ class Column extends CActiveRecord
 			return false;
 		}
 
-		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME)
-			. ' DROP ' . self::$db->quoteColumnName($this->COLUMN_NAME);
+		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
+			. "\t" . 'DROP ' . self::$db->quoteColumnName($this->COLUMN_NAME) . ';';
 		$cmd = self::$db->createCommand($sql);
 		try
 		{
 			$cmd->prepare();
 			$cmd->execute();
 			$this->afterDelete();
+			$this->refresh();
 			return $sql;
 		}
 		catch(CDbException $ex)
@@ -331,12 +376,6 @@ class Column extends CActiveRecord
 			$this->afterDelete();
 			throw new DbException($cmd);
 		}
-	}
-
-	protected function afterSave()
-	{
-		$this->refresh();
-		parent::afterSave();
 	}
 
 	public static function getDataTypes()
@@ -372,6 +411,8 @@ class Column extends CActiveRecord
 			'longblob' => 'longblob',
 			'binary' => 'binary',
 			'varbinary' => 'varbinary',
+			'enum' => 'enum',
+			'set' => 'set',
 		);
 
 		// Date and time

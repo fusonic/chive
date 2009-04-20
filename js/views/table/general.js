@@ -1,30 +1,20 @@
-/*
- * Truncate table
- */
-
-function truncateTable(_schema, _table)
-{
-	schema = _schema;
-	table = _table;
-	$('#truncateTableDialog').dialog('open');	
-}
-
-/*
- * Drop table
- */
-
-function dropTable(_schema, _table)
-{
-	schema = _schema;
-	table = _table;
+var tableGeneral = {
 	
-	$('#dropTableDialog').dialog('open');	
-}
+	truncate: function()
+	{
+		$('#truncateTableDialog').dialog('open');
+	},
+	
+	drop: function()
+	{
+		$('#dropTableDialog').dialog('open');
+	}
+	
+};
 
 /*
  * Setup dialogs
  */
-	
 $(document).ready(function() {
 
 	$('#truncateTableDialog').dialog({
@@ -32,17 +22,17 @@ $(document).ready(function() {
 		resizable: false,
 		autoOpen: false,
 		buttons: {
-			'No': function() {
+			'No': function() 
+			{
 				$(this).dialog('close');
 			},
-			'Yes': function() {
+			'Yes': function() 
+			{
 				// Do truncate request
 				$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/truncate', {
 					table: table,
 					schema: schema,
-				}, function() {
-					window.location.href = baseUrl + '/database/' + schema;
-				});
+				}, AjaxResponse.handle);
 				
 				$(this).dialog('close');
 			}
@@ -54,18 +44,17 @@ $(document).ready(function() {
 		resizable: false,
 		autoOpen: false,
 		buttons: {
-			'No': function() {
+			'No': function() 
+			{
 				$(this).dialog('close');
 			},
-			'Yes': function() {
+			'Yes': function() 
+			{
 				// Do drop request
 				$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/drop', {
 					table: table,
 					schema: schema,
-				}, function() {
-					handleAjaxRequest(responseText);
-					window.location.href = baseUrl + '/database/' + schema;
-				});
+				}, AjaxResponse.handle);
 				
 				$(this).dialog('close');
 			}
@@ -73,4 +62,3 @@ $(document).ready(function() {
 	});
 	
 });
-

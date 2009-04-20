@@ -8,14 +8,15 @@ var idPrefix = '<?php echo CHtml::$idPrefix; ?>';
 	<script type="text/javascript">
 	var row = $('#' + idPrefix).parents("tr").prev();
 	row.children('td:eq(1)').html('<?php echo $column->COLUMN_NAME; ?>');
-	row.children('td:eq(2)').html('<?php echo $column->COLUMN_TYPE; ?>');
+	row.children('td:eq(2)').html(<?php echo json_encode($column->COLUMN_TYPE); ?>);
 	row.children('td:eq(3)').html('<?php echo ($column->COLLATION_NAME ? '<dfn class="collation" title="' . Collation::getDefinition($column->COLLATION_NAME) . '">' . $column->COLLATION_NAME . '</dfn>' : ''); ?>');
 	row.children('td:eq(4)').html('<?php echo Yii::t('core', ($column->isNullable ? 'yes' : 'no')); ?>');
-	row.children('td:eq(5)').html('<?php echo ($column->COLUMN_DEFAULT ? $column->COLUMN_DEFAULT : ($column->isNullable ? '<span class="null">NULL</span>' : '')); ?>');
+	row.children('td:eq(5)').html('<?php echo (!is_null($column->COLUMN_DEFAULT) ? $column->COLUMN_DEFAULT : ($column->isNullable ? '<span class="null">NULL</span>' : '')); ?>');
+	row.children('td:eq(6)').html('<?php echo $column->EXTRA; ?>');
 	$('#' + idPrefix).parent().slideUp(500, function() {
 		$('#' + idPrefix).parents("tr").remove();
 	});
-	Notification.add('success', '<?php echo Yii::t('message', 'successEditColumn', array('{col}' => $column->COLUMN_NAME)); ?>', null, '<?php echo $sql; ?>');
+	Notification.add('success', '<?php echo Yii::t('message', 'successEditColumn', array('{col}' => $column->COLUMN_NAME)); ?>', null, <?php echo json_encode($sql); ?>);
 	</script>
 <?php endif; ?>
 
@@ -40,9 +41,13 @@ var idPrefix = '<?php echo CHtml::$idPrefix; ?>';
 				<legend><?php echo CHtml::activeLabel($column,'scale'); ?></legend>
 				<?php echo CHtml::activeTextField($column, 'scale'); ?>
 			</fieldset>
+			<fieldset class="datatypeSetting enum set">
+				<legend><?php echo CHtml::activeLabel($column,'values'); ?></legend>
+				<?php echo CHtml::activeTextArea($column, 'values'); ?>
+			</fieldset>
 			<fieldset class="datatypeSetting char varchar tinytext smalltext text mediumtext longtext enum set">
 				<legend><?php echo CHtml::activeLabel($column,'COLLATION_NAME'); ?></legend>
-				<?php echo CHtml::activeDropDownList($column, 'COLLATION_NAME', CHtml::listData($collations, 'COLLATION_NAME', 'COLLATION_NAME', 'collationGroup'), array('onchange'=>'dataTypeChanged()')); ?>
+				<?php echo CHtml::activeDropDownList($column, 'COLLATION_NAME', CHtml::listData($collations, 'COLLATION_NAME', 'COLLATION_NAME', 'collationGroup')); ?>
 			</fieldset>
 			<fieldset class="datatypeSetting all">
 				<legend><?php echo CHtml::activeLabel($column,'COLUMN_DEFAULT'); ?></legend>

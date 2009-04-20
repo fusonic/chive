@@ -12,7 +12,7 @@ var tableStructure = {
 	// Edit column
 	editColumn: function(col)
 	{
-		$('#columns_' + col).appendForm(baseUrl + '/schema/' + schema + '/tables/' + table + '/columns/update?col=' + col);
+		$('#columns_' + col).appendForm(baseUrl + '/schema/' + schema + '/tables/' + table + '/columns/' + col + '/update?col=' + col);
 	},
 	
 	// Drop column
@@ -49,6 +49,10 @@ var tableStructure = {
 			// Set title/text in dialog
 			switch(type)
 			{
+				case 'primary':
+					// No dialog needed when adding a primary key
+					tableStructure.addIndexFinish();
+					return;
 				case 'fulltext':
 					var dialogTitle = lang.get('database', 'addFulltextIndex');
 					$('#addIndexDialog div').html(lang.get('database', 'enterNameForNewFulltextIndex'));
@@ -66,6 +70,18 @@ var tableStructure = {
 			// Show dialog
 			$('#addIndexDialog').dialog('option', 'title', dialogTitle).dialog('open');
 		}
+	},
+	addIndexFinish: function()
+	{
+		// Collect ids
+		var ids = tableStructure.getSelectedIds();
+		
+		// Do request
+		$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/createIndex', {
+			index: $('#newIndexName').get(0).value,
+			type: tableStructure.newIndexType,
+			'columns[]': ids
+		}, AjaxResponse.handle);	
 	},
 	
 	// Drop index
@@ -119,8 +135,8 @@ $(document).ready(function() {
 	 */
 	$('#columns tbody').sortable({
 		handle: 'img.icon_arrow_move',
-		update: function(event, ui) {
-			
+		update: function(event, ui) 
+		{
 			// Fix even/odd classes
 			$('#columns tbody tr:even').addClass('even').removeClass('odd');
 			$('#columns tbody tr:odd').addClass('odd').removeClass('even');
@@ -140,12 +156,10 @@ $(document).ready(function() {
 			}
 			
 			// Do AJAX request
-			$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/columns/move', {
-					command: command,
-					column: id
+			$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/columns/' + id + '/move', {
+					command: command
 				}, AjaxResponse.handle
 			);
-			
 		}
 	});
 	
@@ -160,7 +174,8 @@ $(document).ready(function() {
 		}
 		
 		obj.sortable({
-			update: function(event, ui) {
+			update: function(event, ui) 
+			{
 				var tr = $(this).closest('tr');
 				var ul = $(this).closest('ul');
 				var indexName = tr.attr('id').substr(8);
@@ -177,7 +192,6 @@ $(document).ready(function() {
 					type: indexType,
 					'columns[]': columns
 				}, AjaxResponse.handle);
-				
 			}
 		}).css('cursor', 'move');
 		
@@ -193,10 +207,12 @@ $(document).ready(function() {
 		resizable: false,
 		autoOpen: false,
 		buttons: {
-			'No': function() {
+			'No': function() 
+			{
 				$(this).dialog('close');
 			},
-			'Yes': function() {
+			'Yes': function() 
+			{
 				
 				// Collect ids
 				var ids = tableStructure.getSelectedIds();
@@ -233,20 +249,13 @@ $(document).ready(function() {
 		autoOpen: false,
 		dialogClass: 'addIndexDialog',
 		buttons: {
-			'Ok': function() {
-				
-				// Collect ids
-				var ids = tableStructure.getSelectedIds();
-				
-				// Do request
-				$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/createIndex', {
-					index: $('#newIndexName').get(0).value,
-					type: tableStructure.newIndexType,
-					'columns[]': ids
-				}, AjaxResponse.handle);	
+			'Ok': function() 
+			{
+				tableStructure.addIndexFinish();	
 				$(this).dialog('close');
 			},
-			'Cancel': function() {
+			'Cancel': function() 
+			{
 				$(this).dialog('close');
 			}
 		}		
@@ -261,10 +270,12 @@ $(document).ready(function() {
 		resizable: false,
 		autoOpen: false,
 		buttons: {
-			'Cancel': function() {
+			'Cancel': function() 
+			{
 				$(this).dialog('close');
 			},
-			'Ok': function() {
+			'Ok': function() 
+			{
 				
 				// Do request
 				$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/dropIndex', {
@@ -293,9 +304,14 @@ $(document).ready(function() {
 	$('#indices tbody tr').each(function() {
 		
 		var tr = this;
+		if($(this).hasClass('PRIMARY'))
+		{
+			return;
+		}
 		
 		$(this).children('td:first').editable(
-			function(value, settings) {
+			function(value, settings) 
+			{
 				if(tr.id.substr(8) == value)
 				{
 					return value;

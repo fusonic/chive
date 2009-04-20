@@ -105,6 +105,7 @@
 						));
 					}
 				}, 200 );	
+				notice.data('interval', topSpotInt);
 			}
 		}
 
@@ -156,6 +157,9 @@
 				);
 			}
 		};
+		
+		notice.data('fn.removeNotice', removeNotice);
+		
 	};
 	
 	$.fn.purr = function ( options )

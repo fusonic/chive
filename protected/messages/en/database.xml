@@ -47,6 +47,12 @@
 	<entry id="dataSize">Size (data)</entry>
 	<entry id="free">Free</entry>
 	<entry id="data">Data</entry>
+	
+	<entry id="addTable">Add table</entry>
+	<entry id="truncateTables">Truncate tables</entry>
+	<entry id="doYouReallyWantToTruncateTables">Do you really want to truncate the selected tables?</entry>
+	<entry id="dropTables">Drop tables</entry>
+	<entry id="doYouReallyWantToDropTables">Do you really want to drop the selected tables?</entry>
 
 	<entry id="dropSchemata">Drop databases</entry>
 	<entry id="doYouReallyWantToDropSchemata">Do you really want to drop the selected databases?</entry>
@@ -61,6 +67,7 @@
 	<entry id="editColumn">Edit column</entry>
 	<entry id="addSchema">Add schema</entry>
 	<entry id="editSchema">Edit schema</entry>
+	<entry id="overhead">Overhead</entry>
 	
 	<!-- Indices -->
 	<entry id="index">Index</entry>

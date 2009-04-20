@@ -37,6 +37,8 @@ class TableController extends CController
 		$this->_db->charset='utf8';
 		$this->_db->active = true;
 
+		Table::$db = $this->_db;
+
 		parent::__construct($id, $module);
 
 	}
@@ -381,32 +383,92 @@ class TableController extends CController
 
 	}
 
-	/*
-	 * Truncates the table
+	/**
+	 * Truncates tables
 	 */
 	public function actionTruncate()
 	{
-
 		$response = new AjaxResponse();
+		$response->reload = true;
+		$tables = (array)$_POST['tables'];
+		$truncatedTables = $truncatedSqls = array();
 
-		try
+		foreach($tables AS $table)
 		{
-			$table = Table::model()->findByPk(array(
+			$pk = array(
 				'TABLE_SCHEMA' => $this->schema,
-				'TABLE_NAME' => $this->table
-			));
-
-			$sql = $table->truncate();
-
-			$response->addNotification('success', Yii::t('message', 'successTruncateTable', array('{tableName}'=>$this->table)), null, $sql);
+				'TABLE_NAME' => $table
+			);
+			$table = Table::model()->findByPk($pk);
+			try
+			{
+				$sql = $table->truncate();
+				$truncatedTables[] = $table->TABLE_NAME;
+				$truncatedSqls[] = $sql;
+			}
+			catch(DbException $ex)
+			{
+				$response->addNotification('error',
+					Yii::t('message', 'errorTruncateTable', array('{table}' => $this->table)),
+					$ex->getText(),
+					$ex->getSql());
+			}
 		}
-		catch(DbException $ex)
+
+		$count = count($truncatedTables);
+		if($count > 0)
 		{
-			$response->addNotification('error', Yii::t('message', 'errorTruncateTable', array('{tableName}'=>$this->table)), $ex->getMessage(), $ex->getSql());
+			$response->addNotification('success',
+				Yii::t('message', 'successTruncateTable', array($count, '{table}' => $truncatedTables[0], '{tableCount}' => $count)),
+				($count > 1 ? implode(', ', $truncatedTables) : null),
+				implode("\n", $truncatedSqls));
 		}
 
 		$response->send();
+	}
 
+	/**
+	 * Drops the table
+	 */
+	public function actionDrop()
+	{
+		$response = new AjaxResponse();
+		$response->reload = true;
+		$tables = (array)$_POST['tables'];
+		$droppedTables = $droppedSqls = array();
+
+		foreach($tables AS $table)
+		{
+			$pk = array(
+				'TABLE_SCHEMA' => $this->schema,
+				'TABLE_NAME' => $table
+			);
+			$table = Table::model()->findByPk($pk);
+			try
+			{
+				$sql = $table->drop();
+				$droppedTables[] = $table->TABLE_NAME;
+				$droppedSqls[] = $sql;
+			}
+			catch(DbException $ex)
+			{
+				$response->addNotification('error',
+					Yii::t('message', 'errorDropTable', array('{table}' => $this->table)),
+					$ex->getText(),
+					$ex->getSql());
+			}
+		}
+
+		$count = count($droppedTables);
+		if($count > 0)
+		{
+			$response->addNotification('success',
+				Yii::t('message', 'successDropTable', array($count, '{table}' => $droppedTables[0], '{tableCount}' => $count)),
+				($count > 1 ? implode(', ', $droppedTables) : null),
+				implode("\n", $droppedSqls));
+		}
+
+		$response->send();
 	}
 
 	public function actionDropIndex()
@@ -414,12 +476,16 @@ class TableController extends CController
 		Table::$db = $this->_db;
 		$table = $this->loadTable();
 
+		// Get post vars
+		$index = Yii::app()->request->getPost('index');
+		$type = Yii::app()->request->getPost('type');
+
 		$response = new AjaxResponse();
 		try
 		{
-			$sql = $table->dropIndex($_POST['index'], $_POST['type']);
+			$sql = $table->dropIndex($index, $type);
 			$response->addNotification('success',
-				Yii::t('message', 'successDropIndex', array('{index}' => $_POST['index'])),
+				Yii::t('message', 'successDropIndex', array('{index}' => $index)),
 				null,
 				$sql);
 			$response->addData('success', true);
@@ -427,7 +493,7 @@ class TableController extends CController
 		catch(DbException $ex)
 		{
 			$response->addNotification('error',
-				Yii::t('message', 'errorDropIndex', array('{index}' => $_POST['index'])),
+				Yii::t('message', 'errorDropIndex', array('{index}' => $index)),
 				$ex->getText(),
 				$ex->getSql());
 			$response->addData('success', false);
@@ -440,12 +506,21 @@ class TableController extends CController
 		Table::$db = $this->_db;
 		$table = $this->loadTable();
 
+		// Get post vars
+		$index = Yii::app()->request->getPost('index');
+		$type = Yii::app()->request->getPost('type');
+		$columns = (array)Yii::app()->request->getPost('columns');
+
 		$response = new AjaxResponse();
+		if($_POST['type'] == 'PRIMARY')
+		{
+			$response->reload = true;
+		}
 		try
 		{
-			$sql = $table->createIndex($_POST['index'], $_POST['type'], (array)$_POST['columns']);
+			$sql = $table->createIndex($index, $type, $columns);
 			$response->addNotification('success',
-				Yii::t('message', 'successCreateIndex', array('{index}' => $_POST['index'])),
+				Yii::t('message', 'successCreateIndex', array('{index}' => $index)),
 				null,
 				$sql);
 			$response->reload = true;
@@ -453,7 +528,7 @@ class TableController extends CController
 		catch(DbException $ex)
 		{
 			$response->addNotification('error',
-				Yii::t('message', 'errorCreateIndex', array('{index}' => $_POST['index'])),
+				Yii::t('message', 'errorCreateIndex', array('{index}' => $index)),
 				$ex->getText(),
 				$ex->getSql());
 		}
@@ -465,20 +540,25 @@ class TableController extends CController
 		Table::$db = $this->_db;
 		$table = $this->loadTable();
 
+		// Get post vars
+		$index = Yii::app()->request->getPost('index');
+		$type = Yii::app()->request->getPost('type');
+		$columns = (array)Yii::app()->request->getPost('columns');
+
 		$response = new AjaxResponse();
 		try
 		{
-			$sql = $table->dropIndex($_POST['index'], $_POST['type']);
-			$sql .= "\n\n" . $table->createIndex($_POST['index'], $_POST['type'], (array)$_POST['columns']);
+			$sql = $table->dropIndex($index, $type);
+			$sql .= "\n\n" . $table->createIndex($index, $type, $columns);
 			$response->addNotification('success',
-				Yii::t('message', 'successAlterIndex', array('{index}' => $_POST['index'])),
+				Yii::t('message', 'successAlterIndex', array('{index}' => $index)),
 				null,
 				$sql);
 		}
 		catch(DbException $ex)
 		{
 			$response->addNotification('error',
-				Yii::t('message', 'errorAlterIndex', array('{index}' => $_POST['index'])),
+				Yii::t('message', 'errorAlterIndex', array('{index}' => $index)),
 				$ex->getText(),
 				$ex->getSql());
 			$response->reload = true;
@@ -491,12 +571,17 @@ class TableController extends CController
 		Table::$db = $this->_db;
 		$table = $this->loadTable();
 
+		// Get post vars
+		$oldName = Yii::app()->request->getPost('oldName');
+		$newName = Yii::app()->request->getPost('newName');
+		$type = Yii::app()->request->getPost('type');
+
 		$criteria = new CDbCriteria;
 		$criteria->condition = 'TABLE_SCHEMA = :schema AND TABLE_NAME = :table AND INDEX_NAME = :index';
 		$criteria->params = array(
 			':schema' => $table->TABLE_SCHEMA,
 			':table' => $table->TABLE_NAME,
-			':index' => $_POST['oldName']
+			':index' => $oldName,
 		);
 		$indices = Index::model()->findAll($criteria);
 
@@ -518,42 +603,22 @@ class TableController extends CController
 		$response = new AjaxResponse();
 		try
 		{
-			$sql = $table->dropIndex($_POST['oldName'], $_POST['type']);
-			$sql .= "\n\n" . $table->createIndex($_POST['newName'], $type, $columns);
+			$sql = $table->dropIndex($oldName, $type);
+			$sql .= "\n\n" . $table->createIndex($newName, $type, $columns);
 			$response->addNotification('success',
-				Yii::t('message', 'successRenameIndex', array('{index}' => $_POST['newName'])),
+				Yii::t('message', 'successRenameIndex', array('{index}' => $newName)),
 				null,
 				$sql);
 		}
 		catch(DbException $ex)
 		{
 			$response->addNotification('error',
-				Yii::t('message', 'errorRenameIndex', array('{index}' => $_POST['oldName'])),
+				Yii::t('message', 'errorRenameIndex', array('{index}' => $oldName)),
 				$ex->getText(),
 				$ex->getSql());
 			$response->reload = true;
 		}
 		$response->send();
-	}
-
-	/*
-	 * Truncates the table
-	 */
-	public function actionDrop()
-	{
-
-		try
-		{
-			$table = Table::model()->findByPk(array(
-				'TABLE_SCHEMA' => $this->schema,
-				'TABLE_NAME' => $this->table
-			));
-			$table->drop();
-		}
-		catch(Exception $ex) {}
-
-		Yii::app()->end();
-
 	}
 
 	/**

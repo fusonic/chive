@@ -3,6 +3,11 @@
 	<entry id="authenticationFailed">Connection could not be established:&lt;br/&gt;{message}</entry>
 	<entry id="sqlErrorOccured">A SQL error occured ({errno}): &lt;span class="sql"&gt;{errmsg}&lt;/span&gt;</entry>
 	
+	<!-- Tables -->
+	<entry id="successTruncateTable">1#Truncated table »{table}«|n>1#Truncated {tableCount} tables</entry>
+	<entry id="errorTruncateTable">Truncating table »{table}« failed</entry>
+	<entry id="successDropTable">1#Dropped table »{table}«|n>1#Dropped {tableCount} tables</entry>
+	<entry id="errorDropTable">Dropping table »{table}« failed</entry>
 	<entry id="dropTable">Drop table</entry>
 	<entry id="doYouReallyWantToDropTable">Do you really want to drop the table?</entry>
 	<entry id="truncateTable">Truncate table</entry>
@@ -21,7 +26,7 @@
 	<entry id="errorMoveColumn">Moving column »{col}« failed</entry>
 	<entry id="successAddColumn">Added column »{col}«</entry>
 	<entry id="successEditColumn">Saved column »{col}«</entry>
-	<entry id="successDropColumn">Dropped column »{col}«</entry>
+	<entry id="successDropColumn">1#Dropped column »{col}«|n>1#Dropped {colCount} columns</entry>
 	<entry id="errorDropColumn">Dropping column »{col}« failed</entry>
 	
 	<!-- Indices -->

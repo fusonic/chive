@@ -7,7 +7,7 @@ var Notification = {
 	// Add column
 	add: function(type, header, message, code, options)
 	{
-		$('<div class="notification" style="display: none;" onmouseover="window.clearTimeout($(this).data(\'timeout\'));">' + 
+		$('<div class="notification" style="display: none;">' + 
 			'<div class="notification-body">' +
 				'<div class="notification-header">' +
 					'<span class="icon">' +
@@ -23,7 +23,39 @@ var Notification = {
 			'</div>' +
 		'</div>' +
 		'<div class="notification-bottom"></div>' +
-		'</div>').purr(options);
+		'</div>')
+		.mouseover(function() {
+			clearTimeout($(this).data('timeout'));
+			clearInterval($(this).data('interval'));
+		})
+		.mouseout(function() {
+			var obj = $(this);
+			if(obj.hasClass('not-sticky'))
+			{
+				var topSpotInt = setInterval( function ()
+				{
+					// Check to see if our notice is the first non-sticky notice in the list
+					if ( obj.prevAll( '.not-sticky' ).length == 0 )
+					{ 
+						// Stop checking once the condition is met
+						clearInterval( topSpotInt );
+						clearTimeout(obj.data('timeout'));
+						
+						// Call the close action after the timeout set in options
+						obj.data('timeout', setTimeout( function ()
+							{
+								if($.isFunction(obj.data('fn.removeNotice')))
+								{
+									obj.data('fn.removeNotice')();
+								}
+							}, 2000
+						));
+					}
+				}, 200 );
+				obj.data('interval', topSpotInt);
+			}
+		})
+		.purr(options);
 	}
 	
 };

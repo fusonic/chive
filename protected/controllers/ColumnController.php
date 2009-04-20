@@ -6,6 +6,7 @@ class ColumnController extends CController
 
 	public $schema;
 	public $table;
+	public $column;
 
 	/**
 	 * @var Default layout for this controller
@@ -20,11 +21,14 @@ class ColumnController extends CController
 		$request = Yii::app()->getRequest();
 		$this->schema = $request->getParam('schema');
 		$this->table = $request->getParam('table');
+		$this->column = $request->getParam('column');
 
 		// @todo (rponudic) work with parameters!
 		$this->_db = new CDbConnection('mysql:host='.Yii::app()->user->host.';dbname=' . $this->schema, Yii::app()->user->name, Yii::app()->user->password);
 		$this->_db->charset='utf8';
 		$this->_db->active = true;
+
+		Column::$db = $this->_db;
 
 		parent::__construct($id, $module);
 
@@ -49,15 +53,13 @@ class ColumnController extends CController
 	{
 		return array(
 			array('deny',
-					'users'=>array('?'),
+				'users'=>array('?'),
 			),
 		);
 	}
 
 	public function actionCreate()
 	{
-		Column::$db = $this->_db;
-
 		$column = new Column();
 		if(isset($_POST['Column']))
 		{
@@ -88,11 +90,14 @@ class ColumnController extends CController
 
 	public function actionUpdate()
 	{
-		Column::$db = $this->_db;
-
 		$isSubmitted = false;
 		$sql = false;
-		$column = Column::model()->findByPk(array('TABLE_SCHEMA' => $this->schema, 'TABLE_NAME' => $this->table, 'COLUMN_NAME' => $_GET['col']));
+		$pk = array(
+			'TABLE_SCHEMA' => $this->schema,
+			'TABLE_NAME' => $this->table,
+			'COLUMN_NAME' => $this->column,
+		);
+		$column = Column::model()->findByPk($pk);
 		if(isset($_POST['Column']))
 		{
 			$column->attributes = $_POST['Column'];
@@ -119,12 +124,10 @@ class ColumnController extends CController
 
 	public function actionMove()
 	{
-		Column::$db = $this->_db;
-
 		$pk = array(
 			'TABLE_SCHEMA' => $this->schema,
 			'TABLE_NAME' => $this->table,
-			'COLUMN_NAME' => $_POST['column'],
+			'COLUMN_NAME' => $this->column,
 		);
 		$column = Column::model()->findByPk($pk);
 
@@ -133,14 +136,14 @@ class ColumnController extends CController
 		{
 			$command = $column->move($_POST['command']);
 			$response->addNotification('success',
-				Yii::t('message', 'successMoveColumn', array('{col}' => $_POST['column'])),
+				Yii::t('message', 'successMoveColumn', array('{col}' => $column->COLUMN_NAME)),
 				null,
 				$command);
 		}
 		catch(DbException $ex)
 		{
 			$response->addNotification('error',
-				Yii::t('message', 'errorMoveColumn', array('{col}' => $_POST['column'])),
+				Yii::t('message', 'errorMoveColumn', array('{col}' => $column->COLUMN_NAME)),
 				$ex->getText(),
 				$ex->getSql());
 			$response->reload = true;
@@ -150,10 +153,10 @@ class ColumnController extends CController
 
 	public function actionDrop()
 	{
-		Column::$db = $this->_db;
-
 		$columns = (array)$_POST['column'];
 		$response = new AjaxResponse();
+		$droppedColumns = $droppedSqls = array();
+
 		foreach($columns AS $column)
 		{
 			$pk = array(
@@ -165,10 +168,8 @@ class ColumnController extends CController
 			try
 			{
 				$sql = $column->delete();
-				$response->addNotification('success',
-					Yii::t('message', 'successDropColumn', array('{col}' => $column->COLUMN_NAME)),
-					null,
-					$sql);
+				$droppedColumns[] = $column->COLUMN_NAME;
+				$droppedSqls[] = $sql;
 			}
 			catch(DbException $ex)
 			{
@@ -179,6 +180,16 @@ class ColumnController extends CController
 				$response->reload = true;
 			}
 		}
+
+		$count = count($droppedColumns);
+		if($count > 0)
+		{
+			$response->addNotification('success',
+				Yii::t('message', 'successDropColumn', array($count, '{col}' => $droppedColumns[0], '{colCount}' => $count)),
+				($count > 1 ? implode(', ', $droppedColumns) : null),
+				implode("\n", $droppedSqls));
+		}
+
 		$response->send();
 	}
 

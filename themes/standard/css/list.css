@@ -63,7 +63,7 @@
 	}
 	
 	table.list col.filesize {
-		width: 80px;
+		width: 90px;
 	}
 	
 	table.list col.engine {
@@ -72,6 +72,10 @@
 	
 	table.list col.operator {
 		width: 120px;
+	}
+	
+	table.list col.count {
+		width: 100px;
 	}
 	
 	/*

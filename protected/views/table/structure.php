@@ -51,7 +51,9 @@
 							<?php echo $column->COLUMN_NAME; ?>
 						<?php endif; ?>
 					</td>
-					<td><%= $column->COLUMN_TYPE %></td>
+					<td>
+						<?php echo $column->COLUMN_TYPE; ?>
+					</td>
 					<td>
 						<?php if(!is_null($column->COLLATION_NAME)) { ?>
 							<dfn class="collation" title="<?php echo Collation::getDefinition($column->COLLATION_NAME); ?>">
@@ -87,7 +89,13 @@
 						</a>
 					</td>
 					<td>
-						<com:Icon disabled="true" name="key_primary" size="16" text="database.primaryKey" />
+						<?php if(!$table->getHasPrimaryKey()) { ?>
+							<a href="javascript:void(0)" onclick="tableStructure.addIndex1('primary', '<?php echo $column->COLUMN_NAME; ?>')" class="icon">
+								<com:Icon name="key_primary" size="16" text="database.primaryKey" />
+							</a>
+						<?php } else { ?>
+							<com:Icon disabled="true" name="key_primary" size="16" text="database.primaryKey" />
+						<?php } ?>
 					</td>
 					<td>
 						<a href="javascript:void(0)" onclick="tableStructure.addIndex1('index', '<?php echo $column->COLUMN_NAME; ?>')" class="icon">
@@ -134,6 +142,12 @@
 			<com:Icon name="delete" size="16" />
 			<span><?php echo Yii::t('database', 'drop'); ?></span>
 		</a>
+		<?php if(!$table->getHasPrimaryKey()) { ?>
+			<a href="javascript:void(0)" onclick="tableStructure.addIndex('primary')" class="icon">
+				<com:Icon name="key_primary" size="16" text="database.primaryKey" />
+				<span><?php echo Yii::t('database', 'primaryKey'); ?></span>
+			</a>
+		<?php } ?>
 		<a href="javascript:void(0)" onclick="tableStructure.addIndex('index')" class="icon">
 			<com:Icon name="key_index" size="16" text="database.index" />
 			<span><?php echo Yii::t('database', 'index'); ?></span>
@@ -176,7 +190,7 @@
 	<tbody>
 		<?php if(count($indices) > 0) { ?>
 			<?php foreach($indices AS $key=>$index) { ?>
-				<tr id="indices_<?php echo $key; ?>">
+				<tr id="indices_<?php echo $key; ?>" class="<?php echo $index[0]->getType(); ?>">
 					<td><?php echo $index[0]->INDEX_NAME; ?></td>
 					<td><?php echo $index[0]->getType(); ?></td>
 					<td><?php echo $index[0]->CARDINALITY; ?></td>

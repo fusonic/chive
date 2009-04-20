@@ -52,7 +52,7 @@ var table = '<?php echo $this->table; ?>';
 					'icon'=>'truncate',
 					'link'=>array(
 						'url'=> 'javascript:void(0)',
-						'htmlOptions'=> array('class'=>'icon', 'onclick'=>'truncateTable("'.$this->schema.'","'.$this->table.'");'),
+						'htmlOptions'=> array('class'=>'icon', 'onclick'=>'tableGeneral.truncate("'.$this->schema.'","'.$this->table.'");'),
 					),
 					'visible'=>true,
 			),
@@ -60,7 +60,7 @@ var table = '<?php echo $this->table; ?>';
 					'icon'=>'drop',
 					'link'=>array(
 						'url'=> 'javascript:void(0)',
-						'htmlOptions'=> array('class'=>'icon', 'onclick'=>'dropTable("'.$this->schema.'","'.$this->table.'");'),
+						'htmlOptions'=> array('class'=>'icon', 'onclick'=>'tableGeneral.drop("'.$this->schema.'","'.$this->table.'");'),
 					),
 					'visible'=>true,
 			),
@@ -68,10 +68,10 @@ var table = '<?php echo $this->table; ?>';
 	));
 ?>
 
-<div id="truncateTableDialog" title="<?php echo Yii::t('core', 'confirm'); ?>" style="display: none">
+<div id="truncateTableDialog" title="<?php echo Yii::t('database', 'truncateTable'); ?>" style="display: none">
 	<?php echo Yii::t('message', 'doYouReallyWantToTruncateTable'); ?>
 </div>
-<div id="dropTableDialog" title="<?php echo Yii::t('core', 'confirm'); ?>" style="display: none">
+<div id="dropTableDialog" title="<?php echo Yii::t('database', 'dropTable'); ?>" style="display: none">
 	<?php echo Yii::t('message', 'doYouReallyWantToDropTable'); ?>
 </div>
 

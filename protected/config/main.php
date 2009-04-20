@@ -102,12 +102,14 @@ return array(
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/sql'=>'table/sql',
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/search'=>'table/search',
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/insert'=>'table/insert',
-					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/truncate'=>'table/truncate',
-					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/drop'=>'table/drop',
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/dropIndex'=>'table/dropIndex',
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/createIndex'=>'table/createIndex',
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/alterIndex'=>'table/alterIndex',
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/renameIndex'=>'table/renameIndex',
+
+					// Table actions
+					'schema/<schema:'.URL_MATCH.'>/tableAction/truncate'=>'table/truncate',
+					'schema/<schema:'.URL_MATCH.'>/tableAction/drop'=>'table/drop',
 
 					// Row
 					#'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/row/load'=>'row/load',
@@ -115,10 +117,12 @@ return array(
 					#'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/row/delete'=>'row/delete',
 
 					// Column
-					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columns/move'=>'column/move',
-					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columns/create'=>'column/create',
-					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columns/update'=>'column/update',
-					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columns/drop'=>'column/drop',
+					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columns/<column:'.URL_MATCH.'>/move'=>'column/move',
+					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columns/<column:'.URL_MATCH.'>/update'=>'column/update',
+
+					// ColumnActions
+					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columnAction/create'=>'column/create',
+					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columnAction/drop'=>'column/drop',
             ),
         ),
 

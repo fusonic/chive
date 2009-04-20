@@ -26,4 +26,9 @@ $(document).ready(function() {
 
 	});
 	$('#' + idPrefix + 'Column_dataType').change();
+	$('#' + idPrefix + 'Column_autoIncrement').change(function() {
+		$('#' + idPrefix + 'Column_COLUMN_DEFAULT').attr('disabled', this.checked);
+		$('#' + idPrefix + 'Column_isNullable').attr('disabled', this.checked);
+	});
+	$('#' + idPrefix + 'Column_autoIncrement').change();
 });
