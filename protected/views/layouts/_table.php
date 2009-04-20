@@ -57,7 +57,7 @@ var table = '<?php echo $this->table; ?>';
 					'visible'=>true,
 			),
 			array(	'label'=>Yii::t('database','drop'),
-					'icon'=>'drop',
+					'icon'=>'delete',
 					'link'=>array(
 						'url'=> 'javascript:void(0)',
 						'htmlOptions'=> array('class'=>'icon', 'onclick'=>'tableGeneral.drop("'.$this->schema.'","'.$this->table.'");'),

@@ -29,9 +29,9 @@ $(document).ready(function() {
 			'Yes': function() 
 			{
 				// Do truncate request
-				$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/truncate', {
-					table: table,
-					schema: schema,
+				$.post(baseUrl + '/schema/' + schema + '/tableAction/truncate', {
+					tables: table,
+					schema: schema
 				}, AjaxResponse.handle);
 				
 				$(this).dialog('close');
@@ -51,10 +51,13 @@ $(document).ready(function() {
 			'Yes': function() 
 			{
 				// Do drop request
-				$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/drop', {
-					table: table,
-					schema: schema,
-				}, AjaxResponse.handle);
+				$.post(baseUrl + '/schema/' + schema + '/tableAction/drop', {
+					tables: table,
+					schema: schema
+				}, function(responseText) {
+					AjaxResponse.handle(responseText);
+					location.href = '#tables';
+				});
 				
 				$(this).dialog('close');
 			}
