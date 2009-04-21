@@ -1,6 +1,6 @@
 <?php
 
-class SiteController extends CController
+class SiteController extends Controller
 {
 
 	public function __construct($id, $module=null) {

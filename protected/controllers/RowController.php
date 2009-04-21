@@ -1,6 +1,6 @@
 <?php
 
-class RowController extends CController
+class RowController extends Controller
 {
 	private $_db;
 

@@ -1,6 +1,6 @@
 <?php
 
-class AjaxSettingsController extends CController
+class AjaxSettingsController extends Controller
 {
 
 	public function __construct($id, $module=null) {

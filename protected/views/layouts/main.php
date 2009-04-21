@@ -71,7 +71,7 @@
 						<a href="<?php echo $schema->SCHEMA_NAME ?>">
 							<com:Icon name="database" size="16" />
 						</a>
-						<a href="<?php echo Yii::app()->baseUrl; ?>/schema/<?php echo $schema->SCHEMA_NAME; ?>" rel="no-ajax">
+						<a href="<?php echo Yii::app()->baseUrl; ?>/schema/<?php echo $schema->SCHEMA_NAME; ?>">
 							<?php echo $schema->SCHEMA_NAME; ?>
 						</a>
 					</li>

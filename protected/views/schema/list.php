@@ -34,7 +34,7 @@
 			<?php foreach($schemaList as $n=>$model): ?>
 				<tr id="schemata_<?php echo $model->SCHEMA_NAME; ?>">
 					<td>
-						<?php echo CHtml::link($model->SCHEMA_NAME, 'schema/' . $model->SCHEMA_NAME, array('rel' => 'no-ajax')); ?>
+						<?php echo CHtml::link($model->SCHEMA_NAME, 'schema/' . $model->SCHEMA_NAME); ?>
 					</td>
 					<td class="count">
 						<?php echo $model->tableCount; ?>

@@ -1,6 +1,6 @@
 <?php
 
-class SchemaController extends CController
+class SchemaController extends Controller
 {
 	const PAGE_SIZE = 10;
 
@@ -95,6 +95,7 @@ class SchemaController extends CController
 			'DATA_LENGTH' => 'datalength',
 			'DATA_FREE' => 'datafree',
 		);
+		$sort->route = '#tables';
 		$sort->applyOrder($criteria);
 
 		$this->_schema->tables = Table::model()->findAll($criteria);
@@ -268,6 +269,7 @@ class SchemaController extends CController
 		$pages = new CPagination(Schema::model()->count($criteria));
 		$pages->pageSize = self::PAGE_SIZE;
 		$pages->applyLimit($criteria);
+		$pages->route = '#schemata';
 
 		// Sort
 		$sort = new CSort('Schema');
@@ -277,6 +279,7 @@ class SchemaController extends CController
 			'DEFAULT_COLLATION_NAME' => 'collation',
 		);
 		$sort->defaultOrder = 'SCHEMA_NAME ASC';
+		$sort->route = '#schemata';
 		$sort->applyOrder($criteria);
 
 		$criteria->group = 'SCHEMA_NAME';
@@ -353,7 +356,6 @@ class SchemaController extends CController
 	/*
 	 * Bookmark actions
 	 */
-
 	public function actionShowBookmark()
 	{
 

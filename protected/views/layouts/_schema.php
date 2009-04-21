@@ -9,7 +9,7 @@ var schema = '<?php echo $this->schema; ?>';
 			array(	'label'=> Yii::t('database','tables'),
 					'icon'=>'table',
 					'link'=>array(
-						'url'=> Yii::app()->baseUrl .  '/schema/' . $this->schema . '/tables',
+						'url'=> '#tables',
 						'htmlOptions'=> array('class'=>'icon'),
 					),
 					'visible'=>true,
@@ -17,7 +17,7 @@ var schema = '<?php echo $this->schema; ?>';
 			array(	'label'=> Yii::t('database','sql'),
 					'icon'=>'sql',
 					'link'=>array(
-						'url'=> Yii::app()->baseUrl .  '/schema/' . $this->schema . '/sql',
+						'url'=> '#sql',
 						'htmlOptions'=> array('class'=>'icon'),
 					),
 					'visible'=>true,
@@ -25,7 +25,7 @@ var schema = '<?php echo $this->schema; ?>';
 			array(	'label'=> Yii::t('action','export'),
 					'icon'=>'save',
 					'link'=>array(
-						'url'=> Yii::app()->baseUrl .  '/schema/' . $this->schema . '/export',
+						'url'=> '#export',
 						'htmlOptions'=> array('class'=>'icon'),
 					),
 					'visible'=>true,
@@ -33,7 +33,7 @@ var schema = '<?php echo $this->schema; ?>';
 			array(	'label'=> Yii::t('action','import'),
 					'icon'=>'import',
 					'link'=>array(
-						'url'=> Yii::app()->baseUrl .  '/schema/' . $this->schema . '/import',
+						'url'=> '#import',
 						'htmlOptions'=> array('class'=>'icon'),
 					),
 					'visible'=>true,
@@ -41,7 +41,7 @@ var schema = '<?php echo $this->schema; ?>';
 			array(	'label'=> Yii::t('action','operations'),
 					'icon'=>'operations',
 					'link'=>array(
-						'url'=> Yii::app()->baseUrl .  '/schema/' . $this->schema . '/operations',
+						'url'=> '#operations',
 						'htmlOptions'=> array('class'=>'icon'),
 					),
 					'visible'=>true,

@@ -1,6 +1,6 @@
 <?php
 
-class ColumnController extends CController
+class ColumnController extends Controller
 {
 	private $_db;
 

@@ -1,6 +1,6 @@
 <?php
 
-class BookmarkController extends CController
+class BookmarkController extends Controller
 {
 
 	public $schema;

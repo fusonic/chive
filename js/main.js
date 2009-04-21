@@ -89,11 +89,12 @@ function init() {
 	}
 	
 	// Change ajax links
+	/*
 	var locationWithoutAnchor = new RegExp(location.href.substr(0, location.href.indexOf('#')) + '\/?');
 	$('div.ui-layout-center a[rel!="no-ajax"]').each(function() {
 		this.href = this.href.replace(locationWithoutAnchor, '#');
 	});
-	
+	*/
 	// Add checkboxes to respective tables
 	try 
 	{

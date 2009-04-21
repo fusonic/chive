@@ -1,6 +1,6 @@
 <?php
 
-class TableController extends CController
+class TableController extends Controller
 {
 	const PAGE_SIZE=10;
 

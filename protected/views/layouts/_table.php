@@ -11,7 +11,7 @@ var table = '<?php echo $this->table; ?>';
 			array(	'label'=> Yii::t('database','browse'),
 					'icon'=>'browse',
 					'link'=>array(
-						'url'=> Yii::app()->baseUrl .  '/schema/' . $this->schema . '/tables/' . $this->table . '/browse',
+						'url'=> '#tables/' . $this->table . '/browse',
 						'htmlOptions'=> array('class'=>'icon'),
 					),
 					'visible'=>true,
@@ -19,7 +19,7 @@ var table = '<?php echo $this->table; ?>';
 			array(	'label'=>Yii::t('database','structure'),
 					'icon'=>'structure',
 					'link'=>array(
-						'url'=> Yii::app()->baseUrl .  '/schema/' . $this->schema . '/tables/' . $this->table . '/structure',
+						'url'=> '#tables/' . $this->table . '/structure',
 						'htmlOptions'=> array('class'=>'icon'),
 					),
 					'visible'=>true,
@@ -27,7 +27,7 @@ var table = '<?php echo $this->table; ?>';
 			array(	'label'=>Yii::t('database','sql'),
 					'icon'=>'structure',
 					'link'=>array(
-						'url'=> Yii::app()->baseUrl .  '/schema/' . $this->schema . '/tables/' . $this->table . '/sql',
+						'url'=> '#tables/' . $this->table . '/sql',
 						'htmlOptions'=> array('class'=>'icon'),
 					),
 					'visible'=>true,
@@ -35,7 +35,7 @@ var table = '<?php echo $this->table; ?>';
 			array(	'label'=>Yii::t('core','search'),
 					'icon'=>'search',
 					'link'=>array(
-						'url'=> Yii::app()->baseUrl .  '/schema/' . $this->schema . '/tables/' . $this->table . '/search',
+						'url'=> '#tables/' . $this->table . '/search',
 						'htmlOptions'=> array('class'=>'icon'),
 					),
 					'visible'=>true,
@@ -43,7 +43,7 @@ var table = '<?php echo $this->table; ?>';
 			array(	'label'=>Yii::t('database','insert'),
 					'icon'=>'insert',
 					'link'=>array(
-						'url'=> Yii::app()->baseUrl .  '/schema/' . $this->schema . '/tables/' . $this->table . '/insert',
+						'url'=> '#tables/' . $this->table . '/insert',
 						'htmlOptions'=> array('class'=>'icon'),
 					),
 					'visible'=>true,
