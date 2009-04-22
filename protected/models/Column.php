@@ -257,13 +257,13 @@ class Column extends CActiveRecord
 			$collate = '';
 		}
 
-		if(is_null($this->COLUMN_DEFAULT) || $this->EXTRA == 'auto_increment')
+		if(strlen($this->COLUMN_DEFAULT) == 0 || $this->EXTRA == 'auto_increment')
 		{
 			$default = '';
 		}
 		else
 		{
-			$default = (!is_null($this->COLUMN_DEFAULT) ? 'DEFAULT :defaultValue' : ($this->getIsNullable() ? 'DEFAULT NULL' : ''));
+			$default = (strlen($this->COLUMN_DEFAULT) > 0 ? 'DEFAULT :defaultValue' : ($this->getIsNullable() ? 'DEFAULT NULL' : ''));
 		}
 
 		return self::$db->quoteColumnName($this->COLUMN_NAME)
@@ -276,7 +276,7 @@ class Column extends CActiveRecord
 
 	protected function bindColumnDefinitionValues($sql)
 	{
-		if(!is_null($this->COLUMN_DEFAULT) && $ths->EXTRA != 'auto_increment')
+		if(strlen($this->COLUMN_DEFAULT) > 0 && $this->EXTRA != 'auto_increment')
 		{
 			$sql->bindParam('defaultValue', $this->COLUMN_DEFAULT, PDO::PARAM_STR);
 		}
@@ -318,6 +318,7 @@ class Column extends CActiveRecord
 
 		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
 			. "\t" . 'MODIFY ' . $this->getColumnDefinition() . ';';
+			echo $sql;
 		$cmd = new CDbCommand(self::$db, $sql);
 		$this->bindColumnDefinitionValues($cmd);
 		try

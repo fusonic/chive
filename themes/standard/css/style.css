@@ -212,5 +212,10 @@
   span.primaryKey {
   	border-bottom: dotted 1px;
   }
+  
+  div.small {
+  	color: #808080;
+	font-size: 0.9em;
+  }
    
 }

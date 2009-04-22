@@ -34,6 +34,15 @@ var columnForm = {
 		$('#' + idPrefix + 'Column_COLUMN_DEFAULT').attr('disabled', $('#' + idPrefix + 'Column_autoIncrement').attr('checked'));
 		$('#' + idPrefix + 'Column_isNullable').attr('disabled', $('#' + idPrefix + 'Column_autoIncrement').attr('checked'));
 		
+		if($('#' + idPrefix + 'Column_isNullable').attr('checked') && !$('#' + idPrefix + 'Column_isNullable').attr('disabled'))
+		{
+			$('#' + idPrefix + 'settingDefaultNullHint').show();
+		}
+		else
+		{
+			$('#' + idPrefix + 'settingDefaultNullHint').hide();
+		}
+		
 	}
 	
 };
@@ -42,5 +51,6 @@ $(document).ready(function() {
 	$('#' + idPrefix + 'Column_dataType').change(new Function('columnForm.setup("' + idPrefix + '")'));
 	$('#' + idPrefix + 'Column_autoIncrement').change(new Function('columnForm.setup("' + idPrefix + '")'));
 	$('#' + idPrefix + 'createIndexPrimary').change(new Function('columnForm.setup("' + idPrefix + '")'));
+	$('#' + idPrefix + 'Column_isNullable').change(new Function('columnForm.setup("' + idPrefix + '")'));
 	columnForm.setup(idPrefix);
 });

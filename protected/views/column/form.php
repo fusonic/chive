@@ -71,6 +71,9 @@ var isPrimary<?php echo CHtml::$idPrefix; ?> = <?php echo json_encode($column->g
 				</td>
 				<td colspan="2">
 					<?php echo CHtml::activeTextArea($column, 'values'); ?>
+					<div class="small">
+						<?php echo Yii::t('core', 'enterOneValuePerLine'); ?>
+					</div>
 				</td>
 			</tr>
 			<tr id="<?php echo CHtml::$idPrefix; ?>settingCollation">
@@ -87,6 +90,9 @@ var isPrimary<?php echo CHtml::$idPrefix; ?> = <?php echo json_encode($column->g
 				</td>
 				<td colspan="2">
 					<?php echo CHtml::activeTextField($column, 'COLUMN_DEFAULT'); ?>
+					<div class="small" id="<?php echo CHtml::$idPrefix; ?>settingDefaultNullHint">
+						<?php echo Yii::t('core', 'leaveEmptyForNull'); ?>
+					</div>
 				</td>
 			</tr>
 			<tr>

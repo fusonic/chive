@@ -2,6 +2,7 @@
 
 class Index extends CActiveRecord
 {
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return CActiveRecord the static model class

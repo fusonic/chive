@@ -36,4 +36,6 @@
 	<entry id="deleteBookmark">Delete bookmark</entry>
 	<entry id="type">Type</entry>
 	<entry id="size">Size</entry>
+	<entry id="enterOneValuePerLine">Enter one value per line.</entry>
+	<entry id="leaveEmptyForNull">Leave empty to use &lt;span class="null"&gt;NULL&lt;/&gt;.</entry>
 </category>
