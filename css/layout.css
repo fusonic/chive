@@ -423,5 +423,19 @@
     height: 16px; 
     background: url(../images/icons/fugue/16/delete.png) no-repeat 0 0px;
   }
+  
+  .notification .sticky {
+    position: absolute;
+    top: 18px; 
+    right: 36px; 
+    width: 16px; 
+    height: 16px; 
+    background: url(../images/icons/fugue/16/pin_up.png) no-repeat 0 0px;
+  }
+  
+  .notification.not-sticky .sticky
+  {
+  	 background: url(../images/icons/fugue/16/pin.png) no-repeat 0 0px !important;
+  }
     
 }

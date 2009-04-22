@@ -80,10 +80,14 @@ class Table extends CActiveRecord
 	}
 
 	public function getAverageRowSize() {
-		if($rowCount = $this->getRowCount() > 0)
-			return $this->DATA_LENGTH / $rowCount;
+		if($this->getRowCount() > 0)
+		{
+			return $this->DATA_LENGTH / $this->getRowCount();
+		}
 		else
+		{
 			return '-';
+		}
 	}
 
 	public function getHasPrimaryKey()
@@ -109,6 +113,9 @@ class Table extends CActiveRecord
 		$sql = 'TRUNCATE TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . ';';
 		$cmd = self::$db->createCommand($sql);
 
+		$sql = 'TRUNCATE TABLE ' . self::$db->quoteTableName($this->TABLE_NAME);
+		$cmd = self::$db->createCommand($sql);
+
 		// Execute
 		try
 		{
@@ -127,10 +134,10 @@ class Table extends CActiveRecord
 	 *
 	 * @return	string
 	 */
-	public function drop()
-	{
-		// Create command
-		$sql = 'DROP TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . ';';
+
+	public function drop() {
+
+		$sql = 'DROP TABLE ' . self::$db->quoteTableName($this->TABLE_NAME);
 		$cmd = self::$db->createCommand($sql);
 
 		// Execute

@@ -52,6 +52,15 @@ class Row extends CActiveRecord
 		);
 	}
 
+	/*
+	 * @return string primary key columns
+	 */
+	public function primaryKey()
+	{
+		return self::$db->getSchema($this->schema)->getTable($this->table)->primaryKey;
+	}
+
+
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
@@ -71,6 +80,51 @@ class Row extends CActiveRecord
 
 	public function getDbConnection() {
 		return self::$db;
+	}
+
+	public function delete()
+	{
+
+		if($this->getIsNewRecord())
+		{
+			throw new CDbException(Yii::t('yii','The active record cannot be deleted because it is new.'));
+		}
+		if(!$this->beforeDelete())
+		{
+			return false;
+		}
+
+		$sql = 'DELETE FROM ' . self::$db->quoteTableName($this->table) . ' WHERE ';
+
+		$pkCount = count($this->getPrimaryKey());
+
+		$i = 0;
+		foreach($this->getPrimaryKey() AS $key=>$value)
+		{
+			$sql .= "\n\t" . self::$db->quoteColumnName($key) . ' = ' . self::$db->quoteValue($value);
+			$i++;
+
+			if($i < $pkCount)
+				$sql .= ' AND';
+
+		}
+
+		$cmd = self::$db->createCommand($sql);
+
+		try
+		{
+			$cmd->prepare();
+			$cmd->execute();
+			$this->afterDelete();
+			return $sql;
+		}
+		catch(CDbException $ex)
+		{
+			$this->afterDelete();
+			throw new DbException($cmd);
+			return false;
+		}
+
 	}
 
 }

@@ -95,65 +95,215 @@ class TableController extends Controller
 		$db = $this->_db;
 		$error = false;
 
-		$pages = new CPagination;
-		$pages->setPageSize(self::PAGE_SIZE);
+		$response = new AjaxResponse();
 
-		$sort = new Sort($db);
-		$sort->multiSort = false;
+		#$_query = 'SELECT * FROM test ORDER BY id DESC LIMIT 0, 10';
+		//$_query = ' USE test';
 
-		$sort->route = '/table/sql';
+		// Profiling
+		$profiling = Yii::app()->user->settings->get('profiling');
 
 		if(!$_query)
-			$_query = self::getDefaultQuery();
-
-		$oSql = new Sql($_query);
-		$oSql->applyCalculateFoundRows();
-
-		if(!$oSql->hasLimit)
 		{
-			$offset = (isset($_GET['page']) ? (int)$_GET['page'] : 1) * self::PAGE_SIZE - self::PAGE_SIZE;
-			$oSql->applyLimit(self::PAGE_SIZE, $offset, true);
+			$queries = (array)self::getDefaultQuery();
 		}
-
-		$oSql->applySort($sort->getOrder(), true);
-
-		$cmd = $db->createCommand($oSql->getQuery());
-		$cmd->prepare();
-
-		try
+		else
 		{
-			// Fetch data
-			$data = $cmd->queryAll();
+			if($profiling)
+			{
+				$cmd = $db->createCommand('FLUSH STATUS');
+				$cmd->execute();
 
-			#$data=array();
-			#$cmd->execute();
-
-			$total = (int)$db->createCommand('SELECT FOUND_ROWS()')->queryScalar();
-			$pages->setItemCount($total);
-
-			$columns = array();
-
-			// Fetch column headers
-			if($total > 0) {
-				$columns = array_keys($data[0]);
+				$cmd = $db->createCommand('SET PROFILING = 1');
+				$cmd->execute();
 			}
 
+			$queries = SqlQuery::split($_query);
+		}
+
+		$queryCount = count($queries);
+
+		$i = 1;
+		foreach($queries AS $query)
+		{
+
+			$sqlQuery = new SqlQuery($query);
+			$type = $sqlQuery->getType();
+
+			// SELECT
+			if($type == "select")
+			{
+
+				// Pagination
+				$pages = new CPagination;
+				$pages->setPageSize(self::PAGE_SIZE);
+				$pages->route = '#tables/'.$this->table.'/browse';
+
+				// Sorting
+				$sort = new Sort($db);
+				$sort->multiSort = false;
+				$sort->route = '#tables/'.$this->table.'/browse';
+
+				$sqlQuery->applyCalculateFoundRows();
+
+				// Apply limit
+				if(!$sqlQuery->getLimit())
+				{
+					$offset = (isset($_GET['page']) ? (int)$_GET['page'] : 1) * self::PAGE_SIZE - self::PAGE_SIZE;
+					$sqlQuery->applyLimit(self::PAGE_SIZE, $offset, true);
+				}
+
+				// Apply sort
+				$sqlQuery->applySort($sort->getOrder(), true);
+
+
+			}
+
+			// OTHER
+			elseif($type == "insert" || $type == "update" || $type == "delete")
+			{
+				#predie("insert / update / delete statement");
+
+			}
+			elseif($type == "show")
+			{
+				// show create table etc.
+
+			}
+			elseif($type == "analyze" || $type == "optimize" || $type == "repair" || $type == "check")
+			{
+				// Table functions
+			}
+			elseif($type == "use")
+			{
+				$name = $sqlQuery->getDatabase();
+				if($queryCount == 1 && $name && $this->schema != $name)
+				{
+					$response->redirectUrl = Yii::app()->baseUrl . '/schema/' . $name . '#sql';
+					$response->addNotification('success', Yii::t('message', 'successChangeDatabase', array('{name}' => $name)));
+				}
+			}
+			elseif($type == "create")
+			{
+				//$name = $sqlQuery->getTable();
+			}
+			else
+			{
+
+			}
+
+			// Prepare query for execution
+			$cmd = $db->createCommand($sqlQuery->getQuery());
+			$cmd->prepare();
+
+			if($sqlQuery->returnsResultSet())
+			{
+
+				try
+				{
+					// Fetch data
+					$data = $cmd->queryAll();
+
+					if($type == 'select')
+					{
+						$total = (int)$db->createCommand('SELECT FOUND_ROWS()')->queryScalar();
+						$pages->setItemCount($total);
+					}
+
+					$columns = array();
+
+					// Fetch column headers
+					if($total > 0 || isset($data[0]))
+					{
+						$columns = array_keys($data[0]);
+					}
+
+
+				}
+				catch (Exception $ex)
+				{
+					$error = $ex->getMessage();
+				}
+
+
+			}
+			else
+			{
+
+				try
+				{
+					// Measure time
+					$start = microtime(true);
+					$result = $cmd->execute();
+					$time = round(microtime(true) - $start, 10);
+
+					$response->addNotification('success', Yii::t('message', 'successExecuteQuery'), Yii::t('message', 'affectedRowsQueryTime', array($result,  '{rows}'=>$result, '{time}'=>$time)), $sqlQuery->getQuery());
+
+
+				}
+				catch(CDbException $ex)
+				{
+					$dbException = new DbException($cmd);
+					$response->addNotification('error', Yii::t('message', 'sqlErrorOccured'));
+				}
+
+			}
+
+			$i++;
+
 
 		}
-		catch (Exception $ex)
+
+		if($profiling)
 		{
-			$error = $ex->getMessage();
+			$cmd = $db->createCommand('select
+					state,
+					SUM(duration) as total,
+					count(*)
+				FROM information_schema.profiling
+				GROUP BY state
+				ORDER by total desc');
+
+			$cmd->prepare();
+			$profileData = $cmd->queryAll();
+
+			if(count($profileData))
+			{
+				$test = '<table>';
+
+				foreach($profileData AS $item)
+				{
+					$test .= '<tr>';
+
+					$i = 0;
+					foreach($item AS $value)
+					{
+						$test .= '<td style="padding: 2px; min-width: 80px;">' . ($i == 0 ? '<b>' . ucfirst($value) . '</b>' : $value)  . '</td>';
+						$i++;
+					}
+
+
+					$test .= '</tr>';
+				}
+
+				$test .= '</table>';
+
+				$response->addNotification('info', 'Profling results (sorted by execution time)', $test, null, array('isSticky'=>false));
+			}
+
 		}
 
 
 		$this->render('browse',array(
 			'data' => $data,
 			'columns' => $columns,
-			'query' => $oSql->getOriginalQuery(),
+			'query' => $sqlQuery->getOriginalQuery(),
 			'pages' => $pages,
 			'sort' => $sort,
 			'error' => $error,
 			'table' => $this->_db->getSchema()->getTable($this->table),
+			'response' => $response,
+			'type' => $type,
 		));
 
 	}
@@ -245,96 +395,6 @@ class TableController extends Controller
 		Row::$db = $this->_db;
 		$row = new Row;
 
-		if(isset($_POST['Row']))
-		{
-
-			$row->isNewRecord = true;
-			$row->attributes = $_POST['Row'];
-
-			$sql = 'INSERT INTO ' . $db->quoteTableName($this->table) . ' (';
-
-			$attributesCount = count($row->getAttributes());
-
-			$i = 0;
-			foreach($row->getAttributes() AS $attribute=>$value)
-			{
-				$sql .= "\n\t" . $attribute;
-
-				$i++;
-
-				if($i < $attributesCount)
-					$sql .= ', ';
-			}
-
-			$sql .= "\n" . ') VALUES (';
-
-			$i = 0;
-			foreach($row->getAttributes() AS $attribute=>$value)
-			{
-				$sql .= "\n\t" . $db->quoteValue($value);
-
-				$i++;
-
-				if($i < $attributesCount)
-					$sql .= ', ';
-
-
-			}
-
-			$sql .= "\n" . ')';
-
-			$cmd = $db->createCommand($sql);
-
-			$response = new AjaxResponse();
-
-			try
-			{
-				$cmd->prepare();
-				$cmd->execute();
-
-				$response->addNotification('success', Yii::t('message', 'insertedNewRow'));
-				$response->redirectUrl = '#tables/' . $this->table . '/browse';
-
-			}
-			catch (CDbException $ex)
-			{
-				$response->addNotification('error', Yii::t('message', 'insertingNewRowFailed'), $sql);
-			}
-
-			$response->send();
-
-		}
-
-		/*
-		$table = $this->loadTable();
-
-		if(isset($_POST['sent'])) {
-
-			$builder = $this->_db->getCommandBuilder();
-
-			$data = array();
-			foreach($table->columns AS $column) {
-				$data[$column->COLUMN_NAME] = $_POST[$column->COLUMN_NAME];
-			}
-
-			$cmd = $builder->createInsertCommand($this->table, $data);
-
-			try
-			{
-				$cmd->prepare();
-				$cmd->execute();
-				Yii::app()->end('redirect:' . $this->schema . '#tables/' . $this->table . '/browse');
-			}
-			catch(CDbException $ex)
-			{
-				$errorInfo = $cmd->getPdoStatement()->errorInfo();
-				//$this->addError('SCHEMA_NAME', Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
-				return false;
-			}
-
-		}
-		*/
-
 		$functions = array(
 			'',
 			'ASCII',
@@ -373,6 +433,114 @@ class TableController extends Controller
 			'UNHEX',
 		);
 
+		//predie($_POST);
+
+		if(isset($_POST['Row']))
+		{
+
+			$row->isNewRecord = true;
+			$row->attributes = $_POST['Row'];
+
+			$sql = 'INSERT INTO ' . $db->quoteTableName($this->table) . ' (';
+
+			$attributesCount = count($row->getAttributes());
+
+			$i = 0;
+			foreach($row->getAttributes() AS $attribute=>$value)
+			{
+				$sql .= "\n\t" . $attribute;
+
+				$i++;
+
+				if($i < $attributesCount)
+					$sql .= ', ';
+			}
+
+			$sql .= "\n" . ') VALUES (';
+
+			$i = 0;
+			foreach($row->getAttributes() AS $attribute=>$value)
+			{
+				// NULL value
+				if(isset($_POST[$attribute]['null']))
+				{
+					$sql .= "\n\t" . 'NULL';
+				}
+
+				// FUNCTION
+				elseif(isset($_POST[$attribute]['function']) && $_POST[$attribute]['function'])
+				{
+					$sql .= "\n\t" . $functions[$_POST[$attribute]['function']] . '(' . $db->quoteValue($value) . ')';
+				}
+
+				// RAW
+				else
+				{
+					$sql .= "\n\t" . $db->quoteValue($value);
+				}
+
+				$i++;
+
+				if($i < $attributesCount)
+					$sql .= ', ';
+
+
+			}
+
+			$sql .= "\n" . ')';
+
+			$cmd = $db->createCommand($sql);
+
+			$response = new AjaxResponse();
+
+			try
+			{
+				$cmd->prepare();
+				$cmd->execute();
+
+				$response->addNotification('success', Yii::t('message', 'successInsertRow'), null, $sql);
+				$response->redirectUrl = '#tables/' . $this->table . '/browse';
+
+			}
+			catch (CDbException $ex)
+			{
+				$response->addNotification('error', Yii::t('message', 'errorInsertRow'), $sql);
+			}
+
+			$response->send();
+
+		}
+
+		/*
+		$table = $this->loadTable();
+
+		if(isset($_POST['sent'])) {
+
+			$builder = $this->_db->getCommandBuilder();
+
+			$data = array();
+			foreach($table->columns AS $column) {
+				$data[$column->COLUMN_NAME] = $_POST[$column->COLUMN_NAME];
+			}
+
+			$cmd = $builder->createInsertCommand($this->table, $data);
+
+			try
+			{
+				$cmd->prepare();
+				$cmd->execute();
+				Yii::app()->end('redirect:' . $this->schema . '#tables/' . $this->table . '/browse');
+			}
+			catch(CDbException $ex)
+			{
+				$errorInfo = $cmd->getPdoStatement()->errorInfo();
+				//$this->addError('SCHEMA_NAME', Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
+				return false;
+			}
+
+		}
+		*/
+
 		$this->render('insert',array(
 			'row'=>$row,
 			//'table'=>$table,
@@ -382,8 +550,7 @@ class TableController extends Controller
 
 
 	}
-
-	/**
+/**
 	 * Truncates tables
 	 */
 	public function actionTruncate()
@@ -693,7 +860,6 @@ class TableController extends Controller
 	 */
 	private function getDefaultQuery()
 	{
-		return 'SELECT * FROM ' . $this->_db->quoteTableName($this->table) . "\n\t"
-				. 'WHERE 1';
+		return 'SELECT * FROM ' . $this->_db->quoteTableName($this->table);
 	}
 }

@@ -76,4 +76,16 @@ class AjaxSettingsController extends Controller
 
 	}
 
+	public function actionToggle()
+	{
+		$name = $_POST['name'];
+		$scope = (isset($_POST['scope']) ? $_POST['scope'] : null);
+		$object = (isset($_POST['object']) ? $_POST['object'] : null);
+
+		$oldValue = Yii::app()->user->settings->get($name, $scope, $object);
+
+		Yii::app()->user->settings->set($name, !$oldValue, $scope, $object);
+		Yii::app()->user->settings->saveSettings();
+	}
+
 }

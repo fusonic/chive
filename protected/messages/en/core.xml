@@ -13,6 +13,7 @@
 	<entry id="search">Search</entry>
 	<entry id="confirm">Confirm</entry>
 	<entry id="action">Action</entry>
+	<entry id="insert">Insert</entry>
 	
 	<entry id="error">Error</entry>
 	<entry id="warning">Warning</entry>

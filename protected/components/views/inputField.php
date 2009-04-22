@@ -3,7 +3,7 @@
 switch($this->getType()) {
 
 	case 'shorttext':
-		echo CHtml::activeTextField($row, $column->name, array('maxlength'=>$column->size, 'size'=>$column->size, 'class'=>'text'));
+		echo CHtml::activeTextField($row, $column->name, array_merge((array)$htmlOptions, array('maxlength'=>$column->size, 'size'=>$column->size, 'class'=>'text')));
 		break;
 
 	case 'int':
@@ -15,7 +15,7 @@ switch($this->getType()) {
 		break;
 
 	case 'text':
-		echo CHtml::activeTextArea($row, $column->name, array('maxlength'=>$column->size, 'size'=>$column->size));
+		echo CHtml::activeTextArea($row, $column->name, $htmlOptions);
 		break;
 
 	case 'datetime':

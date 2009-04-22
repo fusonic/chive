@@ -147,6 +147,12 @@
 		font-weight: bold;
 	}
 	
+	table.list.editable form {
+		border: none;
+		background: none;
+		padding: 0px;
+	}
+	
 	/*
 	 * With selected
 	 */

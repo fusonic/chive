@@ -7,7 +7,7 @@ var tableBrowse = {
 	deleteRow: function(row)
 	{
 		$('#browse input[type="checkbox"]').attr('checked', false).change();
-		$('#browse input[type="checkbox"]').eq(row).attr('checked', true).change();
+		$('#browse input[type="checkbox"]').eq(row+1).attr('checked', true).change();
 		tableBrowse.deleteRows();
 	},
 	
@@ -53,7 +53,7 @@ $(document).ready(function() {
 					data	: 	JSON.stringify(data),
 					schema	: 	schema,
 					table	: 	table
-				});
+				}, AjaxResponse.handle);
 				
 				$(this).dialog('close');
 			}
@@ -64,56 +64,74 @@ $(document).ready(function() {
 	 * Setup inline editing
 	 */
 	
-	$('#browse tbody tr td').editable(function(value, settings) {
+	$('.editable td[class!=action]').each(function() 
+	{
+
+		eval('var type = tableData.columns.' + $(this).attr('class') + '.dbType');
 		
-		container = this.getContainer();
+		if(type.indexOf('text') > -1)
+		{
+			console.log('textarea');
+			type = 'textarea';
+		}
+		else
+			type = 'text';
+			
+		$(this).editable(function(value, settings) {
 		
-		index = container.parent().attr('id').match(/\d/);
-		attribute = container.attr('class');
+			container = this.getContainer();
+			
+			index = container.parent().attr('id').match(/\d/);
+			attribute = container.attr('class');
+			
+			$.ajax({
+				type: 		"POST",
+				url: 		baseUrl + '/row/update',
+				dataType: 	"html",
+				success:	function(response) {
+					
+					response = JSON.parse(response);
+					
+					// Update cell content
+					container.text(response.data.value);
+					
+					// Update row data
+					eval('rowData[index].'+ response.data.attribute +' = response.data.value;');
+					
+					AjaxResponse.handle(response);
+					
+				},
+				data: {
+					
+					data: 		JSON.stringify(rowData[index]),
+					value: 		value,
+					attribute:	attribute,
+					
+					// General information
+					table: 		table,
+					schema: 	schema
+					
+				},
+				cache:		false
+			});
 		
-		$.ajax({
-			type: 		"POST",
-			url: 		baseUrl + '/row/update',
-			dataType: 	"html",
-			success:	function(response) {
+			}, {
+	         indicator : 'Saving...',
+			 onblur    : 'submit',
+	         tooltip   : 'Click to edit...',
+			 type	   : type,
+			 event	   : 'dblclick',
+			 data	   : function(value) {
+			 	
+			 	index = this.getContainer().parent().attr('id').match(/\d/);
+				column = this.getContainer().attr('class');
+				value = eval('rowData[index].' + column);
+				return value;
 				
-				response = JSON.parse(response);
-				
-				container.text(response.data.value);
-				
-				rowData[]
-				
-				AjaxResponse.handle(response);
-				
-			},
-			data: {
-				
-				data: 		JSON.stringify(keyData[index]),
-				value: 		value,
-				attribute:	attribute,
-				
-				// General information
-				table: 		table,
-				schema: 	schema
-				
-			},
-			cache:		false
+			 }
+		
 		});
 		
-	}, {
-         indicator : 'Saving...',
-		 onblur    : 'ignore',
-         tooltip   : 'Click to edit...',
-		 event	   : 'dblclick',
-		 data	   : function(value) {
-		 	
-		 	index = this.getContainer().parent().attr('id').match(/\d/);
-			column = this.getContainer().attr('class');
-			value = eval('rowData[index].' + column);
-			return value;
-			
-		 }
-	
 	});
 
 });

@@ -1,7 +1,5 @@
 var currentLocation = window.location.href;
 var sideBar;
-var profiling;
-
 /**
 * Function : dump()
 * Arguments: The data - array,hash(associative array),object
@@ -13,28 +11,28 @@ var profiling;
 * array/hash/object that is given.
 */
 function dump(arr,level) {
-var dumped_text = "";
-if(!level) level = 0;
-
-//The padding given at the beginning of the line.
-var level_padding = "";
-for(var j=0;j<level+1;j++) level_padding += "    ";
-
-if(typeof(arr) == 'object') { //Array/Hashes/Objects
- for(var item in arr) {
-  var value = arr[item];
- 
-  if(typeof(value) == 'object') { //If it is an array,
-   dumped_text += level_padding + "'" + item + "' ...\n";
-   dumped_text += dump(value,level+1);
-  } else {
-   dumped_text += level_padding + "'" + item + "' => \"" + value + "\"\n";
-  }
- }
-} else { //Stings/Chars/Numbers etc.
- dumped_text = "===>"+arr+"<===("+typeof(arr)+")";
-}
-return dumped_text;
+	var dumped_text = "";
+	if(!level) level = 0;
+	
+	//The padding given at the beginning of the line.
+	var level_padding = "";
+	for(var j=0;j<level+1;j++) level_padding += "    ";
+	
+	if(typeof(arr) == 'object') { //Array/Hashes/Objects
+	 for(var item in arr) {
+	  var value = arr[item];
+	 
+	  if(typeof(value) == 'object') { //If it is an array,
+	   dumped_text += level_padding + "'" + item + "' ...\n";
+	   dumped_text += dump(value,level+1);
+	  } else {
+	   dumped_text += level_padding + "'" + item + "' => \"" + value + "\"\n";
+	  }
+	 }
+	} else { //Stings/Chars/Numbers etc.
+	 dumped_text = "===>"+arr+"<===("+typeof(arr)+")";
+	}
+	return dumped_text;
 } 
 
 function checkLocation() {
@@ -80,7 +78,7 @@ function init() {
 		table = RegExp.$2.toString();
 		
 		$('#bc_table a span').text(table);
-		$('#bc_table a').attr('href', baseUrl + '/database/' + schema + '#tables/' + table + '/structure');
+		$('#bc_table a').attr('href', baseUrl + '/schema/' + schema + '#tables/' + table + '/structure');
 		$('#bc_table').show();
 	}
 	else 
@@ -103,7 +101,7 @@ function init() {
 		});
 	}
 	catch(exception) {
-		alert(exception);
+		console.log(exception);
 	}
 }
 
@@ -179,18 +177,18 @@ $(document).ready(function()
 	// START
 	$(document).ajaxStart(function() {
 		$('#loading').css({'background': '#FF0000'}).fadeIn();
+		//$('#loading2').show();
 	});
 	
 	// STOP
 	$(document).ajaxStop(function() {
+		//$('#loading2').hide();
 		$('#loading').css({'background': '#009900'}).fadeOut();
 	});
 	
 	// ERROR
 	$(document).ajaxError(function() {
-		Notification.add('warning', 'Ajax reques t failed, click <a href="">here</a> to reload site.', 'Warning', null, {
-			isSticky: true
-		});
+		Notification.add('warning', 'Ajax request failed', 'Click <a href="javascript:void(0);" onclick="reload();">here</a> to reload site.', null);
 	});
 
 
@@ -210,6 +208,9 @@ var AjaxResponse = {
 	
 	handle: function(data)
 	{
+		if(!data)
+			return; 
+			
 		try 
 		{
 			data = JSON.parse(data);

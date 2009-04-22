@@ -63,8 +63,10 @@ class RowController extends Controller
 
 		$db = $this->_db;
 
+		$pk = CPropertyValue::ensureArray($db->getSchema()->getTable($this->table)->primaryKey);
+
 		$attributes = json_decode($_POST['data'], true);
-		$attributesCount = count($attributes);
+		$attributesCount = count($pk);
 
 		$response = new AjaxResponse();
 
@@ -84,6 +86,9 @@ class RowController extends Controller
 
 			$i = 0;
 			foreach($attributes AS $name=>$value) {
+
+				if(!in_array($name, $pk))
+					continue;
 
 				$sql .= "\t" . $db->quoteColumnName($name) . ' = ' . $db->quoteValue($value) . ' ';
 				$i++;
@@ -111,31 +116,43 @@ class RowController extends Controller
 
 	}
 
-	public function actionGetColumnValue()
-	{
-
-		// @todo (rponudic) remove this section if not needed anymore
-		$pk = json_decode($_POST['data'], true);
-		$row = Row::model()->findByPk($pk);
-
-		return $row->getAttribute($_POST['attribute']);
-
-	}
-
 	public function actionDelete()
 	{
 
+		$response = new AjaxResponse();
+
 		$data = json_decode($_POST['data'], true);
 
-		foreach($data AS $attributes) {
+		try
+		{
 
-			$row = new Row;
-			$row->attributes = $attributes;
-			$row->delete();
+			foreach($data AS $attributes) {
+
+				//$response->addData()
+
+				$row = new Row;
+				$row->attributes = $attributes;
+
+				$pkAttributes = $row->getPrimaryKey();
+				$row->attributes = null;
+
+				$row->attributes = $pkAttributes;
+
+				$sql .= $row->delete() . "\n\n";
+			}
 
 		}
+		catch (DbException $ex)
+		{
+			$response->addNotification('error', Yii::t('message', 'errorUpdateRow'), $ex->getText(), $sql, array('isSticky'=>true));
+		}
 
-		Yii::app()->end('redirect: xyz.com');
+
+		$response->reload = true;
+		$response->addNotification('success', Yii::t('message', 'successDeleteRows', array(count($data), '{rowCount}' => count($data))), null, $sql);
+
+
+		$response->send();
 	}
 
 }

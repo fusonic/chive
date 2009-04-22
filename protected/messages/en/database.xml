@@ -100,4 +100,7 @@
 	<!-- Primary keys -->
 	<entry id="primaryKey">Primary key</entry>
 	<entry id="addPrimaryKey">Add primary key</entry>
+	
+	<!-- Profiling -->
+	<entry id="toggleProfiling">Toggle profiling</entry>
 </category>

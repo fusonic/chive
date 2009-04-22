@@ -1,5 +1,3 @@
-<h2>Insert new row</h2>
-
 <div class="form">
 <?php echo CHtml::form(); ?>
 
@@ -25,12 +23,16 @@
 	<tbody>
 		<?php foreach($row->getMetaData()->tableSchema->columns AS $column) { ?>
 			<tr>
-				<td><?php echo $column->name; ?></td>
+				<td style="font-weight: bold;"><?php echo $column->name; ?></td>
 				<td><?php echo $column->dbType; ?></td>
-				<td><?php echo CHtml::dropDownList('function','',$functions); ?></td>
-				<td><?php echo ($column->allowNull ? CHtml::checkBox($column->name.'[null]', true) : ''); ?></td>
+				<td><?php echo CHtml::dropDownList($column->name . '[function]','',$functions); ?></td>
+				<td class="center">
+					<?php echo ($column->allowNull ? CHtml::checkBox($column->name.'[null]', true) : ''); ?>
+				</td>
 				<td>
-					<com:InputField row={$row} column={$column} />
+					<?php $this->widget('InputField', array('row' => $row, 'column'=>$column, 'htmlOptions'=>array(
+						'onfocus' => '$("#'.$column->name.'_null").attr("checked", "").change();',
+					))); ?>
 				</td>
 			</tr>
 		<?php } ?>

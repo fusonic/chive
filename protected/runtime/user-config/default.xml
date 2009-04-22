@@ -7,5 +7,6 @@
 	<profiling>0</profiling>
 	<entriesPerPage scope="databases.tables">200</entriesPerPage>
 	<entriesPerPage scope="databases.tables.browse">30</entriesPerPage>
+	<showFullColumnContent scope="schema.table.browse">0</showFullColumnContent>
 	<bookmarks scope="database"></bookmarks>
 </settings>

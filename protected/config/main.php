@@ -21,8 +21,10 @@ return array(
 		'application.models.*',
 		'application.components.*',
 		'application.components.helpers.*',
+		'application.components.helpers.utils.*',
 		'application.controllers.*',
 		'application.db.*',
+		'application.extensions.*',
 	),
 
 	// application components

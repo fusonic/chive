@@ -52,6 +52,12 @@ class AjaxResponse
 		Yii::app()->end($this);
 	}
 
+
+	public function get()
+	{
+		return $this;
+	}
+
 	public function __toString() {
 
 		$data = array(

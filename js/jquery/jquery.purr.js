@@ -69,6 +69,60 @@
 							return false;
 						}
 					);
+					
+			// Set up the close button
+			var sticky = document.createElement( 'a' );
+			$( sticky ).attr(	
+				{
+					className: 'sticky',
+					href: '#sticky',
+				}
+			)
+				.appendTo( notice )
+					.click( function ()
+						{
+							if($(notice).hasClass( 'not-sticky' )) {
+								// Make notice sticky
+								$(notice).removeClass('not-sticky');
+								
+								clearTimeout($(notice).data('timeout'));
+								clearInterval($(notice).data('interval'));
+								
+							}
+							else
+							{
+								
+								// Remove stickyness from note
+								$(notice).addClass ('not-sticky');
+								
+								var obj = $(this);
+								var topSpotInt = setInterval( function ()
+								{
+									// Check to see if our notice is the first non-sticky notice in the list
+									if ( obj.prevAll( '.not-sticky' ).length == 0 )
+									{ 
+										// Stop checking once the condition is met
+										clearInterval( topSpotInt );
+										clearTimeout(obj.data('timeout'));
+										
+										// Call the close action after the timeout set in options
+										obj.data('timeout', setTimeout( function ()
+											{
+												if($.isFunction(obj.data('fn.removeNotice')))
+												{
+													obj.data('fn.removeNotice')();
+												}
+											}, 2000
+										));
+									}
+								}, 200 );
+								obj.data('interval', topSpotInt);
+								
+							}
+							
+							return false;
+						}
+					);
 			
 			// Add the notice to the page and keep it hidden initially
 			notice.prependTo( cont )

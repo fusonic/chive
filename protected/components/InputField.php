@@ -5,6 +5,7 @@ class InputField extends CWidget
 
 	public $column;
 	public $row;
+	public $htmlOptions;
 
 	private $types = array(
 
@@ -63,6 +64,7 @@ class InputField extends CWidget
 		$this->render('inputField', array(
 			'column'=>$this->column,
 			'row'=>$this->row,
+			'htmlOptions'=>$this->htmlOptions,
 		));
 
 	}

@@ -55,6 +55,11 @@ var Notification = {
 				obj.data('interval', topSpotInt);
 			}
 		})
+		.click(function() {
+			clearTimeout($(this).data('timeout'));
+			clearInterval($(this).data('interval'));
+			$(this).removeClass('not-sticky');
+		})
 		.purr(options);
 	}
 	

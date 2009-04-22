@@ -133,10 +133,10 @@ class Sort extends CComponent
 					$attribute=$schema->quoteTableName(substr($attribute,0,$pos)).'.'.$schema->quoteColumnName(substr($attribute,$pos+1));
 				else
 					$attribute=$schema->quoteColumnName($attribute);
-				$orders[]=$descending?$attribute.' DESC':$attribute;
+
+				$orders[$attribute] = $descending? 'DESC' : 'ASC';
 			}
-			$order=implode(', ',$orders);
-			return ' ORDER BY ' . $order;
+			return $orders;
 		}
 
 
