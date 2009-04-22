@@ -1,6 +1,7 @@
 <?php CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3); ?>
 <script type="text/javascript">
 var idPrefix = '<?php echo CHtml::$idPrefix; ?>';
+var isPrimary<?php echo CHtml::$idPrefix; ?> = <?php echo json_encode($column->getIsPartOfPrimaryKey()); ?>;
 </script>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/views/column/form.js', CClientScript::POS_END); ?>
 
@@ -25,49 +26,147 @@ var idPrefix = '<?php echo CHtml::$idPrefix; ?>';
 		<?php echo Yii::t('database', ($column->isNewRecord ? 'addColumn' : 'editColumn')); ?>
 	</h1>
 	<?php echo CHtml::errorSummary($column, false); ?>
-	<div style="float: left; width: 200px">
-		<fieldset>
-			<legend><?php echo CHtml::activeLabel($column,'COLUMN_NAME'); ?></legend>
-			<?php echo CHtml::activeTextField($column, 'COLUMN_NAME', ($column->isNewRecord ? array() : array('disabled' =>  true))); ?>
-		</fieldset>
-		<fieldset id="<?php echo CHtml::$idPrefix; ?>dataTypeSet">
-			<legend><?php echo CHtml::activeLabel($column,'dataType'); ?></legend>
-			<?php echo CHtml::activeDropDownList($column, 'dataType', Column::getDataTypes()); ?>
-			<fieldset class="datatypeSetting char varchar binary varbinary blob text bit tinyint smallint mediumint int bigint float double decimal year">
-				<legend><?php echo CHtml::activeLabel($column,'size'); ?></legend>
-				<?php echo CHtml::activeTextField($column, 'size'); ?>
-			</fieldset>
-			<fieldset class="datatypeSetting float double decimal">
-				<legend><?php echo CHtml::activeLabel($column,'scale'); ?></legend>
-				<?php echo CHtml::activeTextField($column, 'scale'); ?>
-			</fieldset>
-			<fieldset class="datatypeSetting enum set">
-				<legend><?php echo CHtml::activeLabel($column,'values'); ?></legend>
-				<?php echo CHtml::activeTextArea($column, 'values'); ?>
-			</fieldset>
-			<fieldset class="datatypeSetting char varchar tinytext smalltext text mediumtext longtext enum set">
-				<legend><?php echo CHtml::activeLabel($column,'COLLATION_NAME'); ?></legend>
-				<?php echo CHtml::activeDropDownList($column, 'COLLATION_NAME', CHtml::listData($collations, 'COLLATION_NAME', 'COLLATION_NAME', 'collationGroup')); ?>
-			</fieldset>
-			<fieldset class="datatypeSetting all">
-				<legend><?php echo CHtml::activeLabel($column,'COLUMN_DEFAULT'); ?></legend>
-				<?php echo CHtml::activeTextField($column, 'COLUMN_DEFAULT'); ?>
-			</fieldset>
-		</fieldset>
-	</div>
-	<div style="margin-left: 200px">
-		<fieldset>
-			<legend><?php echo Yii::t('core', 'options'); ?></legend>
-			<?php echo CHtml::activeCheckBox($column, 'isNullable'); ?>
-			<?php echo CHtml::activeLabel($column, 'isNullable'); ?>
-			<?php echo CHtml::activeCheckBox($column, 'autoIncrement'); ?>
-			<?php echo CHtml::activeLabel($column, 'autoIncrement'); ?>
-		</fieldset>
-		<fieldset>
-			<legend><?php echo CHtml::activeLabel($column,'COLUMN_COMMENT'); ?></legend>
-			<?php echo CHtml::activeTextField($column, 'COLUMN_COMMENT'); ?>
-		</fieldset>
-	</div>
+	<table class="form" style="float: left; margin-right: 20px">
+		<colgroup>
+			<col class="col1"/>
+			<col class="col2" />
+			<col class="col3" />
+		</colgroup>
+		<tbody>
+			<tr>
+				<td>
+					<?php echo CHtml::activeLabel($column,'COLUMN_NAME'); ?>
+				</td>
+				<td colspan="2">
+					<?php echo CHtml::activeTextField($column, 'COLUMN_NAME', ($column->isNewRecord ? array() : array('disabled' =>  true))); ?>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<?php echo CHtml::activeLabel($column, 'dataType'); ?>
+				</td>
+				<td colspan="2">
+					<?php echo CHtml::activeDropDownList($column, 'dataType', Column::getDataTypes()); ?>
+				</td>
+			</tr>
+			<tr id="<?php echo CHtml::$idPrefix; ?>settingSize">
+				<td>
+					<?php echo CHtml::activeLabel($column, 'size'); ?>
+				</td>
+				<td colspan="2">
+					<?php echo CHtml::activeTextField($column, 'size'); ?>
+				</td>
+			</tr>
+			<tr id="<?php echo CHtml::$idPrefix; ?>settingScale">
+				<td>
+					<?php echo CHtml::activeLabel($column, 'scale'); ?>
+				</td>
+				<td colspan="2">
+					<?php echo CHtml::activeTextField($column, 'scale'); ?>
+				</td>
+			</tr>
+			<tr id="<?php echo CHtml::$idPrefix; ?>settingValues">
+				<td>
+					<?php echo CHtml::activeLabel($column, 'values'); ?>
+				</td>
+				<td colspan="2">
+					<?php echo CHtml::activeTextArea($column, 'values'); ?>
+				</td>
+			</tr>
+			<tr id="<?php echo CHtml::$idPrefix; ?>settingCollation">
+				<td>
+					<?php echo CHtml::activeLabel($column, 'COLLATION_NAME'); ?>
+				</td>
+				<td colspan="2">
+					<?php echo CHtml::activeDropDownList($column, 'COLLATION_NAME', CHtml::listData($collations, 'COLLATION_NAME', 'COLLATION_NAME', 'collationGroup')); ?>
+				</td>
+			</tr>
+			<tr id="<?php echo CHtml::$idPrefix; ?>settingDefault">
+				<td>
+					<?php echo CHtml::activeLabel($column, 'COLUMN_DEFAULT'); ?>
+				</td>
+				<td colspan="2">
+					<?php echo CHtml::activeTextField($column, 'COLUMN_DEFAULT'); ?>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<?php echo CHtml::activeLabel($column,'COLUMN_COMMENT'); ?>
+				</td>
+				<td colspan="2">
+					<?php echo CHtml::activeTextField($column, 'COLUMN_COMMENT'); ?>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<table class="form">
+		<colgroup>
+			<col class="col1"/>
+			<col class="col2" />
+			<col class="col3" />
+		</colgroup>
+		<tbody>
+			<tr>
+				<td>
+					<?php echo Yii::t('core', 'options'); ?>
+				</td>
+				<td>
+					<?php echo CHtml::activeCheckBox($column, 'isNullable'); ?>
+					<?php echo CHtml::activeLabel($column, 'isNullable'); ?>
+				</td>
+				<td>
+					<?php echo CHtml::activeCheckBox($column, 'autoIncrement'); ?>
+					<?php echo CHtml::activeLabel($column, 'autoIncrement'); ?>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<?php echo Yii::t('database', 'attribute'); ?>
+				</td>
+				<td colspan="2">
+					<?php echo CHtml::activeRadioButton($column, 'attribute', array('value' => '', 'id' => CHtml::$idPrefix . 'Column_attribute_')); ?>
+					<?php echo CHtml::label(Yii::t('database', 'noAttribute'), 'Column_attribute_', array('style' => 'font-style: italic')); ?>
+				</td>
+			</tr>
+			<tr>
+				<td />
+				<td>
+					<?php echo CHtml::activeRadioButton($column, 'attribute', array('value' => 'unsigned', 'id' => CHtml::$idPrefix . 'Column_attribute_unsigned')); ?>
+					<?php echo CHtml::label(Yii::t('database', 'unsigned'), 'Column_attribute_unsigned'); ?>
+				</td>
+				<td>
+					<?php echo CHtml::activeRadioButton($column, 'attribute', array('value' => 'unsigned zerofill', 'id' => CHtml::$idPrefix . 'Column_attribute_unsignedzerofill')); ?>
+					<?php echo CHtml::label(Yii::t('database', 'unsignedZerofill'), 'Column_attribute_unsignedzerofill'); ?>
+				</td>
+			</tr>
+			<?php if($column->isNewRecord) { ?>
+				<tr id="<?php echo CHtml::$idPrefix; ?>settingSize">
+					<td>
+						<?php echo Yii::t('database', 'createIndex'); ?>
+					</td>
+					<td>
+						<?php echo CHtml::checkBox('createIndexPrimary'); ?>
+						<?php echo CHtml::label(Yii::t('database', 'primaryKey'), 'createIndexPrimary', array('disabled' => $table->getHasPrimaryKey())); ?>
+					</td>
+					<td>
+						<?php echo CHtml::checkBox('createIndex'); ?>
+						<?php echo CHtml::label(Yii::t('database', 'index'), 'createIndex'); ?>
+					</td>
+				</tr>
+				<tr id="<?php echo CHtml::$idPrefix; ?>settingScale">
+					<td />
+					<td>
+						<?php echo CHtml::checkBox('createIndexUnique'); ?>
+						<?php echo CHtml::label(Yii::t('database', 'uniqueKey'), 'createIndexUnique'); ?>
+					</td>
+					<td>
+						<?php echo CHtml::checkBox('createIndexFulltext'); ?>
+						<?php echo CHtml::label(Yii::t('database', 'fulltextIndex'), 'createIndexFulltext'); ?>
+					</td>
+				</tr>
+			<?php } ?>
+		</tbody>
+	</table>
 	<div style="clear: left; padding-top: 5px">
 		<?php echo CHtml::submitButton(Yii::t('action', ($column->isNewRecord ? 'create' : 'save')), array('class'=>'icon save')); ?>
 		<?php echo CHtml::button(Yii::t('action', 'cancel'), array('class'=>'icon delete', 'onclick'=>'$(this.form).slideUp(500, function() { $(this).parents("tr").remove(); })')); ?>

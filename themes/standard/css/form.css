@@ -11,4 +11,21 @@
 		padding-left: 22px;
 	}
 	
+	/*
+	 * Table
+	 */
+	
+	table.form>colgroup>col.col1,
+	table.form>colgroup>col.col2 {
+		width: 100px;
+	}
+	
+	table.form>colgroup>col.col3 {
+		width: 150px;
+	}
+	
+	table.form>tbody>tr {
+		height: 25px;
+	}
+	
 }

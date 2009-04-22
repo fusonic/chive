@@ -28,7 +28,7 @@ class ColumnController extends Controller
 		$this->_db->charset='utf8';
 		$this->_db->active = true;
 
-		Column::$db = $this->_db;
+		Column::$db = Table::$db = $this->_db;
 
 		parent::__construct($id, $module);
 
@@ -61,10 +61,11 @@ class ColumnController extends Controller
 	public function actionCreate()
 	{
 		$column = new Column();
+		$column->TABLE_NAME = $this->table;
+		$table = Table::model()->findByPk(array('TABLE_SCHEMA' => $this->schema, 'TABLE_NAME' => $this->table));
 		if(isset($_POST['Column']))
 		{
 			$column->attributes = $_POST['Column'];
-			$column->TABLE_NAME = $this->table;
 			if($sql = $column->save())
 			{
 				$response = new AjaxResponse();
@@ -73,6 +74,47 @@ class ColumnController extends Controller
 					null,
 					$sql);
 				$response->reload = true;
+
+				/*
+				 * Add index
+				 */
+				$addIndices = array();
+				if(isset($_POST['createIndexPrimary']))
+				{
+					$addIndices['PRIMARY'] = 'PRIMARY';
+				}
+				if(isset($_POST['createIndex']))
+				{
+					$addIndices['INDEX'] = $column->COLUMN_NAME;
+				}
+				if(isset($_POST['createIndexUnique']))
+				{
+					$addIndices['UNIQUE'] = $column->COLUMN_NAME . (array_search($column->COLUMN_NAME, $addIndices) !== false ? '_unique' : '');
+				}
+				if(isset($_POST['createIndexFulltext']))
+				{
+					$addIndices['FULLTEXT'] = $column->COLUMN_NAME . (array_search($column->COLUMN_NAME, $addIndices) !== false ? '_fulltext' : '');
+				}
+				foreach($addIndices AS $type => $index)
+				{
+					try
+					{
+						$sql = $table->createIndex($index, $type, array($column->COLUMN_NAME));
+						$response->addNotification('success',
+							Yii::t('message', 'successCreateIndex', array('{index}' => $index)),
+							null,
+							$sql);
+						$response->reload = true;
+					}
+					catch(DbException $ex)
+					{
+						$response->addNotification('error',
+							Yii::t('message', 'errorCreateIndex', array('{index}' => $index)),
+							$ex->getText(),
+							$ex->getSql());
+					}
+				}
+
 				$response->send();
 			}
 		}
@@ -84,6 +126,7 @@ class ColumnController extends Controller
 
 		$this->render('form', array(
 			'column' => $column,
+			'table' => $table,
 			'collations' => $collations,
 		));
 	}

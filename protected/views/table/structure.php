@@ -98,17 +98,25 @@
 						<?php } ?>
 					</td>
 					<td>
+						<?php if(DataType::check($column->DATA_TYPE, DataType::SUPPORTS_INDEX)) { ?>
 						<a href="javascript:void(0)" onclick="tableStructure.addIndex1('index', '<?php echo $column->COLUMN_NAME; ?>')" class="icon">
 							<com:Icon name="key_index" size="16" text="database.index" />
 						</a>
+						<?php } else { ?>
+							<com:Icon name="key_index" size="16" text="database.index" disabled="true" />
+						<?php }?>
 					</td>
 					<td>
-						<a href="javascript:void(0)" onclick="tableStructure.addIndex1('unique', '<?php echo $column->COLUMN_NAME; ?>')" class="icon">
-							<com:Icon name="key_unique" size="16" text="database.uniqueKey" />
-						</a>
+						<?php if(DataType::check($column->DATA_TYPE, DataType::SUPPORTS_UNIQUE)) { ?>
+							<a href="javascript:void(0)" onclick="tableStructure.addIndex1('unique', '<?php echo $column->COLUMN_NAME; ?>')" class="icon">
+								<com:Icon name="key_unique" size="16" text="database.uniqueKey" />
+							</a>
+						<?php } else { ?>
+							<com:Icon name="key_unique" size="16" text="database.uniqueKey" disabled="true" />
+						<?php }?>
 					</td>
 					<td>
-						<?php if(DataType::supportsFulltext($column->DATA_TYPE)) { ?>
+						<?php if(DataType::check($column->DATA_TYPE, DataType::SUPPORTS_FULLTEXT)) { ?>
 							<a href="javascript:void(0)" onclick="tableStructure.addIndex1('fulltext', '<?php echo $column->COLUMN_NAME; ?>')" class="icon">
 								<com:Icon name="key_fulltext" size="16" text="database.fulltextIndex" />
 							</a>

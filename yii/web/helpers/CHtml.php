@@ -461,6 +461,10 @@ class CHtml
 	 */
 	public static function label($label,$for,$htmlOptions=array())
 	{
+		if(substr($for, 0, strlen(self::$idPrefix)) != self::$idPrefix)
+		{
+			$for = self::$idPrefix . $for;
+		}
 		$htmlOptions['for']=$for;
 		if(isset($htmlOptions['required']))
 		{
@@ -1132,12 +1136,11 @@ EOD;
 		self::resolveNameID($model,$attribute,$htmlOptions);
 		if(!isset($htmlOptions['value']))
 			$htmlOptions['value']=1;
-		if($model->$attribute)
+		if($model->$attribute == $htmlOptions['value'])
 			$htmlOptions['checked']='checked';
 		self::clientChange('click',$htmlOptions);
 		// add a hidden field so that if the radio button is not selected, it still submits a value
-		return self::hiddenField($htmlOptions['name'],$htmlOptions['value']?0:-1,array('id'=>self::ID_PREFIX.$htmlOptions['id']))
-			. self::activeInputField('radio',$model,$attribute,$htmlOptions);
+		return self::activeInputField('radio',$model,$attribute,$htmlOptions);
 	}
 
 	/**

@@ -6,6 +6,7 @@ class Column extends CActiveRecord
 	public $COLLATION_NAME = Collation::DEFAULT_COLLATION;
 	public $scale = 0, $size = 0;
 	public $_values = array();
+	public $attribute = '';
 
 	public static $db;
 
@@ -23,24 +24,42 @@ class Column extends CActiveRecord
 		$res = parent::instantiate($attributes);
 
 		/*
-		 * We have to set size/scale by hand
+		 * We have to set some properties by hand
 		 */
-		if(isset($attributes['COLUMN_TYPE']) && DataType::supportsSize($attributes['DATA_TYPE']))
+		if(isset($attributes['COLUMN_TYPE']))
 		{
-			if(preg_match('/^\w+\((\d+)(,\d+)?\)$/', $attributes['COLUMN_TYPE'], $result))
+			// Size / scale
+			if(DataType::check($attributes['COLUMN_TYPE'], DataType::SUPPORTS_SIZE))
 			{
-				$res->size = (int)$result[1];
-				if(isset($result[2]) && DataType::supportsScale($attributes['COLUMN_TYPE']))
+				if(preg_match('/^\w+\((\d+)(,\d+)?\)/', $attributes['COLUMN_TYPE'], $result))
 				{
-					$res->scale = (int)substr($result[2], 1);
+					$res->size = (int)$result[1];
+					if(isset($result[2]) && DataType::check($attributes['COLUMN_TYPE'], DataType::SUPPORTS_SCALE))
+					{
+						$res->scale = (int)substr($result[2], 1);
+					}
 				}
 			}
-		}
-		elseif(isset($attributes['COLUMN_TYPE']) && DataType::supportsValues($attributes['DATA_TYPE']))
-		{
-			if(preg_match('/^\w+\(\'([^\)]+)\'\)$/', $attributes['COLUMN_TYPE'], $result))
+
+			// Values
+			elseif(DataType::check($attributes['COLUMN_TYPE'], DataType::SUPPORTS_VALUES))
 			{
-				$res->setValues(implode("\n", (array)explode("','", $result[1])));
+				if(preg_match('/^\w+\(\'([^\)]+)\'\)/', $attributes['COLUMN_TYPE'], $result))
+				{
+					$res->setValues(implode("\n", (array)explode("','", $result[1])));
+				}
+			}
+
+			// Unsigned
+			if(preg_match('/ unsigned$/', $attributes['COLUMN_TYPE']))
+			{
+				$res->attribute = 'unsigned';
+			}
+
+			// Unsigned zerofill
+			elseif(preg_match('/ unsigned zerofill$/', $attributes['COLUMN_TYPE']))
+			{
+				$res->attribute = 'unsigned zerofill';
 			}
 		}
 
@@ -90,6 +109,7 @@ class Column extends CActiveRecord
 			'values',
 			'collation',
 			'autoIncrement',
+			'attribute',
 			'COLUMN_COMMENT',
 			'COLLATION_NAME',
 		);
@@ -163,7 +183,7 @@ class Column extends CActiveRecord
 
 	public function getDataType()
 	{
-		return $this->DATA_TYPE;
+		return DataType::getBaseType($this->DATA_TYPE);
 	}
 
 	public function setDataType($value)
@@ -175,16 +195,16 @@ class Column extends CActiveRecord
 	public function getColumnType()
 	{
 		$return = $this->DATA_TYPE;
-		if(DataType::supportsSize($this->DATA_TYPE))
+		if(DataType::check($this->DATA_TYPE, DataType::SUPPORTS_SIZE))
 		{
 			$return .= '(' . (int)$this->size;
-			if(DataType::supportsScale($this->DATA_TYPE))
+			if(DataType::check($this->DATA_TYPE, DataType::SUPPORTS_SCALE))
 			{
 				$return .= ', ' . (int)$this->scale;
 			}
 			$return .= ')';
 		}
-		elseif(DataType::supportsValues($this->DATA_TYPE) && count((array)$this->_values) > 0)
+		elseif(DataType::check($this->DATA_TYPE, DataType::SUPPORTS_VALUES) && count((array)$this->_values) > 0)
 		{
 			$return .= '(\'' . implode('\',\'', $this->_values) . '\')';
 		}
@@ -228,7 +248,7 @@ class Column extends CActiveRecord
 
 	public function getColumnDefinition()
 	{
-		if(DataType::supportsCollation($this->DATA_TYPE))
+		if(DataType::check($this->DATA_TYPE, DataType::SUPPORTS_COLLATION))
 		{
 			$collate = ' CHARACTER SET ' . Collation::getCharacterSet($this->COLLATION_NAME) . ' COLLATE ' . $this->COLLATION_NAME;
 		}
@@ -247,7 +267,7 @@ class Column extends CActiveRecord
 		}
 
 		return self::$db->quoteColumnName($this->COLUMN_NAME)
-			. ' ' . $this->getColumnType() . $collate
+			. ' ' . $this->getColumnType() . ' ' . $collate . $this->attribute
 			. ' ' . ($this->getIsNullable() ? 'NULL' : 'NOT NULL')
 			. ' ' . $default
 			. ' ' . ($this->EXTRA == 'auto_increment' ? 'AUTO_INCREMENT' : '')

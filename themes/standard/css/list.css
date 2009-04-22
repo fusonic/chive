@@ -27,12 +27,16 @@
 		width: 100%;
 	}
 	
-	table.list td, table.list th {
+	table.list>tbody>tr>td, 
+	table.list>thead>tr>th, 
+	table.list>tfoot>tr>th {
 		border: solid 1px #FFFFFF;
 		padding: 3px 5px;
 	}
 	
-	table.list td.nodecoration, table.list th.nodecoration {
+	table.list>tbody>tr>td.nodecoration, 
+	table.list>thead>tr>th.nodecoration, 
+	table.list>tfoot>tr>th.nodecoration {
 		background: none;
 	}
 	
@@ -45,36 +49,36 @@
 	 * ColGroup
 	 */
 	
-	table.list col.action,
-	table.list col.checkbox {
+	table.list>colgroup>col.action,
+	table.list>colgroup>col.checkbox {
 		width: 16px;
 	}
 	
-	table.list col.type {
+	table.list>colgroup>col.type {
 		width: 160px;
 	}
 	
-	table.list col.collation {
+	table.list>colgroup>col.collation {
 		width: 130px;
 	}
 	
-	table.list col.null {
+	table.list>colgroup>col.null {
 		width: 50px;
 	}
 	
-	table.list col.filesize {
+	table.list>colgroup>col.filesize {
 		width: 90px;
 	}
 	
-	table.list col.engine {
+	table.list>colgroup>col.engine {
 		width: 100px;
 	}
 	
-	table.list col.operator {
+	table.list>colgroup>col.operator {
 		width: 120px;
 	}
 	
-	table.list col.count {
+	table.list>colgroup>col.count {
 		width: 100px;
 	}
 	
@@ -82,11 +86,12 @@
 	 * THead
 	 */
 	
-	table.list thead {
+	table.list>thead {
 		background: #2D83D0 url(../../../images/header-bg.png) repeat-x scroll left center;
 	}
 	
-	table.list thead, table.list thead a {
+	table.list>thead, 
+	table.list>thead a {
 		color: #FFFFFF;
 		font-weight: bold !important;
 	}
@@ -96,19 +101,19 @@
 	 * TBody
 	 */
 
-	table.list tbody tr {
+	table.list>tbody>tr {
 		background-color: #F0F0F0;
 	}
 	
-	table.list tbody tr.odd {
+	table.list>tbody>tr.odd {
 		background-color: #E0E0E0;
 	}
 	
-	table.list tbody tr.selected {
+	table.list>tbody>tr.selected {
 		background-color: #E3EE93;		
 	}
 	
-	table.list tbody tr:hover {
+	table.list>tbody>tr:hover {
 		background-color: #D3E73B;
 	}
 	
@@ -117,7 +122,7 @@
 	 * TFoot
 	 */
 	
-	table.list tfoot th {
+	table.list>tfoot>tr>th {
 		background: #2D83D0 url(../../../images/header-bg.png) repeat-x scroll left center;
 		color: #FFFFFF;
 		font-weight: bold;
@@ -127,17 +132,17 @@
 	 * Form
 	 */
 	
-	table.list tr.form td {
+	table.list>tbody>tr.form>td {
 		padding: 0px;
 	}
 	
-	table.list form {
+	table.list>tbody>tr.form>td form {
 		border: solid 4px #D3E73B;
 		background: #e8edc2;
 		padding: 5px;
 	}
 	
-	table.list form h1 {
+	table.list>tbody>tr.form>td form h1 {
 		font-size: 110%;
 		font-weight: bold;
 	}

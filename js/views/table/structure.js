@@ -6,7 +6,7 @@ var tableStructure = {
 	// Add column
 	addColumn: function()
 	{
-		$('#columns').appendForm(baseUrl + '/schema/' + schema + '/tables/' + table + '/columns/create');
+		$('#columns').appendForm(baseUrl + '/schema/' + schema + '/tables/' + table + '/columnAction/create');
 	},
 	
 	// Edit column
@@ -218,7 +218,7 @@ $(document).ready(function() {
 				var ids = tableStructure.getSelectedIds();
 				
 				// Do drop request
-				$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/columns/drop', {
+				$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/columnAction/drop', {
 					'schema': schema,
 					'table': table,
 					'column[]': ids

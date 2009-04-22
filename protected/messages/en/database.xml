@@ -33,6 +33,11 @@
 	<entry id="cardinality">Cardinality</entry>
 	<entry id="usage">Usage</entry>
 	<entry id="spaceUsage">Space usage</entry>
+	<entry id="attribute">Attribute</entry>
+	<entry id="noAttribute">No attribute</entry>
+	<entry id="unsigned">Unsigned</entry>
+	<entry id="unsignedZerofill">Unsigned Zerofill</entry>
+	<entry id="createIndex">Create index</entry>
 	
 	<entry id="operator">Operator</entry>
 	

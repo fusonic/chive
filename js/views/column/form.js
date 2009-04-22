@@ -1,34 +1,46 @@
-$(document).ready(function() {
-	var types = {
-		numeric: ['bit', 'tinyint', 'bool', 'smallint', 'mediumint', 'int', 'bigint', 'float', 'double', 'decimal'],
-		strings: ['char', 'varchar', 'tinytext', 'text', 'mediumtext', 'longtext', 'tinyblob', 'blob', 'mediumblob', 'longblob', 'binary', 'varbinary']
-	};
-	$('#' + idPrefix + 'Column_dataType').change(function() {
+var columnForm = {
+	
+	setup: function(idPrefix) 
+	{
 		
-		var type = $(this).val();
-		var isNumeric = $.inArray(type, types.numeric) > -1;
-		var isString = $.inArray(type, types.strings) > -1;
-
-		// Hide all datatype settings
-		$('#' + idPrefix + 'dataTypeSet fieldset.datatypeSetting').hide();
-		$('#' + idPrefix + 'dataTypeSet fieldset.datatypeSetting input').attr('disabled', true);
-		$('#' + idPrefix + 'dataTypeSet fieldset.datatypeSetting select').attr('disabled', true);
-		// Show datatype settings for this type
-		$('#' + idPrefix + 'dataTypeSet fieldset.all').show();
-		$('#' + idPrefix + 'dataTypeSet fieldset.all input').attr('disabled', false);
-		$('#' + idPrefix + 'dataTypeSet fieldset.all select').attr('disabled', false);
-		$('#' + idPrefix + 'dataTypeSet fieldset.' + type).show();
-		$('#' + idPrefix + 'dataTypeSet fieldset.' + type + ' input').attr('disabled', false);
-		$('#' + idPrefix + 'dataTypeSet fieldset.' + type + ' select').attr('disabled', false);
+		var type = $('#' + idPrefix + 'Column_dataType').val();
+		
+		$('#' + idPrefix + 'settingSize')[dataType.check(type, dataType.SUPPORTS_SIZE) ? "show" : "hide" ]();
+		$('#' + idPrefix + 'settingScale')[dataType.check(type, dataType.SUPPORTS_SCALE) ? "show" : "hide" ]();
+		$('#' + idPrefix + 'settingValues')[dataType.check(type, dataType.SUPPORTS_VALUES) ? "show" : "hide" ]();
+		$('#' + idPrefix + 'settingCollation')[dataType.check(type, dataType.SUPPORTS_COLLATION) ? "show" : "hide" ]();
+		
+		// Attributes
+		console.log(dataType.check(type, dataType.SUPPORTS_UNSIGNED));
+		$('#' + idPrefix + 'Column_attribute_unsigned').attr('disabled', !dataType.check(type, dataType.SUPPORTS_UNSIGNED));
+		$('#' + idPrefix + 'Column_attribute_unsignedzerofill').attr('disabled', !dataType.check(type, dataType.SUPPORTS_UNSIGNED_ZEROFILL));
+		
+		// Indices
+		$('#' + idPrefix + 'createIndex').attr('disabled', !dataType.check(type, dataType.SUPPORTS_INDEX));
+		$('#' + idPrefix + 'createIndexUnique').attr('disabled', !dataType.check(type, dataType.SUPPORTS_UNIQUE));
+		$('#' + idPrefix + 'createIndexFulltext').attr('disabled', !dataType.check(type, dataType.SUPPORTS_FULLTEXT));
 		
 		// Auto_increment
-		$('#' + idPrefix + 'Column_autoIncrement').attr('disabled', !isNumeric);
+		if($('#' + idPrefix + 'createIndexPrimary').length == 1)
+		{
+			var isPrimary = $('#' + idPrefix + 'createIndexPrimary').attr('checked');
+		}
+		else
+		{
+			eval('var isPrimary = isPrimary' + idPrefix);
+		}
+		$('#' + idPrefix + 'Column_autoIncrement').attr('disabled', !(dataType.check(type, dataType.SUPPORTS_AUTO_INCREMENT) && isPrimary));
+		
+		$('#' + idPrefix + 'Column_COLUMN_DEFAULT').attr('disabled', $('#' + idPrefix + 'Column_autoIncrement').attr('checked'));
+		$('#' + idPrefix + 'Column_isNullable').attr('disabled', $('#' + idPrefix + 'Column_autoIncrement').attr('checked'));
+		
+	}
+	
+};
 
-	});
-	$('#' + idPrefix + 'Column_dataType').change();
-	$('#' + idPrefix + 'Column_autoIncrement').change(function() {
-		$('#' + idPrefix + 'Column_COLUMN_DEFAULT').attr('disabled', this.checked);
-		$('#' + idPrefix + 'Column_isNullable').attr('disabled', this.checked);
-	});
-	$('#' + idPrefix + 'Column_autoIncrement').change();
+$(document).ready(function() {
+	$('#' + idPrefix + 'Column_dataType').change(new Function('columnForm.setup("' + idPrefix + '")'));
+	$('#' + idPrefix + 'Column_autoIncrement').change(new Function('columnForm.setup("' + idPrefix + '")'));
+	$('#' + idPrefix + 'createIndexPrimary').change(new Function('columnForm.setup("' + idPrefix + '")'));
+	columnForm.setup(idPrefix);
 });

@@ -512,10 +512,6 @@ class TableController extends Controller
 		$columns = (array)Yii::app()->request->getPost('columns');
 
 		$response = new AjaxResponse();
-		if($_POST['type'] == 'PRIMARY')
-		{
-			$response->reload = true;
-		}
 		try
 		{
 			$sql = $table->createIndex($index, $type, $columns);
