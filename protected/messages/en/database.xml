@@ -69,15 +69,15 @@
 	<entry id="XColumns">{count} Columns</entry>
 	<entry id="amountTables">1#{amount}  Table|n>1#{amount}  Tables</entry>
 	
-	<entry id="dropColumns">Drop columns</entry>
-	<entry id="doYouReallyWantToDropColumns">Do you really want to drop the selected columns?</entry>
-	
-	<entry id="addColumn">Add new column</entry>
+	<!-- Columns -->
+	<entry id="addColumn">Add column</entry>
 	<entry id="editColumn">Edit column</entry>
 	<entry id="addSchema">Add schema</entry>
 	<entry id="editSchema">Edit schema</entry>
 	<entry id="overhead">Overhead</entry>
 	<entry id="selectColumnToAdd">Select a column to add</entry>
+	<entry id="dropColumns">Drop columns</entry>
+	<entry id="doYouReallyWantToDropColumns">Do you really want to drop the selected columns?</entry>
 	
 	<!-- Indices -->
 	<entry id="index">Index</entry>

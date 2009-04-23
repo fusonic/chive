@@ -24,7 +24,7 @@ var indexForm = {
 				+ '</a>'
 			+ '</td>'
 		+ '</tr>');
-		indexForm.checkColumnAmount(idPrefix);
+		indexForm.setup(idPrefix);
 	},
 	
 	/*
@@ -33,14 +33,26 @@ var indexForm = {
 	removeColumn: function(idPrefix, obj) 
 	{
 		$(obj).closest('tr').remove();
-		indexForm.checkColumnAmount(idPrefix);
+		indexForm.setup(idPrefix);
 	},
 	
 	/*
-	 * Check number of columns and show hint or not
+	 * Setup form
 	 */
-	checkColumnAmount: function(idPrefix)
+	setup: function(idPrefix)
 	{
+		// Primary key
+		if($('#' + idPrefix + 'Index_type').val() == 'PRIMARY')
+		{
+			$('#' + idPrefix + 'Index_INDEX_NAME').val('PRIMARY');
+			$('#' + idPrefix + 'Index_INDEX_NAME').attr('disabled', true);
+		}
+		else
+		{
+			$('#' + idPrefix + 'Index_INDEX_NAME').attr('disabled', false);
+		}
+		
+		// Number of added columns
 		if($('#' + idPrefix + 'columns>tbody.content>tr').length > 0)
 		{
 			$('#' + idPrefix + 'columns>tbody.noItems').hide();
@@ -82,6 +94,8 @@ $(document).ready(function() {
 		
 	});
 	
-	indexForm.checkColumnAmount(idPrefix);
+	indexForm.setup(idPrefix);
+	
+	$('#' + idPrefix + 'Index_type').change(new Function('indexForm.setup("' + idPrefix + '")'));
 	
 });

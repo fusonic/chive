@@ -54,6 +54,7 @@ $app->setTheme($theme);
 if($request->isAjaxRequest)
 {
 	$app->clientScript->scriptMap['jquery.js'] = false;
+	$app->clientScript->scriptMap['jquery.min.js'] = false;
 }
 
 Yii::app()->getComponent('messages')->publishJavaScriptMessages();

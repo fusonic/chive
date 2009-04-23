@@ -281,7 +281,7 @@
 .ui-accordion .ui-accordion-header { cursor: pointer; position: relative; zoom: 1; border: none; -moz-border-radius: 0px; -webkit-border-raidus: 0px; }
 .ui-accordion .ui-accordion-li-fix { display: inline; }
 .ui-accordion .ui-accordion-header-active { border-bottom: 0 !important; }
-.ui-accordion .ui-accordion-header a { display: block; font-size: 1em; padding: .5em .5em .5em 2.2em; }
+.ui-accordion .ui-accordion-header a { display: block; font-size: 1em; padding: .2em .5em .2em 2.2em; }
 .ui-accordion .ui-accordion-header .ui-icon { position: absolute; left: .5em; top: 50%; margin-top: -8px; }
 .ui-accordion .ui-accordion-content { border-top: 0; overflow: auto; display: none; border: none; }
 .ui-accordion .ui-accordion-content-active { display: block; }/* Datepicker
