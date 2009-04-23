@@ -65,7 +65,7 @@ class SiteController extends Controller
 		$this->layout = "login";
 
 		// Languages
-		$availableLanguages = FileHelper::readDirectory('protected/messages', false, 'dir');
+		$availableLanguages = FileUtil::readDirectory('protected/messages', false, 'dir');
 
 		$currentLanguage = Yii::app()->getLanguage();
 

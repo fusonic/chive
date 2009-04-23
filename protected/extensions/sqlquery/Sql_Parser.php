@@ -749,7 +749,7 @@ class Sql_Parser {
 			case 'replace':
 			case 'insert':
 			case 'delete':
-			case 'create':
+			#case 'create':
 				$className = __CLASS__.ucfirst($token);
 				return call_user_func(array($className, "parse"));
 			default:

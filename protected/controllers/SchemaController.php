@@ -366,4 +366,46 @@ class SchemaController extends Controller
 
 	}
 
+	public function actionExport()
+	{
+
+
+		$criteria = new CDbCriteria;
+		$criteria->condition = 'TABLE_SCHEMA = :schema';
+		$criteria->params = array(
+			':schema' => $this->schema,
+		);
+
+		$tables = Table::model()->findAll($criteria);
+
+		$this->render('export', array(
+			'tables'=>$tables
+		));
+	}
+
+
+	public function actionImport()
+	{
+
+		$file = null;
+
+		// Upload file
+		if(isset($_FILES['file']))
+		{
+
+			$file = CUploadedFile::getInstanceByName('file');
+
+		}
+
+		$this->render('import', array(
+			'file' => $file,
+		));
+
+	}
+
+	public function actionUpload()
+	{
+		Yii::trace('data received from upload', 'system');
+	}
+
 }

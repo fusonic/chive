@@ -32,7 +32,7 @@ class SqlQuery {
 	public function __construct($_query) {
 
 		$this->query = $this->originalQuery = $_query;
-		self::stripComments();
+		//self::stripComments();
 
 		$this->sqlCompiler = new Sql_Compiler();
 
@@ -41,15 +41,13 @@ class SqlQuery {
 			$this->sqlParser = new Sql_Parser($this->query);
 			$this->parsedQuery = $this->parsedOriginalQuery = $this->sqlParser->parse();
 
-			var_dump($this->parsedQuery);
-
 			#predie($this->parsedQuery);
 
 		}
 		catch (Exception $ex)
 		{
 			// Query is no select / insert / update / delete statement - handle it anyway
-			//var_dump($ex);
+			// var_dump($ex);
 
 		}
 
@@ -69,7 +67,9 @@ class SqlQuery {
 	 */
 	public static function split($_query, $_delimiter = ';')
 	{
-		$queries = preg_split("/".$_delimiter."+(?=([^'|^\\\']*['|\\\'][^'|^\\\']*['|\\\'])*[^'|^\\\']*[^'|^\\\']$)/", $_query);
+		#$query = self::stripComments($_query);
+
+		$queries = preg_split("/".$_delimiter."+(?=([^'|^\\\']*['|\\\'][^'|^\\\']*['|\\\'])*[^'|^\\\']*[^'|^\\\']$)/", $query);
 
 		// Remove delimiter at the last query
 		$queries[count($queries)-1] = preg_replace('/'.$_delimiter.'$/', '', $queries[count($queries)-1]);
@@ -80,20 +80,22 @@ class SqlQuery {
 	/*
 	 * Strips all comments out
 	 */
-	public function stripComments() {
+	public static function stripComments($_query) {
 
 		$comments = array();
 
 		// Inline comments
-		preg_match_all('/(#|--\40)(.*)($|\n)/i', $this->query, $single);
+		preg_match_all('/(#|--\40)(.*)($|\n)/i', $_query, $single);
 		$comments = $single[0];
 
 		// Other comments
-		preg_match_all('/\/\*(.+)\*\//is', $this->query, $multi);
+		preg_match_all('/\/\*(.+)\*\//is', $_query, $multi);
 		$comments = array_merge($comments, $multi[0]);
 
+		var_dump($comments);
+
 		// Strip them
-		$this->query = str_replace($comments, "\n", $this->query);
+		return str_replace($comments, "\n", $_query);
 
 	}
 
@@ -115,8 +117,6 @@ class SqlQuery {
 		{
 			// @todo programming
 		}
-
-		//$this->parsedQuery['ColumnNames'] = array_merge(array('SQL_CALC_FOUND_ROWS'), (array)$this->parsedQuery['ColumnNames']);
 
 		/*
 		preg_match('/select\s+(.*)\s+from/i', $this->query, $select);
@@ -145,15 +145,13 @@ class SqlQuery {
 		}
 		else
 		{
-			throw new NotImplementedException();
+			$this->query .= "\n\t" . 'LIMIT ' . $start . ', ' . $length;
+
+			if($_applyToOriginal)
+				$this->originalQuery .= "\n\t" . 'LIMIT ' . $start . ', ' . $length;
+
+			//throw new NotImplementedException();
 		}
-
-		/*
-		$this->query .= "\n\t" . 'LIMIT ' . $offset . ', ' . $limit;
-
-		if($_applyToOriginal)
-			$this->originalQuery .= "\n\t" . 'LIMIT ' . $offset . ', ' . $limit;
-		*/
 
 	}
 
@@ -168,7 +166,7 @@ class SqlQuery {
 		}
 		else
 		{
-			throw new NotImplementedException();
+			//throw new NotImplementedException();
 		}
 		/*
 
@@ -215,12 +213,19 @@ class SqlQuery {
 
 	public function getLimit()
 	{
+
 		if($this->parsedQuery)
 		{
 			return isset($this->parsedQuery['Limit']) ? $this->parsedQuery['Limit'] : false;
 		}
 		else
 		{
+			/*
+			var_dump($this->query);
+			$this->query = ' SELECT *, (SELECT * FROM test LIMIT 0, 20) FROM test LIMIT 0, 10';
+			preg_match('/SELECT(.*)FROM(.*)LIMIT (\d+)(,)? (\d+)?/i', $this->query, $res);
+			predie($res);
+			*/
 			return null;
 		}
 	}

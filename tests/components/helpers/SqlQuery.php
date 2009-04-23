@@ -7,43 +7,48 @@
 class SqlQueryTest extends TestCase
 {
 
+	private $db;
+
+	protected function setUp()
+	{
+		$this->executeSqlFile('components/helpers/SqlQuery_setup.sql');
+		$this->db = new CDbConnection('mysql:host='.DB_HOST.';dbname=sqltest', DB_USER, DB_PASSWORD);
+		$this->db->charset='utf8';
+		$this->db->active = true;
+	}
+
 	public function testSplit()
 	{
 
-		$sql = 'DROP TABLE IF EXISTS `###DBPREFIX###sys_accesscontrol`;
-					CREATE TABLE `###DBPREFIX###sys_accesscontrol` (
-					  `accId` int(10) unsigned NOT NULL auto_increment,
-					  `name` varchar(50) NOT NULL,
-					  `pattern` varchar(250) NOT NULL,
-					  `ipStart` varchar(15) default NULL,
-					  `ipEnd` varchar(15) default NULL,
-					  `enter` tinyint(1) unsigned NOT NULL,
-					  `login` tinyint(1) unsigned NOT NULL,
-					  `register` tinyint(1) unsigned NOT NULL,
-					  PRIMARY KEY  (`accId`),
-					  KEY `ipStart` (`ipStart`,`ipEnd`),
-					  KEY `pattern` (`pattern`)
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8;';
+		$sql = file_get_contents('components/helpers/SqlQuery.sql', null, null, 0, 1000000);
 
-		$sql .= "INSERT INTO `###DBPREFIX###acp_subgroup` (`asgId`, `lvaId`, `modId`, `order`, `agrId`) VALUES
-			('layoutAppearance', 'global.w.appearance', 'sys', '10', 'layout'),
-			('systemDatabase', 'global.w.database', 'sys', '30', 'system'),
-			('usersExport', 'global.w.export', 'sys', '50', 'users'),
-			('users', 'global.w.users', 'sys', '15', 'users'),
-			('addonsDummy', 'DUMMY', 'sys', '1', 'addons'),
-			('usersGroups', 'global.w.groups', 'sys', '10', 'users'),
-			('systemMaintenance', 'global.p.maintenanceAndSecurity', 'sys', '20', 'system'),
-			('systemSettings', 'global.w.settings', 'sys', '10', 'system'),
-			('layoutAdvanced', 'global.w.advanced', 'sys', '20', 'layout'),
-			('systemMisc', 'global.w.misc', 'sys', '100', 'system');";
+		$splitter = new SqlSplitter($sql);
+		$queries = $splitter->getQueries();
 
-		$sqlQuery = new SqlQuery($sql);
+		// Unset last query
+		unset($queries[count($queries)-1]);
 
-		$this->assertEquals(2, count($sqlQuery->queries));
+		foreach($queries AS $query)
+		{
 
+			$cmd = $this->db->createCommand($query);
 
+			try
+			{
 
+				$cmd->execute();
 
+			}
+			catch (Exception $ex)
+			{
+
+				$this->fail($ex->getMessage());
+				#$this->fail(strrev($query));
+
+			}
+		}
+
+		echo 'Executed ' . count($splitter->getQueries()) . ' queries';
 
 	}
 

@@ -128,7 +128,9 @@ class TableController extends Controller
 				$cmd->execute();
 			}
 
-			$queries = SqlQuery::split($_query);
+			$splitter = new SqlSplitter($_query);
+			$queries = $splitter->getQueries();
+
 		}
 
 		$queryCount = count($queries);
@@ -721,6 +723,7 @@ class TableController extends Controller
 	 */
 	private function getDefaultQuery()
 	{
-		return 'SELECT * FROM ' . $this->_db->quoteTableName($this->table);
+		return 'SELECT * FROM ' . $this->_db->quoteTableName($this->table) .
+			"\n\t" . 'WHERE 1';
 	}
 }
