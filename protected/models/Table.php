@@ -48,7 +48,7 @@ class Table extends CActiveRecord
 	{
 		return array(
 			'schema' => array(self::BELONGS_TO, 'Schema', 'TABLE_SCHEMA'),
-			'columns' => array(self::HAS_MANY, 'Column', 'TABLE_SCHEMA, TABLE_NAME', 'order'=>'??.ORDINAL_POSITION ASC', 'alias'=>'TableColumn'),
+			'columns' => array(self::HAS_MANY, 'Column', 'TABLE_SCHEMA, TABLE_NAME'),
 			'indices' => array(self::HAS_MANY, 'Index', 'TABLE_SCHEMA, TABLE_NAME', 'alias'=>'TableIndex'),
 			#'constraints' => array(self::HAS_MANY, 'Constraint', 'TABLE_SCHEMA, TABLE_NAME', 'alias'=>'TableConstraint'),
 		);
@@ -190,12 +190,12 @@ class Table extends CActiveRecord
 	 * @return	string			sql statement
 	 * @throws	DbException		If sql statement fails.
 	 */
-	public function createIndex($index, $type, array $columns)
+	public function createIndex($index, $type, array $columns, array $keyLengths = array())
 	{
 		// Prepare columns
 		foreach($columns AS $key => $value)
 		{
-			$columns[$key] = self::$db->quoteColumnName($value);
+			$columns[$key] = self::$db->quoteColumnName($value) . (isset($keyLengths[$value]) ? '(' . (int)$keyLengths[$value] . ')' : '');
 		}
 		$columns = implode(',', $columns);
 
@@ -223,6 +223,20 @@ class Table extends CActiveRecord
 		{
 			throw new DbException($cmd);
 		}
+	}
+
+	public function getSupportedIndexTypes()
+	{
+		$types = array(
+			'PRIMARY' => Yii::t('database', 'primaryKey'),
+			'INDEX' => Yii::t('database', 'index'),
+			'UNIQUE' => Yii::t('database', 'uniqueKey'),
+		);
+		if($this->ENGINE != 'InnoDB')
+		{
+			$types['FULLTEXT'] = Yii::t('database', 'fulltextIndex');
+		}
+		return $types;
 	}
 
 }

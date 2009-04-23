@@ -124,7 +124,7 @@
   	text-align: right;
   }
 
-  table.list thead > tr:first-child th {
+  table.list > thead > tr:first-child th {
   	font-weight: bold;
   }
 

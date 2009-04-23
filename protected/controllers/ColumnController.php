@@ -13,12 +13,13 @@ class ColumnController extends Controller
 	 */
 	public $layout = 'schema';
 
-	public function __construct($id, $module=null) {
+	public function __construct($id, $module=null)
+	{
+		$request = Yii::app()->getRequest();
 
-		if(Yii::app()->request->isAjaxRequest)
+		if($request->isAjaxRequest)
 			$this->layout = false;
 
-		$request = Yii::app()->getRequest();
 		$this->schema = $request->getParam('schema');
 		$this->table = $request->getParam('table');
 		$this->column = $request->getParam('column');
@@ -135,12 +136,11 @@ class ColumnController extends Controller
 	{
 		$isSubmitted = false;
 		$sql = false;
-		$pk = array(
+		$column = Column::model()->findByPk(array(
 			'TABLE_SCHEMA' => $this->schema,
 			'TABLE_NAME' => $this->table,
 			'COLUMN_NAME' => $this->column,
-		);
-		$column = Column::model()->findByPk($pk);
+		));
 		if(isset($_POST['Column']))
 		{
 			$column->attributes = $_POST['Column'];

@@ -49,7 +49,7 @@ function pdbg($data, $color="orange", $Line=null, $File=null, $height=180, $widt
 }
 
 // remove the following line when in production mode
-defined('YII_DEBUG') or define('YII_DEBUG',true);
+defined('YII_DEBUG') or define('YII_DEBUG',false);
 
 $console = false;
 

@@ -14,6 +14,8 @@
 	<entry id="default">Default</entry>
 	<entry id="extra">Extra</entry>
 	<entry id="actions">Actions</entry>
+	<entry id="columns">Columns</entry>
+	<entry id="noColumnsAddedYet">No columns added yet.</entry>
 	
 	<entry id="browseDistinctValues">Show distinct values</entry>
 	
@@ -75,6 +77,7 @@
 	<entry id="addSchema">Add schema</entry>
 	<entry id="editSchema">Edit schema</entry>
 	<entry id="overhead">Overhead</entry>
+	<entry id="selectColumnToAdd">Select a column to add</entry>
 	
 	<!-- Indices -->
 	<entry id="index">Index</entry>
@@ -82,6 +85,7 @@
 	<entry id="enterNameForNewIndex">Please enter a name for the new index:</entry>
 	<entry id="dropIndex">Drop index</entry>
 	<entry id="doYouReallyWantToDropIndex">Do you really want to drop the index »{index}«?</entry>
+	<entry id="editIndex">Edit index</entry>
 
 	<!-- Fulltext indices -->	
 	<entry id="fulltextIndex">Fulltext index</entry>

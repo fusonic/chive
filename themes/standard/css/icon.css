@@ -28,4 +28,8 @@
 	margin-right: 2px;
   }
   
+  img.icon_arrow_move {
+  	cursor: move;
+  }
+  
 }

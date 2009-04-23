@@ -12,7 +12,7 @@ var tableStructure = {
 	// Edit column
 	editColumn: function(col)
 	{
-		$('#columns_' + col).appendForm(baseUrl + '/schema/' + schema + '/tables/' + table + '/columns/' + col + '/update?col=' + col);
+		$('#columns_' + col).appendForm(baseUrl + '/schema/' + schema + '/tables/' + table + '/columns/' + col + '/update');
 	},
 	
 	// Drop column
@@ -77,11 +77,21 @@ var tableStructure = {
 		var ids = tableStructure.getSelectedIds();
 		
 		// Do request
-		$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/createIndex', {
+		$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/indexAction/createSimple', {
 			index: $('#newIndexName').get(0).value,
 			type: tableStructure.newIndexType,
 			'columns[]': ids
 		}, AjaxResponse.handle);	
+	},
+	addIndexForm: function()
+	{
+		$('#indices').appendForm(baseUrl + '/schema/' + schema + '/tables/' + table + '/indexAction/create');
+	},
+	
+	// Edit index
+	editIndex: function(index)
+	{
+		$('#indices_' + index).appendForm(baseUrl + '/schema/' + schema + '/tables/' + table + '/indices/' + index + '/update');
 	},
 	
 	// Drop index
@@ -161,40 +171,6 @@ $(document).ready(function() {
 				}, AjaxResponse.handle
 			);
 		}
-	});
-	
-	/*
-	 * Setup sortable indices
-	 */
-	$('#indices ul').each(function() {
-		var obj = $(this);
-		if(obj.children('li').length < 2)
-		{
-			return;
-		}
-		
-		obj.sortable({
-			update: function(event, ui) 
-			{
-				var tr = $(this).closest('tr');
-				var ul = $(this).closest('ul');
-				var indexName = tr.attr('id').substr(8);
-				var indexType = tr.children('td:eq(1)').text().trim();
-				
-				var columns = new Array();
-				ul.children('li').each(function() {
-					columns.push(this.id.replace(tr.attr('id') + '_', ''));
-				});
-				
-				// Do AJAX requests
-				$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/alterIndex', {
-					index: indexName,
-					type: indexType,
-					'columns[]': columns
-				}, AjaxResponse.handle);
-			}
-		}).css('cursor', 'move');
-		
 	});
 	
 	
@@ -278,9 +254,8 @@ $(document).ready(function() {
 			{
 				
 				// Do request
-				$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/dropIndex', {
-					index: tableStructure.dropIndexName,
-					type: tableStructure.dropIndexType
+				$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/indexAction/drop', {
+					index: tableStructure.dropIndexName
 				}, function(responseText) {
 					var response = JSON.parse(responseText);
 					AjaxResponse.handle(response);
@@ -298,36 +273,4 @@ $(document).ready(function() {
 		}		
 	});
 	
-	/*
-	 * Setup editable indices
-	 */
-	$('#indices tbody tr').each(function() {
-		
-		var tr = this;
-		if($(this).hasClass('PRIMARY'))
-		{
-			return;
-		}
-		
-		$(this).children('td:first').editable(
-			function(value, settings) 
-			{
-				if(tr.id.substr(8) == value)
-				{
-					return value;
-				}
-				$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/renameIndex', {
-					oldName: tr.id.substr(8),
-					newName: value
-				}, AjaxResponse.handle);
-				tr.id = 'indices_' + value;
-				return value;
-			},
-			{
-				event: 'dblclick',
-				onblur: 'submit'
-			}
-		);
-		
-	});
 });

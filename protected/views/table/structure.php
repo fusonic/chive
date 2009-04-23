@@ -172,155 +172,178 @@
 
 </div>
 
+<br />
 
-<br/>
+<div style="overflow: hidden">
 
-<table id="indices" class="list" style="width: 42%; float: left;margin-right: 10px;">
-	<colgroup>
-		<col />
-		<col />
-		<col />
-		<col />
-		<col class="action" />
-		<col class="action" />
-	</colgroup>
-	<thead>
-		<tr>
-			<th colspan="6"><?php echo Yii::t('database', 'indices'); ?></th>
-		</tr>
-		<tr>
-			<th><?php echo Yii::t('database', 'key'); ?></th>
-			<th><?php echo Yii::t('database', 'type'); ?></th>
-			<th><?php echo Yii::t('database', 'cardinality'); ?></th>
-			<th colspan="3"><?php echo Yii::t('database', 'field'); ?></th>
-		</tr>
-	</thead>
-	<tbody>
-		<?php if(count($indices) > 0) { ?>
-			<?php foreach($indices AS $key=>$index) { ?>
-				<tr id="indices_<?php echo $key; ?>" class="<?php echo $index[0]->getType(); ?>">
-					<td><?php echo $index[0]->INDEX_NAME; ?></td>
-					<td><?php echo $index[0]->getType(); ?></td>
-					<td><?php echo $index[0]->CARDINALITY; ?></td>
+	<div style="width: 40%; float: left; padding-right: 5px">
+
+		<div class="list">
+
+			<table id="indices" class="list">
+				<colgroup>
+					<col />
+					<col />
+					<col />
+					<col />
+					<col class="action" />
+					<col class="action" />
+				</colgroup>
+				<thead>
+					<tr>
+						<th colspan="6"><?php echo Yii::t('database', 'indices'); ?></th>
+					</tr>
+					<tr>
+						<th><?php echo Yii::t('database', 'key'); ?></th>
+						<th><?php echo Yii::t('database', 'type'); ?></th>
+						<th><?php echo Yii::t('database', 'cardinality'); ?></th>
+						<th colspan="3"><?php echo Yii::t('database', 'field'); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach($table->indices AS $index) { ?>
+						<tr id="indices_<?php echo $index->INDEX_NAME; ?>">
+							<td><?php echo $index->INDEX_NAME; ?></td>
+							<td>
+								<?php echo $index->getType(); ?>
+							</td>
+							<td>
+								<?php echo $index->CARDINALITY; ?>
+							</td>
+							<td>
+								<ul>
+									<?php foreach($index->columns AS $column) { ?>
+										<li id="indices_<?php echo $index->INDEX_NAME; ?>_<?php echo $column->COLUMN_NAME; ?>">
+											<?php echo $column->COLUMN_NAME; ?>
+											<?php if(!is_null($column->SUB_PART)) { ?>
+												(<?php echo $column->SUB_PART; ?>)
+											<?php } ?>
+										</li>
+									<?php } ?>
+								</ul>
+							</td>
+							<td>
+								<a href="javascript:void(0)" onclick="tableStructure.editIndex('<?php echo $index->INDEX_NAME; ?>')" class="icon">
+									<com:Icon name="edit" size="16" text="core.edit" />
+								</a>
+							</td>
+							<td>
+								<a href="javascript:void(0)" onclick="tableStructure.dropIndex('<?php echo $index->INDEX_NAME; ?>')" class="icon">
+									<com:Icon name="delete" size="16" text="database.drop" />
+								</a>
+							</td>
+						</tr>
+					<?php } ?>
+				</tbody>
+			</table>
+
+			<div class="rightLinks">
+				<a href="javascript:void(0)" onclick="tableStructure.addIndexForm()" class="icon">
+					<com:Icon name="add" size="16" />
+					<span><?php echo Yii::t('database', 'addIndex'); ?></span>
+				</a>
+			</div>
+
+		</div>
+
+	</div>
+
+	<div style="width: 20%; float: left; padding: 0px 10px">
+
+		<table class="list">
+			<colgroup>
+				<col />
+				<col />
+			</colgroup>
+			<thead>
+				<tr>
+					<th colspan="2"><?php echo Yii::t('database', 'spaceUsage'); ?></th>
+				</tr>
+				<tr>
+					<th><?php echo Yii::t('database', 'type'); ?></th>
+					<th><?php echo Yii::t('database', 'usage'); ?></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><?php echo Yii::t('database', 'data'); ?></td>
+					<td class="right"><?php echo Formatter::fileSize($table->DATA_LENGTH); ?></td>
+				</tr>
+				<tr>
+					<td><?php echo Yii::t('database', 'index'); ?></td>
+					<td class="right"><?php echo Formatter::fileSize($table->INDEX_LENGTH); ?></td>
+				</tr>
+				<tr>
+					<td><?php echo Yii::t('core', 'total'); ?></td>
+					<td class="right"><?php echo Formatter::fileSize($table->INDEX_LENGTH + $table->DATA_LENGTH); ?></td>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+
+	<div style="width: 20%; float: left; padding-left: 10px">
+
+		<table class="list">
+			<colgroup>
+				<col />
+				<col />
+			</colgroup>
+			<thead>
+				<tr>
+					<th colspan="2">
+						<?php echo Yii::t('core', 'information'); ?>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><?php echo Yii::t('database', 'format'); ?></td>
+					<td><?php echo $table->ROW_FORMAT; ?></td>
+				</tr>
+				<tr>
+					<td><?php echo Yii::t('database', 'collation'); ?></td>
 					<td>
-						<ul>
-							<?php foreach($index AS $column) {?>
-								<li id="indices_<?php echo $key; ?>_<?php echo $column->COLUMN_NAME; ?>">
-									<?php echo $column->COLUMN_NAME; ?>
-								</li>
-							<?php } ?>
-						</ul>
-					</td>
-					<td>
-						<?php if($index[0]->getType() == 'PRIMARY') { ?>
-							<com:Icon name="edit" size="16" text="core.edit" disabled="true" />
-						<?php } else { ?>
-							<a href="javascript:void(0)" onclick="$(this).closest('tr').children('td:first').dblclick()" class="icon">
-								<com:Icon name="edit" size="16" text="core.edit" />
-							</a>
-						<?php } ?>
-					</td>
-					<td>
-						<a href="javascript:void(0)" onclick="tableStructure.dropIndex('<?php echo $index[0]->INDEX_NAME; ?>')" class="icon">
-							<com:Icon name="delete" size="16" text="database.drop" />
-						</a>
+						<dfn class="collation" title="<?php echo Collation::getDefinition($table->TABLE_COLLATION); ?>">
+							<?php echo $table->TABLE_COLLATION; ?>
+						</dfn>
 					</td>
 				</tr>
-			<?php } ?>
-		<?php } else { ?>
-			<tr>
-				<td colspan="6"><?php echo Yii::t('database', 'noIndicesAvailable'); ?></td>
-			</tr>
-		<?php } ?>
-	</tbody>
-</table>
+				<tr>
+					<td><?php echo Yii::t('database', 'rows'); ?></td>
+					<td><?php echo $table->getRowCount(); ?></td>
+				</tr>
+				<tr>
+					<td><?php echo Yii::t('database', 'averageRowLength'); ?></td>
+					<td><?php echo $table->AVG_ROW_LENGTH; ?></td>
+				</tr>
+				<tr>
+					<td><?php echo Yii::t('database', 'averageRowSize'); ?></td>
+					<td><?php echo Formatter::fileSize($table->getAverageRowSize()); ?></td>
+				</tr>
+				<?php if ($table->AUTO_INCREMENT) { ?>
+					<tr>
+						<td><?php echo Yii::t('database', 'nextAutoincrementValue'); ?></td>
+						<td><?php echo $table->AUTO_INCREMENT; ?></td>
+					</tr>
+				<?php } ?>
+				<tr>
+					<td><?php echo Yii::t('core', 'creationDate'); ?></td>
+					<td><?php echo ($table->CREATE_TIME ? Yii::app()->getDateFormatter()->formatDateTime($table->CREATE_TIME, 'short', 'short') : '-'); ?></td>
+				</tr>
+				<tr>
+					<td><?php echo Yii::t('core', 'lastUpdateDate'); ?></td>
+					<td><?php echo ($table->UPDATE_TIME ? Yii::app()->getDateFormatter()->formatDateTime($table->UPDATE_TIME, 'short', 'short') : '-'); ?></td>
+				</tr>
+				<tr>
+					<td><?php echo Yii::t('core', 'lastCheckDate'); ?></td>
+					<td>
+						<?php echo ($table->CHECK_TIME ? Yii::app()->getDateFormatter()->formatDateTime($table->CHECK_TIME, 'short', 'short') : '-'); ?>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 
-<table class="list" style="width: 25%; float: left; margin-right: 10px;">
-	<colgroup>
-		<col />
-		<col />
-	</colgroup>
-	<thead>
-		<tr>
-			<th colspan="2"><?php echo Yii::t('database', 'spaceUsage'); ?></th>
-		</tr>
-		<tr>
-			<th><?php echo Yii::t('database', 'type'); ?></th>
-			<th><?php echo Yii::t('database', 'usage'); ?></th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td><?php echo Yii::t('database', 'data'); ?></td>
-			<td class="right"><?php echo Formatter::fileSize($table->DATA_LENGTH); ?></td>
-		</tr>
-		<tr>
-			<td><?php echo Yii::t('database', 'index'); ?></td>
-			<td class="right"><?php echo Formatter::fileSize($table->INDEX_LENGTH); ?></td>
-		</tr>
-		<tr>
-			<td><?php echo Yii::t('core', 'total'); ?></td>
-			<td class="right"><?php echo Formatter::fileSize($table->INDEX_LENGTH + $table->DATA_LENGTH); ?></td>
-		</tr>
-	</tbody>
-</table>
+	</div>
 
-<table class="list" style="width: 30%; float: right;">
-	<colgroup>
-		<col />
-		<col />
-	</colgroup>
-	<thead>
-		<tr>
-			<th colspan="2">
-				<?php echo Yii::t('core', 'information'); ?>
-			</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td><?php echo Yii::t('database', 'format'); ?></td>
-			<td><?php echo $table->ROW_FORMAT; ?></td>
-		</tr>
-		<tr>
-			<td><?php echo Yii::t('database', 'collation'); ?></td>
-			<td>
-				<dfn class="collation" title="<?php echo Collation::getDefinition($table->TABLE_COLLATION); ?>">
-					<?php echo $table->TABLE_COLLATION; ?>
-				</dfn>
-			</td>
-		</tr>
-		<tr>
-			<td><?php echo Yii::t('database', 'rows'); ?></td>
-			<td><?php echo $table->getRowCount(); ?></td>
-		</tr>
-		<tr>
-			<td><?php echo Yii::t('database', 'averageRowLength'); ?></td>
-			<td><?php echo $table->AVG_ROW_LENGTH; ?></td>
-		</tr>
-		<tr>
-			<td><?php echo Yii::t('database', 'averageRowSize'); ?></td>
-			<td><?php echo Formatter::fileSize($table->getAverageRowSize()); ?></td>
-		</tr>
-		<?php if ($table->AUTO_INCREMENT) { ?>
-			<tr>
-				<td><?php echo Yii::t('database', 'nextAutoincrementValue'); ?></td>
-				<td><?php echo $table->AUTO_INCREMENT; ?></td>
-			</tr>
-		<?php } ?>
-		<tr>
-			<td><?php echo Yii::t('core', 'creationDate'); ?></td>
-			<td><?php echo ($table->CREATE_TIME ? Yii::app()->getDateFormatter()->formatDateTime($table->CREATE_TIME, 'short', 'short') : '-'); ?></td>
-		</tr>
-		<tr>
-			<td><?php echo Yii::t('core', 'lastUpdateDate'); ?></td>
-			<td><?php echo ($table->UPDATE_TIME ? Yii::app()->getDateFormatter()->formatDateTime($table->UPDATE_TIME, 'short', 'short') : '-'); ?></td>
-		</tr>
-		<tr>
-			<td><?php echo Yii::t('core', 'lastCheckDate'); ?></td>
-			<td>
-				<?php echo ($table->CHECK_TIME ? Yii::app()->getDateFormatter()->formatDateTime($table->CHECK_TIME, 'short', 'short') : '-'); ?>
-			</td>
-		</tr>
-	</tbody>
-</table>
+</div>

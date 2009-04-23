@@ -72,17 +72,27 @@ class TableController extends Controller
 	 */
 	public function actionStructure()
 	{
-
 		$table = $this->loadTable();
 
-		$indices = array();
-		foreach($table->indices AS $index) {
-			$indices[$index->INDEX_NAME][] = $index;
+		// Indices
+		$sql = 'SELECT * FROM STATISTICS '
+			. 'WHERE TABLE_SCHEMA = :tableSchema '
+			. 'AND TABLE_NAME = :tableName '
+			. 'GROUP BY INDEX_NAME '
+			. 'ORDER BY INDEX_NAME = \'PRIMARY\' DESC, INDEX_NAME';
+		$params = array(
+			'tableSchema' => $table->TABLE_SCHEMA,
+			'tableName' => $table->TABLE_NAME,
+		);
+		$table->indices = Index::model()->findAllBySql($sql, $params);
+
+		foreach($table->indices AS $index)
+		{
+			$index->columns = IndexColumn::model()->findAllByAttributes(array('TABLE_SCHEMA' => $table->TABLE_SCHEMA, 'TABLE_NAME' => $table->TABLE_NAME, 'INDEX_NAME' => $index->INDEX_NAME));
 		}
 
 		$this->render('structure',array(
 			'table' => $table,
-			'indices'=>$indices,
 		));
 	}
 
@@ -638,152 +648,6 @@ class TableController extends Controller
 		$response->send();
 	}
 
-	public function actionDropIndex()
-	{
-		Table::$db = $this->_db;
-		$table = $this->loadTable();
-
-		// Get post vars
-		$index = Yii::app()->request->getPost('index');
-		$type = Yii::app()->request->getPost('type');
-
-		$response = new AjaxResponse();
-		try
-		{
-			$sql = $table->dropIndex($index, $type);
-			$response->addNotification('success',
-				Yii::t('message', 'successDropIndex', array('{index}' => $index)),
-				null,
-				$sql);
-			$response->addData('success', true);
-		}
-		catch(DbException $ex)
-		{
-			$response->addNotification('error',
-				Yii::t('message', 'errorDropIndex', array('{index}' => $index)),
-				$ex->getText(),
-				$ex->getSql());
-			$response->addData('success', false);
-		}
-		$response->send();
-	}
-
-	public function actionCreateIndex()
-	{
-		Table::$db = $this->_db;
-		$table = $this->loadTable();
-
-		// Get post vars
-		$index = Yii::app()->request->getPost('index');
-		$type = Yii::app()->request->getPost('type');
-		$columns = (array)Yii::app()->request->getPost('columns');
-
-		$response = new AjaxResponse();
-		try
-		{
-			$sql = $table->createIndex($index, $type, $columns);
-			$response->addNotification('success',
-				Yii::t('message', 'successCreateIndex', array('{index}' => $index)),
-				null,
-				$sql);
-			$response->reload = true;
-		}
-		catch(DbException $ex)
-		{
-			$response->addNotification('error',
-				Yii::t('message', 'errorCreateIndex', array('{index}' => $index)),
-				$ex->getText(),
-				$ex->getSql());
-		}
-		$response->send();
-	}
-
-	public function actionAlterIndex()
-	{
-		Table::$db = $this->_db;
-		$table = $this->loadTable();
-
-		// Get post vars
-		$index = Yii::app()->request->getPost('index');
-		$type = Yii::app()->request->getPost('type');
-		$columns = (array)Yii::app()->request->getPost('columns');
-
-		$response = new AjaxResponse();
-		try
-		{
-			$sql = $table->dropIndex($index, $type);
-			$sql .= "\n\n" . $table->createIndex($index, $type, $columns);
-			$response->addNotification('success',
-				Yii::t('message', 'successAlterIndex', array('{index}' => $index)),
-				null,
-				$sql);
-		}
-		catch(DbException $ex)
-		{
-			$response->addNotification('error',
-				Yii::t('message', 'errorAlterIndex', array('{index}' => $index)),
-				$ex->getText(),
-				$ex->getSql());
-			$response->reload = true;
-		}
-		$response->send();
-	}
-
-	public function actionRenameIndex()
-	{
-		Table::$db = $this->_db;
-		$table = $this->loadTable();
-
-		// Get post vars
-		$oldName = Yii::app()->request->getPost('oldName');
-		$newName = Yii::app()->request->getPost('newName');
-		$type = Yii::app()->request->getPost('type');
-
-		$criteria = new CDbCriteria;
-		$criteria->condition = 'TABLE_SCHEMA = :schema AND TABLE_NAME = :table AND INDEX_NAME = :index';
-		$criteria->params = array(
-			':schema' => $table->TABLE_SCHEMA,
-			':table' => $table->TABLE_NAME,
-			':index' => $oldName,
-		);
-		$indices = Index::model()->findAll($criteria);
-
-		$columns = array();
-		$type = 'index';
-		foreach($indices AS $index)
-		{
-			$columns[] = $index->COLUMN_NAME;
-			if($index->INDEX_TYPE == 'FULLTEXT')
-			{
-				$type = 'fulltext';
-			}
-			elseif($index->NON_UNIQUE)
-			{
-				$type = 'unique';
-			}
-		}
-
-		$response = new AjaxResponse();
-		try
-		{
-			$sql = $table->dropIndex($oldName, $type);
-			$sql .= "\n\n" . $table->createIndex($newName, $type, $columns);
-			$response->addNotification('success',
-				Yii::t('message', 'successRenameIndex', array('{index}' => $newName)),
-				null,
-				$sql);
-		}
-		catch(DbException $ex)
-		{
-			$response->addNotification('error',
-				Yii::t('message', 'errorRenameIndex', array('{index}' => $oldName)),
-				$ex->getText(),
-				$ex->getSql());
-			$response->reload = true;
-		}
-		$response->send();
-	}
-
 	/**
 	 * Updates a particular user.
 	 * If update is successful, the browser will be redirected to the 'show' page.
@@ -829,28 +693,25 @@ class TableController extends Controller
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the primary key value. Defaults to null, meaning using the 'id' GET variable
 	 */
-	public function loadTable($id=null)
+	public function loadTable($id = null)
 	{
-		if($this->_table===null)
+		if($this->_table === null)
 		{
-			if($id!==null || ($this->table && $this->schema))
+			if($id !== null || ($this->table && $this->schema))
 			{
-				$criteria = new CDbCriteria;
-				$criteria->condition = 'TABLE_SCHEMA = :schema AND TABLE_NAME = :table';
-				$criteria->params = array(
-					'schema'=>$this->schema,
-					'table'=>$this->table,
+				$pk = array(
+					'TABLE_SCHEMA' => $this->schema,
+					'TABLE_NAME' => $this->table,
 				);
-
-				$table = Table::model()->find($criteria);
-				$table->columns = Column::model()->findAll($criteria);
-				$table->indices = Index::model()->findAll($criteria);
-
+				$table = Table::model()->findByPk($pk);
+				$table->columns = Column::model()->findAllByAttributes($pk);
 				$this->_table = $table;
 			}
 
-			if($this->_table===null)
+			if($this->_table === null)
+			{
 				throw new CHttpException(500,'The requested table does not exist.');
+			}
 		}
 		return $this->_table;
 	}

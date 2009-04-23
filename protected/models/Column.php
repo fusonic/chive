@@ -257,13 +257,18 @@ class Column extends CActiveRecord
 			$collate = '';
 		}
 
-		if(strlen($this->COLUMN_DEFAULT) == 0 || $this->EXTRA == 'auto_increment')
+		$db = new CDbConnection();
+		if(strlen($this->COLUMN_DEFAULT) > 0 && $this->EXTRA != 'auto_increment')
 		{
-			$default = '';
+			$default = 'DEFAULT ' . self::$db->quoteValue($this->COLUMN_DEFAULT);
+		}
+		else if($this->getIsNullable() && $this->EXTRA != 'auto_increment')
+		{
+			$default = 'DEFAULT NULL';
 		}
 		else
 		{
-			$default = (strlen($this->COLUMN_DEFAULT) > 0 ? 'DEFAULT :defaultValue' : ($this->getIsNullable() ? 'DEFAULT NULL' : ''));
+			$default = '';
 		}
 
 		return self::$db->quoteColumnName($this->COLUMN_NAME)
@@ -271,19 +276,7 @@ class Column extends CActiveRecord
 			. ' ' . ($this->getIsNullable() ? 'NULL' : 'NOT NULL')
 			. ' ' . $default
 			. ' ' . ($this->EXTRA == 'auto_increment' ? 'AUTO_INCREMENT' : '')
-			. ' ' . (strlen($this->COLUMN_COMMENT) ? 'COMMENT :comment' : '');
-	}
-
-	protected function bindColumnDefinitionValues($sql)
-	{
-		if(strlen($this->COLUMN_DEFAULT) > 0 && $this->EXTRA != 'auto_increment')
-		{
-			$sql->bindParam('defaultValue', $this->COLUMN_DEFAULT, PDO::PARAM_STR);
-		}
-		if(strlen($this->COLUMN_COMMENT))
-		{
-			$sql->bindParam('comment', $this->COLUMN_COMMENT, PDO::PARAM_STR);
-		}
+			. ' ' . (strlen($this->COLUMN_COMMENT) ? 'COMMENT ' . self::$db->quoteValue($this->COLUMN_COMMENT) : '');
 	}
 
 	public function move($command)
@@ -292,7 +285,6 @@ class Column extends CActiveRecord
 			. "\t" . 'MODIFY ' . $this->getColumnDefinition()
 			. ' ' . (substr($command, 0, 6) == 'AFTER ' ? 'AFTER ' . self::$db->quoteColumnName(substr($command, 6)) : 'FIRST') . ';';
 		$cmd = new CDbCommand(self::$db, $sql);
-		$this->bindColumnDefinitionValues($cmd);
 		try
 		{
 			$cmd->prepare();
@@ -318,9 +310,7 @@ class Column extends CActiveRecord
 
 		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
 			. "\t" . 'MODIFY ' . $this->getColumnDefinition() . ';';
-			echo $sql;
 		$cmd = new CDbCommand(self::$db, $sql);
-		$this->bindColumnDefinitionValues($cmd);
 		try
 		{
 			$cmd->prepare();
@@ -352,7 +342,6 @@ class Column extends CActiveRecord
 		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
 			. "\t" . 'ADD ' . $this->getColumnDefinition() . ';';
 		$cmd = new CDbCommand(self::$db, $sql);
-		$this->bindColumnDefinitionValues($cmd);
 		try
 		{
 			$cmd->prepare();

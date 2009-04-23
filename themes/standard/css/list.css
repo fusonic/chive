@@ -49,36 +49,36 @@
 	 * ColGroup
 	 */
 	
-	table.list>colgroup>col.action,
-	table.list>colgroup>col.checkbox {
+	colgroup>col.action,
+	colgroup>col.checkbox {
 		width: 16px;
 	}
 	
-	table.list>colgroup>col.type {
+	colgroup>col.type {
 		width: 160px;
 	}
 	
-	table.list>colgroup>col.collation {
+	colgroup>col.collation {
 		width: 130px;
 	}
 	
-	table.list>colgroup>col.null {
+	colgroup>col.null {
 		width: 50px;
 	}
 	
-	table.list>colgroup>col.filesize {
+	colgroup>col.filesize {
 		width: 90px;
 	}
 	
-	table.list>colgroup>col.engine {
+	colgroup>col.engine {
 		width: 100px;
 	}
 	
-	table.list>colgroup>col.operator {
+	colgroup>col.operator {
 		width: 120px;
 	}
 	
-	table.list>colgroup>col.count {
+	colgroup>col.count {
 		width: 100px;
 	}
 	
@@ -151,6 +151,36 @@
 		border: none;
 		background: none;
 		padding: 0px;
+	}
+	
+	/*
+	 * Form-List
+	 */
+	
+	table.formList {
+		width: 100%;
+	}
+	
+	table.formList th {
+		font-style: italic;
+		font-weight: normal;
+	}
+	
+	table.formList td,
+	table.formList th {
+		padding: 2px 0px;
+	}
+	
+	table.formList thead {
+		border-bottom: solid 2px #D3E73B;
+	}
+	
+	table.formList tfoot {
+		border-top: solid 2px #D3E73B;
+	}
+	
+	table.formList input.indexSize {
+		width: 40px;
 	}
 	
 	/*

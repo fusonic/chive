@@ -45,7 +45,7 @@ return array(
 				),
 				array(
 					'class'=>'CWebLogRoute',
-					'levels'=>'error, warning', //, warning, info, trace',
+					'levels'=>'error, warning, info, trace', //, warning, info, trace',
 					'showInFireBug'=>true,
 				),
 			),
@@ -104,10 +104,6 @@ return array(
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/sql'=>'table/sql',
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/search'=>'table/search',
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/insert'=>'table/insert',
-					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/dropIndex'=>'table/dropIndex',
-					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/createIndex'=>'table/createIndex',
-					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/alterIndex'=>'table/alterIndex',
-					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/renameIndex'=>'table/renameIndex',
 
 					// Table actions
 					'schema/<schema:'.URL_MATCH.'>/tableAction/truncate'=>'table/truncate',
@@ -125,6 +121,14 @@ return array(
 					// ColumnActions
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columnAction/create'=>'column/create',
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columnAction/drop'=>'column/drop',
+
+					// Index
+					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/indices/<index:'.URL_MATCH.'>/update'=>'index/update',
+
+					// IndexActions
+					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/indexAction/create'=>'index/create',
+					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/indexAction/createSimple'=>'index/createSimple',
+					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/indexAction/drop'=>'index/drop',
             ),
         ),
 
