@@ -42,6 +42,7 @@ class View extends CActiveRecord
 	public function relations()
 	{
 		return array(
+			'columns' => array(self::HAS_MANY, 'Column', 'TABLE_SCHEMA, TABLE_NAME'),
 		);
 	}
 

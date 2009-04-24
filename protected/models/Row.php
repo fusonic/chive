@@ -13,7 +13,7 @@ class Row extends CActiveRecord
 		$request = Yii::app()->getRequest();
 
 		$this->schema = $request->getParam('schema');
-		$this->table = $request->getParam('table');
+		$this->table = $request->getParam('table') ? $request->getParam('table') : $request->getParam('view');
 
 	}
 

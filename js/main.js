@@ -164,7 +164,7 @@ $(document).ready(function()
 		autoHeight: true,
 		collapsible: false,
 		fillSpace: true,
-		selectedClass: "active"
+		selectedClass: "active",
 	});
 	
 	$('#tableList').setupListFilter($('#tableSearch'));
@@ -176,14 +176,14 @@ $(document).ready(function()
 	
 	// START
 	$(document).ajaxStart(function() {
-		$('#loading').css({'background': '#FF0000'}).fadeIn();
+		$('#loading').css({'background-image': 'url(../images/loading4.gif)'}).fadeIn();
 		//$('#loading2').show();
 	});
 	
 	// STOP
 	$(document).ajaxStop(function() {
 		//$('#loading2').hide();
-		$('#loading').css({'background': '#009900'}).fadeOut();
+		$('#loading').css({'background-image': 'url(../images/loading5.gif)'}).fadeOut();
 	});
 	
 	// ERROR
@@ -242,6 +242,11 @@ var AjaxResponse = {
 
 String.prototype.trim = function () {
     return this.replace(/^\s*/, "").replace(/\s*$/, "");
+}
+
+String.prototype.startsWith = function(str)
+{
+	return (this.match("^"+str)==str);
 }
 
 

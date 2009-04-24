@@ -370,13 +370,29 @@ class SchemaController extends Controller
 	{
 
 
-		$criteria = new CDbCriteria;
-		$criteria->condition = 'TABLE_SCHEMA = :schema';
-		$criteria->params = array(
-			':schema' => $this->schema,
-		);
 
-		$tables = Table::model()->findAll($criteria);
+		if(!$_POST['tables'])
+		{
+			$criteria = new CDbCriteria;
+			$criteria->condition = 'TABLE_SCHEMA = :schema';
+			$criteria->params = array(
+				':schema' => $this->schema,
+			);
+
+			$tables = Table::model()->findAll($criteria);
+
+		}
+		else
+		{
+
+
+
+			foreach($_POST['tables'] AS $table)
+			{
+
+			}
+
+		}
 
 		$this->render('export', array(
 			'tables'=>$tables

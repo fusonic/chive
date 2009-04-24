@@ -36,7 +36,9 @@
 </head>
 <body>
 
-  <div id="loading"><?php echo Yii::t('core', 'loading'); ?>...</div>
+  <div id="loading">
+  	<?php echo Yii::t('core', 'loading'); ?>...
+  	</div>
 
   <div class="ui-layout-north">
 	<div id="header">
@@ -48,6 +50,7 @@
 				'items'=>array(
 					array('label'=>'Home', 'icon'=>'home', 'url'=>array('/site/index'), 'visible'=>!Yii::app()->user->isGuest),
 					array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
+					array('label'=>'Refresh','icon'=>'refresh', 'url'=>'javascript:void(0)', 'htmlOptions'=>array('onclick'=>'return reload();'), 'visible'=>!Yii::app()->user->isGuest),
 					array('label'=>'Logout', 'icon'=>'logout', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
 				),
 			)); ?>

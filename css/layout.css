@@ -241,10 +241,14 @@
   	position: absolute; 
 	top: 45px; 
 	z-index: 9999999 !important; 
-	right: 20px; 
+	right: 20px;
+	line-height: 20px;
 	font-weight: bold; 
-	padding: 3px;
 	color: #FFFFFF;
+	padding: 0px 4px;
+	background: url(../images/loading4.gif) no-repeat;
+	width: 112px;
+	height: 20px;
   }
   
   /*

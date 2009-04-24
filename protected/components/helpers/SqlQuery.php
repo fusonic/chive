@@ -27,6 +27,7 @@ class SqlQuery {
 		'analyze',
 		'repair',
 		'check',
+		'explain',
 	);
 
 	public function __construct($_query) {

@@ -32,7 +32,7 @@
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.layout.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.listFilter.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.tableForm.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery-ui-1.7.1.custom.min.js', CClientScript::POS_HEAD); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery-ui-1.7.1.custom.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.checkboxTable.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.form.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.selectboxes.js', CClientScript::POS_HEAD); ?>
@@ -131,7 +131,7 @@
 
 		</div>
   		<div class="sidebarHeader">
-			<a class="icon">
+			<a class="icon" href="#views">
 				<com:Icon name="view" size="24" text="database.views" />
 				<span><?php echo Yii::t('database', 'views') ?></span>
 			</a>
@@ -140,10 +140,10 @@
 			<ul class="list icon nowrap">
 				<?php foreach(View::model()->findAll(array('select'=>'TABLE_NAME','condition'=>'TABLE_SCHEMA=:schema', 'params'=>array(':schema'=>$_GET['schema']), 'order'=>'TABLE_NAME ASC')) AS $table) { ?>
 					<li>
-						<a href="'#tables/<?php echo $table->getName() ?>/browse">
+						<a href="#views/<?php echo $table->getName() ?>/browse">
 							<com:Icon name="view" size="16" text="core.username" />
 						</a>
-						<a href="'#tables/<?php echo $table->getName() ?>/browse">
+						<a href="#views/<?php echo $table->getName() ?>/structure">
 							<span><?php echo $table->getName(); ?></span>
 						</a>
 					</li>

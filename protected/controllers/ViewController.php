@@ -1,6 +1,6 @@
 <?php
 
-class TableController extends Controller
+class ViewController extends Controller
 {
 	const PAGE_SIZE=10;
 
@@ -12,10 +12,10 @@ class TableController extends Controller
 	/**
 	 * @var CActiveRecord the currently loaded data model instance.
 	 */
-	private $_table;
+	private $_view;
 	private $_db;
 
-	public $table;
+	public $view;
 	public $schema;
 
 	public $isSent = false;
@@ -23,21 +23,19 @@ class TableController extends Controller
 	/**
 	 * @var Default layout for this controller
 	 */
-	public $layout = '_table';
+	public $layout = '_view';
 
 	public function __construct($id, $module=null) {
 
 		$request = Yii::app()->getRequest();
 
-		$this->table = $request->getParam('table');
+		$this->view = $request->getParam('view');
 		$this->schema = $request->getParam('schema');
 
 		// @todo (rponudic) work with parameters!
 		$this->_db = new CDbConnection('mysql:host='.Yii::app()->user->host.';dbname=' . $this->schema, Yii::app()->user->name, Yii::app()->user->password);
 		$this->_db->charset='utf8';
 		$this->_db->active = true;
-
-		Table::$db = $this->_db;
 
 		parent::__construct($id, $module);
 
@@ -67,32 +65,26 @@ class TableController extends Controller
 		);
 	}
 
+	public function getViewPath()
+	{
+		return parent::getViewPath();
+
+
+		// @todo (rponudic) is this needed anymore?
+		if(($module=$this->getModule())===null)
+			$module=Yii::app();
+		return $module->getViewPath().'/table';
+	}
+
 	/**
 	 * Shows the table structure
 	 */
 	public function actionStructure()
 	{
-		$table = $this->loadTable();
-
-		// Indices
-		$sql = 'SELECT * FROM STATISTICS '
-			. 'WHERE TABLE_SCHEMA = :tableSchema '
-			. 'AND TABLE_NAME = :tableName '
-			. 'GROUP BY INDEX_NAME '
-			. 'ORDER BY INDEX_NAME = \'PRIMARY\' DESC, INDEX_NAME';
-		$params = array(
-			'tableSchema' => $table->TABLE_SCHEMA,
-			'tableName' => $table->TABLE_NAME,
-		);
-		$table->indices = Index::model()->findAllBySql($sql, $params);
-
-		foreach($table->indices AS $index)
-		{
-			$index->columns = IndexColumn::model()->findAllByAttributes(array('TABLE_SCHEMA' => $table->TABLE_SCHEMA, 'TABLE_NAME' => $table->TABLE_NAME, 'INDEX_NAME' => $index->INDEX_NAME));
-		}
+		$view = $this->loadView();
 
 		$this->render('structure',array(
-			'table' => $table,
+			'view' => $view,
 		));
 	}
 
@@ -106,9 +98,6 @@ class TableController extends Controller
 		$error = false;
 
 		$response = new AjaxResponse();
-
-		#$_query = 'SELECT * FROM test ORDER BY id DESC LIMIT 0, 10';
-		//$_query = ' USE test';
 
 		// Profiling
 		$profiling = Yii::app()->user->settings->get('profiling');
@@ -149,12 +138,12 @@ class TableController extends Controller
 				// Pagination
 				$pages = new CPagination;
 				$pages->setPageSize(self::PAGE_SIZE);
-				$pages->route = '#tables/'.$this->table.'/browse';
+				$pages->route = '#tables/'.$this->view.'/browse';
 
 				// Sorting
 				$sort = new Sort($db);
 				$sort->multiSort = false;
-				$sort->route = '#tables/'.$this->table.'/browse';
+				$sort->route = '#tables/'.$this->view.'/browse';
 
 				$sqlQuery->applyCalculateFoundRows();
 
@@ -315,7 +304,7 @@ class TableController extends Controller
 			'pages' => $pages,
 			'sort' => $sort,
 			'error' => $error,
-			'table' => $this->_db->getSchema()->getTable($this->table),
+			'table' => $this->_db->getSchema()->getTable($this->view),
 			'response' => $response,
 			'type' => $type,
 		));
@@ -382,14 +371,14 @@ class TableController extends Controller
 
 			}
 
-			$query = $db->getCommandBuilder()->createFindCommand($this->table, $criteria)->getText();
+			$query = $db->getCommandBuilder()->createFindCommand($this->view, $criteria)->getText();
 
 			self::actionBrowse($query);
 
 		}
 		else
 		{
-			$this->render('search', array(
+			$this->render('/table/search', array(
 				'row' => $row,
 				'operators'=>$operators,
 			));
@@ -455,7 +444,7 @@ class TableController extends Controller
 			$row->isNewRecord = true;
 			$row->attributes = $_POST['Row'];
 
-			$sql = 'INSERT INTO ' . $db->quoteTableName($this->table) . ' (';
+			$sql = 'INSERT INTO ' . $db->quoteTableName($this->view) . ' (';
 
 			$attributesCount = count($row->getAttributes());
 
@@ -513,7 +502,7 @@ class TableController extends Controller
 				$cmd->execute();
 
 				$response->addNotification('success', Yii::t('message', 'successInsertRow'), null, $sql);
-				$response->redirectUrl = '#tables/' . $this->table . '/browse';
+				$response->redirectUrl = '#tables/' . $this->view . '/browse';
 
 			}
 			catch (CDbException $ex)
@@ -526,7 +515,7 @@ class TableController extends Controller
 		}
 
 		/*
-		$table = $this->loadTable();
+		$table = $this->loadView();
 
 		if(isset($_POST['sent'])) {
 
@@ -537,13 +526,13 @@ class TableController extends Controller
 				$data[$column->COLUMN_NAME] = $_POST[$column->COLUMN_NAME];
 			}
 
-			$cmd = $builder->createInsertCommand($this->table, $data);
+			$cmd = $builder->createInsertCommand($this->view, $data);
 
 			try
 			{
 				$cmd->prepare();
 				$cmd->execute();
-				Yii::app()->end('redirect:' . $this->schema . '#tables/' . $this->table . '/browse');
+				Yii::app()->end('redirect:' . $this->schema . '#tables/' . $this->view . '/browse');
 			}
 			catch(CDbException $ex)
 			{
@@ -590,7 +579,7 @@ class TableController extends Controller
 			catch(DbException $ex)
 			{
 				$response->addNotification('error',
-					Yii::t('message', 'errorTruncateTable', array('{table}' => $this->table)),
+					Yii::t('message', 'errorTruncateTable', array('{table}' => $this->view)),
 					$ex->getText(),
 					$ex->getSql());
 			}
@@ -634,7 +623,7 @@ class TableController extends Controller
 			catch(DbException $ex)
 			{
 				$response->addNotification('error',
-					Yii::t('message', 'errorDropTable', array('{table}' => $this->table)),
+					Yii::t('message', 'errorDropTable', array('{table}' => $this->view)),
 					$ex->getText(),
 					$ex->getSql());
 			}
@@ -697,27 +686,36 @@ class TableController extends Controller
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the primary key value. Defaults to null, meaning using the 'id' GET variable
 	 */
-	public function loadTable($id = null)
+	public function loadView($id = null)
 	{
-		if($this->_table === null)
+		if($this->_view === null)
 		{
-			if($id !== null || ($this->table && $this->schema))
+			if($id !== null || ($this->view && $this->schema))
 			{
+
+				$criteria = new CDbCriteria;
+				$criteria->condition = 'TABLE_SCHEMA = :schema AND TABLE_NAME = :table';
+				$criteria->params = array(
+					':schema' => $this->schema,
+					':table' => $this->view,
+				);
+
 				$pk = array(
 					'TABLE_SCHEMA' => $this->schema,
-					'TABLE_NAME' => $this->table,
+					'TABLE_NAME' => $this->view,
 				);
-				$table = Table::model()->findByPk($pk);
-				$table->columns = Column::model()->findAllByAttributes($pk);
-				$this->_table = $table;
+				$view = View::model()->find($criteria);
+				$view->columns = Column::model()->findAll($criteria);
+				$this->_view = $view;
 			}
 
-			if($this->_table === null)
+			if($this->_view === null)
 			{
-				throw new CHttpException(500,'The requested table does not exist.');
+				throw new CHttpException(500,'The requested view does not exist.');
 			}
 		}
-		return $this->_table;
+
+		return $this->_view;
 	}
 
 	/*
@@ -725,7 +723,8 @@ class TableController extends Controller
 	 */
 	private function getDefaultQuery()
 	{
-		return 'SELECT * FROM ' . $this->_db->quoteTableName($this->table) .
+		return 'SELECT * FROM ' . $this->_db->quoteTableName($this->view) .
 			"\n\t" . 'WHERE 1';
 	}
+
 }

@@ -71,7 +71,6 @@ $(document).ready(function() {
 		
 		if(type.indexOf('text') > -1)
 		{
-			console.log('textarea');
 			type = 'textarea';
 		}
 		else

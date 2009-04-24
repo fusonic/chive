@@ -284,7 +284,8 @@
 .ui-accordion .ui-accordion-header a { display: block; font-size: 1em; padding: .2em .5em .2em 2.2em; }
 .ui-accordion .ui-accordion-header .ui-icon { position: absolute; left: .5em; top: 50%; margin-top: -8px; }
 .ui-accordion .ui-accordion-content { border-top: 0; overflow: auto; display: none; border: none; }
-.ui-accordion .ui-accordion-content-active { display: block; }/* Datepicker
+.ui-accordion .ui-accordion-content-active { display: block; }
+/* Datepicker
 ----------------------------------*/
 .ui-datepicker { width: 17em; padding: .2em .2em 0; }
 .ui-datepicker .ui-datepicker-header { position:relative; padding:.2em 0; }

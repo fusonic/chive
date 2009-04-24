@@ -108,9 +108,20 @@ return array(
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/search'=>'table/search',
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/insert'=>'table/insert',
 
-					// Table actions
-					'schema/<schema:'.URL_MATCH.'>/tableAction/truncate'=>'table/truncate',
-					'schema/<schema:'.URL_MATCH.'>/tableAction/drop'=>'table/drop',
+						// Table actions
+						'schema/<schema:'.URL_MATCH.'>/tableAction/truncate'=>'table/truncate',
+						'schema/<schema:'.URL_MATCH.'>/tableAction/drop'=>'table/drop',
+
+					// Views
+					'schema/<schema:'.URL_MATCH.'>/views/<view:'.URL_MATCH.'>/browse'=>'view/browse',
+					'schema/<schema:'.URL_MATCH.'>/views/<view:'.URL_MATCH.'>/structure'=>'view/structure',
+					'schema/<schema:'.URL_MATCH.'>/views/<view:'.URL_MATCH.'>/sql'=>'view/sql',
+					'schema/<schema:'.URL_MATCH.'>/views/<view:'.URL_MATCH.'>/search'=>'view/search',
+					'schema/<schema:'.URL_MATCH.'>/views/<view:'.URL_MATCH.'>/insert'=>'view/insert',
+
+						// View actions
+						'schema/<schema:'.URL_MATCH.'>/viewAction/drop'=>'view/drop',
+
 
 					// Row
 					#'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/row/load'=>'row/load',

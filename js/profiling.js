@@ -10,7 +10,7 @@ var Profiling = {
 					name: 'profiling'				
 		}, function() {
 			
-			reload();
+			//reload();
 			
 		});
 	}
