@@ -92,6 +92,7 @@ class TableTest extends TestCase
 		$table->optionPackKeys = 0;
 		$table->ENGINE = 'MyISAM';
 		$table->TABLE_COLLATION = 'utf8_general_ci';
+		$table->TABLE_COMMENT = 'mein testkommentar';
 		$table->save();
 
 		// Load again
@@ -107,6 +108,8 @@ class TableTest extends TestCase
 		$this->assertEquals('0', $table->optionPackKeys);
 		$this->assertEquals('MyISAM', $table->ENGINE);
 		$this->assertEquals('utf8_general_ci', $table->TABLE_COLLATION);
+		// This test will fail due to a innodb issue!!!
+		$this->assertEquals('mein testkommentar', $table->TABLE_COMMENT);
 	}
 
 	/**
