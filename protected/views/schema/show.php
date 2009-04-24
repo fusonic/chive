@@ -1,5 +1,3 @@
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->getRequest()->baseUrl.'/js/views/schema/show.js', CClientScript::POS_HEAD); ?>
-
 <h2><?php echo $schema->SCHEMA_NAME; ?></h2>
 
 <div id="truncateTablesDialog" title="<?php echo Yii::t('database', 'truncateTables'); ?>" style="display: none">
@@ -67,17 +65,17 @@
 						</a>
 					</td>
 					<td>
-						<span class="icon">
-							<com:Icon name="edit" size="16" text="core.edit" disabled="true" />
-						</span>
+						<a href="javascript:void(0);" onclick="schemaShow.editTable($(this).closest('tr').attr('id').substr(7))" class="icon">
+							<com:Icon name="edit" size="16" text="core.edit" />
+						</a>
 					</td>
 					<td>
-						<a href="javascript:void(0);" onclick="schemaShow.truncateTable('<?php echo $table->TABLE_NAME; ?>')" class="icon">
+						<a href="javascript:void(0);" onclick="schemaShow.truncateTable($(this).closest('tr').attr('id').substr(7))" class="icon">
 							<com:Icon name="truncate" size="16" text="database.truncate" />
 						</a>
 					</td>
 					<td>
-						<a href="javascript:void(0);" onclick="schemaShow.dropTable('<?php echo $table->TABLE_NAME; ?>')" class="icon">
+						<a href="javascript:void(0);" onclick="schemaShow.dropTable($(this).closest('tr').attr('id').substr(7))" class="icon">
 							<com:Icon name="delete" size="16" text="database.drop" />
 						</a>
 					</td>
@@ -137,3 +135,7 @@
 	</div>
 
 </div>
+
+<script type="text/javascript">
+schemaShow.setupDialogs();
+</script>

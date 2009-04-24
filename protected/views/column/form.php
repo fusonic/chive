@@ -1,13 +1,13 @@
 <?php CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3); ?>
 <script type="text/javascript">
-var idPrefix = '<?php echo CHtml::$idPrefix; ?>';
 var isPrimary<?php echo CHtml::$idPrefix; ?> = <?php echo json_encode($column->getIsPartOfPrimaryKey()); ?>;
 </script>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/views/column/form.js', CClientScript::POS_END); ?>
 
-<?php if($isSubmitted && !$column->isNewRecord): ?>
+<?php if($isSubmitted && !$column->isNewRecord) { ?>
 	<script type="text/javascript">
-	var row = $('#' + idPrefix).parents("tr").prev();
+	var idPrefix = '<?php echo CHtml::$idPrefix; ?>';
+	var row = $('#' + idPrefix).closest("tr").prev();
+	row.attr('id', 'columns_<?php echo $column->COLUMN_NAME; ?>');
 	row.children('td:eq(1)').html('<?php echo $column->COLUMN_NAME; ?>');
 	row.children('td:eq(2)').html(<?php echo json_encode($column->COLUMN_TYPE); ?>);
 	row.children('td:eq(3)').html('<?php echo ($column->COLLATION_NAME ? '<dfn class="collation" title="' . Collation::getDefinition($column->COLLATION_NAME) . '">' . $column->COLLATION_NAME . '</dfn>' : ''); ?>');
@@ -19,7 +19,7 @@ var isPrimary<?php echo CHtml::$idPrefix; ?> = <?php echo json_encode($column->g
 	});
 	Notification.add('success', '<?php echo Yii::t('message', 'successEditColumn', array('{col}' => $column->COLUMN_NAME)); ?>', null, <?php echo json_encode($sql); ?>);
 	</script>
-<?php endif; ?>
+<?php } ?>
 
 <?php echo CHtml::form('', 'post', array('id' => CHtml::$idPrefix)); ?>
 	<h1>
@@ -38,7 +38,7 @@ var isPrimary<?php echo CHtml::$idPrefix; ?> = <?php echo json_encode($column->g
 					<?php echo CHtml::activeLabel($column,'COLUMN_NAME'); ?>
 				</td>
 				<td colspan="2">
-					<?php echo CHtml::activeTextField($column, 'COLUMN_NAME', ($column->isNewRecord ? array() : array('disabled' =>  true))); ?>
+					<?php echo CHtml::activeTextField($column, 'COLUMN_NAME'); ?>
 				</td>
 			</tr>
 			<tr>
@@ -178,3 +178,7 @@ var isPrimary<?php echo CHtml::$idPrefix; ?> = <?php echo json_encode($column->g
 		<?php echo CHtml::button(Yii::t('action', 'cancel'), array('class'=>'icon delete', 'onclick'=>'$(this.form).slideUp(500, function() { $(this).parents("tr").remove(); })')); ?>
 	</div>
 </form>
+
+<script type="text/javascript">
+columnForm.create('<?php echo CHtml::$idPrefix; ?>');
+</script>

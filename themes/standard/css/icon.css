@@ -16,15 +16,13 @@
   a.icon span {
   	text-decoration: underline;
   }
-  /*
-  div.ui-layout-center span.icon img.icon,
-  div.ui-layout-center a.icon img.icon,
-  #purr-container a.icon img.icon,
-  #purr-container span.icon img.icon
-  */
- span.icon img.icon,
- a.icon img.icon 
-  {
+  
+  a.icon:hover span {
+  	text-decoration: none;
+  }
+  
+  span.icon img.icon,
+  a.icon img.icon {
   	border: none;
 	position: relative;
 	top: 3px;

@@ -3,6 +3,7 @@
 class Column extends CActiveRecord
 {
 
+	public $originalColumnName;
 	public $COLLATION_NAME = Collation::DEFAULT_COLLATION;
 	public $scale = 0, $size = 0;
 	public $_values = array();
@@ -22,6 +23,12 @@ class Column extends CActiveRecord
 	public function instantiate($attributes)
 	{
 		$res = parent::instantiate($attributes);
+
+		// Oringinal column name
+		if(isset($attributes['COLUMN_NAME']))
+		{
+			$res->originalColumnName = $attributes['COLUMN_NAME'];
+		}
 
 		/*
 		 * We have to set some properties by hand
@@ -260,23 +267,25 @@ class Column extends CActiveRecord
 		$db = new CDbConnection();
 		if(strlen($this->COLUMN_DEFAULT) > 0 && $this->EXTRA != 'auto_increment')
 		{
-			$default = 'DEFAULT ' . self::$db->quoteValue($this->COLUMN_DEFAULT);
+			$default = ' DEFAULT ' . self::$db->quoteValue($this->COLUMN_DEFAULT);
 		}
 		else if($this->getIsNullable() && $this->EXTRA != 'auto_increment')
 		{
-			$default = 'DEFAULT NULL';
+			$default = ' DEFAULT NULL';
 		}
 		else
 		{
 			$default = '';
 		}
 
-		return self::$db->quoteColumnName($this->COLUMN_NAME)
-			. ' ' . $this->getColumnType() . ' ' . $collate . $this->attribute
-			. ' ' . ($this->getIsNullable() ? 'NULL' : 'NOT NULL')
-			. ' ' . $default
-			. ' ' . ($this->EXTRA == 'auto_increment' ? 'AUTO_INCREMENT' : '')
-			. ' ' . (strlen($this->COLUMN_COMMENT) ? 'COMMENT ' . self::$db->quoteValue($this->COLUMN_COMMENT) : '');
+		return trim(
+			self::$db->quoteColumnName($this->COLUMN_NAME)
+			. ' ' . $this->getColumnType() . $collate . $this->attribute
+			. ($this->getIsNullable() ? ' NULL' : ' NOT NULL')
+			. $default
+			. ($this->EXTRA == 'auto_increment' ? ' AUTO_INCREMENT' : '')
+			. (strlen($this->COLUMN_COMMENT) ? ' COMMENT ' . self::$db->quoteValue($this->COLUMN_COMMENT) : '')
+		);
 	}
 
 	public function move($command)
@@ -308,8 +317,15 @@ class Column extends CActiveRecord
 			return false;
 		}
 
-		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
-			. "\t" . 'MODIFY ' . $this->getColumnDefinition() . ';';
+		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n";
+		if($this->originalColumnName == $this->COLUMN_NAME)
+		{
+			$sql .= "\t" . 'MODIFY ' . $this->getColumnDefinition() . ';';
+		}
+		else
+		{
+			$sql .= "\t" . 'CHANGE ' . self::$db->quoteColumnName($this->originalColumnName) . ' ' . $this->getColumnDefinition() . ';';
+		}
 		$cmd = new CDbCommand(self::$db, $sql);
 		try
 		{

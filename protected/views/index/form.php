@@ -1,8 +1,4 @@
 <?php CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3); ?>
-<script type="text/javascript">
-var idPrefix = '<?php echo CHtml::$idPrefix; ?>';
-</script>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/views/index/form.js', CClientScript::POS_END); ?>
 
 <?php echo CHtml::form('', 'post', array('id' => CHtml::$idPrefix)); ?>
 	<h1>
@@ -97,3 +93,7 @@ var idPrefix = '<?php echo CHtml::$idPrefix; ?>';
 		<?php echo CHtml::button(Yii::t('action', 'cancel'), array('class'=>'icon delete', 'onclick'=>'$(this.form).slideUp(500, function() { $(this).parents("tr").remove(); })')); ?>
 	</div>
 </form>
+
+<script type="text/javascript">
+indexForm.create('<?php echo CHtml::$idPrefix; ?>');
+</script>

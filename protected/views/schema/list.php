@@ -1,5 +1,3 @@
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/views/schema/list.js', CClientScript::POS_HEAD); ?>
-
 <div id="dropSchemataDialog" title="<?php echo Yii::t('database', 'dropSchemata'); ?>" style="display: none">
 	<?php echo Yii::t('database', 'doYouReallyWantToDropSchemata'); ?>
 </div>
@@ -31,7 +29,7 @@
 		</thead>
 		<tbody>
 
-			<?php foreach($schemaList as $n=>$model): ?>
+			<?php foreach($schemaList as $n => $model): ?>
 				<tr id="schemata_<?php echo $model->SCHEMA_NAME; ?>">
 					<td>
 						<?php echo CHtml::link($model->SCHEMA_NAME, 'schema/' . $model->SCHEMA_NAME); ?>
@@ -50,12 +48,12 @@
 						</a>
 					</td>
 					<td>
-						<a href="javascript:void(0)" onclick="editSchema('<?php echo $model->SCHEMA_NAME; ?>')" class="icon">
+						<a href="javascript:void(0)" onclick="schemaList.editSchema('<?php echo $model->SCHEMA_NAME; ?>')" class="icon">
 							<com:Icon name="edit" size="16" text="core.edit" />
 						</a>
 					</td>
 					<td>
-						<a href="javascript:void(0)" onclick="dropSchema('<?php echo $model->SCHEMA_NAME; ?>')" class="icon">
+						<a href="javascript:void(0)" onclick="schemaList.dropSchema('<?php echo $model->SCHEMA_NAME; ?>')" class="icon">
 							<com:Icon name="delete" size="16" text="database.drop" />
 						</a>
 					</td>
@@ -83,7 +81,7 @@
 			<com:Icon name="arrow_turn_090" size="16" />
 			<span><?php echo Yii::t('core', 'withSelected'); ?></span>
 		</span>
-		<a class="icon" href="javascript:void(0)" onclick="dropSchemata()">
+		<a class="icon" href="javascript:void(0)" onclick="schemaList.dropSchemata()">
 			<com:Icon name="delete" size="16" />
 			<span><?php echo Yii::t('database', 'drop'); ?></span>
 		</a>
@@ -94,3 +92,7 @@
 	</div>
 
 </div>
+
+<script type="text/javascript">
+schemaList.setupDialogs();
+</script>

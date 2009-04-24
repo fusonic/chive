@@ -564,7 +564,8 @@ class TableController extends Controller
 
 
 	}
-/**
+
+	/**
 	 * Truncates tables
 	 */
 	public function actionTruncate()
@@ -653,11 +654,41 @@ class TableController extends Controller
 	}
 
 	/**
-	 * Updates a particular user.
-	 * If update is successful, the browser will be redirected to the 'show' page.
+	 * Updates a table.
 	 */
 	public function actionUpdate()
 	{
+		$this->layout = false;
+
+		$isSubmitted = false;
+		$sql = false;
+		$table = Table::model()->findByPk(array(
+			'TABLE_SCHEMA' => $this->schema,
+			'TABLE_NAME' => $this->table,
+		));
+
+		if(isset($_POST['Table']))
+		{
+			$table->attributes = $_POST['Table'];
+			$sql = $table->save();
+			if($sql)
+			{
+				$isSubmitted = true;
+			}
+		}
+
+		$collations = Collation::model()->findAll(array(
+			'order' => 'COLLATION_NAME',
+			'select'=>'COLLATION_NAME, CHARACTER_SET_NAME AS collationGroup'
+		));
+
+		$this->render('form', array(
+			'table' => $table,
+			'collations' => $collations,
+			'storageEngines' => StorageEngine::getSupportedEngines(),
+			'isSubmitted' => $isSubmitted,
+			'sql' => $sql,
+		));
 	}
 
 	/**

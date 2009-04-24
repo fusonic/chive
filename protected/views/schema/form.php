@@ -1,17 +1,17 @@
-<span id="<?php echo $helperId; ?>" />
-
+<?php CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3); ?>
 <?php if($isSubmitted && !$schema->isNewRecord): ?>
 	<script type="text/javascript">
-	$("#<%= $helperId %>").parents("tr").prev().effect("highlight", {}, 2000);
-	$("#<%= $helperId %>").parents("tr").prev().find("td dfn.collation").html("<?php echo $schema->DEFAULT_COLLATION_NAME; ?>");
-	$("#<%= $helperId %>").parents("tr").prev().find("td dfn.collation").attr("title", "<?php echo Collation::getDefinition($schema->DEFAULT_COLLATION_NAME); ?>");
-	$("#<%= $helperId %>").parent().slideUp(500, function() {
-		$("#<%= $helperId %>").parents("tr").remove();
+	var idPrefix = '<?php echo CHtml::$idPrefix; ?>';
+	var row = $('#' + idPrefix).closest("tr").prev();
+	row.effect("highlight", {}, 2000);
+	row.find("td dfn.collation").html("<?php echo $schema->DEFAULT_COLLATION_NAME; ?>").attr("title", "<?php echo Collation::getDefinition($schema->DEFAULT_COLLATION_NAME); ?>");
+	$('#' + idPrefix).parent().slideUp(500, function() {
+		$('#' + idPrefix).parents("tr").remove();
 	});
 	</script>
 <?php endif; ?>
 
-<?php echo CHtml::form('', 'post'); ?>
+<?php echo CHtml::form('', 'post', array('id' => CHtml::$idPrefix)); ?>
 	<h1>
 		<?php echo Yii::t('database', ($schema->isNewRecord ? 'addSchema' : 'editSchema')); ?>
 	</h1>

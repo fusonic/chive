@@ -5,6 +5,11 @@ class Table extends CActiveRecord
 
 	public static $db;
 
+	public $originalAttributes;
+	public $optionChecksum = 0, $originalOptionChecksum = 0;
+	public $optionDelayKeyWrite = 0, $originalOptionDelayKeyWrite = 0;
+	public $optionPackKeys = 'DEFAULT', $originalOptionPackKeys = 'DEFAULT';
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return CActiveRecord the static model class
@@ -15,11 +20,54 @@ class Table extends CActiveRecord
 	}
 
 	/**
+	 * @see CActiveRecord::instantiate()
+	 */
+	public function instantiate($attributes)
+	{
+		$res = parent::instantiate($attributes);
+		$res->originalAttributes = $attributes;
+
+		// Check options
+		$options = strtolower($attributes['CREATE_OPTIONS']);
+		if(strpos($options, 'checksum=1') !== false)
+		{
+			$res->optionChecksum = $res->originalOptionChecksum = 1;
+		}
+		if(strpos($options, 'delay_key_write=1') !== false)
+		{
+			$res->optionDelayKeyWrite = $res->originalOptionDelayKeyWrite = 1;
+		}
+		if(strpos($options, 'pack_keys=1') !== false)
+		{
+			$res->optionPackKeys = $res->originalOptionPackKeys = 1;
+		}
+		elseif(strpos($options, 'pack_keys=0') !== false)
+		{
+			$res->optionPackKeys = $res->originalOptionPackKeys = 0;
+		}
+
+		return $res;
+	}
+
+	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
 		return 'TABLES';
+	}
+
+	public function safeAttributes()
+	{
+		return array(
+			'TABLE_NAME',
+			'TABLE_COLLATION',
+			'ENGINE',
+			'TABLE_COMMENT',
+			'optionPackKeys',
+			'optionDelayKeyWrite',
+			'optionChecksum',
+		);
 	}
 
 	/**
@@ -60,6 +108,13 @@ class Table extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
+			'optionPackKeys' => Yii::t('database', 'packKeys'),
+			'optionDelayKeyWrite' => Yii::t('database', 'delayKeyWrite'),
+			'optionChecksum' => Yii::t('core', 'checksum'),
+			'TABLE_COLLATION' => Yii::t('database', 'collation'),
+			'TABLE_COMMENT' => Yii::t('core', 'comment'),
+			'TABLE_NAME' => Yii::t('core', 'name'),
+			'ENGINE' => Yii::t('database', 'storageEngine'),
 		);
 	}
 
@@ -113,9 +168,6 @@ class Table extends CActiveRecord
 		$sql = 'TRUNCATE TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . ';';
 		$cmd = self::$db->createCommand($sql);
 
-		$sql = 'TRUNCATE TABLE ' . self::$db->quoteTableName($this->TABLE_NAME);
-		$cmd = self::$db->createCommand($sql);
-
 		// Execute
 		try
 		{
@@ -134,10 +186,9 @@ class Table extends CActiveRecord
 	 *
 	 * @return	string
 	 */
-
 	public function drop() {
 
-		$sql = 'DROP TABLE ' . self::$db->quoteTableName($this->TABLE_NAME);
+		$sql = 'DROP TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . ';';
 		$cmd = self::$db->createCommand($sql);
 
 		// Execute
@@ -154,74 +205,66 @@ class Table extends CActiveRecord
 	}
 
 	/**
-	 * Drops an index from this table.
+	 * Update table
 	 *
-	 * @param	string			name of the index
-	 * @param	string			type of the index (index/unique/fulltext/primary)
-	 * @return	string			sql statement
-	 * @throws	DbException		If sql statement fails.
+	 * @return	bool
 	 */
-	public function dropIndex($index, $type)
+	public function update()
 	{
-		// Create command
-		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
-			. "\t" . 'DROP INDEX ' . self::$db->quoteColumnName($index) . ';';
-		$cmd = self::$db->createCommand($sql);
+		if($this->getIsNewRecord())
+		{
+			throw new CDbException(Yii::t('yii','The active record cannot be updated because it is new.'));
+		}
+		if(!$this->beforeSave())
+		{
+			return false;
+		}
 
-		// Execute
+		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->originalAttributes['TABLE_NAME']);
+		if($this->TABLE_NAME != $this->originalAttributes['TABLE_NAME'])
+		{
+			$sql .= "\n\t" . 'RENAME ' . self::$db->quoteTableName($this->TABLE_NAME);
+		}
+		if($this->TABLE_COLLATION != $this->originalAttributes['TABLE_COLLATION'])
+		{
+			$sql .= "\n\t" . 'CHARACTER SET ' . Collation::getCharacterSet($this->TABLE_COLLATION) . ' COLLATE ' . $this->TABLE_COLLATION;
+		}
+		if($this->TABLE_COMMENT != $this->originalAttributes['TABLE_COMMENT'])
+		{
+			$sql .= "\n\t" . 'COMMENT ' . self::$db->quoteValue($this->TABLE_COMMENT);
+		}
+		if($this->ENGINE != $this->originalAttributes['ENGINE'])
+		{
+			$sql .= "\n\t" . 'ENGINE ' . $this->ENGINE;
+		}
+		if($this->optionChecksum != $this->originalOptionChecksum)
+		{
+			$sql .= "\n\t" . 'CHECKSUM ' . $this->optionChecksum;
+		}
+		if($this->optionPackKeys != $this->originalOptionPackKeys)
+		{
+			$sql .= "\n\t" . 'PACK_KEYS ' . $this->optionPackKeys;
+		}
+		if($this->optionDelayKeyWrite != $this->originalOptionDelayKeyWrite)
+		{
+			$sql .= "\n\t" . 'DELAY_KEY_WRITE ' . $this->optionDelayKeyWrite;
+		}
+		$sql .= ';';
+		$cmd = new CDbCommand(self::$db, $sql);
 		try
 		{
 			$cmd->prepare();
 			$cmd->execute();
+			$this->afterSave();
+			$this->refresh();
 			return $sql;
 		}
 		catch(CDbException $ex)
 		{
-			throw new DbException($cmd);
-		}
-	}
-
-	/**
-	 * Creates an index in this table.
-	 *
-	 * @param	string			name of the index
-	 * @param	string			type of the index (index/unique/fulltext/primary)
-	 * @param	array			array of columns
-	 * @return	string			sql statement
-	 * @throws	DbException		If sql statement fails.
-	 */
-	public function createIndex($index, $type, array $columns, array $keyLengths = array())
-	{
-		// Prepare columns
-		foreach($columns AS $key => $value)
-		{
-			$columns[$key] = self::$db->quoteColumnName($value) . (isset($keyLengths[$value]) ? '(' . (int)$keyLengths[$value] . ')' : '');
-		}
-		$columns = implode(',', $columns);
-
-		// Create command
-		if(strtolower($type) == 'primary')
-		{
-			$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
-				. "\t" . 'ADD PRIMARY KEY (' . $columns . ');';
-		}
-		else
-		{
-			$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
-				. "\t" . 'ADD ' . $type . ' ' . self::$db->quoteColumnName($index) . ' (' . $columns . ');';
-		}
-		$cmd = self::$db->createCommand($sql);
-
-		// Execute
-		try
-		{
-			$cmd->prepare();
-			$cmd->execute();
-			return $sql;
-		}
-		catch(CDbException $ex)
-		{
-			throw new DbException($cmd);
+			$errorInfo = $cmd->getPdoStatement()->errorInfo();
+			$this->addError(null, Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
+			$this->afterSave();
+			return false;
 		}
 	}
 

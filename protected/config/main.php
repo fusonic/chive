@@ -45,7 +45,7 @@ return array(
 				),
 				array(
 					'class'=>'CWebLogRoute',
-					'levels'=>'error, warning, info, trace', //, warning, info, trace',
+					'levels'=>'error, warning', //, warning, info, trace',
 					'showInFireBug'=>true,
 				),
 			),
@@ -101,17 +101,37 @@ return array(
 				//Bookmarks
 				'schema/<schema:'.URL_MATCH.'>/bookmark/show/<id:(.+)>'=>'schema/showBookmark',
 
+					// Table actions
+					'schema/<schema:'.URL_MATCH.'>/tableAction/truncate'=>'table/truncate',
+					'schema/<schema:'.URL_MATCH.'>/tableAction/drop'=>'table/drop',
+
 					// Table
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/browse'=>'table/browse',
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/structure'=>'table/structure',
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/sql'=>'table/sql',
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/search'=>'table/search',
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/insert'=>'table/insert',
+					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/update'=>'table/update',
 
-						// Table actions
-						'schema/<schema:'.URL_MATCH.'>/tableAction/truncate'=>'table/truncate',
-						'schema/<schema:'.URL_MATCH.'>/tableAction/drop'=>'table/drop',
+						// ColumnActions
+						'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columnAction/create'=>'column/create',
+						'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columnAction/drop'=>'column/drop',
 
+						// Column
+						'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columns/<column:'.URL_MATCH.'>/move'=>'column/move',
+						'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columns/<column:'.URL_MATCH.'>/update'=>'column/update',
+
+						// IndexActions
+						'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/indexAction/create'=>'index/create',
+						'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/indexAction/createSimple'=>'index/createSimple',
+						'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/indexAction/drop'=>'index/drop',
+
+						// Index
+						'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/indices/<index:'.URL_MATCH.'>/update'=>'index/update',
+
+					// View actions
+					'schema/<schema:'.URL_MATCH.'>/viewAction/drop'=>'view/drop',
+						
 					// Views
 					'schema/<schema:'.URL_MATCH.'>/views/<view:'.URL_MATCH.'>/browse'=>'view/browse',
 					'schema/<schema:'.URL_MATCH.'>/views/<view:'.URL_MATCH.'>/structure'=>'view/structure',
@@ -119,30 +139,10 @@ return array(
 					'schema/<schema:'.URL_MATCH.'>/views/<view:'.URL_MATCH.'>/search'=>'view/search',
 					'schema/<schema:'.URL_MATCH.'>/views/<view:'.URL_MATCH.'>/insert'=>'view/insert',
 
-						// View actions
-						'schema/<schema:'.URL_MATCH.'>/viewAction/drop'=>'view/drop',
-
-
 					// Row
 					#'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/row/load'=>'row/load',
 					#'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/row/update'=>'row/update',
 					#'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/row/delete'=>'row/delete',
-
-					// Column
-					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columns/<column:'.URL_MATCH.'>/move'=>'column/move',
-					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columns/<column:'.URL_MATCH.'>/update'=>'column/update',
-
-					// ColumnActions
-					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columnAction/create'=>'column/create',
-					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columnAction/drop'=>'column/drop',
-
-					// Index
-					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/indices/<index:'.URL_MATCH.'>/update'=>'index/update',
-
-					// IndexActions
-					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/indexAction/create'=>'index/create',
-					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/indexAction/createSimple'=>'index/createSimple',
-					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/indexAction/drop'=>'index/drop',
             ),
         ),
 

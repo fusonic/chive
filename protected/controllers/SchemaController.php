@@ -76,7 +76,6 @@ class SchemaController extends Controller
 	 */
 	public function actionShow()
 	{
-
 		$schema = $this->loadSchema();
 
 		$criteria = new CDbCriteria;
@@ -262,7 +261,6 @@ class SchemaController extends Controller
 	 */
 	public function actionList()
 	{
-
 		$criteria = new CDbCriteria();
 
 		// Pagination
@@ -283,7 +281,7 @@ class SchemaController extends Controller
 		$sort->applyOrder($criteria);
 
 		$criteria->group = 'SCHEMA_NAME';
-		$criteria->select = 'COUNT(*) AS tableCount';
+		$criteria->select = 'SCHEMA_NAME, DEFAULT_COLLATION_NAME, COUNT(*) AS tableCount';
 
 		$schemaList = Schema::model()->with(array(
 			'table' => array('select' => 'COUNT(??.TABLE_NAME) AS tableCount'),

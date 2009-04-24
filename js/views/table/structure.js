@@ -131,146 +131,146 @@ var tableStructure = {
 			ids.push($(this).val());
 		});
 		return ids;		
+	},
+	
+	// Setup sortable
+	setupSortable: function()
+	{
+		/*
+		 * Setup sortable columns
+		 */
+		$('#columns tbody').sortable({
+			handle: 'img.icon_arrow_move',
+			update: function(event, ui) 
+			{
+				// Fix even/odd classes
+				$('#columns tbody tr:even').addClass('even').removeClass('odd');
+				$('#columns tbody tr:odd').addClass('odd').removeClass('even');
+				
+				// Get column id
+				var id = ui.item[0].id.substr(8);
+				
+				// Get position & command
+				var prevs = $('#columns_' + id).prevAll();
+				if(prevs.length == 0)
+				{
+					var command = "FIRST";
+				}
+				else
+				{
+					var command = "AFTER " + $('#columns_' + id).prev()[0].id.substr(8); 
+				}
+				
+				// Do AJAX request
+				$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/columns/' + id + '/move', {
+						command: command
+					}, AjaxResponse.handle
+				);
+			}
+		});
+	},
+	
+	// Setup dialogs
+	setupDialogs: function()
+	{
+		/*
+		 * Setup drop column dialog
+		 */
+		$('div.ui-dialog>div[id="dropColumnsDialog"]').remove();
+		$('#dropColumnsDialog').dialog({
+			modal: true,
+			resizable: false,
+			autoOpen: false,
+			buttons: {
+				'No': function() 
+				{
+					$(this).dialog('close');
+				},
+				'Yes': function() 
+				{
+					
+					// Collect ids
+					var ids = tableStructure.getSelectedIds();
+					
+					// Do drop request
+					$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/columnAction/drop', {
+						'schema': schema,
+						'table': table,
+						'column[]': ids
+					}, function(responseText) {
+						AjaxResponse.handle(responseText);
+						for(var i = 0; i < ids.length; i++)
+						{
+							$('#columns_' + ids[i]).remove();
+						}
+						$('#columns tr').removeClass('even').removeClass('odd');
+						$('#columns tbody tr:even').addClass('even');
+						$('#columns tbody tr:odd').addClass('odd');
+					});
+					
+					$(this).dialog('close');
+				}
+			}		
+		});
+		
+		
+		/*
+		 * Setup add index dialog
+		 */
+		$('div.ui-dialog>div[id="addIndexDialog"]').remove();
+		$('#addIndexDialog').dialog({
+			modal: true,
+			resizable: false,
+			autoOpen: false,
+			dialogClass: 'addIndexDialog',
+			buttons: {
+				'Ok': function() 
+				{
+					tableStructure.addIndexFinish();	
+					$(this).dialog('close');
+				},
+				'Cancel': function() 
+				{
+					$(this).dialog('close');
+				}
+			}		
+		});
+		
+		/*
+		 * Setup drop index dialog
+		 */
+		$('div.ui-dialog>div[id="dropIndexDialog"]').remove();
+		$('#dropIndexDialog').dialog({
+			modal: true,
+			resizable: false,
+			autoOpen: false,
+			buttons: {
+				'Cancel': function() 
+				{
+					$(this).dialog('close');
+				},
+				'Ok': function() 
+				{
+					
+					// Do request
+					$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/indexAction/drop', {
+						index: tableStructure.dropIndexName
+					}, function(responseText) {
+						var response = JSON.parse(responseText);
+						AjaxResponse.handle(response);
+						if(response.data.success)
+						{
+							$('#indices_' + tableStructure.dropIndexName).remove();
+							$('#indices tr').removeClass('even').removeClass('odd');
+							$('#indices tbody tr:even').addClass('even');
+							$('#indices tbody tr:odd').addClass('odd');
+						}
+					});
+					
+					$(this).dialog('close');
+				}
+			}		
+		});
 	}
 	
 };
-
-/*
- * OnLoad
- */
-$(document).ready(function() {
-	
-	/*
-	 * Setup sortable columns
-	 */
-	$('#columns tbody').sortable({
-		handle: 'img.icon_arrow_move',
-		update: function(event, ui) 
-		{
-			// Fix even/odd classes
-			$('#columns tbody tr:even').addClass('even').removeClass('odd');
-			$('#columns tbody tr:odd').addClass('odd').removeClass('even');
-			
-			// Get column id
-			var id = ui.item[0].id.substr(8);
-			
-			// Get position & command
-			var prevs = $('#columns_' + id).prevAll();
-			if(prevs.length == 0)
-			{
-				var command = "FIRST";
-			}
-			else
-			{
-				var command = "AFTER " + $('#columns_' + id).prev()[0].id.substr(8); 
-			}
-			
-			// Do AJAX request
-			$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/columns/' + id + '/move', {
-					command: command
-				}, AjaxResponse.handle
-			);
-		}
-	});
-	
-	
-	/*
-	 * Setup drop column dialog
-	 */
-	$('div.ui-dialog>div[id="dropColumnsDialog"]').remove();
-	$('#dropColumnsDialog').dialog({
-		modal: true,
-		resizable: false,
-		autoOpen: false,
-		buttons: {
-			'No': function() 
-			{
-				$(this).dialog('close');
-			},
-			'Yes': function() 
-			{
-				
-				// Collect ids
-				var ids = tableStructure.getSelectedIds();
-				
-				// Do drop request
-				$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/columnAction/drop', {
-					'schema': schema,
-					'table': table,
-					'column[]': ids
-				}, function(responseText) {
-					AjaxResponse.handle(responseText);
-					for(var i = 0; i < ids.length; i++)
-					{
-						$('#columns_' + ids[i]).remove();
-					}
-					$('#columns tr').removeClass('even').removeClass('odd');
-					$('#columns tbody tr:even').addClass('even');
-					$('#columns tbody tr:odd').addClass('odd');
-				});
-				
-				$(this).dialog('close');
-			}
-		}		
-	});
-	
-	
-	/*
-	 * Setup add index dialog
-	 */
-	$('div.ui-dialog>div[id="addIndexDialog"]').remove();
-	$('#addIndexDialog').dialog({
-		modal: true,
-		resizable: false,
-		autoOpen: false,
-		dialogClass: 'addIndexDialog',
-		buttons: {
-			'Ok': function() 
-			{
-				tableStructure.addIndexFinish();	
-				$(this).dialog('close');
-			},
-			'Cancel': function() 
-			{
-				$(this).dialog('close');
-			}
-		}		
-	});
-	
-	/*
-	 * Setup drop index dialog
-	 */
-	$('div.ui-dialog>div[id="dropIndexDialog"]').remove();
-	$('#dropIndexDialog').dialog({
-		modal: true,
-		resizable: false,
-		autoOpen: false,
-		buttons: {
-			'Cancel': function() 
-			{
-				$(this).dialog('close');
-			},
-			'Ok': function() 
-			{
-				
-				// Do request
-				$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/indexAction/drop', {
-					index: tableStructure.dropIndexName
-				}, function(responseText) {
-					var response = JSON.parse(responseText);
-					AjaxResponse.handle(response);
-					if(response.data.success)
-					{
-						$('#indices_' + tableStructure.dropIndexName).remove();
-						$('#indices tr').removeClass('even').removeClass('odd');
-						$('#indices tbody tr:even').addClass('even');
-						$('#indices tbody tr:odd').addClass('odd');
-					}
-				});
-				
-				$(this).dialog('close');
-			}
-		}		
-	});
-	
-});

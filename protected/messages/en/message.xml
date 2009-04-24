@@ -15,6 +15,7 @@
 	<entry id="errorTruncateTable">Truncating table »{table}« failed</entry>
 	<entry id="successDropTable">1#Dropped table »{table}«|n>1#Dropped {tableCount} tables</entry>
 	<entry id="errorDropTable">Dropping table »{table}« failed</entry>
+	<entry id="successEditTable">Saved table »{table}«</entry>
 
 	<entry id="dropTable">Drop table</entry>
 	<entry id="doYouReallyWantToDropTable">Do you really want to drop the table?</entry>
@@ -53,11 +54,5 @@
 	<entry id="doYouReallyWantToDeleteSelectedRows">Do you really want to delete the selected row(s)?</entry>
 	<entry id="successDeleteRows">1#Deleted {rowCount} row|n>1#Deleted {rowCount} rows</entry>
 	<entry id="successInsertRow">Inserted row</entry>
-	
-	<!-- Table -->
-	<entry id="successTruncateTable">Truncated table »{table}«</entry>
-	<entry id="errorTruncateTable">Truncating table »{table}« failed</entry>
-	<entry id="successDropTable">Dropped table »{table}«</entry>
-	<entry id="errorDropTable">Dropping table »{table}« failed</entry>
 	
 </category>

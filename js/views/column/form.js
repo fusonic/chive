@@ -43,14 +43,15 @@ var columnForm = {
 			$('#' + idPrefix + 'settingDefaultNullHint').hide();
 		}
 		
+	},
+	
+	create: function(idPrefix)
+	{
+		$('#' + idPrefix + 'Column_dataType').change(new Function('columnForm.setup("' + idPrefix + '")'));
+		$('#' + idPrefix + 'Column_autoIncrement').change(new Function('columnForm.setup("' + idPrefix + '")'));
+		$('#' + idPrefix + 'createIndexPrimary').change(new Function('columnForm.setup("' + idPrefix + '")'));
+		$('#' + idPrefix + 'Column_isNullable').change(new Function('columnForm.setup("' + idPrefix + '")'));
+		columnForm.setup(idPrefix);
 	}
 	
 };
-
-$(document).ready(function() {
-	$('#' + idPrefix + 'Column_dataType').change(new Function('columnForm.setup("' + idPrefix + '")'));
-	$('#' + idPrefix + 'Column_autoIncrement').change(new Function('columnForm.setup("' + idPrefix + '")'));
-	$('#' + idPrefix + 'createIndexPrimary').change(new Function('columnForm.setup("' + idPrefix + '")'));
-	$('#' + idPrefix + 'Column_isNullable').change(new Function('columnForm.setup("' + idPrefix + '")'));
-	columnForm.setup(idPrefix);
-});

@@ -1,6 +1,3 @@
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.jeditable.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl . '/js/views/table/structure.js', CClientScript::POS_HEAD); ?>
-
 <div id="dropColumnsDialog" title="<?php echo Yii::t('database', 'dropColumns'); ?>" style="display: none">
 	<?php echo Yii::t('database', 'doYouReallyWantToDropColumns'); ?>
 </div>
@@ -33,12 +30,12 @@
 		</colgroup>
 		<thead>
 			<tr>
-				<th><%= Yii::t('database','field'); %></th>
-				<th><%= Yii::t('database','type'); %></th>
-				<th><%= Yii::t('database','collation'); %></th>
-				<th><%= Yii::t('database','null'); %></th>
-				<th><%= Yii::t('database','default'); %></th>
-				<th colspan="9"><%= Yii::t('database','extra'); %></th>
+				<th><?php echo Yii::t('database','field'); ?></th>
+				<th><?php echo Yii::t('database','type'); ?></th>
+				<th><?php echo Yii::t('database','collation'); ?></th>
+				<th><?php echo Yii::t('database','null'); ?></th>
+				<th><?php echo Yii::t('database','default'); ?></th>
+				<th colspan="9"><?php echo Yii::t('database','extra'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -79,18 +76,18 @@
 						<com:Icon name="arrow_move" size="16" text="core.move" htmlOptions={array('style'=>'cursor: pointer;')} />
 					</td>
 					<td>
-						<a href="javascript:void(0)" onclick="tableStructure.editColumn('<?php echo $column->COLUMN_NAME; ?>')" class="icon">
+						<a href="javascript:void(0)" onclick="tableStructure.editColumn($(this).closest('tr').attr('id').substr(8))" class="icon">
 							<com:Icon name="edit" size="16" text="core.edit" />
 						</a>
 					</td>
 					<td>
-						<a href="javascript:void(0)" onclick="tableStructure.dropColumn('<?php echo $column->COLUMN_NAME; ?>')" class="icon">
+						<a href="javascript:void(0)" onclick="tableStructure.dropColumn($(this).closest('tr').attr('id').substr(8))" class="icon">
 							<com:Icon name="delete" size="16" text="database.drop" />
 						</a>
 					</td>
 					<td>
 						<?php if(!$table->getHasPrimaryKey()) { ?>
-							<a href="javascript:void(0)" onclick="tableStructure.addIndex1('primary', '<?php echo $column->COLUMN_NAME; ?>')" class="icon">
+							<a href="javascript:void(0)" onclick="tableStructure.addIndex1('primary', $(this).closest('tr').attr('id').substr(8))" class="icon">
 								<com:Icon name="key_primary" size="16" text="database.primaryKey" />
 							</a>
 						<?php } else { ?>
@@ -99,7 +96,7 @@
 					</td>
 					<td>
 						<?php if(DataType::check($column->DATA_TYPE, DataType::SUPPORTS_INDEX)) { ?>
-						<a href="javascript:void(0)" onclick="tableStructure.addIndex1('index', '<?php echo $column->COLUMN_NAME; ?>')" class="icon">
+						<a href="javascript:void(0)" onclick="tableStructure.addIndex1('index', $(this).closest('tr').attr('id').substr(8))" class="icon">
 							<com:Icon name="key_index" size="16" text="database.index" />
 						</a>
 						<?php } else { ?>
@@ -108,7 +105,7 @@
 					</td>
 					<td>
 						<?php if(DataType::check($column->DATA_TYPE, DataType::SUPPORTS_UNIQUE)) { ?>
-							<a href="javascript:void(0)" onclick="tableStructure.addIndex1('unique', '<?php echo $column->COLUMN_NAME; ?>')" class="icon">
+							<a href="javascript:void(0)" onclick="tableStructure.addIndex1('unique', $(this).closest('tr').attr('id').substr(8))" class="icon">
 								<com:Icon name="key_unique" size="16" text="database.uniqueKey" />
 							</a>
 						<?php } else { ?>
@@ -117,7 +114,7 @@
 					</td>
 					<td>
 						<?php if(DataType::check($column->DATA_TYPE, DataType::SUPPORTS_FULLTEXT)) { ?>
-							<a href="javascript:void(0)" onclick="tableStructure.addIndex1('fulltext', '<?php echo $column->COLUMN_NAME; ?>')" class="icon">
+							<a href="javascript:void(0)" onclick="tableStructure.addIndex1('fulltext', $(this).closest('tr').attr('id').substr(8))" class="icon">
 								<com:Icon name="key_fulltext" size="16" text="database.fulltextIndex" />
 							</a>
 						<?php } else { ?>
@@ -347,3 +344,8 @@
 	</div>
 
 </div>
+
+<script type="text/javascript">
+tableStructure.setupDialogs();
+tableStructure.setupSortable();
+</script>

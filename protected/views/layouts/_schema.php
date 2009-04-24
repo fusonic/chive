@@ -1,5 +1,3 @@
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/views/schema/general.js', CClientScript::POS_HEAD); ?>
-
 <script type="text/javascript">
 var schema = '<?php echo $this->schema; ?>';
 </script>
@@ -50,7 +48,7 @@ var schema = '<?php echo $this->schema; ?>';
 					'icon'=>'delete',
 					'link'=>array(
 						'url'=> 'javascript:void(0)',
-						'htmlOptions'=> array('class'=>'icon', 'onclick'=>'dropSchema("'.$this->schema.'");'),
+						'htmlOptions'=> array('class'=>'icon', 'onclick'=>'schemaGeneral.dropSchema()'),
 					),
 					'visible'=>true,
 			),
@@ -62,5 +60,8 @@ var schema = '<?php echo $this->schema; ?>';
 	<?php echo Yii::t('message', 'doYouReallyWantToDropDatabase'); ?>
 </div>
 
-
 <?php echo $content; ?>
+
+<script type="text/javascript">
+schemaGeneral.setupDialogs();
+</script>

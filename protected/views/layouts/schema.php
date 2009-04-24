@@ -15,29 +15,47 @@
 <link rel="shortcut icon" href="<?php echo Yii::app()->baseUrl; ?>/images/favicon.ico">
 
 <script type="text/javascript">
-	// Set global javascript variables
-	var baseUrl = '<?php echo Yii::app()->baseUrl; ?>';
-	var iconPath = '<?php echo Yii::app()->baseUrl . '/images/icons/fugue'; ?>';
+// Set global javascript variables
+var baseUrl = '<?php echo Yii::app()->baseUrl; ?>';
+var iconPath = '<?php echo Yii::app()->baseUrl . '/images/icons/fugue'; ?>';
 </script>
 
+<?php
+$scriptFiles = array(
+	'jquery/jquery.js',
+	'jquery/jquery-ui-1.7.1.custom.min.js',
+	'jquery/jquery.checkboxTable.js',
+	'jquery/jquery.form.js',
+	'jquery/jquery.jeditable.js',
+	'jquery/jquery.layout.js',
+	'jquery/jquery.listFilter.js',
+	'jquery/jquery.purr.js',
+	'jquery/jquery.selectboxes.js',
+	'jquery/jquery.tableForm.js',
+	'lib/json.js',
+	'main.js',
+	'bookmark.js',
+	'dataType.js',
+	'notification.js',
+	'profiling.js',
+	'storageEngine.js',
+	'views/column/form.js',
+	'views/index/form.js',
+	'views/schema/general.js',
+	'views/schema/list.js',
+	'views/schema/show.js',
+	'views/table/general.js',
+	'views/table/browse.js',
+	'views/table/form.js',
+	'views/table/structure.js',
+);
+foreach($scriptFiles AS $file)
+{
+	echo '<script type="text/javascript" src="' . BASEURL . '/js/' . $file . '"></script>';
+}
+?>
+
 <?php Yii::app()->clientScript->registerScript('userSettings', Yii::app()->user->settings->getJsObject(), CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.purr.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/notification.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/profiling.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/bookmark.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/lib/json.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/main.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.autogrow.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.layout.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.listFilter.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.tableForm.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery-ui-1.7.1.custom.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.checkboxTable.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.form.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.selectboxes.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/dataType.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/assets/lang_js/'.Yii::app()->getLanguage().'.js', CClientScript::POS_HEAD); ?>
 
 </head>
 <body>

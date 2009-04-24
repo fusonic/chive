@@ -68,6 +68,11 @@
 	<entry id="showingXSchemata">{count} Schemata</entry>
 	<entry id="XColumns">{count} Columns</entry>
 	<entry id="amountTables">1#{amount}  Table|n>1#{amount}  Tables</entry>
+	<entry id="packKeys">Pack keys</entry>
+	<entry id="storageEngine">Storage engine</entry>
+	<entry id="delayKeyWrite">Delay key write</entry>
+	<entry id="addTable">Add table</entry>
+	<entry id="editTable">Edit table</entry>
 	
 	<!-- Columns -->
 	<entry id="addColumn">Add column</entry>

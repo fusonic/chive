@@ -16,7 +16,7 @@ function predie($_value) {
 }
 
 // remove the following line when in production mode
-defined('YII_DEBUG') or define('YII_DEBUG',false);
+defined('YII_DEBUG') or define('YII_DEBUG', true);
 
 $console = false;
 
@@ -26,11 +26,12 @@ if($console == true)
 require_once($yii);
 $app = Yii::createWebApplication($config);
 
+// Define constants
+define('BASEURL', Yii::app()->baseUrl);
+define('ICONPATH', BASEURL . '/' . Yii::app()->params->iconpack);
+
 $session = Yii::app()->getSession();
 $request = Yii::app()->getRequest();
-
-// Define icon path
-define('ICONPATH', Yii::app()->baseUrl . DIRECTORY_SEPARATOR . Yii::app()->params->iconpack . DIRECTORY_SEPARATOR);
 
 if(!$app->user->isGuest)
 {
@@ -39,7 +40,9 @@ if(!$app->user->isGuest)
     $app->db->password= $app->user->password;
     $app->db->autoConnect = true;
 
-} elseif(!in_array($request->getPathInfo(), array('site/login', 'index.php'))) {
+}
+elseif(!in_array($request->getPathInfo(), array('site/login', 'index.php')))
+{
 
 	if($request->isAjaxRequest)
 	{
@@ -51,7 +54,6 @@ if(!$app->user->isGuest)
 	{
 		$request->redirect(Yii::app()->baseUrl . '/site/login');
 	}
-
 
 }
 
@@ -67,7 +69,6 @@ if($request->isAjaxRequest)
 	$app->clientScript->scriptMap['jquery.js'] = false;
 	$app->clientScript->scriptMap['jquery.min.js'] = false;
 }
-
 
 Yii::app()->getComponent('messages')->publishJavaScriptMessages();
 

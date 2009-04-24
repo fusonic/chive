@@ -63,39 +63,38 @@ var indexForm = {
 			$('#' + idPrefix + 'columns>tbody.noItems').show();
 			$('#' + idPrefix + 'columns>tbody.content').hide();
 		}
+	},
+	
+	create: function(idPrefix)
+	{
+		/*
+		 * Setup sortable columns
+		 */
+		$('#' + idPrefix + 'columns tbody.content').sortable({
+			handle: 'img.icon_arrow_move'
+		});
+		
+		/*
+		 * Setup add column select
+		 */
+		$('#' + idPrefix + 'addColumn').change(function() {
+			
+			var obj = $(this);
+			var idPrefix = this.id.substr(0, 4);
+			
+			if(obj.val() == '')
+			{
+				return;
+			}
+			
+			indexForm.addColumn(idPrefix, obj.val());
+			obj.selectOptions('');
+			
+		});
+		
+		indexForm.setup(idPrefix);
+		
+		$('#' + idPrefix + 'Index_type').change(new Function('indexForm.setup("' + idPrefix + '")'));
 	}
 	
 };
-
-$(document).ready(function() {
-	
-	/*
-	 * Setup sortable columns
-	 */
-	$('#' + idPrefix + 'columns tbody.content').sortable({
-		handle: 'img.icon_arrow_move'
-	});
-	
-	/*
-	 * Setup add column select
-	 */
-	$('#' + idPrefix + 'addColumn').change(function() {
-		
-		var obj = $(this);
-		var idPrefix = this.id.substr(0, 4);
-		
-		if(obj.val() == '')
-		{
-			return;
-		}
-		
-		indexForm.addColumn(idPrefix, obj.val());
-		obj.selectOptions('');
-		
-	});
-	
-	indexForm.setup(idPrefix);
-	
-	$('#' + idPrefix + 'Index_type').change(new Function('indexForm.setup("' + idPrefix + '")'));
-	
-});

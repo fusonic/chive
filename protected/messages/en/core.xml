@@ -39,4 +39,6 @@
 	<entry id="enterOneValuePerLine">Enter one value per line.</entry>
 	<entry id="leaveEmptyForNull">Leave empty to use &lt;span class="null"&gt;NULL&lt;/&gt;.</entry>
 	<entry id="move">Move</entry>
+	<entry id="default">Default</entry>
+	<entry id="checksum">Checksum</entry>
 </category>

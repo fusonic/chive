@@ -1,10 +1,7 @@
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/views/table/general.js', CClientScript::POS_HEAD); ?>
-
 <script type="text/javascript">
 var schema = '<?php echo $this->schema; ?>';
 var table = '<?php echo $this->table; ?>';
 </script>
-
 
 <?php $this->widget('TabMenu', array(
 		'items'=>array(
@@ -52,7 +49,7 @@ var table = '<?php echo $this->table; ?>';
 					'icon'=>'truncate',
 					'link'=>array(
 						'url'=> 'javascript:void(0)',
-						'htmlOptions'=> array('class'=>'icon', 'onclick'=>'tableGeneral.truncate("'.$this->schema.'","'.$this->table.'");'),
+						'htmlOptions'=> array('class'=>'icon', 'onclick'=>'tableGeneral.truncate()'),
 					),
 					'visible'=>true,
 			),
@@ -60,7 +57,7 @@ var table = '<?php echo $this->table; ?>';
 					'icon'=>'delete',
 					'link'=>array(
 						'url'=> 'javascript:void(0)',
-						'htmlOptions'=> array('class'=>'icon', 'onclick'=>'tableGeneral.drop("'.$this->schema.'","'.$this->table.'");'),
+						'htmlOptions'=> array('class'=>'icon', 'onclick'=>'tableGeneral.drop()'),
 					),
 					'visible'=>true,
 			),
@@ -78,3 +75,7 @@ var table = '<?php echo $this->table; ?>';
 <div id="content">
 	<?php echo $content; ?>
 </div>
+
+<script type="text/javascript">
+tableGeneral.setupDialogs();
+</script>
