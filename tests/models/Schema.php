@@ -6,6 +6,9 @@ class SchemaTest extends TestCase
 	protected function setUp()
 	{
 		$this->executeSqlFile('models/Schema.sql');
+		Schema::$db = new CDbConnection('mysql:host='.DB_HOST.';dbname=information_schema', DB_USER, DB_PASSWORD);
+		Schema::$db->charset='utf8';
+		Schema::$db->active = true;
 	}
 
 	/**

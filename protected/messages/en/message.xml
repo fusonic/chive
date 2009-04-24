@@ -7,8 +7,11 @@
 	<entry id="successExecuteQuery">Executed query</entry>
 	<entry id="affectedRowsQueryTime">0#No rows affected. Query took {time} seconds.|1#{rows} row affected. Query took {time} seconds.|n>1#{rows} rows affected. Query took {time} seconds.</entry>
 
-	<!-- Database -->
-	<entry id="successChangeDatabase">Changed database to »{name}«</entry>
+	<!-- Schema -->
+	<entry id="successAddSchema">Added schema »{schema}«</entry>
+	<entry id="successEditSchema">Saved schema »{schema}«</entry>
+	<entry id="successDropSchema">1#Dropped schema »{schema}«|n>1#Dropped {schemaCount} schemata</entry>
+	<entry id="errorDropSchema">Dropping schema »{schema}« failed</entry>
 
 	<!-- Tables -->
 	<entry id="successTruncateTable">1#Truncated table »{table}«|n>1#Truncated {tableCount} tables</entry>

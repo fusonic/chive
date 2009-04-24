@@ -18,7 +18,7 @@ var schemaList = {
 	{
 		$('#schemata input[type="checkbox"]').attr('checked', false).change();
 		$('#schemata input[type="checkbox"][value="' + db + '"]').attr('checked', true).change();
-		dropSchemata();
+		schemaList.dropSchemata();
 	},
 	
 	// Setup dialogs
@@ -42,10 +42,8 @@ var schemaList = {
 					
 					// Do drop request
 					$.post(baseUrl + '/schemata/drop', {
-						'schema[]': ids
-					}, function() {
-						window.location.reload();
-					});
+						'schemata[]': ids
+					}, AjaxResponse.handle);
 					
 					$(this).dialog('close');
 				}

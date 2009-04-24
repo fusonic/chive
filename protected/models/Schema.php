@@ -3,6 +3,8 @@
 class Schema extends CActiveRecord
 {
 
+	public static $db;
+
 	public $originalSchemaName;
 
 	public $tableCount;
@@ -107,15 +109,15 @@ class Schema extends CActiveRecord
 			return false;
 		}
 
-		// @todo(mburtscher): Work with parameters!
-		$cmd = Yii::app()->db->createCommand('CREATE DATABASE ' . $this->SCHEMA_NAME
-			. ' DEFAULT COLLATE = ' . $this->DEFAULT_COLLATION_NAME);
+		$sql = 'CREATE DATABASE ' . self::$db->quoteTableName($this->SCHEMA_NAME) . "\n"
+			. "\t" . 'DEFAULT COLLATE = ' . self::$db->quoteValue($this->DEFAULT_COLLATION_NAME) . ';';
+		$cmd = self::$db->createCommand($sql);
 		try
 		{
 			$cmd->prepare();
 			$cmd->execute();
 			$this->afterSave();
-			return true;
+			return $sql;
 		}
 		catch(CDbException $ex)
 		{
@@ -137,14 +139,15 @@ class Schema extends CActiveRecord
 			return false;
 		}
 
-		$cmd = Yii::app()->db->createCommand('ALTER DATABASE ' . $this->SCHEMA_NAME
-			. ' DEFAULT COLLATE = ' . $this->DEFAULT_COLLATION_NAME);
+		$sql = 'ALTER DATABASE ' . self::$db->quoteTableName($this->SCHEMA_NAME) . "\n"
+			. "\t" . 'DEFAULT COLLATE = ' . self::$db->quoteValue($this->DEFAULT_COLLATION_NAME) . ';';
+		$cmd = self::$db->createCommand($sql);
 		try
 		{
 			$cmd->prepare();
 			$cmd->execute();
 			$this->afterSave();
-			return true;
+			return $sql;
 		}
 		catch(CDbException $ex)
 		{
@@ -166,19 +169,19 @@ class Schema extends CActiveRecord
 			return false;
 		}
 
-		// @todo(mburtscher): Work with parameters!
-		$cmd = Yii::app()->db->createCommand('DROP DATABASE ' . $this->SCHEMA_NAME);
+		$sql = 'DROP DATABASE ' . self::$db->quoteTableName($this->SCHEMA_NAME) . ';';
+		$cmd = self::$db->createCommand($sql);
 		try
 		{
 			$cmd->prepare();
 			$cmd->execute();
 			$this->afterDelete();
-			return true;
+			return $sql;
 		}
 		catch(CDbException $ex)
 		{
 			$this->afterDelete();
-			return false;
+			throw new DbException($cmd);
 		}
 	}
 

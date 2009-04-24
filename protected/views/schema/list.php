@@ -43,9 +43,7 @@
 						</dfn>
 					</td>
 					<td>
-						<a href="#" class="icon">
-							<com:Icon name="privileges" size="16" text="core.privileges" />
-						</a>
+						<com:Icon name="privileges" size="16" text="core.privileges" disabled="true" />
 					</td>
 					<td>
 						<a href="javascript:void(0)" onclick="schemaList.editSchema('<?php echo $model->SCHEMA_NAME; ?>')" class="icon">

@@ -38,6 +38,8 @@ class SchemaController extends Controller
 		$this->_db->charset='utf8';
 		$this->_db->active = true;
 
+		Schema::$db = Yii::app()->db;
+
 		parent::__construct($id, $module);
 
 	}
@@ -189,9 +191,15 @@ class SchemaController extends Controller
 		if(isset($_POST['Schema']))
 		{
 			$schema->attributes = $_POST['Schema'];
-			if($schema->save())
+			if($sql = $schema->save())
 			{
-				Yii::app()->end('redirect:schema/' . $schema->SCHEMA_NAME);
+				$response = new AjaxResponse();
+				$response->addNotification('success',
+					Yii::t('message', 'successAddSchema', array('{schema}' => $schema->SCHEMA_NAME)),
+					null,
+					$sql);
+				$response->reload = true;
+				$response->send();
 			}
 		}
 
@@ -213,11 +221,12 @@ class SchemaController extends Controller
 	public function actionUpdate()
 	{
 		$isSubmitted = false;
+		$sql = null;
 		$schema = $this->loadSchema();
 		if(isset($_POST['Schema']))
 		{
 			$schema->attributes = $_POST['Schema'];
-			if($schema->save())
+			if($sql = $schema->save())
 			{
 				$isSubmitted = true;
 			}
@@ -231,8 +240,8 @@ class SchemaController extends Controller
 		$this->render('form', array(
 			'schema' => $schema,
 			'collations' => $collations,
-			'helperId' => 'helper_' . mt_rand(1000, 9999),
 			'isSubmitted' => $isSubmitted,
+			'sql' => $sql,
 		));
 	}
 
@@ -242,18 +251,39 @@ class SchemaController extends Controller
 	 */
 	public function actionDrop()
 	{
-		$schemata = (array)$_POST['schema'];
+		$response = new AjaxResponse();
+		$response->reload = true;
+		$schemata = (array)$_POST['schemata'];
+		$droppedSchemata = $droppedSqls = array();
 
 		foreach($schemata AS $schema)
 		{
+			$schemaObj = Schema::model()->findByPk($schema);
 			try
 			{
-				$schema = Schema::model()->findByPk($schema);
-				$schema->delete();
+				$sql = $schemaObj->delete();
+				$droppedSchemata[] = $schema;
+				$droppedSqls[] = $sql;
 			}
-			catch(Exception $ex) { }
+			catch(DbException $ex)
+			{
+				$response->addNotification('error',
+					Yii::t('message', 'errorDropSchema', array('{schema}' => $schema)),
+					$ex->getText(),
+					$ex->getSql());
+			}
 		}
-		Yii::app()->end();
+
+		$count = count($droppedSchemata);
+		if($count > 0)
+		{
+			$response->addNotification('success',
+				Yii::t('message', 'successDropSchema', array($count, '{schema}' => $droppedSchemata[0], '{schemaCount}' => $count)),
+				($count > 1 ? implode(', ', $droppedSchemata) : null),
+				implode("\n", $droppedSqls));
+		}
+
+		$response->send();
 	}
 
 	/**

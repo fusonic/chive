@@ -2,6 +2,7 @@
 
 <?php if($isSubmitted && !$table->isNewRecord) { ?>
 	<script type="text/javascript">
+	var idPrefix = '<?php echo CHtml::$idPrefix; ?>';
 	var row = $('#' + idPrefix).parents("tr").prev();
 	row.attr('id', 'tables_<?php echo $table->TABLE_NAME; ?>');
 	row.children('td:eq(1)').children('a').html('<?php echo $table->TABLE_NAME; ?>').attr('href', '#tables/<?php echo $table->TABLE_NAME; ?>/structure');

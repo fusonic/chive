@@ -186,7 +186,7 @@ class Table extends CActiveRecord
 	 *
 	 * @return	string
 	 */
-	public function drop() {
+	public function delete() {
 
 		$sql = 'DROP TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . ';';
 		$cmd = self::$db->createCommand($sql);
@@ -221,33 +221,41 @@ class Table extends CActiveRecord
 		}
 
 		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->originalAttributes['TABLE_NAME']);
-		if($this->TABLE_NAME != $this->originalAttributes['TABLE_NAME'])
+		$comma = '';
+		if($this->TABLE_NAME !== $this->originalAttributes['TABLE_NAME'])
 		{
+			//@todo(mburtscher): Privileges are not copied!!!
 			$sql .= "\n\t" . 'RENAME ' . self::$db->quoteTableName($this->TABLE_NAME);
+			$comma = ',';
 		}
-		if($this->TABLE_COLLATION != $this->originalAttributes['TABLE_COLLATION'])
+		if($this->TABLE_COLLATION !== $this->originalAttributes['TABLE_COLLATION'])
 		{
-			$sql .= "\n\t" . 'CHARACTER SET ' . Collation::getCharacterSet($this->TABLE_COLLATION) . ' COLLATE ' . $this->TABLE_COLLATION;
+			$sql .= $comma . "\n\t" . 'CHARACTER SET ' . Collation::getCharacterSet($this->TABLE_COLLATION) . ' COLLATE ' . $this->TABLE_COLLATION;
+			$comma = ',';
 		}
-		if($this->TABLE_COMMENT != $this->originalAttributes['TABLE_COMMENT'])
+		if($this->TABLE_COMMENT !== $this->originalAttributes['TABLE_COMMENT'])
 		{
-			$sql .= "\n\t" . 'COMMENT ' . self::$db->quoteValue($this->TABLE_COMMENT);
+			$sql .= $comma . "\n\t" . 'COMMENT ' . self::$db->quoteValue($this->TABLE_COMMENT);
+			$comma = ',';
 		}
-		if($this->ENGINE != $this->originalAttributes['ENGINE'])
+		if($this->ENGINE !== $this->originalAttributes['ENGINE'])
 		{
-			$sql .= "\n\t" . 'ENGINE ' . $this->ENGINE;
+			$sql .= $comma . "\n\t" . 'ENGINE ' . $this->ENGINE;
+			$comma = ',';
 		}
-		if($this->optionChecksum != $this->originalOptionChecksum)
+		if($this->optionChecksum !== $this->originalOptionChecksum)
 		{
-			$sql .= "\n\t" . 'CHECKSUM ' . $this->optionChecksum;
+			$sql .= $comma . "\n\t" . 'CHECKSUM ' . $this->optionChecksum;
+			$comma = ',';
 		}
-		if($this->optionPackKeys != $this->originalOptionPackKeys)
+		if($this->optionPackKeys !== $this->originalOptionPackKeys)
 		{
-			$sql .= "\n\t" . 'PACK_KEYS ' . $this->optionPackKeys;
+			$sql .= $comma . "\n\t" . 'PACK_KEYS ' . $this->optionPackKeys;
+			$comma = ',';
 		}
-		if($this->optionDelayKeyWrite != $this->originalOptionDelayKeyWrite)
+		if($this->optionDelayKeyWrite !== $this->originalOptionDelayKeyWrite)
 		{
-			$sql .= "\n\t" . 'DELAY_KEY_WRITE ' . $this->optionDelayKeyWrite;
+			$sql .= $comma . "\n\t" . 'DELAY_KEY_WRITE ' . $this->optionDelayKeyWrite;
 		}
 		$sql .= ';';
 		$cmd = new CDbCommand(self::$db, $sql);

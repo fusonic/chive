@@ -3,11 +3,11 @@
 	<script type="text/javascript">
 	var idPrefix = '<?php echo CHtml::$idPrefix; ?>';
 	var row = $('#' + idPrefix).closest("tr").prev();
-	row.effect("highlight", {}, 2000);
 	row.find("td dfn.collation").html("<?php echo $schema->DEFAULT_COLLATION_NAME; ?>").attr("title", "<?php echo Collation::getDefinition($schema->DEFAULT_COLLATION_NAME); ?>");
 	$('#' + idPrefix).parent().slideUp(500, function() {
 		$('#' + idPrefix).parents("tr").remove();
 	});
+	Notification.add('success', '<?php echo Yii::t('message', 'successEditSchema', array('{schema}' => $schema->SCHEMA_NAME)); ?>', null, <?php echo json_encode($sql); ?>);
 	</script>
 <?php endif; ?>
 

@@ -621,21 +621,20 @@ class TableController extends Controller
 
 		foreach($tables AS $table)
 		{
-			$pk = array(
+			$tableObj = Table::model()->findByPk(array(
 				'TABLE_SCHEMA' => $this->schema,
 				'TABLE_NAME' => $table
-			);
-			$table = Table::model()->findByPk($pk);
+			));
 			try
 			{
-				$sql = $table->drop();
-				$droppedTables[] = $table->TABLE_NAME;
+				$sql = $tableObj->delete();
+				$droppedTables[] = $table;
 				$droppedSqls[] = $sql;
 			}
 			catch(DbException $ex)
 			{
 				$response->addNotification('error',
-					Yii::t('message', 'errorDropTable', array('{table}' => $this->table)),
+					Yii::t('message', 'errorDropTable', array('{table}' => $table)),
 					$ex->getText(),
 					$ex->getSql());
 			}
@@ -759,4 +758,5 @@ class TableController extends Controller
 		return 'SELECT * FROM ' . $this->_db->quoteTableName($this->table) .
 			"\n\t" . 'WHERE 1';
 	}
+
 }
