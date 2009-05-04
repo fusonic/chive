@@ -9,7 +9,6 @@
 
 <?php if($file) { ?>
 	a file has been uploaded
-
 <?php } ?>
 
 

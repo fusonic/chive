@@ -44,6 +44,7 @@ $scriptFiles = array(
 	'views/schema/general.js',
 	'views/schema/list.js',
 	'views/schema/show.js',
+	'views/schema/processes.js',
 	'views/table/general.js',
 	'views/table/browse.js',
 	'views/table/form.js',
@@ -175,6 +176,9 @@ foreach($scriptFiles AS $file)
 			</a>
 		</div>
 		<div class="sidebarContent">
+
+			<input type="text" id="bookmarkSearch" class="search text" />
+
 			<ul class="list icon nowrap" id="bookmarkList">
 			<?php if(Yii::app()->user->settings->get('bookmarks', 'database', $this->schema)) { ?>
 				<?php foreach(Yii::app()->user->settings->get('bookmarks', 'database', $this->schema) AS $key=>$bookmark) { ?>
@@ -198,8 +202,8 @@ foreach($scriptFiles AS $file)
 		</div>
   		<div class="sidebarHeader">
 			<a class="icon">
-				<com:Icon name="routine" size="24" text="core.procedures" />
-				<span><?php echo Yii::t('core', 'procedures') ?></span>
+				<com:Icon name="trigger" size="24" text="core.triggers" />
+				<span><?php echo Yii::t('core', 'triggers') ?></span>
 			</a>
 		</div>
 		<div class="sidebarContent">

@@ -167,7 +167,10 @@ $(document).ready(function()
 		selectedClass: "active",
 	});
 	
+	// Setup list filters
+	
 	$('#tableList').setupListFilter($('#tableSearch'));
+	$('#bookmarkList').setupListFilter($('#bookmarkSearch'));
 	
 	
 	/*

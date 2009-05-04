@@ -36,7 +36,7 @@ class SqlQueryTest extends TestCase
 			try
 			{
 
-				$cmd->execute();
+				//$cmd->execute();
 
 			}
 			catch (Exception $ex)
@@ -47,6 +47,14 @@ class SqlQueryTest extends TestCase
 
 			}
 		}
+		/*
+		for($i = 0; $i < 5000; $i++)
+		{
+
+			$this->db->createCommand('DROP DATABASE testing_' . $i)->execute();
+
+		}
+		*/
 
 		echo 'Executed ' . count($splitter->getQueries()) . ' queries';
 

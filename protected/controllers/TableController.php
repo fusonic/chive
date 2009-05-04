@@ -462,7 +462,7 @@ class TableController extends Controller
 			$i = 0;
 			foreach($row->getAttributes() AS $attribute=>$value)
 			{
-				$sql .= "\n\t" . $attribute;
+				$sql .= "\n\t" . $db->quoteColumnName($attribute);
 
 				$i++;
 
@@ -504,7 +504,6 @@ class TableController extends Controller
 			$sql .= "\n" . ')';
 
 			$cmd = $db->createCommand($sql);
-
 			$response = new AjaxResponse();
 
 			try
@@ -518,7 +517,8 @@ class TableController extends Controller
 			}
 			catch (CDbException $ex)
 			{
-				$response->addNotification('error', Yii::t('message', 'errorInsertRow'), $sql);
+				$ex = new DbException($cmd);
+				$response->addNotification('error', Yii::t('message', 'errorInsertRow'), $ex->getText(), $sql);
 			}
 
 			$response->send();

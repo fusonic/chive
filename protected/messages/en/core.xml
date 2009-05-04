@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <category id="core">
+	<entry id="id">ID</entry>
 	<entry id="username">Username</entry>
 	<entry id="password">Password</entry>
 	<entry id="host">Host</entry>
 	<entry id="edit">Edit</entry>
 	<entry id="delete">Delete</entry>
+	<entry id="kill">Kill</entry>
 	<entry id="loading">Loading</entry>
 	<entry id="name">Name</entry>
 	<entry id="value">Value</entry>
@@ -41,4 +43,8 @@
 	<entry id="move">Move</entry>
 	<entry id="default">Default</entry>
 	<entry id="checksum">Checksum</entry>
+	
+	<entry id="user">User</entry>
+	<entry id="time">Time</entry>
+	<entry id="status">Status</entry>
 </category>

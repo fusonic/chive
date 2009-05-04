@@ -21,7 +21,7 @@ var iconPath = '<?php echo Yii::app()->baseUrl . '/images/icons/fugue'; ?>';
 <?php
 $scriptFiles = array(
 	'jquery/jquery.js',
-	'jquery/jquery-ui-1.7.1.custom.min.js',
+	'jquery/jquery-ui-1.7.1.custom.js',
 	'jquery/jquery.checkboxTable.js',
 	'jquery/jquery.form.js',
 	'jquery/jquery.jeditable.js',
@@ -42,6 +42,7 @@ $scriptFiles = array(
 	'views/schema/general.js',
 	'views/schema/list.js',
 	'views/schema/show.js',
+	'views/schema/processes.js',
 	'views/table/general.js',
 	'views/table/browse.js',
 	'views/table/form.js',
@@ -89,11 +90,13 @@ foreach($scriptFiles AS $file)
 			</a>
 		</div>
 		<div class="sidebarContent">
-			<!---
-			<ul class="list icon">
+
+			<input type="text" id="schemaSearch" class="search text" />
+
+			<ul id="schemaList" class="list icon">
 				<?php foreach(Schema::model()->findAll(array('order'=>'SCHEMA_NAME ASC')) AS $schema) { ?>
 					<li class="nowrap">
-						<a href="<?php echo $schema->SCHEMA_NAME ?>">
+						<a href="<?php echo Yii::app()->baseUrl; ?>/schema/<?php echo $schema->SCHEMA_NAME; ?>">
 							<com:Icon name="database" size="16" />
 						</a>
 						<a href="<?php echo Yii::app()->baseUrl; ?>/schema/<?php echo $schema->SCHEMA_NAME; ?>">
@@ -102,9 +105,6 @@ foreach($scriptFiles AS $file)
 					</li>
 				<?php } ?>
 			</ul>
-			 --->
-
-			<com:SchemaTreeView />
 
 		</div>
   		<div class="sidebarHeader">
@@ -132,6 +132,46 @@ foreach($scriptFiles AS $file)
 		</div>
 		<div class="sidebarContent">
 			triggers
+		</div>
+  		<div class="sidebarHeader">
+			<a class="icon">
+				<com:Icon name="info" size="24" />
+				<span>Information</span>
+			</a>
+		</div>
+		<div class="sidebarContent">
+			<ul id="statusList" class="list icon">
+				<li class="nowrap">
+					<a class="icon" href="#schemata/status">
+						<com:Icon name="chart" size="16" />
+						<?php echo Yii::t('core', 'status'); ?>
+					</a>
+				</li>
+				<li class="nowrap">
+					<a class="icon" href="#schemata/variables">
+						<com:Icon name="variable" size="16" />
+						<?php echo Yii::t('database', 'variables'); ?>
+					</a>
+				</li>
+				<li class="nowrap">
+					<a class="icon" href="#schemata/charactersets">
+						<com:Icon name="charset" size="16" />
+						<?php echo Yii::t('database', 'characterSets'); ?>
+					</a>
+				</li>
+				<li class="nowrap">
+					<a class="icon" href="#schemata/storageengines">
+						<com:Icon name="engine" size="16" />
+						<?php echo Yii::t('database', 'storageEngines'); ?>
+					</a>
+				</li>
+				<li class="nowrap">
+					<a class="icon" href="#schemata/processes">
+						<com:Icon name="process" size="16" />
+						<?php echo Yii::t('database', 'processes'); ?>
+					</a>
+				</li>
+			</ul>
 		</div>
 
 	</div>

@@ -442,4 +442,11 @@
   	 background: url(../images/icons/fugue/16/pin.png) no-repeat 0 0px !important;
   }
     
+  /*
+   * Pagination
+   */	
+  ul.yiiPager .first, ul.yiiPager .last 
+  {
+  	display: inline !important;
+  }
 }

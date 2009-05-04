@@ -129,10 +129,11 @@
 	<?php $this->widget('CLinkPager',array('pages'=>$pages)); ?>
 	</div>
 
-<?php }  elseif($this->isSent) { ?>
+<?php } elseif($this->isSent) { ?>
 	Es wurden keine Enträge gefunden!
 <?php } ?>
 
 <script type="text/javascript">
+	tableBrowse.setup();
 	AjaxResponse.handle(<?php echo $response; ?>);
 </script>

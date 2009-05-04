@@ -89,6 +89,15 @@ return array(
 				'schemata/update'=>'schema/update',
 				'schemata/drop'=>'schema/drop',
 
+				// Information
+				'schemata/status'=>'schema/status',
+				'schemata/variables'=>'schema/variables',
+				'schemata/charactersets'=>'schema/charactersets',
+				'schemata/storageengines'=>'schema/storageengines',
+
+				'schemata/processes'=>'schema/processes',
+				'schemata/processes/kill'=>'schema/killProcess',
+
 				// schema
                	'schema'=>'schema/list',
                 'schema/<schema:'.URL_MATCH.'>'=>'schema/index',
@@ -131,7 +140,7 @@ return array(
 
 					// View actions
 					'schema/<schema:'.URL_MATCH.'>/viewAction/drop'=>'view/drop',
-						
+
 					// Views
 					'schema/<schema:'.URL_MATCH.'>/views/<view:'.URL_MATCH.'>/browse'=>'view/browse',
 					'schema/<schema:'.URL_MATCH.'>/views/<view:'.URL_MATCH.'>/structure'=>'view/structure',

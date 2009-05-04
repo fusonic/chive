@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <category id="database">
 	
+	<entry id="schema">Schema</entry>
 	<entry id="schemata">Schemata</entry>
+	
 	<entry id="tables">Tables</entry>
 	<entry id="views">Views</entry>
 	<entry id="Xrows">{amount} rows</entry>
@@ -22,6 +24,8 @@
 	<entry id="browse">Browse</entry>
 	<entry id="structure">Structure</entry>
 	<entry id="sql">SQL</entry>
+	<entry id="query">Query</entry>
+	<entry id="command">Command</entry>
 
 	<entry id="insert">Insert</entry>
 	<entry id="operations">Operations</entry>
@@ -112,4 +116,10 @@
 	
 	<!-- Profiling -->
 	<entry id="toggleProfiling">Toggle profiling</entry>
+	
+	<!-- Storage Engines -->
+	<entry id="storageEngines">Storage engines</entry>
+	<entry id="processes">Processes</entry>
+	<entry id="characterSets">Character sets</entry>
+	<entry id="variables">Variables</entry>
 </category>

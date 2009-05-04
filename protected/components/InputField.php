@@ -82,7 +82,13 @@ class InputField extends CWidget
 		$type = preg_match('/\(\'(.+)\'\)/i', $this->column->dbType, $res);
 		$values = explode('\',\'', $res[1]);
 
-		return $values;
+		$return = array();
+		foreach($values AS $value)
+		{
+			$return[$value] = $value;
+		}
+
+		return $return;
 	}
 
 

@@ -57,6 +57,7 @@ class Row extends CActiveRecord
 	 */
 	public function primaryKey()
 	{
+		predie(self::$db->getSchema($this->schema)->getTable($this->table)->primaryKey);
 		return self::$db->getSchema($this->schema)->getTable($this->table)->primaryKey;
 	}
 
@@ -82,6 +83,11 @@ class Row extends CActiveRecord
 		return self::$db;
 	}
 
+	public function save()
+	{
+
+	}
+
 	public function delete()
 	{
 
@@ -94,12 +100,16 @@ class Row extends CActiveRecord
 			return false;
 		}
 
+
+		$pkCount = count($pk);
+
+
+		$pk = $this->getPrimaryKey();
+
 		$sql = 'DELETE FROM ' . self::$db->quoteTableName($this->table) . ' WHERE ';
 
-		$pkCount = count($this->getPrimaryKey());
-
 		$i = 0;
-		foreach($this->getPrimaryKey() AS $key=>$value)
+		foreach($pk AS $key=>$value)
 		{
 			$sql .= "\n\t" . self::$db->quoteColumnName($key) . ' = ' . self::$db->quoteValue($value);
 			$i++;

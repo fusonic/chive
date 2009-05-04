@@ -58,4 +58,12 @@
 	<entry id="successDeleteRows">1#Deleted {rowCount} row|n>1#Deleted {rowCount} rows</entry>
 	<entry id="successInsertRow">Inserted row</entry>
 	
+	<!-- Processes -->
+	<entry id="successKillProcess">Killed process #{id}</entry>
+	<entry id="errorKillProcess">Killing process #{id} failed</entry>
+	<entry id="doYouReallyWantToKillSelectedProcesses">Do you really want to kill the selected process(es)?</entry>
+	<entry id="killProcess">Kill process</entry>
+	
+	
+	
 </category>
