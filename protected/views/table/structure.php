@@ -13,6 +13,7 @@
 
 	<table id="columns" class="list addCheckboxes">
 		<colgroup>
+			<col class="checkbox" />
 			<col />
 			<col class="type" />
 			<col class="collation" />
@@ -30,6 +31,7 @@
 		</colgroup>
 		<thead>
 			<tr>
+				<th><input type="checkbox" /></th>
 				<th><?php echo Yii::t('database','field'); ?></th>
 				<th><?php echo Yii::t('database','type'); ?></th>
 				<th><?php echo Yii::t('database','collation'); ?></th>
@@ -41,6 +43,9 @@
 		<tbody>
 			<?php foreach($table->columns AS $column) { ?>
 				<tr id="columns_<?php echo $column->COLUMN_NAME; ?>">
+					<td>
+						<input type="checkbox" name="columns[]" value="<?php echo $column->COLUMN_NAME; ?>" />
+					</td>
 					<td>
 						<?php if($column->getIsPartOfPrimaryKey($table->indices)): ?>
 							<span class="primaryKey"><?php echo $column->COLUMN_NAME; ?></span>
@@ -126,6 +131,7 @@
 		</tbody>
 		<tfoot>
 			<tr>
+				<th><input type="checkbox" /></th>
 				<th colspan="14"><?php echo Yii::t('database', 'XColumns', array('{count}' => count($table->columns))); ?></th>
 			</tr>
 		</tfoot>

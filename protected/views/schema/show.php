@@ -11,6 +11,7 @@
 
 	<table class="list addCheckboxes" id="tables">
 		<colgroup>
+			<col class="checkbox" />
 			<col />
 			<col class="action" />
 			<col class="action" />
@@ -27,6 +28,7 @@
 		</colgroup>
 		<thead>
 			<tr>
+				<th><input type="checkbox" /></th>
 				<th colspan="8"><?php echo $sort->link('TABLE_NAME', Yii::t('database', 'table')); ?></th>
 				<th><?php echo $sort->link('TABLE_ROWS', Yii::t('database', 'rows')); ?></th>
 				<th><?php echo $sort->link('ENGINE', Yii::t('database', 'engine')); ?></th>
@@ -39,6 +41,9 @@
 			<?php $totalRowCount = $totalDataLength = $totalDataFree = 0;?>
 			<?php foreach($schema->tables AS $table) { ?>
 				<tr id="tables_<?php echo $table->TABLE_NAME; ?>">
+					<td>
+						<input type="checkbox" name="tables[]" value="<?php echo $table->TABLE_NAME; ?>" />
+					</td>
 					<td>
 						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/structure">
 							<?php echo $table->TABLE_NAME; ?>
@@ -70,14 +75,22 @@
 						</a>
 					</td>
 					<td>
+						<?php if(Yii::app()->user->privileges->checkTable($table->TABLE_SCHEMA, $table->TABLE_NAME, 'DELETE')) { ?>
 						<a href="javascript:void(0);" onclick="schemaShow.truncateTable($(this).closest('tr').attr('id').substr(7))" class="icon">
 							<com:Icon name="truncate" size="16" text="database.truncate" />
 						</a>
+						<?php } else { ?>
+							<com:Icon name="truncate" size="16" text="database.truncate" disabled="true" />
+						<?php } ?>
 					</td>
 					<td>
-						<a href="javascript:void(0);" onclick="schemaShow.dropTable($(this).closest('tr').attr('id').substr(7))" class="icon">
-							<com:Icon name="delete" size="16" text="database.drop" />
-						</a>
+						<?php if(Yii::app()->user->privileges->checkTable($table->TABLE_SCHEMA, $table->TABLE_NAME, 'DROP')) { ?>
+							<a href="javascript:void(0);" onclick="schemaShow.dropTable($(this).closest('tr').attr('id').substr(7))" class="icon">
+								<com:Icon name="delete" size="16" text="database.drop" />
+							</a>
+						<?php } else { ?>
+							<com:Icon name="delete" size="16" text="database.drop" disabled="true" />
+						<?php } ?>
 					</td>
 					<td>
 						<?php echo $table->getRowCount(); ?>
@@ -102,6 +115,7 @@
 		</tbody>
 		<tfoot>
 			<tr>
+				<th><input type="checkbox" /></th>
 				<th colspan="8"><?php echo Yii::t('database', 'amountTables', array($schema->tableCount, '{amount} '=> $schema->tableCount)); ?></th>
 				<th><?php echo $totalRowCount; ?></th>
 				<th></th>

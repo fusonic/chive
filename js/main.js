@@ -50,7 +50,14 @@ function reload() {
 		.replace(/\?(.+)#/, '')
 		.replace('#', '/')					// Replace # with /
 		.replace(/([^:])\/+/g, '$1/');		// Remove multiple slashes
-	$('div.ui-layout-center').load(newLocation, {}, function(response) {
+	$.post(newLocation, {}, function(response) {
+		var content = document.getElementById('content');
+		content.innerHTML = response;
+		var scripts = content.getElementsByTagName('script');
+		for(var i = 0; i < scripts.length; i++)
+		{
+			$.globalEval(scripts[i].innerHTML);
+		}
 		init();
 		AjaxResponse.handle(response);
 	});
@@ -83,22 +90,13 @@ function init() {
 	}
 	else 
 	{
-		$('bc_table').hide();
+		$('#bc_table').hide();
 	}
 	
-	// Change ajax links
-	/*
-	var locationWithoutAnchor = new RegExp(location.href.substr(0, location.href.indexOf('#')) + '\/?');
-	$('div.ui-layout-center a[rel!="no-ajax"]').each(function() {
-		this.href = this.href.replace(locationWithoutAnchor, '#');
-	});
-	*/
 	// Add checkboxes to respective tables
 	try 
 	{
-		$('table.addCheckboxes').each(function() {
-			$(this).addCheckboxes(this.id).removeClass('addCheckboxes');
-		});
+		$('table.addCheckboxes').addCheckboxes().removeClass('addCheckboxes');
 	}
 	catch(exception) {
 		console.log(exception);
@@ -168,7 +166,7 @@ $(document).ready(function()
 	});
 	
 	// Setup list filters
-	
+
 	$('#tableList').setupListFilter($('#tableSearch'));
 	$('#bookmarkList').setupListFilter($('#bookmarkSearch'));
 	
@@ -261,7 +259,7 @@ var lang = {
 	
 	get: function(category, variable, parameters) 
 	{
-		eval('var package = lang.' + category);
+		var package = lang[category];
 		if(package && package[variable])
 		{
 			variable = package[variable];

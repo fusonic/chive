@@ -8,7 +8,6 @@
 			var list = $(this);
 			var input = inputObj;
 			var items = new Array();
-			var moveTimeout = null;
 			
 			function selectResult(element) 
 			{
@@ -23,17 +22,16 @@
 			{
 				if(e.keyCode == 40) // Down arrow
 				{
-					moveDown(200);
+					moveDown();
 				}
 				else if(e.keyCode == 38) // Up arrow
 				{
-					moveUp(200);
+					moveUp();
 				}
 			}
 			
 			function keyUp(e) 
 			{
-				window.clearTimeout(moveTimeout);
 				if(e.keyCode == 13) // Enter
 				{
 					performAction();
@@ -44,7 +42,7 @@
 				}
 			}
 			
-			function moveUp(_timeout)
+			function moveUp()
 			{
 				var selectedResult = $(list.children("li.listFilterSelected:visible")[0]);
 				var selectedNow = $(list.children("li:visible")[list.children("li:visible").length - 1]);
@@ -56,12 +54,9 @@
 					}
 				}
 				selectResult(selectedNow);
-				if(!_timeout)
-					_timeout = 40;				
-				moveTimeout = window.setTimeout(moveUp, _timeout);
 			}
 			
-			function moveDown(_timeout)
+			function moveDown()
 			{
 				var selectedResult = $(list.children("li.listFilterSelected:visible")[0]);
 				var selectedNow = $(list.children("li:visible")[0]);
@@ -73,9 +68,6 @@
 					}
 				}
 				selectResult(selectedNow);
-				if(!_timeout)
-					_timeout = 40;				
-				moveTimeout = window.setTimeout(moveDown, _timeout);
 			}
 			
 			function performAction()
@@ -91,15 +83,25 @@
 				var selectedResult = $(list.children("li.listFilterSelected:visible")[0]);
 				
 				// Do filtering
-				for(var i = 0; i < items.length; i++) 
+				if(searchString == '')
 				{
-					if(items[i].text.indexOf(searchString) > -1)
+					for(var i = 0; i < items.length; i++)
 					{
 						items[i].obj.show();
 					}
-					else
+				}
+				else
+				{
+					for(var i = 0; i < items.length; i++) 
 					{
-						items[i].obj.hide();
+						if(items[i].text.indexOf(searchString) > -1)
+						{
+							items[i].obj.show();
+						}
+						else
+						{
+							items[i].obj.hide();
+						}
 					}
 				}
 				
@@ -123,11 +125,11 @@
 			/*
 			 * Setup
 			 */
-			
 			list.children("li").each(function() {
+				var item = $(this);
 				items.push({
-					"text" : $(this).text().toLowerCase(),
-					"obj" : $(this)
+					"text" : item.text().toLowerCase(),
+					"obj" : item
 				});
 			});
 			
@@ -141,7 +143,10 @@
 				selectResult(null); 
 			});
 			
-			doFilter();
+			if(input.val() != '')
+			{
+				doFilter();
+			}
 			
 		});
 		

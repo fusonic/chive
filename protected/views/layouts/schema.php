@@ -22,37 +22,38 @@ var iconPath = '<?php echo Yii::app()->baseUrl . '/images/icons/fugue'; ?>';
 
 <?php
 $scriptFiles = array(
-	'jquery/jquery.js',
-	'jquery/jquery-ui-1.7.1.custom.min.js',
-	'jquery/jquery.checkboxTable.js',
-	'jquery/jquery.form.js',
-	'jquery/jquery.jeditable.js',
-	'jquery/jquery.layout.js',
-	'jquery/jquery.listFilter.js',
-	'jquery/jquery.purr.js',
-	'jquery/jquery.selectboxes.js',
-	'jquery/jquery.tableForm.js',
-	'lib/json.js',
-	'main.js',
-	'bookmark.js',
-	'dataType.js',
-	'notification.js',
-	'profiling.js',
-	'storageEngine.js',
-	'views/column/form.js',
-	'views/index/form.js',
-	'views/schema/general.js',
-	'views/schema/list.js',
-	'views/schema/show.js',
-	'views/schema/processes.js',
-	'views/table/general.js',
-	'views/table/browse.js',
-	'views/table/form.js',
-	'views/table/structure.js',
+	'js/jquery/jquery.js',
+	'js/jquery/jquery-ui-1.7.1.custom.min.js',
+	'js/jquery/jquery.checkboxTable.js',
+	'js/jquery/jquery.form.js',
+	'js/jquery/jquery.jeditable.js',
+	'js/jquery/jquery.layout.js',
+	'js/jquery/jquery.listFilter.js',
+	'js/jquery/jquery.purr.js',
+	'js/jquery/jquery.selectboxes.js',
+	'js/jquery/jquery.tableForm.js',
+	'js/lib/json.js',
+	'js/main.js',
+	'js/bookmark.js',
+	'js/dataType.js',
+	'js/notification.js',
+	'js/profiling.js',
+	'js/storageEngine.js',
+	'js/views/column/form.js',
+	'js/views/index/form.js',
+	'js/views/schema/general.js',
+	'js/views/schema/list.js',
+	'js/views/schema/show.js',
+	'js/views/schema/processes.js',
+	'js/views/table/general.js',
+	'js/views/table/browse.js',
+	'js/views/table/form.js',
+	'js/views/table/structure.js',
+	'assets/lang_js/' . Yii::app()->getLanguage() . '.js',
 );
 foreach($scriptFiles AS $file)
 {
-	echo '<script type="text/javascript" src="' . BASEURL . '/js/' . $file . '"></script>';
+	echo '<script type="text/javascript" src="' . BASEURL . '/' . $file . '"></script>';
 }
 ?>
 
@@ -202,7 +203,7 @@ foreach($scriptFiles AS $file)
 		</div>
   		<div class="sidebarHeader">
 			<a class="icon">
-				<com:Icon name="trigger" size="24" text="core.triggers" />
+				<com:Icon name="bookmark" size="24" text="core.triggers" />
 				<span><?php echo Yii::t('core', 'triggers') ?></span>
 			</a>
 		</div>

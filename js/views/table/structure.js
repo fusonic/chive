@@ -213,7 +213,6 @@ var tableStructure = {
 			}		
 		});
 		
-		
 		/*
 		 * Setup add index dialog
 		 */
@@ -240,6 +239,8 @@ var tableStructure = {
 		 * Setup drop index dialog
 		 */
 		$('div.ui-dialog>div[id="dropIndexDialog"]').remove();
+		console.profile();
+		console.time('dialog');
 		$('#dropIndexDialog').dialog({
 			modal: true,
 			resizable: false,
@@ -271,6 +272,8 @@ var tableStructure = {
 				}
 			}		
 		});
+		console.timeEnd('dialog');
+		console.profileEnd();
 	}
 	
 };

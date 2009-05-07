@@ -54,6 +54,7 @@ class UserIdentity extends CUserIdentity
 
 			// Create settings array
 			$this->setState('settings', new UserSettingsManager($this->host, $this->username));
+			$this->setState('privileges', new UserPrivilegesManager($this->host, $this->username));
 			$this->setState("host", $this->host);
 
 		} catch (Exception $ex) {

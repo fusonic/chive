@@ -12,6 +12,7 @@
 
 	<table id="schemata" class="list addCheckboxes">
 		<colgroup>
+			<col class="checkbox" />
 			<col />
 			<col style="width: 80px" />
 			<col class="collation" />
@@ -21,6 +22,7 @@
 		</colgroup>
 		<thead>
 			<tr>
+				<th><input type="checkbox" /></th>
 				<th><?php echo $sort->link('SCHEMA_NAME'); ?></th>
 				<th><?php echo $sort->link('tableCount'); ?></th>
 				<th><?php echo $sort->link('DEFAULT_COLLATION_NAME'); ?></th>
@@ -31,6 +33,9 @@
 
 			<?php foreach($schemaList as $n => $model): ?>
 				<tr id="schemata_<?php echo $model->SCHEMA_NAME; ?>">
+					<td>
+						<input type="checkbox" name="schemata[]" value="<?php echo $model->SCHEMA_NAME; ?>" />
+					</td>
 					<td>
 						<?php echo CHtml::link($model->SCHEMA_NAME, 'schema/' . $model->SCHEMA_NAME); ?>
 					</td>
@@ -60,6 +65,7 @@
 		</tbody>
 		<tfoot>
 			<tr>
+				<th><input type="checkbox" /></th>
 				<th colspan="6">
 					<?php echo Yii::t('database', 'showingXSchemata', array('{count}' => $schemaCountThisPage, '{total}' => $schemaCount)); ?>
 				</th>

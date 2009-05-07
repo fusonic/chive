@@ -136,13 +136,13 @@
 		padding: 0px;
 	}
 	
-	table.list>tbody>tr.form>td form {
+	table.list>tbody>tr.form>td>div.form {
 		border: solid 4px #D3E73B;
 		background: #e8edc2;
 		padding: 5px;
 	}
 	
-	table.list>tbody>tr.form>td form h1 {
+	table.list>tbody>tr.form>td>div.form h1 {
 		font-size: 110%;
 		font-weight: bold;
 	}

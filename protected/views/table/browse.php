@@ -53,80 +53,90 @@
 
 <?php if(count($data) > 0) { ?>
 
-	<div class="pager top">
-	<?php $this->widget('CLinkPager',array('pages'=>$pages)); ?>
-	</div>
+	<div class="list">
 
-	<br/>
+		<div class="pager top">
+			<?php $this->widget('CLinkPager',array('pages'=>$pages)); ?>
+		</div>
 
-	<?php $i = 0; ?>
-	<table class="list <?php if($type == 'select') { ?>addCheckboxes editable<?php } ?>" style="width: auto;" id="browse">
-		<colgroup>
-			<?php if($type == 'select') { ?>
-				<col class="action" />
-				<col class="action" />
-			<?php } ?>
-			<?php foreach ($columns AS $column) { ?>
-				<?php echo '<col class="date" />'; ?>
-			<?php } ?>
-		</colgroup>
-		<thead>
-			<tr>
+		<br/>
+
+		<?php $i = 0; ?>
+		<table class="list <?php if($type == 'select') { ?>addCheckboxes editable<?php } ?>" style="width: auto;" id="browse">
+			<colgroup>
+				<col class="checkbox" />
 				<?php if($type == 'select') { ?>
-					<th></th>
-					<th></th>
+					<col class="action" />
+					<col class="action" />
 				<?php } ?>
 				<?php foreach ($columns AS $column) { ?>
-					<th><?php echo ($type == 'select' ? $sort->link($column) : $column); ?></th>
+					<?php echo '<col class="date" />'; ?>
 				<?php } ?>
-			</tr>
-		</thead>
-		<tbody>
-			<?php foreach($data AS $row) { ?>
-				<tr id="row_<?php echo $i; ?>">
+			</colgroup>
+			<thead>
+				<tr>
 					<?php if($type == 'select') { ?>
-						<td class="action">
-							<a href="javascript:void(0);" class="icon" onclick="tableBrowse.deleteRow(<?php echo $i; ?>);">
-								<com:Icon name="delete" size="16" text="core.delete" />
-							</a>
-						</td>
-						<td class="action">
-							<a href="javascript:void(0);" class="icon" onclick="tableBrowse.deleteRow(<?php echo $i; ?>);">
-								<com:Icon name="insert" size="16" text="core.insert" />
-							</a>
-						</td>
+						<th><input type="checkbox" /></th>
+						<th></th>
+						<th></th>
 					<?php } ?>
-					<?php foreach($row AS $key=>$value) { ?>
-						<td class="<?php echo $key; ?>">
-							<?php echo is_null($value) ? '<span class="null">NULL</span>' : (Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $this->schema . '.' .  $this->table) ? str_replace(array('<','>'),array('&lt;','&gt;'),$value) : StringUtil::cutText(str_replace(array('<','>'),array('&lt;','&gt;'),$value), 100)); ?>
-						</td>
+					<?php foreach ($columns AS $column) { ?>
+						<th><?php echo ($type == 'select' ? $sort->link($column) : $column); ?></th>
 					<?php } ?>
 				</tr>
-				<?php $i++; ?>
-			<?php } ?>
-		</tbody>
-	</table>
-	<?php if ($type == 'select') { ?>
-	<div class="withSelected">
-		<span class="icon">
-			<com:Icon name="arrow_turn_090" size="16" />
-			<span><?php echo Yii::t('core', 'withSelected'); ?></span>
-		</span>
-		<a class="icon" href="javascript:void(0)" onclick="tableBrowse.deleteRows()">
-			<com:Icon name="delete" size="16" />
-			<span><?php echo Yii::t('core', 'delete'); ?></span>
-		</a>
-	</div>
-	<script type="text/javascript">
+			</thead>
+			<tbody>
+				<?php foreach($data AS $row) { ?>
+					<tr id="row_<?php echo $i; ?>">
+						<?php if($type == 'select') { ?>
+							<td>
+								<input type="checkbox" name="browse[]" value="row_<?php echo $i; ?>" />
+							</td>
+							<td class="action">
+								<a href="javascript:void(0);" class="icon" onclick="tableBrowse.deleteRow(<?php echo $i; ?>);">
+									<com:Icon name="delete" size="16" text="core.delete" />
+								</a>
+							</td>
+							<td class="action">
+								<a href="javascript:void(0);" class="icon" onclick="tableBrowse.deleteRow(<?php echo $i; ?>);">
+									<com:Icon name="insert" size="16" text="core.insert" />
+								</a>
+							</td>
+						<?php } ?>
+						<?php foreach($row AS $key=>$value) { ?>
+							<td class="<?php echo $key; ?>">
+								<?php echo is_null($value) ? '<span class="null">NULL</span>' : (Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $this->schema . '.' .  $this->table) ? str_replace(array('<','>'),array('&lt;','&gt;'),$value) : StringUtil::cutText(str_replace(array('<','>'),array('&lt;','&gt;'),$value), 100)); ?>
+							</td>
+						<?php } ?>
+					</tr>
+					<?php $i++; ?>
+				<?php } ?>
+			</tbody>
+		</table>
 
-		var tableData = <?php echo json_encode($table); ?>;
-		var rowData = <?php echo json_encode($data); ?>;
+		<?php if ($type == 'select') { ?>
+			<div class="withSelected">
+				<span class="icon">
+					<com:Icon name="arrow_turn_090" size="16" />
+					<span><?php echo Yii::t('core', 'withSelected'); ?></span>
+				</span>
+				<a class="icon" href="javascript:void(0)" onclick="tableBrowse.deleteRows()">
+					<com:Icon name="delete" size="16" />
+					<span><?php echo Yii::t('core', 'delete'); ?></span>
+				</a>
+			</div>
+			<script type="text/javascript">
 
-	</script>
-	<?php } ?>
+				var tableData = <?php echo json_encode($table); ?>;
+				var rowData = <?php echo json_encode($data); ?>;
 
-	<div class="pager bottom">
-	<?php $this->widget('CLinkPager',array('pages'=>$pages)); ?>
+			</script>
+		<?php } ?>
+
+		<div class="pager bottom">
+			<?php $this->widget('CLinkPager',array('pages'=>$pages)); ?>
+		</div>
+
 	</div>
 
 <?php } elseif($this->isSent) { ?>

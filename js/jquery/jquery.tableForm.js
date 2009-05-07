@@ -46,7 +46,9 @@
 			
 			tdObj.attr("colspan", tableColumns);
 			
-			divObj.css("display", "none");
+			divObj.addClass('form');
+			//divObj.css("display", "none");
+			divObj.html('<span class="icon"><img src="' + baseUrl + '/images/loading.gif" alt="' + lang.get('core', 'loading') + '" class="icon icon16" /> <span>' + lang.get('core', 'loading') + '...</span></span>');
 			
 			divObj.appendTo(tdObj);
 			tdObj.appendTo(trObj);

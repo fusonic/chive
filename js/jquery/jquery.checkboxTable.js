@@ -1,6 +1,6 @@
 (function($) {	
 	
-	$.fn.addCheckboxes = function(name, options) {
+	$.fn.addCheckboxes = function(options) {
 		
 		var options = $.extend($.fn.addCheckboxes.defaultSettings, options);
 		
@@ -12,101 +12,67 @@
 			{
 				return tableObj;
 			}
-				
-			tableObj.children("colGroup").prepend("<col class=\"checkbox\" />");
 			
-			tableObj.find("tr").each(function() {
+			var tbodyObj = $(this.tBodies[0]);
+			var allBoxes = tbodyObj.find('input[type="checkbox"]').length;
+			
+			if(options.selectableRows)
+			{
+				tbodyObj.click(function(e) {
+					if(e.target.tagName != 'INPUT' && e.target.tagName != 'A' && e.target.parentNode.tagName != 'A')
+					{
+						$(e.target).closest('tr').find('input[type="checkbox"]').click().change();
+					}
+				});
+			}
 				
-				var rowObject = $(this);
+			tableObj.find('tr').each(function() {
 				
-				if(rowObject.hasClass("noCheckboxes"))
-				{
-					rowObject.children("td")[0].colSpan++;
-					return;
-				}
-				
-				// Find first cell in this row
-				var firstCellElement = $(this).children("th, td")[0];
-				var firstCellObject = $(firstCellElement);
-				
-				// Detect wether we are in the head or not
-				var isHead = firstCellElement.tagName == "TH";
-				
-				// Create the new cell
-				var cellElement = document.createElement(firstCellElement.tagName);
-				var cellObject = $(cellElement);
-				cellObject.css("width", "10px");
-				
-				// Create checkbox
-				var checkboxElement = document.createElement("input");
-				var checkboxObject = $(checkboxElement);
-				checkboxObject.attr("type", "checkbox");
-				if(!isHead) {
-					checkboxObject.attr("name", name + "[]");
-					checkboxObject.attr("value", rowObject.attr("id").replace(name + "_", ""));
-				}
+				var rowObj = $(this);
+				var isHead = this.parentNode.tagName != 'TBODY';
+				var checkboxObject = rowObj.find('input[type="checkbox"]');
 					
 				// Configure checkbox actions
 				if(isHead) {
 					
 					checkboxObject.change(function() {
-						
-						tableObj.find("tr").find("td input[type='checkbox']:first, th input[type='checkbox']:first").attr("checked", this.checked);
-						
-						if(this.checked)
-							tableObj.find("tr").addClass("selected");
+						var checked = this.checked;
+						var checkboxes = tableObj.find("input[type='checkbox']").each(function() {
+							this.checked = checked;
+						});
+						if(checked)
+						{
+							tableObj.children('tbody').children('tr').addClass('selected');
+						}
 						else
-							tableObj.find("tr").removeClass("selected");
-							
+						{
+							tableObj.children('tbody').children('tr').removeClass('selected');
+						}
 					});
 					
 				}
 				else {
 					
 					checkboxObject.change(function(event) {
-						
-						var allBoxes = tableObj.find("tr").find("td input:first[type='checkbox']").length;
-						var checkedBoxes = tableObj.find("tr").find("td input:first[type='checkbox'][checked]").length;
+						var checkedBoxes = tableObj.find("tbody input[type='checkbox'][checked]").length;
 						
 						// Set head checkbox
-						var headCheckboxObject = tableObj.find("tr").find("th input[type='checkbox']:first").attr("checked", checkedBoxes == allBoxes); 
+						tableObj.find("th input[type='checkbox']").each(function() {
+							this.checked = checkedBoxes == allBoxes;
+						}); 
 						
 						// Set row class
 						if(this.checked)
-							$(this).closest("tr").addClass("selected");
-						else
-							$(this).closest("tr").removeClass("selected");
-							
-						if(options.selectableRows)
 						{
-							event.stopPropagation();
+							rowObj.addClass("selected");
 						}
-						
+						else
+						{
+							rowObj.removeClass("selected");
+						}
 					});
-					
-					if(options.selectableRows)
-					{
-						rowObject.find("a").click(function(event) {
-							event.stopPropagation();
-						});
-					}
-					
-				}
 
-				// Add row click action
-				if(options.selectableRows)
-				{
-					rowObject.find("td").click(function() {
-						checkboxObject.click();
-						checkboxObject.change();
-					});
 				}
-				
-				// Append checkbox to cell
-				cellObject.append(checkboxObject);
-				
-				// Append cell to table row
-				firstCellObject.before(cellObject);
 
 			});
 				

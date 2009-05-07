@@ -1,7 +1,48 @@
 <?php
 
-class StorageEngine
+class StorageEngine extends SqlModel
 {
+
+	public static function model($class = __CLASS__)
+	{
+		return parent::model($class);
+	}
+
+	protected function getSql()
+	{
+		return 'SHOW ENGINES';
+	}
+
+	public function attributeNames()
+	{
+		return array(
+			'Engine',
+			'Support',
+			'Comment',
+		);
+	}
+
+	public function getSupportsDelayKeyWrite()
+	{
+		return self::check($this->Engine, self::SUPPORTS_DELAY_KEY_WRITE);
+	}
+
+	public function getSupportsChecksum()
+	{
+		return self::check($this->Engine, self::SUPPORTS_CHECKSUM);
+	}
+
+	public function getSupportsPackKeys()
+	{
+		return self::check($this->Engine, self::SUPPORTS_PACK_KEYS);
+	}
+
+
+
+
+	/*
+	 * static things ...
+	 */
 
 	const SUPPORTS_DELAY_KEY_WRITE = 0;
 	const SUPPORTS_CHECKSUM = 1;
@@ -15,9 +56,15 @@ class StorageEngine
 		'MyISAM'		=> array(	true,	true,	true),
 		'MEMORY'		=> array(	false,	false,	false),
 		'InnoDB'		=> array(	false,	false,	false),
+		'BerkeleyDB'	=> array(	false,	false,	false),
 		'BLACKHOLE'		=> array(	false,	false,	false),
+		'EXAMPLE'		=> array(	false,	false,	false),
 		'ARCHIVE'		=> array(	false,	false,	false),
 		'CSV'			=> array(	false,	false,	false),
+		'ndbcluster'	=> array(	false,	false,	false),
+		'FEDERATED'		=> array(	false,	false,	false),
+		'MRG_MYISAM'	=> array(	false,	false,	false),
+		'ISAM'			=> array(	false,	false,	false),
 
 	);
 
@@ -41,14 +88,9 @@ class StorageEngine
 
 	public static function getSupportedEngines()
 	{
-		return array(
-			'MyISAM' => Yii::t('storageEngines', 'MyISAM'),
-			'MEMORY' => Yii::t('storageEngines', 'MEMORY'),
-			'InnoDB' => Yii::t('storageEngines', 'InnoDB'),
-			'BLACKHOLE' => Yii::t('storageEngines', 'BLACKHOLE'),
-			'ARCHIVE' => Yii::t('storageEngines', 'ARCHIVE'),
-			'CSV' => Yii::t('storageEngines', 'CSV'),
-		);
+		return StorageEngine::model()->findAllByAttributes(array(
+			'Support' => array('YES', 'DEFAULT'),
+		));
 	}
 
 	public static function getPackKeyOptions()

@@ -44,7 +44,7 @@
 					<?php echo CHtml::activeLabel($table, 'ENGINE'); ?>
 				</td>
 				<td colspan="2">
-					<?php echo CHtml::activeDropDownList($table, 'ENGINE', $storageEngines); ?>
+					<?php echo CHtml::activeDropDownList($table, 'ENGINE', CHtml::listData($storageEngines, 'Engine', 'Engine')); ?>
 				</td>
 			</tr>
 			<tr>
