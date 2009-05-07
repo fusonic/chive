@@ -1,3 +1,3 @@
-This is se index page!
-
-<?php echo $content; ?>
+<script type="text/javascript">
+location.href = '#schemata';
+</script>

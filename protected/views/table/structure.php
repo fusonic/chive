@@ -352,6 +352,8 @@
 </div>
 
 <script type="text/javascript">
-tableStructure.setupDialogs();
-tableStructure.setupSortable();
+window.setTimeout(function() {
+	tableStructure.setupDialogs();
+	tableStructure.setupSortable();
+}, 500);
 </script>

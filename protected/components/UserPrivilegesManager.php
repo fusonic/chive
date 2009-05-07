@@ -90,10 +90,10 @@ class UserPrivilegesManager
 
 	public function checkSchema($schema, $priv)
 	{
-		#if($this->checkGlobal($priv))
-		#{
-		#	return true;
-		#}
+		if($this->checkGlobal($priv))
+		{
+			return true;
+		}
 		foreach($this->schema AS $scope => $privs)
 		{
 			$escaped = $this->escape($scope);
@@ -107,10 +107,10 @@ class UserPrivilegesManager
 
 	public function checkTable($schema, $table, $priv)
 	{
-		#if($this->checkSchema($schema, $priv))
-		#{
-		#	return true;
-		#}
+		if($this->checkSchema($schema, $priv))
+		{
+			return true;
+		}
 		if(isset($this->table[$schema . '.' . $table]))
 		{
 			return in_array($priv, $this->table[$schema . '.' . $table]);
@@ -123,10 +123,10 @@ class UserPrivilegesManager
 
 	public function checkColumn($schema, $table, $column, $priv)
 	{
-		#if($this->checkTable($schema, $table, $priv))
-		#{
-		#	return true;
-		#}
+		if($this->checkTable($schema, $table, $priv))
+		{
+			return true;
+		}
 		if(isset($this->column[$schema . '.' . $table . '.' . $column]))
 		{
 			return in_array($priv, $this->column[$schema . '.' . $table . '.' . $column]);

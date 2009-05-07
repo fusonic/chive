@@ -50,7 +50,7 @@ var schema = '<?php echo $this->schema; ?>';
 						'url'=> 'javascript:void(0)',
 						'htmlOptions'=> array('class'=>'icon', 'onclick'=>'schemaGeneral.dropSchema()'),
 					),
-					'visible'=>true,
+					'visible'=>Yii::app()->user->privileges->checkSchema($this->schema, 'DROP'),
 			),
 		),
 	));

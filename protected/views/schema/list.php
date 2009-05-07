@@ -25,13 +25,13 @@
 				<th><input type="checkbox" /></th>
 				<th><?php echo $sort->link('SCHEMA_NAME'); ?></th>
 				<th><?php echo $sort->link('tableCount'); ?></th>
-				<th><?php echo $sort->link('DEFAULT_COLLATION_NAME'); ?></th>
-				<th colspan="3"></th>
+				<th colspan="4"><?php echo $sort->link('DEFAULT_COLLATION_NAME'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
 
-			<?php foreach($schemaList as $n => $model): ?>
+			<?php $canDrop = false; ?>
+			<?php foreach($schemaList as $n => $model) { ?>
 				<tr id="schemata_<?php echo $model->SCHEMA_NAME; ?>">
 					<td>
 						<input type="checkbox" name="schemata[]" value="<?php echo $model->SCHEMA_NAME; ?>" />
@@ -51,17 +51,26 @@
 						<com:Icon name="privileges" size="16" text="core.privileges" disabled="true" />
 					</td>
 					<td>
-						<a href="javascript:void(0)" onclick="schemaList.editSchema('<?php echo $model->SCHEMA_NAME; ?>')" class="icon">
-							<com:Icon name="edit" size="16" text="core.edit" />
-						</a>
+						<?php if(Yii::app()->user->privileges->checkSchema($model->SCHEMA_NAME, 'ALTER')) { ?>
+							<a href="javascript:void(0)" onclick="schemaList.editSchema('<?php echo $model->SCHEMA_NAME; ?>')" class="icon">
+								<com:Icon name="edit" size="16" text="core.edit" />
+							</a>
+						<?php } else { ?>
+							<com:Icon name="edit" size="16" text="core.edit" disabled="true" />
+						<?php } ?>
 					</td>
 					<td>
-						<a href="javascript:void(0)" onclick="schemaList.dropSchema('<?php echo $model->SCHEMA_NAME; ?>')" class="icon">
-							<com:Icon name="delete" size="16" text="database.drop" />
-						</a>
+						<?php if(Yii::app()->user->privileges->checkSchema($model->SCHEMA_NAME, 'DROP')) { ?>
+							<?php $canDrop = true; ?>
+							<a href="javascript:void(0)" onclick="schemaList.dropSchema('<?php echo $model->SCHEMA_NAME; ?>')" class="icon">
+								<com:Icon name="delete" size="16" text="database.drop" />
+							</a>
+						<?php } else { ?>
+							<com:Icon name="delete" size="16" text="database.drop" disabled="true" />
+						<?php } ?>
 					</td>
 				</tr>
-			<?php endforeach; ?>
+			<?php } ?>
 		</tbody>
 		<tfoot>
 			<tr>
@@ -74,10 +83,17 @@
 	</table>
 
 	<div class="rightLinks">
-		<a href="javascript:void(0)" onclick="$('#schemata').appendForm(baseUrl + '/schemata/create')" class="icon">
-			<com:Icon name="add" size="16" />
-			<span><?php echo Yii::t('database', 'addSchema'); ?></span>
-		</a>
+		<?php if(Yii::app()->user->privileges->checkGlobal('CREATE')) { ?>
+			<a href="javascript:void(0)" onclick="$('#schemata').appendForm(baseUrl + '/schemata/create')" class="icon">
+				<com:Icon name="add" size="16" />
+				<span><?php echo Yii::t('database', 'addSchema'); ?></span>
+			</a>
+		<?php } else { ?>
+			<span class="icon">
+				<com:Icon name="add" size="16" disabled="disabled" />
+				<span><?php echo Yii::t('database', 'addSchema'); ?></span>
+			</span>
+		<?php } ?>
 	</div>
 
 	<div class="withSelected">
@@ -85,10 +101,17 @@
 			<com:Icon name="arrow_turn_090" size="16" />
 			<span><?php echo Yii::t('core', 'withSelected'); ?></span>
 		</span>
-		<a class="icon" href="javascript:void(0)" onclick="schemaList.dropSchemata()">
-			<com:Icon name="delete" size="16" />
-			<span><?php echo Yii::t('database', 'drop'); ?></span>
-		</a>
+		<?php if($canDrop) { ?>
+			<a class="icon" href="javascript:void(0)" onclick="schemaList.dropSchemata()">
+				<com:Icon name="delete" size="16" />
+				<span><?php echo Yii::t('database', 'drop'); ?></span>
+			</a>
+		<?php } else { ?>
+			<span class="icon">
+				<com:Icon name="delete" size="16" disabled="true" />
+				<span><?php echo Yii::t('database', 'drop'); ?></span>
+			</span>
+		<?php } ?>
 	</div>
 
 	<div class="pager bottom">

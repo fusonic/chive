@@ -39,6 +39,7 @@
 		</thead>
 		<tbody>
 			<?php $totalRowCount = $totalDataLength = $totalDataFree = 0;?>
+			<?php $canDrop = $canTruncate = false; ?>
 			<?php foreach($schema->tables AS $table) { ?>
 				<tr id="tables_<?php echo $table->TABLE_NAME; ?>">
 					<td>
@@ -70,15 +71,20 @@
 						</a>
 					</td>
 					<td>
-						<a href="javascript:void(0);" onclick="schemaShow.editTable($(this).closest('tr').attr('id').substr(7))" class="icon">
-							<com:Icon name="edit" size="16" text="core.edit" />
-						</a>
+						<?php if(Yii::app()->user->privileges->checkTable($table->TABLE_SCHEMA, $table->TABLE_NAME, 'ALTER')) { ?>
+							<a href="javascript:void(0);" onclick="schemaShow.editTable($(this).closest('tr').attr('id').substr(7))" class="icon">
+								<com:Icon name="edit" size="16" text="core.edit" />
+							</a>
+						<?php } else { ?>
+							<com:Icon name="edit" size="16" text="core.edit" disabled="true" />
+						<?php } ?>
 					</td>
 					<td>
 						<?php if(Yii::app()->user->privileges->checkTable($table->TABLE_SCHEMA, $table->TABLE_NAME, 'DELETE')) { ?>
-						<a href="javascript:void(0);" onclick="schemaShow.truncateTable($(this).closest('tr').attr('id').substr(7))" class="icon">
-							<com:Icon name="truncate" size="16" text="database.truncate" />
-						</a>
+							<a href="javascript:void(0);" onclick="schemaShow.truncateTable($(this).closest('tr').attr('id').substr(7))" class="icon">
+								<com:Icon name="truncate" size="16" text="database.truncate" />
+							</a>
+							<?php $canTruncate = true; ?>
 						<?php } else { ?>
 							<com:Icon name="truncate" size="16" text="database.truncate" disabled="true" />
 						<?php } ?>
@@ -88,6 +94,7 @@
 							<a href="javascript:void(0);" onclick="schemaShow.dropTable($(this).closest('tr').attr('id').substr(7))" class="icon">
 								<com:Icon name="delete" size="16" text="database.drop" />
 							</a>
+							<?php $canDrop = true; ?>
 						<?php } else { ?>
 							<com:Icon name="delete" size="16" text="database.drop" disabled="true" />
 						<?php } ?>
@@ -138,14 +145,28 @@
 			<com:Icon name="arrow_turn_090" size="16" />
 			<span><?php echo Yii::t('core', 'withSelected'); ?></span>
 		</span>
-		<a href="javascript:void(0)" onclick="schemaShow.dropTables()" class="icon">
-			<com:Icon name="delete" size="16" />
-			<span><?php echo Yii::t('database', 'drop'); ?></span>
-		</a>
-		<a href="javascript:void(0)" onclick="schemaShow.truncateTables()" class="icon">
-			<com:Icon name="truncate" size="16" />
-			<span><?php echo Yii::t('database', 'truncate'); ?></span>
-		</a>
+		<?php if($canDrop) { ?>
+			<a href="javascript:void(0)" onclick="schemaShow.dropTables()" class="icon">
+				<com:Icon name="delete" size="16" />
+				<span><?php echo Yii::t('database', 'drop'); ?></span>
+			</a>
+		<?php } else { ?>
+			<span class="icon">
+				<com:Icon name="delete" size="16" disabled="true" />
+				<span><?php echo Yii::t('database', 'drop'); ?></span>
+			</span>
+		<?php } ?>
+		<?php if($canTruncate) { ?>
+			<a href="javascript:void(0)" onclick="schemaShow.truncateTables()" class="icon">
+				<com:Icon name="truncate" size="16" />
+				<span><?php echo Yii::t('database', 'truncate'); ?></span>
+			</a>
+		<?php } else { ?>
+			<span class="icon">
+				<com:Icon name="truncate" size="16" disabled="true" />
+				<span><?php echo Yii::t('database', 'truncate'); ?></span>
+			</span>
+		<?php } ?>
 	</div>
 
 </div>

@@ -51,7 +51,7 @@ var table = '<?php echo $this->table; ?>';
 						'url'=> 'javascript:void(0)',
 						'htmlOptions'=> array('class'=>'icon', 'onclick'=>'tableGeneral.truncate()'),
 					),
-					'visible'=>true,
+					'visible'=>Yii::app()->user->privileges->checkTable($this->schema, $this->table, 'DELETE'),
 			),
 			array(	'label'=>Yii::t('database','drop'),
 					'icon'=>'delete',
@@ -59,7 +59,7 @@ var table = '<?php echo $this->table; ?>';
 						'url'=> 'javascript:void(0)',
 						'htmlOptions'=> array('class'=>'icon', 'onclick'=>'tableGeneral.drop()'),
 					),
-					'visible'=>true,
+					'visible'=>Yii::app()->user->privileges->checkTable($this->schema, $this->table, 'DROP'),
 			),
 		),
 	));
