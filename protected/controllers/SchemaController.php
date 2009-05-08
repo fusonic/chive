@@ -16,7 +16,6 @@ class SchemaController extends Controller
 	private $_db;
 
 	public $schema;
-	public $isSent;
 
 	/**
 	 * @var Default layout for this controller
@@ -62,9 +61,7 @@ class SchemaController extends Controller
 	public function accessRules()
 	{
 		return array(
-			array('deny',
-					'users'=>array('?'),
-			),
+			array('deny', 'users' => array('?')),
 		);
 	}
 
@@ -115,7 +112,8 @@ class SchemaController extends Controller
 		$request = Yii::app()->getRequest();
 		$query = $_query ? $_query : $request->getParam('query');
 
-		if($query) {
+		if($query)
+		{
 
 			$pages = new CPagination;
 			$pages->setPageSize(self::PAGE_SIZE);
@@ -154,11 +152,10 @@ class SchemaController extends Controller
 					$columns = array();
 
 					// Fetch column headers
-					if($total > 0) {
+					if($total > 0)
+					{
 						$columns = array_keys($data[0]);
 					}
-
-
 				}
 				catch (Exception $ex)
 				{
@@ -311,7 +308,7 @@ class SchemaController extends Controller
 		$sort->applyOrder($criteria);
 
 		$criteria->group = 'SCHEMA_NAME';
-		$criteria->select = 'SCHEMA_NAME, DEFAULT_COLLATION_NAME, COUNT(*) AS tableCount';
+		$criteria->select = 'SCHEMA_NAME, DEFAULT_COLLATION_NAME';
 
 		$schemaList = Schema::model()->with(array(
 			'table' => array('select' => 'COUNT(??.TABLE_NAME) AS tableCount'),

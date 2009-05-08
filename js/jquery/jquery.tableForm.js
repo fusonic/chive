@@ -60,7 +60,11 @@
 			 */
 			
 			var setAjaxForms = function() {
-				divObj.children("form").ajaxForm({
+				var forms = divObj.children('form');
+				forms.submit(function(event) {
+					$(this).parent().block({css: null, overlayCss: null, message: null});
+				});
+				forms.ajaxForm({
 					success: function(responseText, statusText) {
 						try 
 						{

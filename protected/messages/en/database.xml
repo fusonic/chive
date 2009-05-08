@@ -79,6 +79,7 @@
 	<entry id="editTable">Edit table</entry>
 	
 	<!-- Columns -->
+	<entry id="noColumns">No visible columns in this table.</entry>
 	<entry id="addColumn">Add column</entry>
 	<entry id="editColumn">Edit column</entry>
 	<entry id="addSchema">Add schema</entry>
@@ -89,6 +90,7 @@
 	<entry id="doYouReallyWantToDropColumns">Do you really want to drop the selected columns?</entry>
 	
 	<!-- Indices -->
+	<entry id="noIndices">No indices in this table.</entry>
 	<entry id="index">Index</entry>
 	<entry id="addIndex">Add index</entry>
 	<entry id="enterNameForNewIndex">Please enter a name for the new index:</entry>

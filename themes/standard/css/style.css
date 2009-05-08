@@ -145,7 +145,7 @@
 	-moz-border-radius: 20px;
   }
   
-  input, textarea {
+  input[type=text], input[type=password], textarea {
   	background: #F7F7F7;
   	border: solid 1px #CCC;
 	color: #333;
@@ -216,6 +216,11 @@
   div.small {
   	color: #808080;
 	font-size: 0.9em;
+  }
+  
+  div.blockUI {
+  	background: #EFEFEF url('../../../images/loading_big.gif') no-repeat center center !important;
+	opacity: 0.6;
   }
    
 }

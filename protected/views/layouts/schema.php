@@ -24,6 +24,7 @@ var iconPath = '<?php echo Yii::app()->baseUrl . '/images/icons/fugue'; ?>';
 $scriptFiles = array(
 	'js/jquery/jquery.js',
 	'js/jquery/jquery-ui-1.7.1.custom.min.js',
+	'js/jquery/jquery.blockUI.js',
 	'js/jquery/jquery.checkboxTable.js',
 	'js/jquery/jquery.form.js',
 	'js/jquery/jquery.jeditable.js',
@@ -53,7 +54,7 @@ $scriptFiles = array(
 );
 foreach($scriptFiles AS $file)
 {
-	echo '<script type="text/javascript" src="' . BASEURL . '/' . $file . '"></script>';
+	echo '<script type="text/javascript" src="' . BASEURL . '/' . $file . '"></script>' . "\n";
 }
 ?>
 
@@ -189,7 +190,7 @@ foreach($scriptFiles AS $file)
 							<span><?php echo $bookmark['name']; ?></span>
 						</a>
 						<div class="listIconContainer">
-							<a href="javascript:void(0);" onclick="Bookmark.delete('<?php echo $this->schema; ?>', '<?php echo $bookmark['id']; ?>');">
+							<a href="javascript:void(0);" onclick="Bookmark.remove('<?php echo $this->schema; ?>', '<?php echo $bookmark['id']; ?>');">
 								<com:Icon name="delete" size="16" title="core.delete" disabled={true} />
 							</a>
 							<a href="javascript:void(0);" onclick="Bookmark.execute('<?php echo $this->schema; ?>', '<?php echo $bookmark['id']; ?>');">

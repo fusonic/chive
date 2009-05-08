@@ -51,7 +51,7 @@ $scriptFiles = array(
 );
 foreach($scriptFiles AS $file)
 {
-	echo '<script type="text/javascript" src="' . BASEURL . '/' . $file . '"></script>';
+	echo '<script type="text/javascript" src="' . BASEURL . '/' . $file . '"></script>' . "\n";
 }
 ?>
 
@@ -95,7 +95,7 @@ foreach($scriptFiles AS $file)
 			<input type="text" id="schemaSearch" class="search text" />
 
 			<ul id="schemaList" class="list icon">
-				<?php foreach(Schema::model()->findAll(array('order'=>'SCHEMA_NAME ASC')) AS $schema) { ?>
+				<?php foreach(Schema::model()->findAll(array('order' => 'SCHEMA_NAME ASC')) AS $schema) { ?>
 					<li class="nowrap">
 						<a href="<?php echo Yii::app()->baseUrl; ?>/schema/<?php echo $schema->SCHEMA_NAME; ?>">
 							<com:Icon name="database" size="16" />

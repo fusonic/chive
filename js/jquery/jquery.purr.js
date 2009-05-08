@@ -32,7 +32,7 @@
 		if ( !options.isSticky )
 		{
 			notice.addClass( 'not-sticky' );
-		};
+		}
 		
 		// Get the container element from the page
 		var cont = document.getElementById( 'purr-container' );
@@ -58,7 +58,7 @@
 			$( close ).attr(	
 				{
 					className: 'close',
-					href: '#close',
+					href: '#close'
 				}
 			)
 				.appendTo( notice )
@@ -75,7 +75,7 @@
 			$( sticky ).attr(	
 				{
 					className: 'sticky',
-					href: '#sticky',
+					href: '#sticky'
 				}
 			)
 				.appendTo( notice )

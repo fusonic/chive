@@ -1,5 +1,6 @@
 var currentLocation = window.location.href;
 var sideBar;
+
 /**
 * Function : dump()
 * Arguments: The data - array,hash(associative array),object
@@ -10,7 +11,8 @@ var sideBar;
 * text that will be a more readable version of the
 * array/hash/object that is given.
 */
-function dump(arr,level) {
+function dump(arr,level) 
+{
 	var dumped_text = "";
 	if(!level) level = 0;
 	
@@ -35,16 +37,16 @@ function dump(arr,level) {
 	return dumped_text;
 } 
 
-function checkLocation() {
-
+function checkLocation() 
+{
 	if(window.location.href != currentLocation) 
 	{
 		reload();
 	}
-
 }
 
-function reload() {
+function reload() 
+{
 	currentLocation = window.location.href;
 	newLocation = currentLocation
 		.replace(/\?(.+)#/, '')
@@ -64,11 +66,22 @@ function reload() {
 	return false;
 }
 
-function init() {
-	
-	$('table.list tbody').each(function() {
-		$(this).children('tr:even').addClass('even');
-		$(this).children('tr:odd').addClass('odd');
+function init() 
+{
+	$('table.list').each(function() {
+		var tBody = this.tBodies[0];
+		var rowCount = tBody.rows.length;
+		for(var i = 0; i < rowCount; i++)
+		{
+			if(i % 2 == 0)
+			{
+				tBody.rows[i].className += ' even';
+			}
+			else
+			{
+				tBody.rows[i].className += ' odd';
+			}
+		}
 	});
 	
 	$('div.ui-layout-center form').ajaxForm({
@@ -99,7 +112,6 @@ function init() {
 		$('table.addCheckboxes').addCheckboxes().removeClass('addCheckboxes');
 	}
 	catch(exception) {
-		console.log(exception);
 	}
 }
 
@@ -162,7 +174,7 @@ $(document).ready(function()
 		autoHeight: true,
 		collapsible: false,
 		fillSpace: true,
-		selectedClass: "active",
+		selectedClass: "active"
 	});
 	
 	// Setup list filters
@@ -202,7 +214,6 @@ $(document).ready(function()
 	{
 		reload();
 	}
-
 });
 
 var AjaxResponse = {
@@ -241,7 +252,7 @@ var AjaxResponse = {
 };
 
 
-String.prototype.trim = function () {
+String.prototype.trim = function() {
     return this.replace(/^\s*/, "").replace(/\s*$/, "");
 }
 

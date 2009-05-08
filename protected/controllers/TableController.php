@@ -93,6 +93,7 @@ class TableController extends Controller
 
 		$this->render('structure',array(
 			'table' => $table,
+			'canAlter' => Yii::app()->user->privileges->checkTable($table->TABLE_SCHEMA, $table->TABLE_NAME, 'ALTER'),
 		));
 	}
 

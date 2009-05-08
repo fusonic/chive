@@ -172,5 +172,7 @@
 </div>
 
 <script type="text/javascript">
-schemaShow.setupDialogs();
+window.setTimeout(function() {
+	schemaShow.setupDialogs();
+}, 500);
 </script>

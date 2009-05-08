@@ -14,70 +14,58 @@
 			}
 			
 			var tbodyObj = $(this.tBodies[0]);
-			var allBoxes = tbodyObj.find('input[type="checkbox"]').length;
 			
 			if(options.selectableRows)
 			{
-				tbodyObj.click(function(e) {
-					if(e.target.tagName != 'INPUT' && e.target.tagName != 'A' && e.target.parentNode.tagName != 'A')
+				tbodyObj.click(function(e, switchChecked) {
+					if(e.target.tagName == 'INPUT')
 					{
-						$(e.target).closest('tr').find('input[type="checkbox"]').click().change();
-					}
-				});
-			}
-				
-			tableObj.find('tr').each(function() {
-				
-				var rowObj = $(this);
-				var isHead = this.parentNode.tagName != 'TBODY';
-				var checkboxObject = rowObj.find('input[type="checkbox"]');
-					
-				// Configure checkbox actions
-				if(isHead) {
-					
-					checkboxObject.change(function() {
-						var checked = this.checked;
-						var checkboxes = tableObj.find("input[type='checkbox']").each(function() {
-							this.checked = checked;
-						});
-						if(checked)
-						{
-							tableObj.children('tbody').children('tr').addClass('selected');
-						}
-						else
-						{
-							tableObj.children('tbody').children('tr').removeClass('selected');
-						}
-					});
-					
-				}
-				else {
-					
-					checkboxObject.change(function(event) {
-						var checkedBoxes = tableObj.find("tbody input[type='checkbox'][checked]").length;
-						
+						var checkedBoxes = bodyBoxes.filter('input[checked]').length;
+
 						// Set head checkbox
-						tableObj.find("th input[type='checkbox']").each(function() {
-							this.checked = checkedBoxes == allBoxes;
+						headBoxes.each(function() {
+							this.checked = checkedBoxes == bodyBoxes.length;
 						}); 
 						
 						// Set row class
-						if(this.checked)
+						if(e.target.checked)
 						{
-							rowObj.addClass("selected");
+							$(e.target).closest('tr').addClass("selected");
 						}
 						else
 						{
-							rowObj.removeClass("selected");
+							$(e.target).closest('tr').removeClass("selected");
 						}
-					});
-
-				}
-
-			});
-				
-			return tableObj;
+					}
+					else if(e.target.tagName != 'INPUT' && e.target.tagName != 'A' && e.target.parentNode.tagName != 'A')
+					{
+						$(e.target).closest('tr').find('input[type="checkbox"]').trigger('click', true);
+					}
+				});
+			}
 			
+			var headBoxes = $([this.tHead, this.tFoot]).find('input[type="checkbox"]');
+			var bodyBoxes = tbodyObj.find('input[type="checkbox"]');
+			
+			headBoxes.click(function(event) {
+				var checked = this.checked;
+				headBoxes.each(function() {
+					this.checked = checked;
+				});
+				bodyBoxes.each(function() {
+					this.checked = checked;
+					if(this.checked)
+					{
+						$(this.parentNode.parentNode).addClass('selected');
+					}
+					else
+					{
+						$(this.parentNode.parentNode).removeClass('selected');
+					}
+				});
+			});
+
+			return tableObj;
 		});
 		
 	}

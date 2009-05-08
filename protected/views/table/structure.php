@@ -41,6 +41,13 @@
 			</tr>
 		</thead>
 		<tbody>
+			<?php if(count($table->columns) < 1) { ?>
+				<tr>
+					<td class="noEntries" colspan="15">
+						<?php echo Yii::t('database', 'noColumns'); ?>
+					</td>
+				</tr>
+			<?php } ?>
 			<?php foreach($table->columns AS $column) { ?>
 				<tr id="columns_<?php echo $column->COLUMN_NAME; ?>">
 					<td>
@@ -81,17 +88,25 @@
 						<com:Icon name="arrow_move" size="16" text="core.move" htmlOptions={array('style'=>'cursor: pointer;')} />
 					</td>
 					<td>
-						<a href="javascript:void(0)" onclick="tableStructure.editColumn($(this).closest('tr').attr('id').substr(8))" class="icon">
-							<com:Icon name="edit" size="16" text="core.edit" />
-						</a>
+						<?php if($canAlter) { ?>
+							<a href="javascript:void(0)" onclick="tableStructure.editColumn($(this).closest('tr').attr('id').substr(8))" class="icon">
+								<com:Icon name="edit" size="16" text="core.edit" />
+							</a>
+						<?php } else { ?>
+							<com:Icon name="edit" size="16" text="core.edit" disabled="true"/>
+						<?php }?>
 					</td>
 					<td>
-						<a href="javascript:void(0)" onclick="tableStructure.dropColumn($(this).closest('tr').attr('id').substr(8))" class="icon">
-							<com:Icon name="delete" size="16" text="database.drop" />
-						</a>
+						<?php if($canAlter) { ?>
+							<a href="javascript:void(0)" onclick="tableStructure.dropColumn($(this).closest('tr').attr('id').substr(8))" class="icon">
+								<com:Icon name="delete" size="16" text="database.drop" />
+							</a>
+						<?php } else { ?>
+							<com:Icon name="delete" size="16" text="database.drop" disabled="true" />
+						<?php } ?>
 					</td>
 					<td>
-						<?php if(!$table->getHasPrimaryKey()) { ?>
+						<?php if($canAlter && !$table->getHasPrimaryKey()) { ?>
 							<a href="javascript:void(0)" onclick="tableStructure.addIndex1('primary', $(this).closest('tr').attr('id').substr(8))" class="icon">
 								<com:Icon name="key_primary" size="16" text="database.primaryKey" />
 							</a>
@@ -100,7 +115,7 @@
 						<?php } ?>
 					</td>
 					<td>
-						<?php if(DataType::check($column->DATA_TYPE, DataType::SUPPORTS_INDEX)) { ?>
+						<?php if($canAlter && DataType::check($column->DATA_TYPE, DataType::SUPPORTS_INDEX)) { ?>
 						<a href="javascript:void(0)" onclick="tableStructure.addIndex1('index', $(this).closest('tr').attr('id').substr(8))" class="icon">
 							<com:Icon name="key_index" size="16" text="database.index" />
 						</a>
@@ -109,7 +124,7 @@
 						<?php }?>
 					</td>
 					<td>
-						<?php if(DataType::check($column->DATA_TYPE, DataType::SUPPORTS_UNIQUE)) { ?>
+						<?php if($canAlter && DataType::check($column->DATA_TYPE, DataType::SUPPORTS_UNIQUE)) { ?>
 							<a href="javascript:void(0)" onclick="tableStructure.addIndex1('unique', $(this).closest('tr').attr('id').substr(8))" class="icon">
 								<com:Icon name="key_unique" size="16" text="database.uniqueKey" />
 							</a>
@@ -118,7 +133,7 @@
 						<?php }?>
 					</td>
 					<td>
-						<?php if(DataType::check($column->DATA_TYPE, DataType::SUPPORTS_FULLTEXT)) { ?>
+						<?php if($canAlter && DataType::check($column->DATA_TYPE, DataType::SUPPORTS_FULLTEXT)) { ?>
 							<a href="javascript:void(0)" onclick="tableStructure.addIndex1('fulltext', $(this).closest('tr').attr('id').substr(8))" class="icon">
 								<com:Icon name="key_fulltext" size="16" text="database.fulltextIndex" />
 							</a>
@@ -138,10 +153,17 @@
 	</table>
 
 	<div class="rightLinks">
-		<a href="javascript:void(0)" onclick="tableStructure.addColumn()" class="icon">
-			<com:Icon name="add" size="16" />
-			<span><?php echo Yii::t('database', 'addColumn'); ?></span>
-		</a>
+		<?php if($canAlter) { ?>
+			<a href="javascript:void(0)" onclick="tableStructure.addColumn()" class="icon">
+				<com:Icon name="add" size="16" />
+				<span><?php echo Yii::t('database', 'addColumn'); ?></span>
+			</a>
+		<?php } else { ?>
+			<span class="icon">
+				<com:Icon name="add" size="16" disabled="true" />
+				<span><?php echo Yii::t('database', 'addColumn'); ?></span>
+			</span>
+		<?php } ?>
 	</div>
 
 	<div class="withSelected">
@@ -149,28 +171,53 @@
 			<com:Icon name="arrow_turn_090" size="16" />
 			<span><?php echo Yii::t('core', 'withSelected'); ?></span>
 		</span>
-		<a href="javascript:void(0)" onclick="tableStructure.dropColumns()" class="icon">
-			<com:Icon name="delete" size="16" />
-			<span><?php echo Yii::t('database', 'drop'); ?></span>
-		</a>
-		<?php if(!$table->getHasPrimaryKey()) { ?>
-			<a href="javascript:void(0)" onclick="tableStructure.addIndex('primary')" class="icon">
-				<com:Icon name="key_primary" size="16" text="database.primaryKey" />
-				<span><?php echo Yii::t('database', 'primaryKey'); ?></span>
+		<?php if($canAlter) { ?>
+			<a href="javascript:void(0)" onclick="tableStructure.dropColumns()" class="icon">
+				<com:Icon name="delete" size="16" />
+				<span><?php echo Yii::t('database', 'drop'); ?></span>
 			</a>
+			<?php if(!$table->getHasPrimaryKey()) { ?>
+				<a href="javascript:void(0)" onclick="tableStructure.addIndex('primary')" class="icon">
+					<com:Icon name="key_primary" size="16" text="database.primaryKey" />
+					<span><?php echo Yii::t('database', 'primaryKey'); ?></span>
+				</a>
+			<?php } ?>
+			<a href="javascript:void(0)" onclick="tableStructure.addIndex('index')" class="icon">
+				<com:Icon name="key_index" size="16" text="database.index" />
+				<span><?php echo Yii::t('database', 'index'); ?></span>
+			</a>
+			<a href="javascript:void(0)" onclick="tableStructure.addIndex('unique')" class="icon">
+				<com:Icon name="key_unique" size="16" text="database.uniqueKey" />
+				<span><?php echo Yii::t('database', 'uniqueKey'); ?></span>
+			</a>
+			<a href="javascript:void(0)" onclick="tableStructure.addIndex('fulltext')" class="icon">
+				<com:Icon name="key_fulltext" size="16" text="database.fulltextIndex" />
+				<span><?php echo Yii::t('database', 'fulltextIndex'); ?></span>
+			</a>
+		<?php } else { ?>
+			<span class="icon">
+				<com:Icon name="delete" size="16" disabled="true" />
+				<span><?php echo Yii::t('database', 'drop'); ?></span>
+			</span>
+			<?php if(!$table->getHasPrimaryKey()) { ?>
+				<span class="icon">
+					<com:Icon name="key_primary" size="16" text="database.primaryKey" disabled="true" />
+					<span><?php echo Yii::t('database', 'primaryKey'); ?></span>
+				</span>
+			<?php } ?>
+			<span class="icon">
+				<com:Icon name="key_index" size="16" text="database.index" disabled="true" />
+				<span><?php echo Yii::t('database', 'index'); ?></span>
+			</span>
+			<span class="icon">
+				<com:Icon name="key_unique" size="16" text="database.uniqueKey" disabled="true" />
+				<span><?php echo Yii::t('database', 'uniqueKey'); ?></span>
+			</span>
+			<span class="icon">
+				<com:Icon name="key_fulltext" size="16" text="database.fulltextIndex" disabled="true" />
+				<span><?php echo Yii::t('database', 'fulltextIndex'); ?></span>
+			</span>
 		<?php } ?>
-		<a href="javascript:void(0)" onclick="tableStructure.addIndex('index')" class="icon">
-			<com:Icon name="key_index" size="16" text="database.index" />
-			<span><?php echo Yii::t('database', 'index'); ?></span>
-		</a>
-		<a href="javascript:void(0)" onclick="tableStructure.addIndex('unique')" class="icon">
-			<com:Icon name="key_unique" size="16" text="database.uniqueKey" />
-			<span><?php echo Yii::t('database', 'uniqueKey'); ?></span>
-		</a>
-		<a href="javascript:void(0)" onclick="tableStructure.addIndex('fulltext')" class="icon">
-			<com:Icon name="key_fulltext" size="16" text="database.fulltextIndex" />
-			<span><?php echo Yii::t('database', 'fulltextIndex'); ?></span>
-		</a>
 	</div>
 
 </div>
@@ -204,6 +251,13 @@
 					</tr>
 				</thead>
 				<tbody>
+					<?php if(count($table->indices) < 1) { ?>
+						<tr>
+							<td class="noEntries" colspan="6">
+								<?php echo Yii::t('database', 'noIndices'); ?>
+							</td>
+						</tr>
+					<?php } ?>
 					<?php foreach($table->indices AS $index) { ?>
 						<tr id="indices_<?php echo $index->INDEX_NAME; ?>">
 							<td><?php echo $index->INDEX_NAME; ?></td>
@@ -226,14 +280,26 @@
 								</ul>
 							</td>
 							<td>
-								<a href="javascript:void(0)" onclick="tableStructure.editIndex('<?php echo $index->INDEX_NAME; ?>')" class="icon">
-									<com:Icon name="edit" size="16" text="core.edit" />
-								</a>
+								<?php if($canAlter) { ?>
+									<a href="javascript:void(0)" onclick="tableStructure.editIndex('<?php echo $index->INDEX_NAME; ?>')" class="icon">
+										<com:Icon name="edit" size="16" text="core.edit" />
+									</a>
+								<?php } else { ?>
+									<span class="icon">
+										<com:Icon name="edit" size="16" text="core.edit" disabled="true" />
+									</span>
+								<?php } ?>
 							</td>
 							<td>
-								<a href="javascript:void(0)" onclick="tableStructure.dropIndex('<?php echo $index->INDEX_NAME; ?>')" class="icon">
-									<com:Icon name="delete" size="16" text="database.drop" />
-								</a>
+								<?php if($canAlter) { ?>
+									<a href="javascript:void(0)" onclick="tableStructure.dropIndex('<?php echo $index->INDEX_NAME; ?>')" class="icon">
+										<com:Icon name="delete" size="16" text="database.drop" />
+									</a>
+								<?php } else { ?>
+									<span class="icon">
+										<com:Icon name="delete" size="16" text="database.drop" disabled="true" />
+									</span>
+								<?php } ?>
 							</td>
 						</tr>
 					<?php } ?>
@@ -241,10 +307,17 @@
 			</table>
 
 			<div class="rightLinks">
-				<a href="javascript:void(0)" onclick="tableStructure.addIndexForm()" class="icon">
-					<com:Icon name="add" size="16" />
-					<span><?php echo Yii::t('database', 'addIndex'); ?></span>
-				</a>
+				<?php if($canAlter) { ?>
+					<a href="javascript:void(0)" onclick="tableStructure.addIndexForm()" class="icon">
+						<com:Icon name="add" size="16" />
+						<span><?php echo Yii::t('database', 'addIndex'); ?></span>
+					</a>
+				<?php } else { ?>
+					<span class="icon">
+						<com:Icon name="add" size="16" disabled="disabled" />
+						<span><?php echo Yii::t('database', 'addIndex'); ?></span>
+					</span>
+				<?php } ?>
 			</div>
 
 		</div>

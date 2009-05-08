@@ -121,5 +121,7 @@
 </div>
 
 <script type="text/javascript">
-schemaList.setupDialogs();
+window.setTimeout(function() {
+	schemaList.setupDialogs();
+}, 500);
 </script>

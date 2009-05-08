@@ -34,7 +34,7 @@ var Bookmark = {
 		
 	},
 	
-	delete: function(_schema, _id)
+	remove: function(_schema, _id)
 	{
 		this.schema = _schema;
 		this.id = _id;
@@ -44,9 +44,7 @@ var Bookmark = {
 	
 	removeFromList: function(_id) 
 	{
-		
 		$('#bookmarkList li[id="bookmark_' + _id + '"]').hide().remove();
-		
 	},
 	
 	execute: function(_schema, _id) 
@@ -94,7 +92,9 @@ $(document).ready(function() {
 					data = response.data;
 					
 					if(data)
+					{
 						Bookmark.addToList(data.id, data.schema, data.name, data.query);
+					}
 						
 					AjaxResponse.handle(response);
 					

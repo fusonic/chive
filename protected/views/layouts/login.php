@@ -20,24 +20,22 @@
 
 $(document).ready(function() {
 
-	$('body').layout({
-		// General
-		applyDefaultStyles: false,
+	$('body')
+		.layout({
+			// General
+			applyDefaultStyles: false,
 
-		north__size: 42,
-		north__resizable: false,
-		north__closable: false,
-		north__spacing_open: 1
+			north__size: 42,
+			north__resizable: false,
+			north__closable: false,
+			north__spacing_open: 1
 
-	});
+		})
+		.click(function() {
+			$('#languageSelect').slideUp();
+			$('#themeSelect').slideUp();
+		});
 
-});
-
-$(document).ready(function() {
-	$('body').click(function() {
-		$('#languageSelect').slideUp();
-		$('#themeSelect').slideUp();
-	});;
 });
 
 </script>
