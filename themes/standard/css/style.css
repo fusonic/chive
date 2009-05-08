@@ -143,6 +143,7 @@
   	background: #3a68a0 url(../images/login-bg.png) repeat-x;
 	border: 10px solid #FFF;
 	-moz-border-radius: 20px;
+	-webkit-border-radius: 20px;
   }
   
   input[type=text], input[type=password], textarea {

@@ -5,23 +5,20 @@
    */
 
   ul.tabMenu li {
-	background: url(../images/tab-bg.png) right top;
-	height: 30px;
 	font-size: 120%;
 	margin-right: 10px;
-	padding-right: 9px;
+	padding: 3px 10px 5px 10px;
+	background: #DFDFDF url('../images/tab-bg.png') repeat-x top left;
+	-moz-border-radius-bottomleft: 5px;
+	-moz-border-radius-bottomright: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+	-webkit-border-bottom-right-radius: 5px;
+	border: solid 1px #C0C0C0;
+	border-top: none;
   }
   
-  ul.tabMenu li a {
-	padding: 2px 6px 8px 15px;
-	height: 20px;
-	background: url(../images/tab-bg.png) left top;
-  }
-  
-  ul.tabMenu li:hover, ul.tabMenu li.active {
-  	background: url(../images/tab-bg.png) right 30px;
-  }
-  
-  ul.tabMenu li:hover a, ul.tabMenu li.active a {
-  	background: url(../images/tab-bg.png) 0px 30px;
+  ul.tabMenu li.active,
+  ul.tabMenu li:hover {
+  	background-color: #d4e73f;
+  	background-position: bottom left;
   }
