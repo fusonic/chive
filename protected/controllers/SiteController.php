@@ -75,7 +75,7 @@ class SiteController extends Controller
 			$full = substr($language, strrpos($language, '/')+1);
 			$short = substr($full, 0, 2);
 
-			// Don't display containers
+			// Don't display containers and active language
 			if($short == $full || $full == $currentLanguage)
 				continue;
 
@@ -89,12 +89,17 @@ class SiteController extends Controller
 		}
 
 		$availableThemes = Yii::app()->getThemeManager()->getThemeNames();
+		$activeTheme = Yii::app()->getTheme()->getName();
 
 		$themes = array();
 		foreach($availableThemes AS $theme) {
+
+			if($activeTheme == $theme)
+				continue;
+
 			$themes[] = array(
 				'label'=> ucfirst($theme),
-				'icon'=> 'themes/' . $theme . '/images/icon.png',
+				'icon'=> '/themes/' . $theme . '/images/icon.png',
 				'url'=>Yii::app()->request->baseUrl . '/site/changeTheme/' . $theme,
 				'htmlOptions'=>array('class'=>'icon'),
 			);

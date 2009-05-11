@@ -106,6 +106,9 @@ function init()
 		$('#bc_table').hide();
 	}
 	
+	// Trigger resize event for sidebar accordion - doesn't work in webkit-based browsers
+	sideBar.accordion('resize');
+	
 	// Add checkboxes to respective tables
 	try 
 	{
@@ -166,6 +169,7 @@ $(document).ready(function()
 			return;
 		}
 	});
+	
 
 	// ACCORDION - inside the West pane
 	sideBar = $("#sideBar").accordion({
@@ -177,8 +181,11 @@ $(document).ready(function()
 		selectedClass: "active"
 	});
 	
+	
+	
 	// Setup list filters
 
+	$('#schemaList').setupListFilter($('#schemaSearch'));
 	$('#tableList').setupListFilter($('#tableSearch'));
 	$('#bookmarkList').setupListFilter($('#bookmarkSearch'));
 	

@@ -30,8 +30,9 @@ $(document).ready(function() {
 			north__closable: false,
 			north__spacing_open: 1
 
-		})
-		.click(function() {
+		});
+
+	$('body').click(function() {
 			$('#languageSelect').slideUp();
 			$('#themeSelect').slideUp();
 		});

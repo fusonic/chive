@@ -4,7 +4,7 @@
 		<?php if($item['url']) { ?>
 			<?php echo CHtml::openTag('a', array('href'=>$item['url'], 'class'=>'icon')); ?>
 		<?php } ?>
-		<?php if($item['icon']) { ?><img src="<?php echo $item['icon'] ?>" alt="<?php echo $item['label'] ?>" title="" /><?php } ?>
+		<?php if($item['icon']) { ?><img src="<?php echo Yii::app()->baseUrl . '/' . $item['icon'] ?>" alt="<?php echo $item['label'] ?>" title="" /><?php } ?>
 		<span><?php echo $item['label']; ?><span>
 		<?php if($item['url']) { ?>
 			<?php echo CHtml::closetag('a'); ?>

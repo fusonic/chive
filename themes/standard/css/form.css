@@ -7,8 +7,8 @@
 	 * Search field
 	 */	
 	input.search {
-		background: url(../../../images/icons/fugue/16/search.png) 2px 3px no-repeat;
-		padding-left: 22px;
+		background: url(../../../images/icons/fugue/16/search.png) 2px 3px no-repeat !important;
+		padding-left: 22px !important;
 	}
 	
 	/*

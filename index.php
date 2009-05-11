@@ -33,6 +33,11 @@ define('ICONPATH', BASEURL . '/' . Yii::app()->params->iconpack);
 $session = Yii::app()->getSession();
 $request = Yii::app()->getRequest();
 
+$validPaths = array(
+	'site',
+	'index.php',
+);
+
 if(!$app->user->isGuest)
 {
 	$app->db->connectionString = 'mysql:host=' . $app->user->host . ';dbname=information_schema';
@@ -41,9 +46,8 @@ if(!$app->user->isGuest)
     $app->db->autoConnect = true;
 
 }
-elseif(!in_array($request->getPathInfo(), array('site/login', 'index.php')))
+elseif(!preg_match('/^(' . implode('|', $validPaths) . ')/i', $request->getPathInfo()))
 {
-
 	if($request->isAjaxRequest)
 	{
 		$response = new AjaxResponse();

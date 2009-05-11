@@ -60,9 +60,9 @@ foreach($scriptFiles AS $file)
 </head>
 <body>
 
-	<div id="loading">
-  		<?php echo Yii::t('core', 'loading'); ?>...
-	</div>
+  <div id="loading">
+  	<?php echo Yii::t('core', 'loading'); ?>...
+  </div>
 
   <div class="ui-layout-north">
 	<div id="header">
@@ -125,6 +125,7 @@ foreach($scriptFiles AS $file)
 		<div class="sidebarContent">
 			routines
 		</div>
+		<!--- TRIGGERS
   		<div class="sidebarHeader">
 			<a class="icon">
 				<img src="images/icons/script_fav_24.png" />
@@ -134,6 +135,7 @@ foreach($scriptFiles AS $file)
 		<div class="sidebarContent">
 			triggers
 		</div>
+		--->
   		<div class="sidebarHeader">
 			<a class="icon">
 				<com:Icon name="info" size="24" />

@@ -168,7 +168,7 @@
   }
   
   input.text, input.password {
-  	width: 99%;
+  	width: 98%;
 	height: 18px;
 	padding: 2px;
   }
@@ -200,7 +200,7 @@
   div.ui-layout-west {
   	padding: 0px !important;
 	overflow: hidden !important;
-	text-align-left;
+	text-align: left;
 	margin-top: 30px;
 	padding-top: 10px;	
   }
