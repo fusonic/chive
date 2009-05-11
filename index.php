@@ -16,7 +16,7 @@ function predie($_value) {
 }
 
 // remove the following line when in production mode
-defined('YII_DEBUG') or define('YII_DEBUG', false);
+defined('YII_DEBUG') or define('YII_DEBUG', true);
 
 $console = false;
 

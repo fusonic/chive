@@ -90,7 +90,7 @@ class Schema extends CActiveRecord
 		);
 	}
 
-	/*
+	/**
 	 * @return string primary key column
 	 */
 	public function primaryKey()

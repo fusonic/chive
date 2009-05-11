@@ -111,6 +111,7 @@ return array(
 				'schema/<schema:'.URL_MATCH.'>/bookmark/show/<id:(.+)>'=>'schema/showBookmark',
 
 					// Table actions
+					'schema/<schema:'.URL_MATCH.'>/tableAction/create'=>'table/create',
 					'schema/<schema:'.URL_MATCH.'>/tableAction/truncate'=>'table/truncate',
 					'schema/<schema:'.URL_MATCH.'>/tableAction/drop'=>'table/drop',
 

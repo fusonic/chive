@@ -1,5 +1,3 @@
-<?php CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3); ?>
-
 <?php if($isSubmitted && !$table->isNewRecord) { ?>
 	<script type="text/javascript">
 	var idPrefix = '<?php echo CHtml::$idPrefix; ?>';
@@ -98,6 +96,10 @@
 			</tr>
 		</tbody>
 	</table>
+	<h1 style="clear: left">
+		<?php echo Yii::t('database', 'addFirstColumn'); ?>
+	</h1>
+	<?php echo $columnForm; ?>
 	<div style="clear: left; padding-top: 5px">
 		<?php echo CHtml::submitButton(Yii::t('action', ($table->isNewRecord ? 'create' : 'save')), array('class'=>'icon save')); ?>
 		<?php echo CHtml::button(Yii::t('action', 'cancel'), array('class'=>'icon delete', 'onclick'=>'$(this.form).slideUp(500, function() { $(this).parents("tr").remove(); })')); ?>
@@ -106,4 +108,7 @@
 
 <script type="text/javascript">
 tableForm.create('<?php echo CHtml::$idPrefix; ?>');
+<?php if($columnForm) { ?>
+	columnForm.create('<?php echo CHtml::$idPrefix; ?>');
+<?php } ?>
 </script>

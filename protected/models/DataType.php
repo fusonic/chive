@@ -31,8 +31,8 @@ class DataType
 		'double'		=> array(	'numeric',	false,	true,	true,	false,	true,	true,	false,	true,	true,	false,	true),
 		'decimal'		=> array(	'numeric',	false,	true,	true,	false,	true,	true,	false,	true,	true,	false,	true),
 
-		'char'			=> array(	'string',	true,	true,	true,	false,	true,	false,	false,	false,	false,	false,	false),
-		'varchar'		=> array(	'string',	true,	true,	true,	false,	true,	false,	false,	false,	false,	false,	false),
+		'char'			=> array(	'string',	true,	true,	true,	true,	true,	false,	false,	false,	false,	false,	false),
+		'varchar'		=> array(	'string',	true,	true,	true,	true,	true,	false,	false,	false,	false,	false,	false),
 		'tinytext'		=> array(	'string',	true,	false,	false,	true,	false,	false,	false,	false,	false,	false,	false),
 		'text'			=> array(	'string',	true,	false,	false,	true,	false,	false,	false,	false,	false,	false,	false),
 		'mediumtext'	=> array(	'string',	true,	false,	false,	true,	false,	false,	false,	false,	false,	false,	false),
