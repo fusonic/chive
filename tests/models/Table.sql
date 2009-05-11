@@ -11,6 +11,8 @@ CREATE TABLE IF NOT EXISTS `tabletest`.`innodb` (
   KEY `varchar` (`varchar`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
+INSERT INTO `tabletest`.`innodb` (`pk`, `varchar`, `datetime`) VALUES (1, 'a', '2008-01-01');
+
 DROP TABLE IF EXISTS `tabletest`.`myisam`;
 CREATE TABLE IF NOT EXISTS `tabletest`.`myisam` (
   `pk` int(11) NOT NULL auto_increment,

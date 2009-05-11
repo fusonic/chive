@@ -6,9 +6,11 @@ class Table extends CActiveRecord
 	public static $db;
 
 	public $originalAttributes;
-	public $optionChecksum = 0, $originalOptionChecksum = 0;
-	public $optionDelayKeyWrite = 0, $originalOptionDelayKeyWrite = 0;
+	public $optionChecksum = '0', $originalOptionChecksum = '0';
+	public $optionDelayKeyWrite = '0', $originalOptionDelayKeyWrite = '0';
 	public $optionPackKeys = 'DEFAULT', $originalOptionPackKeys = 'DEFAULT';
+
+	public $comment;
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -31,20 +33,43 @@ class Table extends CActiveRecord
 		$options = strtolower($attributes['CREATE_OPTIONS']);
 		if(strpos($options, 'checksum=1') !== false)
 		{
-			$res->optionChecksum = $res->originalOptionChecksum = 1;
+			$res->optionChecksum = $res->originalOptionChecksum = '1';
 		}
 		if(strpos($options, 'delay_key_write=1') !== false)
 		{
-			$res->optionDelayKeyWrite = $res->originalOptionDelayKeyWrite = 1;
+			$res->optionDelayKeyWrite = $res->originalOptionDelayKeyWrite = '1';
 		}
 		if(strpos($options, 'pack_keys=1') !== false)
 		{
-			$res->optionPackKeys = $res->originalOptionPackKeys = 1;
+			$res->optionPackKeys = $res->originalOptionPackKeys = '1';
 		}
 		elseif(strpos($options, 'pack_keys=0') !== false)
 		{
-			$res->optionPackKeys = $res->originalOptionPackKeys = 0;
+			$res->optionPackKeys = $res->originalOptionPackKeys = '0';
 		}
+
+		// Comment
+		if($attributes['ENGINE'] == 'InnoDB')
+		{
+			$search = 'InnoDB free: \d+ ..?$';
+			if(preg_match('/^' . $search . '/', $attributes['TABLE_COMMENT']))
+			{
+				$res->comment = '';
+			}
+			elseif(preg_match('/; ' . $search . '/', $attributes['TABLE_COMMENT'], $result))
+			{
+				$res->comment = str_replace($result[0], '', $attributes['TABLE_COMMENT']);
+			}
+			else
+			{
+				$res->comment = $attributes['TABLE_COMMENT'];
+			}
+		}
+		else
+		{
+			$res->comment = $attributes['TABLE_COMMENT'];
+		}
+		$res->originalAttributes['comment'] = $res->comment;
 
 		return $res;
 	}
@@ -63,7 +88,7 @@ class Table extends CActiveRecord
 			'TABLE_NAME',
 			'TABLE_COLLATION',
 			'ENGINE',
-			'TABLE_COMMENT',
+			'comment',
 			'optionPackKeys',
 			'optionDelayKeyWrite',
 			'optionChecksum',
@@ -124,10 +149,6 @@ class Table extends CActiveRecord
 			'TABLE_SCHEMA',
 			'TABLE_NAME',
 		);
-	}
-
-	public function getName() {
-		return $this->TABLE_NAME;
 	}
 
 	public function getRowCount() {
@@ -233,9 +254,9 @@ class Table extends CActiveRecord
 			$sql .= $comma . "\n\t" . 'CHARACTER SET ' . Collation::getCharacterSet($this->TABLE_COLLATION) . ' COLLATE ' . $this->TABLE_COLLATION;
 			$comma = ',';
 		}
-		if($this->TABLE_COMMENT !== $this->originalAttributes['TABLE_COMMENT'])
+		if($this->comment !== $this->originalAttributes['comment'])
 		{
-			$sql .= $comma . "\n\t" . 'COMMENT ' . self::$db->quoteValue($this->TABLE_COMMENT);
+			$sql .= $comma . "\n\t" . 'COMMENT ' . self::$db->quoteValue($this->comment);
 			$comma = ',';
 		}
 		if($this->ENGINE !== $this->originalAttributes['ENGINE'])

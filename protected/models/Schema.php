@@ -117,6 +117,7 @@ class Schema extends CActiveRecord
 			$cmd->prepare();
 			$cmd->execute();
 			$this->afterSave();
+			$this->setIsNewRecord(false);
 			return $sql;
 		}
 		catch(CDbException $ex)

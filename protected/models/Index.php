@@ -187,6 +187,7 @@ class Index extends CActiveRecord
 			$cmd->prepare();
 			$cmd->execute();
 			$this->afterSave();
+			$this->setIsNewRecord(false);
 			$this->refresh();
 			return $sql;
 		}

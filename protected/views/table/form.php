@@ -57,10 +57,10 @@
 			</tr>
 			<tr>
 				<td>
-					<?php echo CHtml::activeLabel($table, 'TABLE_COMMENT'); ?>
+					<?php echo CHtml::activeLabel($table, 'comment'); ?>
 				</td>
 				<td colspan="2">
-					<?php echo CHtml::activeTextField($table, 'TABLE_COMMENT'); ?>
+					<?php echo CHtml::activeTextField($table, 'comment'); ?>
 				</td>
 			</tr>
 		</tbody>

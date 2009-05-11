@@ -146,31 +146,6 @@
 	-webkit-border-radius: 20px;
   }
   
-  input[type=text], input[type=password], textarea {
-  	background: #F7F7F7;
-  	border: solid 1px #CCC;
-	color: #333;
-	padding: 2px;
-  }
-  
-  input[type="submit"] {
-    font-weight: bold;
-  }
-
-  input.icon {
-    background-repeat: no-repeat;
-    background-position: 3px center;
-    padding-left: 20px;
-  }
-  
-  input.icon.save {
-    background-image: url('../../../images/icons/fugue/16/save.png');
-  }
-  
-  input.icon.delete {
-    background-image: url('../../../images/icons/fugue/16/delete.png');
-  }
-  
   select {
   	border: solid 1px #CCC;
 	padding-top: 2px;

@@ -72,6 +72,28 @@ class TableTest extends TestCase
 	}
 
 	/**
+	 * Test truncating
+	 */
+	public function testTruncate()
+	{
+		// Load table definition
+		$table = Table::model()->findByPk(array(
+			'TABLE_SCHEMA' => 'tabletest',
+			'TABLE_NAME' => 'innodb',
+		));
+
+		// Drop table
+		$table->truncate();
+
+		// Reload
+		$table->refresh();
+
+		// Check if table is still there
+		$this->assertEquals(0, $table->getRowCount());
+		$this->assertEquals('-', $table->getAverageRowSize());
+	}
+
+	/**
 	 * Test updating table properties
 	 */
 	public function testUpdate()
@@ -92,7 +114,7 @@ class TableTest extends TestCase
 		$table->optionPackKeys = 0;
 		$table->ENGINE = 'MyISAM';
 		$table->TABLE_COLLATION = 'utf8_general_ci';
-		$table->TABLE_COMMENT = 'mein testkommentar';
+		$table->comment = 'mein testkommentar';
 		$table->save();
 
 		// Load again
@@ -108,8 +130,24 @@ class TableTest extends TestCase
 		$this->assertEquals('0', $table->optionPackKeys);
 		$this->assertEquals('MyISAM', $table->ENGINE);
 		$this->assertEquals('utf8_general_ci', $table->TABLE_COLLATION);
-		// This test will fail due to a innodb issue!!!
-		$this->assertEquals('mein testkommentar', $table->TABLE_COMMENT);
+		$this->assertEquals('mein testkommentar', $table->comment);
+		$this->assertEquals(1, $table->getRowCount());
+		$this->assertEquals(20, $table->getAverageRowSize());
+
+		// Set option pack_keys to 1
+		$table->optionPackKeys = 1;
+		$table->ENGINE = 'InnoDB';
+		$table->save();
+
+		// Load again
+		$table = Table::model()->findByPk(array(
+			'TABLE_SCHEMA' => 'tabletest',
+			'TABLE_NAME' => 'innodb2',
+		));
+
+		// Check properties
+		$this->assertEquals(1, $table->optionPackKeys);
+		$this->assertEquals('mein testkommentar', $table->comment);
 	}
 
 	/**
@@ -160,6 +198,21 @@ class TableTest extends TestCase
 		$this->assertEquals(true, isset($types['INDEX']));
 		$this->assertEquals(true, isset($types['UNIQUE']));
 		$this->assertEquals(true, isset($types['FULLTEXT']));
+	}
+
+	/**
+	 * Tests some config functions.
+	 */
+	public function testConfigFunctions()
+	{
+		// Create new schema
+		$table = new Table();
+
+		// Check return types
+		$this->assertTrue(is_array($table->safeAttributes()));
+		$this->assertTrue(is_array($table->attributeLabels()));
+		$this->assertTrue(is_array($table->rules()));
+		$this->assertTrue(is_array($table->relations()));
 	}
 
 }
