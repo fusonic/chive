@@ -107,7 +107,7 @@ class IndexTest extends TestCase
 	{
 		// Load index
 		$index = Index::model()->findByAttributes(array(
-			'INDEX_NAME' => 'index',
+			'INDEX_NAME' => 'PRIMARY',
 			'TABLE_NAME' => 'table2',
 			'TABLE_SCHEMA' => 'indextest',
 		));
@@ -141,6 +141,22 @@ class IndexTest extends TestCase
 		$this->assertEquals('UNIQUE', $index->getType());
 		$this->assertNull($cols[0]->SUB_PART);
 		$this->assertEquals(10, $cols[1]->SUB_PART);
+
+		// Create PRIMARY
+		$index = new Index();
+		$index->TABLE_NAME = 'table2';
+		$index->TABLE_SCHEMA = 'indextest';
+		$index->INDEX_NAME = 'PRIMARY';
+		$index->setType('PRIMARY');
+		$index->columns = $columns;
+		$index->save();
+
+		// Refresh
+		$index->refresh();
+
+		// Check
+		$this->assertEquals('PRIMARY', $index->INDEX_NAME);
+		$this->assertEquals('PRIMARY', $index->getType());
 	}
 
 	/**
