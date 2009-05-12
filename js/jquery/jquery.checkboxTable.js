@@ -18,28 +18,32 @@
 			if(options.selectableRows)
 			{
 				tbodyObj.click(function(e, switchChecked) {
-					if(e.target.tagName == 'INPUT')
+					var formObj = $(e.target).closest('form');
+					if(formObj.length == 0)
 					{
-						var checkedBoxes = bodyBoxes.filter('input[checked]').length;
-
-						// Set head checkbox
-						headBoxes.each(function() {
-							this.checked = checkedBoxes == bodyBoxes.length;
-						}); 
-						
-						// Set row class
-						if(e.target.checked)
+						if(e.target.tagName == 'INPUT')
 						{
-							$(e.target).closest('tr').addClass("selected");
+							var checkedBoxes = bodyBoxes.filter('input[checked]').length;
+	
+							// Set head checkbox
+							headBoxes.each(function() {
+								this.checked = checkedBoxes == bodyBoxes.length;
+							}); 
+							
+							// Set row class
+							if(e.target.checked)
+							{
+								$(e.target).closest('tr').addClass("selected");
+							}
+							else
+							{
+								$(e.target).closest('tr').removeClass("selected");
+							}
 						}
-						else
+						else if(e.target.tagName != 'INPUT' && e.target.tagName != 'A' && e.target.parentNode.tagName != 'A')
 						{
-							$(e.target).closest('tr').removeClass("selected");
+							$(e.target).closest('tr').find('input[type="checkbox"]').trigger('click', true);
 						}
-					}
-					else if(e.target.tagName != 'INPUT' && e.target.tagName != 'A' && e.target.parentNode.tagName != 'A')
-					{
-						$(e.target).closest('tr').find('input[type="checkbox"]').trigger('click', true);
 					}
 				});
 			}

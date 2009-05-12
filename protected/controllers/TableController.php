@@ -37,7 +37,7 @@ class TableController extends Controller
 		$this->_db->charset='utf8';
 		$this->_db->active = true;
 
-		Table::$db = $this->_db;
+		Table::$db = Column::$db = Index::$db = $this->_db;
 
 		parent::__construct($id, $module);
 
@@ -321,6 +321,95 @@ class TableController extends Controller
 			'type' => $type,
 		));
 
+	}
+
+	public function actionCreate()
+	{
+		$this->layout = false;
+
+		$table = new Table();
+		$column = new Column();
+		if(isset($_POST['Table'], $_POST['Column']))
+		{
+			$table->attributes = $_POST['Table'];
+			$column->attributes = $_POST['Column'];
+			if($sql = $table->insert(array($column)))
+			{
+				$response = new AjaxResponse();
+				$response->addNotification('success',
+					Yii::t('message', 'successAddTable', array('{table}' => $table->TABLE_NAME)),
+					null,
+					$sql);
+				$response->redirectUrl = '#tables/' . $table->TABLE_NAME . '/structure';
+
+							/*
+				 * Add index
+				 */
+				$addIndices = array();
+				if(isset($_POST['createIndexPrimary']))
+				{
+					$addIndices['PRIMARY'] = 'PRIMARY';
+				}
+				if(isset($_POST['createIndex']))
+				{
+					$addIndices['INDEX'] = $column->COLUMN_NAME;
+				}
+				if(isset($_POST['createIndexUnique']))
+				{
+					$addIndices['UNIQUE'] = $column->COLUMN_NAME . (array_search($column->COLUMN_NAME, $addIndices) !== false ? '_unique' : '');
+				}
+				if(isset($_POST['createIndexFulltext']))
+				{
+					$addIndices['FULLTEXT'] = $column->COLUMN_NAME . (array_search($column->COLUMN_NAME, $addIndices) !== false ? '_fulltext' : '');
+				}
+				foreach($addIndices AS $type => $indexName)
+				{
+					try
+					{
+						$index = new Index();
+						$index->throwExceptions = true;
+						$index->TABLE_NAME = $table->TABLE_NAME;
+						$index->TABLE_SCHEMA = $this->schema;
+						$index->INDEX_NAME = $indexName;
+						$index->setType($type);
+						$indexCol = new IndexColumn();
+						$indexCol->COLUMN_NAME = $column->COLUMN_NAME;
+						$index->columns = array($indexCol);
+						$sql = $index->save();
+
+						$response->addNotification('success',
+							Yii::t('message', 'successCreateIndex', array('{index}' => $index->INDEX_NAME)),
+							null,
+							$sql);
+						$response->reload = true;
+					}
+					catch(DbException $ex)
+					{
+						$response->addNotification('error',
+							Yii::t('message', 'errorCreateIndex', array('{index}' => $index->INDEX_NAME)),
+							$ex->getText(),
+							$ex->getSql());
+					}
+				}
+
+				$response->send();
+			}
+		}
+
+		$collations = Collation::model()->findAll(array(
+			'order' => 'COLLATION_NAME',
+			'select' => 'COLLATION_NAME, CHARACTER_SET_NAME AS collationGroup'
+		));
+
+		CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3);
+		$data = array(
+			'table' => $table,
+			'column' => $column,
+			'collations' => $collations,
+			'storageEngines' => StorageEngine::getSupportedEngines(),
+		);
+		$data['columnForm'] = $this->renderPartial('/column/formBody', $data, true);
+		$this->render('form', $data);
 	}
 
 	/*
@@ -682,6 +771,7 @@ class TableController extends Controller
 			'select'=>'COLLATION_NAME, CHARACTER_SET_NAME AS collationGroup'
 		));
 
+		CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3);
 		$this->render('form', array(
 			'table' => $table,
 			'collations' => $collations,

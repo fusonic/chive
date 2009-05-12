@@ -134,7 +134,7 @@
 	</table>
 
 	<div class="rightLinks">
-		<a href="javascript:void(0)" class="icon">
+		<a href="javascript:void(0)" class="icon" onclick="schemaShow.addTable()">
 			<com:Icon name="add" size="16" />
 			<span><?php echo Yii::t('database', 'addTable'); ?></span>
 		</a>

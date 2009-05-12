@@ -178,10 +178,6 @@ class SchemaController extends Controller
 
 	}
 
-	/**
-	 * Creates a new user.
-	 * If creation is successful, the browser will be redirected to the 'show' page.
-	 */
 	public function actionCreate()
 	{
 		$schema = new Schema;

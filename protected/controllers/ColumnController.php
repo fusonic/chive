@@ -29,7 +29,7 @@ class ColumnController extends Controller
 		$this->_db->charset='utf8';
 		$this->_db->active = true;
 
-		Column::$db = Table::$db = $this->_db;
+		Column::$db = Table::$db = Index::$db = $this->_db;
 
 		parent::__construct($id, $module);
 
@@ -96,13 +96,23 @@ class ColumnController extends Controller
 				{
 					$addIndices['FULLTEXT'] = $column->COLUMN_NAME . (array_search($column->COLUMN_NAME, $addIndices) !== false ? '_fulltext' : '');
 				}
-				foreach($addIndices AS $type => $index)
+				foreach($addIndices AS $type => $indexName)
 				{
 					try
 					{
-						$sql = $table->createIndex($index, $type, array($column->COLUMN_NAME));
+						$index = new Index();
+						$index->throwExceptions = true;
+						$index->TABLE_NAME = $this->table;
+						$index->TABLE_SCHEMA = $this->schema;
+						$index->INDEX_NAME = $indexName;
+						$index->setType($type);
+						$indexCol = new IndexColumn();
+						$indexCol->COLUMN_NAME = $column->COLUMN_NAME;
+						$index->columns = array($indexCol);
+						$sql = $index->save();
+
 						$response->addNotification('success',
-							Yii::t('message', 'successCreateIndex', array('{index}' => $index)),
+							Yii::t('message', 'successCreateIndex', array('{index}' => $index->INDEX_NAME)),
 							null,
 							$sql);
 						$response->reload = true;
@@ -110,7 +120,7 @@ class ColumnController extends Controller
 					catch(DbException $ex)
 					{
 						$response->addNotification('error',
-							Yii::t('message', 'errorCreateIndex', array('{index}' => $index)),
+							Yii::t('message', 'errorCreateIndex', array('{index}' => $index->INDEX_NAME)),
 							$ex->getText(),
 							$ex->getSql());
 					}
@@ -125,11 +135,14 @@ class ColumnController extends Controller
 			'select'=>'COLLATION_NAME, CHARACTER_SET_NAME AS collationGroup'
 		));
 
-		$this->render('form', array(
+		CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3);
+		$data = array(
 			'column' => $column,
 			'table' => $table,
 			'collations' => $collations,
-		));
+		);
+		$data['formBody'] = $this->renderPartial('formBody', $data, true);
+		$this->render('form', $data);
 	}
 
 	public function actionUpdate()
@@ -156,13 +169,16 @@ class ColumnController extends Controller
 			'select'=>'COLLATION_NAME, CHARACTER_SET_NAME AS collationGroup'
 		));
 
-		$this->render('form', array(
+		CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3);
+		$data = array(
 			'column' => $column,
+			'table' => $table,
 			'collations' => $collations,
-			'helperId' => 'helper_' . mt_rand(1000, 9999),
 			'isSubmitted' => $isSubmitted,
 			'sql' => $sql,
-		));
+		);
+		$data['formBody'] = $this->renderPartial('formBody', $data, true);
+		$this->render('form', $data);
 	}
 
 	public function actionMove()

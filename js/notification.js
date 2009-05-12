@@ -55,12 +55,13 @@ var Notification = {
 				obj.data('interval', topSpotInt);
 			}
 		})
+		.purr(options)
+		.children('a.sticky')
 		.click(function() {
 			clearTimeout($(this).data('timeout'));
 			clearInterval($(this).data('interval'));
 			$(this).removeClass('not-sticky');
-		})
-		.purr(options);
+		});
 	}
 	
 };

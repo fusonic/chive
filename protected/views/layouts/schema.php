@@ -137,12 +137,12 @@ foreach($scriptFiles AS $file)
 			<ul class="list icon nowrap" id="tableList">
 				<?php foreach(Table::model()->findAll(array('select'=>'TABLE_NAME, TABLE_ROWS', 'condition'=>'TABLE_SCHEMA=:schema', 'params'=>array(':schema'=>$_GET['schema']), 'order'=>'TABLE_NAME ASC')) AS $table) { ?>
 					<li>
-						<a href="#tables/<?php echo $table->getName(); ?>/<?php echo ($table->getRowCount() ? 'browse' : 'structure'); ?>">
+						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/<?php echo ($table->getRowCount() ? 'browse' : 'structure'); ?>">
 							<?php $this->widget('Icon', array('name'=>'browse', 'size'=>16, 'disabled'=>!$table->getRowCount(), 'title'=>Yii::t('database', 'Xrows', array('{amount}'=>$table->getRowCount() ? $table->getRowCount() : 0)))); ?>
 						</a>
-						<a href="#tables/<?php echo $table->getName(); ?>/structure"><?php echo $table->getName(); ?></a>
+						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/structure"><?php echo $table->TABLE_NAME; ?></a>
 						<div class="listIconContainer">
-							<a href="#tables/<?php echo $table->getName(); ?>/insert">
+							<a href="#tables/<?php echo $table->TABLE_NAME; ?>/insert">
 								<com:Icon name="add" size="16" />
 							</a>
 						</div>

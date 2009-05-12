@@ -81,6 +81,7 @@
 	<!-- Columns -->
 	<entry id="noColumns">No visible columns in this table.</entry>
 	<entry id="addColumn">Add column</entry>
+	<entry id="addFirstColumn">Add first column</entry>
 	<entry id="editColumn">Edit column</entry>
 	<entry id="addSchema">Add schema</entry>
 	<entry id="editSchema">Edit schema</entry>

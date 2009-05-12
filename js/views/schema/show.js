@@ -1,5 +1,11 @@
 var schemaShow = {
 	
+	// Add table
+	addTable: function()
+	{
+		$('#tables').appendForm(baseUrl + '/schema/' + schema + '/tableAction/create');
+	},
+	
 	// Edit table
 	editTable: function(table)
 	{

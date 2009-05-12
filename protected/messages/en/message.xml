@@ -14,6 +14,7 @@
 	<entry id="errorDropSchema">Dropping schema »{schema}« failed</entry>
 
 	<!-- Tables -->
+	<entry id="successAddTable">Added table »{table}«</entry>
 	<entry id="successTruncateTable">1#Truncated table »{table}«|n>1#Truncated {tableCount} tables</entry>
 	<entry id="errorTruncateTable">Truncating table »{table}« failed</entry>
 	<entry id="successDropTable">1#Dropped table »{table}«|n>1#Dropped {tableCount} tables</entry>

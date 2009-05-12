@@ -84,7 +84,7 @@
 
 	<div class="rightLinks">
 		<?php if(Yii::app()->user->privileges->checkGlobal('CREATE')) { ?>
-			<a href="javascript:void(0)" onclick="$('#schemata').appendForm(baseUrl + '/schemata/create')" class="icon">
+			<a href="javascript:void(0)" onclick="schemaList.addSchema()" class="icon">
 				<com:Icon name="add" size="16" />
 				<span><?php echo Yii::t('database', 'addSchema'); ?></span>
 			</a>

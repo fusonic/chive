@@ -11,7 +11,6 @@ var columnForm = {
 		$('#' + idPrefix + 'settingCollation')[dataType.check(type, dataType.SUPPORTS_COLLATION) ? "show" : "hide" ]();
 		
 		// Attributes
-		console.log(dataType.check(type, dataType.SUPPORTS_UNSIGNED));
 		$('#' + idPrefix + 'Column_attribute_unsigned').attr('disabled', !dataType.check(type, dataType.SUPPORTS_UNSIGNED));
 		$('#' + idPrefix + 'Column_attribute_unsignedzerofill').attr('disabled', !dataType.check(type, dataType.SUPPORTS_UNSIGNED_ZEROFILL));
 		

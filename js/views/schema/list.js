@@ -1,5 +1,11 @@
 var schemaList = {
 	
+	// Add schema
+	addSchema: function()
+	{
+		$('#schemata').appendForm(baseUrl + '/schemata/create');
+	},
+	
 	// Edit schema
 	editSchema: function(db)
 	{
