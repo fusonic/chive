@@ -67,6 +67,28 @@ class ColumnController extends Controller
 		if(isset($_POST['Column']))
 		{
 			$column->attributes = $_POST['Column'];
+
+			/*
+			 * Add index
+			 */
+			$addIndices = array();
+			if(isset($_POST['createIndexPrimary']))
+			{
+				$column->createPrimaryKey = true;
+			}
+			if(isset($_POST['createIndex']))
+			{
+				$addIndices['INDEX'] = $column->COLUMN_NAME;
+			}
+			if(isset($_POST['createIndexUnique']))
+			{
+				$column->createUniqueKey = true;
+			}
+			if(isset($_POST['createIndexFulltext']))
+			{
+				$addIndices['FULLTEXT'] = $column->COLUMN_NAME . (array_search($column->COLUMN_NAME, $addIndices) !== false ? '_fulltext' : '');
+			}
+
 			if($sql = $column->save())
 			{
 				$response = new AjaxResponse();
@@ -76,26 +98,6 @@ class ColumnController extends Controller
 					$sql);
 				$response->reload = true;
 
-				/*
-				 * Add index
-				 */
-				$addIndices = array();
-				if(isset($_POST['createIndexPrimary']))
-				{
-					$addIndices['PRIMARY'] = 'PRIMARY';
-				}
-				if(isset($_POST['createIndex']))
-				{
-					$addIndices['INDEX'] = $column->COLUMN_NAME;
-				}
-				if(isset($_POST['createIndexUnique']))
-				{
-					$addIndices['UNIQUE'] = $column->COLUMN_NAME . (array_search($column->COLUMN_NAME, $addIndices) !== false ? '_unique' : '');
-				}
-				if(isset($_POST['createIndexFulltext']))
-				{
-					$addIndices['FULLTEXT'] = $column->COLUMN_NAME . (array_search($column->COLUMN_NAME, $addIndices) !== false ? '_fulltext' : '');
-				}
 				foreach($addIndices AS $type => $indexName)
 				{
 					try

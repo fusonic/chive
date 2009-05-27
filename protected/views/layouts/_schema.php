@@ -60,7 +60,9 @@ var schema = '<?php echo $this->schema; ?>';
 	<?php echo Yii::t('message', 'doYouReallyWantToDropDatabase'); ?>
 </div>
 
-<?php echo $content; ?>
+<div>
+	<?php echo $content; ?>
+</div>
 
 <script type="text/javascript">
 schemaGeneral.setupDialogs();

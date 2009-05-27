@@ -40,6 +40,13 @@
 		<tbody>
 			<?php $totalRowCount = $totalDataLength = $totalDataFree = 0;?>
 			<?php $canDrop = $canTruncate = false; ?>
+			<?php if(count($schema->tables) < 1) { ?>
+				<tr>
+					<td class="noEntries" colspan="14">
+						<?php echo Yii::t('database', 'noTables'); ?>
+					</td>
+				</tr>
+			<?php } ?>
 			<?php foreach($schema->tables AS $table) { ?>
 				<tr id="tables_<?php echo $table->TABLE_NAME; ?>">
 					<td>

@@ -59,6 +59,7 @@
 	<entry id="free">Free</entry>
 	<entry id="data">Data</entry>
 	
+	<entry id="noTables">No visible tables in this schema.</entry>
 	<entry id="addTable">Add table</entry>
 	<entry id="truncateTable">Truncate table</entry>
 	<entry id="truncateTables">Truncate tables</entry>

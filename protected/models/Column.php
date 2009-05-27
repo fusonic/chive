@@ -8,6 +8,7 @@ class Column extends CActiveRecord
 	public $scale = 0, $size = 0;
 	public $_values = array();
 	public $attribute = '';
+	public $createPrimaryKey, $createUniqueKey;
 
 	public static $db;
 
@@ -280,10 +281,12 @@ class Column extends CActiveRecord
 
 		return trim(
 			self::$db->quoteColumnName($this->COLUMN_NAME)
-			. ' ' . $this->getColumnType() . $collate . $this->attribute
+			. ' ' . $this->getColumnType() . $collate . ($this->attribute ? ' ' . $this->attribute : '')
 			. ($this->getIsNullable() ? ' NULL' : ' NOT NULL')
 			. $default
 			. ($this->EXTRA == 'auto_increment' ? ' AUTO_INCREMENT' : '')
+			. ($this->createPrimaryKey ? ' PRIMARY KEY' : '')
+			. ($this->createUniqueKey ? ' UNIQUE KEY' : '')
 			. (strlen($this->COLUMN_COMMENT) ? ' COMMENT ' . self::$db->quoteValue($this->COLUMN_COMMENT) : '')
 		);
 	}

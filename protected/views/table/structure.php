@@ -226,200 +226,206 @@
 
 <div style="overflow: hidden">
 
-	<div style="width: 40%; float: left; padding-right: 5px">
+	<div style="width: 45%; float: left">
+		<div style="padding-right: 10px">
 
-		<div class="list">
+			<div class="list">
 
-			<table id="indices" class="list">
-				<colgroup>
-					<col />
-					<col />
-					<col />
-					<col />
-					<col class="action" />
-					<col class="action" />
-				</colgroup>
-				<thead>
-					<tr>
-						<th colspan="6"><?php echo Yii::t('database', 'indices'); ?></th>
-					</tr>
-					<tr>
-						<th><?php echo Yii::t('database', 'key'); ?></th>
-						<th><?php echo Yii::t('database', 'type'); ?></th>
-						<th><?php echo Yii::t('database', 'cardinality'); ?></th>
-						<th colspan="3"><?php echo Yii::t('database', 'field'); ?></th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php if(count($table->indices) < 1) { ?>
+				<table id="indices" class="list">
+					<colgroup>
+						<col />
+						<col />
+						<col />
+						<col />
+						<col class="action" />
+						<col class="action" />
+					</colgroup>
+					<thead>
 						<tr>
-							<td class="noEntries" colspan="6">
-								<?php echo Yii::t('database', 'noIndices'); ?>
-							</td>
+							<th colspan="6"><?php echo Yii::t('database', 'indices'); ?></th>
 						</tr>
-					<?php } ?>
-					<?php foreach($table->indices AS $index) { ?>
-						<tr id="indices_<?php echo $index->INDEX_NAME; ?>">
-							<td><?php echo $index->INDEX_NAME; ?></td>
-							<td>
-								<?php echo $index->getType(); ?>
-							</td>
-							<td>
-								<?php echo $index->CARDINALITY; ?>
-							</td>
-							<td>
-								<ul>
-									<?php foreach($index->columns AS $column) { ?>
-										<li id="indices_<?php echo $index->INDEX_NAME; ?>_<?php echo $column->COLUMN_NAME; ?>">
-											<?php echo $column->COLUMN_NAME; ?>
-											<?php if(!is_null($column->SUB_PART)) { ?>
-												(<?php echo $column->SUB_PART; ?>)
-											<?php } ?>
-										</li>
+						<tr>
+							<th><?php echo Yii::t('database', 'key'); ?></th>
+							<th><?php echo Yii::t('database', 'type'); ?></th>
+							<th><?php echo Yii::t('database', 'cardinality'); ?></th>
+							<th colspan="3"><?php echo Yii::t('database', 'field'); ?></th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php if(count($table->indices) < 1) { ?>
+							<tr>
+								<td class="noEntries" colspan="6">
+									<?php echo Yii::t('database', 'noIndices'); ?>
+								</td>
+							</tr>
+						<?php } ?>
+						<?php foreach($table->indices AS $index) { ?>
+							<tr id="indices_<?php echo $index->INDEX_NAME; ?>">
+								<td><?php echo $index->INDEX_NAME; ?></td>
+								<td>
+									<?php echo $index->getType(); ?>
+								</td>
+								<td>
+									<?php echo $index->CARDINALITY; ?>
+								</td>
+								<td>
+									<ul>
+										<?php foreach($index->columns AS $column) { ?>
+											<li id="indices_<?php echo $index->INDEX_NAME; ?>_<?php echo $column->COLUMN_NAME; ?>">
+												<?php echo $column->COLUMN_NAME; ?>
+												<?php if(!is_null($column->SUB_PART)) { ?>
+													(<?php echo $column->SUB_PART; ?>)
+												<?php } ?>
+											</li>
+										<?php } ?>
+									</ul>
+								</td>
+								<td>
+									<?php if($canAlter) { ?>
+										<a href="javascript:void(0)" onclick="tableStructure.editIndex('<?php echo $index->INDEX_NAME; ?>')" class="icon">
+											<com:Icon name="edit" size="16" text="core.edit" />
+										</a>
+									<?php } else { ?>
+										<span class="icon">
+											<com:Icon name="edit" size="16" text="core.edit" disabled="true" />
+										</span>
 									<?php } ?>
-								</ul>
-							</td>
-							<td>
-								<?php if($canAlter) { ?>
-									<a href="javascript:void(0)" onclick="tableStructure.editIndex('<?php echo $index->INDEX_NAME; ?>')" class="icon">
-										<com:Icon name="edit" size="16" text="core.edit" />
-									</a>
-								<?php } else { ?>
-									<span class="icon">
-										<com:Icon name="edit" size="16" text="core.edit" disabled="true" />
-									</span>
-								<?php } ?>
-							</td>
-							<td>
-								<?php if($canAlter) { ?>
-									<a href="javascript:void(0)" onclick="tableStructure.dropIndex('<?php echo $index->INDEX_NAME; ?>')" class="icon">
-										<com:Icon name="delete" size="16" text="database.drop" />
-									</a>
-								<?php } else { ?>
-									<span class="icon">
-										<com:Icon name="delete" size="16" text="database.drop" disabled="true" />
-									</span>
-								<?php } ?>
-							</td>
-						</tr>
-					<?php } ?>
-				</tbody>
-			</table>
+								</td>
+								<td>
+									<?php if($canAlter) { ?>
+										<a href="javascript:void(0)" onclick="tableStructure.dropIndex('<?php echo $index->INDEX_NAME; ?>')" class="icon">
+											<com:Icon name="delete" size="16" text="database.drop" />
+										</a>
+									<?php } else { ?>
+										<span class="icon">
+											<com:Icon name="delete" size="16" text="database.drop" disabled="true" />
+										</span>
+									<?php } ?>
+								</td>
+							</tr>
+						<?php } ?>
+					</tbody>
+				</table>
 
-			<div class="rightLinks">
-				<?php if($canAlter) { ?>
-					<a href="javascript:void(0)" onclick="tableStructure.addIndexForm()" class="icon">
-						<com:Icon name="add" size="16" />
-						<span><?php echo Yii::t('database', 'addIndex'); ?></span>
-					</a>
-				<?php } else { ?>
-					<span class="icon">
-						<com:Icon name="add" size="16" disabled="disabled" />
-						<span><?php echo Yii::t('database', 'addIndex'); ?></span>
-					</span>
-				<?php } ?>
+				<div class="rightLinks">
+					<?php if($canAlter) { ?>
+						<a href="javascript:void(0)" onclick="tableStructure.addIndexForm()" class="icon">
+							<com:Icon name="add" size="16" />
+							<span><?php echo Yii::t('database', 'addIndex'); ?></span>
+						</a>
+					<?php } else { ?>
+						<span class="icon">
+							<com:Icon name="add" size="16" disabled="disabled" />
+							<span><?php echo Yii::t('database', 'addIndex'); ?></span>
+						</span>
+					<?php } ?>
+				</div>
+
 			</div>
 
 		</div>
-
 	</div>
 
-	<div style="width: 20%; float: left; padding: 0px 10px">
+	<div style="width: 25%; float: left">
+		<div style="padding: 0px 10px">
 
-		<table class="list">
-			<colgroup>
-				<col />
-				<col />
-			</colgroup>
-			<thead>
-				<tr>
-					<th colspan="2"><?php echo Yii::t('database', 'spaceUsage'); ?></th>
-				</tr>
-				<tr>
-					<th><?php echo Yii::t('database', 'type'); ?></th>
-					<th><?php echo Yii::t('database', 'usage'); ?></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td><?php echo Yii::t('database', 'data'); ?></td>
-					<td class="right"><?php echo Formatter::fileSize($table->DATA_LENGTH); ?></td>
-				</tr>
-				<tr>
-					<td><?php echo Yii::t('database', 'index'); ?></td>
-					<td class="right"><?php echo Formatter::fileSize($table->INDEX_LENGTH); ?></td>
-				</tr>
-				<tr>
-					<td><?php echo Yii::t('core', 'total'); ?></td>
-					<td class="right"><?php echo Formatter::fileSize($table->INDEX_LENGTH + $table->DATA_LENGTH); ?></td>
-				</tr>
-			</tbody>
-		</table>
-
-	</div>
-
-	<div style="width: 20%; float: left; padding-left: 10px">
-
-		<table class="list">
-			<colgroup>
-				<col />
-				<col />
-			</colgroup>
-			<thead>
-				<tr>
-					<th colspan="2">
-						<?php echo Yii::t('core', 'information'); ?>
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td><?php echo Yii::t('database', 'format'); ?></td>
-					<td><?php echo $table->ROW_FORMAT; ?></td>
-				</tr>
-				<tr>
-					<td><?php echo Yii::t('database', 'collation'); ?></td>
-					<td>
-						<dfn class="collation" title="<?php echo Collation::getDefinition($table->TABLE_COLLATION); ?>">
-							<?php echo $table->TABLE_COLLATION; ?>
-						</dfn>
-					</td>
-				</tr>
-				<tr>
-					<td><?php echo Yii::t('database', 'rows'); ?></td>
-					<td><?php echo $table->getRowCount(); ?></td>
-				</tr>
-				<tr>
-					<td><?php echo Yii::t('database', 'averageRowLength'); ?></td>
-					<td><?php echo $table->AVG_ROW_LENGTH; ?></td>
-				</tr>
-				<tr>
-					<td><?php echo Yii::t('database', 'averageRowSize'); ?></td>
-					<td><?php echo Formatter::fileSize($table->getAverageRowSize()); ?></td>
-				</tr>
-				<?php if ($table->AUTO_INCREMENT) { ?>
+			<table class="list">
+				<colgroup>
+					<col />
+					<col />
+				</colgroup>
+				<thead>
 					<tr>
-						<td><?php echo Yii::t('database', 'nextAutoincrementValue'); ?></td>
-						<td><?php echo $table->AUTO_INCREMENT; ?></td>
+						<th colspan="2"><?php echo Yii::t('database', 'spaceUsage'); ?></th>
 					</tr>
-				<?php } ?>
-				<tr>
-					<td><?php echo Yii::t('core', 'creationDate'); ?></td>
-					<td><?php echo ($table->CREATE_TIME ? Yii::app()->getDateFormatter()->formatDateTime($table->CREATE_TIME, 'short', 'short') : '-'); ?></td>
-				</tr>
-				<tr>
-					<td><?php echo Yii::t('core', 'lastUpdateDate'); ?></td>
-					<td><?php echo ($table->UPDATE_TIME ? Yii::app()->getDateFormatter()->formatDateTime($table->UPDATE_TIME, 'short', 'short') : '-'); ?></td>
-				</tr>
-				<tr>
-					<td><?php echo Yii::t('core', 'lastCheckDate'); ?></td>
-					<td>
-						<?php echo ($table->CHECK_TIME ? Yii::app()->getDateFormatter()->formatDateTime($table->CHECK_TIME, 'short', 'short') : '-'); ?>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+					<tr>
+						<th><?php echo Yii::t('database', 'type'); ?></th>
+						<th><?php echo Yii::t('database', 'usage'); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><?php echo Yii::t('database', 'data'); ?></td>
+						<td class="right"><?php echo Formatter::fileSize($table->DATA_LENGTH); ?></td>
+					</tr>
+					<tr>
+						<td><?php echo Yii::t('database', 'index'); ?></td>
+						<td class="right"><?php echo Formatter::fileSize($table->INDEX_LENGTH); ?></td>
+					</tr>
+					<tr>
+						<td><?php echo Yii::t('core', 'total'); ?></td>
+						<td class="right"><?php echo Formatter::fileSize($table->INDEX_LENGTH + $table->DATA_LENGTH); ?></td>
+					</tr>
+				</tbody>
+			</table>
 
+		</div>
+	</div>
+
+	<div style="width: 30%; float: right">
+		<div style="padding-left: 10px">
+
+			<table class="list">
+				<colgroup>
+					<col />
+					<col />
+				</colgroup>
+				<thead>
+					<tr>
+						<th colspan="2">
+							<?php echo Yii::t('core', 'information'); ?>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><?php echo Yii::t('database', 'format'); ?></td>
+						<td><?php echo $table->ROW_FORMAT; ?></td>
+					</tr>
+					<tr>
+						<td><?php echo Yii::t('database', 'collation'); ?></td>
+						<td>
+							<dfn class="collation" title="<?php echo Collation::getDefinition($table->TABLE_COLLATION); ?>">
+								<?php echo $table->TABLE_COLLATION; ?>
+							</dfn>
+						</td>
+					</tr>
+					<tr>
+						<td><?php echo Yii::t('database', 'rows'); ?></td>
+						<td><?php echo $table->getRowCount(); ?></td>
+					</tr>
+					<tr>
+						<td><?php echo Yii::t('database', 'averageRowLength'); ?></td>
+						<td><?php echo $table->AVG_ROW_LENGTH; ?></td>
+					</tr>
+					<tr>
+						<td><?php echo Yii::t('database', 'averageRowSize'); ?></td>
+						<td><?php echo Formatter::fileSize($table->getAverageRowSize()); ?></td>
+					</tr>
+					<?php if ($table->AUTO_INCREMENT) { ?>
+						<tr>
+							<td><?php echo Yii::t('database', 'nextAutoincrementValue'); ?></td>
+							<td><?php echo $table->AUTO_INCREMENT; ?></td>
+						</tr>
+					<?php } ?>
+					<tr>
+						<td><?php echo Yii::t('core', 'creationDate'); ?></td>
+						<td><?php echo ($table->CREATE_TIME ? Yii::app()->getDateFormatter()->formatDateTime($table->CREATE_TIME, 'short', 'short') : '-'); ?></td>
+					</tr>
+					<tr>
+						<td><?php echo Yii::t('core', 'lastUpdateDate'); ?></td>
+						<td><?php echo ($table->UPDATE_TIME ? Yii::app()->getDateFormatter()->formatDateTime($table->UPDATE_TIME, 'short', 'short') : '-'); ?></td>
+					</tr>
+					<tr>
+						<td><?php echo Yii::t('core', 'lastCheckDate'); ?></td>
+						<td>
+							<?php echo ($table->CHECK_TIME ? Yii::app()->getDateFormatter()->formatDateTime($table->CHECK_TIME, 'short', 'short') : '-'); ?>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
 	</div>
 
 </div>

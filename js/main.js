@@ -196,14 +196,14 @@ $(document).ready(function()
 	
 	// START
 	$(document).ajaxStart(function() {
-		$('#loading').css({'background-image': 'url(../images/loading4.gif)'}).fadeIn();
+		$('#loading').css({'background-image': 'url(' + baseUrl + '/images/loading4.gif)'}).fadeIn();
 		//$('#loading2').show();
 	});
 	
 	// STOP
 	$(document).ajaxStop(function() {
 		//$('#loading2').hide();
-		$('#loading').css({'background-image': 'url(../images/loading5.gif)'}).fadeOut();
+		$('#loading').css({'background-image': 'url(' + baseUrl + '/images/loading5.gif)'}).fadeOut();
 	});
 	
 	// ERROR

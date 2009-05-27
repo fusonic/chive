@@ -58,6 +58,6 @@ var table = '<?php echo $this->view; ?>';
 	<?php echo Yii::t('message', 'doYouReallyWantToDropTable'); ?>
 </div>
 
-<div id="content">
+<div>
 	<?php echo $content; ?>
 </div>

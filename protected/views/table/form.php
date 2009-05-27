@@ -96,10 +96,12 @@
 			</tr>
 		</tbody>
 	</table>
-	<h1 style="clear: left">
-		<?php echo Yii::t('database', 'addFirstColumn'); ?>
-	</h1>
-	<?php echo $columnForm; ?>
+	<?php if($table->isNewRecord) { ?>
+		<h1 style="clear: left">
+			<?php echo Yii::t('database', 'addFirstColumn'); ?>
+		</h1>
+		<?php echo $columnForm; ?>
+	<?php } ?>
 	<div style="clear: left; padding-top: 5px">
 		<?php echo CHtml::submitButton(Yii::t('action', ($table->isNewRecord ? 'create' : 'save')), array('class'=>'icon save')); ?>
 		<?php echo CHtml::button(Yii::t('action', 'cancel'), array('class'=>'icon delete', 'onclick'=>'$(this.form).slideUp(500, function() { $(this).parents("tr").remove(); })')); ?>
