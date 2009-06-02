@@ -10,7 +10,14 @@ var Profiling = {
 					name: 'profiling'				
 		}, function() {
 			
-			//reload();
+			src = $('#profiling_indicator').attr('src');
+			
+			if(src.indexOf('green') > 0)
+				$('#profiling_indicator').attr('src', src.replace(/green/, 'red'));
+			else {
+				$('#profiling_indicator').attr('src', src.replace(/red/, 'green'));
+				
+			}
 			
 		});
 	}

@@ -22,7 +22,7 @@ var Bookmark = {
 											'<span>' +_name + '</span>' +
 										'</a>' +
 										'<div class="listIconContainer">' +
-											'<a onclick="Bookmark.delete(\'' + _schema + '\', \'' + _id + '\');" href="javascript:void(0);">'+
+											'<a onclick="Bookmark.remove(\'' + _schema + '\', \'' + _id + '\');" href="javascript:void(0);">'+
 												'<img alt="execute" src="' + iconPath + '/16/delete.png" title="delete" class="icon icon16 icon_delete" class="disabled" />' +							
 											'</a>' +
 											'<a onclick="Bookmark.execute(\'' + _schema + '\', \'' + _id + '\');" href="javascript:void(0);">'+
@@ -30,7 +30,7 @@ var Bookmark = {
 											'</a>' +
 									'</li>');
 									
-		$('#bookmark_1').effect('highlight', {}, 2000);
+		$('#bookmark_' + _id).effect('highlight', {}, 2000);
 		
 	},
 	
@@ -38,6 +38,9 @@ var Bookmark = {
 	{
 		this.schema = _schema;
 		this.id = _id;
+		
+		// Set text of dialog
+		$('#deleteBookmarkDialog').html(lang.get('message', 'doYouReallyWantToDeleteBookmark', {name: $('#bookmark_' + _id + ' a span').html()}));
 		
 		$('#deleteBookmarkDialog').dialog("open");
 	},

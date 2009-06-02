@@ -24,10 +24,11 @@
 				}, function() {
 					reload();
 				});;">
-				<com:Icon size="16" name="chart" />
 				<?php if( Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $this->schema . '.' .  $this->view)) {?>
+					<com:Icon size="16" name="square_green" />
 					<span><?php echo Yii::t('database', 'cutColumnContent'); ?></span>
 				<?php } else { ?>
+					<com:Icon size="16" name="square_red" />
 					<span><?php echo Yii::t('database', 'showFullColumnContent'); ?></span>
 				<?php } ?>
 			</a>
@@ -44,7 +45,7 @@
 <?php if(count($data) > 0) { ?>
 
 	<div class="pager top">
-	<?php $this->widget('CLinkPager',array('pages'=>$pages)); ?>
+	<?php $this->widget('LinkPager',array('pages'=>$pages)); ?>
 	</div>
 
 	<br/>
@@ -78,7 +79,7 @@
 	</table>
 
 	<div class="pager bottom">
-	<?php $this->widget('CLinkPager',array('pages'=>$pages)); ?>
+	<?php $this->widget('LinkPager',array('pages'=>$pages)); ?>
 	</div>
 
 <?php }  elseif($this->isSent) { ?>

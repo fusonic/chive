@@ -16,20 +16,24 @@
 			<!---
 			<com:application.extensions.CodePress.CodePress language="sql" name="query" width="100%" height="80px" autogrow="true" value={$query} />
 			--->
-			<textarea name="query" style="width: 99%; height: 90px;"><?php echo $query; ?></textarea>
+			<textarea name="query" style="width: 99%; height: 90px;" id="query"><?php echo $query; ?></textarea>
 			<div class="buttons">
 				<?php echo CHtml::submitButton('Execute', array('class'=>'icon button execute')); ?>
 			</div>			
 		</td>
 		<td style="vertical-align: top; padding: 2px 5px;">
-			<a class="icon button" href="javascript:void(0);" onclick="Bookmark.add('<?php echo $this->schema; ?>', query.getCode());">
+			<a class="icon button" href="javascript:void(0);" onclick="Bookmark.add('<?php echo $this->schema; ?>', $('#query').val());">
 				<com:Icon size="16" name="bookmark_add" />
 				<span><?php echo Yii::t('core', 'bookmark'); ?></span>
 			</a>
 			<br/><br/>
 			<a class="icon button" href="javascript:void(0);" onclick="Profiling.toggle();">
-				<com:Icon size="16" name="chart" />
-				<span><?php echo Yii::t('database', 'toggleProfiling'); ?></span>
+				<?php if( Yii::app()->user->settings->get('profiling')) {?>
+					<com:Icon size="16" name="square_green" text="core.on" htmlOptions={array('id'=>'profiling_indicator')} />
+				<?php } else { ?>
+					<com:Icon size="16" name="square_red" text="core.off" htmlOptions={array('id'=>'profiling_indicator')} />
+				<?php } ?>
+				<span><?php echo Yii::t('database', 'Profiling'); ?></span>
 			</a>
 			<br/><br/>
 			<a class="icon button" href="javascript:void(0);" onclick="$.post(baseUrl + '/ajaxSettings/toggle', {
@@ -39,12 +43,12 @@
 				}, function() {
 					reload();
 				});;">
-				<com:Icon size="16" name="chart" />
 				<?php if( Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $this->schema . '.' .  $this->table)) {?>
-					<span><?php echo Yii::t('database', 'cutColumnContent'); ?></span>
+					<com:Icon size="16" name="square_green" />
 				<?php } else { ?>
-					<span><?php echo Yii::t('database', 'showFullColumnContent'); ?></span>
+					<com:Icon size="16" name="square_red" />
 				<?php } ?>
+				<span><?php echo Yii::t('core', 'showFullColumnContent'); ?></span>
 			</a>
 		</td>
 	</tr>
@@ -60,7 +64,7 @@
 	<div class="list">
 
 		<div class="pager top">
-			<?php $this->widget('CLinkPager',array('pages'=>$pages, 'cssFile'=>false)); ?>
+			<?php $this->widget('LinkPager',array('pages'=>$pages, 'cssFile'=>false)); ?>
 		</div>
 
 		<br/>
@@ -149,7 +153,7 @@
 		<?php } ?>
 
 		<div class="pager bottom">
-			<?php $this->widget('CLinkPager',array('pages'=>$pages, 'cssFile'=>false)); ?>
+			<?php $this->widget('LinkPager',array('pages'=>$pages, 'cssFile'=>false)); ?>
 		</div>
 
 	</div>

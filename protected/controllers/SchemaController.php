@@ -15,7 +15,9 @@ class SchemaController extends Controller
 	private $_schema;
 	private $_db;
 
+	
 	public $schema;
+	public $isSent;
 
 	/**
 	 * @var Default layout for this controller

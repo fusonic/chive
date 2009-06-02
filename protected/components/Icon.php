@@ -30,11 +30,13 @@ class Icon extends CWidget
 		}
 		list($titleCategory, $titleVar) = explode(".", $this->title);
 
-		echo '<img '
-			. 'src="' . ICONPATH . '/' . $this->size . DIRECTORY_SEPARATOR . $this->name . '.png" '
-			. 'alt="' . Yii::t($category, $var) . '" '
-			. 'title="' . Yii::t($titleCategory, $titleVar) . '" '
-			. 'class="' . $classes . '" />';
+		$this->htmlOptions += array(
+			'class' => $classes,
+			'title' => Yii::t($titleCategory, $titleVar),
+		);
+		
+		echo CHtml::image(ICONPATH . '/' . $this->size . DIRECTORY_SEPARATOR . $this->name . '.png', Yii::t($category, $var), $this->htmlOptions);
+		
 	}
 
 }

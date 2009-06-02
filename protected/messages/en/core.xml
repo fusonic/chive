@@ -18,6 +18,11 @@
 	<entry id="insert">Insert</entry>
 	<entry id="save">Save</entry>
 	<entry id="cancel">Cancel</entry>
+	<entry id="first">First</entry>
+	<entry id="last">Last</entry>
+	<entry id="on">On</entry>
+	<entry id="off">Off</entry>
+	
 	
 	<entry id="error">Error</entry>
 	<entry id="warning">Warning</entry>
@@ -49,6 +54,8 @@
 	<entry id="user">User</entry>
 	<entry id="time">Time</entry>
 	<entry id="status">Status</entry>
+	
+	<entry id="showFullColumnContent">Show full column content</entry>
 	
 	<entry id="chooseLanguage">Choose language</entry>
 	<entry id="chooseTheme">Choose theme</entry>

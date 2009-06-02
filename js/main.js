@@ -175,6 +175,7 @@ $(document).ready(function()
 	// STOP
 	$(document).ajaxStop(function() {
 		//$('#loading2').hide();
+		alert("OK");
 		$('#loading').css({'background-image': 'url(' + baseUrl + '/images/loading5.gif)'}).fadeOut();
 	});
 	

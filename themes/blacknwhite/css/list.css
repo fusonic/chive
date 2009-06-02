@@ -1,0 +1,216 @@
+@CHARSET "UTF-8";
+
+@media screen, projection
+{
+	
+	/*
+	 * Pager
+	 */
+	
+	div.list div.pager.top {
+		margin-bottom: 10px;
+	}
+	
+	div.list div.pager.bottom {
+		margin-top: 10px;
+	}
+	
+	
+	/*
+	 * Table
+	 */
+	
+	table.list {
+		border: none;
+		border-spacing: 0px;
+		margin: 0px;
+		width: 100%;
+	}
+	
+	table.list>tbody>tr>td, 
+	table.list>thead>tr>th, 
+	table.list>tfoot>tr>th {
+		border: solid 1px #FFFFFF;
+		padding: 3px 5px;
+	}
+	
+	table.list>tbody>tr>td.nodecoration, 
+	table.list>thead>tr>th.nodecoration, 
+	table.list>tfoot>tr>th.nodecoration {
+		background: none;
+	}
+	
+	table.list td.count {
+		text-align: right;
+	}
+	
+	
+	/*
+	 * ColGroup
+	 */
+	
+	colgroup>col.action,
+	colgroup>col.checkbox {
+		width: 16px;
+	}
+	
+	colgroup>col.type {
+		width: 160px;
+	}
+	
+	colgroup>col.collation {
+		width: 130px;
+	}
+	
+	colgroup>col.null {
+		width: 50px;
+	}
+	
+	colgroup>col.filesize {
+		width: 90px;
+	}
+	
+	colgroup>col.engine {
+		width: 100px;
+	}
+	
+	colgroup>col.operator {
+		width: 120px;
+	}
+	
+	colgroup>col.count {
+		width: 100px;
+	}
+	
+	/*
+	 * THead
+	 */
+	
+	table.list>thead {
+		background: #2D83D0 url(../../../images/header-bg.png) repeat-x scroll left center;
+	}
+	
+	table.list>thead, 
+	table.list>thead a {
+		color: #FFFFFF;
+		font-weight: bold !important;
+	}
+	
+	
+	/*
+	 * TBody
+	 */
+
+	table.list>tbody>tr {
+		background-color: #F0F0F0;
+	}
+	
+	table.list>tbody>tr.odd {
+		background-color: #E0E0E0;
+	}
+	
+	table.list>tbody>tr.selected {
+		background-color: #E3EE93;		
+	}
+	
+	table.list>tbody>tr:hover {
+		background-color: #D3E73B;
+	}
+	
+	table.list td.noEntries {
+		text-align: center;
+		font-style: italic;
+		padding: 10px 5px;
+	}
+	
+	
+	/*
+	 * TFoot
+	 */
+	
+	table.list>tfoot>tr>th {
+		background: #2D83D0 url(../../../images/header-bg.png) repeat-x scroll left center;
+		color: #FFFFFF;
+		font-weight: bold;
+	}
+	
+	/*
+	 * Form
+	 */
+	
+	table.list>tbody>tr.form>td {
+		padding: 0px;
+	}
+	
+	table.list>tbody>tr.form>td>div.form {
+		border: solid 4px #D3E73B;
+		background: #e8edc2;
+		padding: 5px;
+	}
+	
+	table.list>tbody>tr.form>td>div.form h1 {
+		font-size: 110%;
+		font-weight: bold;
+	}
+	
+	table.list.editable form {
+		border: none;
+		background: none;
+		padding: 0px;
+	}
+	
+	/*
+	 * Form-List
+	 */
+	
+	table.formList {
+		width: 100%;
+	}
+	
+	table.formList th {
+		font-style: italic;
+		font-weight: normal;
+	}
+	
+	table.formList td,
+	table.formList th {
+		padding: 2px 0px;
+	}
+	
+	table.formList thead {
+		border-bottom: solid 2px #D3E73B;
+	}
+	
+	table.formList tfoot {
+		border-top: solid 2px #D3E73B;
+	}
+	
+	table.formList input.indexSize {
+		width: 40px;
+	}
+	
+	/*
+	 * With selected
+	 */
+	
+	div.list div.withSelected {
+		margin: 3px 0px 0px 6px;
+	}
+	
+	div.list div.withSelected img.icon_arrow_turn_090 {
+		top: 0px !important;
+	}
+	
+	div.list div.withSelected a, div.list div.withSelected span {
+		margin: 0px 5px;
+	}
+	
+	/*
+	 * Right links
+	 */
+	
+	div.list div.rightLinks {
+		float: right;
+	}
+
+}

@@ -35,7 +35,7 @@
 <?php if(count($data)) { ?>
 
 	<div class="pager top">
-	<?php $this->widget('CLinkPager',array('pages'=>$pages)); ?>
+	<?php $this->widget('LinkPager',array('pages'=>$pages)); ?>
 	</div>
 
 	<br/>
@@ -81,7 +81,7 @@
 	</table>
 
 	<div class="pager bottom">
-	<?php $this->widget('CLinkPager',array('pages'=>$pages)); ?>
+	<?php $this->widget('LinkPager',array('pages'=>$pages)); ?>
 	</div>
 
 <?php }  elseif($this->isSent) { ?>

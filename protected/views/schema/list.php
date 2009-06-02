@@ -6,10 +6,10 @@
 
 <div class="list">
 
-	<div class="buttonContainer"
+	<div class="buttonContainer">
 		
 		<div class="left">
-			<?php $this->widget('CLinkPager',array('pages'=>$pages, 'cssFile'=>false, 'header'=>'')); ?>
+			<?php $this->widget('LinkPager',array('pages'=>$pages)); ?>
 		</div>
 		<div class="right">
 			<?php if(Yii::app()->user->privileges->checkGlobal('CREATE')) { ?>
@@ -138,7 +138,7 @@
 	<div class="clear"></div>
 
 	<div class="pager bottom">
-		<?php $this->widget('CLinkPager',array('pages'=>$pages, 'cssFile'=>false, 'nextPageLabel'=>'&raquo;', 'prevPageLabel'=>'&laquo;')); ?>
+		<?php $this->widget('LinkPager',array('pages'=>$pages, 'cssFile'=>false, 'nextPageLabel'=>'&raquo;', 'prevPageLabel'=>'&laquo;')); ?>
 	</div>
 
 </div>
