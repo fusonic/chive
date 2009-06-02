@@ -65,6 +65,7 @@ class UserPrivilegesManager
 			}
 			$this->column[$priv['TABLE_SCHEMA'] . '.' . $priv['TABLE_NAME'] . '.' . $priv['COLUMN_NAME']][] = $priv['PRIVILEGE_TYPE'];
 		}
+		
 	}
 
 	private function escape($value)

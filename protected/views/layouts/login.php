@@ -6,10 +6,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <!-- (en) Add your meta data here -->
 <!-- (de) Fuegen Sie hier ihre Meta-Daten ein -->
-<link rel="stylesheet" type="text/css" href="<% echo Yii::app()->request->baseUrl; %>/css/main.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo BASEURL; ?>/css/main.css" />
 <link rel="stylesheet" type="text/css" href="<% echo Yii::app()->theme->getBaseUrl(); %>/css/style.css" />
 <!--[if lte IE 7]>
-<link href="css/patches/patch_my_layout.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="<?php echo BASEURL; ?>/css/patch/ie7.css"/>
 <![endif]-->
 
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.js', CClientScript::POS_HEAD); ?>
@@ -19,19 +19,16 @@
 </head>
 <body>
 	<div id="header">
-		<div style="float:right;" >
-			
+		<div id="header-inner">
 			<a class="icon button" href="javascript:void(0);" style="margin-right: 10px;" onclick="$('#themeDialog').dialog('open');">
 				<img src="<?php echo BASEURL; ?>/themes/<?php  echo Yii::app()->getTheme()->name; ?>/images/icon.png" />		
 				<span><?php echo ucfirst(Yii::app()->getTheme()->name); ?></span>
 			</a>
-			
 			<a class="icon button" href="javascript:void(0);" style="margin-right: 10px;" onclick="$('#languageDialog').dialog('open');">
 				<img src="<?php echo BASEURL; ?>/images/country/<?php echo substr(Yii::app()->getLanguage(),0,2); ?>.png" />
 				<span><?php echo Yii::t('language', Yii::app()->getLanguage()); ?></span>
 			</a>
-			
-		</div> 
+		</div>
 	</div>
 	
   <?php echo $content; ?>

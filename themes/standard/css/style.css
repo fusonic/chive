@@ -26,10 +26,16 @@
     color: #000;
     background: #3B5998;
 	height: 40px;
-	line-height: 40px;
 	position: absolute;
-	top: 0px; left: 0px;
+	top: 0px; 
+	left: 0px;
 	width: 100%;
+  }
+  
+  #header-inner {
+  	position: relative;
+  	top: 8px;
+  	float: right;
   }
   
   #headerLeft {
@@ -211,8 +217,6 @@
   ul.breadCrumb li {
   	/*background: url('../images/breadcrumb/bg.png') top right;*/
   	background: #FFF url(../images/table/head-bg.png);
-  	-moz-border-radius: 3px;
-  	-webkit-border-radius: 3px;
   	padding-left: 10px;
   	padding-right: 10px;
   } 

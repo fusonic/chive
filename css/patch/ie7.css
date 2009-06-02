@@ -1,0 +1,22 @@
+@CHARSET "UTF-8";
+
+#login {
+	padding-top: 100px;
+}
+
+/*
+ *	Icons
+ */
+ 
+a.icon img {
+	top: 5px;
+	position: relative;
+}
+
+a.icon span {
+	top: -2px;
+}
+
+#header-inner {
+	top: 4px;
+}

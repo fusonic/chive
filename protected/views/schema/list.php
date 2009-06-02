@@ -137,14 +137,14 @@
 
 	<div class="clear"></div>
 
+	<!---
 	<div class="pager bottom">
 		<?php $this->widget('LinkPager',array('pages'=>$pages, 'cssFile'=>false, 'nextPageLabel'=>'&raquo;', 'prevPageLabel'=>'&laquo;')); ?>
 	</div>
+	 --->
 
 </div>
 
 <script type="text/javascript">
-window.setTimeout(function() {
-	schemaList.setupDialogs();
-}, 500);
+	schemaList.setup();
 </script>

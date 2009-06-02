@@ -31,6 +31,7 @@ class UserSettingsManager
 	{
 		$jsSettings = 'var userSettings = {};' . "\n";
 		foreach($this->defaultSettings AS $key => $value) {
+			
 			$value = $value[null];
 			if(is_array($value))
 			{
@@ -50,7 +51,7 @@ class UserSettingsManager
 					}
 					else
 					{
-						$jsSettings .= 'userSettings.' . $key . '__' . $key2 . ' = "' . str_replace('"', '\"', $value2) . '";' . "\n";
+						$jsSettings .= 'userSettings.' . $key . '__' . str_replace('.', '_', $key2) . ' = "' . str_replace('"', '\"', $value2) . '";' . "\n";
 					}
 				}
 			}

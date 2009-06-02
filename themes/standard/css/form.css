@@ -65,6 +65,14 @@
 	.button:hover {
 		border: 1px solid #999;
 	}
+	
+	div.left .button {
+		margin-right: 5px;
+	}
+	
+	div.right .button {
+		margin-left: 5px;
+	}
 	 
 	/*
 	 * Search field

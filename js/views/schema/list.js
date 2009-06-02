@@ -28,7 +28,7 @@ var schemaList = {
 	},
 	
 	// Setup dialogs
-	setupDialogs: function()
+	setup: function()
 	{
 		$('#dropSchemataDialog').dialog({
 			modal: true,

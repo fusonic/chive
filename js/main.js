@@ -83,7 +83,6 @@ function init()
 	}
 	catch(exception) {
 		// @todo (rponudic) remove
-		console.error(exception);
 	}
 	
 	// Unset editing
