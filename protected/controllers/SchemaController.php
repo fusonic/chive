@@ -30,10 +30,13 @@ class SchemaController extends Controller
 		$this->schema = $request->getParam('schema');
 
 		if($request->isAjaxRequest && $this->schema && $request->pathInfo != 'schemata/update')
+		{
 			$this->layout = '_schema';
-
+		}
 		elseif($request->isAjaxRequest)
+		{
 			$this->layout = false;
+		}
 
 		$this->_db = new CDbConnection('mysql:host='.Yii::app()->user->host.';dbname=' . $this->schema, Yii::app()->user->name, Yii::app()->user->password);
 		$this->_db->charset='utf8';
@@ -488,7 +491,7 @@ class SchemaController extends Controller
 	{
 
 		$ids = json_decode(Yii::app()->getRequest()->getParam('ids'));
-		
+
 		$response = new AjaxResponse();
 		$response->reload = true;
 
@@ -505,7 +508,7 @@ class SchemaController extends Controller
 				$cmd->execute();
 
 				$response->addNotification('success', Yii::t('message', 'successKillProcess', array('{id}' => $id)), null, $sql);
-				
+
 			}
 			catch(CDbException $ex)
 			{

@@ -131,6 +131,9 @@ return array(
 						'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columns/<column:'.URL_MATCH.'>/move'=>'column/move',
 						'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columns/<column:'.URL_MATCH.'>/update'=>'column/update',
 
+						// Relation
+						'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/foreignKeys/<column:'.URL_MATCH.'>/update'=>'foreignKey/update',
+
 						// IndexActions
 						'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/indexAction/create'=>'index/create',
 						'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/indexAction/createSimple'=>'index/createSimple',

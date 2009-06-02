@@ -148,41 +148,43 @@
 		</tfoot>
 	</table>
 
-	<div class="rightLinks">
-		<a href="javascript:void(0)" class="icon button" onclick="schemaShow.addTable()">
-			<com:Icon name="add" size="16" />
-			<span><?php echo Yii::t('database', 'addTable'); ?></span>
-		</a>
+	<div class="buttonContainer">
+		<div class="left">
+			<span class="icon">
+				<com:Icon name="arrow_turn_090" size="16" />
+				<span><?php echo Yii::t('core', 'withSelected'); ?></span>
+			</span>
+			<?php if($canDrop) { ?>
+				<a href="javascript:void(0)" onclick="schemaShow.dropTables()" class="icon button">
+					<com:Icon name="delete" size="16" />
+					<span><?php echo Yii::t('database', 'drop'); ?></span>
+				</a>
+			<?php } else { ?>
+				<span class="icon button">
+					<com:Icon name="delete" size="16" disabled="true" />
+					<span><?php echo Yii::t('database', 'drop'); ?></span>
+				</span>
+			<?php } ?>
+			<?php if($canTruncate) { ?>
+				<a href="javascript:void(0)" onclick="schemaShow.truncateTables()" class="icon button">
+					<com:Icon name="truncate" size="16" />
+					<span><?php echo Yii::t('database', 'truncate'); ?></span>
+				</a>
+			<?php } else { ?>
+				<span class="icon button">
+					<com:Icon name="truncate" size="16" disabled="true" />
+					<span><?php echo Yii::t('database', 'truncate'); ?></span>
+				</span>
+			<?php } ?>
+		</div>
+		<div class="right">
+			<a href="javascript:void(0)" class="icon button" onclick="schemaShow.addTable()">
+				<com:Icon name="add" size="16" />
+				<span><?php echo Yii::t('database', 'addTable'); ?></span>
+			</a>
+		</div>
 	</div>
 
-	<div class="withSelected">
-		<span class="icon">
-			<com:Icon name="arrow_turn_090" size="16" />
-			<span><?php echo Yii::t('core', 'withSelected'); ?></span>
-		</span>
-		<?php if($canDrop) { ?>
-			<a href="javascript:void(0)" onclick="schemaShow.dropTables()" class="icon button">
-				<com:Icon name="delete" size="16" />
-				<span><?php echo Yii::t('database', 'drop'); ?></span>
-			</a>
-		<?php } else { ?>
-			<span class="icon button">
-				<com:Icon name="delete" size="16" disabled="true" />
-				<span><?php echo Yii::t('database', 'drop'); ?></span>
-			</span>
-		<?php } ?>
-		<?php if($canTruncate) { ?>
-			<a href="javascript:void(0)" onclick="schemaShow.truncateTables()" class="icon button">
-				<com:Icon name="truncate" size="16" />
-				<span><?php echo Yii::t('database', 'truncate'); ?></span>
-			</a>
-		<?php } else { ?>
-			<span class="icon button">
-				<com:Icon name="truncate" size="16" disabled="true" />
-				<span><?php echo Yii::t('database', 'truncate'); ?></span>
-			</span>
-		<?php } ?>
-	</div>
 </div>
 
 <script type="text/javascript">

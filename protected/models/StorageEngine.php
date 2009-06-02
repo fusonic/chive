@@ -47,30 +47,31 @@ class StorageEngine extends SqlModel
 	const SUPPORTS_DELAY_KEY_WRITE = 0;
 	const SUPPORTS_CHECKSUM = 1;
 	const SUPPORTS_PACK_KEYS = 2;
+	const SUPPORTS_FOREIGN_KEYS = 3;
 
 	public static $engines = array(
 
 		//							< OPTIONS             >
-		// Engine					delkwr	chksum	pckkeys
+		// Engine					delkwr	chksum	pckkeys	fkeys
 
-		'MyISAM'		=> array(	true,	true,	true),
-		'MEMORY'		=> array(	false,	false,	false),
-		'InnoDB'		=> array(	false,	false,	false),
-		'BerkeleyDB'	=> array(	false,	false,	false),
-		'BLACKHOLE'		=> array(	false,	false,	false),
-		'EXAMPLE'		=> array(	false,	false,	false),
-		'ARCHIVE'		=> array(	false,	false,	false),
-		'CSV'			=> array(	false,	false,	false),
-		'ndbcluster'	=> array(	false,	false,	false),
-		'FEDERATED'		=> array(	false,	false,	false),
-		'MRG_MYISAM'	=> array(	false,	false,	false),
-		'ISAM'			=> array(	false,	false,	false),
+		'MyISAM'		=> array(	true,	true,	true,	false),
+		'MEMORY'		=> array(	false,	false,	false,	false),
+		'InnoDB'		=> array(	false,	false,	false,	true),
+		'BerkeleyDB'	=> array(	false,	false,	false,	false),
+		'BLACKHOLE'		=> array(	false,	false,	false,	false),
+		'EXAMPLE'		=> array(	false,	false,	false,	false),
+		'ARCHIVE'		=> array(	false,	false,	false,	false),
+		'CSV'			=> array(	false,	false,	false,	false),
+		'ndbcluster'	=> array(	false,	false,	false,	false),
+		'FEDERATED'		=> array(	false,	false,	false,	false),
+		'MRG_MYISAM'	=> array(	false,	false,	false,	false),
+		'ISAM'			=> array(	false,	false,	false,	false),
 
 	);
 
 	public static function check($engine, $property)
 	{
-		return self::$types[self::getFormattedName($engine)][$property];
+		return self::$engines[self::getFormattedName($engine)][$property];
 	}
 
 	public static function getFormattedName($engine)

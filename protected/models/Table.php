@@ -122,8 +122,8 @@ class Table extends CActiveRecord
 		return array(
 			'schema' => array(self::BELONGS_TO, 'Schema', 'TABLE_SCHEMA'),
 			'columns' => array(self::HAS_MANY, 'Column', 'TABLE_SCHEMA, TABLE_NAME'),
-			'indices' => array(self::HAS_MANY, 'Index', 'TABLE_SCHEMA, TABLE_NAME', 'alias'=>'TableIndex'),
-			#'constraints' => array(self::HAS_MANY, 'Constraint', 'TABLE_SCHEMA, TABLE_NAME', 'alias'=>'TableConstraint'),
+			'indices' => array(self::HAS_MANY, 'Index', 'TABLE_SCHEMA, TABLE_NAME', 'alias' => 'TableIndex'),
+			'foreignKeys' => array(self::HAS_MANY, 'ForeignKey', 'TABLE_SCHEMA, TABLE_NAME', 'alias' => 'TableConstraint'),
 		);
 	}
 

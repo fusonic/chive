@@ -74,17 +74,38 @@ class TableController extends Controller
 	{
 		$table = $this->loadTable();
 
+		// Constraints
+		if(StorageEngine::check($table->ENGINE, StorageEngine::SUPPORTS_FOREIGN_KEYS))
+		{
+			$foreignKeys = array();
+			$sql = 'SELECT * FROM KEY_COLUMN_USAGE '
+				. 'WHERE TABLE_SCHEMA = :tableSchema '
+				. 'AND TABLE_NAME = :tableName '
+				. 'AND REFERENCED_TABLE_SCHEMA IS NOT NULL';
+			$table->foreignKeys = ForeignKey::model()->findAllBySql($sql, array(
+				'tableSchema' => $table->TABLE_SCHEMA,
+				'tableName' => $table->TABLE_NAME,
+			));
+			foreach($table->foreignKeys AS $key)
+			{
+				$foreignKeys[] = $key->COLUMN_NAME;
+			}
+		}
+		else
+		{
+			$foreignKeys = false;
+		}
+
 		// Indices
 		$sql = 'SELECT * FROM STATISTICS '
 			. 'WHERE TABLE_SCHEMA = :tableSchema '
 			. 'AND TABLE_NAME = :tableName '
 			. 'GROUP BY INDEX_NAME '
 			. 'ORDER BY INDEX_NAME = \'PRIMARY\' DESC, INDEX_NAME';
-		$params = array(
+		$table->indices = Index::model()->findAllBySql($sql, array(
 			'tableSchema' => $table->TABLE_SCHEMA,
 			'tableName' => $table->TABLE_NAME,
-		);
-		$table->indices = Index::model()->findAllBySql($sql, $params);
+		));
 
 		foreach($table->indices AS $index)
 		{
@@ -94,6 +115,7 @@ class TableController extends Controller
 		$this->render('structure',array(
 			'table' => $table,
 			'canAlter' => Yii::app()->user->privileges->checkTable($table->TABLE_SCHEMA, $table->TABLE_NAME, 'ALTER'),
+			'foreignKeys' => $foreignKeys,
 		));
 	}
 

@@ -30,6 +30,12 @@ var tableStructure = {
 		}
 	},
 	
+	// Edit relation
+	editRelation: function(col)
+	{
+		$('#columns_' + col).appendForm(baseUrl + '/schema/' + schema + '/tables/' + table + '/foreignKeys/' + col + '/update');
+	},
+	
 	// Add index
 	newIndexType: null,
 	addIndex1: function(type, col)

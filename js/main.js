@@ -90,7 +90,8 @@ function init()
 	editing = false;
 }
 
-$(document).ready(function()
+$(document)
+.ready(function()
 {
 	$('body').layout({
 		
@@ -175,7 +176,6 @@ $(document).ready(function()
 	// STOP
 	$(document).ajaxStop(function() {
 		//$('#loading2').hide();
-		alert("OK");
 		$('#loading').css({'background-image': 'url(' + baseUrl + '/images/loading5.gif)'}).fadeOut();
 	});
 	
@@ -193,6 +193,20 @@ $(document).ready(function()
 	if(currentLocation.indexOf('#') > -1)
 	{
 		reload();
+	}
+})
+.keydown(function(e) 
+{
+	if(e.keyCode >= 48 
+		&& e.keyCode <= 90
+		&& !e.altKey && !e.ctrlKey && !e.shiftKey 
+		&& (e.target == null || (e.target.tagName != 'INPUT' && e.target.tagName != 'TEXTAREA' && e.target.tagName != 'SELECT')))
+	{
+		var element = $('#tableSearch:visible, #schemaSearch:visible');
+		if(element.length == 1)
+		{
+		element.get(0).focus();
+		}
 	}
 });
 

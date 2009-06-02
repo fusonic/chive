@@ -7,7 +7,7 @@
 <div class="list">
 
 	<div class="buttonContainer">
-		
+
 		<div class="left">
 			<?php $this->widget('LinkPager',array('pages'=>$pages)); ?>
 		</div>
@@ -25,7 +25,7 @@
 			<?php } ?>
 		</div>
 	</div>
-	
+
 	<div class="clear"></div>
 
 	<table id="schemata" class="list addCheckboxes">

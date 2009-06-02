@@ -129,4 +129,8 @@
 	
 	<!-- Trigger -->
 	<entry id="triggers">Triggers</entry>
+	
+	<!-- Relations -->
+	<entry id="relation">Relation</entry>
+	<entry id="editRelation">Edit relation</entry>
 </category>

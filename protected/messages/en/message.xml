@@ -66,6 +66,7 @@
 	<entry id="doYouReallyWantToKillSelectedProcesses">Do you really want to kill the selected process(es)?</entry>
 	<entry id="killProcess">Kill process</entry>
 	
-	
+	<!-- Foreign keys -->
+	<entry id="successEditRelation">Saved relation for column »{col}«</entry>
 	
 </category>

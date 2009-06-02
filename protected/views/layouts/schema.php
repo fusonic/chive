@@ -42,6 +42,7 @@ $scriptFiles = array(
 	'js/profiling.js',
 	'js/storageEngine.js',
 	'js/views/column/form.js',
+	'js/views/foreignKey/form.js',
 	'js/views/index/form.js',
 	'js/views/schema/general.js',
 	'js/views/schema/list.js',
