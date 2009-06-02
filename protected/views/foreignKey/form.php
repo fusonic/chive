@@ -52,7 +52,7 @@
 			</tr>
 		</tbody>
 	</table>
-	<div style="clear: left; padding-top: 5px">
+	<div class="buttonContainer">
 		<a href="javascript:void(0)" onclick="$('#<?php echo CHtml::$idPrefix; ?>').submit()" class="icon button">
 			<com:Icon name="save" size="16" />
 			<span><?php echo Yii::t('action', 'save'); ?></span>

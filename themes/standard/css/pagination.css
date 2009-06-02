@@ -13,7 +13,6 @@ ul.yiiPager {
 ul.yiiPager li {
 	float: left;
 	display: inline;
-	padding: 3px 8px;
 	font-weight: bold;
 	background: url(../images/pagination/standard-bg.png) repeat-x;
 	border: 1px solid #CCC;
@@ -22,6 +21,8 @@ ul.yiiPager li {
 
 ul.yiiPager li a {
 	color: #777;	
+	padding: 3px 8px;
+	display: block;
 }
 
 ul.yiiPager li.hidden a {

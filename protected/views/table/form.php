@@ -102,9 +102,15 @@
 		</h1>
 		<?php echo $columnForm; ?>
 	<?php } ?>
-	<div style="clear: left; padding-top: 5px">
-		<?php echo CHtml::submitButton(Yii::t('action', ($table->isNewRecord ? 'create' : 'save')), array('class'=>'icon save')); ?>
-		<?php echo CHtml::button(Yii::t('action', 'cancel'), array('class'=>'icon delete', 'onclick'=>'$(this.form).slideUp(500, function() { $(this).parents("tr").remove(); })')); ?>
+	<div class="buttonContainer">
+		<a href="javascript:void(0)" onclick="$('#<?php echo CHtml::$idPrefix; ?>').submit()" class="icon button">
+			<com:Icon name="save" size="16" />
+			<span><?php echo Yii::t('action', 'save'); ?></span>
+		</a>
+		<a href="javascript:void(0)" onclick="$('#<?php echo CHtml::$idPrefix; ?>').slideUp(500, function() { $(this).parents('tr').remove(); })" class="icon button">
+			<com:Icon name="delete" size="16" />
+			<span><?php echo Yii::t('action', 'cancel'); ?></span>
+		</a>
 	</div>
 </form>
 

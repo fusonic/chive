@@ -5,7 +5,7 @@ class ForeignKey extends CActiveRecord
 
 	public static $db;
 
-	public $onDelete, $onUpdate;
+	public $onDelete, $onUpdate, $table;
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -14,6 +14,31 @@ class ForeignKey extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+
+	public function instantiate($attributes)
+	{
+		$res = parent::instantiate($attributes);
+
+		$res->table = Table::model()->findByAttributes(array(
+			'TABLE_SCHEMA' => $attributes['TABLE_SCHEMA'],
+			'TABLE_NAME' => $attributes['TABLE_NAME'],
+		));
+
+		$match = '/^\s+constraint `' . $attributes['CONSTRAINT_NAME'] . '` .+?$/im';
+		if(preg_match($match, $res->table->getShowCreateTable(), $result))
+		{
+			if(preg_match('/on delete (CASCADE|NO ACTION|SET NULL|RESTRICT)/i', $result[0], $result2))
+			{
+				$res->onDelete = $result2[1];
+			}
+			if(preg_match('/on update (CASCADE|NO ACTION|SET NULL|RESTRICT)/i', $result[0], $result2))
+			{
+				$res->onUpdate = $result2[1];
+			}
+		}
+
+		return $res;
 	}
 
 	/**
@@ -37,8 +62,7 @@ class ForeignKey extends CActiveRecord
 	 */
 	public function relations()
 	{
-		return array(
-		);
+		return array();
 	}
 
 	/**
@@ -46,8 +70,7 @@ class ForeignKey extends CActiveRecord
 	 */
 	public function attributeLabels()
 	{
-		return array(
-		);
+		return array();
 	}
 
 	public function safeAttributes()

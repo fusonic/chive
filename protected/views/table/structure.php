@@ -338,18 +338,20 @@
 					</tbody>
 				</table>
 
-				<div class="rightLinks">
-					<?php if($canAlter) { ?>
-						<a href="javascript:void(0)" onclick="tableStructure.addIndexForm()" class="icon">
-							<com:Icon name="add" size="16" />
-							<span><?php echo Yii::t('database', 'addIndex'); ?></span>
-						</a>
-					<?php } else { ?>
-						<span class="icon">
-							<com:Icon name="add" size="16" disabled="disabled" />
-							<span><?php echo Yii::t('database', 'addIndex'); ?></span>
-						</span>
-					<?php } ?>
+				<div class="buttonContainer">
+					<div class="right">
+						<?php if($canAlter) { ?>
+							<a href="javascript:void(0)" onclick="tableStructure.addIndexForm()" class="icon button">
+								<com:Icon name="add" size="16" />
+								<span><?php echo Yii::t('database', 'addIndex'); ?></span>
+							</a>
+						<?php } else { ?>
+							<span class="icon button">
+								<com:Icon name="add" size="16" disabled="disabled" />
+								<span><?php echo Yii::t('database', 'addIndex'); ?></span>
+							</span>
+						<?php } ?>
+					</div>
 				</div>
 
 			</div>

@@ -56,6 +56,12 @@
 		padding: 5px 10px;
 		background: url('../images/forms/button-bg.png') repeat-x;
 		cursor: pointer;
+		margin-right: 5px;
+	}
+	
+	div.buttonContainer div.right .button {
+		margin-right: 0px;
+		margin-left: 5px;
 	}
 	
 	a.button span {
@@ -66,12 +72,12 @@
 		border: 1px solid #999;
 	}
 	
-	div.left .button {
-		margin-right: 5px;
-	}
+	/*
+	 * Button container
+	 */
 	
-	div.right .button {
-		margin-left: 5px;
+	div.form div.buttonContainer {
+		padding: 5px 0px;
 	}
 	 
 	/*

@@ -12,6 +12,8 @@ class Table extends CActiveRecord
 	public $TABLE_COLLATION = 'utf8_general_ci';
 	public $comment;
 
+	private $showCreateTable;
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return CActiveRecord the static model class
@@ -176,6 +178,17 @@ class Table extends CActiveRecord
 			}
 		}
 		return false;
+	}
+
+	public function getShowCreateTable()
+	{
+		if(!$this->showCreateTable)
+		{
+			$cmd = self::$db->createCommand('SHOW CREATE TABLE ' . self::$db->quoteTableName($this->TABLE_NAME));
+			$res = $cmd->queryAll();
+			$this->showCreateTable = $res[0]['Create Table'];
+		}
+		return $this->showCreateTable;
 	}
 
 	/**
