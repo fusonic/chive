@@ -7,7 +7,7 @@
 	<colgroup>
 		<col />
 		<col class="type" />
-		<col />
+		<col style="width: 100px;" />
 		<col class="checkbox" />
 		<col />
 	</colgroup>

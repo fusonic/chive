@@ -126,4 +126,7 @@
 	<entry id="processes">Processes</entry>
 	<entry id="characterSets">Character sets</entry>
 	<entry id="variables">Variables</entry>
+	
+	<!-- Trigger -->
+	<entry id="triggers">Triggers</entry>
 </category>

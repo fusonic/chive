@@ -1,56 +1,97 @@
-<?php if(count($languages) > 0) {?>
-	<div id="languageSelect" style="display: none;" class="dropdown">
-		<com:Dropdown items={$languages} />
+<?php if (count($languages) > 0 ) {?>
+	<div id="languageDialog" title="<?php echo Yii::t('core', 'chooseLanguage'); ?>">
+		<table>
+			<tr>
+			<?php $i = 0; ?>
+			<?php $languageCount = count($languages); ?>
+			<?php foreach($languages AS $language) { ?>
+				
+				<td>
+					<a href="<?php echo $language['url']; ?>" class="icon">
+						<img src="<?php echo BASEURL . '/' . $language['icon']; ?>" alt="test" />
+						<span><?php echo $language['label']; ?></span>
+					</a>
+				</td>
+				
+				<?php $i++; ?>
+				<?php if ($i % 3 == 0 && $languageCount > $i) { ?>
+					</tr><tr>
+				<?php } ?>
+				
+				
+			<?php } ?>
+			</tr>
+		</table>
+		<span style="float:right; margin-top: 20px;">Help translating this project...</span>
 	</div>
 <?php } ?>
 
-<?php if(count($themes) > 0) { ?>
-	<div id="themeSelect" style="display: none;" class="dropdown">
-		<com:Dropdown items={$themes} />
+<?php if (count($themes) > 0 ) {?>
+	<div id="themeDialog" title="<?php echo Yii::t('core', 'chooseTheme'); ?>">
+		<table>
+			<tr>
+			<?php $i = 0; ?>
+			<?php $themeCount = count($themes); ?>
+			<?php foreach($themes AS $theme) { ?>
+				
+				<td>
+					<a href="<?php echo $theme['url']; ?>" class="icon">
+						<img src="<?php echo BASEURL . '/' . $theme['icon']; ?>" alt="test" />
+						<span><?php echo $theme['label']; ?></span>
+					</a>
+				</td>
+				
+				<?php $i++; ?>
+				<?php if ($i % 3 == 0 && $themeCount > $i) { ?>
+					</tr><tr>
+				<?php } ?>
+				
+				
+			<?php } ?>
+			</tr>
+		</table>
+		<span style="float:right; margin-top: 20px;">Help translating this project...</span>
 	</div>
 <?php } ?>
 
 <div id="login">
-	<div style="text-align: center; margin-bottom: 10px;">
-	<img src="<% echo Yii::app()->request->baseUrl . "/images/logo.png"; %>" />
-	</div>
-	<?php echo CHtml::form(); ?>
+	
+	<div style="background: url('http://blog.fusonic.net/wp-admin/css/../images/logo-login.gif') no-repeat; padding-bottom: 15px; height: 67px;"></div>
 
-	<div class="formItems non-floated" style="text-align: left;">
-		<div class="item row1">
-			<div class="left">
-				<?php echo CHtml::activeLabel($form,'host'); ?>
-			</div>
-			<div class="right">
-				<% if(!true) { %>
-					<?php echo CHtml::activeDropDownList($form,'host',$hosts); ?>
-				<% } else { %>
+	<div id="loginform">
+		<?php echo CHtml::form(); ?>
+		<div class="formItems non-floated" style="text-align: left;">
+			<div class="item row1">
+				<div class="left">
+					<?php echo CHtml::activeLabel($form,'host'); ?>
+				</div>
+				<div class="right">
 					<?php echo CHtml::activeTextField($form, 'host', array('value'=>'localhost', 'class'=>'text')); ?>
-				<% } %>
+				</div>
+			</div>
+			<div class="item row2">
+				<div class="left" style="float: none;">
+					<?php echo CHtml::activeLabel($form,'username'); ?>
+				</div>
+				<div class="right">
+					<?php echo CHtml::activeTextField($form,'username', array('class'=>'text')) ?>
+					<?php echo CHtml::error($form, 'username'); ?>
+				</div>
+			</div>
+			<div class="item row1">
+				<div class="left">
+					<?php echo CHtml::activeLabel($form,'password'); ?>
+				</div>
+				<div class="right">
+					<?php echo CHtml::activePasswordField($form,'password', array('class'=>'text')); ?>
+				</div>
 			</div>
 		</div>
-		<div class="item row2">
-			<div class="left" style="float: none;">
-				<?php echo CHtml::activeLabel($form,'username'); ?>
-			</div>
-			<div class="right">
-				<?php echo CHtml::activeTextField($form,'username', array('class'=>'text')) ?>
-				<?php echo CHtml::error($form, 'username'); ?>
-			</div>
-		</div>
-		<div class="item row1">
-			<div class="left">
-				<?php echo CHtml::activeLabel($form,'password'); ?>
-			</div>
-			<div class="right">
-				<?php echo CHtml::activePasswordField($form,'password', array('class'=>'text')); ?>
-			</div>
-		</div>
-	</div>
 
-	<div class="buttons" style="position: absolute; bottom: 20px; width: 300px; ">
-		<?php echo CHtml::submitButton('Login'); ?>
+		<div class="buttons">
+			<?php echo CHtml::submitButton('Login', array('class'=>'button')); ?>
+		</div>
+		<?php echo CHtml::closeTag('form'); ?>
 	</div>
-
-	<?php echo CHtml::closeTag('form'); ?>
+	
 </div>

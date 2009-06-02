@@ -26,6 +26,7 @@ $scriptFiles = array(
 	'js/jquery/jquery-ui-1.7.1.custom.min.js',
 	'js/jquery/jquery.blockUI.js',
 	'js/jquery/jquery.checkboxTable.js',
+	'js/jquery/jquery.editableTable.js',
 	'js/jquery/jquery.form.js',
 	'js/jquery/jquery.jeditable.js',
 	'js/jquery/jquery.layout.js',
@@ -50,6 +51,7 @@ $scriptFiles = array(
 	'js/views/table/browse.js',
 	'js/views/table/form.js',
 	'js/views/table/structure.js',
+	'assets/2ca8e2d4/codepress.js',		// @todo (rponudic) change this to valid path
 	'assets/lang_js/' . Yii::app()->getLanguage() . '.js',
 );
 foreach($scriptFiles AS $file)
@@ -84,22 +86,22 @@ foreach($scriptFiles AS $file)
 	<div id="header">
 		<div id="headerLeft">
 			<ul class="breadCrumb">
-				<li id="bc_root">
+				<li>
 					<a href="<?php echo Yii::app()->baseUrl . '/#schemata'; ?>" style="float:left; margin-right: 5px;">
 						<img src="<?php echo Yii::app()->baseUrl . "/images/logo.png"; ?>" />
 					</a>
 				</li>
 				<?php if($this->schema) { ?>
-					<li id="bc_schema">
-						<span>&raquo;</span>
+					<li id="bc-schema">
+						<!---<span>&raquo;</span>--->
 						<a class="icon" href="<?php echo Yii::app()->baseUrl; ?>/schema/<?php echo $this->schema; ?>">
 							<com:Icon name="database" size="24" />
 							<span><?php echo $_GET['schema']; ?></span>
 						</a>
 					</li>
 				<?php } ?>
-				<li id="bc_table" style="display: none;">
-					<span>&raquo;</span>
+				<li id="bc-table" style="display: none;">
+					<!---<span>&raquo;</span>--->
 					<a class="icon" href="<?php echo Yii::app()->baseUrl; ?>/database/<?php $this->schema; ?>">
 						<com:Icon name="table" size="24" />
 						<span></span>
@@ -204,12 +206,12 @@ foreach($scriptFiles AS $file)
 		</div>
   		<div class="sidebarHeader">
 			<a class="icon">
-				<com:Icon name="bookmark" size="24" text="core.triggers" />
-				<span><?php echo Yii::t('core', 'triggers') ?></span>
+				<com:Icon name="bookmark" size="24" text="database.triggers" />
+				<span><?php echo Yii::t('database', 'triggers') ?></span>
 			</a>
 		</div>
 		<div class="sidebarContent">
-			procedures
+			Triggers
 		</div>
 	</div>
   </div>

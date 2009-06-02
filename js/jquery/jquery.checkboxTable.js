@@ -48,8 +48,18 @@
 				});
 			}
 			
-			var headBoxes = $([this.tHead, this.tFoot]).find('input[type="checkbox"]');
+			var search = [];
+			
+			if(this.tHead)
+				search.push(this.tHead);
+			
+			if(this.tFoot)
+				search.push(this.tFoot);
+			
+			var headBoxes = $(search).find('input[type="checkbox"]');
 			var bodyBoxes = tbodyObj.find('input[type="checkbox"]');
+			
+			console.log(headBoxes.length)
 			
 			headBoxes.click(function(event) {
 				var checked = this.checked;

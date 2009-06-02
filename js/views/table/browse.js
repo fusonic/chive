@@ -39,7 +39,7 @@ var tableBrowse = {
 					var data = [];
 					$('#browse input[name="browse[]"]').each(function(i,o) {
 						if($(this).attr('checked')) {
-							data.push(rowData[i]);
+							data.push(keyData[i]);
 						}
 					});
 					
@@ -59,9 +59,13 @@ var tableBrowse = {
 		 * Setup inline editing
 		 */
 		
+		
+		
+		
+		/*
+		
 		$('.editable td[class!=action]').each(function() 
 		{
-	
 			eval('var type = tableData.columns.' + $(this).attr('class') + '.dbType');
 			
 			if(type.indexOf('text') > -1)
@@ -127,7 +131,7 @@ var tableBrowse = {
 			});
 			
 		});
-
+		*/
 		
 	}
 	

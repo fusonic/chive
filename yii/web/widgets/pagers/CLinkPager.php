@@ -74,13 +74,13 @@ class CLinkPager extends CBasePager
 	public function run()
 	{
 		if($this->nextPageLabel===null)
-			$this->nextPageLabel=Yii::t('yii','Next &gt;');
+			$this->nextPageLabel=Yii::t('yii','Next');
 		if($this->prevPageLabel===null)
-			$this->prevPageLabel=Yii::t('yii','&lt; Previous');
+			$this->prevPageLabel=Yii::t('yii','Previous');
 		if($this->firstPageLabel===null)
-			$this->firstPageLabel=Yii::t('yii','&lt;&lt; First');
+			$this->firstPageLabel=Yii::t('yii','First');
 		if($this->lastPageLabel===null)
-			$this->lastPageLabel=Yii::t('yii','Last &gt;&gt;');
+			$this->lastPageLabel=Yii::t('yii','Last');
 		if($this->header===null)
 			$this->header=Yii::t('yii','Go to page: ');
 
@@ -187,6 +187,7 @@ class CLinkPager extends CBasePager
 	 */
 	public static function registerCssFile($url=null)
 	{
+		
 		if($url===null)
 			$url=CHtml::asset(Yii::getPathOfAlias('system.web.widgets.pagers.pager').'.css');
 		Yii::app()->getClientScript()->registerCssFile($url);

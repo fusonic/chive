@@ -64,15 +64,27 @@ class RowController extends Controller
 		$db = $this->_db;
 
 		$pk = CPropertyValue::ensureArray($db->getSchema()->getTable($this->table)->primaryKey);
+		$column = Yii::app()->getRequest()->getParam('column');
+		$newValue = Yii::app()->getRequest()->getParam('value');
+		$null = Yii::app()->getRequest()->getParam('null');
 
-		$attributes = json_decode($_POST['data'], true);
+		$attributes = json_decode($_POST['attributes'], true);
 		$attributesCount = count($pk);
 
+		if($null)
+		{
+			$newValue = 'NULL';
+		}
+		
 		$response = new AjaxResponse();
+		
+		Row::$db = $db;
+		$row = Row::model()->findByPk($attributes);
 
 		$response->addData(null, array(
-			'value' => $_POST['value'],
-			'attribute' => $_POST['attribute'],
+			'value' => htmlspecialchars($newValue),
+			'column' => $column,
+			'isPrimary' => in_array($column, $pk)
 		));
 
 		try
@@ -81,7 +93,7 @@ class RowController extends Controller
 			$commandBuilder = $this->_db->getCommandBuilder();
 
 			$sql = 'UPDATE ' . $db->quoteTableName($this->table) . ' SET ' . "\n";
-			$sql .= "\t" . $db->quoteColumnName($_POST['attribute']) . ' = ' . $db->quoteValue($_POST['value']) . ' ' . "\n";
+			$sql .= "\t" . $db->quoteColumnName($column) . ' = ' . ($null ? $newValue : $db->quoteValue($newValue)) . ' ' . "\n";
 			$sql .= ' WHERE ' . "\n";
 
 			$i = 0;
@@ -97,12 +109,28 @@ class RowController extends Controller
 					$sql .= 'AND ' . "\n";
 
 			}
+			
+			$sql .= 'LIMIT 1';
 
 			$cmd = $commandBuilder->createSqlCommand($sql);
 
 			$cmd->prepare();
 			$cmd->execute();
-
+			
+			// Get value out of DB
+			if(in_array($column, array_keys($attributes)))
+			{
+				$attributes[$column] = $newValue;
+			}
+			
+			$row = Row::model()->findByAttributes($attributes);
+			
+			if($row == null)
+			{
+				$response->reload = true;
+			}
+			
+			
 			$response->addNotification('success', Yii::t('message', 'successUpdateRow'), null, $sql);
 
 		}
@@ -110,6 +138,7 @@ class RowController extends Controller
 		{
 			$ex = new DbException($cmd);
 			$response->addNotification('error', Yii::t('message', 'errorUpdateRow'), $ex->getText(), $sql, array('isSticky'=>true));
+			$response->addData(null, array('error'=>true));
 		}
 
 		$response->send();
@@ -128,8 +157,6 @@ class RowController extends Controller
 
 			foreach($data AS $attributes) {
 
-				//$response->addData()
-
 				$row = new Row;
 				$row->attributes = $attributes;
 
@@ -139,12 +166,13 @@ class RowController extends Controller
 				$row->attributes = $pkAttributes;
 
 				$sql .= $row->delete() . "\n\n";
+				
 			}
 
 		}
 		catch (DbException $ex)
 		{
-			$response->addNotification('error', Yii::t('message', 'errorUpdateRow'), $ex->getText(), $sql, array('isSticky'=>true));
+			$response->addNotification('error', Yii::t('message', 'errorDeleteRow'), $ex->getText(), $sql, array('isSticky'=>true));
 		}
 
 
@@ -153,6 +181,40 @@ class RowController extends Controller
 
 
 		$response->send();
+	}
+
+	public function actionInput()
+	{
+		
+		$attributes = json_decode(Yii::app()->getRequest()->getParam('attributes'), true);
+		$column = Yii::app()->getRequest()->getParam('column');
+		$oldValue = Yii::app()->getRequest()->getParam('oldValue');
+		$rowIndex = Yii::app()->getRequest()->getParam('rowIndex');
+		
+		// Single PK
+		$kvAttributes = $attributes;
+		
+		if(count($attributes) == 1)
+		{
+			$attributes = array_pop($attributes);
+		}
+		
+		$row = Row::model()->findByPk($attributes);
+		$column = $this->_db->getSchema()->getTable($this->table)->getColumn($column);
+		
+		$this->render('input', array(
+			'column' => $column,
+			'row' => $row,
+			'attributes' => $kvAttributes,
+			'oldValue' => str_replace("\n", "", $oldValue),				// @todo (rponudic) double-check if this is the solution!?
+			'rowIndex' => $rowIndex,
+		));
+
+	}
+	
+	public function actionSave()
+	{
+		$attributes = json_decode($_POST['attributes'], true);
 	}
 
 }

@@ -15,42 +15,43 @@ class DataType
 	const SUPPORTS_UNSIGNED_ZEROFILL = 9;
 	const SUPPORTS_ON_UPDATE_CURRENT_TIMESTAMP = 10;
 	const SUPPORTS_AUTO_INCREMENT = 11;
+	const INPUT_TYPE = 12;
 
 	public static $types = array(
 
-		//	Type					group		coll.	index	unique	fulltxt	size	scale	values	unsgnd	unsgndz	updtts	autoinc
+		//	Type					group		coll.	index	unique	fulltxt	size	scale	values	unsgnd	unsgndz	updtts	autoinc	input
 
-		'bit'			=> array(	'numeric',	false,	true,	true,	false,	true,	false,	false,	true,	true,	false,	false),
-		'tinyint'		=> array(	'numeric',	false,	true,	true,	false,	true,	false,	false,	true,	true,	false,	true),
-		'bool'			=> array(	'numeric',	false,	true,	true,	false,	false,	false,	false,	true,	true,	false,	false),
-		'smallint'		=> array(	'numeric',	false,	true,	true,	false,	true,	false,	false,	true,	true,	false,	true),
-		'mediumint'		=> array(	'numeric',	false,	true,	true,	false,	true,	false,	false,	true,	true,	false,	true),
-		'int'			=> array(	'numeric',	false,	true,	true,	false,	true,	false,	false,	true,	true,	false,	true),
-		'bigint'		=> array(	'numeric',	false,	true,	true,	false,	true,	false,	false,	true,	true,	false,	true),
-		'float'			=> array(	'numeric',	false,	true,	true,	false,	true,	true,	false,	true,	true,	false,	true),
-		'double'		=> array(	'numeric',	false,	true,	true,	false,	true,	true,	false,	true,	true,	false,	true),
-		'decimal'		=> array(	'numeric',	false,	true,	true,	false,	true,	true,	false,	true,	true,	false,	true),
+		'bit'			=> array(	'numeric',	false,	true,	true,	false,	true,	false,	false,	true,	true,	false,	false,	'number'),
+		'tinyint'		=> array(	'numeric',	false,	true,	true,	false,	true,	false,	false,	true,	true,	false,	true,	'number'),
+		'bool'			=> array(	'numeric',	false,	true,	true,	false,	false,	false,	false,	true,	true,	false,	false,	'checkbox'),
+		'smallint'		=> array(	'numeric',	false,	true,	true,	false,	true,	false,	false,	true,	true,	false,	true,	'number'),
+		'mediumint'		=> array(	'numeric',	false,	true,	true,	false,	true,	false,	false,	true,	true,	false,	true,	'number'),
+		'int'			=> array(	'numeric',	false,	true,	true,	false,	true,	false,	false,	true,	true,	false,	true,	'number'),
+		'bigint'		=> array(	'numeric',	false,	true,	true,	false,	true,	false,	false,	true,	true,	false,	true, 	'number'),
+		'float'			=> array(	'numeric',	false,	true,	true,	false,	true,	true,	false,	true,	true,	false,	true,	'number'),
+		'double'		=> array(	'numeric',	false,	true,	true,	false,	true,	true,	false,	true,	true,	false,	true,	'number'),
+		'decimal'		=> array(	'numeric',	false,	true,	true,	false,	true,	true,	false,	true,	true,	false,	true,	'number'),
 
-		'char'			=> array(	'string',	true,	true,	true,	true,	true,	false,	false,	false,	false,	false,	false),
-		'varchar'		=> array(	'string',	true,	true,	true,	true,	true,	false,	false,	false,	false,	false,	false),
-		'tinytext'		=> array(	'string',	true,	false,	false,	true,	false,	false,	false,	false,	false,	false,	false),
-		'text'			=> array(	'string',	true,	false,	false,	true,	false,	false,	false,	false,	false,	false,	false),
-		'mediumtext'	=> array(	'string',	true,	false,	false,	true,	false,	false,	false,	false,	false,	false,	false),
-		'longtext'		=> array(	'string',	true,	false,	false,	true,	false,	false,	false,	false,	false,	false,	false),
-		'tinyblob'		=> array(	'string',	false,	false,	false,	true,	false,	false,	false,	false,	false,	false,	false),
-		'blob'			=> array(	'string',	false,	false,	false,	true,	false,	false,	false,	false,	false,	false,	false),
-		'mediumblob'	=> array(	'string',	false,	false,	false,	true,	false,	false,	false,	false,	false,	false,	false),
-		'longblob'		=> array(	'string',	false,	false,	false,	true,	false,	false,	false,	false,	false,	false,	false),
-		'binary'		=> array(	'string',	false,	true,	true,	false,	true,	false,	false,	false,	false,	false,	false),
-		'varbinary'		=> array(	'string',	false,	true,	true,	false,	true,	false,	false,	false,	false,	false,	false),
-		'enum'			=> array(	'string',	true,	true,	true,	false,	false,	false,	true,	false,	false,	false,	false),
-		'set'			=> array(	'string',	true,	true,	true,	false,	false,	false,	true,	false,	false,	false,	false),
+		'char'			=> array(	'string',	true,	true,	true,	true,	true,	false,	false,	false,	false,	false,	false,	'single'),
+		'varchar'		=> array(	'string',	true,	true,	true,	true,	true,	false,	false,	false,	false,	false,	false,	'single'),
+		'tinytext'		=> array(	'string',	true,	false,	false,	true,	false,	false,	false,	false,	false,	false,	false,	'text'),
+		'text'			=> array(	'string',	true,	false,	false,	true,	false,	false,	false,	false,	false,	false,	false,	'text'),
+		'mediumtext'	=> array(	'string',	true,	false,	false,	true,	false,	false,	false,	false,	false,	false,	false,	'text'),
+		'longtext'		=> array(	'string',	true,	false,	false,	true,	false,	false,	false,	false,	false,	false,	false,	'text'),
+		'tinyblob'		=> array(	'string',	false,	false,	false,	true,	false,	false,	false,	false,	false,	false,	false,	'file'),
+		'blob'			=> array(	'string',	false,	false,	false,	true,	false,	false,	false,	false,	false,	false,	false,	'file'),
+		'mediumblob'	=> array(	'string',	false,	false,	false,	true,	false,	false,	false,	false,	false,	false,	false,	'file'),
+		'longblob'		=> array(	'string',	false,	false,	false,	true,	false,	false,	false,	false,	false,	false,	false,	'file'),
+		'binary'		=> array(	'string',	false,	true,	true,	false,	true,	false,	false,	false,	false,	false,	false,	'single'),
+		'varbinary'		=> array(	'string',	false,	true,	true,	false,	true,	false,	false,	false,	false,	false,	false,	'single'),
+		'enum'			=> array(	'string',	true,	true,	true,	false,	false,	false,	true,	false,	false,	false,	false,	'select'),
+		'set'			=> array(	'string',	true,	true,	true,	false,	false,	false,	true,	false,	false,	false,	false,	'select-multiple'),
 
-		'date'			=> array(	'date',		false,	true,	true,	false,	false,	false,	false,	false,	false,	false,	false),
-		'datetime'		=> array(	'date',		false,	true,	true,	false,	false,	false,	false,	false,	false,	false,	false),
-		'timestamp'		=> array(	'date',		false,	true,	true,	false,	false,	false,	false,	false,	false,	false,	false),
-		'time'			=> array(	'date',		false,	true,	true,	false,	false,	false,	false,	false,	false,	false,	false),
-		'year'			=> array(	'date',		false,	true,	true,	true,	false,	false,	false,	false,	false,	false,	false),
+		'date'			=> array(	'date',		false,	true,	true,	false,	false,	false,	false,	false,	false,	false,	false,	'date'),
+		'datetime'		=> array(	'date',		false,	true,	true,	false,	false,	false,	false,	false,	false,	false,	false,	'datetime'),
+		'timestamp'		=> array(	'date',		false,	true,	true,	false,	false,	false,	false,	false,	false,	false,	false,	'single'),
+		'time'			=> array(	'date',		false,	true,	true,	false,	false,	false,	false,	false,	false,	false,	false,	'single'),
+		'year'			=> array(	'date',		false,	true,	true,	true,	false,	false,	false,	false,	false,	false,	false,	'number'),
 
 	);
 
@@ -63,6 +64,10 @@ class DataType
 	{
 		preg_match('/^\w+/', $dataType, $res);
 		return $res[0];
+	}
+	
+	public static function getInputType($dataType) {
+		return self::$types[self::getBaseType($dataType)][self::INPUT_TYPE];
 	}
 
 }

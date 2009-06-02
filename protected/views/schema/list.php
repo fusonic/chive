@@ -6,9 +6,27 @@
 
 <div class="list">
 
-	<div class="pager top">
-		<?php $this->widget('CLinkPager',array('pages'=>$pages, 'nextPageLabel'=>'&raquo;', 'prevPageLabel'=>'&laquo;')); ?>
+	<div class="buttonContainer"
+		
+		<div class="left">
+			<?php $this->widget('CLinkPager',array('pages'=>$pages, 'cssFile'=>false, 'header'=>'')); ?>
+		</div>
+		<div class="right">
+			<?php if(Yii::app()->user->privileges->checkGlobal('CREATE')) { ?>
+				<a href="javascript:void(0)" onclick="schemaList.addSchema()" class="icon button">
+					<com:Icon name="add" size="16" />
+					<span><?php echo Yii::t('database', 'addSchema'); ?></span>
+				</a>
+			<?php } else { ?>
+				<span class="icon button">
+					<com:Icon name="add" size="16" disabled="disabled" />
+					<span><?php echo Yii::t('database', 'addSchema'); ?></span>
+				</span>
+			<?php } ?>
+		</div>
 	</div>
+	
+	<div class="clear"></div>
 
 	<table id="schemata" class="list addCheckboxes">
 		<colgroup>
@@ -82,40 +100,45 @@
 		</tfoot>
 	</table>
 
-	<div class="rightLinks">
-		<?php if(Yii::app()->user->privileges->checkGlobal('CREATE')) { ?>
-			<a href="javascript:void(0)" onclick="schemaList.addSchema()" class="icon">
-				<com:Icon name="add" size="16" />
-				<span><?php echo Yii::t('database', 'addSchema'); ?></span>
-			</a>
-		<?php } else { ?>
-			<span class="icon">
-				<com:Icon name="add" size="16" disabled="disabled" />
-				<span><?php echo Yii::t('database', 'addSchema'); ?></span>
-			</span>
-		<?php } ?>
+	<div class="buttonContainer">
+		<div class="left">
+			<div class="withSelected">
+				<span class="icon">
+					<com:Icon name="arrow_turn_090" size="16" />
+					<span><?php echo Yii::t('core', 'withSelected'); ?></span>
+				</span>
+				<?php if($canDrop) { ?>
+					<a class="icon button" href="javascript:void(0)" onclick="schemaList.dropSchemata()">
+						<com:Icon name="delete" size="16" />
+						<span><?php echo Yii::t('database', 'drop'); ?></span>
+					</a>
+				<?php } else { ?>
+					<span class="icon button">
+						<com:Icon name="delete" size="16" disabled="true" />
+						<span><?php echo Yii::t('database', 'drop'); ?></span>
+					</span>
+				<?php } ?>
+			</div>
+		</div>
+		<div class="right">
+			<?php if(Yii::app()->user->privileges->checkGlobal('CREATE')) { ?>
+				<a href="javascript:void(0)" onclick="schemaList.addSchema()" class="icon button">
+					<com:Icon name="add" size="16" />
+					<span><?php echo Yii::t('database', 'addSchema'); ?></span>
+				</a>
+			<?php } else { ?>
+				<span class="icon button">
+					<com:Icon name="add" size="16" disabled="disabled" />
+					<span><?php echo Yii::t('database', 'addSchema'); ?></span>
+				</span>
+			<?php } ?>
+		</div>
 	</div>
 
-	<div class="withSelected">
-		<span class="icon">
-			<com:Icon name="arrow_turn_090" size="16" />
-			<span><?php echo Yii::t('core', 'withSelected'); ?></span>
-		</span>
-		<?php if($canDrop) { ?>
-			<a class="icon" href="javascript:void(0)" onclick="schemaList.dropSchemata()">
-				<com:Icon name="delete" size="16" />
-				<span><?php echo Yii::t('database', 'drop'); ?></span>
-			</a>
-		<?php } else { ?>
-			<span class="icon">
-				<com:Icon name="delete" size="16" disabled="true" />
-				<span><?php echo Yii::t('database', 'drop'); ?></span>
-			</span>
-		<?php } ?>
-	</div>
+	<div class="clear"></div>
 
 	<div class="pager bottom">
-		<?php $this->widget('CLinkPager',array('pages'=>$pages, 'nextPageLabel'=>'&raquo;', 'prevPageLabel'=>'&laquo;')); ?>
+		<?php $this->widget('CLinkPager',array('pages'=>$pages, 'cssFile'=>false, 'nextPageLabel'=>'&raquo;', 'prevPageLabel'=>'&laquo;')); ?>
 	</div>
 
 </div>

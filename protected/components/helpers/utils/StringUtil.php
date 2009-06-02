@@ -56,6 +56,30 @@ class StringUtil
 
 	}
 
+	/**
+	 * Returns a random string with a specified length
+	 * @param int	$_length
+	 * @param bool	$_specialChars
+	 * @param bool $_removeConfusable (removes o,i,l ....)
+	 * @return string
+	 */
+	public static function getRandom($_length, $_specialChars = false, $_removeConfusable = false) {
+		$confusable = "IOlo0i";
+		$chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz123456789" . ($_removeConfusable ? "" : $confusable);
+		if($_specialChars)
+			$chars .= "!\"§$%&/()=?*+#'-_,;.:<>";
+
+		$return = "";
+
+		for($i = 0; $i < $_length; $i++) {
+			$char = mt_rand(0, strlen($chars) - 1);
+			$return .= substr($chars, $char, 1);
+		}
+
+		return $return;
+
+	}
+
 }
 
 ?>

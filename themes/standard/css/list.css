@@ -21,17 +21,19 @@
 	 */
 	
 	table.list {
-		border: none;
-		border-spacing: 0px;
-		margin: 0px;
+		border-collapse: separate;
+		border-spacing: 0;
+		-moz-border-radius: 4px;
+		-webkit-border-radius: 4px;
+		border: 1px solid #CCC;
+		margin: 10px 0px;
 		width: 100%;
 	}
 	
 	table.list>tbody>tr>td, 
 	table.list>thead>tr>th, 
 	table.list>tfoot>tr>th {
-		border: solid 1px #FFFFFF;
-		padding: 3px 5px;
+		padding: 8px 5px;
 	}
 	
 	table.list>tbody>tr>td.nodecoration, 
@@ -87,12 +89,13 @@
 	 */
 	
 	table.list>thead {
-		background: #2D83D0 url(../../../images/header-bg.png) repeat-x scroll left center;
+		background: #CCC url(../images/table/head-bg.png) repeat-x scroll left top;
+		height: 30px;
 	}
 	
 	table.list>thead, 
 	table.list>thead a {
-		color: #FFFFFF;
+		color: #333;
 		font-weight: bold !important;
 	}
 	
@@ -129,8 +132,8 @@
 	 */
 	
 	table.list>tfoot>tr>th {
-		background: #2D83D0 url(../../../images/header-bg.png) repeat-x scroll left center;
-		color: #FFFFFF;
+		background: #CCC url(../images/table/head-bg.png) repeat-x scroll left center;
+		color: #333;
 		font-weight: bold;
 	}
 	
@@ -194,7 +197,7 @@
 	 */
 	
 	div.list div.withSelected {
-		margin: 3px 0px 0px 1px;
+		margin-left: 1px;
 	}
 	
 	div.list div.withSelected img.icon_arrow_turn_090 {
@@ -205,12 +208,4 @@
 		margin: 0px 5px;
 	}
 	
-	/*
-	 * Right links
-	 */
-	
-	div.list div.rightLinks {
-		float: right;
-	}
-
 }

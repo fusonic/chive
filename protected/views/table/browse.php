@@ -13,23 +13,29 @@
 <table style="width: 100%;">
 	<tr>
 		<td style="width: 80%;">
+			<!---
 			<com:application.extensions.CodePress.CodePress language="sql" name="query" width="100%" height="80px" autogrow="true" value={$query} />
+			--->
+			<textarea name="query" style="width: 99%; height: 90px;"><?php echo $query; ?></textarea>
+			<div class="buttons">
+				<?php echo CHtml::submitButton('Execute', array('class'=>'icon button execute')); ?>
+			</div>			
 		</td>
-		<td style="vertical-align: top; padding: 10px;">
-			<a class="icon" href="javascript:void(0);" onclick="Bookmark.add('<?php echo $this->schema; ?>', query.getCode());">
+		<td style="vertical-align: top; padding: 2px 5px;">
+			<a class="icon button" href="javascript:void(0);" onclick="Bookmark.add('<?php echo $this->schema; ?>', query.getCode());">
 				<com:Icon size="16" name="bookmark_add" />
 				<span><?php echo Yii::t('core', 'bookmark'); ?></span>
 			</a>
 			<br/><br/>
-			<a class="icon" href="javascript:void(0);" onclick="Profiling.toggle();">
+			<a class="icon button" href="javascript:void(0);" onclick="Profiling.toggle();">
 				<com:Icon size="16" name="chart" />
 				<span><?php echo Yii::t('database', 'toggleProfiling'); ?></span>
 			</a>
 			<br/><br/>
-			<a class="icon" href="javascript:void(0);" onclick="$.post(baseUrl + '/ajaxSettings/toggle', {
-				name: 'showFullColumnContent',
-				scope: 'schema.table.browse',
-				object: '<?php echo $this->schema; ?>.<?php echo $this->table; ?>'
+			<a class="icon button" href="javascript:void(0);" onclick="$.post(baseUrl + '/ajaxSettings/toggle', {
+					name: 'showFullColumnContent',
+					scope: 'schema.table.browse',
+					object: '<?php echo $this->schema; ?>.<?php echo $this->table; ?>'
 				}, function() {
 					reload();
 				});;">
@@ -44,9 +50,7 @@
 	</tr>
 </table>
 
-<div class="buttons">
-	<?php echo CHtml::submitButton('Execute'); ?>
-</div>
+
 
 
 <?php echo CHtml::endForm(); ?>
@@ -56,16 +60,17 @@
 	<div class="list">
 
 		<div class="pager top">
-			<?php $this->widget('CLinkPager',array('pages'=>$pages)); ?>
+			<?php $this->widget('CLinkPager',array('pages'=>$pages, 'cssFile'=>false)); ?>
 		</div>
 
 		<br/>
 
 		<?php $i = 0; ?>
-		<table class="list <?php if($type == 'select') { ?>addCheckboxes editable<?php } ?>" style="width: auto;" id="browse">
+		<table class="list <?php if($type == 'select' && $table->primaryKey !== null) { ?>addCheckboxes editable<?php } ?>" style="width: auto;" id="browse">
 			<colgroup>
 				<col class="checkbox" />
 				<?php if($type == 'select') { ?>
+					<col class="action" />
 					<col class="action" />
 					<col class="action" />
 				<?php } ?>
@@ -79,6 +84,7 @@
 						<th><input type="checkbox" /></th>
 						<th></th>
 						<th></th>
+						<th></th>
 					<?php } ?>
 					<?php foreach ($columns AS $column) { ?>
 						<th><?php echo ($type == 'select' ? $sort->link($column) : $column); ?></th>
@@ -87,7 +93,7 @@
 			</thead>
 			<tbody>
 				<?php foreach($data AS $row) { ?>
-					<tr id="row_<?php echo $i; ?>">
+					<tr>
 						<?php if($type == 'select') { ?>
 							<td>
 								<input type="checkbox" name="browse[]" value="row_<?php echo $i; ?>" />
@@ -98,6 +104,11 @@
 								</a>
 							</td>
 							<td class="action">
+								<a href="javascript:void(0);" class="icon" onclick="tableBrowse.editRow(<?php echo $i; ?>);">
+									<com:Icon name="edit" size="16" text="core.edit" />
+								</a>
+							</td>
+							<td class="action">
 								<a href="javascript:void(0);" class="icon" onclick="tableBrowse.deleteRow(<?php echo $i; ?>);">
 									<com:Icon name="insert" size="16" text="core.insert" />
 								</a>
@@ -105,8 +116,13 @@
 						<?php } ?>
 						<?php foreach($row AS $key=>$value) { ?>
 							<td class="<?php echo $key; ?>">
-								<?php echo is_null($value) ? '<span class="null">NULL</span>' : (Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $this->schema . '.' .  $this->table) ? str_replace(array('<','>'),array('&lt;','&gt;'),$value) : StringUtil::cutText(str_replace(array('<','>'),array('&lt;','&gt;'),$value), 100)); ?>
+								<span><?php echo is_null($value) ? 'NULL' : (Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $this->schema . '.' .  $this->table) ? str_replace(array('<','>'),array('&lt;','&gt;'),$value) : StringUtil::cutText(str_replace(array('<','>'),array('&lt;','&gt;'),$value), 100)); ?></span>
 							</td>
+
+							<?php if($type == 'select' && $table->primaryKey !== null && in_array($key, (array)$table->primaryKey)) { ?>
+								<?php $keyData[$i][$key] = $value; ?>
+							<?php } ?>
+
 						<?php } ?>
 					</tr>
 					<?php $i++; ?>
@@ -120,21 +136,20 @@
 					<com:Icon name="arrow_turn_090" size="16" />
 					<span><?php echo Yii::t('core', 'withSelected'); ?></span>
 				</span>
-				<a class="icon" href="javascript:void(0)" onclick="tableBrowse.deleteRows()">
+				<a class="icon button" href="javascript:void(0)" onclick="tableBrowse.deleteRows()">
 					<com:Icon name="delete" size="16" />
 					<span><?php echo Yii::t('core', 'delete'); ?></span>
 				</a>
 			</div>
-			<script type="text/javascript">
-
-				var tableData = <?php echo json_encode($table); ?>;
-				var rowData = <?php echo json_encode($data); ?>;
-
-			</script>
+			<?php if ($table->primaryKey !== null) { ?>
+				<script type="text/javascript">
+					var keyData = <?php echo json_encode($keyData); ?>;
+				</script>
+			<?php } ?>
 		<?php } ?>
 
 		<div class="pager bottom">
-			<?php $this->widget('CLinkPager',array('pages'=>$pages)); ?>
+			<?php $this->widget('CLinkPager',array('pages'=>$pages, 'cssFile'=>false)); ?>
 		</div>
 
 	</div>

@@ -13,77 +13,32 @@
 <![endif]-->
 
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.layout.js', CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery-ui-1.7.1.custom.js', CClientScript::POS_HEAD); ?>
-
-<script type="text/javascript">
-
-$(document).ready(function() {
-
-	$('body')
-		.layout({
-			// General
-			applyDefaultStyles: false,
-
-			north__size: 42,
-			north__resizable: false,
-			north__closable: false,
-			north__spacing_open: 1
-
-		});
-
-	$('body').click(function() {
-			$('#languageSelect').slideUp();
-			$('#themeSelect').slideUp();
-		});
-
-});
-
-</script>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery-ui-1.7.1.custom.min.js', CClientScript::POS_HEAD); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/views/site/login.js', CClientScript::POS_HEAD); ?>
 
 </head>
 <body>
-  <div class="ui-layout-north">
 	<div id="header">
-		<div id="headerLeft">
-			<a href="http://www.example.com/dublin">
-				<img src="<% echo Yii::app()->request->baseUrl . "/images/logo.png"; %>" />
+		<div style="float:right;" >
+			
+			<a class="icon button" href="javascript:void(0);" style="margin-right: 10px;" onclick="$('#themeDialog').dialog('open');">
+				<img src="<?php echo BASEURL; ?>/themes/<?php  echo Yii::app()->getTheme()->name; ?>/images/icon.png" />		
+				<span><?php echo ucfirst(Yii::app()->getTheme()->name); ?></span>
 			</a>
-		</div>
-		<div id="headerLogo">
-		</div>
-		<div id="headerRight">
-			<?php $this->widget('application.components.MainMenu',array(
-				'items'=>array(
-						array(
-							'label' => ucfirst(Yii::app()->getTheme()->name),
-							'icon' => '../../../../themes/' . Yii::app()->getTheme()->name . '/images/icon',
-							'url' => 'javascript:void(0);',
-							'htmlOptions' => array(
-								'style'=>'width: 150px;',
-								'class'=>'icon',
-									'onclick'=>'$("#themeSelect").slideDown(); var dontHideBox = true; event.stopPropagation(); return false;',
-							),
-						),
-						array(
-							'label' => Yii::t('language', Yii::app()->getLanguage()),
-							'icon' => '../../../country/' . substr(Yii::app()->getLanguage(),0,2),
-							'url'=>array('#'),
-							'htmlOptions' => array(
-								'style'=>'width: 150px;',
-								'class'=>'icon',
-									'onclick'=>'$("#languageSelect").slideDown(); var dontHideBox = true; event.stopPropagation(); return false;',
-							),
-						),
-				),
-			)); ?>
-		</div>
+			
+			<a class="icon button" href="javascript:void(0);" style="margin-right: 10px;" onclick="$('#languageDialog').dialog('open');">
+				<img src="<?php echo BASEURL; ?>/images/country/<?php echo substr(Yii::app()->getLanguage(),0,2); ?>.png" />
+				<span><?php echo Yii::t('language', Yii::app()->getLanguage()); ?></span>
+			</a>
+			
+		</div> 
 	</div>
-  </div>
-
-  <div class="ui-layout-center">
-  		<% echo $content; %>
-  </div>
-
+	
+  <?php echo $content; ?>
+  
+  <script type="text/javascript">
+		login.setup();
+  </script>
+  
 </body>
 </html>

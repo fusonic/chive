@@ -9,6 +9,7 @@ class Select extends CWidget
 	public function run() {
 
 		$items = array();
+
 		foreach($this->items AS $item) {
 			$items[] = $item;
 		}

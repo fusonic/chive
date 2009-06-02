@@ -68,7 +68,13 @@ foreach($scriptFiles AS $file)
   <div class="ui-layout-north">
 	<div id="header">
 		<div id="headerLeft">
-			<img src="<?php echo Yii::app()->request->baseUrl . "/images/logo.png"; ?>" />
+			<ul class="breadCrumb">
+				<li>
+					<a href="<?php echo Yii::app()->baseUrl . '/#schemata'; ?>" style="float:left; margin-right: 5px;">
+						<img src="<?php echo Yii::app()->baseUrl . "/images/logo.png"; ?>" />
+					</a>
+				</li>
+			</ul>
 		</div>
 		<div id="headerRight">
 			<?php $this->widget('application.components.MainMenu',array(

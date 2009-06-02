@@ -9,10 +9,10 @@
 	input[type=reset],
 	input[type=button], 
 	textarea {
-		background: #F7F7F7;
+		background-color: #F7F7F7;
 		border: solid 1px #CCC;
 		color: #333;
-		padding: 2px;
+		padding: 4px;
 	}
 	
 	input[type="submit"] {
@@ -32,7 +32,40 @@
 	input.icon.delete {
 		background-image: url('../../../images/icons/fugue/16/delete.png');
 	}
+	
+	input.icon.cancel {
+		background-image: url('../../../images/icons/fugue/16/delete.png');
+	}
+	
+	input.icon.null {
+		background-image: url('../../../images/icons/fugue/16/null.png');
+	}
+	
+	input.icon.execute {
+		background-image: url('../../../images/icons/fugue/16/execute.png');
+	}
 
+	
+	/*
+	 * Buttons
+	 */
+	.button {
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		border: 1px solid #BBB;
+		padding: 5px 10px;
+		background: url('../images/forms/button-bg.png') repeat-x;
+		cursor: pointer;
+	}
+	
+	a.button span {
+		text-decoration: none !important;
+	} 
+	
+	.button:hover {
+		border: 1px solid #999;
+	}
+	 
 	/*
 	 * Search field
 	 */	

@@ -108,9 +108,6 @@ class TableController extends Controller
 
 		$response = new AjaxResponse();
 
-		#$_query = 'SELECT * FROM test ORDER BY id DESC LIMIT 0, 10';
-		//$_query = ' USE test';
-
 		// Profiling
 		$profiling = Yii::app()->user->settings->get('profiling');
 
@@ -223,6 +220,11 @@ class TableController extends Controller
 					{
 						$total = (int)$db->createCommand('SELECT FOUND_ROWS()')->queryScalar();
 						$pages->setItemCount($total);
+
+						$keyData = array();
+
+						#predie($this->_db->getSchema()->getTable($this->table)->primaryKey);
+
 					}
 
 					$columns = array();

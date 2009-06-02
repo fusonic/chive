@@ -41,12 +41,12 @@ return array(
 				array(
 					'class'=>'CProfileLogRoute',
 					'levels'=>'error, warning, info, trace',
-					'showInFireBug'=>true,
+					'showInFireBug'=>false,
 				),
 				array(
 					'class'=>'CWebLogRoute',
 					'levels'=>'error, warning', //, warning, info, trace',
-					'showInFireBug'=>true,
+					'showInFireBug'=>false,
 				),
 			),
 		),

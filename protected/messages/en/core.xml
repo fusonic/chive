@@ -16,6 +16,8 @@
 	<entry id="confirm">Confirm</entry>
 	<entry id="action">Action</entry>
 	<entry id="insert">Insert</entry>
+	<entry id="save">Save</entry>
+	<entry id="cancel">Cancel</entry>
 	
 	<entry id="error">Error</entry>
 	<entry id="warning">Warning</entry>
@@ -47,4 +49,8 @@
 	<entry id="user">User</entry>
 	<entry id="time">Time</entry>
 	<entry id="status">Status</entry>
+	
+	<entry id="chooseLanguage">Choose language</entry>
+	<entry id="chooseTheme">Choose theme</entry>
+	
 </category>

@@ -58,6 +58,7 @@
 	<entry id="doYouReallyWantToDeleteSelectedRows">Do you really want to delete the selected row(s)?</entry>
 	<entry id="successDeleteRows">1#Deleted {rowCount} row|n>1#Deleted {rowCount} rows</entry>
 	<entry id="successInsertRow">Inserted row</entry>
+	<entry id="errorUpdateRow">Updating row failed</entry>
 	
 	<!-- Processes -->
 	<entry id="successKillProcess">Killed process #{id}</entry>

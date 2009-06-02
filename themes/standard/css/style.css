@@ -4,6 +4,7 @@
 @import "icon.css";
 @import "list.css";
 @import "form.css";
+@import "pagination.css";
 @import "../jquery-ui/start.css";
 
 @media screen, projection
@@ -14,7 +15,7 @@
   /*
    * Body
    */
-  body { background: #e0e0e0; }
+  body { background: #F8F8F8; }
 
 
   /*
@@ -23,7 +24,7 @@
 
   #header {
     color: #000;
-    background: #fff url(../images/header-bg.png) repeat-x top left;
+    background: #3B5998;
 	height: 40px;
 	line-height: 40px;
 	position: absolute;
@@ -33,11 +34,15 @@
   
   #headerLeft {
   	float: left;
-	margin: 0px 0px 0px 5px;
+  }
+  
+  #headerLeft a {
+  	position: relative;
+  	top: -4px;
   }
   
   #headerLeft, #headerLeft a span {
-  	color: #FFF;
+  	color: #3B5998;
 	text-decoration: none !important;
   }
   
@@ -139,16 +144,17 @@
 	font-size: 140%;
   }
   
-  #login {
-  	background: #3a68a0 url(../images/login-bg.png) repeat-x;
-	border: 10px solid #FFF;
-	-moz-border-radius: 20px;
-	-webkit-border-radius: 20px;
+  #loginform {
+  	padding: 10px;
+  	background: #FFF;
+	border: 1px solid #E5E5E5;
+	-moz-border-radius: 11px;
+	-webkit-border-radius: 11px;
   }
   
   select {
   	border: solid 1px #CCC;
-	padding-top: 2px;
+	padding: 2px;
   }
   
   #login div.formItems.non-floated div.left {
@@ -197,6 +203,22 @@
   div.blockUI {
   	background: #EFEFEF url('../../../images/loading_big.gif') no-repeat center center !important;
 	opacity: 0.6;
+  }
+  
+  /*
+   * Breadcrumb
+   */
+  ul.breadCrumb li {
+  	/*background: url('../images/breadcrumb/bg.png') top right;*/
+  	background: #FFF url(../images/table/head-bg.png);
+  	-moz-border-radius: 3px;
+  	-webkit-border-radius: 3px;
+  	padding-left: 10px;
+  	padding-right: 10px;
+  } 
+  
+  ul.breadCrumb li:hover {
+  	background: #ffd900;
   }
    
 }

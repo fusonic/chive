@@ -101,17 +101,15 @@ class Row extends CActiveRecord
 		}
 
 
+		$pk = (array)self::$db->getSchema($this->schema)->getTable($this->table)->primaryKey;
 		$pkCount = count($pk);
-
-
-		$pk = $this->getPrimaryKey();
-
+		
 		$sql = 'DELETE FROM ' . self::$db->quoteTableName($this->table) . ' WHERE ';
 
 		$i = 0;
-		foreach($pk AS $key=>$value)
+		foreach($pk AS $column)
 		{
-			$sql .= "\n\t" . self::$db->quoteColumnName($key) . ' = ' . self::$db->quoteValue($value);
+			$sql .= "\n\t" . self::$db->quoteColumnName($column) . ' = ' . self::$db->quoteValue($this->$column);
 			$i++;
 
 			if($i < $pkCount)

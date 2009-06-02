@@ -6,19 +6,21 @@
 
 <table class="list addCheckboxes" id="processes">
 	<colgroup>
-			<col class="action" />
-			<col />
-			<col />
-			<col />
-			<col />
-			<col />
-			<col />
-			<col />
-			<col />
-			<col />
+		<col class="checkbox" />
+		<col class="action" />
+		<col />
+		<col />
+		<col />
+		<col />
+		<col />
+		<col />
+		<col />
+		<col />
+		<col />
 	</colgroup>
 	<thead>
 		<tr>
+			<th><input type="checkbox" /></th>
 			<th></th>
 			<th><?php echo Yii::t('core', 'id'); ?></th>
 			<th><?php echo Yii::t('core', 'user'); ?></th>
@@ -33,6 +35,9 @@
 	<tbody>
 		<?php foreach($processes AS $process) { ?>
 			<tr id="processes_<?php echo $process['Id']; ?>">
+				<td>
+					<input type="checkbox" name="processes[]" value="<?php echo $process['Id']; ?>" />
+				</td>
 				<td>
 					<a href="javascript:void(0);" onclick="tableProcesses.killProcess('<?php echo $process['Id']; ?>');">
 						<com:Icon name="delete" size="16" text="core.kill" />
@@ -50,15 +55,20 @@
 		<?php } ?>
 	</tbody>
 </table>
-<div class="withSelected">
-	<span class="icon">
-		<com:Icon name="arrow_turn_090" size="16" />
-		<span><?php echo Yii::t('core', 'withSelected'); ?></span>
-	</span>
-	<a class="icon" href="javascript:void(0);" onclick="tableProcesses.killProcesses();">
-		<com:Icon name="delete" size="16" />
-		<span><?php echo Yii::t('core', 'kill'); ?></span>
-	</a>
+
+<div class="buttonContainer">
+	<div class="left">
+		<div class="withSelected">
+			<span class="icon">
+				<com:Icon name="arrow_turn_090" size="16" />
+				<span><?php echo Yii::t('core', 'withSelected'); ?></span>
+			</span>
+			<a class="icon button" href="javascript:void(0);" onclick="tableProcesses.killProcesses();">
+				<com:Icon name="delete" size="16" />
+				<span><?php echo Yii::t('core', 'kill'); ?></span>
+			</a>
+		</div>
+	</div>
 </div>
 
 <script type="text/javascript">
@@ -67,7 +77,5 @@
 </script>
 
 <script type="text/javascript">
-tableProcesses.setupDialogs();
+	tableProcesses.setup();
 </script>
-
-

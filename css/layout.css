@@ -191,6 +191,7 @@
   	clear: both;
 	float: none;
 	text-align: center;
+	margin-top: 10px;
   }
 
   /*
@@ -256,12 +257,13 @@
    */
   
   #login {
-  	position: absolute; 
-	left: 50%; 
-	top: 50%; 
-	margin: -250px auto auto -150px; 
-	width: 300px; 
-	height: 300px; 
+	margin: 7em auto; 
+	width: 320px;
+  }
+  
+  #loginform {
+  	width: 300px; 
+	height: 250px; 
 	padding: 10px;
   }
   
@@ -271,14 +273,14 @@
   
   #languageSelect {
   	position: absolute;
-	top: -3px;
+	top: 40px;
 	right: 0px;
 	width: 172px;
   }
   
   #themeSelect {
   	position: absolute;
-	top: -3px;
+	top: 40px;
 	right: 172px;
 	width: 172px;
   }
@@ -379,11 +381,16 @@
    * Breadcrumb
    */
   
+  ul.breadCrumb {
+  	margin: 5px;
+  }
+  
   ul.breadCrumb li {
   	float: left;
-	margin: 0px 10px 0px 0px;
-	height: 40px;
-	line-height: 40px;
+	margin: 0px 5px 0px 0px;
+	padding: 3px 5px;
+	height: 24px;
+	line-height: 20px;
   }
   
   /*
@@ -449,4 +456,33 @@
   {
   	display: inline !important;
   }
+  
+  /*
+   * Icons
+   */
+  a.icon span {
+  	position: relative;
+  }
+  
+  div.buttonContainer {
+  	clear: both;
+  }
+  
+  div.buttonContainer div.left {
+  	float: left;
+  	width: 50%;
+  }
+  
+  div.buttonContainer div.right  {
+  	float: right;
+  }
+  
+  /*
+   * Form elements
+   */
+  select {
+  	min-width: 120px;
+  }
+  
+  
 }

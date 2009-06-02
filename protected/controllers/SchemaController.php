@@ -486,7 +486,9 @@ class SchemaController extends Controller
 	{
 
 		$ids = json_decode(Yii::app()->getRequest()->getParam('ids'));
+		
 		$response = new AjaxResponse();
+		$response->reload = true;
 
 		foreach($ids AS $id)
 		{
@@ -501,6 +503,7 @@ class SchemaController extends Controller
 				$cmd->execute();
 
 				$response->addNotification('success', Yii::t('message', 'successKillProcess', array('{id}' => $id)), null, $sql);
+				
 			}
 			catch(CDbException $ex)
 			{

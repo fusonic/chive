@@ -37,13 +37,20 @@ class AjaxResponse
 
 	public function addData($name, $value)
 	{
-		if($name != null)
+		if($name !== null)
 		{
 			$this->data[$name] = $value;
 		}
 		else
 		{
-			$this->data = $value;
+			if($this->data)
+			{
+				$this->data += $value;
+			}
+			else
+			{
+				$this->data = $value;
+			}
 		}
 	}
 
