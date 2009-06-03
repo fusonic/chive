@@ -71,7 +71,7 @@ class TabMenu extends CWidget
 
 			$items[]=$item2;
 		}
-
+		
 		$this->render('tabMenu',array('items'=>$items));
 	}
 

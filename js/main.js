@@ -6,11 +6,16 @@ function checkLocation()
 {
 	if(window.location.href != currentLocation) 
 	{
-		reload();
+		refresh();
 	}
 }
 
 function reload() 
+{
+	location.reload();
+}
+
+function refresh() 
 {
 	currentLocation = window.location.href;
 	newLocation = currentLocation
@@ -85,8 +90,7 @@ function init()
 	editing = false;
 }
 
-$(document)
-.ready(function()
+$(document).ready(function()
 {
 	$('body').layout({
 		
@@ -188,7 +192,7 @@ $(document)
 	
 	if(currentLocation.indexOf('#') > -1)
 	{
-		reload();
+		refresh();
 	}
 })
 .keydown(function(e) 
@@ -227,6 +231,11 @@ var AjaxResponse = {
 		if(data.reload)
 		{
 			reload();
+		}
+		
+		if(data.refresh) 
+		{
+			refresh();
 		}
 		
 		if(data.notifications && data.notifications.length > 0) 

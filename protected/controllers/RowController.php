@@ -66,7 +66,7 @@ class RowController extends Controller
 		$pk = CPropertyValue::ensureArray($db->getSchema()->getTable($this->table)->primaryKey);
 		$column = Yii::app()->getRequest()->getParam('column');
 		$newValue = Yii::app()->getRequest()->getParam('value');
-		$null = Yii::app()->getRequest()->getParam('null');
+		$null = Yii::app()->getRequest()->getParam('isNull');
 
 		$attributes = json_decode($_POST['attributes'], true);
 		$attributesCount = count($pk);
@@ -110,7 +110,7 @@ class RowController extends Controller
 
 			}
 			
-			$sql .= 'LIMIT 1';
+			$sql .= "\n" . 'LIMIT 1';
 
 			$cmd = $commandBuilder->createSqlCommand($sql);
 
@@ -127,7 +127,7 @@ class RowController extends Controller
 			
 			if($row == null)
 			{
-				$response->reload = true;
+				$response->refresh = true;
 			}
 			
 			
@@ -176,7 +176,7 @@ class RowController extends Controller
 		}
 
 
-		$response->reload = true;
+		$response->refresh = true;
 		$response->addNotification('success', Yii::t('message', 'successDeleteRows', array(count($data), '{rowCount}' => count($data))), null, $sql);
 
 

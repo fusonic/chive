@@ -217,7 +217,7 @@ class TableController extends Controller
 			}
 			elseif($type == "create")
 			{
-
+				$response->reload = true;
 
 				//$name = $sqlQuery->getTable();
 			}

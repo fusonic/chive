@@ -115,7 +115,7 @@ foreach($scriptFiles AS $file)
 			<?php $this->widget('application.components.MainMenu',array(
 				'items'=>array(
 					array('label'=>'Home', 'icon'=>'home', 'url'=>array('/site/index'), 'visible'=>!Yii::app()->user->isGuest),
-					array('label'=>'Refresh','icon'=>'refresh', 'url'=>'javascript:void(0)', 'htmlOptions'=>array('onclick'=>'return reload();'), 'visible'=>!Yii::app()->user->isGuest),
+					array('label'=>'Refresh','icon'=>'refresh', 'url'=>'javascript:void(0)', 'htmlOptions'=>array('onclick'=>'return refresh();'), 'visible'=>!Yii::app()->user->isGuest),
 					array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
 					array('label'=>'Logout', 'icon'=>'logout', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
 				),
@@ -139,13 +139,13 @@ foreach($scriptFiles AS $file)
 			<ul class="list icon nowrap" id="tableList">
 				<?php foreach(Table::model()->findAll(array('select'=>'TABLE_NAME, TABLE_ROWS', 'condition'=>'TABLE_SCHEMA=:schema', 'params'=>array(':schema'=>$_GET['schema']), 'order'=>'TABLE_NAME ASC')) AS $table) { ?>
 					<li>
-						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/<?php echo ($table->getRowCount() ? 'browse' : 'structure'); ?>">
+						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/<?php echo ($table->getRowCount() ? 'browse' : 'structure'); ?>" class="separateIcon">
 							<?php $this->widget('Icon', array('name'=>'browse', 'size'=>16, 'disabled'=>!$table->getRowCount(), 'title'=>Yii::t('database', 'Xrows', array('{amount}'=>$table->getRowCount() ? $table->getRowCount() : 0)))); ?>
 						</a>
 						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/structure"><?php echo $table->TABLE_NAME; ?></a>
 						<div class="listIconContainer">
 							<a href="#tables/<?php echo $table->TABLE_NAME; ?>/insert">
-								<com:Icon name="add" size="16" />
+								<com:Icon name="add" size="16" text="core.insertNewRow" />
 							</a>
 						</div>
 					</li>

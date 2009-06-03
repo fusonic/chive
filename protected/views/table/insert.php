@@ -5,7 +5,7 @@
 
 <table class="list">
 	<colgroup>
-		<col />
+		<col style="width: 100px;" />
 		<col class="type" />
 		<col style="width: 100px;" />
 		<col class="checkbox" />
@@ -39,6 +39,11 @@
 	</tbody>
 </table>
 
-<?php echo CHtml::submitButton(Yii::t('core', 'insert'), array('name'=>'submitRow')); ?>
+<div class="buttons">
+	<a href="javascript:void(0);" onclick="$('form').submit();" class="icon button">
+		<com:Icon name="add" size="16" text="core.insert" />
+		<span><?php echo Yii::t('core', 'insert'); ?></span>
+	</a>
+</div>
 
 <?php echo CHtml::endForm(); ?>

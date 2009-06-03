@@ -191,7 +191,7 @@
   	clear: both;
 	float: none;
 	text-align: center;
-	margin-top: 10px;
+	margin: 10px 0px;
   }
 
   /*
@@ -463,6 +463,14 @@
   	position: relative;
   }
   
+  ul.list li a.icon span {
+  	text-decoration: none;
+  } 
+  
+  ul.list li a.icon:hover span {
+  	text-decoration: underline;
+  }
+
   div.buttonContainer {
   	clear: both;
   }

@@ -50,7 +50,6 @@
 			<?php } ?>
 			</tr>
 		</table>
-		<span style="float:right; margin-top: 20px;">Help translating this project...</span>
 	</div>
 <?php } ?>
 
@@ -88,9 +87,9 @@
 			</div>
 		</div>
 
-		<div class="buttons" style="margin-bottom: 10px;">
+		<div class="buttons">
 			<a class="icon button" href="javascript:void(0);" onclick="$('form').submit()">
-				<com:Icon size="16" name="add" text="core.login" />
+				<com:Icon size="16" name="login" text="core.login" />
 				<span><?php echo Yii::t('core', 'login'); ?></span>
 			</a>
 			<input type="submit" value="<?php echo Yii::t('core', 'login'); ?>" style="display: none" />

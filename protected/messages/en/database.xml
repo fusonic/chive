@@ -51,6 +51,7 @@
 	<entry id="rows">Rows</entry>
 	<entry id="averageRowLength">Average row length</entry>
 	<entry id="averageRowSize">Average row size</entry>
+	<entry id="insertNewRow">Insert new row</entry>
 	<entry id="nextAutoincrementValue">Next autoincrement value</entry>
 
 	<entry id="table">Table</entry>

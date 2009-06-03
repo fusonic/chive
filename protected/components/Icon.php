@@ -28,8 +28,7 @@ class Icon extends CWidget
 		{
 			$this->title = $this->text;
 		}
-		list($titleCategory, $titleVar) = explode(".", $this->title);
-
+		
 		$this->htmlOptions += array(
 			'class' => $classes,
 			'title' => Yii::t($titleCategory, $titleVar),

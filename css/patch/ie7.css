@@ -17,8 +17,21 @@ a.icon.button span {
 	top: 1px;
 }
 
+a.separateIcon {
+	margin-right: 5px;	
+}
+
+ul.list li {
+	height: 24px;
+	display: inline-block;
+}
+
 #header-inner {
 	top: 3px;
+}
+
+div.sidebarContent {
+	position: relative;	
 }
 
 a.button {
@@ -36,6 +49,6 @@ table.list {
 }
 
 table.list thead th, table.list tfoot th {
-	padding: 0px 0px 0px 5px !important;
+	padding: 0px 8px !important;
 	height: 30px;
 }

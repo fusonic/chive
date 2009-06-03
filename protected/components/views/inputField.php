@@ -19,9 +19,13 @@ switch($type) {
 		break;
 
 	case 'text':
-		echo CHtml::activeTextArea($row, $column->name, $htmlOptions);
+		echo CHtml::activeTextArea($row, $column->name, array_merge((array)$htmlOptions, array('style'=>'min-width: 500px;')));
 		break;
 
+	case 'file':
+		echo CHtml::activeFileField($row, $column->name, $htmlOptions);
+		break;	
+		
 	case 'date':
 			echo CHtml::activeTextField($row, $column->name, $htmlOptions);
 			echo '<script type="text/javascript">

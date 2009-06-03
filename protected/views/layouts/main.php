@@ -104,11 +104,9 @@ foreach($scriptFiles AS $file)
 			<ul id="schemaList" class="list icon">
 				<?php foreach(Schema::model()->findAll(array('order' => 'SCHEMA_NAME ASC')) AS $schema) { ?>
 					<li class="nowrap">
-						<a href="<?php echo Yii::app()->baseUrl; ?>/schema/<?php echo $schema->SCHEMA_NAME; ?>">
+						<a href="<?php echo Yii::app()->baseUrl; ?>/schema/<?php echo $schema->SCHEMA_NAME; ?>" class="icon">
 							<com:Icon name="database" size="16" />
-						</a>
-						<a href="<?php echo Yii::app()->baseUrl; ?>/schema/<?php echo $schema->SCHEMA_NAME; ?>">
-							<?php echo $schema->SCHEMA_NAME; ?>
+							<span><?php echo $schema->SCHEMA_NAME; ?></span>
 						</a>
 					</li>
 				<?php } ?>

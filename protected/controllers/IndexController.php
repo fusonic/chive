@@ -85,7 +85,7 @@ class IndexController extends Controller
 					Yii::t('message', 'successCreateIndex', array('{index}' => $index->INDEX_NAME)),
 					null,
 					$sql);
-				$response->reload = true;
+				$response->refresh = true;
 				$response->send();
 			}
 		}
@@ -125,7 +125,7 @@ class IndexController extends Controller
 				Yii::t('message', 'successCreateIndex', array('{index}' => $index->INDEX_NAME)),
 				null,
 				$sql);
-			$response->reload = true;
+			$response->refresh = true;
 		}
 		catch(DbException $ex)
 		{
@@ -161,7 +161,7 @@ class IndexController extends Controller
 					Yii::t('message', 'successAlterIndex', array('{index}' => $index->INDEX_NAME)),
 					null,
 					$sql);
-				$response->reload = true;
+				$response->refresh = true;
 				$response->send();
 			}
 		}

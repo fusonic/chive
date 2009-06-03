@@ -137,7 +137,7 @@ class BookmarkController extends Controller
 		$id = Yii::app()->getRequest()->getParam('id');
 
 		$response = new AjaxResponse();
-		$response->reload = true;
+		$response->refresh = true;
 
 		$bookmark = Yii::app()->user->settings->get('bookmarks', 'database', $this->schema, 'id', $id);
 

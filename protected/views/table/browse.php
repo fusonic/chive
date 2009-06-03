@@ -36,12 +36,12 @@
 				<span><?php echo Yii::t('database', 'Profiling'); ?></span>
 			</a>
 			<br/><br/>
-			<a style="width: 100%" class="icon button" href="javascript:void(0);" onclick="$.post(baseUrl + '/ajaxSettings/toggle', {
+			<a class="icon button" href="javascript:void(0);" onclick="$.post(baseUrl + '/ajaxSettings/toggle', {
 					name: 'showFullColumnContent',
 					scope: 'schema.table.browse',
 					object: '<?php echo $this->schema; ?>.<?php echo $this->table; ?>'
 				}, function() {
-					reload();
+					refresh();
 				});">
 				<?php if( Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $this->schema . '.' .  $this->table)) {?>
 					<com:Icon size="16" name="square_green" />
