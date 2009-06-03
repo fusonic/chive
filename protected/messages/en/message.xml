@@ -12,6 +12,7 @@
 	<entry id="successEditSchema">Saved schema »{schema}«</entry>
 	<entry id="successDropSchema">1#Dropped schema »{schema}«|n>1#Dropped {schemaCount} schemata</entry>
 	<entry id="errorDropSchema">Dropping schema »{schema}« failed</entry>
+	<entry id="doYouReallyWantToDropSchema">Do you really want to drop the schema?</entry>
 
 	<!-- Tables -->
 	<entry id="successAddTable">Added table »{table}«</entry>

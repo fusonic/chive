@@ -13,13 +13,13 @@
 <table style="width: 100%;">
 	<tr>
 		<td style="width: 80%;">
-			<!---
 			<com:application.extensions.CodePress.CodePress language="sql" name="query" width="100%" height="80px" autogrow="true" value={$query} />
-			--->
+			<!---
 			<textarea name="query" style="width: 99%; height: 90px;" id="query"><?php echo $query; ?></textarea>
+			--->
 			<div class="buttons">
 				<?php echo CHtml::submitButton('Execute', array('class'=>'icon button execute')); ?>
-			</div>			
+			</div>
 		</td>
 		<td style="vertical-align: top; padding: 2px 5px;">
 			<a class="icon button" href="javascript:void(0);" onclick="Bookmark.add('<?php echo $this->schema; ?>', $('#query').val());">

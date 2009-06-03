@@ -69,8 +69,8 @@
 	<entry id="dropTables">Drop tables</entry>
 	<entry id="doYouReallyWantToDropTables">Do you really want to drop the selected tables?</entry>
 
-	<entry id="dropSchemata">Drop databases</entry>
-	<entry id="doYouReallyWantToDropSchemata">Do you really want to drop the selected databases?</entry>
+	<entry id="dropSchemata">Drop schemata</entry>
+	<entry id="doYouReallyWantToDropSchemata">Do you really want to drop the selected schemata?</entry>
 	<entry id="showingXSchemata">{count} Schemata</entry>
 	<entry id="XColumns">{count} Columns</entry>
 	<entry id="amountTables">1#{amount}  Table|n>1#{amount}  Tables</entry>

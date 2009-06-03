@@ -57,7 +57,7 @@ var schema = '<?php echo $this->schema; ?>';
 ?>
 
 <div id="dropSchemaDialog" title="<?php echo Yii::t('core', 'confirm'); ?>" style="display: none">
-	<?php echo Yii::t('message', 'doYouReallyWantToDropDatabase'); ?>
+	<?php echo Yii::t('message', 'doYouReallyWantToDropSchema'); ?>
 </div>
 
 <div>
