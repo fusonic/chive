@@ -5,20 +5,20 @@
 			<?php $i = 0; ?>
 			<?php $languageCount = count($languages); ?>
 			<?php foreach($languages AS $language) { ?>
-				
+
 				<td style="width: 150px;">
 					<a href="<?php echo $language['url']; ?>" class="icon">
 						<img src="<?php echo BASEURL . '/' . $language['icon']; ?>" alt="test" />
 						<span><?php echo $language['label']; ?></span>
 					</a>
 				</td>
-				
+
 				<?php $i++; ?>
 				<?php if ($i % 3 == 0 && $languageCount > $i) { ?>
 					</tr><tr>
 				<?php } ?>
-				
-				
+
+
 			<?php } ?>
 			</tr>
 		</table>
@@ -33,20 +33,20 @@
 			<?php $i = 0; ?>
 			<?php $themeCount = count($themes); ?>
 			<?php foreach($themes AS $theme) { ?>
-				
+
 				<td style="width: 150px;">
 					<a href="<?php echo $theme['url']; ?>" class="icon">
 						<img src="<?php echo BASEURL . '/' . $theme['icon']; ?>" alt="test" />
 						<span><?php echo $theme['label']; ?></span>
 					</a>
 				</td>
-				
+
 				<?php $i++; ?>
 				<?php if ($i % 3 == 0 && $themeCount > $i) { ?>
 					</tr><tr>
 				<?php } ?>
-				
-				
+
+
 			<?php } ?>
 			</tr>
 		</table>
@@ -55,7 +55,7 @@
 <?php } ?>
 
 <div id="login">
-	
+
 	<div style="background: url('http://blog.fusonic.net/wp-admin/css/../images/logo-login.gif') no-repeat; padding-bottom: 15px; height: 67px;"></div>
 
 	<div id="loginform">
@@ -89,13 +89,14 @@
 		</div>
 
 		<div class="buttons" style="margin-bottom: 10px;">
-			<a class="icon button" href="javascript:void(0);" onclick="$('form').submit();">
+			<a class="icon button" href="javascript:void(0);" onclick="$('form').submit()">
 				<com:Icon size="16" name="add" text="core.login" />
 				<span><?php echo Yii::t('core', 'login'); ?></span>
 			</a>
+			<input type="submit" value="<?php echo Yii::t('core', 'login'); ?>" style="display: none" />
 		</div>
-		
+
 		<?php echo CHtml::closeTag('form'); ?>
 	</div>
-	
+
 </div>

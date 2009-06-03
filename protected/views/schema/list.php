@@ -99,24 +99,22 @@
 	</table>
 
 	<div class="buttonContainer">
-		<div class="left">
-			<div class="withSelected">
-				<span class="icon">
-					<com:Icon name="arrow_turn_090" size="16" />
-					<span><?php echo Yii::t('core', 'withSelected'); ?></span>
+		<div class="left withSelected">
+			<span class="icon">
+				<com:Icon name="arrow_turn_090" size="16" />
+				<span><?php echo Yii::t('core', 'withSelected'); ?></span>
+			</span>
+			<?php if($canDrop) { ?>
+				<a class="icon button" href="javascript:void(0)" onclick="schemaList.dropSchemata()">
+					<com:Icon name="delete" size="16" />
+					<span><?php echo Yii::t('database', 'drop'); ?></span>
+				</a>
+			<?php } else { ?>
+				<span class="icon button">
+					<com:Icon name="delete" size="16" disabled="true" />
+					<span><?php echo Yii::t('database', 'drop'); ?></span>
 				</span>
-				<?php if($canDrop) { ?>
-					<a class="icon button" href="javascript:void(0)" onclick="schemaList.dropSchemata()">
-						<com:Icon name="delete" size="16" />
-						<span><?php echo Yii::t('database', 'drop'); ?></span>
-					</a>
-				<?php } else { ?>
-					<span class="icon button">
-						<com:Icon name="delete" size="16" disabled="true" />
-						<span><?php echo Yii::t('database', 'drop'); ?></span>
-					</span>
-				<?php } ?>
-			</div>
+			<?php } ?>
 		</div>
 		<div class="right">
 			<?php if(Yii::app()->user->privileges->checkGlobal('CREATE')) { ?>
@@ -144,5 +142,7 @@
 </div>
 
 <script type="text/javascript">
+setTimeout(function() {
 	schemaList.setup();
+}, 500);
 </script>

@@ -147,7 +147,7 @@
 	</table>
 
 	<div class="buttonContainer">
-		<div class="left">
+		<div class="left withSelected">
 			<span class="icon">
 				<com:Icon name="arrow_turn_090" size="16" />
 				<span><?php echo Yii::t('core', 'withSelected'); ?></span>
@@ -186,7 +186,7 @@
 </div>
 
 <script type="text/javascript">
-window.setTimeout(function() {
+setTimeout(function() {
 	schemaShow.setupDialogs();
 }, 500);
 </script>

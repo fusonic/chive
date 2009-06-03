@@ -47,7 +47,7 @@ var table = '<?php echo $this->view; ?>';
 					'icon'=>'delete',
 					'link'=>array(
 						'url'=> 'javascript:void(0)',
-						'htmlOptions'=> array('class'=>'icon', 'onclick'=>'tableGeneral.drop("'.$this->schema.'","'.$this->view.'");'),
+						'htmlOptions'=> array('class'=>'icon', 'onclick'=>'viewGeneral.drop("'.$this->schema.'","'.$this->view.'");'),
 					),
 			),
 		),

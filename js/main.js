@@ -71,10 +71,6 @@ function init()
 		$('#bc-table').hide();
 	}
 	
-	
-	// Trigger resize event for sidebar accordion - doesn't work in webkit-based browsers
-	sideBar.accordion('resize');
-	
 	// Add checkboxes to respective tables
 	try 
 	{
@@ -153,7 +149,8 @@ $(document)
 		selectedClass: "active"
 	});
 	
-	
+	// Trigger resize event for sidebar accordion - doesn't work in webkit-based browsers
+	sideBar.accordion('resize');
 	
 	// Setup list filters
 
