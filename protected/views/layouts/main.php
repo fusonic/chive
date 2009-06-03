@@ -38,16 +38,9 @@ $scriptFiles = array(
 	'js/notification.js',
 	'js/profiling.js',
 	'js/storageEngine.js',
-	'js/views/column/form.js',
-	'js/views/index/form.js',
 	'js/views/schema/general.js',
 	'js/views/schema/list.js',
-	'js/views/schema/show.js',
-	'js/views/schema/processes.js',
-	'js/views/table/general.js',
-	'js/views/table/browse.js',
-	'js/views/table/form.js',
-	'js/views/table/structure.js',
+	'js/views/information/processes.js',
 	'assets/lang_js/' . Yii::app()->getLanguage() . '.js',
 );
 foreach($scriptFiles AS $file)
@@ -150,31 +143,31 @@ foreach($scriptFiles AS $file)
 		<div class="sidebarContent">
 			<ul id="statusList" class="list icon">
 				<li class="nowrap">
-					<a class="icon" href="#schemata/status">
+					<a class="icon" href="#information/status">
 						<com:Icon name="chart" size="16" />
 						<?php echo Yii::t('core', 'status'); ?>
 					</a>
 				</li>
 				<li class="nowrap">
-					<a class="icon" href="#schemata/variables">
+					<a class="icon" href="#information/variables">
 						<com:Icon name="variable" size="16" />
 						<?php echo Yii::t('database', 'variables'); ?>
 					</a>
 				</li>
 				<li class="nowrap">
-					<a class="icon" href="#schemata/charactersets">
+					<a class="icon" href="#information/characterSets">
 						<com:Icon name="charset" size="16" />
 						<?php echo Yii::t('database', 'characterSets'); ?>
 					</a>
 				</li>
 				<li class="nowrap">
-					<a class="icon" href="#schemata/storageengines">
+					<a class="icon" href="#information/storageEngines">
 						<com:Icon name="engine" size="16" />
 						<?php echo Yii::t('database', 'storageEngines'); ?>
 					</a>
 				</li>
 				<li class="nowrap">
-					<a class="icon" href="#schemata/processes">
+					<a class="icon" href="#information/processes">
 						<com:Icon name="process" size="16" />
 						<?php echo Yii::t('database', 'processes'); ?>
 					</a>

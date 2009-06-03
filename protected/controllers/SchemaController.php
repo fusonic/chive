@@ -24,7 +24,8 @@ class SchemaController extends Controller
 	 */
 	public $layout = 'schema';
 
-	public function __construct($id, $module=null) {
+	public function __construct($id, $module=null)
+	{
 
 		$request = Yii::app()->getRequest();
 		$this->schema = $request->getParam('schema');
@@ -409,117 +410,6 @@ class SchemaController extends Controller
 		$this->render('status', array(
 			'status' => $status,
 		));
-
-	}
-
-	public function actionVariables()
-	{
-
-		$cmd = $this->_db->createCommand('SHOW GLOBAL VARIABLES');
-		$data = $cmd->queryAll();
-
-		$variables = array();
-		foreach($data AS $entry) {
-
-			$prefix = substr($entry['Variable_name'], 0, strpos($entry['Variable_name'], '_'));
-			$variables[$prefix][$entry['Variable_name']] = $entry['Value'];
-
-		}
-
-		$this->render('variables', array(
-			'variables' => $variables,
-		));
-
-	}
-
-	public function actionCharactersets()
-	{
-
-		$cmd = $this->_db->createCommand('SHOW CHARACTER SET');
-		$charactersets = $cmd->queryAll();
-
-		$charsets = array();
-		foreach($charactersets AS $set)
-		{
-			$charsets[$set['Charset']] = $set;
-		}
-
-		// Fetch collations into charsets
-		$cmd = $this->_db->createCommand('SHOW COLLATION');
-		$collations = $cmd->queryAll();
-
-		foreach($collations AS $collation)
-		{
-			$charsets[$collation['Charset']]['collations'][] = $collation;
-		}
-
-		$this->render('charactersets', array(
-			'charactersets' => $charsets,
-		));
-
-	}
-
-	public function actionStorageengines()
-	{
-
-		$cmd = $this->_db->createCommand('SHOW STORAGE ENGINES');
-		$engines = $cmd->queryAll();
-
-		$this->render('storageengines', array(
-			'engines' => $engines,
-		));
-
-	}
-
-	public function actionProcesses()
-	{
-
-		$cmd = $this->_db->createCommand('SHOW PROCESSLIST');
-		$processes = $cmd->queryAll();
-
-		$this->render('processes', array(
-			'processes' => $processes,
-		));
-
-
-	}
-
-	public function actionKillProcess()
-	{
-
-		$ids = json_decode(Yii::app()->getRequest()->getParam('ids'));
-
-		$response = new AjaxResponse();
-		$response->reload = true;
-
-		foreach($ids AS $id)
-		{
-			$sql = 'KILL ' . $id;
-
-
-			try
-			{
-				$cmd = $this->_db->createCommand($sql);
-
-				$cmd->prepare();
-				$cmd->execute();
-
-				$response->addNotification('success', Yii::t('message', 'successKillProcess', array('{id}' => $id)), null, $sql);
-
-			}
-			catch(CDbException $ex)
-			{
-
-				$ex = new DbException($cmd);
-				$response->addNotification('error', Yii::t('message', 'errorKillProcess', array('{id}' => $id)), $ex->getText(), $sql);
-
-			}
-
-		}
-
-
-		$response->send();
-
 
 	}
 

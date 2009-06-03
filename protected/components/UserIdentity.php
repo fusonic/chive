@@ -37,7 +37,7 @@ class UserIdentity extends CUserIdentity
 	public function authenticate()
 	{
 
-		$db = Yii::app()->db;
+		$db = new CDbConnection();
 
 		// Set username and password
 		$db->username = $this->username;
@@ -47,6 +47,9 @@ class UserIdentity extends CUserIdentity
 		try {
 
 			$db->active = true;
+
+			Yii::app()->setComponent('db', $db);
+
 			$this->errorCode = self::ERROR_NONE;
 
 			// Store password in UserIdentity
@@ -57,11 +60,12 @@ class UserIdentity extends CUserIdentity
 			$this->setState('privileges', new UserPrivilegesManager($this->host, $this->username));
 			$this->setState("host", $this->host);
 
-		} catch (Exception $ex) {
-
+		}
+		catch (Exception $ex)
+		{
+			var_dump($ex);
 			$this->errorCode = self::ERROR_AUTHENTICATION_FAILED;
 			$this->errorMessage = $ex->getMessage();
-
 		}
 
 		return !$this->errorCode;

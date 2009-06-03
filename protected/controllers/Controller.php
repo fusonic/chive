@@ -6,6 +6,8 @@
 class Controller extends CController
 {
 
+	private $_db;
+
 	/**
 	 * @see CController::createUrl()
 	 */

@@ -60,7 +60,7 @@ return array(
 		// Database settings
 		'db'=>array(
 			'class' => 'CDbConnection',
-			'connectionString' => 'mysql:host=web;dbname=information_schema',
+			'connectionString' => 'mysql:host=localhost;dbname=information_schema',
 			'charset' => 'utf8',
 			'autoConnect' => false,
 			'schemaCachingDuration'=>3600,
@@ -90,13 +90,12 @@ return array(
 				'schemata/drop'=>'schema/drop',
 
 				// Information
-				'schemata/status'=>'schema/status',
-				'schemata/variables'=>'schema/variables',
-				'schemata/charactersets'=>'schema/charactersets',
-				'schemata/storageengines'=>'schema/storageengines',
-
-				'schemata/processes'=>'schema/processes',
-				'schemata/processes/kill'=>'schema/killProcess',
+				'information/status'=>'information/status',
+				'information/variables'=>'information/variables',
+				'information/characterSets'=>'information/characterSets',
+				'information/storageEngines' => 'information/storageEngines',
+				'information/processes' => 'information/processes',
+				'information/processes/kill' => 'information/killProcess',
 
 				// schema
                	'schema'=>'schema/list',

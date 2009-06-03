@@ -1,3 +1,4 @@
 <script type="text/javascript">
-location.href = '#schemata';
+//location.href = '#schemata';
 </script>
+startseite

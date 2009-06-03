@@ -6,7 +6,9 @@ class SiteController extends Controller
 	public function __construct($id, $module=null) {
 
 		if(Yii::app()->request->isAjaxRequest)
+		{
 			$this->layout = false;
+		}
 
 		parent::__construct($id, $module);
 
@@ -47,14 +49,7 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
-		// renders the view file 'protected/views/site/index.php'
-		// using the default layout 'protected/views/layouts/main.php'
-
-		$tables = array();
-
-		$this->render('index', array('tables'=>$tables));
-
-
+		$this->render('index');
 	}
 
 	/**
@@ -68,7 +63,7 @@ class SiteController extends Controller
 		$availableLanguages = FileUtil::readDirectory('protected/messages', false, 'dir');
 
 		$currentLanguage = Yii::app()->getLanguage();
-		
+
 		if(strlen($currentLanguage) == 2)
 		{
 			$currentLanguage .= '_' . $currentLanguage;
@@ -79,11 +74,11 @@ class SiteController extends Controller
 
 			$full = substr($language, strrpos($language, '/')+1);
 			$short = substr($full, 0, 2);
-			
+
 			// Don't display containers and active language
 			if($short == $full || $full == $currentLanguage)
 				continue;
-				
+
 			$languages[] = array(
 				'label'=>Yii::t('language', $full),
 				'icon'=>'images/country/' . $short . '.png',
@@ -133,6 +128,53 @@ class SiteController extends Controller
 			'hosts'=>$hosts,
 			'themes'=>$themes,
 		));
+	}
+
+	/**
+	 * Shows all currently running processes on the MySQL server.
+	 */
+	public function actionProcesses()
+	{
+		$cmd = $this->_db->createCommand('SHOW PROCESSLIST');
+		$processes = $cmd->queryAll();
+
+		$this->render('processes', array(
+			'processes' => $processes,
+		));
+	}
+
+	/**
+	 * Kills a process on the server.
+	 */
+	public function actionKillProcess()
+	{
+		$ids = json_decode(Yii::app()->getRequest()->getParam('ids'));
+
+		$response = new AjaxResponse();
+		$response->reload = true;
+
+		foreach($ids AS $id)
+		{
+			$sql = 'KILL ' . $id;
+
+			try
+			{
+				$cmd = $this->_db->createCommand($sql);
+
+				$cmd->prepare();
+				$cmd->execute();
+
+				$response->addNotification('success', Yii::t('message', 'successKillProcess', array('{id}' => $id)), null, $sql);
+			}
+			catch(CDbException $ex)
+			{
+				$ex = new DbException($cmd);
+				$response->addNotification('error', Yii::t('message', 'errorKillProcess', array('{id}' => $id)), $ex->getText(), $sql);
+			}
+
+		}
+
+		$response->send();
 	}
 
 	/**

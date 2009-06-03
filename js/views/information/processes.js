@@ -1,9 +1,8 @@
 /*
  * View functions
  */
-var tableProcesses = {
+var informationProcesses = {
 	
-	// Add column
 	killProcess: function(id)
 	{
 		$('#processes input[type="checkbox"]').attr('checked', false).change();

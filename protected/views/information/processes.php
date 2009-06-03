@@ -76,5 +76,7 @@
 <script type="text/javascript">
 <?php // @todo (rponudic) check if this still works with 100s of processes? isn't this too slow? '?>
 //setTimeout('reload()', 5000);
-setTimeout(tableProcesses.setup, 100);
+setTimeout(function() {
+	informationProcesses.setup();
+}, 500);
 </script>
