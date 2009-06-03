@@ -8,15 +8,34 @@
  *	Icons
  */
  
-a.icon img {
-	top: 5px;
+a.icon.button img {
+	top: 3px;
 	position: relative;
 }
 
-a.icon span {
-	top: -2px;
+a.icon.button span {
+	top: 1px;
 }
 
 #header-inner {
-	top: 4px;
+	top: 3px;
+}
+
+a.button {
+	display: inline-block;
+	height: 20px;
+}
+
+div.list {
+	width: 98%;	
+}
+
+table.list {
+	border-spacing: 0px;
+	border-collapse: collapse;
+}
+
+table.list thead th, table.list tfoot th {
+	padding: 0px 0px 0px 5px !important;
+	height: 30px;
 }

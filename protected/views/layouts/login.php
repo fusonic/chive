@@ -20,11 +20,11 @@
 <body>
 	<div id="header">
 		<div id="header-inner">
-			<a class="icon button" href="javascript:void(0);" style="margin-right: 10px;" onclick="$('#themeDialog').dialog('open');">
+			<a class="icon button" href="javascript:void(0);" style="margin-right: 9px;" onclick="$('#themeDialog').dialog('open');">
 				<img src="<?php echo BASEURL; ?>/themes/<?php  echo Yii::app()->getTheme()->name; ?>/images/icon.png" />		
 				<span><?php echo ucfirst(Yii::app()->getTheme()->name); ?></span>
 			</a>
-			<a class="icon button" href="javascript:void(0);" style="margin-right: 10px;" onclick="$('#languageDialog').dialog('open');">
+			<a class="icon button" href="javascript:void(0);" style="margin-right: 9px;" onclick="$('#languageDialog').dialog('open');">
 				<img src="<?php echo BASEURL; ?>/images/country/<?php echo substr(Yii::app()->getLanguage(),0,2); ?>.png" />
 				<span><?php echo Yii::t('language', Yii::app()->getLanguage()); ?></span>
 			</a>

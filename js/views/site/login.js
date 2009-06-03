@@ -12,7 +12,8 @@ var login = {
 		$('#languageDialog').dialog({
 			modal: true,
 			resizable: false,
-			autoOpen: false
+			autoOpen: false,
+			width: 400
 		});
 		
 		/*
@@ -21,7 +22,8 @@ var login = {
 		$('#themeDialog').dialog({
 			modal: true,
 			resizable: false,
-			autoOpen: false
+			autoOpen: false,
+			width: 400
 		});		
 		
 	}

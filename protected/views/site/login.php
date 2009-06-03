@@ -6,7 +6,7 @@
 			<?php $languageCount = count($languages); ?>
 			<?php foreach($languages AS $language) { ?>
 				
-				<td>
+				<td style="width: 150px;">
 					<a href="<?php echo $language['url']; ?>" class="icon">
 						<img src="<?php echo BASEURL . '/' . $language['icon']; ?>" alt="test" />
 						<span><?php echo $language['label']; ?></span>
@@ -34,7 +34,7 @@
 			<?php $themeCount = count($themes); ?>
 			<?php foreach($themes AS $theme) { ?>
 				
-				<td>
+				<td style="width: 150px;">
 					<a href="<?php echo $theme['url']; ?>" class="icon">
 						<img src="<?php echo BASEURL . '/' . $theme['icon']; ?>" alt="test" />
 						<span><?php echo $theme['label']; ?></span>
@@ -88,9 +88,13 @@
 			</div>
 		</div>
 
-		<div class="buttons">
-			<?php echo CHtml::submitButton('Login', array('class'=>'button')); ?>
+		<div class="buttons" style="margin-bottom: 10px;">
+			<a class="icon button" href="javascript:void(0);" onclick="$('form').submit();">
+				<com:Icon size="16" name="add" text="core.login" />
+				<span><?php echo Yii::t('core', 'login'); ?></span>
+			</a>
 		</div>
+		
 		<?php echo CHtml::closeTag('form'); ?>
 	</div>
 	

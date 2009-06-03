@@ -2,7 +2,9 @@
 <category id="core">
 	
 	<entry id="en">Englisch</entry>
-	<entry id="de_de">Deutsch</entry>
+	<entry id="en_gb">Englisch (GB)</entry>
+	<entry id="en_us">Englisch (US)</entry>
+	<entry id="de_de">Deutsch (DE)</entry>
 	
 	<entry id="english">English</entry>
 	<entry id="german">Deutsch</entry>

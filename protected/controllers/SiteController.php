@@ -68,17 +68,22 @@ class SiteController extends Controller
 		$availableLanguages = FileUtil::readDirectory('protected/messages', false, 'dir');
 
 		$currentLanguage = Yii::app()->getLanguage();
+		
+		if(strlen($currentLanguage) == 2)
+		{
+			$currentLanguage .= '_' . $currentLanguage;
+		}
 
 		$languages = array();
 		foreach($availableLanguages AS $key=>$language) {
 
 			$full = substr($language, strrpos($language, '/')+1);
 			$short = substr($full, 0, 2);
-
+			
 			// Don't display containers and active language
 			if($short == $full || $full == $currentLanguage)
 				continue;
-
+				
 			$languages[] = array(
 				'label'=>Yii::t('language', $full),
 				'icon'=>'images/country/' . $short . '.png',
