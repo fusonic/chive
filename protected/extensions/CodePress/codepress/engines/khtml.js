@@ -36,11 +36,11 @@ CodePress = {
 
 	// treat key bindings
 	keyHandler : function(evt) {
-    	keyCode = evt.keyCode;	
-		charCode = evt.charCode;
-		fromChar = String.fromCharCode(charCode);
+    	keyCode = evt.keyCode; // 42
+		charCode = evt.charCode; // 42
+		fromChar = String.fromCharCode(charCode); // *
 
-		if((evt.ctrlKey || evt.metaKey) && evt.shiftKey && charCode!=90)  { // shortcuts = ctrl||appleKey+shift+key!=z(undo) 
+		if((evt.ctrlKey || evt.metaKey) && evt.shiftKey && charCode!=90)  { // shortcuts = ctrl||appleKey+shift+key!=z(undo)
 			CodePress.shortcuts(charCode?charCode:keyCode);
 		}
 		else if( (completeEndingChars.indexOf('|'+fromChar+'|')!= -1 || completeChars.indexOf('|'+fromChar+'|')!=-1) && CodePress.autocomplete) { // auto complete

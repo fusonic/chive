@@ -53,7 +53,7 @@ var schemaShow = {
 	},
 	
 	// Setup dialogs
-	setup: function()
+	setupDialogs: function()
 	{
 		/*
 		 * Setup drop table dialog

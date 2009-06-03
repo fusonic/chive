@@ -51,7 +51,7 @@ $scriptFiles = array(
 	'js/views/table/browse.js',
 	'js/views/table/form.js',
 	'js/views/table/structure.js',
-	'assets/2ca8e2d4/codepress.js',		// @todo (rponudic) change this to valid path
+	'protected/extensions/CodePress/codepress/codepress.js',		// @todo (rponudic) change this to valid path
 	'assets/lang_js/' . Yii::app()->getLanguage() . '.js',
 );
 foreach($scriptFiles AS $file)

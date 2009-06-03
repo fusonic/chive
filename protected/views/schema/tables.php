@@ -1,5 +1,3 @@
-<h2><?php echo $schema->SCHEMA_NAME; ?></h2>
-
 <div id="truncateTablesDialog" title="<?php echo Yii::t('database', 'truncateTables'); ?>" style="display: none">
 	<?php echo Yii::t('database', 'doYouReallyWantToTruncateTables'); ?>
 </div>

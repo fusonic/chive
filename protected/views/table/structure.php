@@ -273,10 +273,7 @@
 					</colgroup>
 					<thead>
 						<tr>
-							<th colspan="6"><?php echo Yii::t('database', 'indices'); ?></th>
-						</tr>
-						<tr>
-							<th><?php echo Yii::t('database', 'key'); ?></th>
+							<th><?php echo Yii::t('database', 'index'); ?></th>
 							<th><?php echo Yii::t('database', 'type'); ?></th>
 							<th><?php echo Yii::t('database', 'cardinality'); ?></th>
 							<th colspan="3"><?php echo Yii::t('database', 'field'); ?></th>
@@ -371,10 +368,6 @@
 					<tr>
 						<th colspan="2"><?php echo Yii::t('database', 'spaceUsage'); ?></th>
 					</tr>
-					<tr>
-						<th><?php echo Yii::t('database', 'type'); ?></th>
-						<th><?php echo Yii::t('database', 'usage'); ?></th>
-					</tr>
 				</thead>
 				<tbody>
 					<tr>
@@ -411,6 +404,10 @@
 					</tr>
 				</thead>
 				<tbody>
+					<tr>
+						<td><?php echo Yii::t('database', 'storageEngine'); ?></td>
+						<td><?php echo $table->ENGINE; ?></td>
+					</tr>
 					<tr>
 						<td><?php echo Yii::t('database', 'format'); ?></td>
 						<td><?php echo $table->ROW_FORMAT; ?></td>

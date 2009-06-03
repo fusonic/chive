@@ -2,8 +2,6 @@
 	<?php echo Yii::t('database', 'doYouReallyWantToDropSchemata'); ?>
 </div>
 
-<h2>Schema List</h2>
-
 <div class="list">
 
 	<div class="buttonContainer">

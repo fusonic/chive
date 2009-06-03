@@ -15,7 +15,7 @@ class SchemaController extends Controller
 	private $_schema;
 	private $_db;
 
-	
+
 	public $schema;
 	public $isSent;
 
@@ -75,10 +75,7 @@ class SchemaController extends Controller
 		$this->render('index');
 	}
 
-	/**
-	 * Shows a particular user.
-	 */
-	public function actionShow()
+	public function actionTables()
 	{
 		$schema = $this->loadSchema();
 
@@ -104,7 +101,7 @@ class SchemaController extends Controller
 		$this->_schema->tables = Table::model()->findAll($criteria);
 		$this->_schema->tableCount = Table::model()->count($criteria);
 
-		$this->render('show',array(
+		$this->render('tables', array(
 			'schema' => $schema,
 			'sort' => $sort,
 		));

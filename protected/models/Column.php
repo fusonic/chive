@@ -5,10 +5,11 @@ class Column extends CActiveRecord
 
 	public $originalColumnName;
 	public $COLLATION_NAME = Collation::DEFAULT_COLLATION;
-	public $scale = 0, $size = 0;
+	public $scale, $size;
 	public $_values = array();
 	public $attribute = '';
 	public $createPrimaryKey, $createUniqueKey;
+	public $DATA_TYPE = 'varchar';
 
 	public static $db;
 
