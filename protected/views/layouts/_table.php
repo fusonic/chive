@@ -61,6 +61,7 @@ var table = '<?php echo $this->table; ?>';
 					),
 					'visible'=>true,
 			),
+			/*
 			array(	'label'=>Yii::t('database','operations'),
 					'icon'=>'operation',
 					'link'=>array(
@@ -69,6 +70,7 @@ var table = '<?php echo $this->table; ?>';
 					),
 					'visible'=>true,
 			),
+			*/
 			array(	'label'=>Yii::t('database','truncate'),
 					'icon'=>'truncate',
 					'link'=>array(

@@ -36,6 +36,7 @@ var schema = '<?php echo $this->schema; ?>';
 					),
 					'visible'=>true,
 			),
+			/*
 			array(	'label'=> Yii::t('action','operations'),
 					'icon'=>'operations',
 					'link'=>array(
@@ -44,6 +45,7 @@ var schema = '<?php echo $this->schema; ?>';
 					),
 					'visible'=>true,
 			),
+			*/
 			array(	'label'=>Yii::t('action','drop'),
 					'icon'=>'delete',
 					'link'=>array(

@@ -138,12 +138,14 @@ foreach($scriptFiles AS $file)
 			<input type="text" id="tableSearch" class="search text" />
 
 			<ul class="list icon nowrap" id="tableList">
-				<?php foreach(Table::model()->findAll(array('select'=>'TABLE_NAME, TABLE_ROWS', 'condition'=>'TABLE_SCHEMA=:schema', 'params'=>array(':schema'=>$_GET['schema']), 'order'=>'TABLE_NAME ASC')) AS $table) { ?>
+				<?php foreach(Table::model()->findAllByAttributes(array('TABLE_SCHEMA' => $_GET['schema'])) AS $table) { ?>
 					<li>
-						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/<?php echo ($table->getRowCount() ? 'browse' : 'structure'); ?>" class="separateIcon">
+						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/<?php echo ($table->getRowCount() ? 'browse' : 'structure'); ?>" class="icon">
 							<?php $this->widget('Icon', array('name'=>'browse', 'size'=>16, 'disabled'=>!$table->getRowCount(), 'title'=>Yii::t('database', 'Xrows', array('{amount}'=>$table->getRowCount() ? $table->getRowCount() : 0)))); ?>
 						</a>
-						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/structure"><?php echo $table->TABLE_NAME; ?></a>
+						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/structure" class="icon">
+							<span><?php echo $table->TABLE_NAME; ?></span>
+						</a>
 						<div class="listIconContainer">
 							<a href="#tables/<?php echo $table->TABLE_NAME; ?>/insert">
 								<com:Icon name="add" size="16" text="core.insertNewRow" />
@@ -162,14 +164,38 @@ foreach($scriptFiles AS $file)
 		</div>
 		<div class="sidebarContent">
 			<ul class="list icon nowrap">
-				<?php foreach(View::model()->findAll(array('select'=>'TABLE_NAME','condition'=>'TABLE_SCHEMA=:schema', 'params'=>array(':schema'=>$_GET['schema']), 'order'=>'TABLE_NAME ASC')) AS $table) { ?>
+				<?php foreach(View::model()->findAllByAttributes(array('TABLE_SCHEMA' => $_GET['schema'])) AS $table) { ?>
 					<li>
-						<a href="#views/<?php echo $table->getName() ?>/browse">
-							<com:Icon name="view" size="16" text="core.username" />
+						<a href="#views/<?php echo $table->getName() ?>/browse" class="icon">
+							<com:Icon name="view" size="16" text="database.browse" />
 						</a>
-						<a href="#views/<?php echo $table->getName() ?>/structure">
+						<a href="#views/<?php echo $table->getName() ?>/structure" class="icon">
 							<span><?php echo $table->getName(); ?></span>
 						</a>
+					</li>
+				<?php } ?>
+			</ul>
+		</div>
+  		<div class="sidebarHeader">
+			<a class="icon">
+				<com:Icon name="procedure" size="24" />
+				<span>Routines</span>
+			</a>
+		</div>
+		<div class="sidebarContent">
+			<ul class="list icon nowrap">
+				<?php foreach(Routine::model()->findAllByAttributes(array('ROUTINE_SCHEMA' => $_GET['schema'])) AS $routine) { ?>
+					<li>
+						<span class="icon">
+							<?php if($routine->ROUTINE_TYPE == 'FUNCTION') { ?>
+								<com:Icon name="function" size="16" text="database.function" />
+							<?php } else { ?>
+								<com:Icon name="procedure" size="16" text="database.procecure" />
+							<?php } ?>
+						</span>
+						<span class="icon">
+							<span><?php echo $routine->ROUTINE_NAME; ?></span>
+						</span>
 					</li>
 				<?php } ?>
 			</ul>
@@ -204,15 +230,6 @@ foreach($scriptFiles AS $file)
 				<?php } ?>
 			<?php } ?>
 			</ul>
-		</div>
-  		<div class="sidebarHeader">
-			<a class="icon">
-				<com:Icon name="bookmark" size="24" text="database.triggers" />
-				<span><?php echo Yii::t('database', 'triggers') ?></span>
-			</a>
-		</div>
-		<div class="sidebarContent">
-			Triggers
 		</div>
 	</div>
   </div>

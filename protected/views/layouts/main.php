@@ -115,15 +115,6 @@ foreach($scriptFiles AS $file)
 		</div>
 		<div class="sidebarContent">
 		</div>
-  		<div class="sidebarHeader">
-			<a class="icon">
-				<com:Icon name="routine" size="24" />
-				<span>Routines</span>
-			</a>
-		</div>
-		<div class="sidebarContent">
-			routines
-		</div>
 		<!--- TRIGGERS
   		<div class="sidebarHeader">
 			<a class="icon">
