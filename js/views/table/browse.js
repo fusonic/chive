@@ -19,6 +19,14 @@ var tableBrowse = {
 		}
 	},
 	
+	exportRows: function() 
+	{
+		if($('#browse input[name="browse[]"]:checked').length > 0) 
+		{
+			console.log("implement export");
+		}
+	},
+	
 	setup: function() 
 	{
 	

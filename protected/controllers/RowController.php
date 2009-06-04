@@ -12,15 +12,14 @@ class RowController extends Controller
 	 */
 	public $layout = 'schema';
 
-	public function __construct($id, $module=null) {
-
+	public function __construct($id, $module=null) 
+	{
 		if(Yii::app()->request->isAjaxRequest)
 			$this->layout = false;
 
 		$request = Yii::app()->getRequest();
 		$this->schema = $request->getParam('schema');
 		$this->table = $request->getParam('table');
-
 
 		// @todo (rponudic) work with parameters!
 		$this->_db = new CDbConnection('mysql:host='.Yii::app()->user->host.';dbname=' . $this->schema, Yii::app()->user->name, Yii::app()->user->password);
@@ -84,7 +83,8 @@ class RowController extends Controller
 		$response->addData(null, array(
 			'value' => htmlspecialchars($newValue),
 			'column' => $column,
-			'isPrimary' => in_array($column, $pk)
+			'isPrimary' => in_array($column, $pk),
+			'visibleValue' => ($null ? '<span class="null">NULL</span>' : $value)
 		));
 
 		try
@@ -130,7 +130,6 @@ class RowController extends Controller
 				$response->refresh = true;
 			}
 			
-			
 			$response->addNotification('success', Yii::t('message', 'successUpdateRow'), null, $sql);
 
 		}
@@ -155,8 +154,8 @@ class RowController extends Controller
 		try
 		{
 
-			foreach($data AS $attributes) {
-
+			foreach($data AS $attributes) 
+			{
 				$row = new Row;
 				$row->attributes = $attributes;
 
@@ -166,7 +165,6 @@ class RowController extends Controller
 				$row->attributes = $pkAttributes;
 
 				$sql .= $row->delete() . "\n\n";
-				
 			}
 
 		}
@@ -175,17 +173,14 @@ class RowController extends Controller
 			$response->addNotification('error', Yii::t('message', 'errorDeleteRow'), $ex->getText(), $sql, array('isSticky'=>true));
 		}
 
-
 		$response->refresh = true;
 		$response->addNotification('success', Yii::t('message', 'successDeleteRows', array(count($data), '{rowCount}' => count($data))), null, $sql);
-
 
 		$response->send();
 	}
 
 	public function actionInput()
 	{
-		
 		$attributes = json_decode(Yii::app()->getRequest()->getParam('attributes'), true);
 		$column = Yii::app()->getRequest()->getParam('column');
 		$oldValue = Yii::app()->getRequest()->getParam('oldValue');
@@ -212,9 +207,10 @@ class RowController extends Controller
 
 	}
 	
-	public function actionSave()
+	public function actionExport() 
 	{
-		$attributes = json_decode($_POST['attributes'], true);
+		
+		
 	}
 
 }

@@ -28,7 +28,7 @@
 				return false;
 			}
 
-			$('#<?php echo $id; ?>').parent().html(responseObj.data.value);
+			$('#<?php echo $id; ?>').parent().html(responseObj.data.visibleValue);
 			
 			if(responseObj.data.isPrimary) 
 			{
@@ -59,7 +59,7 @@
 			editing = false;
 			
 			responseObj = JSON.parse(response);
-			$('#<?php echo $id; ?>').parent().html(responseObj.data.value);
+			$('#<?php echo $id; ?>').parent().html(responseObj.data.visibleValue);
 
 			if(responseObj.data.isPrimary) 
 			{

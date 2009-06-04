@@ -260,7 +260,23 @@ String.prototype.startsWith = function(str)
 	return (this.match("^"+str)==str);
 }
 
-
+/*
+ * Keyboard shortcuts
+ */
+$(document).bind('keydown', 'pageup', function() {
+	if($('ul.yiiPager li.selected').next('li').length > 0)
+	{
+		location.href = $('ul.yiiPager li.selected').next('li').find('a').attr('href');
+	}
+	
+});
+$(document).bind('keydown', 'pagedown', function() {
+	if($('ul.yiiPager li.selected').prev('li').length > 0)
+	{
+		location.href = $('ul.yiiPager li.selected').prev('li').find('a').attr('href');
+	}
+	
+});
 /*
  * Language
  */

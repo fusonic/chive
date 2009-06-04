@@ -65,8 +65,6 @@
 			<?php $this->widget('LinkPager',array('pages'=>$pages, 'cssFile'=>false)); ?>
 		</div>
 
-		<br/>
-
 		<?php $i = 0; ?>
 		<table class="list <?php if($type == 'select' && $table->primaryKey !== null) { ?>addCheckboxes editable<?php } ?>" style="width: auto;" id="browse">
 			<colgroup>
@@ -118,7 +116,7 @@
 						<?php } ?>
 						<?php foreach($row AS $key=>$value) { ?>
 							<td class="<?php echo $key; ?>">
-								<span><?php echo is_null($value) ? 'NULL' : (Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $this->schema . '.' .  $this->table) ? str_replace(array('<','>'),array('&lt;','&gt;'),$value) : StringUtil::cutText(str_replace(array('<','>'),array('&lt;','&gt;'),$value), 100)); ?></span>
+								<span><?php echo is_null($value) ? '<span class="null">NULL</span>' : (Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $this->schema . '.' .  $this->table) ? str_replace(array('<','>'),array('&lt;','&gt;'),$value) : StringUtil::cutText(str_replace(array('<','>'),array('&lt;','&gt;'),$value), 100)); ?></span>
 							</td>
 
 							<?php if($type == 'select' && $table->primaryKey !== null && in_array($key, (array)$table->primaryKey)) { ?>
@@ -139,8 +137,12 @@
 					<span><?php echo Yii::t('core', 'withSelected'); ?></span>
 				</span>
 				<a class="icon button" href="javascript:void(0)" onclick="tableBrowse.deleteRows()">
-					<com:Icon name="delete" size="16" />
+					<com:Icon name="delete" size="16" text="core.delete" />
 					<span><?php echo Yii::t('core', 'delete'); ?></span>
+				</a>
+				<a class="icon button" href="javascript:void(0)" onclick="tableBrowse.exportRows()">
+					<com:Icon name="save" size="16" text="core.export" />
+					<span><?php echo Yii::t('core', 'export'); ?></span>
 				</a>
 			</div>
 			<?php if ($table->primaryKey !== null) { ?>

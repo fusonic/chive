@@ -30,6 +30,7 @@ $scriptFiles = array(
 	'js/jquery/jquery.listFilter.js',
 	'js/jquery/jquery.purr.js',
 	'js/jquery/jquery.selectboxes.js',
+	'js/jquery/jquery.hotkey.js',
 	'js/jquery/jquery.tableForm.js',
 	'js/lib/json.js',
 	'js/main.js',
