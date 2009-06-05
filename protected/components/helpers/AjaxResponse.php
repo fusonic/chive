@@ -70,6 +70,7 @@ class AjaxResponse
 		$data = array(
 			'redirectUrl'=>$this->redirectUrl,
 			'reload'=>$this->reload,
+			'refresh'=>$this->refresh,
 			'notifications'=>$this->notifications,
 			'data' => $this->data,
 		);

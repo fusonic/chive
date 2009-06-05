@@ -120,8 +120,10 @@ class RowController extends Controller
 			// Get value out of DB
 			if(in_array($column, array_keys($attributes)))
 			{
-				$attributes[$column] = $newValue;
+				
 			}
+			
+			$attributes[$column] = $newValue;
 			
 			$row = Row::model()->findByAttributes($attributes);
 			

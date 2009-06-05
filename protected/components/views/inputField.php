@@ -3,11 +3,11 @@
 switch($type) {
 
 	case 'single':
-		echo CHtml::activeTextField($row, $column->name, array_merge((array)$htmlOptions, array('maxlength'=>$column->size, 'size'=>$column->size, 'class'=>'text')));
+		echo CHtml::activeTextField($row, $column->name, array_merge((array)$htmlOptions, array('maxlength'=>$column->size, 'class'=>'text')));
 		break;
 
 	case 'number':
-		echo CHtml::activeTextField($row, $column->name, array_merge((array)$htmlOptions, array('maxlength'=>$column->precision, 'size'=>$column->precision)));
+		echo CHtml::activeTextField($row, $column->name, array_merge((array)$htmlOptions, array('maxlength'=>$column->precision)));
 		break;
 
 	case 'select':

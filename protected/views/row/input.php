@@ -73,7 +73,7 @@
 	
 </script>
 
-<div class="buttonContainer" style="width: 100%; padding-top: 5px;">
+<div class="buttonContainer" style="width: 300px; padding-top: 5px;">
 	<input type="button" name="save" class="button icon save" value="<?php echo Yii::t('core', 'save'); ?>" onclick="save();" />
 	<input type="button" name="cancel" class="button icon cancel" value="<?php echo Yii::t('core', 'cancel'); ?>" onclick="reset();" />
 	<?php if($column->allowNull) { ?>
