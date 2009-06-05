@@ -167,7 +167,6 @@ class SchemaController extends Controller
 
 			}
 
-
 		}
 
 		$this->render('sql', array(

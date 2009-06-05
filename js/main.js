@@ -194,6 +194,14 @@ $(document).ready(function()
 	{
 		refresh();
 	}
+	
+	/*
+	 * Keepalive packages
+	 */
+	setInterval(function() {
+		$.post(baseUrl + '/site/keepAlive');
+	}, 1000*5*60);	//Every 5 minutes
+	
 })
 .keydown(function(e) 
 {
@@ -271,6 +279,13 @@ $(document).bind('keydown', 'pageup', function() {
 	
 });
 $(document).bind('keydown', 'pagedown', function() {
+	if($('ul.yiiPager li.selected').prev('li').length > 0)
+	{
+		location.href = $('ul.yiiPager li.selected').prev('li').find('a').attr('href');
+	}
+	
+});
+$(document).bind('keydown', 'strg+pagedown', function() {
 	if($('ul.yiiPager li.selected').prev('li').length > 0)
 	{
 		location.href = $('ul.yiiPager li.selected').prev('li').find('a').attr('href');

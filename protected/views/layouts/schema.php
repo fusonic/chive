@@ -11,7 +11,7 @@
 <link rel="stylesheet" type="text/css" href="<?php echo BASEURL; ?>/css/patch/ie7.css"/>
 <![endif]-->
 
-<link rel="shortcut icon" href="<?php echo Yii::app()->baseUrl; ?>/images/favicon.ico">
+<link rel="shortcut icon" href="<?php echo Yii::app()->baseUrl; ?>/images/favicon.ico" />
 
 <script type="text/javascript">
 // Set global javascript variables
@@ -89,7 +89,7 @@ foreach($scriptFiles AS $file)
 			<ul class="breadCrumb">
 				<li>
 					<a href="<?php echo Yii::app()->baseUrl . '/#schemata'; ?>" style="float:left; margin-right: 5px;">
-						<img src="<?php echo Yii::app()->baseUrl . "/images/logo.png"; ?>" />
+						<img src="<?php echo Yii::app()->baseUrl . "/images/logo.png"; ?>" alt="logo" />
 					</a>
 				</li>
 				<?php if($this->schema) { ?>
@@ -126,7 +126,7 @@ foreach($scriptFiles AS $file)
   </div>
   <div class="ui-layout-west">
 
-  <div id="sideBar">
+  	<div id="sideBar">
   		<div class="sidebarHeader">
 			<a class="icon">
 				<com:Icon name="table" size="24" text="database.tables" />

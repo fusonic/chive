@@ -176,6 +176,11 @@ class SiteController extends Controller
 
 		$response->send();
 	}
+	
+	public function actionKeepAlive() 
+	{
+		Yii::app()->end('OK');
+	}
 
 	/**
 	 * Change the language

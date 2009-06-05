@@ -32,6 +32,8 @@ class Icon extends CWidget
 		$this->htmlOptions += array(
 			'class' => $classes,
 			'title' => Yii::t($titleCategory, $titleVar),
+			'width' => $this->size,
+			'height' => $this->size,
 		);
 		
 		echo CHtml::image(ICONPATH . '/' . $this->size . DIRECTORY_SEPARATOR . $this->name . '.png', Yii::t($category, $var), $this->htmlOptions);

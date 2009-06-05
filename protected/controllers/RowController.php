@@ -84,7 +84,7 @@ class RowController extends Controller
 			'value' => htmlspecialchars($newValue),
 			'column' => $column,
 			'isPrimary' => in_array($column, $pk),
-			'visibleValue' => ($null ? '<span class="null">NULL</span>' : $value)
+			'visibleValue' => ($null ? '<span class="null">NULL</span>' : htmlspecialchars($newValue))
 		));
 
 		try
