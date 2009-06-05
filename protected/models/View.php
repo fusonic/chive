@@ -55,6 +55,7 @@ class View extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
+			'IS_UPDATABLE' => Yii::t('database', 'updatable'),
 		);
 	}
 

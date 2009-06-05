@@ -21,20 +21,20 @@
 			<col class="action" />
 			<col class="action" />
 			<col class="action" />
+			<col />
 		</colgroup>
 		<thead>
 			<tr>
 				<th><input type="checkbox" /></th>
-				<th colspan="6"><?php echo $sort->link('TABLE_NAME', Yii::t('database', 'table')); ?></th>
+				<th colspan="6"><?php echo $sort->link('TABLE_NAME', Yii::t('database', 'view')); ?></th>
+				<th><?php echo $sort->link('IS_UPDATABLE'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
-			<?php $totalRowCount = $totalDataLength = $totalDataFree = 0;?>
-			<?php $canDrop = $canTruncate = false; ?>
-			<?php if(count($schema->tables) < 1) { ?>
+			<?php if($viewCount < 1) { ?>
 				<tr>
 					<td class="noEntries" colspan="14">
-						<?php echo Yii::t('database', 'noTables'); ?>
+						<?php echo Yii::t('database', 'noViews'); ?>
 					</td>
 				</tr>
 			<?php } ?>
@@ -82,13 +82,16 @@
 							<com:Icon name="delete" size="16" text="database.drop" disabled="true" />
 						<?php } ?>
 					</td>
+					<td>
+						<?php echo Yii::t('core', strtolower($view->IS_UPDATABLE)); ?>
+					</td>
 				</tr>
 			<?php } ?>
 		</tbody>
 		<tfoot>
 			<tr>
 				<th><input type="checkbox" /></th>
-				<th colspan="6"><?php echo Yii::t('database', 'amountViews', array($viewCount, '{amount} '=> $viewCount)); ?></th>
+				<th colspan="7"><?php echo Yii::t('database', 'amountViews', array($viewCount, '{amount} '=> $viewCount)); ?></th>
 			</tr>
 		</tfoot>
 	</table>

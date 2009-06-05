@@ -76,12 +76,15 @@ class SchemaController extends Controller
 		$this->render('index');
 	}
 
+	/**
+	 * Lists all tables.
+	 */
 	public function actionTables()
 	{
 		$schema = $this->loadSchema();
 
 		$criteria = new CDbCriteria;
-		$criteria->condition = 'TABLE_SCHEMA = :schema AND TABLE_TYPE = \'BASE TABLE\'';
+		$criteria->condition = 'TABLE_SCHEMA = :schema AND TABLE_TYPE IN (\'BASE TABLE\', \'SYSTEM VIEW\')';
 		$criteria->params = array(
 			':schema' => $this->schema,
 		);
@@ -108,6 +111,9 @@ class SchemaController extends Controller
 		));
 	}
 
+	/**
+	 * Lists all views.
+	 */
 	public function actionViews()
 	{
 		$schema = $this->loadSchema();
@@ -119,15 +125,10 @@ class SchemaController extends Controller
 		);
 
 		// Sort
-		// @todo(mburtscher): change to correct sort columns
 		$sort = new CSort('View');
 		$sort->attributes = array(
 			'TABLE_NAME' => 'name',
-			'TABLE_ROWS' => 'rows',
-			'TABLE_COLLATION' => 'collation',
-			'ENGINE' => 'engine',
-			'DATA_LENGTH' => 'datalength',
-			'DATA_FREE' => 'datafree',
+			'IS_UPDATABLE' => 'updatable',
 		);
 		$sort->route = '#views';
 		$sort->applyOrder($criteria);
@@ -213,6 +214,9 @@ class SchemaController extends Controller
 
 	}
 
+	/**
+	 * Create a new schema.
+	 */
 	public function actionCreate()
 	{
 		$schema = new Schema;
@@ -243,8 +247,9 @@ class SchemaController extends Controller
 	}
 
 	/**
-	 * Updates a particular user.
-	 * If update is successful, the browser will be redirected to the 'show' page.
+	 * Update a schema.
+	 *
+	 * @todo(mburtscher): Renaming. Requires copying the whole schema.
 	 */
 	public function actionUpdate()
 	{
@@ -274,8 +279,7 @@ class SchemaController extends Controller
 	}
 
 	/**
-	 * Deletes a particular user.
-	 * If deletion is successful, the browser will be redirected to the 'list' page.
+	 * Drop a schema.
 	 */
 	public function actionDrop()
 	{
@@ -339,10 +343,10 @@ class SchemaController extends Controller
 		$sort->applyOrder($criteria);
 
 		$criteria->group = 'SCHEMA_NAME';
-		$criteria->select = 'SCHEMA_NAME, DEFAULT_COLLATION_NAME';
+		$criteria->select = 'SCHEMA_NAME, DEFAULT_COLLATION_NAME, COUNT(*) AS tableCount';
 
 		$schemaList = Schema::model()->with(array(
-			'table' => array('select' => 'COUNT(??.TABLE_NAME) AS tableCount'),
+			'tables' => array('select' => 'COUNT(??.TABLE_NAME) AS tableCount'),
 		))->together()->findAll($criteria);
 
 		$this->render('list',array(

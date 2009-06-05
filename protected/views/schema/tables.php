@@ -46,7 +46,7 @@
 		<tbody>
 			<?php $totalRowCount = $totalDataLength = $totalDataFree = 0;?>
 			<?php $canDrop = $canTruncate = false; ?>
-			<?php if(count($schema->tables) < 1) { ?>
+			<?php if($tableCount < 1) { ?>
 				<tr>
 					<td class="noEntries" colspan="14">
 						<?php echo Yii::t('database', 'noTables'); ?>

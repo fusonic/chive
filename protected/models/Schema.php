@@ -5,6 +5,7 @@ class Schema extends CActiveRecord
 
 	public static $db;
 
+	public $tableCount;
 	public $originalSchemaName;
 
 	public $DEFAULT_CHARACTER_SET_NAME = Collation::DEFAULT_CHARACTER_SET;

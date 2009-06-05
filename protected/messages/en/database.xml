@@ -59,6 +59,7 @@
 	<entry id="dataSize">Size (data)</entry>
 	<entry id="free">Free</entry>
 	<entry id="data">Data</entry>
+	<entry id="updatable">Updatable</entry>
 	
 	<entry id="noTables">No visible tables in this schema.</entry>
 	<entry id="addTable">Add table</entry>
@@ -136,6 +137,7 @@
 	<entry id="editRelation">Edit relation</entry>
 	
 	<!-- Views -->
+	<entry id="view">View</entry>
 	<entry id="amountViews">1#{amount}  View|n>1#{amount}  Views</entry>
 	<entry id="addView">Add view</entry>
 	<entry id="dropViews">Drop views</entry>

@@ -410,8 +410,9 @@ class ViewController extends Controller
 		}
 		else
 		{
-			$query = 'CREATE VIEW [your view name here] AS' . "\n"
-				. '[your view definition here]';
+			$query = 'CREATE VIEW ' . $this->_db->quoteTableName('name_of_view') . ' AS' . "\n"
+				. '-- Definition start' . "\n\n"
+				. '-- Definition end';
 		}
 
 		CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3);
