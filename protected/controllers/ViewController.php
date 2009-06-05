@@ -34,8 +34,10 @@ class ViewController extends Controller
 
 		// @todo (rponudic) work with parameters!
 		$this->_db = new CDbConnection('mysql:host='.Yii::app()->user->host.';dbname=' . $this->schema, Yii::app()->user->name, Yii::app()->user->password);
-		$this->_db->charset='utf8';
+		$this->_db->charset = 'utf8';
 		$this->_db->active = true;
+
+		View::$db = Column::$db = $this->_db;
 
 		parent::__construct($id, $module);
 
@@ -60,20 +62,9 @@ class ViewController extends Controller
 	{
 		return array(
 			array('deny',
-					'users'=>array('?'),
+				'users'=>array('?'),
 			),
 		);
-	}
-
-	public function getViewPath()
-	{
-		return parent::getViewPath();
-
-
-		// @todo (rponudic) is this needed anymore?
-		if(($module=$this->getModule())===null)
-			$module=Yii::app();
-		return $module->getViewPath().'/table';
 	}
 
 	/**
@@ -387,254 +378,86 @@ class ViewController extends Controller
 	}
 
 	/**
-	 * Insert a new row
-	 * If creation is successful, the browser will be redirected to the 'browse' page.
+	 * Creates a view.
 	 */
-	public function actionInsert()
+	public function actionCreate()
 	{
+		$this->layout = false;
 
-		$db = $this->_db;
+		$view = new View();
 
-		Row::$db = $this->_db;
-		$row = new Row;
-
-		$functions = array(
-			'',
-			'ASCII',
-			'CHAR',
-			'MD5',
-			'SHA1',
-			'ENCRYPT',
-			'RAND',
-			'LAST_INSERT_ID',
-			'UNIX_TIMESTAMP',
-			'COUNT',
-			'AVG',
-			'SUM',
-			'SOUNDEX',
-			'LCASE',
-			'UCASE',
-			'NOW',
-			'PASSWORD',
-			'OLD_PASSWORD',
-			'COMPRESS',
-			'UNCOMPRESS',
-			'CURDATE',
-			'CURTIME',
-			'UTC_DATE',
-			'UTC_TIME',
-			'UTC_TIMESTAMP',
-			'FROM_DAYS',
-			'FROM_UNIXTIME',
-			'PERIOD_ADD',
-			'PERIOD_DIFF',
-			'TO_DAYS',
-			'USER',
-			'WEEKDAY',
-			'CONCAT',
-			'HEX',
-			'UNHEX',
-		);
-
-		//predie($_POST);
-
-		if(isset($_POST['Row']))
+		if(isset($_POST['query']))
 		{
-
-			$row->isNewRecord = true;
-			$row->attributes = $_POST['Row'];
-
-			$sql = 'INSERT INTO ' . $db->quoteTableName($this->view) . ' (';
-
-			$attributesCount = count($row->getAttributes());
-
-			$i = 0;
-			foreach($row->getAttributes() AS $attribute=>$value)
-			{
-				$sql .= "\n\t" . $attribute;
-
-				$i++;
-
-				if($i < $attributesCount)
-					$sql .= ', ';
-			}
-
-			$sql .= "\n" . ') VALUES (';
-
-			$i = 0;
-			foreach($row->getAttributes() AS $attribute=>$value)
-			{
-				// NULL value
-				if(isset($_POST[$attribute]['null']))
-				{
-					$sql .= "\n\t" . 'NULL';
-				}
-
-				// FUNCTION
-				elseif(isset($_POST[$attribute]['function']) && $_POST[$attribute]['function'])
-				{
-					$sql .= "\n\t" . $functions[$_POST[$attribute]['function']] . '(' . $db->quoteValue($value) . ')';
-				}
-
-				// RAW
-				else
-				{
-					$sql .= "\n\t" . $db->quoteValue($value);
-				}
-
-				$i++;
-
-				if($i < $attributesCount)
-					$sql .= ', ';
-
-
-			}
-
-			$sql .= "\n" . ')';
-
-			$cmd = $db->createCommand($sql);
-
-			$response = new AjaxResponse();
-
+			$query = $_POST['query'];
+			$cmd = $this->_db->createCommand($query);
 			try
 			{
 				$cmd->prepare();
 				$cmd->execute();
-
-				$response->addNotification('success', Yii::t('message', 'successInsertRow'), null, $sql);
-				$response->redirectUrl = '#tables/' . $this->view . '/browse';
-
-			}
-			catch (CDbException $ex)
-			{
-				$response->addNotification('error', Yii::t('message', 'errorInsertRow'), $sql);
-			}
-
-			$response->send();
-
-		}
-
-		/*
-		$table = $this->loadView();
-
-		if(isset($_POST['sent'])) {
-
-			$builder = $this->_db->getCommandBuilder();
-
-			$data = array();
-			foreach($table->columns AS $column) {
-				$data[$column->COLUMN_NAME] = $_POST[$column->COLUMN_NAME];
-			}
-
-			$cmd = $builder->createInsertCommand($this->view, $data);
-
-			try
-			{
-				$cmd->prepare();
-				$cmd->execute();
-				Yii::app()->end('redirect:' . $this->schema . '#tables/' . $this->view . '/browse');
+				$response = new AjaxResponse();
+				$response->addNotification('success',
+					Yii::t('message', 'successAddView'),
+					null,
+					$query);
+				$response->refresh = true;
+				$response->send();
 			}
 			catch(CDbException $ex)
 			{
 				$errorInfo = $cmd->getPdoStatement()->errorInfo();
-				//$this->addError('SCHEMA_NAME', Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
-				return false;
+				$view->addError(null, Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
 			}
-
 		}
-		*/
+		else
+		{
+			$query = 'CREATE VIEW [your view name here] AS' . "\n"
+				. '[your view definition here]';
+		}
 
-		$this->render('insert',array(
-			'row'=>$row,
-			//'table'=>$table,
-			'functions'=>$functions,
+		CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3);
+		$this->render('form', array(
+			'view' => $view,
+			'query' => $query,
 		));
-
-
-
-	}
-/**
-	 * Truncates tables
-	 */
-	public function actionTruncate()
-	{
-		$response = new AjaxResponse();
-		$response->reload = true;
-		$tables = (array)$_POST['tables'];
-		$truncatedTables = $truncatedSqls = array();
-
-		foreach($tables AS $table)
-		{
-			$pk = array(
-				'TABLE_SCHEMA' => $this->schema,
-				'TABLE_NAME' => $table
-			);
-			$table = Table::model()->findByPk($pk);
-			try
-			{
-				$sql = $table->truncate();
-				$truncatedTables[] = $table->TABLE_NAME;
-				$truncatedSqls[] = $sql;
-			}
-			catch(DbException $ex)
-			{
-				$response->addNotification('error',
-					Yii::t('message', 'errorTruncateTable', array('{table}' => $this->view)),
-					$ex->getText(),
-					$ex->getSql());
-			}
-		}
-
-		$count = count($truncatedTables);
-		if($count > 0)
-		{
-			$response->addNotification('success',
-				Yii::t('message', 'successTruncateTable', array($count, '{table}' => $truncatedTables[0], '{tableCount}' => $count)),
-				($count > 1 ? implode(', ', $truncatedTables) : null),
-				implode("\n", $truncatedSqls));
-		}
-
-		$response->send();
 	}
 
 	/**
-	 * Drops the table
+	 * Drops tables
 	 */
 	public function actionDrop()
 	{
 		$response = new AjaxResponse();
-		$response->reload = true;
-		$tables = (array)$_POST['tables'];
-		$droppedTables = $droppedSqls = array();
+		$response->refresh = true;
+		$views = (array)$_POST['views'];
+		$droppedViews = $droppedSqls = array();
 
-		foreach($tables AS $table)
+		foreach($views AS $view)
 		{
-			$pk = array(
+			$viewObj = View::model()->findByPk(array(
 				'TABLE_SCHEMA' => $this->schema,
-				'TABLE_NAME' => $table
-			);
-			$table = Table::model()->findByPk($pk);
+				'TABLE_NAME' => $view,
+			));
 			try
 			{
-				$sql = $table->drop();
-				$droppedTables[] = $table->TABLE_NAME;
+				$sql = $viewObj->delete();
+				$droppedViews[] = $view;
 				$droppedSqls[] = $sql;
 			}
 			catch(DbException $ex)
 			{
 				$response->addNotification('error',
-					Yii::t('message', 'errorDropTable', array('{table}' => $this->view)),
+					Yii::t('message', 'errorDropView', array('{view}' => $view)),
 					$ex->getText(),
 					$ex->getSql());
 			}
 		}
 
-		$count = count($droppedTables);
+		$count = count($droppedViews);
 		if($count > 0)
 		{
 			$response->addNotification('success',
-				Yii::t('message', 'successDropTable', array($count, '{table}' => $droppedTables[0], '{tableCount}' => $count)),
-				($count > 1 ? implode(', ', $droppedTables) : null),
+				Yii::t('message', 'successDropView', array($count, '{view}' => $droppedViews[0], '{viewCount}' => $count)),
+				($count > 1 ? implode(', ', $droppedViews) : null),
 				implode("\n", $droppedSqls));
 		}
 
@@ -642,11 +465,49 @@ class ViewController extends Controller
 	}
 
 	/**
-	 * Updates a particular user.
-	 * If update is successful, the browser will be redirected to the 'show' page.
+	 * Updates a view.
 	 */
 	public function actionUpdate()
 	{
+		$this->layout = false;
+
+		$view = View::model()->findByPk(array(
+			'TABLE_SCHEMA' => $this->schema,
+			'TABLE_NAME' => $this->view,
+		));
+
+		if(isset($_POST['query']))
+		{
+			$query = $_POST['query'];
+			$cmd = $this->_db->createCommand($query);
+			try
+			{
+				$cmd->prepare();
+				$cmd->execute();
+				$response = new AjaxResponse();
+				$response->addNotification('success',
+					Yii::t('message', 'successAlterView', array('{view}' => $view->TABLE_NAME)),
+					null,
+					$query);
+				$response->refresh = true;
+				$response->send();
+			}
+			catch(CDbException $ex)
+			{
+				$errorInfo = $cmd->getPdoStatement()->errorInfo();
+				$view->addError(null, Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
+			}
+		}
+		else
+		{
+			$query = $view->getAlterView();
+		}
+
+		CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3);
+		$this->render('form', array(
+			'view' => $view,
+			'query' => $query,
+		));
 	}
 
 	/**

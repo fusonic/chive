@@ -12,6 +12,14 @@ var schema = '<?php echo $this->schema; ?>';
 					),
 					'visible'=>true,
 			),
+			array(	'label'=> Yii::t('database','views'),
+					'icon'=>'view',
+					'link'=>array(
+						'url'=> '#views',
+						'htmlOptions'=> array('class'=>'icon'),
+					),
+					'visible'=>true,
+			),
 			array(	'label'=> Yii::t('database','sql'),
 					'icon'=>'sql',
 					'link'=>array(

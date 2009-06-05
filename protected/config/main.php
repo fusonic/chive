@@ -101,6 +101,7 @@ return array(
                	'schema'=>'schema/list',
                 'schema/<schema:'.URL_MATCH.'>'=>'schema/index',
 				'schema/<schema:'.URL_MATCH.'>/tables'=>'schema/tables',
+				'schema/<schema:'.URL_MATCH.'>/views'=>'schema/views',
 				'schema/<schema:'.URL_MATCH.'>/sql'=>'schema/sql',
 				'schema/<schema:'.URL_MATCH.'>/import'=>'schema/import',
 				'schema/<schema:'.URL_MATCH.'>/import/upload'=>'schema/upload',
@@ -142,14 +143,16 @@ return array(
 						'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/indices/<index:'.URL_MATCH.'>/update'=>'index/update',
 
 					// View actions
-					'schema/<schema:'.URL_MATCH.'>/viewAction/drop'=>'view/drop',
+					'schema/<schema:' . URL_MATCH . '>/viewAction/create' => 'view/create',
+					'schema/<schema:' . URL_MATCH . '>/viewAction/drop' => 'view/drop',
 
 					// Views
-					'schema/<schema:'.URL_MATCH.'>/views/<view:'.URL_MATCH.'>/browse'=>'view/browse',
-					'schema/<schema:'.URL_MATCH.'>/views/<view:'.URL_MATCH.'>/structure'=>'view/structure',
-					'schema/<schema:'.URL_MATCH.'>/views/<view:'.URL_MATCH.'>/sql'=>'view/sql',
-					'schema/<schema:'.URL_MATCH.'>/views/<view:'.URL_MATCH.'>/search'=>'view/search',
-					'schema/<schema:'.URL_MATCH.'>/views/<view:'.URL_MATCH.'>/insert'=>'view/insert',
+					'schema/<schema:' . URL_MATCH . '>/views/<view:' . URL_MATCH . '>/browse' => 'view/browse',
+					'schema/<schema:' . URL_MATCH . '>/views/<view:' . URL_MATCH . '>/structure' => 'view/structure',
+					'schema/<schema:' . URL_MATCH . '>/views/<view:' . URL_MATCH . '>/sql' => 'view/sql',
+					'schema/<schema:' . URL_MATCH . '>/views/<view:' . URL_MATCH . '>/search' => 'view/search',
+					'schema/<schema:' . URL_MATCH . '>/views/<view:' . URL_MATCH . '>/insert' => 'view/insert',
+					'schema/<schema:' . URL_MATCH . '>/views/<view:' . URL_MATCH . '>/update' => 'view/update',
 
 					// Row
 					#'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/row/load'=>'row/load',

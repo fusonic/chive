@@ -8,7 +8,7 @@
 <div class="list">
 	<div class="buttonContainer">
 		<div class="right">
-			<a href="javascript:void(0)" class="icon button" onclick="schemaShow.addTable()">
+			<a href="javascript:void(0)" class="icon button" onclick="schemaTables.addTable()">
 				<com:Icon name="add" size="16" />
 				<span><?php echo Yii::t('database', 'addTable'); ?></span>
 			</a>
@@ -85,7 +85,7 @@
 					</td>
 					<td>
 						<?php if(Yii::app()->user->privileges->checkTable($table->TABLE_SCHEMA, $table->TABLE_NAME, 'ALTER')) { ?>
-							<a href="javascript:void(0);" onclick="schemaShow.editTable($(this).closest('tr').attr('id').substr(7))" class="icon">
+							<a href="javascript:void(0);" onclick="schemaTables.editTable($(this).closest('tr').attr('id').substr(7))" class="icon">
 								<com:Icon name="edit" size="16" text="core.edit" />
 							</a>
 						<?php } else { ?>
@@ -94,7 +94,7 @@
 					</td>
 					<td>
 						<?php if(Yii::app()->user->privileges->checkTable($table->TABLE_SCHEMA, $table->TABLE_NAME, 'DELETE')) { ?>
-							<a href="javascript:void(0);" onclick="schemaShow.truncateTable($(this).closest('tr').attr('id').substr(7))" class="icon">
+							<a href="javascript:void(0);" onclick="schemaTables.truncateTable($(this).closest('tr').attr('id').substr(7))" class="icon">
 								<com:Icon name="truncate" size="16" text="database.truncate" />
 							</a>
 							<?php $canTruncate = true; ?>
@@ -104,7 +104,7 @@
 					</td>
 					<td>
 						<?php if(Yii::app()->user->privileges->checkTable($table->TABLE_SCHEMA, $table->TABLE_NAME, 'DROP')) { ?>
-							<a href="javascript:void(0);" onclick="schemaShow.dropTable($(this).closest('tr').attr('id').substr(7))" class="icon">
+							<a href="javascript:void(0);" onclick="schemaTables.dropTable($(this).closest('tr').attr('id').substr(7))" class="icon">
 								<com:Icon name="delete" size="16" text="database.drop" />
 							</a>
 							<?php $canDrop = true; ?>
@@ -136,7 +136,7 @@
 		<tfoot>
 			<tr>
 				<th><input type="checkbox" /></th>
-				<th colspan="8"><?php echo Yii::t('database', 'amountTables', array($schema->tableCount, '{amount} '=> $schema->tableCount)); ?></th>
+				<th colspan="8"><?php echo Yii::t('database', 'amountTables', array($tableCount, '{amount} '=> $tableCount)); ?></th>
 				<th><?php echo $totalRowCount; ?></th>
 				<th></th>
 				<th></th>
@@ -153,7 +153,7 @@
 				<span><?php echo Yii::t('core', 'withSelected'); ?></span>
 			</span>
 			<?php if($canDrop) { ?>
-				<a href="javascript:void(0)" onclick="schemaShow.dropTables()" class="icon button">
+				<a href="javascript:void(0)" onclick="schemaTables.dropTables()" class="icon button">
 					<com:Icon name="delete" size="16" />
 					<span><?php echo Yii::t('database', 'drop'); ?></span>
 				</a>
@@ -164,7 +164,7 @@
 				</span>
 			<?php } ?>
 			<?php if($canTruncate) { ?>
-				<a href="javascript:void(0)" onclick="schemaShow.truncateTables()" class="icon button">
+				<a href="javascript:void(0)" onclick="schemaTables.truncateTables()" class="icon button">
 					<com:Icon name="truncate" size="16" />
 					<span><?php echo Yii::t('database', 'truncate'); ?></span>
 				</a>
@@ -176,7 +176,7 @@
 			<?php } ?>
 		</div>
 		<div class="right">
-			<a href="javascript:void(0)" class="icon button" onclick="schemaShow.addTable()">
+			<a href="javascript:void(0)" class="icon button" onclick="schemaTables.addTable()">
 				<com:Icon name="add" size="16" />
 				<span><?php echo Yii::t('database', 'addTable'); ?></span>
 			</a>
@@ -187,6 +187,6 @@
 
 <script type="text/javascript">
 setTimeout(function() {
-	schemaShow.setupDialogs();
+	schemaTables.setupDialogs();
 }, 500);
 </script>

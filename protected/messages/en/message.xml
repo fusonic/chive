@@ -26,6 +26,13 @@
 	<entry id="doYouReallyWantToDropTable">Do you really want to drop the table?</entry>
 	<entry id="truncateTable">Truncate table</entry>
 	<entry id="doYouReallyWantToTruncateTable">Do you really want to truncate the table?</entry>
+	<entry id="successAlterView">Saved view »{view}«</entry>
+	
+	<!-- Views -->
+	<entry id="successAddView">Added view</entry>
+	<entry id="successDropView">1#Dropped view »{view}«|n>1#Dropped {viewCount} views</entry>
+	<entry id="errorDropView">Dropping view »{view}« failed</entry>
+	<entry id="doYouReallyWantToDropView">Do you really want to drop the view?</entry>
 	
 	<!-- Bookmarks -->
 	<entry id="successAddBookmark">Saved bookmark »{name}«</entry>

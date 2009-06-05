@@ -62,13 +62,25 @@ function init()
 		}
 	});
 
+	// @todo(mburtscher): do this in a more elegant way
 	if(currentLocation.match(/schema\/(\w+)#tables\/(\w+)\//))
 	{
 		schema = RegExp.$1.toString();
 		table = RegExp.$2.toString();
 		
+		$('#bc-table a img').attr('src', iconPath + '/24/table.png');
 		$('#bc-table a span').text(table);
 		$('#bc-table a').attr('href', baseUrl + '/schema/' + schema + '#tables/' + table + '/structure');
+		$('#bc-table').show();
+	}
+	else if(currentLocation.match(/schema\/(\w+)#views\/(\w+)\//))
+	{
+		schema = RegExp.$1.toString();
+		view = RegExp.$2.toString();
+		
+		$('#bc-table a img').attr('src', iconPath + '/24/view.png');
+		$('#bc-table a span').text(view);
+		$('#bc-table a').attr('href', baseUrl + '/schema/' + schema + '#views/' + view + '/structure');
 		$('#bc-table').show();
 	}
 	else 

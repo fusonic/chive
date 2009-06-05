@@ -1,10 +1,7 @@
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/views/table/general.js', CClientScript::POS_HEAD); ?>
-
 <script type="text/javascript">
 var schema = '<?php echo $this->schema; ?>';
-var table = '<?php echo $this->view; ?>';
+var view = '<?php echo $this->view; ?>';
 </script>
-
 
 <?php $this->widget('TabMenu', array(
 		'items'=>array(
@@ -54,10 +51,14 @@ var table = '<?php echo $this->view; ?>';
 	));
 ?>
 
-<div id="dropTableDialog" title="<?php echo Yii::t('database', 'dropTable'); ?>" style="display: none">
-	<?php echo Yii::t('message', 'doYouReallyWantToDropTable'); ?>
+<div id="dropViewDialog" title="<?php echo Yii::t('database', 'dropView'); ?>" style="display: none">
+	<?php echo Yii::t('message', 'doYouReallyWantToDropView'); ?>
 </div>
 
 <div>
 	<?php echo $content; ?>
 </div>
+
+<script type="text/javascript">
+viewGeneral.setupDialogs();
+</script>

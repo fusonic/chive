@@ -7,11 +7,8 @@ class Schema extends CActiveRecord
 
 	public $originalSchemaName;
 
-	public $tableCount;
 	public $DEFAULT_CHARACTER_SET_NAME = Collation::DEFAULT_CHARACTER_SET;
 	public $DEFAULT_COLLATION_NAME = COLLATION::DEFAULT_COLLATION;
-
-	public $tables;
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -73,7 +70,8 @@ class Schema extends CActiveRecord
 	public function relations()
 	{
 		return array(
-			'table' => array(self::HAS_MANY, 'Table', 'TABLE_SCHEMA'),
+			'tables' => array(self::HAS_MANY, 'Table', 'TABLE_SCHEMA'),
+			'views' => array(self::HAS_MANY, 'View', 'TABLE_SCHEMA'),
 			'collation' => array(self::BELONGS_TO, 'Collation', 'DEFAULT_COLLATION_NAME'),
 		);
 	}

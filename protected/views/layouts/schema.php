@@ -46,12 +46,14 @@ $scriptFiles = array(
 	'js/views/index/form.js',
 	'js/views/schema/general.js',
 	'js/views/schema/list.js',
-	'js/views/schema/show.js',
 	'js/views/schema/processes.js',
+	'js/views/schema/tables.js',
+	'js/views/schema/views.js',
 	'js/views/table/general.js',
 	'js/views/table/browse.js',
 	'js/views/table/form.js',
 	'js/views/table/structure.js',
+	'js/views/view/general.js',
 	'protected/extensions/CodePress/codepress/codepress.js',		// @todo (rponudic) change this to valid path
 	'assets/lang_js/' . Yii::app()->getLanguage() . '.js',
 );
@@ -164,13 +166,13 @@ foreach($scriptFiles AS $file)
 		</div>
 		<div class="sidebarContent">
 			<ul class="list icon nowrap">
-				<?php foreach(View::model()->findAllByAttributes(array('TABLE_SCHEMA' => $_GET['schema'])) AS $table) { ?>
+				<?php foreach(View::model()->findAllByAttributes(array('TABLE_SCHEMA' => $_GET['schema'])) AS $view) { ?>
 					<li>
-						<a href="#views/<?php echo $table->getName() ?>/browse" class="icon">
+						<a href="#views/<?php echo $view->TABLE_NAME; ?>/browse" class="icon">
 							<com:Icon name="view" size="16" text="database.browse" />
 						</a>
-						<a href="#views/<?php echo $table->getName() ?>/structure" class="icon">
-							<span><?php echo $table->getName(); ?></span>
+						<a href="#views/<?php echo $view->TABLE_NAME; ?>/structure" class="icon">
+							<span><?php echo $view->TABLE_NAME; ?></span>
 						</a>
 					</li>
 				<?php } ?>

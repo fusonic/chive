@@ -726,7 +726,7 @@ class TableController extends Controller
 	}
 
 	/**
-	 * Drops the table
+	 * Drops tables
 	 */
 	public function actionDrop()
 	{

@@ -2,6 +2,9 @@
 
 class View extends CActiveRecord
 {
+
+	public static $db;
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return CActiveRecord the static model class
@@ -55,7 +58,57 @@ class View extends CActiveRecord
 		);
 	}
 
-	public function getName() {
-		return $this->TABLE_NAME;
+	public function primaryKey()
+	{
+		return array(
+			'TABLE_SCHEMA',
+			'TABLE_NAME',
+		);
 	}
+
+	/**
+	 * Drop view
+	 *
+	 * @return	string
+	 */
+	public function delete()
+	{
+		$sql = 'DROP VIEW ' . self::$db->quoteTableName($this->TABLE_NAME) . ';';
+		$cmd = self::$db->createCommand($sql);
+
+		// Execute
+		try
+		{
+			$cmd->prepare();
+			$cmd->execute();
+			return $sql;
+		}
+		catch(CDbException $ex)
+		{
+			throw new DbException($cmd);
+		}
+	}
+
+	/**
+	 * Returns the CREATE VIEW statement for this view.
+	 *
+	 * @return	string
+	 */
+	public function getCreateView()
+	{
+		$cmd = self::$db->createCommand('SHOW CREATE VIEW ' . self::$db->quoteTableName($this->TABLE_NAME));
+		$res = $cmd->queryRow(false);
+		return $res[1];
+	}
+
+	/**
+	 * Returns the ALTER VIEW statement for this view.
+	 *
+	 * @return	string
+	 */
+	public function getAlterView()
+	{
+		return 'ALTER' . substr($this->getCreateView(), 6);
+	}
+
 }

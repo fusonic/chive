@@ -6,7 +6,7 @@
 	
 	<entry id="tables">Tables</entry>
 	<entry id="views">Views</entry>
-	<entry id="Xrows">{amount} rows</entry>
+	<entry id="Xrows">{amount}  rows</entry>
 	
 	<entry id="field">Field</entry>
 	<entry id="type">Type</entry>
@@ -134,4 +134,14 @@
 	<!-- Relations -->
 	<entry id="relation">Relation</entry>
 	<entry id="editRelation">Edit relation</entry>
+	
+	<!-- Views -->
+	<entry id="amountViews">1#{amount}  View|n>1#{amount}  Views</entry>
+	<entry id="addView">Add view</entry>
+	<entry id="dropViews">Drop views</entry>
+	<entry id="doYouReallyWantToDropViews">Do you really want to drop the selected views?</entry>
+	<entry id="noViews">No visible views in this schema.</entry>
+	<entry id="addView">Add view</entry>
+	<entry id="editView">Edit view</entry>
+	<entry id="dropView">Drop view</entry>
 </category>

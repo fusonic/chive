@@ -43,7 +43,7 @@ class SchemaController extends Controller
 		$this->_db->charset='utf8';
 		$this->_db->active = true;
 
-		Schema::$db = Yii::app()->db;
+		Schema::$db = Table::$db = View::$db = $this->_db;
 
 		parent::__construct($id, $module);
 
@@ -81,7 +81,7 @@ class SchemaController extends Controller
 		$schema = $this->loadSchema();
 
 		$criteria = new CDbCriteria;
-		$criteria->condition = 'TABLE_SCHEMA = :schema';
+		$criteria->condition = 'TABLE_SCHEMA = :schema AND TABLE_TYPE = \'BASE TABLE\'';
 		$criteria->params = array(
 			':schema' => $this->schema,
 		);
@@ -99,11 +99,44 @@ class SchemaController extends Controller
 		$sort->route = '#tables';
 		$sort->applyOrder($criteria);
 
-		$this->_schema->tables = Table::model()->findAll($criteria);
-		$this->_schema->tableCount = Table::model()->count($criteria);
+		$schema->tables = Table::model()->findAll($criteria);
 
 		$this->render('tables', array(
 			'schema' => $schema,
+			'tableCount' => count($schema->tables),
+			'sort' => $sort,
+		));
+	}
+
+	public function actionViews()
+	{
+		$schema = $this->loadSchema();
+
+		$criteria = new CDbCriteria;
+		$criteria->condition = 'TABLE_SCHEMA = :schema';
+		$criteria->params = array(
+			':schema' => $this->schema,
+		);
+
+		// Sort
+		// @todo(mburtscher): change to correct sort columns
+		$sort = new CSort('View');
+		$sort->attributes = array(
+			'TABLE_NAME' => 'name',
+			'TABLE_ROWS' => 'rows',
+			'TABLE_COLLATION' => 'collation',
+			'ENGINE' => 'engine',
+			'DATA_LENGTH' => 'datalength',
+			'DATA_FREE' => 'datafree',
+		);
+		$sort->route = '#views';
+		$sort->applyOrder($criteria);
+
+		$schema->views = View::model()->findAll($criteria);
+
+		$this->render('views', array(
+			'schema' => $schema,
+			'viewCount' => count($schema->views),
 			'sort' => $sort,
 		));
 	}
