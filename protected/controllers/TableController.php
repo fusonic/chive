@@ -18,8 +18,6 @@ class TableController extends Controller
 	public $table;
 	public $schema;
 
-	public $isSent = false;
-
 	/**
 	 * @var Default layout for this controller
 	 */
@@ -127,6 +125,7 @@ class TableController extends Controller
 
 		$db = $this->_db;
 		$error = false;
+		$isSent = false;
 
 		$response = new AjaxResponse();
 
@@ -256,12 +255,15 @@ class TableController extends Controller
 					{
 						$columns = array_keys($data[0]);
 					}
+					
+					$isSent = true;
 
 
 				}
-				catch (Exception $ex)
+				catch (CDbException $ex)
 				{
-					$error = $ex->getMessage();
+					$ex = new DbException($cmd);
+					$response->addNotification('error', Yii::t('message', 'executingQueryFailed'), $ex->getText());
 				}
 
 
@@ -327,7 +329,7 @@ class TableController extends Controller
 
 				$test .= '</table>';
 
-				$response->addNotification('info', 'Profling results (sorted by execution time)', $test, null, array('isSticky'=>false));
+				$response->addNotification('info', 'Profling results (sorted by execution time)', $test, null);
 			}
 
 		}
@@ -337,6 +339,7 @@ class TableController extends Controller
 			'data' => $data,
 			'columns' => $columns,
 			'query' => $sqlQuery->getOriginalQuery(),
+			'isSent' => $isSent,
 			'pages' => $pages,
 			'sort' => $sort,
 			'error' => $error,
@@ -447,8 +450,6 @@ class TableController extends Controller
 
 		if(!$query)
 		{
-			$this->isSent = true;
-
 			$this->render('browse',array(
 				'data' => array(),
 				'query' => self::getDefaultQuery(),

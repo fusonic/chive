@@ -56,7 +56,18 @@ class SqlQueryTest extends TestCase
 		}
 		*/
 
-		echo 'Executed ' . count($splitter->getQueries()) . ' queries';
+		/*
+		 * Test 2char delimiter
+		 */
+		
+		$sql = file_get_contents('components/helpers/SqlSplitter.sql');
+		
+		$splitter = new SqlSplitter($sql);
+		$splitter->delimiter = '//';
+		
+		$queries = $splitter->getQueries();
+		
+		$this->assertEquals(2, count($queries));
 
 	}
 

@@ -24,6 +24,7 @@
 	<entry id="off">Off</entry>
 	<entry id="login">Login</entry>
 	<entry id="export">Export</entry>
+	<entry id="execute">Execute</entry>
 	
 	
 	<entry id="error">Error</entry>

@@ -4,21 +4,18 @@
 	<?php echo Yii::t('message', 'doYouReallyWantToDeleteSelectedRows'); ?>
 </div>
 
-<?php if($error) { ?>
-	<div class="errorSummary">
-		<?php echo $error; ?>
-	</div>
-<?php } ?>
-
 <table style="width: 100%;">
 	<tr>
 		<td style="width: 80%;">
-			<com:application.extensions.CodePress.CodePress language="sql" name="query" width="100%" height="80px" autogrow="true" value={$query} />
 			<!---
-			<textarea name="query" style="width: 99%; height: 90px;" id="query"><?php echo $query; ?></textarea>
+			<com:application.extensions.CodePress.CodePress language="sql" name="query" width="100%" height="80px" autogrow="true" value={$query} />
 			--->
+			<textarea name="query" style="width: 99%; height: 90px;" id="query"><?php echo $query; ?></textarea>
 			<div class="buttons">
-				<?php echo CHtml::submitButton('Execute', array('class'=>'icon button execute')); ?>
+				<a href="javascript:void(0);" onclick="$('form').submit();" class="icon button">
+					<com:Icon size="16" name="execute" text="core.execute" />
+					<span><?php echo Yii::t('core', 'execute'); ?></span>
+				</a>
 			</div>
 		</td>
 		<td style="vertical-align: top; padding: 2px 5px;">
@@ -33,7 +30,7 @@
 				<?php } else { ?>
 					<com:Icon size="16" name="square_red" text="core.off" htmlOptions={array('id'=>'profiling_indicator')} />
 				<?php } ?>
-				<span><?php echo Yii::t('database', 'Profiling'); ?></span>
+				<span><?php echo Yii::t('database', 'profiling'); ?></span>
 			</a>
 			<br/><br/>
 			<a class="icon button" href="javascript:void(0);" onclick="$.post(baseUrl + '/ajaxSettings/toggle', {
@@ -158,8 +155,8 @@
 
 	</div>
 
-<?php } elseif($this->isSent) { ?>
-	Es wurden keine Enträge gefunden!
+<?php } elseif($isSent) { ?>
+	<?php echo Yii::t('message', 'emptyResultSet'); ?>
 <?php } ?>
 
 <script type="text/javascript">

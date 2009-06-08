@@ -23,10 +23,10 @@ var Bookmark = {
 										'</a>' +
 										'<div class="listIconContainer">' +
 											'<a onclick="Bookmark.remove(\'' + _schema + '\', \'' + _id + '\');" href="javascript:void(0);">'+
-												'<img alt="execute" src="' + iconPath + '/16/delete.png" title="delete" class="icon icon16 icon_delete" class="disabled" />' +							
+												'<img alt="' + lang.get('core', 'delete') + '" src="' + iconPath + '/16/delete.png" title="' + lang.get('core', 'delete') + '" class="icon icon16 icon_delete" class="disabled" />' +							
 											'</a>' +
 											'<a onclick="Bookmark.execute(\'' + _schema + '\', \'' + _id + '\');" href="javascript:void(0);">'+
-												'<img alt="execute" src="' + iconPath + '/16/execute.png" title="execute" class="icon icon16 icon_add"/>' +							
+												'<img alt="' + lang.get('core', 'execute') + '" src="' + iconPath + '/16/execute.png" title="' + lang.get('core', 'execute') + '" class="icon icon16 icon_execute"/>' +							
 											'</a>' +
 									'</li>');
 									

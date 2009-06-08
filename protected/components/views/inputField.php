@@ -15,11 +15,11 @@ switch($type) {
 		break;
 		
 	case 'select-multiple':
-		echo CHtml::activeDropDownList($row,$column->name, $this->getEnumValues());
+		echo CHtml::activeListBox($row, $column->name, $this->getEnumValues(), array_merge((array)$htmlOptions, array('multiple'=>'multiple')));
 		break;
 
 	case 'text':
-		echo CHtml::activeTextArea($row, $column->name, array_merge((array)$htmlOptions, array('style'=>'min-width: 500px;')));
+		echo CHtml::activeTextArea($row, $column->name, array_merge((array)$htmlOptions, array('style'=>'min-width: 500px; min-height: 100px;')));
 		break;
 
 	case 'file':
@@ -30,7 +30,7 @@ switch($type) {
 			echo CHtml::activeTextField($row, $column->name, $htmlOptions);
 			echo '<script type="text/javascript">
 					$(document).ready(function() {
-						$("#' . $htmlOptions['id'] . '").datepicker({showOn: "button", dateFormat: "yy-mm-dd"});
+						$("#' . $htmlOptions['id'] . '").datepicker({showOn: "button", dateFormat: "yy-mm-dd", buttonImage: "' . ICONPATH . '/16/calendar.png' . '", buttonImageOnly: true, buttonText: "' . Yii::t('core', 'showCalendar') . '"});
 					});
 					</script>';
 		break;

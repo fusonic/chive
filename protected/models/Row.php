@@ -5,7 +5,9 @@ class Row extends CActiveRecord
 
 	public $schema;
 	public $table;
-
+	
+	private $originalAttributes;
+	
 	public static $db;
 
 	public function __construct($attributes=array(),$scenario='') {
@@ -15,8 +17,20 @@ class Row extends CActiveRecord
 		$this->schema = $request->getParam('schema');
 		$this->table = $request->getParam('table') ? $request->getParam('table') : $request->getParam('view');
 
+		parent::__construct($attributes, $scenario);
 	}
 
+	/**
+	 * @see CActiveRecord::instantiate()
+	 */
+	public function instantiate($attributes)
+	{
+		$res = parent::instantiate($attributes);
+		$res->originalAttributes = $attributes;
+		
+		return $res;
+	}
+	
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return CActiveRecord the static model class
@@ -57,7 +71,6 @@ class Row extends CActiveRecord
 	 */
 	public function primaryKey()
 	{
-		predie(self::$db->getSchema($this->schema)->getTable($this->table)->primaryKey);
 		return self::$db->getSchema($this->schema)->getTable($this->table)->primaryKey;
 	}
 
@@ -83,7 +96,86 @@ class Row extends CActiveRecord
 		return self::$db;
 	}
 
+	public function save()
+	{
+		if($this->getIsNewRecord())
+		{
+			throw new CDbException(Yii::t('yii','The active record cannot be updated because it is new.'));
+		}
+		if(!$this->beforeSave())
+		{
+			return false;
+		}
+
+		$sql = false;
+		
+		// Check if there has been changed any attribute
+		$changedAttributes = array();
+		foreach($this->originalAttributes AS $column=>$value)
+		{
+			if($this->getAttribute($column) !== $value)
+			{
+				$changedAttributes[$column] = $this->getAttribute($column);
+			}
+		}
+		
+		if(count($changedAttributes) > 0)
+		{
+			
+			$sql = 'UPDATE ' . self::$db->quoteTableName($this->table) . ' SET ' . "\n";
+			
+			foreach($changedAttributes AS $column=>$value)
+			{
+				$sql .= "\t" . self::$db->quoteColumnName($column) . ' = ' . (is_null($value) ? 'NULL' : self::$db->quoteValue($value)) . ' ' . "\n";
+			}
+			
+			$sql .= ' WHERE ' . "\n";
+			
+			
+			$key = $this->getPrimaryKey();
+			
+			// If there is no PK, update with the original attributes in WHERE criteria
+			if($key === null) 
+			{
+				$key = $this->originalAttributes;
+			}
+			elseif(!is_array($key))
+			{
+				$value = $key;
+				$key = array();
+				$key[$this->primaryKey()] = $value;
+			}
+			
+			// Create find criteria
+			$i = count($key);
+			foreach($key AS $column=>$value) {
+				$sql .= "\t" . self::$db->quoteColumnName($column) . ' = ' . self::$db->quoteValue($this->originalAttributes[$column]) . ' ';
+				$i--;
 	
+				if($i > 0)
+					$sql .= 'AND ' . "\n";
+			}
+			
+			$sql .= "\n" . 'LIMIT 1';
+			
+		}
+
+		$cmd = new CDbCommand(self::$db, $sql);
+		
+		try
+		{
+			$cmd->prepare();
+			$cmd->execute();
+			$this->afterSave();
+			$this->refresh();
+			return $sql;
+		}
+		catch(CDbException $ex)
+		{
+			throw new DbException($cmd);
+		}
+		
+	}
 	
 	public function delete()
 	{

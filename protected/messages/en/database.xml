@@ -121,7 +121,7 @@
 	<entry id="addPrimaryKey">Add primary key</entry>
 	
 	<!-- Profiling -->
-	<entry id="toggleProfiling">Toggle profiling</entry>
+	<entry id="profiling">Profiling</entry>
 	
 	<!-- Storage Engines -->
 	<entry id="storageEngines">Storage engines</entry>

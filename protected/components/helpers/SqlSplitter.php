@@ -3,23 +3,22 @@
 class SqlSplitter
 {
 
+	public $delimiter;
+	
 	private $string;
-
 	private $queries = array();
 
 	public function __construct($_string)
 	{
 		$this->string = $_string;
-
-		self::split();
 	}
 
 	private function split()
 	{
 
 		$state = 0;
-
-		$delimiter = ';';
+		$delimiter = $this->delimiter;
+		$delimiterLength = strlen($delimiter);
 
 		/*
 		 * states:
@@ -45,6 +44,7 @@ class SqlSplitter
 		{
 
 			$char = $this->string{$i};
+			$nextChar = $this->string{$i+1};
 
 			/*
 			 * Comments
@@ -110,7 +110,14 @@ class SqlSplitter
 
 			}
 
-			if($state == 0 && ($char == $delimiter || $i == $chars))
+			if($state == 0 && 
+				(
+					($char == $delimiter{0} && 
+						(strlen($delimiter) == 1 || 
+						$nextChar == $delimiter{1})) 
+					|| $i == $chars
+				)
+			)
 			{
 				$query = trim(substr($this->string, $start, $i-$start));
 
@@ -118,6 +125,9 @@ class SqlSplitter
 					$this->queries[] = $query;
 
 				$start = $i+1;
+				
+				if($delimiterLength && $nextChar == $delimiter{1})
+					$start++;
 
 			}
 
@@ -131,6 +141,9 @@ class SqlSplitter
 
 	public function getQueries()
 	{
+		if(!$this->queries)
+			$this->split();
+			 		
 		return $this->queries;
 	}
 

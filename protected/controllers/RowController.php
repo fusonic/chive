@@ -64,81 +64,65 @@ class RowController extends Controller
 
 		$pk = CPropertyValue::ensureArray($db->getSchema()->getTable($this->table)->primaryKey);
 		$column = Yii::app()->getRequest()->getParam('column');
-		$newValue = Yii::app()->getRequest()->getParam('value');
+		$newValue = json_decode(Yii::app()->getRequest()->getParam('value'), true);
 		$null = Yii::app()->getRequest()->getParam('isNull');
+		$attributes = json_decode(Yii::app()->getRequest()->getParam('attributes'), true);
 
-		$attributes = json_decode($_POST['attributes'], true);
+		// SET datatype
+		if(is_array($newValue)) 
+		{
+			$newValue = implode(',', $newValue);
+		}
+		
 		$attributesCount = count($pk);
 
 		if($null)
 		{
-			$newValue = 'NULL';
+			$newValue = null;
 		}
 		
 		$response = new AjaxResponse();
 		
 		Row::$db = $db;
-		$row = Row::model()->findByPk($attributes);
-
-		$response->addData(null, array(
-			'value' => htmlspecialchars($newValue),
-			'column' => $column,
-			'isPrimary' => in_array($column, $pk),
-			'visibleValue' => ($null ? '<span class="null">NULL</span>' : htmlspecialchars($newValue))
-		));
-
-		try
+		
+		if(count($attributes) == 1)
 		{
+			$findAttributes = $attributes[$column];
+		}
+		else
+		{
+			$findAttributes = $attributes;
+		}
+		
+		$row = Row::model()->findByPk($findAttributes);
+		
+		try {
 
-			$commandBuilder = $this->_db->getCommandBuilder();
-
-			$sql = 'UPDATE ' . $db->quoteTableName($this->table) . ' SET ' . "\n";
-			$sql .= "\t" . $db->quoteColumnName($column) . ' = ' . ($null ? $newValue : $db->quoteValue($newValue)) . ' ' . "\n";
-			$sql .= ' WHERE ' . "\n";
-
-			$i = 0;
-			foreach($attributes AS $name=>$value) {
-
-				if(!in_array($name, $pk))
-					continue;
-
-				$sql .= "\t" . $db->quoteColumnName($name) . ' = ' . $db->quoteValue($value) . ' ';
-				$i++;
-
-				if($i < $attributesCount)
-					$sql .= 'AND ' . "\n";
-
-			}
+			$row->setAttribute($column, $newValue);
+			$sql = $row->save();
 			
-			$sql .= "\n" . 'LIMIT 1';
-
-			$cmd = $commandBuilder->createSqlCommand($sql);
-
-			$cmd->prepare();
-			$cmd->execute();
+			$response->addData(null, array(
+				'value' => ($null ? 'NULL' : htmlspecialchars($row->getAttribute($column))),
+				'column' => $column,
+				'isPrimary' => in_array($column, $pk),
+				'isNull' => $null,
+				'visibleValue' => ($null ? '<span class="null">NULL</span>' : htmlspecialchars($row->getAttribute($column)))
+			));
 			
-			// Get value out of DB
-			if(in_array($column, array_keys($attributes)))
-			{
-				
-			}
-			
-			$attributes[$column] = $newValue;
-			
-			$row = Row::model()->findByAttributes($attributes);
-			
-			if($row == null)
-			{
+			// Refresh the page if the row could not be found in database anymore
+			if(!$row->refresh() || $row->getAttribute($column) != $newValue) {
 				$response->refresh = true;
+				
+				// @todo (rponudic) check if a notification is necessary in this case
+				//$response->addNotification('warning', 'type does not match');
 			}
 			
 			$response->addNotification('success', Yii::t('message', 'successUpdateRow'), null, $sql);
 
 		}
-		catch (CDbException $ex)
+		catch (DbException $ex)
 		{
-			$ex = new DbException($cmd);
-			$response->addNotification('error', Yii::t('message', 'errorUpdateRow'), $ex->getText(), $sql, array('isSticky'=>true));
+			$response->addNotification('error', Yii::t('message', 'errorUpdateRow'), $ex->getText(), $sql);
 			$response->addData(null, array('error'=>true));
 		}
 

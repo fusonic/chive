@@ -211,8 +211,12 @@ $(document).ready(function()
 	 * Keepalive packages
 	 */
 	setInterval(function() {
-		$.post(baseUrl + '/site/keepAlive');
-	}, 1000*5*60);	//Every 5 minutes
+		$.post(baseUrl + '/site/keepAlive', function(response) {
+			if(response != 'OK') {
+				reload();
+			}
+		});
+	}, 300000);	//Every 5 minutes
 	
 })
 .keydown(function(e) 
@@ -297,7 +301,7 @@ $(document).bind('keydown', 'pagedown', function() {
 	}
 	
 });
-$(document).bind('keydown', 'strg+pagedown', function() {
+$(document).bind('keydown', 'shift+pagedown', function() {
 	if($('ul.yiiPager li.selected').prev('li').length > 0)
 	{
 		location.href = $('ul.yiiPager li.selected').prev('li').find('a').attr('href');
