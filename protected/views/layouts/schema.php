@@ -47,6 +47,7 @@ $scriptFiles = array(
 	'js/views/schema/general.js',
 	'js/views/schema/list.js',
 	'js/views/schema/processes.js',
+	'js/views/schema/routines.js',
 	'js/views/schema/tables.js',
 	'js/views/schema/views.js',
 	'js/views/table/general.js',
@@ -161,7 +162,7 @@ foreach($scriptFiles AS $file)
   		<div class="sidebarHeader">
 			<a class="icon" href="#views">
 				<com:Icon name="view" size="24" text="database.views" />
-				<span><?php echo Yii::t('database', 'views') ?></span>
+				<span><?php echo Yii::t('database', 'views'); ?></span>
 			</a>
 		</div>
 		<div class="sidebarContent">
@@ -181,7 +182,7 @@ foreach($scriptFiles AS $file)
   		<div class="sidebarHeader">
 			<a class="icon">
 				<com:Icon name="procedure" size="24" />
-				<span>Routines</span>
+				<span><?php echo Yii::t('database', 'routines'); ?></span>
 			</a>
 		</div>
 		<div class="sidebarContent">

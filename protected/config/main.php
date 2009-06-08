@@ -102,6 +102,7 @@ return array(
                 'schema/<schema:'.URL_MATCH.'>'=>'schema/index',
 				'schema/<schema:'.URL_MATCH.'>/tables'=>'schema/tables',
 				'schema/<schema:'.URL_MATCH.'>/views'=>'schema/views',
+				'schema/<schema:'.URL_MATCH.'>/routines'=>'schema/routines',
 				'schema/<schema:'.URL_MATCH.'>/sql'=>'schema/sql',
 				'schema/<schema:'.URL_MATCH.'>/import'=>'schema/import',
 				'schema/<schema:'.URL_MATCH.'>/import/upload'=>'schema/upload',

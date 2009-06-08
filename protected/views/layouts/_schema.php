@@ -44,6 +44,14 @@ var schema = '<?php echo $this->schema; ?>';
 					),
 					'visible'=>true,
 			),
+			array(	'label' => Yii::t('database', 'routines'),
+					'icon' => 'procedure',
+					'link' => array(
+						'url' => '#routines',
+						'htmlOptions' => array('class' => 'icon'),
+					),
+					'visible' => true,
+			),
 			/*
 			array(	'label'=> Yii::t('action','operations'),
 					'icon'=>'operations',

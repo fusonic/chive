@@ -142,6 +142,36 @@ class SchemaController extends Controller
 		));
 	}
 
+	/**
+	 * Lists all routines (procedures & functions).
+	 */
+	public function actionRoutines()
+	{
+		$schema = $this->loadSchema();
+
+		$criteria = new CDbCriteria;
+		$criteria->condition = 'ROUTINE_SCHEMA = :schema';
+		$criteria->params = array(
+			':schema' => $this->schema,
+		);
+
+		// Sort
+		$sort = new CSort('View');
+		$sort->attributes = array(
+			'ROUTINE_NAME' => 'name',
+		);
+		$sort->route = '#routines';
+		$sort->applyOrder($criteria);
+
+		$schema->routines = Routine::model()->findAll($criteria);
+
+		$this->render('routines', array(
+			'schema' => $schema,
+			'routineCount' => count($schema->routines),
+			'sort' => $sort,
+		));
+	}
+
 	public function actionSql($_query = false, $_execute = true) {
 
 		$db = $this->_db;

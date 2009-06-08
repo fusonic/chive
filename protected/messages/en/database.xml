@@ -146,4 +146,14 @@
 	<entry id="addView">Add view</entry>
 	<entry id="editView">Edit view</entry>
 	<entry id="dropView">Drop view</entry>
+	
+	<!-- Routines -->
+	<entry id="routine">Routine</entry>
+	<entry id="routines">Routines</entry>
+	<entry id="amountRoutines">1#{amount}  Routine|n>1#{amount}  Routines</entry>
+	<entry id="addFunction">Add function</entry>
+	<entry id="addProcedure">Add procedure</entry>
+	<entry id="noRoutines">No visible routines in this schema.</entry>
+	<entry id="dropRoutines">Drop routines</entry>
+	<entry id="doYouReallyWantToDropRoutines">Do you really want to drop the selected routines?</entry>
 </category>
