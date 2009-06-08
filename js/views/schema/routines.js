@@ -1,5 +1,23 @@
 var schemaRoutines = {
 	
+	// Add procedure
+	addProcedure: function()
+	{
+		$('#routines').appendForm(baseUrl + '/schema/' + schema + '/routineAction/create?type=procedure');
+	},
+	
+	// Add function
+	addFunction: function()
+	{
+		$('#routines').appendForm(baseUrl + '/schema/' + schema + '/routineAction/create?type=function');
+	},
+	
+	// Edit routine
+	editRoutine: function(routine)
+	{
+		$('#routines_' + routine).appendForm(baseUrl + '/schema/' + schema + '/routines/' + routine + '/update');
+	},
+	
 	// Drop view
 	dropRoutine: function(routine)
 	{

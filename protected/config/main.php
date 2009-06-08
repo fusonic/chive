@@ -155,6 +155,13 @@ return array(
 					'schema/<schema:' . URL_MATCH . '>/views/<view:' . URL_MATCH . '>/insert' => 'view/insert',
 					'schema/<schema:' . URL_MATCH . '>/views/<view:' . URL_MATCH . '>/update' => 'view/update',
 
+					// Routine actions
+					'schema/<schema:' . URL_MATCH . '>/routineAction/create' => 'routine/create',
+					'schema/<schema:' . URL_MATCH . '>/routineAction/drop' => 'routine/drop',
+
+					// Routines
+					'schema/<schema:' . URL_MATCH . '>/routines/<routine:' . URL_MATCH . '>/update' => 'routine/update',
+
 					// Row
 					#'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/row/load'=>'row/load',
 					#'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/row/update'=>'row/update',

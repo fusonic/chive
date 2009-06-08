@@ -3,8 +3,8 @@
 class SqlSplitter
 {
 
-	public $delimiter;
-	
+	public $delimiter = ';';
+
 	private $string;
 	private $queries = array();
 
@@ -110,11 +110,11 @@ class SqlSplitter
 
 			}
 
-			if($state == 0 && 
+			if($state == 0 &&
 				(
-					($char == $delimiter{0} && 
-						(strlen($delimiter) == 1 || 
-						$nextChar == $delimiter{1})) 
+					($char == $delimiter{0} &&
+						(strlen($delimiter) == 1 ||
+						$nextChar == $delimiter{1}))
 					|| $i == $chars
 				)
 			)
@@ -125,7 +125,7 @@ class SqlSplitter
 					$this->queries[] = $query;
 
 				$start = $i+1;
-				
+
 				if($delimiterLength && $nextChar == $delimiter{1})
 					$start++;
 
@@ -143,7 +143,7 @@ class SqlSplitter
 	{
 		if(!$this->queries)
 			$this->split();
-			 		
+
 		return $this->queries;
 	}
 

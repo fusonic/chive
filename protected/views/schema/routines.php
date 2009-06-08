@@ -9,7 +9,7 @@
 				<com:Icon name="add" size="16" />
 				<span><?php echo Yii::t('database', 'addProcedure'); ?></span>
 			</a>
-			<a href="javascript:void(0)" class="icon button" onclick="schemaRoutines.addFuntion()">
+			<a href="javascript:void(0)" class="icon button" onclick="schemaRoutines.addFunction()">
 				<com:Icon name="add" size="16" />
 				<span><?php echo Yii::t('database', 'addFunction'); ?></span>
 			</a>
@@ -84,7 +84,7 @@
 				<com:Icon name="add" size="16" />
 				<span><?php echo Yii::t('database', 'addProcedure'); ?></span>
 			</a>
-			<a href="javascript:void(0)" class="icon button" onclick="schemaRoutines.addFuntion()">
+			<a href="javascript:void(0)" class="icon button" onclick="schemaRoutines.addFunction()">
 				<com:Icon name="add" size="16" />
 				<span><?php echo Yii::t('database', 'addFunction'); ?></span>
 			</a>

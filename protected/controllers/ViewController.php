@@ -2,7 +2,8 @@
 
 class ViewController extends Controller
 {
-	const PAGE_SIZE=10;
+	const PAGE_SIZE = 10;
+	private static $delimiter = '//';
 
 	/**
 	 * @var string specifies the default action to be 'list'.
@@ -389,11 +390,13 @@ class ViewController extends Controller
 		if(isset($_POST['query']))
 		{
 			$query = $_POST['query'];
-			$cmd = $this->_db->createCommand($query);
+
 			try
 			{
+				$cmd = $this->_db->createCommand($query);
 				$cmd->prepare();
 				$cmd->execute();
+
 				$response = new AjaxResponse();
 				$response->addNotification('success',
 					Yii::t('message', 'successAddView'),
@@ -423,7 +426,7 @@ class ViewController extends Controller
 	}
 
 	/**
-	 * Drops tables
+	 * Drops views.
 	 */
 	public function actionDrop()
 	{
@@ -508,38 +511,6 @@ class ViewController extends Controller
 		$this->render('form', array(
 			'view' => $view,
 			'query' => $query,
-		));
-	}
-
-	/**
-	 * Deletes a particular user.
-	 * If deletion is successful, the browser will be redirected to the 'list' page.
-	 */
-	public function actionDelete()
-	{
-	}
-
-	/**
-	 * Lists all users.
-	 */
-	public function actionList()
-	{
-		$criteria=new CDbCriteria;
-
-		$pages=new CPagination(Schema::model()->count($criteria));
-		$pages->pageSize=self::PAGE_SIZE;
-		$pages->applyLimit($criteria);
-
-		$criteria->group = 'SCHEMA_NAME';
-		$criteria->select = 'COUNT(*) AS tableCount';
-
-		$schemaList = Schema::model()->with(array(
-			"table" => array('select'=>'COUNT(*) AS tableCount')
-		))->together()->findAll($criteria);
-
-		$this->render('list',array(
-			'schemaList'=>$schemaList,
-			'pages'=>$pages,
 		));
 	}
 

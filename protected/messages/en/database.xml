@@ -148,6 +148,8 @@
 	<entry id="dropView">Drop view</entry>
 	
 	<!-- Routines -->
+	<entry id="editFunction">Edit function</entry>
+	<entry id="editProcedure">Edit procedure</entry>
 	<entry id="routine">Routine</entry>
 	<entry id="routines">Routines</entry>
 	<entry id="amountRoutines">1#{amount}  Routine|n>1#{amount}  Routines</entry>

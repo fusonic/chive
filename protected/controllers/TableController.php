@@ -809,38 +809,6 @@ class TableController extends Controller
 	}
 
 	/**
-	 * Deletes a particular user.
-	 * If deletion is successful, the browser will be redirected to the 'list' page.
-	 */
-	public function actionDelete()
-	{
-	}
-
-	/**
-	 * Lists all users.
-	 */
-	public function actionList()
-	{
-		$criteria=new CDbCriteria;
-
-		$pages=new CPagination(Schema::model()->count($criteria));
-		$pages->pageSize=self::PAGE_SIZE;
-		$pages->applyLimit($criteria);
-
-		$criteria->group = 'SCHEMA_NAME';
-		$criteria->select = 'COUNT(*) AS tableCount';
-
-		$schemaList = Schema::model()->with(array(
-			"table" => array('select'=>'COUNT(*) AS tableCount')
-		))->together()->findAll($criteria);
-
-		$this->render('list',array(
-			'schemaList'=>$schemaList,
-			'pages'=>$pages,
-		));
-	}
-
-	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the primary key value. Defaults to null, meaning using the 'id' GET variable

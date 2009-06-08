@@ -79,4 +79,9 @@
 	<!-- Foreign keys -->
 	<entry id="successEditRelation">Saved relation for column »{col}«</entry>
 	
+	<!-- Routines -->
+	<entry id="successAddFunction">Added function</entry>
+	<entry id="successAddProcedure">Added procedure</entry>
+	<entry id="successDropRoutine">1#Dropped routine »{routine}«|n>1#Dropped {routineCount} routines</entry>
+	<entry id="errorDropRoutine">Dropping routine »{routine}« failed</entry>
 </category>
