@@ -25,22 +25,19 @@ class SiteController extends Controller
 	}
 
 	/**
-	 * Specifies the access control rules.
-	 * This method is used by the 'accessControl' filter.
-	 * @return array access control rules
+	 * @see		CController::accessRules()
 	 */
 	public function accessRules()
 	{
 		return array(
 			array('allow',
 				'actions' => array('login', 'changeLanguage', 'changeTheme'),
-				'users'=>array('*'),
+				'users' => array('*'),
 			),
 			array('deny',
-				'users'=>array('?'),
+				'users' => array('?'),
 			),
 		);
-
 	}
 
 	/**

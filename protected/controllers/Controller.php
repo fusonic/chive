@@ -50,6 +50,28 @@ class Controller extends CController
 	}
 
 	/**
+	 * @see		CController::filters()
+	 */
+	public function filters()
+	{
+		return array(
+			'accessControl',
+		);
+	}
+
+	/**
+	 * @see		CController::accessRules()
+	 */
+	public function accessRules()
+	{
+		return array(
+			array('deny',
+				'users' => array('?'),
+			),
+		);
+	}
+
+	/**
 	 * @see CController::createUrl()
 	 */
 	public function createUrl($route, $params = array(), $ampersand = '&')
