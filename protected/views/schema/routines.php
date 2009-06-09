@@ -43,7 +43,12 @@
 						<input type="checkbox" name="routines[]" value="<?php echo $routine->ROUTINE_NAME; ?>" />
 					</td>
 					<td>
-						<a href="#views/<?php echo $routine->ROUTINE_NAME; ?>/structure">
+						<a href="#views/<?php echo $routine->ROUTINE_NAME; ?>/structure" class="icon">
+							<?php if($routine->ROUTINE_TYPE == 'PROCEDURE') { ?>
+								<com:Icon name="procedure" size="16" text="database.procedure" />
+							<?php } else { ?>
+								<com:Icon name="function" size="16" text="database.function" />
+							<?php } ?>
 							<?php echo $routine->ROUTINE_NAME; ?>
 						</a>
 					</td>

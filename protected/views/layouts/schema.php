@@ -181,30 +181,6 @@ foreach($scriptFiles AS $file)
 		</div>
   		<div class="sidebarHeader">
 			<a class="icon">
-				<com:Icon name="procedure" size="24" />
-				<span><?php echo Yii::t('database', 'routines'); ?></span>
-			</a>
-		</div>
-		<div class="sidebarContent">
-			<ul class="list icon nowrap">
-				<?php foreach(Routine::model()->findAllByAttributes(array('ROUTINE_SCHEMA' => $_GET['schema'])) AS $routine) { ?>
-					<li>
-						<span class="icon">
-							<?php if($routine->ROUTINE_TYPE == 'FUNCTION') { ?>
-								<com:Icon name="function" size="16" text="database.function" />
-							<?php } else { ?>
-								<com:Icon name="procedure" size="16" text="database.procecure" />
-							<?php } ?>
-						</span>
-						<span class="icon">
-							<span><?php echo $routine->ROUTINE_NAME; ?></span>
-						</span>
-					</li>
-				<?php } ?>
-			</ul>
-		</div>
-  		<div class="sidebarHeader">
-			<a class="icon">
 				<com:Icon name="bookmark" size="24" text="core.bookmarks" />
 				<span><?php echo Yii::t('core', 'bookmarks') ?></span>
 			</a>

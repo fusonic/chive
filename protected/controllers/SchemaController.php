@@ -370,13 +370,11 @@ class SchemaController extends Controller
 	 */
 	public function loadSchema()
 	{
-		if($this->_schema === null)
+		if(is_null($this->_schema))
 		{
-			$this->_schema = Schema::model()->findByPk(array(
-				'SCHEMA_NAME' => $this->schema,
-			));
+			$this->_schema = Schema::model()->findByPk($this->schema);
 
-			if($this->_schema === null)
+			if(is_null($this->_schema))
 			{
 				throw new CHttpException(500, 'The requested schema does not exist.');
 			}

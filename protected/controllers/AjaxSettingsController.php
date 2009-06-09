@@ -2,20 +2,8 @@
 
 class AjaxSettingsController extends Controller
 {
-
-	public function __construct($id, $module=null) {
-
-		if(Yii::app()->user->isGuest)
-		{
-			throw new CException(Yii::t('yii','Guests are not allowed to save or retrieve settings.'));
-		}
-
-		parent::__construct($id, $module);
-
-	}
-
 	/**
-	 * @todo (mburtscher) Add description
+	 * Action to set a setting via Ajax.
 	 */
 	public function actionSet()
 	{
@@ -28,11 +16,10 @@ class AjaxSettingsController extends Controller
 	}
 
 	/**
-	 * Add a value to a setting
+	 * Action to add a value to an array setting.
 	 */
 	public function actionAdd()
 	{
-
 		$name = $_POST['name'];
 		$scope = (isset($_POST['scope']) ? $_POST['scope'] : null);
 		$object = (isset($_POST['object']) ? $_POST['object'] : null);
@@ -49,9 +36,11 @@ class AjaxSettingsController extends Controller
 
 		Yii::app()->user->settings->set($name, $oldValue, $scope, $object);
 		Yii::app()->user->settings->saveSettings();
-
 	}
 
+	/**
+	 * Action to toggle a boolean setting (invert old value).
+	 */
 	public function actionToggle()
 	{
 		$name = $_POST['name'];
@@ -63,5 +52,4 @@ class AjaxSettingsController extends Controller
 		Yii::app()->user->settings->set($name, !$oldValue, $scope, $object);
 		Yii::app()->user->settings->saveSettings();
 	}
-
 }

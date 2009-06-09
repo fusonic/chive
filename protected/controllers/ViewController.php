@@ -482,44 +482,33 @@ class ViewController extends Controller
 	}
 
 	/**
-	 * Returns the data model based on the primary key given in the GET variable.
-	 * If the data model is not found, an HTTP exception will be raised.
-	 * @param integer the primary key value. Defaults to null, meaning using the 'id' GET variable
+	 * Loads the current view.
+	 *
+	 * @return	View
 	 */
-	public function loadView($id = null)
+	public function loadView()
 	{
-		if($this->_view === null)
+		if(is_null($this->_view))
 		{
-			if($id !== null || ($this->view && $this->schema))
+			$pk = array(
+				'TABLE_SCHEMA' => $this->schema,
+				'TABLE_NAME' => $this->view,
+			);
+			$this->_view = View::model()->findByPk($pk);
+			$this->_view->columns = Column::model()->findAllByAttributes($pk);
+
+			if(is_null($this->_view))
 			{
-
-				$criteria = new CDbCriteria;
-				$criteria->condition = 'TABLE_SCHEMA = :schema AND TABLE_NAME = :table';
-				$criteria->params = array(
-					':schema' => $this->schema,
-					':table' => $this->view,
-				);
-
-				$pk = array(
-					'TABLE_SCHEMA' => $this->schema,
-					'TABLE_NAME' => $this->view,
-				);
-				$view = View::model()->find($criteria);
-				$view->columns = Column::model()->findAll($criteria);
-				$this->_view = $view;
-			}
-
-			if($this->_view === null)
-			{
-				throw new CHttpException(500,'The requested view does not exist.');
+				throw new CHttpException(500, 'The requested view does not exist.');
 			}
 		}
-
 		return $this->_view;
 	}
 
-	/*
-	 * Private functions
+	/**
+	 * Returns the defualt query for the current view's browse page.
+	 *
+	 * @return	string					The default query
 	 */
 	private function getDefaultQuery()
 	{

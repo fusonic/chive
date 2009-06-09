@@ -52,16 +52,6 @@ var schema = '<?php echo $this->schema; ?>';
 					),
 					'visible' => true,
 			),
-			/*
-			array(	'label'=> Yii::t('action','operations'),
-					'icon'=>'operations',
-					'link'=>array(
-						'url'=> '#operations',
-						'htmlOptions'=> array('class'=>'icon'),
-					),
-					'visible'=>true,
-			),
-			*/
 			array(	'label'=>Yii::t('action','drop'),
 					'icon'=>'delete',
 					'link'=>array(

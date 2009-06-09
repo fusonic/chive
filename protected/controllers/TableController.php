@@ -772,28 +772,24 @@ class TableController extends Controller
 	}
 
 	/**
-	 * Returns the data model based on the primary key given in the GET variable.
-	 * If the data model is not found, an HTTP exception will be raised.
-	 * @param integer the primary key value. Defaults to null, meaning using the 'id' GET variable
+	 * Loads the current table.
+	 *
+	 * @return	Table
 	 */
-	public function loadTable($id = null)
+	public function loadTable()
 	{
-		if($this->_table === null)
+		if(is_null($this->_table))
 		{
-			if($id !== null || ($this->table && $this->schema))
-			{
-				$pk = array(
-					'TABLE_SCHEMA' => $this->schema,
-					'TABLE_NAME' => $this->table,
-				);
-				$table = Table::model()->findByPk($pk);
-				$table->columns = Column::model()->findAllByAttributes($pk);
-				$this->_table = $table;
-			}
+			$pk = array(
+				'TABLE_SCHEMA' => $this->schema,
+				'TABLE_NAME' => $this->table,
+			);
+			$this->_table = Table::model()->findByPk($pk);
+			$this->_table->columns = Column::model()->findAllByAttributes($pk);
 
-			if($this->_table === null)
+			if(is_null($this->_table))
 			{
-				throw new CHttpException(500,'The requested table does not exist.');
+				throw new CHttpException(500, 'The requested table does not exist.');
 			}
 		}
 		return $this->_table;

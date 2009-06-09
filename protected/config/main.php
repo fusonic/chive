@@ -46,7 +46,7 @@ return array(
 				array(
 					'class'=>'CWebLogRoute',
 					'levels'=>'error, warning', //, warning, info, trace',
-					'showInFireBug'=>false,
+					'showInFireBug'=>true,
 				),
 			),
 		),
