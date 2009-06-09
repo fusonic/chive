@@ -45,7 +45,6 @@ if(!$app->user->isGuest)
     $app->db->password= $app->user->password;
     $app->db->autoConnect = true;
     $app->db->setActive(true);
-
 }
 elseif(!preg_match('/^(' . implode('|', $validPaths) . ')/i', $request->getPathInfo()))
 {

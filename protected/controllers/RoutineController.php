@@ -4,30 +4,20 @@ class RoutineController extends Controller
 {
 	private static $delimiter = '//';
 
-	/**
-	 * @var CActiveRecord the currently loaded data model instance.
-	 */
-	private $_db;
-
 	public $routine;
 	public $schema;
 
-	public function __construct($id, $module=null) {
+	public $layout = false;
 
+	public function __construct($id, $module=null)
+	{
 		$request = Yii::app()->getRequest();
 
 		$this->routine = $request->getParam('routine');
 		$this->schema = $request->getParam('schema');
 
-		// @todo (rponudic) work with parameters!
-		$this->_db = new CDbConnection('mysql:host='.Yii::app()->user->host.';dbname=' . $this->schema, Yii::app()->user->name, Yii::app()->user->password);
-		$this->_db->charset = 'utf8';
-		$this->_db->active = true;
-
-		Routine::$db = $this->_db;
-
 		parent::__construct($id, $module);
-
+		$this->connectDb($this->schema);
 	}
 
 	/**
@@ -70,7 +60,7 @@ class RoutineController extends Controller
 			try
 			{
 
-				$cmd = $this->_db->createCommand($query);
+				$cmd = $this->db->createCommand($query);
 				$cmd->prepare();
 				$cmd->execute();
 
@@ -90,7 +80,7 @@ class RoutineController extends Controller
 		}
 		else
 		{
-			$query = 'CREATE ' . strtoupper($type) . ' ' . $this->_db->quoteTableName('name_of_' . strtolower($type)) . "()\n"
+			$query = 'CREATE ' . strtoupper($type) . ' ' . $this->db->quoteTableName('name_of_' . strtolower($type)) . "()\n"
 				. ($type == 'function' ? 'RETURNS VARCHAR(50)' . "\n" : '')
 				. 'BEGIN' . "\n"
 				. '-- Definition start' . "\n\n"
@@ -177,7 +167,7 @@ class RoutineController extends Controller
 
 				foreach($queries AS $query2)
 				{
-					$cmd = $this->_db->createCommand($query2);
+					$cmd = $this->db->createCommand($query2);
 					$cmd->prepare();
 					$cmd->execute();
 				}
@@ -198,7 +188,7 @@ class RoutineController extends Controller
 		}
 		else
 		{
-			$query = 'DROP ' . strtoupper($routine->ROUTINE_TYPE) . ' ' . $this->_db->quoteTableName($routine->ROUTINE_NAME) . self::$delimiter . "\n"
+			$query = 'DROP ' . strtoupper($routine->ROUTINE_TYPE) . ' ' . $this->db->quoteTableName($routine->ROUTINE_NAME) . self::$delimiter . "\n"
 				. $routine->getCreateRoutine();
 		}
 

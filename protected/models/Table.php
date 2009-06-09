@@ -2,7 +2,6 @@
 
 class Table extends CActiveRecord
 {
-
 	public static $db;
 
 	public $originalAttributes;
@@ -15,8 +14,7 @@ class Table extends CActiveRecord
 	private $showCreateTable;
 
 	/**
-	 * Returns the static model of the specified AR class.
-	 * @return CActiveRecord the static model class
+	 * @see		CActiveRecord::model()
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -24,7 +22,7 @@ class Table extends CActiveRecord
 	}
 
 	/**
-	 * @see CActiveRecord::instantiate()
+	 * @see		CActiveRecord::instantiate()
 	 */
 	public function instantiate($attributes)
 	{
@@ -77,13 +75,27 @@ class Table extends CActiveRecord
 	}
 
 	/**
-	 * @return string the associated database table name
+	 * @see		CActiveRecord::tableName()
 	 */
 	public function tableName()
 	{
 		return 'TABLES';
 	}
 
+	/**
+	 * @see		CActiveRecord::primaryKey()
+	 */
+	public function primaryKey()
+	{
+		return array(
+			'TABLE_SCHEMA',
+			'TABLE_NAME',
+		);
+	}
+
+	/**
+	 * @see		CActiveRecord:.safeAttributes()
+	 */
 	public function safeAttributes()
 	{
 		return array(
@@ -98,26 +110,7 @@ class Table extends CActiveRecord
 	}
 
 	/**
-	 * @return array validation rules for model attributes.
-	 */
-	public function rules()
-	{
-		return array(
-			array('TABLE_CATALOG','length','max'=>512),
-			array('TABLE_SCHEMA','length','max'=>64),
-			array('TABLE_NAME','length','max'=>64),
-			array('TABLE_TYPE','length','max'=>64),
-			array('ENGINE','length','max'=>64),
-			array('ROW_FORMAT','length','max'=>10),
-			array('TABLE_COLLATION','length','max'=>64),
-			array('CREATE_OPTIONS','length','max'=>255),
-			array('TABLE_COMMENT','length','max'=>80),
-			array('VERSION, TABLE_ROWS, AVG_ROW_LENGTH, DATA_LENGTH, MAX_DATA_LENGTH, INDEX_LENGTH, DATA_FREE, AUTO_INCREMENT, CHECKSUM', 'numerical'),
-		);
-	}
-
-	/**
-	 * @return array relational rules.
+	 * @see		CActiveRecord::relations()
 	 */
 	public function relations()
 	{
@@ -130,7 +123,7 @@ class Table extends CActiveRecord
 	}
 
 	/**
-	 * @return array customized attribute labels (name=>label)
+	 * @see		CModel::attributeLabels()
 	 */
 	public function attributeLabels()
 	{
@@ -145,18 +138,20 @@ class Table extends CActiveRecord
 		);
 	}
 
-	public function primaryKey()
-	{
-		return array(
-			'TABLE_SCHEMA',
-			'TABLE_NAME',
-		);
-	}
-
+	/**
+	 * Returns the row count.
+	 *
+	 * @return	int					Number of rows in the table
+	 */
 	public function getRowCount() {
 		return (int)$this->TABLE_ROWS;
 	}
 
+	/**
+	 * Returns the average row size.
+	 *
+	 * @return	mixed				Average row size, '-' if no rows found.
+	 */
 	public function getAverageRowSize() {
 		if($this->getRowCount() > 0)
 		{
@@ -168,6 +163,11 @@ class Table extends CActiveRecord
 		}
 	}
 
+	/**
+	 * Returns wether the table has a primary key.
+	 *
+	 * @return	bool				True, if table has a primary key. False, if not.
+	 */
 	public function getHasPrimaryKey()
 	{
 		foreach($this->indices AS $index)
@@ -180,6 +180,11 @@ class Table extends CActiveRecord
 		return false;
 	}
 
+	/**
+	 * Returns the result of SHOW CREATE TABLE.
+	 *
+	 * @return	string				Create table statement
+	 */
 	public function getShowCreateTable()
 	{
 		if(!$this->showCreateTable)
@@ -216,9 +221,7 @@ class Table extends CActiveRecord
 	}
 
 	/**
-	 * Drop table (delete structure and containing data)
-	 *
-	 * @return	string
+	 * @see		CActiveRecord::delete()
 	 */
 	public function delete() {
 
@@ -249,7 +252,7 @@ class Table extends CActiveRecord
 		$comma = '';
 		if($this->TABLE_NAME !== $this->originalAttributes['TABLE_NAME'] && !$this->getIsNewRecord())
 		{
-			//@todo(mburtscher): Privileges are not copied!!!
+			//@todo(mburtscher): Privileges are not copied automatically!!!
 			$sql .= "\n\t" . 'RENAME ' . self::$db->quoteTableName($this->TABLE_NAME);
 			$comma = ',';
 		}
@@ -286,9 +289,7 @@ class Table extends CActiveRecord
 	}
 
 	/**
-	 * Update table
-	 *
-	 * @return	mixed
+	 * @see		CActiveRecord::update()
 	 */
 	public function update()
 	{
@@ -321,10 +322,7 @@ class Table extends CActiveRecord
 	}
 
 	/**
-	 * Insert new table
-	 *
-	 * @param	array			$columns
-	 * @return	bool
+	 * @see		CActiveRecord::insert()
 	 */
 	public function insert(array $columns)
 	{
@@ -365,6 +363,11 @@ class Table extends CActiveRecord
 		}
 	}
 
+	/**
+	 * Returns all index types which are supported by this table.
+	 *
+	 * @return	array				Array of all supported index types
+	 */
 	public function getSupportedIndexTypes()
 	{
 		$types = array(
@@ -378,5 +381,4 @@ class Table extends CActiveRecord
 		}
 		return $types;
 	}
-
 }

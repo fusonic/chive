@@ -2,8 +2,6 @@
 
 class ColumnController extends Controller
 {
-	private $_db;
-
 	public $schema;
 	public $table;
 	public $column;
@@ -24,15 +22,8 @@ class ColumnController extends Controller
 		$this->table = $request->getParam('table');
 		$this->column = $request->getParam('column');
 
-		// @todo (rponudic) work with parameters!
-		$this->_db = new CDbConnection('mysql:host='.Yii::app()->user->host.';dbname=' . $this->schema, Yii::app()->user->name, Yii::app()->user->password);
-		$this->_db->charset='utf8';
-		$this->_db->active = true;
-
-		Column::$db = Table::$db = Index::$db = $this->_db;
-
 		parent::__construct($id, $module);
-
+		$this->connectDb($this->schema);
 	}
 
 	/**

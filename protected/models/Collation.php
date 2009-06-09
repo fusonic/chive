@@ -8,16 +8,15 @@ class Collation extends CActiveRecord
 	public $collationGroup;
 
 	/**
-	 * Returns the static model of the specified AR class.
-	 * @return CActiveRecord the static model class
+	 * @see		CActiveRecord::model()
 	 */
-	public static function model($className=__CLASS__)
+	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
 	}
 
 	/**
-	 * @return string the associated database table name
+	 * @see		CActiveRecord::tableName()
 	 */
 	public function tableName()
 	{
@@ -25,21 +24,15 @@ class Collation extends CActiveRecord
 	}
 
 	/**
-	 * @return array validation rules for model attributes.
+	 * @see		CActiveRecord::primaryKey()
 	 */
-	public function rules()
+	public function primaryKey()
 	{
-		return array(
-			array('COLLATION_NAME','length','max'=>64),
-			array('CHARACTER_SET_NAME','length','max'=>64),
-			array('IS_DEFAULT','length','max'=>3),
-			array('IS_COMPILED','length','max'=>3),
-			array('ID, SORTLEN', 'numerical'),
-		);
+		return 'COLLATION_NAME';
 	}
 
 	/**
-	 * @return array relational rules.
+	 * @see		CActiveRecord::relations()
 	 */
 	public function relations()
 	{
@@ -50,22 +43,14 @@ class Collation extends CActiveRecord
 	}
 
 	/**
-	 * @return array customized attribute labels (name=>label)
+	 * Returns the definition of the given collation.
+	 *
+	 * The definition contains charset, collation and language like this:
+	 * cp1252 West European, Swedish (Case-Insensitive)
+	 *
+	 * @param	string				Collation name (e.g. utf8_general_ci)
+	 * @return	string				Definition including charset, collation and language
 	 */
-	public function attributeLabels()
-	{
-		return array(
-		);
-	}
-
-	/*
-	 * @return string primary key column
-	 */
-	public function primaryKey()
-	{
-		return 'COLLATION_NAME';
-	}
-
 	public static function getDefinition($collation)
 	{
 		$data = explode('_', $collation);
@@ -77,6 +62,14 @@ class Collation extends CActiveRecord
 		return $text;
 	}
 
+	/**
+	 * Returns the character set of a collation.
+	 *
+	 * This is the content before the first underscore.
+	 *
+	 * @param	string				Collation name (e.g. utf8_general_ci)
+	 * @return	string				Charset (e.g. utf8)
+	 */
 	public static function getCharacterSet($collation)
 	{
 		$data = explode('_', $collation);

@@ -2,24 +2,25 @@
 
 class Schema extends CActiveRecord
 {
-
 	public static $db;
 
 	public $tableCount;
 	public $originalSchemaName;
 
 	public $DEFAULT_CHARACTER_SET_NAME = Collation::DEFAULT_CHARACTER_SET;
-	public $DEFAULT_COLLATION_NAME = COLLATION::DEFAULT_COLLATION;
+	public $DEFAULT_COLLATION_NAME = Collation::DEFAULT_COLLATION;
 
 	/**
-	 * Returns the static model of the specified AR class.
-	 * @return CActiveRecord the static model class
+	 * @see		CActiveRecord::model()
 	 */
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
 	}
 
+	/**
+	 * @see		CActiveRecord::instantiate()
+	 */
 	public function instantiate($attributes)
 	{
 		$res = parent::instantiate($attributes);
@@ -31,7 +32,7 @@ class Schema extends CActiveRecord
 	}
 
 	/**
-	 * @return string the associated database table name
+	 * @see		CActiveRecord::tableName()
 	 */
 	public function tableName()
 	{
@@ -39,23 +40,15 @@ class Schema extends CActiveRecord
 	}
 
 	/**
-	 * @return array validation rules for model attributes.
+	 * @see		CActiveRecord::primaryKey()
 	 */
-	public function rules()
+	public function primaryKey()
 	{
-		return array(
-			array('CATALOG_NAME', 'length', 'max'=>512),
-			array('SCHEMA_NAME', 'required'),
-			array('SCHEMA_NAME', 'length', 'min'=>1, 'max'=>64),
-			array('DEFAULT_CHARACTER_SET_NAME', 'length', 'max'=>64),
-			array('DEFAULT_COLLATION_NAME', 'required'),
-			array('DEFAULT_COLLATION_NAME', 'length', 'max'=>64),
-			array('SQL_PATH','length','max'=>512),
-		);
+		return 'SCHEMA_NAME';
 	}
 
 	/**
-	 * @return array attributes that can be massively assigned
+	 * @see		CActiveRecord::safeAttributes()
 	 */
 	public function safeAttributes()
 	{
@@ -66,7 +59,7 @@ class Schema extends CActiveRecord
 	}
 
 	/**
-	 * @return array relational rules.
+	 * @see		CActiveRecord::relations()
 	 */
 	public function relations()
 	{
@@ -79,7 +72,7 @@ class Schema extends CActiveRecord
 	}
 
 	/**
-	 * @return array customized attribute labels (name=>label)
+	 * @see		CActiveRecord::attributeLabels()
 	 */
 	public function attributeLabels()
 	{
@@ -91,13 +84,8 @@ class Schema extends CActiveRecord
 	}
 
 	/**
-	 * @return string primary key column
+	 * @see		CActiveRecord::insert()
 	 */
-	public function primaryKey()
-	{
-		return 'SCHEMA_NAME';
-	}
-
 	public function insert()
 	{
 		if(!$this->getIsNewRecord())
@@ -129,6 +117,9 @@ class Schema extends CActiveRecord
 		}
 	}
 
+	/**
+	 * @see		CActiveRecord::update()
+	 */
 	public function update()
 	{
 		if($this->getIsNewRecord())
@@ -159,6 +150,9 @@ class Schema extends CActiveRecord
 		}
 	}
 
+	/**
+	 * @see		CActiveRecord::delete()
+	 */
 	public function delete()
 	{
 		if($this->getIsNewRecord())
@@ -185,5 +179,4 @@ class Schema extends CActiveRecord
 			throw new DbException($cmd);
 		}
 	}
-
 }

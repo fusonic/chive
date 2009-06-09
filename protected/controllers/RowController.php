@@ -2,8 +2,6 @@
 
 class RowController extends Controller
 {
-	private $_db;
-
 	public $schema;
 	public $table;
 
@@ -12,7 +10,7 @@ class RowController extends Controller
 	 */
 	public $layout = 'schema';
 
-	public function __construct($id, $module=null) 
+	public function __construct($id, $module=null)
 	{
 		if(Yii::app()->request->isAjaxRequest)
 			$this->layout = false;
@@ -21,16 +19,8 @@ class RowController extends Controller
 		$this->schema = $request->getParam('schema');
 		$this->table = $request->getParam('table');
 
-		// @todo (rponudic) work with parameters!
-		$this->_db = new CDbConnection('mysql:host='.Yii::app()->user->host.';dbname=' . $this->schema, Yii::app()->user->name, Yii::app()->user->password);
-		$this->_db->charset='utf8';
-		$this->_db->active = true;
-
-		// Assign database connection to row model
-		Row::$db = $this->_db;
-
 		parent::__construct($id, $module);
-
+		$this->connectDb($this->schema);
 	}
 
 	/**
@@ -60,7 +50,7 @@ class RowController extends Controller
 	public function actionUpdate()
 	{
 
-		$db = $this->_db;
+		$db = $this->db;
 
 		$pk = CPropertyValue::ensureArray($db->getSchema()->getTable($this->table)->primaryKey);
 		$column = Yii::app()->getRequest()->getParam('column');
@@ -69,22 +59,22 @@ class RowController extends Controller
 		$attributes = json_decode(Yii::app()->getRequest()->getParam('attributes'), true);
 
 		// SET datatype
-		if(is_array($newValue)) 
+		if(is_array($newValue))
 		{
 			$newValue = implode(',', $newValue);
 		}
-		
+
 		$attributesCount = count($pk);
 
 		if($null)
 		{
 			$newValue = null;
 		}
-		
+
 		$response = new AjaxResponse();
-		
+
 		Row::$db = $db;
-		
+
 		if(count($attributes) == 1)
 		{
 			$findAttributes = $attributes[$column];
@@ -93,14 +83,14 @@ class RowController extends Controller
 		{
 			$findAttributes = $attributes;
 		}
-		
+
 		$row = Row::model()->findByPk($findAttributes);
-		
+
 		try {
 
 			$row->setAttribute($column, $newValue);
 			$sql = $row->save();
-			
+
 			$response->addData(null, array(
 				'value' => ($null ? 'NULL' : htmlspecialchars($row->getAttribute($column))),
 				'column' => $column,
@@ -108,15 +98,15 @@ class RowController extends Controller
 				'isNull' => $null,
 				'visibleValue' => ($null ? '<span class="null">NULL</span>' : htmlspecialchars($row->getAttribute($column)))
 			));
-			
+
 			// Refresh the page if the row could not be found in database anymore
 			if(!$row->refresh() || $row->getAttribute($column) != $newValue) {
 				$response->refresh = true;
-				
+
 				// @todo (rponudic) check if a notification is necessary in this case
 				//$response->addNotification('warning', 'type does not match');
 			}
-			
+
 			$response->addNotification('success', Yii::t('message', 'successUpdateRow'), null, $sql);
 
 		}
@@ -140,7 +130,7 @@ class RowController extends Controller
 		try
 		{
 
-			foreach($data AS $attributes) 
+			foreach($data AS $attributes)
 			{
 				$row = new Row;
 				$row->attributes = $attributes;
@@ -171,18 +161,18 @@ class RowController extends Controller
 		$column = Yii::app()->getRequest()->getParam('column');
 		$oldValue = Yii::app()->getRequest()->getParam('oldValue');
 		$rowIndex = Yii::app()->getRequest()->getParam('rowIndex');
-		
+
 		// Single PK
 		$kvAttributes = $attributes;
-		
+
 		if(count($attributes) == 1)
 		{
 			$attributes = array_pop($attributes);
 		}
-		
+
 		$row = Row::model()->findByPk($attributes);
-		$column = $this->_db->getSchema()->getTable($this->table)->getColumn($column);
-		
+		$column = $this->db->getSchema()->getTable($this->table)->getColumn($column);
+
 		$this->render('input', array(
 			'column' => $column,
 			'row' => $row,
@@ -192,11 +182,11 @@ class RowController extends Controller
 		));
 
 	}
-	
-	public function actionExport() 
+
+	public function actionExport()
 	{
-		
-		
+
+
 	}
 
 }

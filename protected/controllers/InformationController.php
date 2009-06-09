@@ -3,15 +3,14 @@
 class InformationController extends Controller
 {
 
-	public function __construct($id, $module=null) {
-
+	public function __construct($id, $module = null)
+	{
 		if(Yii::app()->request->isAjaxRequest)
 		{
 			$this->layout = false;
 		}
 
 		parent::__construct($id, $module);
-
 	}
 
 	/**

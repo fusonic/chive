@@ -13,7 +13,6 @@ class TableController extends Controller
 	 * @var CActiveRecord the currently loaded data model instance.
 	 */
 	private $_table;
-	private $_db;
 
 	public $table;
 	public $schema;
@@ -23,22 +22,15 @@ class TableController extends Controller
 	 */
 	public $layout = '_table';
 
-	public function __construct($id, $module=null) {
-
+	public function __construct($id, $module = null)
+	{
 		$request = Yii::app()->getRequest();
 
 		$this->table = $request->getParam('table');
 		$this->schema = $request->getParam('schema');
 
-		// @todo (rponudic) work with parameters!
-		$this->_db = new CDbConnection('mysql:host='.Yii::app()->user->host.';dbname=' . $this->schema, Yii::app()->user->name, Yii::app()->user->password);
-		$this->_db->charset='utf8';
-		$this->_db->active = true;
-
-		Table::$db = Column::$db = Index::$db = $this->_db;
-
 		parent::__construct($id, $module);
-
+		$this->connectDb($this->schema);
 	}
 
 	/**
@@ -123,7 +115,7 @@ class TableController extends Controller
 	public function actionBrowse($_query = false)
 	{
 
-		$db = $this->_db;
+		$db = $this->db;
 		$error = false;
 		$isSent = false;
 
@@ -243,9 +235,6 @@ class TableController extends Controller
 						$pages->setItemCount($total);
 
 						$keyData = array();
-
-						#predie($this->_db->getSchema()->getTable($this->table)->primaryKey);
-
 					}
 
 					$columns = array();
@@ -255,7 +244,7 @@ class TableController extends Controller
 					{
 						$columns = array_keys($data[0]);
 					}
-					
+
 					$isSent = true;
 
 
@@ -343,7 +332,7 @@ class TableController extends Controller
 			'pages' => $pages,
 			'sort' => $sort,
 			'error' => $error,
-			'table' => $this->_db->getSchema()->getTable($this->table),
+			'table' => $this->db->getSchema()->getTable($this->table),
 			'response' => $response,
 			'type' => $type,
 		));
@@ -473,11 +462,10 @@ class TableController extends Controller
 			'IS NOT NULL',
 		);
 
-		Row::$db = $this->_db;
 		$row = new Row;
 
-		$db = $this->_db;
-		$commandBuilder = $this->_db->getCommandBuilder();
+		$db = $this->db;
+		$commandBuilder = $this->db->getCommandBuilder();
 
 		if(isset($_POST['Row']))
 		{
@@ -521,9 +509,8 @@ class TableController extends Controller
 	public function actionInsert()
 	{
 
-		$db = $this->_db;
+		$db = $this->db;
 
-		Row::$db = $this->_db;
 		$row = new Row;
 
 		$functions = array(
@@ -647,7 +634,7 @@ class TableController extends Controller
 
 		if(isset($_POST['sent'])) {
 
-			$builder = $this->_db->getCommandBuilder();
+			$builder = $this->db->getCommandBuilder();
 
 			$data = array();
 			foreach($table->columns AS $column) {
@@ -841,7 +828,7 @@ class TableController extends Controller
 	 */
 	private function getDefaultQuery()
 	{
-		return 'SELECT * FROM ' . $this->_db->quoteTableName($this->table) .
+		return 'SELECT * FROM ' . $this->db->quoteTableName($this->table) .
 			"\n\t" . 'WHERE 1';
 	}
 

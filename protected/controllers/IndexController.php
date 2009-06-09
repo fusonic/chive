@@ -30,14 +30,8 @@ class IndexController extends Controller
 		$this->schema = $request->getParam('schema');
 		$this->index = $request->getParam('index');
 
-		// @todo (rponudic) work with parameters!
-		$this->_db = new CDbConnection('mysql:host='.Yii::app()->user->host.';dbname=' . $this->schema, Yii::app()->user->name, Yii::app()->user->password);
-		$this->_db->charset='utf8';
-		$this->_db->active = true;
-
-		Index::$db = $this->_db;
-
 		parent::__construct($id, $module);
+		$this->connectDb($this->schema);
 	}
 
 	/**

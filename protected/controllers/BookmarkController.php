@@ -5,22 +5,15 @@ class BookmarkController extends Controller
 
 	public $schema;
 
-	private $_db;
-
-	public function __construct() {
-
+	public function __construct()
+	{
 		$this->layout = false;
 
 		$request = Yii::app()->getRequest();
 		$this->schema = $request->getParam('schema');
 
-		$this->_db = new CDbConnection('mysql:host='.Yii::app()->user->host.';dbname=' . $this->schema, Yii::app()->user->name, Yii::app()->user->password);
-		$this->_db->charset='utf8';
-		$this->_db->active = true;
-
 		parent::__construct($id, $module);
-
-
+		$this->connectDb($this->schema);
 	}
 
 	/**
@@ -52,7 +45,6 @@ class BookmarkController extends Controller
 	 */
 	public function actionAdd()
 	{
-
 		$response = new AjaxResponse();
 
 		$name = $_POST['name'];
@@ -96,15 +88,13 @@ class BookmarkController extends Controller
 		));
 
 		$response->send();
-
 	}
 
-	/*
+	/**
 	 * Delete a bookmark
 	 */
 	public function actionDelete()
 	{
-
 		$response = new AjaxResponse();
 
 		$id = Yii::app()->getRequest()->getParam('id');
@@ -125,15 +115,13 @@ class BookmarkController extends Controller
 
 		$response->addNotification('success', Yii::t('message', 'successDeleteBookmark', array('{name}'=>$name)));
 		$response->send();
-
 	}
 
-	/*
+	/**
 	 * Execute a bookmark
 	 */
 	public function actionExecute()
 	{
-
 		$id = Yii::app()->getRequest()->getParam('id');
 
 		$response = new AjaxResponse();
@@ -143,7 +131,7 @@ class BookmarkController extends Controller
 
 		try
 		{
-			$cmd = new CDbCommand($this->_db, $bookmark['query']);
+			$cmd = new CDbCommand($this->db, $bookmark['query']);
 			$cmd->execute();
 			$response->addNotification('success', Yii::t('message', 'successExecuteBookmark', array('{name}'=>$bookmark['name'])), null, $bookmark['query']);
 		}
@@ -154,7 +142,6 @@ class BookmarkController extends Controller
 		}
 
 		Yii::app()->end($response);
-
 	}
 
 }

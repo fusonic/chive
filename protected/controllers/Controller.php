@@ -1,12 +1,53 @@
 <?php
 
 /**
- * Base controller for this project. Adds Ajax functionality.
+ * Base controller for this project.
+ *
+ * Adds the following functionality:
+ * * Ajax URLs (Pagination, Sorting, ...)
+ * * Database connection
  */
 class Controller extends CController
 {
 
-	private $_db;
+	protected $db;
+	protected $request;
+
+	/**
+	 * Connects to the specified schema and assigns it to all models which need it.
+	 *
+	 * @param	$schema				schema
+	 * @return	CDbConnection
+	 */
+	protected function connectDb($schema)
+	{
+		// Check parameter
+		if(is_null($schema))
+		{
+			$this->db = null;
+			return null;
+		}
+
+		// Connect to database
+		$this->db = new CDbConnection('mysql:host=' . Yii::app()->user->host . ';dbname=' . $schema,
+			Yii::app()->user->name,
+			Yii::app()->user->password);
+		$this->db->charset='utf8';
+		$this->db->active = true;
+
+		// Assign to all models which need it
+		Column::$db =
+		ForeignKey::$db =
+		Index::$db =
+		Routine::$db =
+		Row::$db =
+		Schema::$db =
+		Table::$db =
+		View::$db = $this->db;
+
+		// Return connection
+		return $this->db;
+	}
 
 	/**
 	 * @see CController::createUrl()
@@ -31,5 +72,3 @@ class Controller extends CController
 	}
 
 }
-
-?>

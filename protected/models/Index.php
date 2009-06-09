@@ -2,7 +2,6 @@
 
 class Index extends CActiveRecord
 {
-
 	public static $db;
 
 	public $originalIndexName;
@@ -10,14 +9,16 @@ class Index extends CActiveRecord
 	public $throwExceptions = false;
 
 	/**
-	 * Returns the static model of the specified AR class.
-	 * @return CActiveRecord the static model class
+	 * @see		CActiveRecord::model()
 	 */
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
 	}
 
+	/**
+	 * @see		CActiveRecord::instantiate()
+	 */
 	public function instantiate($attributes)
 	{
 		$res = parent::instantiate($attributes);
@@ -29,7 +30,7 @@ class Index extends CActiveRecord
 	}
 
 	/**
-	 * @return string the associated database table name
+	 * @see		CActiveRecord::tableName()
 	 */
 	public function tableName()
 	{
@@ -37,56 +38,8 @@ class Index extends CActiveRecord
 	}
 
 	/**
-	 * @return array validation rules for model attributes.
+	 * @see		CActiveRecord::primaryKey()
 	 */
-	public function rules()
-	{
-		/*
-		return array(
-			array('TABLE_CATALOG','length','max'=>512),
-			array('TABLE_SCHEMA','required','length','max'=>64),
-			array('TABLE_NAME','required','length','max'=>64),
-			array('INDEX_SCHEMA','required','length','max'=>64),
-			array('INDEX_NAME','required','length','max'=>64),
-			array('COLLATION','length','max'=>1),
-			array('PACKED','length','max'=>10),
-			array('NULLABLE','required','length','max'=>3),
-			array('INDEX_TYPE','required','length','max'=>16),
-			array('COMMENT','length','max'=>16),
-			array('NON_UNIQUE, SEQ_IN_INDEX, CARDINALITY, SUB_PART', 'numerical'),
-		);
-		*/
-		return array();
-	}
-
-	/**
-	 * @return array relational rules.
-	 */
-	public function relations()
-	{
-		return array(
-			'table' => array(self::BELONGS_TO, 'Table', 'TABLE_SCHEMA, TABLE_NAME'),
-			'columns' => array(self::HAS_MANY, 'IndexColumn', 'TABLE_SCHEMA, TABLE_NAME, INDEX_NAME'),
-		);
-	}
-
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return array(
-		);
-	}
-
-	public function safeAttributes()
-	{
-		return array(
-			'INDEX_NAME',
-			'type',
-		);
-	}
-
 	public function primaryKey()
 	{
 		return array(
@@ -97,8 +50,32 @@ class Index extends CActiveRecord
 		);
 	}
 
-	/*
-	 * @return string type
+	/**
+	 * @see		CActiveRecord::relations()
+	 */
+	public function relations()
+	{
+		return array(
+			'table' => array(self::BELONGS_TO, 'Table', 'TABLE_SCHEMA, TABLE_NAME'),
+			'columns' => array(self::HAS_MANY, 'IndexColumn', 'TABLE_SCHEMA, TABLE_NAME, INDEX_NAME'),
+		);
+	}
+
+	/**
+	 * @see		CActiveRecord::safeAttributes()
+	 */
+	public function safeAttributes()
+	{
+		return array(
+			'INDEX_NAME',
+			'type',
+		);
+	}
+
+	/**
+	 * Returns the index type.
+	 *
+	 * @return	string				Index type (PRIMARY/FULLTEXT/UNIQUE/INDEX)
 	 */
 	public function getType()
 	{
@@ -119,6 +96,11 @@ class Index extends CActiveRecord
 		}
 	}
 
+	/**
+	 * Sets the index type.
+	 *
+	 * @param	string				Index type (PRIMARY/FULLTEXT/UNIQUE/INDEX)
+	 */
 	public function setType($type)
 	{
 		$this->INDEX_TYPE = 'BTREE';
@@ -137,6 +119,11 @@ class Index extends CActiveRecord
 		}
 	}
 
+	/**
+	 * Returns all available index types as array.
+	 *
+	 * @return	array				Index types
+	 */
 	public static function getIndexTypes()
 	{
 		return array(
@@ -147,6 +134,9 @@ class Index extends CActiveRecord
 		);
 	}
 
+	/**
+	 * @see		CActiveRecord::insert()
+	 */
 	public function insert()
 	{
 		if(!$this->getIsNewRecord())
@@ -207,6 +197,9 @@ class Index extends CActiveRecord
 		}
 	}
 
+	/**
+	 * @see		CActiveRecord::delete()
+	 */
 	public function delete()
 	{
 		if($this->getIsNewRecord())
@@ -245,6 +238,9 @@ class Index extends CActiveRecord
 		}
 	}
 
+	/**
+	 * @see		CActiveRecord::update()
+	 */
 	public function update()
 	{
 		if($this->getIsNewRecord())
@@ -303,5 +299,4 @@ class Index extends CActiveRecord
 			}
 		}
 	}
-
 }

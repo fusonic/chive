@@ -13,11 +13,7 @@ class SchemaController extends Controller
 	 * @var CActiveRecord the currently loaded data model instance.
 	 */
 	private $_schema;
-	private $_db;
-
-
 	public $schema;
-	public $isSent;
 
 	/**
 	 * @var Default layout for this controller
@@ -26,7 +22,6 @@ class SchemaController extends Controller
 
 	public function __construct($id, $module=null)
 	{
-
 		$request = Yii::app()->getRequest();
 		$this->schema = $request->getParam('schema');
 
@@ -39,38 +34,15 @@ class SchemaController extends Controller
 			$this->layout = false;
 		}
 
-		$this->_db = new CDbConnection('mysql:host='.Yii::app()->user->host.';dbname=' . $this->schema, Yii::app()->user->name, Yii::app()->user->password);
-		$this->_db->charset='utf8';
-		$this->_db->active = true;
-
-		Schema::$db = Table::$db = View::$db = $this->_db;
-
 		parent::__construct($id, $module);
-
+		$this->connectDb($this->schema);
 	}
 
 	/**
-	 * @return array action filters
+	 * Shows schema index.
+	 *
+	 * Currently redirects to table list (via Ajax).
 	 */
-	public function filters()
-	{
-		return array(
-			'accessControl',
-		);
-	}
-
-	/**
-	 * Specifies the access control rules.
-	 * This method is used by the 'accessControl' filter.
-	 * @return array access control rules
-	 */
-	public function accessRules()
-	{
-		return array(
-			array('deny', 'users' => array('?')),
-		);
-	}
-
 	public function actionIndex()
 	{
 		$this->render('index');
@@ -172,9 +144,12 @@ class SchemaController extends Controller
 		));
 	}
 
+	/**
+	 * @todo(rponudic): Finish
+	 */
 	public function actionSql($_query = false, $_execute = true) {
 
-		$db = $this->_db;
+		$db = $this->db;
 
 		$request = Yii::app()->getRequest();
 		$query = $_query ? $_query : $request->getParam('query');
@@ -349,7 +324,7 @@ class SchemaController extends Controller
 	}
 
 	/**
-	 * Lists all users.
+	 * Lists all schemata.
 	 */
 	public function actionList()
 	{
@@ -389,62 +364,30 @@ class SchemaController extends Controller
 	}
 
 	/**
-	 * Manages all users.
+	 * Loads the current schema.
+	 *
+	 * @return	Schema
 	 */
-	public function actionAdmin()
+	public function loadSchema()
 	{
-		$this->processAdminCommand();
-
-		$criteria=new CDbCriteria;
-
-		$pages=new CPagination(User::model()->count($criteria));
-		$pages->pageSize=self::PAGE_SIZE;
-		$pages->applyLimit($criteria);
-
-		$sort=new CSort('User');
-		$sort->applyOrder($criteria);
-
-		$userList=User::model()->findAll($criteria);
-
-		$this->render('admin',array(
-			'userList'=>$userList,
-			'pages'=>$pages,
-			'sort'=>$sort,
-		));
-	}
-
-	/**
-	 * Returns the data model based on the primary key given in the GET variable.
-	 * If the data model is not found, an HTTP exception will be raised.
-	 * @param integer the primary key value. Defaults to null, meaning using the 'id' GET variable
-	 */
-	public function loadSchema($id=null)
-	{
-		if($this->_schema===null)
+		if($this->_schema === null)
 		{
-			if($id!==null || isset($_GET['schema']))
+			$this->_schema = Schema::model()->findByPk(array(
+				'SCHEMA_NAME' => $this->schema,
+			));
+
+			if($this->_schema === null)
 			{
-				$criteria = new CDbCriteria;
-				$criteria->condition = 'SCHEMA_NAME = :schema';
-				$criteria->params = array(
-					':schema' => $this->schema,
-				);
-
-				$this->_schema = Schema::model()->find($criteria);
-
-			}
-
-			if($this->_schema===null)
-			{
-				throw new CHttpException(500,'The requested schema does not exist.');
+				throw new CHttpException(500, 'The requested schema does not exist.');
 			}
 		}
 		return $this->_schema;
 	}
 
 
-	/*
+	/**
 	 * Bookmark actions
+	 * @todo(mburtscher): Is this already finished???
 	 */
 	public function actionShowBookmark()
 	{
@@ -456,30 +399,9 @@ class SchemaController extends Controller
 
 	}
 
-	public function actionStatus()
-	{
-
-
-		// Fetch variables
-
-		$cmd = $this->_db->createCommand('SHOW GLOBAL STATUS');
-		$data = $cmd->queryAll();
-
-		$status = array();
-		foreach($data AS $entry) {
-
-			$prefix = substr($entry['Variable_name'], 0, strpos($entry['Variable_name'], '_'));
-			$status[$prefix][$entry['Variable_name']] = $entry['Value'];
-
-		}
-
-		$this->render('status', array(
-			'status' => $status,
-		));
-
-	}
-
-
+	/**
+	 * @todo(mburtscher): What's going on here?
+	 */
 	public function actionExport()
 	{
 
@@ -512,7 +434,9 @@ class SchemaController extends Controller
 		));
 	}
 
-
+	/**
+	 * @todo(mburtscher): What's going on here?
+	 */
 	public function actionImport()
 	{
 
@@ -539,11 +463,6 @@ class SchemaController extends Controller
 			'file' => $file,
 		));
 
-	}
-
-	public function actionUpload()
-	{
-		Yii::trace('data received from upload', 'system');
 	}
 
 }

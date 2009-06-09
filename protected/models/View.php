@@ -2,20 +2,18 @@
 
 class View extends CActiveRecord
 {
-
 	public static $db;
 
 	/**
-	 * Returns the static model of the specified AR class.
-	 * @return CActiveRecord the static model class
+	 * @see		CActiveRecord::model()
 	 */
-	public static function model($className=__CLASS__)
+	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
 	}
 
 	/**
-	 * @return string the associated database table name
+	 * @see		CActiveRecord::tableName()
 	 */
 	public function tableName()
 	{
@@ -23,42 +21,8 @@ class View extends CActiveRecord
 	}
 
 	/**
-	 * @return array validation rules for model attributes.
+	 * @see		CActiveRecord::primaryKey()
 	 */
-	public function rules()
-	{
-		return array(
-			array('TABLE_CATALOG','length','max'=>512),
-			array('TABLE_SCHEMA','length','max'=>64),
-			array('TABLE_NAME','length','max'=>64),
-			array('CHECK_OPTION','length','max'=>8),
-			array('IS_UPDATABLE','length','max'=>3),
-			array('DEFINER','length','max'=>77),
-			array('SECURITY_TYPE','length','max'=>7),
-			array('VIEW_DEFINITION', 'required'),
-		);
-	}
-
-	/**
-	 * @return array relational rules.
-	 */
-	public function relations()
-	{
-		return array(
-			'columns' => array(self::HAS_MANY, 'Column', 'TABLE_SCHEMA, TABLE_NAME'),
-		);
-	}
-
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return array(
-			'IS_UPDATABLE' => Yii::t('database', 'updatable'),
-		);
-	}
-
 	public function primaryKey()
 	{
 		return array(
@@ -68,9 +32,27 @@ class View extends CActiveRecord
 	}
 
 	/**
-	 * Drop view
-	 *
-	 * @return	string
+	 * @see		CActiveRecord::relations()
+	 */
+	public function relations()
+	{
+		return array(
+			'columns' => array(self::HAS_MANY, 'Column', 'TABLE_SCHEMA, TABLE_NAME'),
+		);
+	}
+
+	/**
+	 * @see		CActiveRecord::attributeLabels()
+	 */
+	public function attributeLabels()
+	{
+		return array(
+			'IS_UPDATABLE' => Yii::t('database', 'updatable'),
+		);
+	}
+
+	/**
+	 * @see		CActiveRecord::delete()
 	 */
 	public function delete()
 	{
@@ -111,5 +93,4 @@ class View extends CActiveRecord
 	{
 		return 'ALTER' . substr($this->getCreateView(), 6);
 	}
-
 }

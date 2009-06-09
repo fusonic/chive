@@ -3,16 +3,15 @@
 class CharacterSet extends CActiveRecord
 {
 	/**
-	 * Returns the static model of the specified AR class.
-	 * @return CActiveRecord the static model class
+	 * @see		CActiveRecord::model()
 	 */
-	public static function model($className=__CLASS__)
+	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
 	}
 
 	/**
-	 * @return string the associated database table name
+	 * @see		CActiveRecord::tableName()
 	 */
 	public function tableName()
 	{
@@ -20,39 +19,20 @@ class CharacterSet extends CActiveRecord
 	}
 
 	/**
-	 * @return array validation rules for model attributes.
+	 * @see		CActiveRecord::primaryKey()
 	 */
-	public function rules()
+	public function primaryKey()
 	{
-		return array(
-			array('CHARACTER_SET_NAME','length','max'=>64),
-			array('DEFAULT_COLLATE_NAME','length','max'=>64),
-			array('DESCRIPTION','length','max'=>60),
-			array('MAXLEN', 'numerical'),
-		);
+		return 'CHARACTER_SET_NAME';
 	}
 
 	/**
-	 * @return array relational rules.
+	 * @see		CActiveRecord::relations()
 	 */
 	public function relations()
 	{
 		return array(
 			'collations' => array(self::HAS_MANY, 'Collation', 'CHARACTER_SET_NAME'),
 		);
-	}
-
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return array(
-		);
-	}
-
-	public function primaryKey()
-	{
-		return 'CHARACTER_SET_NAME';
 	}
 }

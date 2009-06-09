@@ -5,8 +5,7 @@ class Routine extends CActiveRecord
 	public static $db;
 
 	/**
-	 * Returns the static model of the specified AR class.
-	 * @return CActiveRecord the static model class
+	 * @see		CActiveRecord::model()
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -14,7 +13,7 @@ class Routine extends CActiveRecord
 	}
 
 	/**
-	 * @see CActiveRecord::tableName()
+	 * @see		CActiveRecord::tableName()
 	 */
 	public function tableName()
 	{
@@ -22,35 +21,7 @@ class Routine extends CActiveRecord
 	}
 
 	/**
-	 * @see CActiveRecord::rules()
-	 */
-	public function rules()
-	{
-		return array(
-		);
-	}
-
-	/**
-	 * @see CActiveRecord::relations()
-	 */
-	public function relations()
-	{
-		return array(
-		//	'schema' => array(self::BELONGS_TO, 'Schema', 'ROUTINE_SCHEMA'),
-		);
-	}
-
-	/**
-	 * @see CActiveRecord::attributeLabels()
-	 */
-	public function attributeLabels()
-	{
-		return array(
-		);
-	}
-
-	/**
-	 * @see CActiveRecord::primaryKey()
+	 * @see		CActiveRecord::primaryKey()
 	 */
 	public function primaryKey()
 	{
@@ -61,9 +32,7 @@ class Routine extends CActiveRecord
 	}
 
 	/**
-	 * Drop routine.
-	 *
-	 * @return	string
+	 * @see		CActiveRecord::delete()
 	 */
 	public function delete()
 	{
@@ -94,5 +63,4 @@ class Routine extends CActiveRecord
 		$res = $cmd->queryRow(false);
 		return $res[2];
 	}
-
 }

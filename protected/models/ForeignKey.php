@@ -2,20 +2,21 @@
 
 class ForeignKey extends CActiveRecord
 {
-
 	public static $db;
 
 	public $onDelete, $onUpdate, $table;
 
 	/**
-	 * Returns the static model of the specified AR class.
-	 * @return CActiveRecord the static model class
+	 * @see		CActiveRecord::model()
 	 */
-	public static function model($className=__CLASS__)
+	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
 	}
 
+	/**
+	 * @see		CActiveRecord::instantiate()
+	 */
 	public function instantiate($attributes)
 	{
 		$res = parent::instantiate($attributes);
@@ -42,7 +43,7 @@ class ForeignKey extends CActiveRecord
 	}
 
 	/**
-	 * @return string the associated database table name
+	 * @see		CActiveRecord::tableName()
 	 */
 	public function tableName()
 	{
@@ -50,29 +51,20 @@ class ForeignKey extends CActiveRecord
 	}
 
 	/**
-	 * @return array validation rules for model attributes.
+	 * @see		CActiveRecord::primaryKey()
 	 */
-	public function rules()
+	public function primaryKey()
 	{
-		return array();
+		return array(
+			'TABLE_SCHEMA',
+			'TABLE_NAME',
+			'CONSTRAINT_NAME',
+		);
 	}
 
 	/**
-	 * @return array relational rules.
+	 * @see		CActiveRecord::safeAttributes()
 	 */
-	public function relations()
-	{
-		return array();
-	}
-
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return array();
-	}
-
 	public function safeAttributes()
 	{
 		return array(
@@ -85,6 +77,11 @@ class ForeignKey extends CActiveRecord
 		);
 	}
 
+	/**
+	 * Gets the references string.
+	 *
+	 * @return	string
+	 */
 	public function getReferences()
 	{
 		if($this->REFERENCED_COLUMN_NAME)
@@ -97,6 +94,11 @@ class ForeignKey extends CActiveRecord
 		}
 	}
 
+	/**
+	 * Sets the references attributes from a string.
+	 *
+	 * @param	string				References string (e.g. schema.table.column)
+	 */
 	public function setReferences($value)
 	{
 		if($value)
@@ -109,15 +111,9 @@ class ForeignKey extends CActiveRecord
 		}
 	}
 
-	public function primaryKey()
-	{
-		return array(
-			'TABLE_SCHEMA',
-			'TABLE_NAME',
-			'CONSTRAINT_NAME',
-		);
-	}
-
+	/**
+	 * @see		CActiveRecord::delete()
+	 */
 	public function delete()
 	{
 		if($this->getIsNewRecord())
@@ -149,6 +145,9 @@ class ForeignKey extends CActiveRecord
 		}
 	}
 
+	/**
+	 * @see		CActiveRecord::insert()
+	 */
 	public function insert()
 	{
 		if(!$this->getIsNewRecord())
@@ -185,6 +184,9 @@ class ForeignKey extends CActiveRecord
 		}
 	}
 
+	/**
+	 * @see		CActiveRecord::update()
+	 */
 	public function update()
 	{
 		if($this->getIsNewRecord())
@@ -212,5 +214,4 @@ class ForeignKey extends CActiveRecord
 			return false;
 		}
 	}
-
 }

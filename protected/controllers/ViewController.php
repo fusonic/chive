@@ -14,7 +14,6 @@ class ViewController extends Controller
 	 * @var CActiveRecord the currently loaded data model instance.
 	 */
 	private $_view;
-	private $_db;
 
 	public $view;
 	public $schema;
@@ -33,15 +32,8 @@ class ViewController extends Controller
 		$this->view = $request->getParam('view');
 		$this->schema = $request->getParam('schema');
 
-		// @todo (rponudic) work with parameters!
-		$this->_db = new CDbConnection('mysql:host='.Yii::app()->user->host.';dbname=' . $this->schema, Yii::app()->user->name, Yii::app()->user->password);
-		$this->_db->charset = 'utf8';
-		$this->_db->active = true;
-
-		View::$db = Column::$db = $this->_db;
-
 		parent::__construct($id, $module);
-
+		$this->connectDb($this->schema);
 	}
 
 	/**
@@ -86,7 +78,7 @@ class ViewController extends Controller
 	public function actionBrowse($_query = false)
 	{
 
-		$db = $this->_db;
+		$db = $this->db;
 		$error = false;
 
 		$response = new AjaxResponse();
@@ -296,7 +288,7 @@ class ViewController extends Controller
 			'pages' => $pages,
 			'sort' => $sort,
 			'error' => $error,
-			'table' => $this->_db->getSchema()->getTable($this->view),
+			'table' => $this->db->getSchema()->getTable($this->view),
 			'response' => $response,
 			'type' => $type,
 		));
@@ -337,11 +329,10 @@ class ViewController extends Controller
 			'IS NOT NULL',
 		);
 
-		Row::$db = $this->_db;
 		$row = new Row;
 
-		$db = $this->_db;
-		$commandBuilder = $this->_db->getCommandBuilder();
+		$db = $this->db;
+		$commandBuilder = $this->db->getCommandBuilder();
 
 		if(isset($_POST['Row']))
 		{
@@ -393,7 +384,7 @@ class ViewController extends Controller
 
 			try
 			{
-				$cmd = $this->_db->createCommand($query);
+				$cmd = $this->db->createCommand($query);
 				$cmd->prepare();
 				$cmd->execute();
 
@@ -413,7 +404,7 @@ class ViewController extends Controller
 		}
 		else
 		{
-			$query = 'CREATE VIEW ' . $this->_db->quoteTableName('name_of_view') . ' AS' . "\n"
+			$query = 'CREATE VIEW ' . $this->db->quoteTableName('name_of_view') . ' AS' . "\n"
 				. '-- Definition start' . "\n\n"
 				. '-- Definition end';
 		}
@@ -483,7 +474,7 @@ class ViewController extends Controller
 		if(isset($_POST['query']))
 		{
 			$query = $_POST['query'];
-			$cmd = $this->_db->createCommand($query);
+			$cmd = $this->db->createCommand($query);
 			try
 			{
 				$cmd->prepare();
@@ -556,7 +547,7 @@ class ViewController extends Controller
 	 */
 	private function getDefaultQuery()
 	{
-		return 'SELECT * FROM ' . $this->_db->quoteTableName($this->view) .
+		return 'SELECT * FROM ' . $this->db->quoteTableName($this->view) .
 			"\n\t" . 'WHERE 1';
 	}
 

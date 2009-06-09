@@ -135,7 +135,7 @@ class SiteController extends Controller
 	 */
 	public function actionProcesses()
 	{
-		$cmd = $this->_db->createCommand('SHOW PROCESSLIST');
+		$cmd = $this->db->createCommand('SHOW PROCESSLIST');
 		$processes = $cmd->queryAll();
 
 		$this->render('processes', array(
@@ -159,7 +159,7 @@ class SiteController extends Controller
 
 			try
 			{
-				$cmd = $this->_db->createCommand($sql);
+				$cmd = $this->db->createCommand($sql);
 
 				$cmd->prepare();
 				$cmd->execute();
@@ -176,8 +176,8 @@ class SiteController extends Controller
 
 		$response->send();
 	}
-	
-	public function actionKeepAlive() 
+
+	public function actionKeepAlive()
 	{
 		Yii::app()->end('OK');
 	}

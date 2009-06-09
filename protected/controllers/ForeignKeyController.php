@@ -2,8 +2,6 @@
 
 class ForeignKeyController extends Controller
 {
-	private $_db;
-
 	public $schema;
 	public $table;
 	public $column;
@@ -18,21 +16,16 @@ class ForeignKeyController extends Controller
 		$request = Yii::app()->getRequest();
 
 		if($request->isAjaxRequest)
+		{
 			$this->layout = false;
+		}
 
 		$this->schema = $request->getParam('schema');
 		$this->table = $request->getParam('table');
 		$this->column = $request->getParam('column');
 
-		// @todo (rponudic) work with parameters!
-		$this->_db = new CDbConnection('mysql:host='.Yii::app()->user->host.';dbname=' . $this->schema, Yii::app()->user->name, Yii::app()->user->password);
-		$this->_db->charset='utf8';
-		$this->_db->active = true;
-
-		Column::$db = Table::$db = ForeignKey::$db = $this->_db;
-
 		parent::__construct($id, $module);
-
+		$this->connectDb($this->schema);
 	}
 
 	/**

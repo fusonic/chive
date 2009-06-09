@@ -3,16 +3,25 @@
 class StorageEngine extends SqlModel
 {
 
+	/**
+	 * @see		CActiveRecord::model()
+	 */
 	public static function model($class = __CLASS__)
 	{
 		return parent::model($class);
 	}
 
+	/**
+	 * @see		SqlModel::getSql()
+	 */
 	protected function getSql()
 	{
 		return 'SHOW ENGINES';
 	}
 
+	/**
+	 * @see		SqlModel::attributeNames()
+	 */
 	public function attributeNames()
 	{
 		return array(
@@ -22,16 +31,31 @@ class StorageEngine extends SqlModel
 		);
 	}
 
+	/**
+	 * Returns wether DELAY_KEY_WRITE option is supported by storage engine.
+	 *
+	 * @return	bool				True, if supported. Else, if not.
+	 */
 	public function getSupportsDelayKeyWrite()
 	{
 		return self::check($this->Engine, self::SUPPORTS_DELAY_KEY_WRITE);
 	}
 
+	/**
+	 * Returns wether CHECKSUM option is supported by storage engine.
+	 *
+	 * @return	bool				True, if supported. Else, if not.
+	 */
 	public function getSupportsChecksum()
 	{
 		return self::check($this->Engine, self::SUPPORTS_CHECKSUM);
 	}
 
+	/**
+	 * Returns wether PACK_KEYS option is supported by storage engine.
+	 *
+	 * @return	bool				True, if supported. Else, if not.
+	 */
 	public function getSupportsPackKeys()
 	{
 		return self::check($this->Engine, self::SUPPORTS_PACK_KEYS);
@@ -69,11 +93,24 @@ class StorageEngine extends SqlModel
 
 	);
 
+	/**
+	 * Checks a specific property for a specific storage engine.
+	 *
+	 * @param	string				Storage engine
+	 * @param	int					Property Index (use constants to get them)
+	 * @return	bool				True, if supported. Else, if not.
+	 */
 	public static function check($engine, $property)
 	{
 		return self::$engines[self::getFormattedName($engine)][$property];
 	}
 
+	/**
+	 * Returns the formatted name of a storage engine.
+	 *
+	 * @param	string				Storage engine name
+	 * @return	string				Formatted name
+	 */
 	public static function getFormattedName($engine)
 	{
 		switch(strtolower($engine))
@@ -87,6 +124,11 @@ class StorageEngine extends SqlModel
 		}
 	}
 
+	/**
+	 * Returns all storage engines which are supported by the current server.
+	 *
+	 * @return	array				Array of supported StorageEngine objects
+	 */
 	public static function getSupportedEngines()
 	{
 		return StorageEngine::model()->findAllByAttributes(array(
@@ -94,6 +136,11 @@ class StorageEngine extends SqlModel
 		));
 	}
 
+	/**
+	 * Returns the available settings for the PACK_KEY option to use in selects.
+	 *
+	 * @return	array				All settings for the PACK_KEY option
+	 */
 	public static function getPackKeyOptions()
 	{
 		return array(
@@ -102,7 +149,4 @@ class StorageEngine extends SqlModel
 			'0' => Yii::t('core', 'no'),
 		);
 	}
-
 }
-
-?>
