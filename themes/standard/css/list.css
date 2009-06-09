@@ -163,6 +163,31 @@
 	}
 	
 	/*
+	 * Info
+	 */
+	
+	table.list>tbody>tr.info>td {
+		padding: 0px;
+	}
+	
+	table.list>tbody>tr.info>td>div.info {
+		border: solid 4px #3B5998;
+		background: #D6DDEB;
+		padding: 5px;
+	}
+	
+	table.list>tbody>tr.info>td>div.info h1 {
+		font-size: 110%;
+		font-weight: bold;
+	}
+	
+	table.list.editable info {
+		border: none;
+		background: none;
+		padding: 0px;
+	}
+	
+	/*
 	 * Form-List
 	 */
 	

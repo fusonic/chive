@@ -41,16 +41,21 @@ function init()
 	$('table.list').each(function() {
 		var tBody = this.tBodies[0];
 		var rowCount = tBody.rows.length;
+		var currentClass = 'odd';
 		for(var i = 0; i < rowCount; i++)
 		{
-			if(i % 2 == 0)
+			if(!tBody.rows[i].className.match('noSwitch'))
 			{
-				tBody.rows[i].className += ' even';
+				if(currentClass == 'even')
+				{
+					currentClass = 'odd';
+				}
+				else
+				{
+					currentClass = 'even';
+				}
 			}
-			else
-			{
-				tBody.rows[i].className += ' odd';
-			}
+			tBody.rows[i].className += ' ' + currentClass;
 		}
 	});
 	

@@ -1,7 +1,12 @@
 (function($) {	
 	
-	$.fn.appendForm = function(url)
+	$.fn.appendForm = function(url, className)
 	{
+		
+		if(!className)
+		{
+			className = 'form';
+		}
 		
 		return this.each(function() {
 			
@@ -15,7 +20,7 @@
 			}
 		
 			var obj = $(this);
-			var id = "form_" + url.replace(/[^\w]/g, "_");		
+			var id = className + '_' + url.replace(/[^\w]/g, "_");		
 			var tableObj = obj.parents("table:first");
 			
 			if($('#' + id).length > 0)
@@ -33,21 +38,20 @@
 				tableColumns += this.colSpan;
 			});
 			
-			var tr = document.createElement("tr");
-			var td = document.createElement("td");
-			var div = document.createElement("div");
+			var tr = document.createElement('tr');
+			var td = document.createElement('td');
+			var div = document.createElement('div');
 			var trObj = $(tr);
 			var tdObj = $(td);
 			var divObj = $(div);
 			
-			trObj.addClass("noCheckboxes");
-			trObj.addClass("form");
+			trObj.addClass('noCheckboxes');
+			trObj.addClass(className);
 			trObj.attr("id", id);
 			
 			tdObj.attr("colspan", tableColumns);
 			
-			divObj.addClass('form');
-			//divObj.css("display", "none");
+			divObj.addClass(className);
 			divObj.html('<span class="icon"><img src="' + baseUrl + '/images/loading.gif" alt="' + lang.get('core', 'loading') + '" class="icon icon16" /> <span>' + lang.get('core', 'loading') + '...</span></span>');
 			
 			divObj.appendTo(tdObj);
