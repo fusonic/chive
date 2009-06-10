@@ -1215,6 +1215,7 @@ EOD;
 	{
 		self::resolveNameID($model,$attribute,$htmlOptions);
 		$selection=$model->$attribute;
+		
 		$options="\n".self::listOptions($selection,$data,$htmlOptions);
 		self::clientChange('change',$htmlOptions);
 		if($model->hasErrors($attribute))

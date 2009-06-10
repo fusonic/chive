@@ -29,7 +29,13 @@ var tableBrowse = {
 	
 	editRow: function(rowIndex) 
 	{
-		$('#browse tr').eq(rowIndex+1).appendForm(baseUrl + '/row/edit');
+		
+		$('#browse tr').eq(rowIndex+1).appendForm(baseUrl + '/row/edit', {
+			attributes: 	JSON.stringify(keyData[rowIndex]),
+			schema: 		schema,
+			table:			table
+		});
+		
 	},
 	
 	setup: function() 

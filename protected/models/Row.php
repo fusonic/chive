@@ -107,29 +107,43 @@ class Row extends CActiveRecord
 			return false;
 		}
 
-		$sql = false;
+		$sql = '';
 		
 		// Check if there has been changed any attribute
 		$changedAttributes = array();
 		foreach($this->originalAttributes AS $column=>$value)
 		{
-			if($this->getAttribute($column) !== $value)
+			if($newValue = $this->getAttribute($column) !== $value)
 			{
+				// SET datatype
+				if(is_array($newValue))
+				{
+					$this->setAttribute($column, implode(",", $newValue));
+				}
+				
 				$changedAttributes[$column] = $this->getAttribute($column);
 			}
 		}
 		
-		if(count($changedAttributes) > 0)
+		$changedAttributesCount = count($changedAttributes);
+		
+		if($changedAttributesCount > 0)
 		{
-			
+
 			$sql = 'UPDATE ' . self::$db->quoteTableName($this->table) . ' SET ' . "\n";
 			
 			foreach($changedAttributes AS $column=>$value)
 			{
-				$sql .= "\t" . self::$db->quoteColumnName($column) . ' = ' . (is_null($value) ? 'NULL' : self::$db->quoteValue($value)) . ' ' . "\n";
+				$sql .= "\t" . self::$db->quoteColumnName($column) . ' = ' . (is_null($value) ? 'NULL' : self::$db->quoteValue($value));
+				
+				$changedAttributesCount--;
+				
+				if($changedAttributesCount > 0)
+					$sql .= ',' . "\n";
+				
 			}
 			
-			$sql .= ' WHERE ' . "\n";
+			$sql .= "\n" . ' WHERE ' . "\n";
 			
 			
 			$key = $this->getPrimaryKey();
@@ -159,12 +173,11 @@ class Row extends CActiveRecord
 			$sql .= "\n" . 'LIMIT 1';
 			
 		}
-
+		
 		$cmd = new CDbCommand(self::$db, $sql);
 		
 		try
 		{
-			$cmd->prepare();
 			$cmd->execute();
 			$this->afterSave();
 			$this->refresh();
@@ -172,6 +185,7 @@ class Row extends CActiveRecord
 		}
 		catch(CDbException $ex)
 		{
+			predie($ex);
 			throw new DbException($cmd);
 		}
 		

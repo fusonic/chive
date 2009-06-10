@@ -34,6 +34,7 @@ $scriptFiles = array(
 	'js/jquery/jquery.selectboxes.js',
 	'js/jquery/jquery.hotkey.js',
 	'js/jquery/jquery.tableForm.js',
+	#'js/jquery/jquery.ajaxfileupload.js',
 	'js/lib/json.js',
 	'js/main.js',
 	'js/bookmark.js',

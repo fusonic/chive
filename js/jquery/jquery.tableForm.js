@@ -1,6 +1,6 @@
 (function($) {	
 	
-	$.fn.appendForm = function(url, className)
+	$.fn.appendForm = function(url, data, className)
 	{
 		
 		if(!className)
@@ -84,7 +84,7 @@
 				});
 			};
 			
-			divObj.load(url, function() {
+			divObj.load(url, data, function() {
 				divObj.slideDown(500);
 				setAjaxForms();
 				divObj.find('input:first').select();

@@ -14,6 +14,8 @@ class SchemaController extends Controller
 	 */
 	public $_schema;
 	public $schema;
+	
+	public $isSent = false;
 
 	/**
 	 * @var Default layout for this controller
@@ -259,6 +261,7 @@ class SchemaController extends Controller
 			'pages' => $pages,
 			'sort' => $sort,
 			'error' => $error,
+			'isSent' => $_execute,
 		));
 
 	}
@@ -337,6 +340,8 @@ class SchemaController extends Controller
 		$schemata = (array)$_POST['schemata'];
 		$droppedSchemata = $droppedSqls = array();
 
+		Schema::$db = Yii::app()->getDb();
+		
 		foreach($schemata AS $schema)
 		{
 			$schemaObj = Schema::model()->findByPk($schema);

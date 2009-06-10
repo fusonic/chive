@@ -430,7 +430,6 @@ class CDbCommandBuilder extends CComponent
 	public function createPkCondition($table,$values,$prefix=null)
 	{
 		$this->ensureTable($table);
-		var_dump($table->primaryKey);
 		return $this->createInCondition($table,$table->primaryKey,$values,$prefix);
 	}
 

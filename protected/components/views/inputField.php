@@ -23,7 +23,19 @@ switch($type) {
 		break;
 
 	case 'file':
+		echo '<script type="text/javascript">
+			$(document).ready(function() {
+				$("#<?php echo CHtml::$idPrefix; ?>").submit(function() {
+					alert("ok1");
+					
+				});
+			});
+			</script>';
 		echo CHtml::activeFileField($row, $column->name, $htmlOptions);
+		break;	
+		
+	case 'checkbox':
+		echo CHtml::activeCheckBox($row, $column->name, $htmlOptions);
 		break;	
 		
 	case 'date':
@@ -31,6 +43,16 @@ switch($type) {
 			echo '<script type="text/javascript">
 					$(document).ready(function() {
 						$("#' . $htmlOptions['id'] . '").datepicker({showOn: "button", dateFormat: "yy-mm-dd", buttonImage: "' . ICONPATH . '/16/calendar.png' . '", buttonImageOnly: true, buttonText: "' . Yii::t('core', 'showCalendar') . '"});
+					});
+					</script>';
+		break;
+		
+	case 'datetime':
+			echo CHtml::activeTextField($row, $column->name, $htmlOptions);
+			echo '<script type="text/javascript">
+					$(document).ready(function() {
+						now = new Date();
+						$("#' . $htmlOptions['id'] . '").datepicker({showOn: "button", dateFormat: "yy-mm-dd " + now.getHours() + ":" + now.getMinutes() + ":00", buttonImage: "' . ICONPATH . '/16/calendar.png' . '", buttonImageOnly: true, buttonText: "' . Yii::t('core', 'showCalendar') . '"});
 					});
 					</script>';
 		break;

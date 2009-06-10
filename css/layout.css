@@ -354,8 +354,7 @@
 
   ul.tabMenu {
 	position: relative;
-	top: -10px;
-  }
+	top: -10px;  }
   
   ul.tabMenu li {
   	list-style-type: none;

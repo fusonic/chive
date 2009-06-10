@@ -49,6 +49,7 @@
 	
 	<entry id="format">Format</entry>
 	<entry id="rows">Rows</entry>
+	<entry id="editRow">Edit row</entry>
 	<entry id="averageRowLength">Average row length</entry>
 	<entry id="averageRowSize">Average row size</entry>
 	<entry id="insertNewRow">Insert new row</entry>

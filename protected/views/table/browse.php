@@ -113,10 +113,17 @@
 						<?php } ?>
 						<?php foreach($row AS $key=>$value) { ?>
 							<td class="<?php echo $key; ?>">
-								<span><?php echo is_null($value) ? '<span class="null">NULL</span>' : (Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $this->schema . '.' .  $this->table) ? str_replace(array('<','>'),array('&lt;','&gt;'),$value) : StringUtil::cutText(str_replace(array('<','>'),array('&lt;','&gt;'),$value), 100)); ?></span>
+								<?php if(DataType::getBaseType($table->columns[$key]->dbType) == "blob" && $value) { ?>
+									<a href="javascript:void(0);" class="icon" onclick="download('<?php echo BASEURL; ?>/row/download', {key: JSON.stringify(keyData[<?php echo $i; ?>]), column: '<?php echo $column; ?>', table: '<?php echo $this->table; ?>', schema: '<?php echo $this->schema; ?>'})">
+										<com:Icon name="save" text="core.download" size="16" />
+										<?php echo Yii::t('core', 'download'); ?>
+									</a>
+								<?php } else { ?>
+									<span><?php echo is_null($value) ? '<span class="null">NULL</span>' : (Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $this->schema . '.' .  $this->table) ? str_replace(array('<','>'),array('&lt;','&gt;'),$value) : StringUtil::cutText(str_replace(array('<','>'),array('&lt;','&gt;'),$value), 100)); ?></span>
+								<?php } ?>
 							</td>
 
-							<?php if($type == 'select' && $table->primaryKey !== null && in_array($key, (array)$table->primaryKey)) { ?>
+							<?php if($type == 'select' && ($table->primaryKey === null || in_array($key, (array)$table->primaryKey))) { ?>
 								<?php $keyData[$i][$key] = $value; ?>
 							<?php } ?>
 

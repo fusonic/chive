@@ -134,10 +134,11 @@ class TableController extends Controller
 			{
 
 				// Pagination
-				$pages = new CPagination;
-				$pages->setPageSize(self::PAGE_SIZE);
+				$pages = new Pagination();
+				$pages->setupPageSize('pageSize', 'schema.table.browse');
+				$pages->applyLimit($criteria);
 				$pages->route = '#tables/'.$this->table.'/browse';
-
+				
 				// Sorting
 				$sort = new Sort($db);
 				$sort->multiSort = false;
@@ -145,11 +146,13 @@ class TableController extends Controller
 
 				$sqlQuery->applyCalculateFoundRows();
 
+				$pageSize = $pages->getPageSize();
+				
 				// Apply limit
 				if(!$sqlQuery->getLimit())
 				{
-					$offset = (isset($_GET['page']) ? (int)$_GET['page'] : 1) * self::PAGE_SIZE - self::PAGE_SIZE;
-					$sqlQuery->applyLimit(self::PAGE_SIZE, $offset, true);
+					$offset = (isset($_GET['page']) ? (int)$_GET['page'] : 1) * $pageSize - $pageSize;
+					$sqlQuery->applyLimit($pageSize, $offset, true);
 				}
 
 				// Apply sort
@@ -212,7 +215,7 @@ class TableController extends Controller
 
 						$keyData = array();
 					}
-
+					
 					$columns = array();
 
 					// Fetch column headers
@@ -475,173 +478,6 @@ class TableController extends Controller
 				'operators'=>$operators,
 			));
 		}
-
-	}
-
-	/**
-	 * Insert a new row
-	 * If creation is successful, the browser will be redirected to the 'browse' page.
-	 */
-	public function actionInsert()
-	{
-
-		$db = $this->db;
-
-		$row = new Row;
-
-		$functions = array(
-			'',
-			'ASCII',
-			'CHAR',
-			'MD5',
-			'SHA1',
-			'ENCRYPT',
-			'RAND',
-			'LAST_INSERT_ID',
-			'UNIX_TIMESTAMP',
-			'COUNT',
-			'AVG',
-			'SUM',
-			'SOUNDEX',
-			'LCASE',
-			'UCASE',
-			'NOW',
-			'PASSWORD',
-			'OLD_PASSWORD',
-			'COMPRESS',
-			'UNCOMPRESS',
-			'CURDATE',
-			'CURTIME',
-			'UTC_DATE',
-			'UTC_TIME',
-			'UTC_TIMESTAMP',
-			'FROM_DAYS',
-			'FROM_UNIXTIME',
-			'PERIOD_ADD',
-			'PERIOD_DIFF',
-			'TO_DAYS',
-			'USER',
-			'WEEKDAY',
-			'CONCAT',
-			'HEX',
-			'UNHEX',
-		);
-
-		//predie($_POST);
-
-		if(isset($_POST['Row']))
-		{
-
-			$row->isNewRecord = true;
-			$row->attributes = $_POST['Row'];
-
-			$sql = 'INSERT INTO ' . $db->quoteTableName($this->table) . ' (';
-
-			$attributesCount = count($row->getAttributes());
-
-			$i = 0;
-			foreach($row->getAttributes() AS $attribute=>$value)
-			{
-				$sql .= "\n\t" . $db->quoteColumnName($attribute);
-
-				$i++;
-
-				if($i < $attributesCount)
-					$sql .= ', ';
-			}
-
-			$sql .= "\n" . ') VALUES (';
-
-			$i = 0;
-			foreach($row->getAttributes() AS $attribute=>$value)
-			{
-				// NULL value
-				if(isset($_POST[$attribute]['null']))
-				{
-					$sql .= "\n\t" . 'NULL';
-				}
-
-				// FUNCTION
-				elseif(isset($_POST[$attribute]['function']) && $_POST[$attribute]['function'])
-				{
-					$sql .= "\n\t" . $functions[$_POST[$attribute]['function']] . '(' . $db->quoteValue($value) . ')';
-				}
-
-				// RAW
-				else
-				{
-					$sql .= "\n\t" . $db->quoteValue($value);
-				}
-
-				$i++;
-
-				if($i < $attributesCount)
-					$sql .= ', ';
-
-
-			}
-
-			$sql .= "\n" . ')';
-
-			$cmd = $db->createCommand($sql);
-			$response = new AjaxResponse();
-
-			try
-			{
-				$cmd->prepare();
-				$cmd->execute();
-
-				$response->addNotification('success', Yii::t('message', 'successInsertRow'), null, $sql);
-				$response->redirectUrl = '#tables/' . $this->table . '/browse';
-
-			}
-			catch (CDbException $ex)
-			{
-				$ex = new DbException($cmd);
-				$response->addNotification('error', Yii::t('message', 'errorInsertRow'), $ex->getText(), $sql);
-			}
-
-			$response->send();
-
-		}
-
-		/*
-		$table = $this->loadTable();
-
-		if(isset($_POST['sent'])) {
-
-			$builder = $this->db->getCommandBuilder();
-
-			$data = array();
-			foreach($table->columns AS $column) {
-				$data[$column->COLUMN_NAME] = $_POST[$column->COLUMN_NAME];
-			}
-
-			$cmd = $builder->createInsertCommand($this->table, $data);
-
-			try
-			{
-				$cmd->prepare();
-				$cmd->execute();
-				Yii::app()->end('redirect:' . $this->schema . '#tables/' . $this->table . '/browse');
-			}
-			catch(CDbException $ex)
-			{
-				$errorInfo = $cmd->getPdoStatement()->errorInfo();
-				//$this->addError('SCHEMA_NAME', Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
-				return false;
-			}
-
-		}
-		*/
-
-		$this->render('insert',array(
-			'row'=>$row,
-			//'table'=>$table,
-			'functions'=>$functions,
-		));
-
-
 
 	}
 

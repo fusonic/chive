@@ -84,6 +84,6 @@
 	<?php $this->widget('LinkPager',array('pages'=>$pages)); ?>
 	</div>
 
-<?php }  elseif($this->isSent) { ?>
+<?php }  elseif($isSent) { ?>
 	Es wurden keine Enträge gefunden!
 <?php } ?>
