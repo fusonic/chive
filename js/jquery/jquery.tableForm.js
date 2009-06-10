@@ -87,7 +87,11 @@
 			divObj.load(url, function() {
 				divObj.slideDown(500);
 				setAjaxForms();
+				divObj.find('input:first').select();
 			});
+			
+			var targetOffset = obj.position().top + $('#content').scrollTop();
+			$('#content').animate({scrollTop: targetOffset}, 500);
 			
 			
 			/*

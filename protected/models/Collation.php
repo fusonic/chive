@@ -51,10 +51,15 @@ class Collation extends CActiveRecord
 	 * @param	string				Collation name (e.g. utf8_general_ci)
 	 * @return	string				Definition including charset, collation and language
 	 */
-	public static function getDefinition($collation)
+	public static function getDefinition($collation, $showCharset = true)
 	{
 		$data = explode('_', $collation);
-		$text = Yii::t('collation', $data[0]) . ', ' . Yii::t('collation', $data[1]);
+		$text = '';
+		if($showCharset)
+		{
+			$text .= Yii::t('collation', $data[0]) . ', ';
+		}
+		$text .= Yii::t('collation', $data[1]);
 		if(count($data) == 3)
 		{
 			$text .= ' (' . Yii::t('collation', $data[2]) . ')';

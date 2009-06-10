@@ -1,7 +1,7 @@
 <h2>Status information</h2>
 
 <?php foreach($status AS $name => $variable) { ?>
-	<div class="list">
+	<div class="list" style="width: 50%">
 		<table class="list">
 			<colgroup>
 				<col style="width: 50%" />

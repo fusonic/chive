@@ -42,14 +42,21 @@
 	
 	<!-- Languages -->
 	<entry id="bin">Binary</entry>
+	<entry id="bulgarian">Bulgarian</entry>
+	<entry id="chinese">Chinese</entry>
+	<entry id="croatian">Croatian</entry>
 	<entry id="czech">Czech</entry>
 	<entry id="danish">Danish</entry>
 	<entry id="english">English</entry>
 	<entry id="esperanto">Esperanto</entry>
 	<entry id="estonian">Estonian</entry>
 	<entry id="general">General</entry>
+	<entry id="german">German</entry>
+	<entry id="german1">German (1)</entry>
+	<entry id="german2">German (2)</entry>
 	<entry id="hungarian">Hungarian</entry>
 	<entry id="icelandic">Icelandic</entry>
+	<entry id="japanese">Japanese</entry>
 	<entry id="latvian">Latvian</entry>
 	<entry id="lithuanian">Lithuanian</entry>
 	<entry id="persian">Persian</entry>
@@ -61,7 +68,9 @@
 	<entry id="spanish2">Spanish</entry>
 	<entry id="spanish">Spanish</entry>
 	<entry id="swedish">Swedish</entry>
+	<entry id="thai">Thai</entry>
 	<entry id="turkish">Turkish</entry>
+	<entry id="ukrainian">Ukrainian</entry>
 	<entry id="unicode">Unicode</entry>
 	
 	<!-- Case sensitivity -->

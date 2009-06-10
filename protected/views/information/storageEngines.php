@@ -1,7 +1,7 @@
 <h2><?php echo Yii::t('database', 'storageEngines'); ?></h2>
 
 <div class="list">
-	<table class="list">
+	<table class="list selectable">
 		<colgroup>
 			<col />
 			<col />
@@ -9,13 +9,11 @@
 		</colgroup>
 		<tbody>
 			<?php foreach($engines AS $engine) { ?>
-				<tr>
+				<tr style="cursor: pointer" onclick="informationStorageEngines.showDetails('<?php echo $engine['Engine']; ?>')">
 					<td><?php echo $engine['Engine']; ?></td>
 					<td><?php echo $engine['Comment']; ?></td>
 					<td>
-						<a href="javascript:void(0)" onclick="informationStorageEngines.showDetails('<?php echo $engine['Engine']; ?>')">
-							<com:Icon name="search" text="core.showDetails" title="core.showDetails" />
-						</a>
+						<com:Icon name="search" text="core.showDetails" title="core.showDetails" />
 					</td>
 				</tr>
 				<tr id="<?php echo $engine['Engine']; ?>Infos" class="noSwitch info" style="display: none">

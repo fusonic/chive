@@ -376,7 +376,7 @@ class SchemaController extends Controller
 
 		// Pagination
 		$pages = new Pagination(Schema::model()->count($criteria));
-		$pages->pageSize = (isset($_GET['pageSize']) ? (int)$_GET['pageSize'] : self::$defaultPageSize);
+		$pages->setupPageSize('pageSize', 'schemata');
 		$pages->applyLimit($criteria);
 		$pages->route = '#schemata';
 

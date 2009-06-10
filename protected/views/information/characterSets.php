@@ -1,11 +1,11 @@
 <h2>Character sets</h2>
 
 <?php foreach($charsets AS $charset) { ?>
-	<div class="list">
+	<div class="list" style="width: 50%">
 		<table class="list">
 			<colgroup>
+				<col class="collation" />
 				<col />
-				<col style="width: 200px;" />
 			</colgroup>
 			<thead>
 				<tr>
@@ -16,7 +16,7 @@
 				<?php foreach($charset['collations'] AS $collation) { ?>
 					<tr>
 						<td><?php echo $collation['Collation']; ?></td>
-						<td><?php echo $collation['Sortlen']; ?></td>
+						<td><?php echo Collation::getDefinition($collation['Collation'], false); ?></td>
 					</tr>
 				<?php } ?>
 			</tbody>

@@ -26,7 +26,6 @@
 		-moz-border-radius: 4px;
 		-webkit-border-radius: 4px;
 		border: 1px solid #CCC;
-		margin: 10px 0px;
 		width: 100%;
 	}
 	
@@ -61,7 +60,7 @@
 	}
 	
 	colgroup>col.collation {
-		width: 130px;
+		width: 140px;
 	}
 	
 	colgroup>col.null {

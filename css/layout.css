@@ -473,6 +473,8 @@
 
   div.buttonContainer {
   	clear: both;
+	overflow: hidden;
+	padding: 10px 0px;
   }
   
   div.buttonContainer div.left {
