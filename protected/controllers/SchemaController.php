@@ -2,7 +2,7 @@
 
 class SchemaController extends Controller
 {
-	const PAGE_SIZE = 10;
+	public static $defaultPageSize = 10;
 
 	/**
 	 * @var string specifies the default action to be 'list'.
@@ -12,7 +12,7 @@ class SchemaController extends Controller
 	/**
 	 * @var CActiveRecord the currently loaded data model instance.
 	 */
-	private $_schema;
+	public $_schema;
 	public $schema;
 
 	/**
@@ -45,7 +45,21 @@ class SchemaController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$this->render('index');
+		$this->loadSchema();
+
+		// Tables
+		$this->_schema->tables = Table::model()->findAll('TABLE_SCHEMA = :schema AND TABLE_TYPE IN (\'BASE TABLE\', \'SYSTEM VIEW\')', array(
+			':schema' => $this->schema,
+		));
+
+		// Views
+		$this->_schema->views = View::model()->findAllByAttributes(array(
+			'TABLE_SCHEMA' => $this->schema,
+		));
+
+		$this->render('index', array(
+			'bookmarks' => $bookmarks,
+		));
 	}
 
 	/**
@@ -55,11 +69,18 @@ class SchemaController extends Controller
 	{
 		$schema = $this->loadSchema();
 
-		$criteria = new CDbCriteria;
+		// Criteria
+		$criteria = new CDbCriteria();
 		$criteria->condition = 'TABLE_SCHEMA = :schema AND TABLE_TYPE IN (\'BASE TABLE\', \'SYSTEM VIEW\')';
 		$criteria->params = array(
 			':schema' => $this->schema,
 		);
+
+		// Pagination
+		$pages = new Pagination(Table::model()->count($criteria));
+		$pages->setupPageSize('pageSize', 'schema.tables');
+		$pages->applyLimit($criteria);
+		$pages->route = '#tables';
 
 		// Sort
 		$sort = new CSort('Table');
@@ -74,11 +95,14 @@ class SchemaController extends Controller
 		$sort->route = '#tables';
 		$sort->applyOrder($criteria);
 
+		// Load data
 		$schema->tables = Table::model()->findAll($criteria);
 
+		// Render
 		$this->render('tables', array(
 			'schema' => $schema,
 			'tableCount' => count($schema->tables),
+			'pages' => $pages,
 			'sort' => $sort,
 		));
 	}
@@ -90,11 +114,18 @@ class SchemaController extends Controller
 	{
 		$schema = $this->loadSchema();
 
+		// Criteria
 		$criteria = new CDbCriteria;
 		$criteria->condition = 'TABLE_SCHEMA = :schema';
 		$criteria->params = array(
 			':schema' => $this->schema,
 		);
+
+		// Pagination
+		$pages = new Pagination(View::model()->count($criteria));
+		$pages->setupPageSize('pageSize', 'schema.views');
+		$pages->applyLimit($criteria);
+		$pages->route = '#views';
 
 		// Sort
 		$sort = new CSort('View');
@@ -105,11 +136,14 @@ class SchemaController extends Controller
 		$sort->route = '#views';
 		$sort->applyOrder($criteria);
 
+		// Load data
 		$schema->views = View::model()->findAll($criteria);
 
+		// Render
 		$this->render('views', array(
 			'schema' => $schema,
 			'viewCount' => count($schema->views),
+			'pages' => $pages,
 			'sort' => $sort,
 		));
 	}
@@ -121,11 +155,18 @@ class SchemaController extends Controller
 	{
 		$schema = $this->loadSchema();
 
+		// Criteria
 		$criteria = new CDbCriteria;
 		$criteria->condition = 'ROUTINE_SCHEMA = :schema';
 		$criteria->params = array(
 			':schema' => $this->schema,
 		);
+
+		// Pagination
+		$pages = new Pagination(Routine::model()->count($criteria));
+		$pages->setupPageSize('pageSize', 'schema.routines');
+		$pages->applyLimit($criteria);
+		$pages->route = '#routines';
 
 		// Sort
 		$sort = new CSort('View');
@@ -135,11 +176,14 @@ class SchemaController extends Controller
 		$sort->route = '#routines';
 		$sort->applyOrder($criteria);
 
+		// Load data
 		$schema->routines = Routine::model()->findAll($criteria);
 
+		// Render
 		$this->render('routines', array(
 			'schema' => $schema,
 			'routineCount' => count($schema->routines),
+			'pages' => $pages,
 			'sort' => $sort,
 		));
 	}
@@ -331,8 +375,8 @@ class SchemaController extends Controller
 		$criteria = new CDbCriteria();
 
 		// Pagination
-		$pages = new CPagination(Schema::model()->count($criteria));
-		$pages->pageSize = self::PAGE_SIZE;
+		$pages = new Pagination(Schema::model()->count($criteria));
+		$pages->pageSize = (isset($_GET['pageSize']) ? (int)$_GET['pageSize'] : self::$defaultPageSize);
 		$pages->applyLimit($criteria);
 		$pages->route = '#schemata';
 

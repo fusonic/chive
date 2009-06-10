@@ -7,6 +7,9 @@
 
 <div class="list">
 	<div class="buttonContainer">
+		<div class="left">
+			<?php $this->widget('LinkPager', array('pages' => $pages)); ?>
+		</div>
 		<div class="right">
 			<a href="javascript:void(0)" class="icon button" onclick="schemaTables.addTable()">
 				<com:Icon name="add" size="16" />
@@ -15,7 +18,7 @@
 		</div>
 	</div>
 
-	<table class="list addCheckboxes" id="tables">
+	<table class="list addCheckboxes selectable" id="tables">
 		<colgroup>
 			<col class="checkbox" />
 			<col />

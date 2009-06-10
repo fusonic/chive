@@ -12,6 +12,11 @@ class Icon extends CWidget
 
 	public function run()
 	{
+		echo $this->getCode();
+	}
+
+	public function getCode()
+	{
 		list($category, $var) = explode('.', $this->text);
 
 		$classes = "icon icon" . $this->size . " icon_" . $this->name . ($this->disabled ? " disabled" : "");
@@ -37,8 +42,7 @@ class Icon extends CWidget
 			'height' => $this->size,
 		);
 
-		echo CHtml::image(ICONPATH . '/' . $this->size . DIRECTORY_SEPARATOR . $this->name . '.png', Yii::t($category, $var), $this->htmlOptions);
-
+		return CHtml::image(ICONPATH . '/' . $this->size . DIRECTORY_SEPARATOR . $this->name . '.png', Yii::t($category, $var), $this->htmlOptions);
 	}
 
 }

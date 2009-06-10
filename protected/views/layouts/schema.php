@@ -141,7 +141,7 @@ foreach($scriptFiles AS $file)
 			<input type="text" id="tableSearch" class="search text" />
 
 			<ul class="list icon nowrap" id="tableList">
-				<?php foreach(Table::model()->findAllByAttributes(array('TABLE_SCHEMA' => $_GET['schema'])) AS $table) { ?>
+				<?php foreach($this->_schema->tables AS $table) { ?>
 					<li>
 						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/<?php echo ($table->getRowCount() ? 'browse' : 'structure'); ?>" class="icon">
 							<?php $this->widget('Icon', array('name'=>'browse', 'size'=>16, 'disabled'=>!$table->getRowCount(), 'title'=>Yii::t('database', 'Xrows', array('{amount}'=>$table->getRowCount() ? $table->getRowCount() : 0)))); ?>
@@ -167,7 +167,7 @@ foreach($scriptFiles AS $file)
 		</div>
 		<div class="sidebarContent">
 			<ul class="list icon nowrap">
-				<?php foreach(View::model()->findAllByAttributes(array('TABLE_SCHEMA' => $_GET['schema'])) AS $view) { ?>
+				<?php foreach($this->_schema->views AS $view) { ?>
 					<li>
 						<a href="#views/<?php echo $view->TABLE_NAME; ?>/browse" class="icon">
 							<com:Icon name="view" size="16" text="database.browse" />
@@ -190,8 +190,9 @@ foreach($scriptFiles AS $file)
 			<input type="text" id="bookmarkSearch" class="search text" />
 
 			<ul class="list icon nowrap" id="bookmarkList">
-			<?php if(Yii::app()->user->settings->get('bookmarks', 'database', $this->schema)) { ?>
-				<?php foreach(Yii::app()->user->settings->get('bookmarks', 'database', $this->schema) AS $key=>$bookmark) { ?>
+			<?php $bookmarks = Yii::app()->user->settings->get('bookmarks', 'database', $this->schema); ?>
+			<?php if($bookmarks) { ?>
+				<?php foreach($bookmarks AS $key => $bookmark) { ?>
 					<li id="bookmark_<?php echo $bookmark['id']; ?>">
 						<a href="#bookmark/show/<?php echo $bookmark['id']; ?>" class="icon" title="<?php echo $bookmark['query']; ?>">
 							<com:Icon size="16" name="bookmark" />

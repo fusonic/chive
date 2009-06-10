@@ -116,7 +116,7 @@
 		background-color: #E3EE93;		
 	}
 	
-	table.list>tbody>tr:hover {
+	table.list.selectable>tbody>tr:hover {
 		background-color: #D3E73B;
 	}
 	

@@ -19,8 +19,11 @@ ul.yiiPager li {
 	border-right: none;
 }
 
-ul.yiiPager li a {
-	color: #777;	
+ul.yiiPager a {
+	color: #777;
+}
+
+ul.yiiPager li>a, ul.yiiPager li>span {
 	padding: 3px 8px;
 	display: block;
 }

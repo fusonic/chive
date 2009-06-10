@@ -7,7 +7,7 @@
 	<div class="buttonContainer">
 
 		<div class="left">
-			<?php $this->widget('LinkPager',array('pages'=>$pages)); ?>
+			<?php $this->widget('LinkPager', array('pages' => $pages)); ?>
 		</div>
 		<div class="right">
 			<?php if(Yii::app()->user->privileges->checkGlobal('CREATE')) { ?>
@@ -26,7 +26,7 @@
 
 	<div class="clear"></div>
 
-	<table id="schemata" class="list addCheckboxes">
+	<table id="schemata" class="list addCheckboxes selectable">
 		<colgroup>
 			<col class="checkbox" />
 			<col />

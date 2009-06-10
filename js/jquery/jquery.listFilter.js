@@ -7,15 +7,21 @@
 			
 			var list = $(this);
 			var input = inputObj;
+			var inputElement = inputObj.get(0);
 			var items = new Array();
+			var selectedItem = null;
 			
 			function selectResult(element) 
 			{
-				list.children("li").removeClass("listFilterSelected");
+				if(selectedItem)
+				{
+					selectedItem.removeClass('listFilterSelected');
+				}
 				if(element)
 				{
-					element.addClass("listFilterSelected");
+					element.addClass('listFilterSelected');
 				}
+				selectedItem = element;
 			}
 			
 			function keyDown(e)
@@ -36,7 +42,7 @@
 				{
 					performAction();
 				}
-				else
+				else if(e.keyCode != 40 && e.keyCode != 38)
 				{
 					doFilter();
 				}
@@ -44,78 +50,98 @@
 			
 			function moveUp()
 			{
-				var selectedResult = $(list.children("li.listFilterSelected:visible")[0]);
-				var selectedNow = $(list.children("li:visible")[list.children("li:visible").length - 1]);
-				if(selectedResult)
+				var visibleLi = list.children('li:visible');
+				var selectedNow;
+				if(selectedItem)
 				{
-					if(selectedResult.prevAll("li:visible").length > 0)
+					var previousLi = selectedItem.prevAll('li:visible');
+					if(previousLi.length > 0)
 					{
-						selectedNow = $(selectedResult.prevAll("li:visible")[0]);
+						selectedNow = $(previousLi[0]);
 					}
+					else
+					{
+						selectedNow = $(visibleLi[visibleLi.length - 1]);
+					}
+				}
+				else
+				{
+					selectedNow = $(visibleLi[visibleLi.length - 1]);
 				}
 				selectResult(selectedNow);
 			}
 			
 			function moveDown()
 			{
-				var selectedResult = $(list.children("li.listFilterSelected:visible")[0]);
-				var selectedNow = $(list.children("li:visible")[0]);
-				if(selectedResult)
+				var visibleLi = list.children('li:visible');
+				var selectedNow;
+				if(selectedItem)
 				{
-					if(selectedResult.nextAll("li:visible").length > 0)
+					var nextLi = selectedItem.nextAll('li:visible');
+					if(nextLi.length > 0)
 					{
-						selectedNow = $(selectedResult.nextAll("li:visible")[0]);
+						selectedNow = $(nextLi[0]);
 					}
+					else
+					{
+						selectedNow = $(visibleLi[0]);
+					}
+				}
+				else
+				{
+					selectedNow = $(visibleLi[0]);
 				}
 				selectResult(selectedNow);
 			}
 			
 			function performAction()
 			{
-				list.children("li.listFilterSelected:visible").children("a:first").each(function() {
-					window.location.href = this.href;
-				});
+				if(selectedItem)
+				{
+					selectedItem.children("a:first").each(function() {
+						window.location.href = this.href;
+					});
+				}
 			}
 			
 			function doFilter() 
 			{
-				var searchString = input.val().toLowerCase();
-				var selectedResult = $(list.children("li.listFilterSelected:visible")[0]);
+				var searchString = inputElement.value.toLowerCase();
 				
 				// Do filtering
 				if(searchString == '')
 				{
 					for(var i = 0; i < items.length; i++)
 					{
-						items[i].obj.show();
+						items[i][1].show();
 					}
 				}
 				else
 				{
 					for(var i = 0; i < items.length; i++) 
 					{
-						if(items[i].text.indexOf(searchString) > -1)
+						if(items[i][0].indexOf(searchString) > -1)
 						{
-							items[i].obj.show();
+							items[i][1].show();
 						}
 						else
 						{
-							items[i].obj.hide();
+							items[i][1].hide();
 						}
 					}
 				}
 				
 				// Find new selected element
 				var selectedNow = null;
-				if(selectedResult)
+				if(selectedItem)
 				{
-					if(selectedResult.is("li:visible"))
+					if(selectedItem.is('li:visible'))
 					{
-						selectedNow = selectedResult;
+						selectedNow = selectedItem;
 					}
-					else if(selectedResult.nextAll("li:visible").length > 0)
+					else if(selectedItem.nextAll('li:visible').length > 0)
 					{
-						selectedNow = selectedResult.next("li:visible");
+						selectedNow = selectedItem.next('li:visible');
 					}
 				}
 				selectResult(selectedNow);
@@ -127,10 +153,10 @@
 			 */
 			list.children("li").each(function() {
 				var item = $(this);
-				items.push({
-					"text" : item.text().toLowerCase(),
-					"obj" : item
-				});
+				items.push([
+					item.text().toLowerCase(),
+					item
+				]);
 			});
 			
 			

@@ -11,7 +11,7 @@
 
 <div class="list">
 
-	<table id="columns" class="list addCheckboxes">
+	<table id="columns" class="list addCheckboxes selectable">
 		<colgroup>
 			<col class="checkbox" />
 			<col />
