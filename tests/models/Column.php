@@ -582,44 +582,50 @@ class ColumnTest extends TestCase
 
 		// Try with array too
 		$values = "a\nb\nc\nd\ne";
+		
+		$values_arr = array('a','b','c','d'); 
 
 		foreach($cols AS $c => $col)
 		{
 			//enum can't be auto_increment, start at column test3
 			if($c > 0)
 			{
+				
+				($c%2 == 0 ? $values : $values_arr);
+				
 				$col->setDataType('ENUM');
 				$col->setIsNullable(true);
 				$col->setCollation('latin1_swedish_ci');
 				$col->values=$values;
 				$col->COLUMN_DEFAULT = 'a';
-			
+					
 				$col->save();
 				$col->refresh();
 
 				$this->assertEquals('enum',$col->getDataType());
-				$this->assertEquals($values, $col->values);				
-				
+				$this->assertEquals($values, $col->values);
+
 				($c==1 ? $this->assertFalse($col->getIsNullable()) : $this->assertTrue($col->getIsNullable()));
 
 			}
 
 		}
 	}
-	
-	
-		public function testConfigFunctions()
+
+
+	public function testConfigFunctions()
 	{
-		
-		
+
+
 		// Create new schema
 		$column = new column();
 
 		// Check return types
 		$this->assertTrue(is_array($column->safeAttributes()));
 		$this->assertTrue(is_array($column->attributeLabels()));
-		$this->assertTrue( is_array($column->rules()));
+		$this->assertTrue(is_array($column->rules()));
 		$this->assertTrue(is_array($column->relations()));
+		$this->assertTrue(is_array($column->getDataTypes()));
 	}
 
 
