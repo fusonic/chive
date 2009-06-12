@@ -1,7 +1,7 @@
 <?php
 
 $extensions = Array("php", "htm", "js", "css", "tpl");
-$aExcludedirs = Array("./runtime/");
+$aExcludedirs = Array("./runtime/", "./assets/", "./extensions/");
 $aExcludefiles = Array();
 
 function getsize($folder) {
