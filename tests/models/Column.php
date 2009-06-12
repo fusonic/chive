@@ -429,12 +429,22 @@ class ColumnTest extends TestCase
 			$col->setDataType('float');
 			$col->size = 10;
 			$col->scale = 2;
-			$col->attribute = "unsigned";
+			$col->attribute = "unsigned zerofill";
 			$col->setIsNullable(false);
 			$col->save();
 			$col->refresh();
 
-			$this->assertEquals('unsigned',$col->attribute);
+
+			$pk = array(
+			    'TABLE_SCHEMA' => 'columntest',
+			    'TABLE_NAME' => 'test',
+			    'COLUMN_NAME' => $col->COLUMN_NAME,
+			);
+
+			// Load column definition
+			$col = Column::model()->findByPk($pk);
+
+			$this->assertEquals('unsigned zerofill',$col->attribute);
 			$this->assertEquals('float',$col->getDataType());
 			$this->assertEquals(10,$col->size);
 			$this->assertEquals(2,$col->scale);
@@ -477,6 +487,16 @@ class ColumnTest extends TestCase
 			$col->COLUMN_DEFAULT=2;
 			$col->save();
 			$col->refresh();
+
+
+			$pk = array(
+			    'TABLE_SCHEMA' => 'columntest',
+			    'TABLE_NAME' => 'test',
+			    'COLUMN_NAME' => $col->COLUMN_NAME,
+			);
+
+			// Load column definition
+			$col = Column::model()->findByPk($pk);
 
 
 			$this->assertEquals('tinyint',$col->getDataType());
@@ -542,6 +562,15 @@ class ColumnTest extends TestCase
 				$col->refresh();
 
 
+				$pk = array(
+			    'TABLE_SCHEMA' => 'columntest',
+			    'TABLE_NAME' => 'test',
+			    'COLUMN_NAME' => $col->COLUMN_NAME,
+				);
+
+				// Load column definition
+				$col = Column::model()->findByPk($pk);
+
 
 				$this->assertEquals('timestamp',$col->getDataType());
 				$this->assertFalse($col->getIsNullable());
@@ -582,17 +611,18 @@ class ColumnTest extends TestCase
 
 		// Try with array too
 		$values = "a\nb\nc\nd\ne";
-		
-		$values_arr = array('a','b','c','d'); 
+
+
 
 		foreach($cols AS $c => $col)
 		{
 			//enum can't be auto_increment, start at column test3
 			if($c > 0)
 			{
-				
-				($c%2 == 0 ? $values : $values_arr);
-				
+
+
+
+
 				$col->setDataType('ENUM');
 				$col->setIsNullable(true);
 				$col->setCollation('latin1_swedish_ci');
@@ -602,12 +632,68 @@ class ColumnTest extends TestCase
 				$col->save();
 				$col->refresh();
 
+
+				$pk = array(
+			    'TABLE_SCHEMA' => 'columntest',
+			    'TABLE_NAME' => 'test',
+			    'COLUMN_NAME' => $col->COLUMN_NAME,
+				);
+
+				// Load column definition
+				$col = Column::model()->findByPk($pk);
+
 				$this->assertEquals('enum',$col->getDataType());
 				$this->assertEquals($values, $col->values);
 
 				($c==1 ? $this->assertFalse($col->getIsNullable()) : $this->assertTrue($col->getIsNullable()));
 
 			}
+
+		}
+	}
+
+
+	public function testAlter5()
+	{
+
+		$cols = Column::model()->findAllByAttributes(array(
+			'TABLE_SCHEMA' => 'columntest',
+			'TABLE_NAME' => 'test',
+		));
+
+
+		$values = "a\nb\nc\nd";
+		
+
+		$values_arr = array('a','b','c','d');
+
+		foreach($cols AS $c => $col)
+		{
+			if($c > 1)
+			{
+				$col->setDataType('set');
+				$col->setCollation('latin1_swedish_ci');
+				$col->values=($c%2 == 0 ? $values : $values_arr);
+					
+				$col->save();
+				$col->refresh();
+
+
+				$pk = array(
+			    'TABLE_SCHEMA' => 'columntest',
+			    'TABLE_NAME' => 'test',
+			    'COLUMN_NAME' => $col->COLUMN_NAME,
+				);
+
+				// Load column definition
+				$col = Column::model()->findByPk($pk);
+
+				$this->assertEquals('set',$col->getDataType());
+
+				$this->assertEquals($values, $col->values);
+
+			}
+
 
 		}
 	}
