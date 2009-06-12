@@ -82,6 +82,13 @@
 	<!-- Routines -->
 	<entry id="successAddFunction">Added function</entry>
 	<entry id="successAddProcedure">Added procedure</entry>
+	<entry id="successAlterRoutine">Saved routine</entry>
 	<entry id="successDropRoutine">1#Dropped routine »{routine}«|n>1#Dropped {routineCount} routines</entry>
 	<entry id="errorDropRoutine">Dropping routine »{routine}« failed</entry>
+	
+	<!-- Triggers -->
+	<entry id="successAddTrigger">Added trigger</entry>
+	<entry id="successDropTrigger">Dropped trigger</entry>
+	<entry id="errorDropTrigger">Dropping trigger failed</entry>
+	<entry id="successAlterTrigger">Altered trigger</entry>
 </category>

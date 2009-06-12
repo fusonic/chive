@@ -9,25 +9,27 @@ var schemaGeneral = {
 	// Setup dialogs
 	setupDialogs: function()
 	{
+		/*
+		 * Drop schema
+		 */
+		var buttons = {};
+		buttons[lang.get('core', 'no')] = function() 
+		{
+			$(this).dialog('close');
+		}; 
+		buttons[lang.get('core', 'yes')] = function() 
+		{
+			// Do truncate request
+			$.post(baseUrl + '/schemata/drop', {
+				schema: schema
+			}, function() {
+				window.location.href = baseUrl;
+			});
+			
+			$(this).dialog('close');
+		}; 
 		$('#dropSchemaDialog').dialog({
-			modal: true,
-			resizable: false,
-			autoOpen: false,
-			buttons: {
-				'No': function() {
-					$(this).dialog('close');
-				},
-				'Yes': function() {
-					// Do truncate request
-					$.post(baseUrl + '/schemata/drop', {
-						schema: schema
-					}, function() {
-						window.location.href = baseUrl;
-					});
-					
-					$(this).dialog('close');
-				}
-			}		
+			buttons: buttons		
 		});
 	}
 	

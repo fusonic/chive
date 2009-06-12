@@ -66,4 +66,6 @@
 	
 	<entry id="showDetails">Show details</entry>
 	<entry id="entriesPerPage">Entries per page</entry>
+	<entry id="event">Event</entry>
+	<entry id="ok">OK</entry>
 </category>

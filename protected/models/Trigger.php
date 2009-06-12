@@ -2,9 +2,10 @@
 
 class Trigger extends CActiveRecord
 {
+	public static $db;
+
 	/**
-	 * Returns the static model of the specified AR class.
-	 * @return CActiveRecord the static model class
+	 * @see		CModel::model()
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -12,7 +13,7 @@ class Trigger extends CActiveRecord
 	}
 
 	/**
-	 * @return string the associated database table name
+	 * @see		CActiveRecord::tableName()
 	 */
 	public function tableName()
 	{
@@ -20,44 +21,27 @@ class Trigger extends CActiveRecord
 	}
 
 	/**
-	 * @return array validation rules for model attributes.
+	 * @see		CActiveRecord::primaryKey()
 	 */
-	public function rules()
+	public function primaryKey()
 	{
 		return array(
-			array('TRIGGER_CATALOG','length','max'=>512),
-			array('TRIGGER_SCHEMA','length','max'=>64),
-			array('TRIGGER_NAME','length','max'=>64),
-			array('EVENT_MANIPULATION','length','max'=>6),
-			array('EVENT_OBJECT_CATALOG','length','max'=>512),
-			array('EVENT_OBJECT_SCHEMA','length','max'=>64),
-			array('EVENT_OBJECT_TABLE','length','max'=>64),
-			array('ACTION_ORIENTATION','length','max'=>9),
-			array('ACTION_TIMING','length','max'=>6),
-			array('ACTION_REFERENCE_OLD_TABLE','length','max'=>64),
-			array('ACTION_REFERENCE_NEW_TABLE','length','max'=>64),
-			array('ACTION_REFERENCE_OLD_ROW','length','max'=>3),
-			array('ACTION_REFERENCE_NEW_ROW','length','max'=>3),
-			array('ACTION_STATEMENT, SQL_MODE, DEFINER', 'required'),
-			array('ACTION_ORDER', 'numerical'),
+			'TRIGGER_SCHEMA',
+			'TRIGGER_NAME',
 		);
 	}
 
 	/**
-	 * @return array relational rules.
+	 * Returns the CREATE TRIGGER statement for this trigger.
+	 *
+	 * @return	string
 	 */
-	public function relations()
+	public function getCreateTrigger()
 	{
-		return array(
-		);
+		return 'CREATE TRIGGER ' . self::$db->quoteTableName($this->TRIGGER_NAME) . "\n"
+			. $this->ACTION_TIMING . ' ' . $this->EVENT_MANIPULATION . "\n"
+			. 'ON ' . self::$db->quoteTableName($this->EVENT_OBJECT_TABLE) . ' FOR EACH ROW' . "\n"
+			. $this->ACTION_STATEMENT;
 	}
 
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return array(
-		);
-	}
 }

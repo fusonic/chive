@@ -143,6 +143,13 @@ return array(
 						// Index
 						'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/indices/<index:'.URL_MATCH.'>/update'=>'index/update',
 
+						// TriggerActions
+						'schema/<schema:' . URL_MATCH . '>/tables/<table:' . URL_MATCH . '>/triggerAction/create' => 'trigger/create',
+						'schema/<schema:' . URL_MATCH . '>/tables/<table:' . URL_MATCH . '>/triggerAction/drop' => 'trigger/drop',
+
+						// Trigger
+						'schema/<schema:' . URL_MATCH . '>/tables/<table:' . URL_MATCH . '>/triggers/<trigger:' . URL_MATCH . '>/update' => 'trigger/update',
+
 					// View actions
 					'schema/<schema:' . URL_MATCH . '>/viewAction/create' => 'view/create',
 					'schema/<schema:' . URL_MATCH . '>/viewAction/drop' => 'view/drop',

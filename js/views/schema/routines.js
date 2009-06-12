@@ -49,30 +49,26 @@ var schemaRoutines = {
 		/*
 		 * Setup drop view dialog
 		 */
+		var buttons = {};
+		buttons[lang.get('core', 'no')] = function() 
+		{
+			$(this).dialog('close');
+		}; 
+		buttons[lang.get('core', 'yes')] = function() 
+		{
+			// Collect ids
+			var ids = schemaRoutines.getSelectedIds();
+			
+			// Do drop request
+			$.post(baseUrl + '/schema/' + schema + '/routineAction/drop', {
+				'routines[]': ids
+			}, AjaxResponse.handle);
+			
+			$(this).dialog('close');
+		}; 
 		$('div.ui-dialog>div[id="dropRoutinesDialog"]').remove();
 		$('#dropRoutinesDialog').dialog({
-			modal: true,
-			resizable: false,
-			autoOpen: false,
-			buttons: {
-				'No': function() 
-				{
-					$(this).dialog('close');
-				},
-				'Yes': function() 
-				{
-					
-					// Collect ids
-					var ids = schemaRoutines.getSelectedIds();
-					
-					// Do drop request
-					$.post(baseUrl + '/schema/' + schema + '/routineAction/drop', {
-						'routines[]': ids
-					}, AjaxResponse.handle);
-					
-					$(this).dialog('close');
-				}
-			}		
+			buttons: buttons	
 		});
 
 	}

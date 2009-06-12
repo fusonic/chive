@@ -131,7 +131,13 @@
 	<entry id="variables">Variables</entry>
 	
 	<!-- Trigger -->
+	<entry id="trigger">Trigger</entry>
 	<entry id="triggers">Triggers</entry>
+	<entry id="addTrigger">Add trigger</entry>
+	<entry id="editTrigger">Edit trigger</entry>
+	<entry id="dropTrigger">Drop trigger</entry>
+	<entry id="doYouReallyWantToDropTrigger">Do you really want to drop the trigger?</entry>
+	<entry id="noTriggers">No visible triggers in this table.</entry>
 	
 	<!-- Relations -->
 	<entry id="relation">Relation</entry>

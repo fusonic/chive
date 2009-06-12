@@ -8,6 +8,9 @@
 <div id="dropIndexDialog" title="<?php echo Yii::t('database', 'dropIndex'); ?>" style="display: none">
 	<?php echo Yii::t('database', 'doYouReallyWantToDropIndex'); ?>
 </div>
+<div id="dropTriggerDialog" title="<?php echo Yii::t('database', 'dropTrigger'); ?>" style="display: none">
+	<?php echo Yii::t('database', 'doYouReallyWantToDropTrigger'); ?>
+</div>
 
 <div class="list">
 
@@ -255,7 +258,7 @@
 
 </div>
 
-<div style="overflow: hidden; clear: both; padding-top: 10px">
+<div style="overflow: hidden; clear: both">
 
 	<div style="width: 45%; float: left">
 		<div style="padding-right: 10px">
@@ -348,6 +351,61 @@
 								<span><?php echo Yii::t('database', 'addIndex'); ?></span>
 							</span>
 						<?php } ?>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="list">
+
+				<table id="triggers" class="list">
+					<colgroup>
+						<col />
+						<col />
+						<col class="action" />
+						<col class="action" />
+					</colgroup>
+					<thead>
+						<tr>
+							<th><?php echo Yii::t('database', 'trigger'); ?></th>
+							<th colspan="3"><?php echo Yii::t('core', 'event'); ?></th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php if(count($table->triggers) < 1) { ?>
+							<tr>
+								<td class="noEntries" colspan="4">
+									<?php echo Yii::t('database', 'noTriggers'); ?>
+								</td>
+							</tr>
+						<?php } ?>
+						<?php foreach($table->triggers AS $trigger) { ?>
+							<tr id="triggers_<?php echo $trigger->TRIGGER_NAME; ?>">
+								<td><?php echo $trigger->TRIGGER_NAME; ?></td>
+								<td>
+									<?php echo $trigger->ACTION_TIMING . ' ' . $trigger->EVENT_MANIPULATION; ?>
+								</td>
+								<td>
+									<a href="javascript:void(0)" onclick="tableStructure.editTrigger('<?php echo $trigger->TRIGGER_NAME; ?>')" class="icon">
+										<com:Icon name="edit" size="16" text="core.edit" />
+									</a>
+								</td>
+								<td>
+									<a href="javascript:void(0)" onclick="tableStructure.dropTrigger('<?php echo $trigger->TRIGGER_NAME; ?>')" class="icon">
+										<com:Icon name="delete" size="16" text="database.drop" />
+									</a>
+								</td>
+							</tr>
+						<?php } ?>
+					</tbody>
+				</table>
+
+				<div class="buttonContainer">
+					<div class="right">
+						<a href="javascript:void(0)" onclick="tableStructure.addTrigger()" class="icon button">
+							<com:Icon name="add" size="16" />
+							<span><?php echo Yii::t('database', 'addTrigger'); ?></span>
+						</a>
 					</div>
 				</div>
 

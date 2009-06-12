@@ -111,7 +111,7 @@
   * @section content-tables
   */
 
-  table { width: auto; border-collapse:collapse; margin-bottom: 0.5em; }
+  table { width: auto; border-collapse:collapse; margin-bottom: 0em; }
   table caption { font-variant:small-caps; }
   table.full { width: 100%; }
   table.fixed { table-layout:fixed; }

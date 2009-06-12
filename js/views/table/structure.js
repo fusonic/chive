@@ -129,6 +129,26 @@ var tableStructure = {
 		$('#dropIndexDialog').dialog('open');
 	},
 	
+	// Add trigger
+	addTrigger: function()
+	{
+		$('#triggers').appendForm(baseUrl + '/schema/' + schema + '/tables/' + table + '/triggerAction/create');
+	},
+	
+	// Edit trigger
+	editTrigger: function(trigger)
+	{
+		$('#triggers_' + trigger).appendForm(baseUrl + '/schema/' + schema + '/tables/' + table + '/triggers/' + trigger + '/update');
+	},
+	
+	// Drop trigger
+	dropTriggerName: null,
+	dropTrigger: function(name)
+	{
+		tableStructure.dropTriggerName = name;
+		$('#dropTriggerDialog').dialog('open');
+	},
+	
 	// Get selected id's
 	getSelectedIds: function()
 	{
@@ -182,99 +202,117 @@ var tableStructure = {
 		/*
 		 * Setup drop column dialog
 		 */
+		var buttons = {};
+		buttons[lang.get('core', 'no')] = function() 
+		{
+			$(this).dialog('close');
+		};
+		buttons[lang.get('core', 'yes')] = function() 
+		{
+			// Collect ids
+			var ids = tableStructure.getSelectedIds();
+			
+			// Do drop request
+			$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/columnAction/drop', {
+				'schema': schema,
+				'table': table,
+				'column[]': ids
+			}, function(responseText) {
+				AjaxResponse.handle(responseText);
+				for(var i = 0; i < ids.length; i++)
+				{
+					$('#columns_' + ids[i]).remove();
+				}
+				$('#columns tr').removeClass('even').removeClass('odd');
+				$('#columns tbody tr:even').addClass('even');
+				$('#columns tbody tr:odd').addClass('odd');
+			});
+			
+			$(this).dialog('close');
+		};
 		$('div.ui-dialog>div[id="dropColumnsDialog"]').remove();
 		$('#dropColumnsDialog').dialog({
-			modal: true,
-			resizable: false,
-			autoOpen: false,
-			buttons: {
-				'No': function() 
-				{
-					$(this).dialog('close');
-				},
-				'Yes': function() 
-				{
-					
-					// Collect ids
-					var ids = tableStructure.getSelectedIds();
-					
-					// Do drop request
-					$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/columnAction/drop', {
-						'schema': schema,
-						'table': table,
-						'column[]': ids
-					}, function(responseText) {
-						AjaxResponse.handle(responseText);
-						for(var i = 0; i < ids.length; i++)
-						{
-							$('#columns_' + ids[i]).remove();
-						}
-						$('#columns tr').removeClass('even').removeClass('odd');
-						$('#columns tbody tr:even').addClass('even');
-						$('#columns tbody tr:odd').addClass('odd');
-					});
-					
-					$(this).dialog('close');
-				}
-			}		
+			buttons: buttons
 		});
 		
 		/*
 		 * Setup add index dialog
 		 */
+		var buttons = {};
+		buttons[lang.get('core', 'cancel')] = function() 
+		{
+			$(this).dialog('close');
+		};
+		buttons[lang.get('core', 'ok')] = function() 
+		{
+			tableStructure.addIndexFinish();	
+			$(this).dialog('close');
+		};
 		$('div.ui-dialog>div[id="addIndexDialog"]').remove();
 		$('#addIndexDialog').dialog({
-			modal: true,
-			resizable: false,
-			autoOpen: false,
 			dialogClass: 'addIndexDialog',
-			buttons: {
-				'Ok': function() 
-				{
-					tableStructure.addIndexFinish();	
-					$(this).dialog('close');
-				},
-				'Cancel': function() 
-				{
-					$(this).dialog('close');
-				}
-			}		
+			buttons: buttons	
 		});
 		
 		/*
 		 * Setup drop index dialog
 		 */
+		var buttons = {};
+		buttons[lang.get('core', 'no')] = function() 
+		{
+			$(this).dialog('close');
+		};
+		buttons[lang.get('core', 'yes')] = function() 
+		{
+			// Do request
+			$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/indexAction/drop', {
+				index: tableStructure.dropIndexName
+			}, function(responseText) {
+				var response = JSON.parse(responseText);
+				AjaxResponse.handle(response);
+				if(response.data.success)
+				{
+					$('#indices_' + tableStructure.dropIndexName).remove();
+					$('#indices tr').removeClass('even').removeClass('odd');
+					$('#indices tbody tr:even').addClass('even');
+					$('#indices tbody tr:odd').addClass('odd');
+				}
+			});
+			
+			$(this).dialog('close');
+		};
 		$('div.ui-dialog>div[id="dropIndexDialog"]').remove();
 		$('#dropIndexDialog').dialog({
-			modal: true,
-			resizable: false,
-			autoOpen: false,
-			buttons: {
-				'Cancel': function() 
+			buttons: buttons	
+		});
+		
+		/*
+		 * Setup drop trigger dialog
+		 */
+		var buttons = {};
+		buttons[lang.get('core', 'no')] = function() 
+		{
+			$(this).dialog('close');
+		};
+		buttons[lang.get('core', 'yes')] = function() 
+		{
+			// Do request
+			$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/triggerAction/drop', {
+				trigger: tableStructure.dropTriggerName
+			}, function(responseText) {
+				var response = JSON.parse(responseText);
+				AjaxResponse.handle(response);
+				if(response.data.success)
 				{
-					$(this).dialog('close');
-				},
-				'Ok': function() 
-				{
-					
-					// Do request
-					$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/indexAction/drop', {
-						index: tableStructure.dropIndexName
-					}, function(responseText) {
-						var response = JSON.parse(responseText);
-						AjaxResponse.handle(response);
-						if(response.data.success)
-						{
-							$('#indices_' + tableStructure.dropIndexName).remove();
-							$('#indices tr').removeClass('even').removeClass('odd');
-							$('#indices tbody tr:even').addClass('even');
-							$('#indices tbody tr:odd').addClass('odd');
-						}
-					});
-					
-					$(this).dialog('close');
+					$('#triggers_' + tableStructure.dropTriggerName).remove();
 				}
-			}		
+			});
+			
+			$(this).dialog('close');
+		};
+		$('div.ui-dialog>div[id="dropTriggerDialog"]').remove();
+		$('#dropTriggerDialog').dialog({
+			buttons: buttons		
 		});
 	}
 	

@@ -201,6 +201,13 @@ $(document).ready(function()
 		Notification.add('warning', 'Ajax request failed', 'Click <a href="javascript:void(0);" onclick="reload();">here</a> to reload site.', null);
 	});
 
+	/*
+	 * Change jQuery UI dialog defaults
+	 */
+	$.ui.dialog.defaults.autoOpen = false;
+	$.ui.dialog.defaults.modal = true;
+	$.ui.dialog.defaults.resizable = false;
+
 
 	/*
 	 * Misc

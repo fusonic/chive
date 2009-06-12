@@ -78,6 +78,12 @@ class TableController extends Controller
 			$index->columns = IndexColumn::model()->findAllByAttributes(array('TABLE_SCHEMA' => $table->TABLE_SCHEMA, 'TABLE_NAME' => $table->TABLE_NAME, 'INDEX_NAME' => $index->INDEX_NAME));
 		}
 
+		// Triggers
+		$table->triggers = Trigger::model()->findAllByAttributes(array(
+			'EVENT_OBJECT_SCHEMA' => $table->TABLE_SCHEMA,
+			'EVENT_OBJECT_TABLE' => $table->TABLE_NAME,
+		));
+
 		$this->render('structure',array(
 			'table' => $table,
 			'canAlter' => Yii::app()->user->privileges->checkTable($table->TABLE_SCHEMA, $table->TABLE_NAME, 'ALTER'),
@@ -138,7 +144,7 @@ class TableController extends Controller
 				$pages->setupPageSize('pageSize', 'schema.table.browse');
 				$pages->applyLimit($criteria);
 				$pages->route = '#tables/'.$this->table.'/browse';
-				
+
 				// Sorting
 				$sort = new Sort($db);
 				$sort->multiSort = false;
@@ -147,7 +153,7 @@ class TableController extends Controller
 				$sqlQuery->applyCalculateFoundRows();
 
 				$pageSize = $pages->getPageSize();
-				
+
 				// Apply limit
 				if(!$sqlQuery->getLimit())
 				{
@@ -215,7 +221,7 @@ class TableController extends Controller
 
 						$keyData = array();
 					}
-					
+
 					$columns = array();
 
 					// Fetch column headers

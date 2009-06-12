@@ -30,30 +30,31 @@ var schemaList = {
 	// Setup dialogs
 	setup: function()
 	{
+		/*
+		 * Drop schemata
+		 */
+		var buttons = {};
+		buttons[lang.get('core', 'no')] = function() 
+		{
+			$(this).dialog('close');
+		}; 
+		buttons[lang.get('core', 'yes')] = function() 
+		{
+			// Collect ids
+			var ids = [];
+			$('#schemata input[name="schemata[]"]:checked').each(function() {
+				ids.push($(this).val());
+			});
+			
+			// Do drop request
+			$.post(baseUrl + '/schemata/drop', {
+				'schemata[]': ids
+			}, AjaxResponse.handle);
+			
+			$(this).dialog('close');
+		}; 
 		$('#dropSchemataDialog').dialog({
-			modal: true,
-			resizable: false,
-			autoOpen: false,
-			buttons: {
-				'No': function() {
-					$(this).dialog('close');
-				},
-				'Yes': function() {
-					
-					// Collect ids
-					var ids = [];
-					$('#schemata input[name="schemata[]"]:checked').each(function() {
-						ids.push($(this).val());
-					});
-					
-					// Do drop request
-					$.post(baseUrl + '/schemata/drop', {
-						'schemata[]': ids
-					}, AjaxResponse.handle);
-					
-					$(this).dialog('close');
-				}
-			}		
+			buttons: buttons	
 		});
 	}
 	

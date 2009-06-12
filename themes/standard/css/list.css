@@ -3,6 +3,10 @@
 @media screen, projection
 {
 	
+	div.list {
+		margin-bottom: 10px;
+	}
+	
 	/*
 	 * Pager
 	 */

@@ -43,6 +43,7 @@ class Controller extends CController
 		Row::$db =
 		Schema::$db =
 		Table::$db =
+		Trigger::$db =
 		View::$db = $this->db;
 
 		// Return connection
