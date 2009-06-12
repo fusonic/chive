@@ -29,17 +29,17 @@ class UserSettingsManagerTest extends TestCase
 		$this->assertEquals($rand, $this->mgr->get('sidebarWidth'));
 
 		// Set setting with scope
-		$this->mgr->set('entriesPerPage', $rand, 'databases.tables');
-		$this->assertEquals($rand, $this->mgr->get('entriesPerPage', 'databases.tables'));
-		$this->assertEquals($rand, $this->mgr->get('entriesPerPage', 'databases.tables', $rand));
+		$this->mgr->set('pageSize', $rand, 'schema.tables');
+		$this->assertEquals($rand, $this->mgr->get('pageSize', 'schema.tables'));
+		$this->assertEquals($rand, $this->mgr->get('pageSize', 'schema.tables', $rand));
 
 		// Set setting with scope and object
-		$this->mgr->set('entriesPerPage', $rand, 'databases.tables', 'project_com2date');
-		$this->assertEquals($rand, $this->mgr->get('entriesPerPage', 'databases.tables', 'project_com2date'));
+		$this->mgr->set('pageSize', $rand, 'schema.tables', 'project_com2date');
+		$this->assertEquals($rand, $this->mgr->get('pageSize', 'schema.tables', 'project_com2date'));
 
 		// Set array
-		$this->mgr->set('entriesPerPage', array($rand, $rand2), 'databases.tables');
-		$this->assertEquals('a:2:{i:0;i:' . $rand . ';i:1;i:' . $rand2 . ';}', serialize($this->mgr->get('entriesPerPage', 'databases.tables')));
+		$this->mgr->set('pageSize', array($rand, $rand2), 'schema.tables');
+		$this->assertEquals('a:2:{i:0;i:' . $rand . ';i:1;i:' . $rand2 . ';}', serialize($this->mgr->get('pageSize', 'schema.tables')));
 	}
 
 	/**
@@ -99,7 +99,7 @@ class UserSettingsManagerTest extends TestCase
 
 		// Set value and save settings
 		$this->mgr->set('sidebarState', $random);
-		$this->mgr->set('entriesPerPage', array($rand, $rand2), 'databases.tables');
+		$this->mgr->set('pageSize', array($rand, $rand2), 'schema.tables');
 		$this->mgr->saveSettings();
 
 		// Create another manager instance
@@ -107,7 +107,7 @@ class UserSettingsManagerTest extends TestCase
 
 		// Compare values
 		$this->assertEquals($random, $mgr->get('sidebarState'));
-		$this->assertEquals('a:2:{i:0;i:' . $rand . ';i:1;i:' . $rand2 . ';}', serialize($this->mgr->get('entriesPerPage', 'databases.tables')));
+		$this->assertEquals('a:2:{i:0;i:' . $rand . ';i:1;i:' . $rand2 . ';}', serialize($this->mgr->get('pageSize', 'schema.tables')));
 	}
 
 }
