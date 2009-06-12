@@ -410,6 +410,28 @@ class ColumnTest extends TestCase
 
 
 
+	/**
+	 * Record can't be deleted cause its new
+	 *
+	 * @expectedException CDbException
+	 */
+	public function testDeleteNewRecord()
+	{
+		$col = new Column();
+		$col->delete();
+	}
+
+	/**
+	 * Record can't be updated cause its new
+	 *
+	 * @expectedException CDbException
+	 */
+	public function testUpdateNewRecord()
+	{
+		$col = new Column();
+		$col->update();
+	}
+
 
 	/**
 	 * alter colums and check it afterwards
@@ -663,7 +685,7 @@ class ColumnTest extends TestCase
 
 
 		$values = "a\nb\nc\nd";
-		
+
 
 		$values_arr = array('a','b','c','d');
 
@@ -699,6 +721,55 @@ class ColumnTest extends TestCase
 	}
 
 
+
+	public function testInsert()
+	{
+
+		$col = new Column();
+		$col->TABLE_SCHEMA = 'columntest';
+		$col->TABLE_NAME = 'test';
+		$col->COLUMN_NAME = 'testnew';
+
+		$col->setDataType('DOUBLE');
+		$col->COLUMN_DEFAULT=1;
+		$col->size=20;
+		$col->scale=5;
+		$col->setCollation('utf8_general_ci');
+			
+
+		$col->save();
+
+		$pk = array(
+			    'TABLE_SCHEMA' => 'columntest',
+			    'TABLE_NAME' => 'test',
+			    'COLUMN_NAME' => 'testnew',
+		);
+
+	
+		
+		// Load column definition
+		$col = Column::model()->findByPk($pk);
+		
+		$this->assertEquals('double',$col->getDataType());
+		$this->assertEquals(1.00000, $col->COLUMN_DEFAULT);
+		$this->assertNull($col->getCollation());
+		$this->assertEquals(20,$col->size);
+		$this->assertEquals(5,$col->scale);
+
+
+	}
+
+	public function testInsertNotNew()
+	{
+
+
+		$col = new Column();
+		$col->setIsNewRecord(false);
+		$col->save();
+
+
+	}
+
 	public function testConfigFunctions()
 	{
 
@@ -713,6 +784,11 @@ class ColumnTest extends TestCase
 		$this->assertTrue(is_array($column->relations()));
 		$this->assertTrue(is_array($column->getDataTypes()));
 	}
+
+
+
+
+
 
 
 	/*$fixture_numeric = array(

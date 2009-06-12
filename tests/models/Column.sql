@@ -10,3 +10,4 @@ CREATE TABLE `columntest`.`test` (
    	PRIMARY KEY ( `test1` , `test2` )
 ) ENGINE = MYISAM;
 
+-- Add column with attribute 'unsigned_zerofill'
