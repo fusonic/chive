@@ -63,7 +63,7 @@ class DataType
 	public static function getBaseType($dataType)
 	{
 		preg_match('/^\w+/', $dataType, $res);
-		return $res[0];
+		return strtolower($res[0]);
 	}
 	
 	public static function getInputType($dataType) {

@@ -68,7 +68,7 @@ class TableTest extends TestCase
 		));
 
 		// Check if table is still there
-		$this->assertEquals(null, $table);
+		$this->assertNull($table);
 	}
 
 	/**

@@ -11,7 +11,7 @@ class SchemaTest extends TestCase
 		Schema::$db->active = true;
 	}
 
-	/**
+	/*
 	 * Tests to read database information.
 	 */
 	public function testRead()
@@ -25,7 +25,7 @@ class SchemaTest extends TestCase
 		$this->assertEquals('latin7_general_cs', $schema->DEFAULT_COLLATION_NAME);
 	}
 
-	/**
+	/*
 	 * Tests to create a new database.
 	 */
 	public function testInsert()
@@ -49,7 +49,7 @@ class SchemaTest extends TestCase
 		$this->assertEquals('latin1_swedish_ci', $schema->DEFAULT_COLLATION_NAME);
 	}
 
-	/**
+	/*
 	 * Tests to fail inserting.
 	 */
 	public function testInsertFails()
