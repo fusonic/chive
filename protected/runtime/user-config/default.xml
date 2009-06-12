@@ -10,6 +10,7 @@
 	<pageSize scope="schema.views">50</pageSize>
 	<pageSize scope="schema.routines">50</pageSize>
 	<pageSize scope="schema.table.browse">20</pageSize>
+	<pageSize scope="schema.sql">20</pageSize>
 	<showFullColumnContent scope="schema.table.browse">0</showFullColumnContent>
 	<bookmarks scope="database"></bookmarks>
 </settings>

@@ -26,7 +26,7 @@ class AjaxResponse
 			'type' => $type,
 			'title' => ($title ? $title : Yii::t('core', $type)),
 			'message' => $message,
-			'code' => $code,
+			'code' => htmlspecialchars($code),
 			'options' => $options,
 		);
 	}

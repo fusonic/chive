@@ -203,21 +203,21 @@ class SchemaController extends Controller
 		if($query)
 		{
 
-			$pages = new CPagination;
-			$pages->setPageSize(self::PAGE_SIZE);
+			$pages = new Pagination;
+			$pageSize = $pages->setupPageSize('pageSize', 'schema.sql');
 
 			$sort = new Sort($db);
 			$sort->multiSort = false;
 
 			$sort->route = '/schema/sql';
 
-			$oSql = new Sql($query);
+			$oSql = new SqlQuery($query);
 			$oSql->applyCalculateFoundRows();
 
 			if(!$oSql->hasLimit)
 			{
-				$offset = (isset($_GET['page']) ? (int)$_GET['page'] : 1) * self::PAGE_SIZE - self::PAGE_SIZE;
-				$oSql->applyLimit(self::PAGE_SIZE, $offset, true);
+				$offset = (isset($_GET['page']) ? (int)$_GET['page'] : 1) * $pageSize - $pageSize;
+				$oSql->applyLimit($pageSize, $offset, true);
 			}
 
 			$oSql->applySort($sort->getOrder(), true);

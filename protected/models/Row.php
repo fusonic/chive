@@ -96,7 +96,7 @@ class Row extends CActiveRecord
 		return self::$db;
 	}
 
-	public function save()
+	public function update()
 	{
 		if($this->getIsNewRecord())
 		{
@@ -163,7 +163,16 @@ class Row extends CActiveRecord
 			// Create find criteria
 			$i = count($key);
 			foreach($key AS $column=>$value) {
-				$sql .= "\t" . self::$db->quoteColumnName($column) . ' = ' . self::$db->quoteValue($this->originalAttributes[$column]) . ' ';
+				
+				if(is_null($value))
+				{
+					$sql .= "\t" . self::$db->quoteColumnName($column) . ' IS NULL ';
+				}
+				else
+				{
+					$sql .= "\t" . self::$db->quoteColumnName($column) . ' = ' . self::$db->quoteValue($this->originalAttributes[$column]) . ' ';
+				}
+				
 				$i--;
 	
 				if($i > 0)
@@ -178,14 +187,13 @@ class Row extends CActiveRecord
 		
 		try
 		{
+			$cmd->prepare();
 			$cmd->execute();
 			$this->afterSave();
-			$this->refresh();
 			return $sql;
 		}
 		catch(CDbException $ex)
 		{
-			predie($ex);
 			throw new DbException($cmd);
 		}
 		
@@ -204,7 +212,11 @@ class Row extends CActiveRecord
 		}
 
 
-		$pk = (array)self::$db->getSchema($this->schema)->getTable($this->table)->primaryKey;
+		if($pk = self::$db->getSchema($this->schema)->getTable($this->table)->primaryKey !== null)
+			$pk = (array)$pk;
+		else
+			$pk = $this->safeAttributes();
+			
 		$pkCount = count($pk);
 		
 		$sql = 'DELETE FROM ' . self::$db->quoteTableName($this->table) . ' WHERE ';
@@ -212,19 +224,20 @@ class Row extends CActiveRecord
 		$i = 0;
 		foreach($pk AS $column)
 		{
-			$sql .= "\n\t" . self::$db->quoteColumnName($column) . ' = ' . self::$db->quoteValue($this->$column);
+			$sql .= "\n\t" . self::$db->quoteColumnName($column) . (is_null($this->getAttribute($column)) ? ' IS NULL' :  ' = ' . self::$db->quoteValue($this->getAttribute($column)));
 			$i++;
 
 			if($i < $pkCount)
 				$sql .= ' AND';
 
 		}
+		
+		$sql .= "\n" . 'LIMIT 1';
 
 		$cmd = self::$db->createCommand($sql);
 
 		try
 		{
-			$cmd->prepare();
 			$cmd->execute();
 			$this->afterDelete();
 			return $sql;

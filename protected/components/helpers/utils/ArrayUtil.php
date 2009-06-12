@@ -13,7 +13,15 @@ class ArrayUtil
 			
 			foreach($_array AS $key => $value) 
 			{
-				$return .= $key . ':\'' . $value . '\'';
+				
+				if(is_null($value)) 
+				{
+					$return .= $key . ': null';
+				}
+				else
+				{
+					$return .= $key . ':\'' . $value . '\'';
+				}
 				
 				$count--; 			
 				

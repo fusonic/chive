@@ -176,7 +176,7 @@ class RowController extends Controller
 	{
 
 		$db = $this->db;
-
+		
 		$pk = CPropertyValue::ensureArray($db->getSchema()->getTable($this->table)->primaryKey);
 		$column = Yii::app()->getRequest()->getParam('column');
 		$newValue = json_decode(Yii::app()->getRequest()->getParam('value'), true);
@@ -200,22 +200,14 @@ class RowController extends Controller
 
 		Row::$db = $db;
 
-		if(count($attributes) == 1)
-		{
-			$findAttributes = $attributes[$column];
-		}
-		else
-		{
-			$findAttributes = $attributes;
-		}
-
-		$row = Row::model()->findByPk($findAttributes);
-
+		$rows = Row::model()->findAllByAttributes($attributes);
+		$row = $rows[0];
+		
 		try {
 
 			$row->setAttribute($column, $newValue);
 			$sql = $row->save();
-
+			
 			$response->addData(null, array(
 				'value' => ($null ? 'NULL' : htmlspecialchars($row->getAttribute($column))),
 				'column' => $column,
@@ -224,8 +216,11 @@ class RowController extends Controller
 				'visibleValue' => ($null ? '<span class="null">NULL</span>' : htmlspecialchars($row->getAttribute($column)))
 			));
 
+			$rows = Row::model()->findAllByAttributes($attributes);
+			$row = $rows[0];
+			
 			// Refresh the page if the row could not be found in database anymore
-			if(!$row->refresh() || $row->getAttribute($column) != $newValue) {
+			if($rows === null || count($rows) > 1 || $row === null || $row->getAttribute($column) != $newValue) {
 				$response->refresh = true;
 
 				// @todo (rponudic) check if a notification is necessary in this case
@@ -251,13 +246,14 @@ class RowController extends Controller
 		$response = new AjaxResponse();
 
 		$data = json_decode($_POST['data'], true);
-
+		
 		try
 		{
 			foreach($data AS $attributes)
 			{
 				$row = Row::model()->findByAttributes($attributes);
 				$sql .= $row->delete() . "\n\n";
+				
 			}
 		}
 		catch (DbException $ex)
@@ -278,21 +274,13 @@ class RowController extends Controller
 		$oldValue = Yii::app()->getRequest()->getParam('oldValue');
 		$rowIndex = Yii::app()->getRequest()->getParam('rowIndex');
 
-		// Single PK
-		$kvAttributes = $attributes;
-
-		if(count($attributes) == 1)
-		{
-			$attributes = array_pop($attributes);
-		}
-
-		$row = Row::model()->findByPk($attributes);
-		$column = $this->db->getSchema()->getTable($this->table)->getColumn($column);
+		$row = Row::model()->findByAttributes($attributes);
+		$column = $this->db->getSchema($this->schema)->getTable($this->table)->getColumn($column);
 
 		$this->render('input', array(
 			'column' => $column,
 			'row' => $row,
-			'attributes' => $kvAttributes,
+			'attributes' => $attributes,
 			'oldValue' => str_replace("\n", "", $oldValue),				// @todo (rponudic) double-check if this is the solution!?
 			'rowIndex' => $rowIndex,
 		));
@@ -345,6 +333,7 @@ class RowController extends Controller
 				$sql = $row->save();
 				$response->refresh = true;
 				$response->addNotification('success', Yii::t('message', 'successUpdateRow'), null, $sql);
+				
 			}
 			catch(DbException $ex) 
 			{

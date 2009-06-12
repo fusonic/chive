@@ -94,234 +94,22 @@ class TableController extends Controller
 	/**
 	 * Browse the rows of a table
 	 */
-	public function actionBrowse($_query = false)
+	public function actionBrowse()
 	{
 
-		$db = $this->db;
-		$error = false;
-		$isSent = false;
-
-		$response = new AjaxResponse();
-
-		// Profiling
-		$profiling = Yii::app()->user->settings->get('profiling');
-
-		if(!$_query)
-		{
-			$queries = (array)self::getDefaultQuery();
-		}
-		else
-		{
-			if($profiling)
-			{
-				$cmd = $db->createCommand('FLUSH STATUS');
-				$cmd->execute();
-
-				$cmd = $db->createCommand('SET PROFILING = 1');
-				$cmd->execute();
-			}
-
-			$splitter = new SqlSplitter($_query);
-			$queries = $splitter->getQueries();
-
-		}
-
-		$queryCount = count($queries);
-
-		$i = 1;
-		foreach($queries AS $query)
-		{
-
-			$sqlQuery = new SqlQuery($query);
-			$type = $sqlQuery->getType();
-
-			// SELECT
-			if($type == "select")
-			{
-
-				// Pagination
-				$pages = new Pagination();
-				$pages->setupPageSize('pageSize', 'schema.table.browse');
-				$pages->applyLimit($criteria);
-				$pages->route = '#tables/'.$this->table.'/browse';
-
-				// Sorting
-				$sort = new Sort($db);
-				$sort->multiSort = false;
-				$sort->route = '#tables/'.$this->table.'/browse';
-
-				$sqlQuery->applyCalculateFoundRows();
-
-				$pageSize = $pages->getPageSize();
-
-				// Apply limit
-				if(!$sqlQuery->getLimit())
-				{
-					$offset = (isset($_GET['page']) ? (int)$_GET['page'] : 1) * $pageSize - $pageSize;
-					$sqlQuery->applyLimit($pageSize, $offset, true);
-				}
-
-				// Apply sort
-				$sqlQuery->applySort($sort->getOrder(), true);
-
-
-			}
-
-			// OTHER
-			elseif($type == "insert" || $type == "update" || $type == "delete")
-			{
-				#predie("insert / update / delete statement");
-
-			}
-			elseif($type == "show")
-			{
-				// show create table etc.
-
-			}
-			elseif($type == "analyze" || $type == "optimize" || $type == "repair" || $type == "check")
-			{
-				// Table functions
-			}
-			elseif($type == "use")
-			{
-				$name = $sqlQuery->getDatabase();
-				if($queryCount == 1 && $name && $this->schema != $name)
-				{
-					$response->redirectUrl = Yii::app()->baseUrl . '/schema/' . $name . '#sql';
-					$response->addNotification('success', Yii::t('message', 'successChangeDatabase', array('{name}' => $name)));
-				}
-			}
-			elseif($type == "create")
-			{
-				$response->reload = true;
-
-				//$name = $sqlQuery->getTable();
-			}
-			else
-			{
-
-			}
-
-			// Prepare query for execution
-			$cmd = $db->createCommand($sqlQuery->getQuery());
-			$cmd->prepare();
-
-			if($sqlQuery->returnsResultSet())
-			{
-
-				try
-				{
-					// Fetch data
-					$data = $cmd->queryAll();
-
-					if($type == 'select')
-					{
-						$total = (int)$db->createCommand('SELECT FOUND_ROWS()')->queryScalar();
-						$pages->setItemCount($total);
-
-						$keyData = array();
-					}
-
-					$columns = array();
-
-					// Fetch column headers
-					if($total > 0 || isset($data[0]))
-					{
-						$columns = array_keys($data[0]);
-					}
-
-					$isSent = true;
-
-
-				}
-				catch (CDbException $ex)
-				{
-					$ex = new DbException($cmd);
-					$response->addNotification('error', Yii::t('message', 'executingQueryFailed'), $ex->getText());
-				}
-
-
-			}
-			else
-			{
-
-				try
-				{
-					// Measure time
-					$start = microtime(true);
-					$result = $cmd->execute();
-					$time = round(microtime(true) - $start, 10);
-
-					$response->addNotification('success', Yii::t('message', 'successExecuteQuery'), Yii::t('message', 'affectedRowsQueryTime', array($result,  '{rows}'=>$result, '{time}'=>$time)), $sqlQuery->getQuery());
-
-
-				}
-				catch(CDbException $ex)
-				{
-					$dbException = new DbException($cmd);
-					$response->addNotification('error', Yii::t('message', 'sqlErrorOccured', array('{errno}'=>$dbException->getCode(), '{errmsg}'=>$dbException->getText())));
-				}
-
-			}
-
-			$i++;
-
-
-		}
-
-		if($profiling)
-		{
-			$cmd = $db->createCommand('select
-					state,
-					SUM(duration) as total,
-					count(*)
-				FROM information_schema.profiling
-				GROUP BY state
-				ORDER by total desc');
-
-			$cmd->prepare();
-			$profileData = $cmd->queryAll();
-
-			if(count($profileData))
-			{
-				$test = '<table>';
-
-				foreach($profileData AS $item)
-				{
-					$test .= '<tr>';
-
-					$i = 0;
-					foreach($item AS $value)
-					{
-						$test .= '<td style="padding: 2px; min-width: 80px;">' . ($i == 0 ? '<b>' . ucfirst($value) . '</b>' : $value)  . '</td>';
-						$i++;
-					}
-
-
-					$test .= '</tr>';
-				}
-
-				$test .= '</table>';
-
-				$response->addNotification('info', 'Profling results (sorted by execution time)', $test, null);
-			}
-
-		}
-
-
-		$this->render('browse',array(
-			'data' => $data,
-			'columns' => $columns,
-			'query' => $sqlQuery->getOriginalQuery(),
-			'isSent' => $isSent,
-			'pages' => $pages,
-			'sort' => $sort,
-			'error' => $error,
-			'table' => $this->db->getSchema()->getTable($this->table),
-			'response' => $response,
-			'type' => $type,
+		$browsePage = new BrowsePage();
+		
+		$browsePage->schema = $this->schema;
+		$browsePage->table = $this->table;
+		$browsePage->db = $this->db;
+		$browsePage->route = '#tables/' . $this->table . '/browse';
+		
+		$browsePage->run();
+		
+		$this->render('../global/browse', array(
+			'model' => $browsePage
 		));
-
+		
 	}
 
 	public function actionCreate()
@@ -422,15 +210,19 @@ class TableController extends Controller
 
 		$query = Yii::app()->getRequest()->getParam('query');
 
-		if(!$query)
-		{
-			$this->render('browse',array(
-				'data' => array(),
-				'query' => self::getDefaultQuery(),
-			));
-		}
-		else
-			self::actionBrowse($query);
+		$browsePage = new BrowsePage($query);
+		
+		$browsePage->schema = $this->schema;
+		$browsePage->table = $this->table;
+		$browsePage->db = $this->db;
+		$browsePage->route = '#tables/' . $this->table . '/browse';
+		$browsePage->execute = (bool)$query;
+		
+		$browsePage->run();
+		
+		$this->render('../global/browse', array(
+			'model' => $browsePage
+		));
 
 	}
 
@@ -635,15 +427,6 @@ class TableController extends Controller
 			}
 		}
 		return $this->_table;
-	}
-
-	/*
-	 * Private functions
-	 */
-	private function getDefaultQuery()
-	{
-		return 'SELECT * FROM ' . $this->db->quoteTableName($this->table) .
-			"\n\t" . 'WHERE 1';
 	}
 
 }
