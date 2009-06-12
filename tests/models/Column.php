@@ -580,6 +580,7 @@ class ColumnTest extends TestCase
 			'TABLE_NAME' => 'test',
 		));
 
+		// Try with array too
 		$values = "a\nb\nc\nd\ne";
 
 		foreach($cols AS $c => $col)
@@ -604,6 +605,21 @@ class ColumnTest extends TestCase
 			}
 
 		}
+	}
+	
+	
+		public function testConfigFunctions()
+	{
+		
+		
+		// Create new schema
+		$column = new column();
+
+		// Check return types
+		$this->assertTrue(is_array($column->safeAttributes()));
+		$this->assertTrue(is_array($column->attributeLabels()));
+		$this->assertTrue( is_array($column->rules()));
+		$this->assertTrue(is_array($column->relations()));
 	}
 
 
