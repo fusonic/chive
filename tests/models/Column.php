@@ -738,6 +738,7 @@ class ColumnTest extends TestCase
 			
 
 		$col->save();
+		$col->refresh();
 
 		$pk = array(
 			    'TABLE_SCHEMA' => 'columntest',
@@ -745,11 +746,11 @@ class ColumnTest extends TestCase
 			    'COLUMN_NAME' => 'testnew',
 		);
 
-	
-		
+
+
 		// Load column definition
 		$col = Column::model()->findByPk($pk);
-		
+
 		$this->assertEquals('double',$col->getDataType());
 		$this->assertEquals(1.00000, $col->COLUMN_DEFAULT);
 		$this->assertNull($col->getCollation());
@@ -759,15 +760,79 @@ class ColumnTest extends TestCase
 
 	}
 
+
+	public function testAlterWrongCOLUMNNAME()
+	{
+		$col = new Column();
+		$col->TABLE_SCHEMA = 'columntest';
+		$col->TABLE_NAME = 'test';
+		$col->COLUMN_NAME = 'test new';
+
+		$col->setDataType('FOO');
+		$col->COLUMN_DEFAULT=1;
+		$col->size=20;
+		$col->scale=5;
+		$col->setCollation('utf8_general_ci');
+			
+
+		$this->assertFalse($col->insert());
+
+
+	}
+
+
+	public function testAlterNewCOLUMNNAME()
+	{
+
+		$pk = array(
+			    'TABLE_SCHEMA' => 'columntest',
+			    'TABLE_NAME' => 'test',
+			    'COLUMN_NAME' => 'test3',
+		);
+
+
+
+		// Load column definition
+		$col = Column::model()->findByPk($pk);
+		$col->COLUMN_NAME='testnew';
+
+		$col->save();
+
+		$col->refresh();
+
+		
+		$pk = array(
+			    'TABLE_SCHEMA' => 'columntest',
+			    'TABLE_NAME' => 'test',
+			    'COLUMN_NAME' => 'testnew',
+		);
+
+		// Load column definition
+		$col = Column::model()->findByPk($pk);
+		
+		
+		
+		$this->assertEquals('testnew',$col->COLUMN_NAME);
+	}
+
+
+	/**
+	 * Record can't be inserted cause its not new
+	 *
+	 * @expectedException CDbException
+	 */
 	public function testInsertNotNew()
 	{
 
 
-		$col = new Column();
-		$col->setIsNewRecord(false);
-		$col->save();
-
-
+		$pk = array(
+			    'TABLE_SCHEMA' => 'columntest',
+			    'TABLE_NAME' => 'test',
+			    'COLUMN_NAME' => 'test5',
+		);
+		// Load column definition
+		$col = Column::model()->findByPk($pk);
+		$col->insert();
 	}
 
 	public function testConfigFunctions()
