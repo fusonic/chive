@@ -33,3 +33,13 @@ CREATE TABLE IF NOT EXISTS `indextest`.`table3` (
   KEY `index` (`varchar`),
   FULLTEXT KEY `fulltext` (`varchar`)
 );
+
+DROP TABLE IF EXISTS `indextest`.`table4`;
+CREATE TABLE IF NOT EXISTS `indextest`.`table4` (
+  `pk` int(11) NOT NULL,
+  `varchar` varchar(50) NOT NULL,
+  `datetime` datetime NOT NULL,
+  UNIQUE KEY `unique` (`datetime`),
+  KEY `index` (`varchar`),
+  FULLTEXT KEY `fulltext` (`varchar`)
+);
