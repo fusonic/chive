@@ -309,33 +309,14 @@ class TableTest extends TestCase
 
 	}
 
-	/**
-	 * Record can't be updated cause its not new
-	 *
-	 * @expectedException CDbException
-	 */
-	public function testUpdateException()
-	{
-
-
-		$table = array(
-		 'TABLE_SCHEMA' => 'tabletest',
-		 'TABLE_NAME' => 'tabletest3',
-		);
-
-		// Load column definition
-		$ta = Table::model()->findByPk($table);
-		$ta->setIsNewRecord(true);
-		$ta->update();
-	}
-
 	
+
 	/**
 	 * Record can't be inserted cause its not new
 	 *
 	 * @expectedException CDbException
 	 */
-	public function testInsertException()
+	public function testInsertException1()
 	{
 		$col2 = new Column();
 		$col2->COLUMN_NAME = 'test2';
@@ -343,18 +324,22 @@ class TableTest extends TestCase
 		$col2->setDataType('varchar');
 		$col2->setCollation('utf8_general_ci');
 		$col2->size=250;
-		
+
+
+		$column = array($col2);
+
 		$table = array(
-		 'TABLE_SCHEMA' => 'tabletest',
-		 'TABLE_NAME' => 'tabletest3',
+		'TABLE_SCHEMA' => 'tabletest',
+		'TABLE_NAME' => 'tabletest3',
 		);
 
 		// Load column definition
 		$ta = Table::model()->findByPk($table);
-		$ta->setIsNewRecord(true);
-		$ta->update();
+		$ta->insert($column);
 
 	}
+
+
 
 }
 
