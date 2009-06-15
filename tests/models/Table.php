@@ -309,7 +309,21 @@ class TableTest extends TestCase
 
 	}
 
-	
+	/**
+	 * Record can't be updated cause its not new
+	 *
+	 * @expectedException CDbException
+	 */
+	public function testUpdateException()
+	{
+
+		$table = new Table();
+		$table->setAttribute('TABLE_NAME', 'test2');
+		
+		$table->update();
+		
+	}
+
 
 	/**
 	 * Record can't be inserted cause its not new
@@ -339,6 +353,24 @@ class TableTest extends TestCase
 
 	}
 
+	/**
+	 * Record can't be inserted cause its not new
+	 *
+	 * 
+	 */
+	public function testSqlException()
+	{
+		// Create table
+		$table = new Table();
+
+		$table->setAttribute('TABLE_SCHEMA', 'tabletest');
+		$table->setAttribute('TABLE_NAME', '#ÖÜÖöä test3');
+		
+		// Load column definition
+		$this->assertFalse($table->insert(array()));
+
+	}
+	
 
 
 }
