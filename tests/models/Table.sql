@@ -1,6 +1,17 @@
 DROP DATABASE IF EXISTS `tabletest`;
 CREATE DATABASE `tabletest` COLLATE `utf8_general_ci`;
 
+
+
+DROP TABLE IF EXISTS `tabletest`.`tabletest3`;
+CREATE TABLE IF NOT EXISTS `tabletest`.`tabletest3` (
+  `col1` int(11) NOT NULL,
+  `varchar` varchar(50) NOT NULL,
+  `datetime` datetime NOT NULL,
+  KEY `varchar` (`varchar`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+
 DROP TABLE IF EXISTS `tabletest`.`innodb`;
 CREATE TABLE IF NOT EXISTS `tabletest`.`innodb` (
   `pk` int(11) NOT NULL auto_increment,
@@ -22,3 +33,4 @@ CREATE TABLE IF NOT EXISTS `tabletest`.`myisam` (
   UNIQUE KEY `datetime` (`datetime`),
   KEY `varchar` (`varchar`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+

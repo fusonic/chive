@@ -238,7 +238,7 @@ class TableTest extends TestCase
 		$col2->size=250;
 			
 		$columns = array($col1,$col2);
-	
+
 		$table = new Table();
 			
 		// Set some properties and save
@@ -270,7 +270,7 @@ class TableTest extends TestCase
 		$this->assertFalse($col->getIsNullable());
 		$this->assertTrue($col->getIsPartOfPrimaryKey());
 		$this->assertEquals(20,$col->size);
-					
+			
 		$pk = array(
 		 'TABLE_SCHEMA' => 'tabletest',
 		 'TABLE_NAME' => 'innodb2',
@@ -285,11 +285,76 @@ class TableTest extends TestCase
 		$this->assertFalse($col->getAutoIncrement());
 		$this->assertFalse($col->getIsNullable());
 		$this->assertFalse($col->getIsPartOfPrimaryKey());
-	    $this->assertEquals('utf8_general_ci',$col->getCollation());
-	    $this->assertEquals(250,$col->size);
-					
+		$this->assertEquals('utf8_general_ci',$col->getCollation());
+		$this->assertEquals(250,$col->size);
+			
 	}
 
+	/**
+	 * Checks if table has Primarykey
+	 */
+	public function testHasPrimaryKeyFalse()
+	{
+
+
+		$table = array(
+		 'TABLE_SCHEMA' => 'tabletest',
+		 'TABLE_NAME' => 'tabletest3',
+		);
+
+		// Load column definition
+		$ta = Table::model()->findByPk($table);
+
+		$this->assertFalse($ta->getHasPrimaryKey());
+
+	}
+
+	/**
+	 * Record can't be updated cause its not new
+	 *
+	 * @expectedException CDbException
+	 */
+	public function testUpdateException()
+	{
+
+
+		$table = array(
+		 'TABLE_SCHEMA' => 'tabletest',
+		 'TABLE_NAME' => 'tabletest3',
+		);
+
+		// Load column definition
+		$ta = Table::model()->findByPk($table);
+		$ta->setIsNewRecord(true);
+		$ta->update();
+	}
+
+	
+	/**
+	 * Record can't be inserted cause its not new
+	 *
+	 * @expectedException CDbException
+	 */
+	public function testInsertException()
+	{
+		$col2 = new Column();
+		$col2->COLUMN_NAME = 'test2';
+
+		$col2->setDataType('varchar');
+		$col2->setCollation('utf8_general_ci');
+		$col2->size=250;
+		
+		$table = array(
+		 'TABLE_SCHEMA' => 'tabletest',
+		 'TABLE_NAME' => 'tabletest3',
+		);
+
+		// Load column definition
+		$ta = Table::model()->findByPk($table);
+		$ta->setIsNewRecord(true);
+		$ta->update();
+
+	}
 
 }
 
