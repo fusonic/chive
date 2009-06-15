@@ -296,24 +296,26 @@ class IndexTest extends TestCase
 
 	public function testUpdatePrimaryKey()
 	{
-		
+
 		// Load index
 		$index = Index::model()->findByAttributes(array(
 			'INDEX_NAME' => 'UNIQUE',
 			'TABLE_NAME' => 'table4',
 			'TABLE_SCHEMA' => 'indextest',
 		));
-		$index->throwExceptions = true;
-
-		// Change properties
-		$index->INDEX_NAME = 'PRIMARY';
 		$index->setType('PRIMARY');
-		
-	
+
+		// Try saving
+		$index->save();
+
+		// Reload index and load index columns
+		$index->refresh();
+
+
 		// Check properties
 		$this->assertEquals('PRIMARY', $index->INDEX_NAME);
 		$this->assertEquals('PRIMARY', $index->getType());
-		
+
 
 
 
