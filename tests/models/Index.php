@@ -247,6 +247,51 @@ class IndexTest extends TestCase
 		$this->assertTrue(is_array(Index::getIndexTypes()));
 	}
 
+
+	/**
+	 * Tests to add an Index to a Column with Type Fulltext
+	 */
+
+	public function testSetTypeFullText()
+	{
+
+		// Create index
+		$index = new Index();
+		$index->TABLE_NAME = 'table2';
+		$index->TABLE_SCHEMA = 'indextest';
+		$index->INDEX_NAME = 'newname';
+		$index->setType('FULLTEXT');
+
+		// Add new column
+		$columns = $index->columns;
+		$col = new IndexColumn();
+		$col->COLUMN_NAME = 'pk';
+		$columns[] = $col;
+		$col = new IndexColumn();
+		$col->COLUMN_NAME = 'varchar';
+		$col->SUB_PART = 10;
+		$columns[] = $col;
+		$index->columns = $columns;
+
+		// Try saving
+		$index->save();
+
+		// Reload index and load index columns
+		$index->refresh();
+		$cols = IndexColumn::model()->findAllByAttributes(
+		array(
+		'TABLE_SCHEMA' => $index->TABLE_SCHEMA,
+		 'TABLE_NAME' => $index->TABLE_NAME, 
+		 'INDEX_NAME' => $index->INDEX_NAME
+		));
+
+		// Check properties
+		$this->assertEquals('newname', $index->INDEX_NAME);
+		$this->assertEquals('FULLTEXT', $index->getType());
+
+
+	}
+
 }
 
 ?>

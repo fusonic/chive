@@ -16,6 +16,7 @@ class IndexColumnTest extends TestCase
 		$this->assertTrue(is_array($index->attributeLabels()));
 		$this->assertTrue(is_array($index->rules()));
 		$this->assertTrue(is_array($index->relations()));
+		$this->assertTrue(is_array($index->primaryKey()));
 	}
 
 }
