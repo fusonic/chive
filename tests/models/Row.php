@@ -3,7 +3,7 @@
 class RowTest extends TestCase
 {
 
-	public static $enabled = false;
+	//public static $enabled = false;
 
 	/**
 	 * Setup test databases.
@@ -11,20 +11,22 @@ class RowTest extends TestCase
 	protected function setUp()
 	{
 		$this->executeSqlFile('models/Row.sql');
+		$db = new CDbConnection('mysql:host='.DB_HOST.';dbname=indextest', DB_USER, DB_PASSWORD);
+		$db->charset='utf8';
+		$db->active = true;
+		Row::$db = $db;
 
-		$_POST['schema'] = 'rowtest';
-		$_POST['table'] = 'data';
 	}
 
+	
+	
 	/**
 	 * Tests to read database information.
-	 */
+	 
 	public function testRead()
 	{
-
 		// Load schema
 		$row = Row::model()->findAll();
-
 
 		die($row);
 
@@ -86,7 +88,7 @@ class RowTest extends TestCase
 		// Load again
 		$this->assertEquals(null, Schema::model()->findByPk('schematest2'));
 	}
-
+*/
 }
 
 ?>

@@ -1,5 +1,5 @@
-DROP DATABASE IF EXISTS `rowtest1`;
-CREATE DATABASE `schematest1` COLLATE `utf8_general_ci`;
+DROP DATABASE IF EXISTS `rowtest`;
+CREATE DATABASE `rowtest` COLLATE `utf8_general_ci`;
 
 DROP TABLE IF EXISTS `data`;
 

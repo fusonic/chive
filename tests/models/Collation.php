@@ -1,3 +1,4 @@
+d
 <?php
 
 class CollationTest extends TestCase
