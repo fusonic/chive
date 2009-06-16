@@ -4,11 +4,27 @@ CREATE DATABASE `rowtest` COLLATE `utf8_general_ci`;
 DROP TABLE IF EXISTS `data`;
 
 CREATE TABLE `rowtest`.`data` (
-	`id` MEDIUMINT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-	`date` DATETIME NOT NULL ,
-	`name` VARCHAR( 50 ) NOT NULL ,
-	`blob` BLOB NULL ,
-	`description` TEXT NOT NULL
+	`test1` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+	`test2` MEDIUMINT UNSIGNED NOT NULL DEFAULT 3 ,
+	`test3` VARCHAR( 100 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL ,
+	`test4` FLOAT( 5, 2 ) NOT NULL ,
+   	PRIMARY KEY ( `test1`)
 ) ENGINE = MYISAM;
 
-INSERT INTO `rowtest`.`data` (`id`, `date`, `name`, `blob`, `description`) VALUES (NULL, '2009-04-14 17:53:41', 'Rene', 0x5361792048656c6c6f20746f204d79204c6974746c6520467269656e64, 'lorel ipsum');
+
+INSERT INTO `rowtest`.`data` (`test1`,`test2`,`test3`,`test4`) VALUES ('1','2','Test','3.43');
+
+
+DROP TABLE IF EXISTS `data2`;
+
+CREATE TABLE `rowtest`.`data2` (
+	`test1` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+	`test2` datetime NULL,
+	`test3` VARCHAR( 100 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL ,
+	`test4` FLOAT( 5, 2 ) NOT NULL ,
+   	PRIMARY KEY ( `test1`,`test2`,`test3`)
+) ENGINE = MYISAM;
+
+
+INSERT INTO `rowtest`.`data2` (`test1`,`test2`,`test3`,`test4`) VALUES ('1','2008-3-5 00:00:00','Test','3.43');
+

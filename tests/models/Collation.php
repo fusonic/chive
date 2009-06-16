@@ -11,6 +11,14 @@ class CollationTest extends TestCase
 		$this->assertEquals('COLLATIONS',$coll->tableName());
 
 	}
+	
+	public function testModel()
+	{
+		$coll = Collation::Model()->findAll();
+		
+		$this->assertType('array',$coll);
+		
+	}
 
 	public function testprimaryKey()
 	{

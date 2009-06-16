@@ -10,21 +10,112 @@ class RowTest extends TestCase
 	 */
 	protected function setUp()
 	{
+
 		$this->executeSqlFile('models/Row.sql');
-		$db = new CDbConnection('mysql:host='.DB_HOST.';dbname=indextest', DB_USER, DB_PASSWORD);
+		$db = new CDbConnection('mysql:host='.DB_HOST.';dbname=rowtest', DB_USER, DB_PASSWORD);
 		$db->charset='utf8';
 		$db->active = true;
 		Row::$db = $db;
+	}
+
+	/**
+	 * tests some config methods
+	 */
+	public function testConfig()
+	{
+		$_GET['schema'] = "rowtest";
+		$_GET['table'] = "data";
+
+
+		$this->assertType('array', Row::model()->attributeLabels());
+		$this->assertType('array', Row::model()->attributeNames());
+		$this->assertType('array', Row::model()->safeAttributes());
+		$this->assertType('object', Row::model()->getDbConnection());
+		$this->assertType('string', Row::model()->tableName());
+		$this->assertType('array', Row::model()->relations());
+		$this->assertType('array', Row::model()->rules());
+		$this->assertType('string', Row::model()->primaryKey());
+	}
+
+
+	/*
+	 *
+	 * tests:   mehrere Datatypes updaten oder inserten
+	 *          update auf tabelle mit gleichnamigen spalten
+	 *          upadte auf tabelle mit 1 oder mehreren pks
+	 *
+	 *
+	 */
+
+
+	/**
+	 *
+	 * Tests to update row attributes
+	 */
+
+	public function testUpdate()
+	{
+		$_GET['schema'] = "rowtest";
+		$_GET['table'] = "data";
+
+	 $rows = Row::model()->findAllByAttributes(array('test1'=>1));
+
+	 //	 var_dump($row);
+	 $row = $rows[0];
+	 $row->setAttribute('test2',4);
+	 $row->setAttribute('test3','blub blub blub');
+	 $row->setAttribute('test4',443.56);
+
+	 $row->save();
+	 $row->refresh();
+
+	 $row = Row::model()->findByAttributes(array('test2'=>4));
+	 $row = $rows[0];
+	 $this->assertEquals(4,$row->getAttribute('test2'));
+	 $this->assertEquals('blub blub blub',$row->getAttribute('test3'));
+	 $this->assertEquals(443.56,$row->getAttribute('test4'));
+	}
+
+/*
+	public function testUpdate2()
+	{
+		$_GET['schema'] = "rowtest";
+		$_GET['table'] = "data2";
+
+	 $row = Row::model()->findByAttributes(array('test1'=>'1'));
+
+	var_dump($row);
 
 	}
 
-	
-	
+
+	/*
+	 *
+	 *
+	 * $row = new Row();
+
+		$row->setAttribute('spaltenname', 123);
+
+		$row->save();
+
+		$newRow = Row::model()->findByPk($pk);
+
+		$row = Row::model()->findByPk(3);
+
+		$row = Row::model()->findByPk(array('id'=>3, 'description'=>'test'));
+
+
+
+		$this->assertType('string',$row->tableName());
+
+		*
+		*
+		*/
 	/**
 	 * Tests to read database information.
-	 
-	public function testRead()
-	{
+
+	 public function testRead()
+	 {
 		// Load schema
 		$row = Row::model()->findAll();
 
@@ -34,10 +125,10 @@ class RowTest extends TestCase
 		$this->assertEquals('schematest2', $schema->SCHEMA_NAME);
 		$this->assertEquals('latin7', $schema->DEFAULT_CHARACTER_SET_NAME);
 		$this->assertEquals('latin7_general_cs', $schema->DEFAULT_COLLATION_NAME);
-	}
+		}
 
-	public function testInsert()
-	{
+		public function testInsert()
+		{
 		// Create new schema
 		$schema = new Schema();
 
@@ -55,10 +146,10 @@ class RowTest extends TestCase
 		$this->assertEquals('schematest1', $schema->SCHEMA_NAME);
 		$this->assertEquals('latin1', $schema->DEFAULT_CHARACTER_SET_NAME);
 		$this->assertEquals('latin1_swedish_ci', $schema->DEFAULT_COLLATION_NAME);
-	}
+		}
 
-	public function testUpdate()
-	{
+		public function testUpdate()
+		{
 		// Load schema
 		$schema = Schema::model()->findByPk('schematest2');
 
@@ -75,10 +166,10 @@ class RowTest extends TestCase
 		$this->assertEquals('schematest2', $schema->SCHEMA_NAME);
 		$this->assertEquals('latin1', $schema->DEFAULT_CHARACTER_SET_NAME);
 		$this->assertEquals('latin1_swedish_ci', $schema->DEFAULT_COLLATION_NAME);
-	}
+		}
 
-	public function testDrop()
-	{
+		public function testDrop()
+		{
 		// Load schema
 		$schema = Schema::model()->findByPk('schematest2');
 
@@ -87,8 +178,8 @@ class RowTest extends TestCase
 
 		// Load again
 		$this->assertEquals(null, Schema::model()->findByPk('schematest2'));
-	}
-*/
+		}
+		*/
 }
 
 ?>
