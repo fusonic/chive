@@ -75,8 +75,8 @@ class StorageEngine extends SqlModel
 
 	public static $engines = array(
 
-		//							< OPTIONS             >
-		// Engine					delkwr	chksum	pckkeys	fkeys
+	//							< OPTIONS             >
+	// Engine					delkwr	chksum	pckkeys	fkeys
 
 		'MyISAM'		=> array(	true,	true,	true,	false),
 		'MEMORY'		=> array(	false,	false,	false,	false),
@@ -119,6 +119,10 @@ class StorageEngine extends SqlModel
 				return 'MyISAM';
 			case 'innodb':
 				return 'InnoDB';
+			case 'berkeleydb':
+				return 'BerkeleyDB';
+			case 'ndbcluster':
+				return 'ndbcluster';
 			default:
 				return strtoupper($engine);
 		}

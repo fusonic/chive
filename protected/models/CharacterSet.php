@@ -34,5 +34,6 @@ class CharacterSet extends CActiveRecord
 		return array(
 			'collations' => array(self::HAS_MANY, 'Collation', 'CHARACTER_SET_NAME'),
 		);
+
 	}
 }
