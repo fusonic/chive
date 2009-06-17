@@ -10,7 +10,7 @@ class StorageEngineTest extends TestCase
 		$db = new CDbConnection('mysql:host='.DB_HOST.';dbname=information_schema', DB_USER, DB_PASSWORD);
 		$db->charset='utf8';
 		$db->active = true;
-		
+
 	}
 
 	/**
@@ -84,23 +84,54 @@ class StorageEngineTest extends TestCase
 		$this->assertType('array',StorageEngine::model()->findAll());
 	}
 
-	/*
 
 	public function testSupports()
 	{
 
-	
+
+		$db_arr = array(
+		'MEMORY',
+		'BerkeleyDB',
+		'BLACKHOLE',
+		'EXAMPLE',
+		'ARCHIVE',
+		'CSV',
+		'ndbcluster',
+		'FEDERATED',
+		'MRG_MYISAM',
+		'ISAM'	
+		);
+
+		foreach($db_arr as $db)
+		{
+			$se = StorageEngine::model()->findAllByAttributes(array(
+			'Engine' => $db	
+			));
+
+			$this->assertFalse($se[0]->getSupportsChecksum());
+			$this->assertFalse($se[0]->getSupportsPackKeys());
+			$this->assertFalse($se[0]->getSupportsDelayKeyWrite());
+
+		}
+
 		$se = StorageEngine::model()->findAllByAttributes(array(
 			'Engine' => 'MyISAM'	
 		));
 
-		var_dump($se->getSupportsPackKeys());
+		$this->assertTrue($se[0]->getSupportsChecksum());
+		$this->assertTrue($se[0]->getSupportsPackKeys());
+		$this->assertTrue($se[0]->getSupportsDelayKeyWrite());
+			
+		$se = StorageEngine::model()->findAllByAttributes(array(
+			'Engine' => 'InnoDB'	
+		));
+
+		$this->assertFalse($se[0]->getSupportsChecksum());
+		$this->assertFalse($se[0]->getSupportsPackKeys());
+		$this->assertFalse($se[0]->getSupportsDelayKeyWrite());
+
 
 	}
-*/
 }
-
-
-
 
 ?>
