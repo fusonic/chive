@@ -84,6 +84,7 @@ class StorageEngineTest extends TestCase
 		$this->assertType('array',StorageEngine::model()->findAll());
 	}
 
+	/*
 
 	public function testSupports()
 	{
@@ -96,7 +97,7 @@ class StorageEngineTest extends TestCase
 		var_dump($se->getSupportsPackKeys());
 
 	}
-
+*/
 }
 
 
