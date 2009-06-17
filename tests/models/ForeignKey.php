@@ -174,11 +174,16 @@ class ForeignKeyTest extends TestCase
 
 		$fk->setReferences('');
 
-		
+
 		$this->assertFalse($fk->update());
 
 	}
 
+	
+	/**
+	 * 
+	 * tries to delete a foreignkey which is new
+	 */
 	public function testDelete2()
 	{
 		$foreignKey = new ForeignKey();
@@ -189,10 +194,30 @@ class ForeignKeyTest extends TestCase
 		$foreignKey->setReferences('tabletest.product_order.no');
 		$foreignKey->save();
 
-		$this->assertFalse($foreignKey->delete());	
+		$this->assertFalse($foreignKey->delete());
 	}
 
+	/**
+	 * tries to insert a foreignkey which is not new
+	 *
+	 * @expectedException CDbException
+	 */
 
+	public function testInsertNotNew()
+	{
+
+		$fk = ForeignKey::model()->findBySql('SELECT * FROM KEY_COLUMN_USAGE '
+		. 'WHERE TABLE_SCHEMA = :tableSchema '
+		. 'AND TABLE_NAME = :tableName '
+		. 'AND COLUMN_NAME = :columnName '
+		. 'AND REFERENCED_TABLE_SCHEMA IS NOT NULL', array(
+			'tableSchema' => 'tabletest',
+			'tableName' => 'product_order',
+			'columnName' => 'customer_id'));
+			
+
+		$fk->insert();
+	}
 
 
 
