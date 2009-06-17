@@ -157,6 +157,40 @@ class ForeignKeyTest extends TestCase
 
 	}
 
+	public function testUpdate2()
+	{
+		$fk = ForeignKey::model()->findBySql('SELECT * FROM KEY_COLUMN_USAGE '
+		. 'WHERE TABLE_SCHEMA = :tableSchema '
+		. 'AND TABLE_NAME = :tableName '
+		. 'AND COLUMN_NAME = :columnName '
+		. 'AND REFERENCED_TABLE_SCHEMA IS NOT NULL', array(
+			'tableSchema' => 'tabletest',
+			'tableName' => 'product_order',
+			'columnName' => 'customer_id'));
+			
+
+		$this->assertEquals('tabletest.customer.id',$fk->getReferences());
+
+
+		$fk->setReferences('');
+
+		
+		$this->assertFalse($fk->update());
+
+	}
+
+	public function testDelete2()
+	{
+		$foreignKey = new ForeignKey();
+		$foreignKey->TABLE_SCHEMA = 'tabletest';
+		$foreignKey->TABLE_NAME = 'product';
+		$foreignKey->COLUMN_NAME = 'fk';
+
+		$foreignKey->setReferences('tabletest.product_order.no');
+		$foreignKey->save();
+
+		$this->assertFalse($foreignKey->delete());	
+	}
 
 
 
