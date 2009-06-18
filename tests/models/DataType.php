@@ -47,6 +47,9 @@ class DataTypeTest extends TestCase
 			'year'
 			);
 
+			/*
+			 * @todo(mburtscher): This can't work!!!
+			 */
 			$options_bool = array(
 		'SUPPORTS_COLLATION',
 		'SUPPORTS_INDEX',
@@ -67,6 +70,12 @@ class DataTypeTest extends TestCase
 			{
 				foreach($options_bool as $option)
 				{
+					/**
+					 * @todo(mburtscher): This can't work!
+					 * 	1. second parameter has to be an integer
+					 * 	2. check() is static!!!
+					 * 	Call it DataType::check('varchar', DataType::SUPPORTS_INDEX)
+					 */
 					$this->assertNotType('bool',$DataType->check($type,$option));
 				}
 					
@@ -80,6 +89,10 @@ class DataTypeTest extends TestCase
 
 	public function testBaseType()
 	{
+		/*
+		 * @todo(mburtscher): Maybe you should use some types which are not equal
+		 * 	to their base types? (e.g. varchar(10), enum('test', 'test2'), ...)
+		 */
 		$types = array(
 			'bit',
 			'tinyint',

@@ -174,6 +174,7 @@ class ColumnTest extends TestCase
 	/**
 	 *Tests the IsNullable methods
 	 *
+	 * @todo(mburtscher): isNullable is Boolean!
 	 */
 	public function testIsNullable()
 	{
@@ -203,6 +204,8 @@ class ColumnTest extends TestCase
 	/**
 	 *tests the Collation methods
 	 *
+	 * @todo(mburtscher): Maybe try some more special variations (e.g. binary
+	 * 	collations, try loading/setting collation on a non-string column, ...)
 	 */
 
 	public function testCollation()
@@ -229,6 +232,7 @@ class ColumnTest extends TestCase
 	/**
 	 * tests the DataType methods
 	 *
+	 * @todo(mburtscher): If you set size/scale, then why don't you test it?
 	 */
 	public function testDataType()
 	{
@@ -273,7 +277,8 @@ class ColumnTest extends TestCase
 
 	/**
 	 *  Sets a value and checks if its correct
-	 *
+	 * 
+	 * @todo(mburtscher): For "real" random values you could use md5(micromtime()).
 	 */
 	public function testSetGetValues()
 	{
@@ -390,6 +395,8 @@ class ColumnTest extends TestCase
 	 * "you can't delete all columns"
 	 *
 	 * @expectedException CDbException
+	 * @todo(mburtscher): Maybe you should check if the exception is really thrown
+	 * 	for the last column.
 	 */
 	public function testDeleteAllColumns()
 	{
@@ -473,6 +480,10 @@ class ColumnTest extends TestCase
 			$this->assertNull($col->getCollation());
 			$this->assertfalse($col->getIsNullable());
 
+			/*
+			 * @todo(mburtscher): Use a nicer code formatting ;) Only use short ifs for
+			 * 	variable assignments like $i = (true ? 1 : 2) not as a control structure. 
+			 */
 			($c == 0 ? $this->assertTrue($col->getAutoIncrement()) : $this->assertFalse($col->getAutoIncrement()));
 
 			if($c == 0 || $c==1)
@@ -489,6 +500,8 @@ class ColumnTest extends TestCase
 	/**
 	 * alter colums and check it afterwards
 	 *
+	 * @todo(mburtscher): Comment should tell me what the test does! I can't see any
+	 * 	difference to the previous test.
 	 */
 	public function testAlter2()
 	{
@@ -507,6 +520,9 @@ class ColumnTest extends TestCase
 			$col->size=1;
 			$col->setIsNullable(true);
 			$col->COLUMN_DEFAULT=2;
+			/*
+			 * @todo(mburtscher): Always assert the save result!
+			 */
 			$col->save();
 			$col->refresh();
 
@@ -551,7 +567,8 @@ class ColumnTest extends TestCase
 
 	/**
 	 * alter colums and check it afterwards
-	 *
+	 * 
+	 * @todo(mburtscher): See previous test about commenting ...
 	 */
 	public function testAlter3()
 	{
@@ -623,6 +640,9 @@ class ColumnTest extends TestCase
 	}
 
 
+	/*
+	 * @todo(mburtscher): No comment at all?
+	 */
 	public function testAlter4()
 	{
 
@@ -631,14 +651,14 @@ class ColumnTest extends TestCase
 			'TABLE_NAME' => 'test',
 		));
 
-		// Try with array too
+		// @todo(mburtscher): Try with array too
 		$values = "a\nb\nc\nd\ne";
 
 
 
 		foreach($cols AS $c => $col)
 		{
-			//enum can't be auto_increment, start at column test3
+			// @todo(mburtscher): enum can't be auto_increment, start at column test3
 			if($c > 0)
 			{
 
@@ -768,6 +788,10 @@ class ColumnTest extends TestCase
 		$col->TABLE_NAME = 'test';
 		$col->COLUMN_NAME = 'test new';
 
+		/*
+		 * @todo(mburtscher): How can you know if the error is thrown because 
+		 * 	of the column name if you provide an invalid data type?
+		 */
 		$col->setDataType('FOO');
 		$col->COLUMN_DEFAULT=1;
 		$col->size=20;
