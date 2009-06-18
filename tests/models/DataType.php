@@ -2,137 +2,125 @@
 
 class DataTypeTest extends TestCase
 {
-
 	/**
-	 * Setup test
+	 * test if the check method returns the correct values
 	 */
-	protected function setUp()
-	{
-
-	}
-
 	public function testCheck()
 	{
-		$DataType = new DataType();
-
 		$types = array(
-			'bit',
-			'tinyint',
-			'bool',
-			'smallint',
-			'mediumint',
-			'int',
-			'bigint',
-			'float',
-			'double',
-			'decimal',
-			'char',
-			'varchar',
-			'tinytext',
-			'text',
-			'mediumtext',
-			'longtext',
-			'tinyblob',
-			'blob',
-			'mediumblob',
-			'longblob',
-			'binary',
-			'varbinary',
-		    'enum',
-			'set',
-			'date',
-			'datetime',
-			'timestamp',
-			'time',
-			'year'
-			);
+		'bit',
+		'tinyint',
+		'bool',
+		'smallint',
+		'mediumint',
+		'int',
+		'bigint',
+		'float',
+		'double',
+		'decimal',
+		'char',
+		'varchar',
+		'tinytext',
+		'text',
+		'mediumtext',
+		'longtext',
+		'tinyblob',
+		'blob',
+		'mediumblob',
+		'longblob',
+		'binary',
+		'varbinary',
+	    'enum',
+		'set',
+		'date',
+		'datetime',
+		'timestamp',
+		'time',
+		'year'
+		);
 
-			/*
-			 * @todo(mburtscher): This can't work!!!
-			 */
-			$options_bool = array(
-		'SUPPORTS_COLLATION',
-		'SUPPORTS_INDEX',
-		'SUPPORTS_UNIQUE',
-		'SUPPORTS_FULLTEXT',
-		'SUPPORTS_SIZE',
-		'SUPPORTS_SCALE',
-		'SUPPORTS_VALUES',
-		'SUPPORTS_UNSIGNED',
-		'SUPPORTS_UNSIGNED_ZEROFILL',
-		'SUPPORTS_ON_UPDATE_CURRENT_TIMESTAMP',
-		'SUPPORTS_AUTO_INCREMENT');
+		$options_bool = array(
+		DataType::SUPPORTS_COLLATION,
+		DataType::SUPPORTS_INDEX,
+		DataType::SUPPORTS_UNIQUE,
+		DataType::SUPPORTS_FULLTEXT,
+		DataType::SUPPORTS_SIZE,
+		DataType::SUPPORTS_SCALE,
+		DataType::SUPPORTS_VALUES,
+		DataType::SUPPORTS_UNSIGNED,
+		DataType::SUPPORTS_UNSIGNED_ZEROFILL,
+		DataType::SUPPORTS_ON_UPDATE_CURRENT_TIMESTAMP,
+		DataType::SUPPORTS_AUTO_INCREMENT
+		);
 
+		$options_string = array(DataType::GROUP,DataType::INPUT_TYPE);
 
-			$options_string = array('GROUP','INPUT_TYPE');
-
-			foreach($types as $type)
+		foreach($types as $type)
+		{
+			foreach($options_bool as $option)
 			{
-				foreach($options_bool as $option)
-				{
-					/**
-					 * @todo(mburtscher): This can't work!
-					 * 	1. second parameter has to be an integer
-					 * 	2. check() is static!!!
-					 * 	Call it DataType::check('varchar', DataType::SUPPORTS_INDEX)
-					 */
-					$this->assertNotType('bool',$DataType->check($type,$option));
-				}
-					
-				foreach($options_string as $option)
-				{
-					$this->assertNotType('string',$DataType->check($type,$option));
-				}
+				$this->assertType('bool', DataType::check($type, $option));
 			}
+			foreach($options_string as $option)
+			{
+				$this->assertType('string', DataType::check($type, $option));
+			}
+		}
 	}
 
-
+	/**
+	 * tests whether the method BaseType returns the correct values
+	 */
 	public function testBaseType()
 	{
-		/*
-		 * @todo(mburtscher): Maybe you should use some types which are not equal
-		 * 	to their base types? (e.g. varchar(10), enum('test', 'test2'), ...)
-		 */
 		$types = array(
-			'bit',
-			'tinyint',
-			'bool',
-			'smallint',
-			'mediumint',
-			'int',
-			'bigint',
-			'float',
-			'double',
-			'decimal',
-			'char',
-			'varchar',
-			'tinytext',
-			'text',
-			'mediumtext',
-			'longtext',
-			'tinyblob',
-			'blob',
-			'mediumblob',
-			'longblob',
-			'binary',
-			'varbinary',
-		    'enum',
-			'set',
-			'date',
-			'datetime',
-			'timestamp',
-			'time',
-			'year'
+			'bit(1)' => 'bit',
+			'tinyint(2)' => 'tinyint',
+			'bool' => 'bool',
+			'smallint(4)' => 'smallint',
+			'mediumint(8)' => 'mediumint',
+			'int(10)' => 'int',
+			'bigint(16)' => 'bigint',
+			'float(1)' => 'float',
+			'float' => 'float',
+			'float(1,1)' => 'float',
+			'double(14,4)' => 'double', 
+			'decimal(3,5)'=> 'decimal',
+			'char' => 'char',
+			'varchar(10)' => 'varchar',
+			'tinytext' => 'tinytext',
+			'text' => 'text',
+			'mediumtext' =>'mediumtext',
+			'longtext' => 'longtext',
+			'tinyblob' => 'tinyblob',
+			'blob' => 'blob',
+			'mediumblob' => 'mediumblob',
+			'longblob' => 'longblob',
+			'binary' => 'binary',
+			'varbinary' => 'varbinary',
+		    'enum(1,2,3)' => 'enum',
+			'enum(\'1\',\'2\')' => 'enum',
+			'set(1,2,3)' => 'set',
+		    'set(\'1\',\'2\')' => 'set',
+			'date' => 'date',
+		    'date(YYYY-MM-DD)'=> 'date',
+		    'datetime(YYYY-MM-DD HH:MM:SS)' => 'datetime',
+		    'datetime' => 'datetime',
+			'timestamp'=> 'timestamp',
+			'time(HH:MM:SS)' => 'time',
+		    'time' => 'time',
+			'year' => 'year'
 			);
 
-			$DataType = new DataType();
-			foreach($types as $type)
+			foreach($types as $type => $expected)
 			{
-				$this->assertEquals($type,$DataType->getBaseType($type));
+				$this->assertEquals($expected, DataType::getBaseType($type));
 			}
-
 	}
 
+	/** 
+	 * test if the method getInputType returns the correct inputtype
+	 */
 	public function testGetInputType()
 	{
 		$DataType = new DataType();

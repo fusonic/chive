@@ -1,68 +1,71 @@
 <?php
 
-/*
- * @todo(mburtscher): Seems to be unfinished ...
- */
-
 class CollationTest extends TestCase
 {
 
-	public function testTableName()
+	/**
+	 * Load collation with properties and relations.
+	 */
+	public function testLoad()
 	{
+		// Load collation
+		$col = Collation::model()->findByPk('utf8_general_ci');
 
-		/*
-		 * @todo(mburtscher): Move all config things to one test!
-		 */
+		// Assert properties
+		$this->assertEquals('utf8_general_ci', $col->COLLATION_NAME);
+		$this->assertEquals('utf8', $col->CHARACTER_SET_NAME);
+		$this->assertEquals(33, $col->ID);
+		$this->assertEquals('Yes', $col->IS_DEFAULT);
+		$this->assertEquals('Yes', $col->IS_COMPILED);
+		$this->assertEquals(1, $col->SORTLEN);
 
-		$coll = new Collation();
-		$this->assertEquals('COLLATIONS',$coll->tableName());
-
+		// Assert character set
+		$this->assertType('CharacterSet', $col->characterSet);
 	}
 	
-	public function testModel()
+	/**
+	 * Tests some Config
+	 */
+	public function testConfig()
 	{
-		$coll = Collation::Model()->findAll();
-		
-		$this->assertType('array',$coll);
-		
-	}
-
-	public function testprimaryKey()
-	{
-
-		/*
-		 * @todo(mburtscher): Move all config things to one test!
-		 */
-
+		//new Collation model
 		$coll = new Collation();
-
-		$this->assertEquals('COLLATION_NAME',$coll->primaryKey());
-
-	}
-
-	public function testRelations()
-	{
-
-		/*
-		 * @todo(mburtscher): Move all config things to one test!
-		 */
 		
-		$coll = new Collation();
-
+		//check config
 		$this->assertTrue(is_array($coll->relations()));
-
+		$this->assertEquals('COLLATIONS',$coll->tableName());
+		$this->assertEquals('COLLATION_NAME',$coll->primaryKey());
 	}
 
+	/**
+	 * Tests to get collation definition for different collations.
+	 */
 	public function testGetDefinition()
 	{
-		/*
-		 * @todo(mburtscher): Collation::getDefinition() is static! Don't call
-		 * 	it on an instantiated object!
-		 * @todo(mburtscher): Test if definiton for *_ci collations contains
-		 * 	case-insensitive part.
-		 */
-		$coll = new Collation();
-		$this->assertContains('utf8',$coll->getDefinition('utf8_unicode_ci'));
+		// Get definition for utf8_unicode_ci
+		$defCi = Collation::getDefinition('utf8_unicode_ci');
+		$defCs = Collation::getDefinition('utf8_unicode_cs');
+		$def = Collation::getDefinition('utf8_unicode');
+
+		// Check type
+		$this->assertType('string', $defCi);
+		$this->assertType('string', $defCs);
+		$this->assertType('string', $def);
+
+		// Check case sensitivity
+		$this->assertContains('(' . Yii::t('collation', 'ci') . ')', $defCi);
+		$this->assertContains('(' . Yii::t('collation', 'cs') . ')', $defCs);
+		$this->assertNotContains('(' . Yii::t('collation', 'ci') . ')', $def);
+		$this->assertNotContains('(' . Yii::t('collation', 'cs') . ')', $def);
+	}
+
+	/**
+	 * Tests to get character set name from collation name.
+	 */
+	public function testGetCharset()
+	{
+		// Get Charset for utf8_unicode_ci
+		$this->assertEquals('utf8', Collation::getCharacterSet('utf8_unicode_ci'));
 	}
 }
 

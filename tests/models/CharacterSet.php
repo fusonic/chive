@@ -1,20 +1,18 @@
 <?php
 
-/*
- * @todo(mburtscher): Seems to be unfinished ...
- */
-
 class CharacterSetTest extends TestCase
 {
-	/**
-	 * tests the characterset model
-	 */
-	public function testModel()
+	
+	public function testLoad()
 	{
-		$char = CharacterSet::model()->findAll();
-
-		$this->assertType('array',$char);
-
+		// Load character set
+		$cs = CharacterSet::model()->findByPk('big5');
+		
+		// Assert properties
+		$this->assertEquals('big5', $cs->CHARACTER_SET_NAME);
+		$this->assertEquals('big5_chinese_ci', $cs->DEFAULT_COLLATE_NAME);
+		$this->assertEquals('Big5 Traditional Chinese', $cs->DESCRIPTION);
+		$this->assertEquals(2, $cs->MAXLEN);
 	}
 
 	/**
@@ -23,13 +21,9 @@ class CharacterSetTest extends TestCase
 	public function testConfig()
 	{
 		$char = new CharacterSet();
-
-		$this->assertType('string',$char->tableName());
-
-		$this->assertType('string',$char->primaryKey());
-
-		$this->assertType('array',$char->relations());
-
+		$this->assertType('string', $char->tableName());
+		$this->assertType('string', $char->primaryKey());
+		$this->assertType('array', $char->relations());
 	}
 
 }

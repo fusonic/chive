@@ -41,6 +41,7 @@ class DublinTests extends PHPUnit_Framework_TestSuite
 	protected function setUp()
 	{
 		self::$app = new TestWebApplication(dirname(__FILE__) . '/../protected/config/tests.php');
+		self::$app->setLanguage('en');
 	}
 
 }

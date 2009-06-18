@@ -29,6 +29,26 @@ DROP TABLE IF EXISTS `tabletest`.`product`;
 CREATE TABLE `tabletest`.`product`(
 category INT NOT NULL,
 id INT NOT NULL,
-fk INT NOT NULL,
+fk INT NOT NULL, 
 price DECIMAL,
 PRIMARY KEY(category, id)) ENGINE=INNODB;
+
+
+DROP TABLE IF EXISTS `tabletest`.`product2`;
+
+CREATE TABLE `tabletest`.`product2`(
+id INT NOT NULL,
+fk INT NOT NULL, 
+price DECIMAL,
+PRIMARY KEY(id)) ENGINE=INNODB;
+
+
+
+
+DROP TABLE IF EXISTS `tabletest`.`product3`;
+
+CREATE TABLE `tabletest`.`product3`(
+id INT NOT NULL,
+fk VARCHAR(10), 
+price DECIMAL,
+PRIMARY KEY(id)) ENGINE=INNODB;

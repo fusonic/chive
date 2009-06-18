@@ -3,7 +3,6 @@
 
 class ColumnTest extends TestCase
 {
-
 	/**
 	 * Setup test databases.
 	 */
@@ -56,13 +55,13 @@ class ColumnTest extends TestCase
 
 		// Drop first column
 		$col = $table->columns[0];
-		$col->delete();
+		$this->assertType('string', $col->delete());
 
-		// Refresh table definition
-		$table->refresh();
+		// Load table definition
+		$table = Table::model()->findByPk(array('TABLE_SCHEMA' => 'columntest', 'TABLE_NAME' => 'test'));
 
 		// Check column count
-		$this->assertEquals($columnCount - 1, count($table->columns));
+		$this->assertEquals($columnCount-1, count($table->columns));
 	}
 
 	/**
@@ -84,19 +83,19 @@ class ColumnTest extends TestCase
 		$this->assertEquals(5, $col->ORDINAL_POSITION);
 
 		// Move column one foreward
-		$col->move('AFTER test3');
+		$this->assertType('string', $col->move('AFTER test3'));
 
-		// Reload column definition
-		$col->refresh();
+		// Load column definition
+		$col = Column::model()->findByPk($pk);
 
 		// Check new position
 		$this->assertEquals(4, $col->ORDINAL_POSITION);
 
 		// Move column to first position
-		$col->move('FIRST');
+		$this->assertType('string', $col->move('FIRST'));
 
-		// Reload column definition
-		$col->refresh();
+		// Load column definition
+		$col = Column::model()->findByPk($pk);
 
 		// Check position
 		$this->assertEquals(1, $col->ORDINAL_POSITION);
@@ -145,7 +144,6 @@ class ColumnTest extends TestCase
 
 	/**
 	 * Tests the autoincrement methods
-	 *
 	 */
 	public function testAutoIncrement()
 	{
@@ -157,24 +155,22 @@ class ColumnTest extends TestCase
 
 		// Load column definition
 		$col = Column::model()->findByPk($pk);
+
+		//set AutoIncrement to false
 		$col->setAutoIncrement(false);
-		$col->save();
-		$col->refresh();
+		$this->assertType('string',$col->save());
+		$col = Column::model()->findByPk($pk);
 		$this->assertFalse($col->getAutoIncrement());
 
+		//set AutoIncrement to true
 		$col->setAutoIncrement(true);
-		$col->save();
-		$col->refresh();
+		$this->assertType('string',$col->save());
+		$col = Column::model()->findByPk($pk);
 		$this->assertTrue($col->getAutoIncrement());
 	}
 
-
-
-
 	/**
-	 *Tests the IsNullable methods
-	 *
-	 * @todo(mburtscher): isNullable is Boolean!
+	 * Tests the IsNullable methods
 	 */
 	public function testIsNullable()
 	{
@@ -186,28 +182,21 @@ class ColumnTest extends TestCase
 
 		// Load column definition
 		$col = Column::model()->findByPk($pk);
-		$col->setIsNullable('Yes');
-		$col->save();
-		$col->refresh();
 
+		$col->setIsNullable(true);
+		$this->assertType('string',$col->save());
+		$col = Column::model()->findByPk($pk);
 		$this->assertTrue($col->getIsNullable());
 
-		$col->setIsNullable(null);
-		$col->save();
-		$col->refresh();
-
+		$col->setIsNullable(false);
+		$this->assertType('string',$col->save());
+		$col = Column::model()->findByPk($pk);
 		$this->assertFalse($col->getIsNullable());
-
 	}
 
-
 	/**
-	 *tests the Collation methods
-	 *
-	 * @todo(mburtscher): Maybe try some more special variations (e.g. binary
-	 * 	collations, try loading/setting collation on a non-string column, ...)
+	 * tests the Collation methods
 	 */
-
 	public function testCollation()
 	{
 		$pk = array(
@@ -218,21 +207,29 @@ class ColumnTest extends TestCase
 
 		// Load column definition
 		$col = Column::model()->findByPk($pk);
+
+		//set COllation to latin1_swedish_ci
 		$col->setCollation('latin1_swedish_ci');
-		$col->save();
-		$col->refresh();
-			
+		$this->assertType('string',$col->save());
+
+		$col = Column::model()->findByPk($pk);
 		$this->assertEquals('latin1_swedish_ci',$col->getCollation());
 
+		// Load integer column
+		$col = Column::model()->findByPk(array(
+			'TABLE_SCHEMA' => 'columntest',
+			'TABLE_NAME' => 'test',
+			'COLUMN_NAME' => 'test1',
+		));
+
+		// Set collation
+		$col->setCollation('latin1_swedish_ci');
+		// Save column
+		$this->assertType('string', $col->save());
 	}
-
-
-
 
 	/**
 	 * tests the DataType methods
-	 *
-	 * @todo(mburtscher): If you set size/scale, then why don't you test it?
 	 */
 	public function testDataType()
 	{
@@ -242,17 +239,18 @@ class ColumnTest extends TestCase
 			'COLUMN_NAME' => 'test3',
 		);
 
-			
 		// Load column definition
 		$col = Column::model()->findByPk($pk);
 		$this->assertEquals('varchar',$col->getDataType());
-
 		$col->setDataType('FLOAT');
 		$col->size=6;
 		$col->scale=4;
-		$col->save();
-		$col->refresh();
+		$this->assertType('string',$col->save());
+
+		$col = Column::model()->findByPk($pk);
 		$this->assertEquals('float',$col->getDataType());
+		$this->assertEquals(6, $col->size);
+		$this->assertEquals(4, $col->scale);
 	}
 
 
@@ -277,8 +275,6 @@ class ColumnTest extends TestCase
 
 	/**
 	 *  Sets a value and checks if its correct
-	 * 
-	 * @todo(mburtscher): For "real" random values you could use md5(micromtime()).
 	 */
 	public function testSetGetValues()
 	{
@@ -288,12 +284,15 @@ class ColumnTest extends TestCase
 			'COLUMN_NAME' => 'test3',
 		);
 
+		// Set random
+		$rand = md5(microtime());
+
 		// Load column definition
 		$col = Column::model()->findByPk($pk);
-		$col->setValues('test value 1234 test value []{}');
-		$col->save();
+		$col->setValues($rand . ' []{} \'');
+		$this->assertType('string', $col->save());
 		$col->refresh();
-		$this->assertEquals('test value 1234 test value []{}',$col->getValues());
+		$this->assertEquals($rand . ' []{} \'', $col->getValues());
 	}
 
 
@@ -304,14 +303,13 @@ class ColumnTest extends TestCase
 	 */
 	public function testGetColumnDefinition()
 	{
-		$pk = array(
-			'TABLE_SCHEMA' => 'columntest',
-			'TABLE_NAME' => 'test',
-			'COLUMN_NAME' => 'test1',
-		);
-
 		// Load column definition
-		$col = Column::model()->findByPk($pk);
+		$col = Column::model()->findByPk(array(
+		'TABLE_SCHEMA' => 'columntest',
+		'TABLE_NAME' => 'test',
+		'COLUMN_NAME' => 'test1'
+		));
+
 		$this->assertEquals('int',$col->getDataType());
 		$this->assertFalse($col->getIsNullable());
 		$this->assertEquals('unsigned',$col->attribute);
@@ -319,15 +317,13 @@ class ColumnTest extends TestCase
 		$this->assertTrue($col->getIsPartOfPrimaryKey());
 		$this->assertNull($col->COLUMN_DEFAULT);
 
-		$pk1 = array(
-			'TABLE_SCHEMA' => 'columntest',
-			'TABLE_NAME' => 'test',
-			'COLUMN_NAME' => 'test2',
-		);
 
 		// Load column definition
-		$col = Column::model()->findByPk($pk1);
-
+		$col = Column::model()->findByPk(array(
+		'TABLE_SCHEMA' => 'columntest',
+		'TABLE_NAME' => 'test',
+		'COLUMN_NAME' => 'test2'
+		));
 		$this->assertEquals('mediumint',$col->getDataType());
 		$this->assertFalse($col->getIsNullable());
 		$this->assertFalse($col->getAutoIncrement());
@@ -336,15 +332,13 @@ class ColumnTest extends TestCase
 		$this->assertTrue($col->getIsPartOfPrimaryKey());
 		$this->assertFalse($col->getAutoIncrement());
 
-		$pk2 = array(
-			'TABLE_SCHEMA' => 'columntest',
-			'TABLE_NAME' => 'test',
-			'COLUMN_NAME' => 'test3',
-		);
 
 		// Load column definition
-		$col = Column::model()->findByPk($pk2);
-
+		$col = Column::model()->findByPk(array(
+		'TABLE_SCHEMA' => 'columntest',
+		'TABLE_NAME' => 'test',
+		'COLUMN_NAME' => 'test3'
+		));
 		$this->assertEquals('varchar',$col->getDataType());
 		$this->assertEquals(100,$col->size);
 		$this->assertFalse($col->getIsNullable());
@@ -354,14 +348,12 @@ class ColumnTest extends TestCase
 		$this->assertEquals('latin1_swedish_ci',$col->getCollation());
 		$this->assertFalse($col->getAutoIncrement());
 
-		$pk3 = array(
-			'TABLE_SCHEMA' => 'columntest',
-			'TABLE_NAME' => 'test',
-			'COLUMN_NAME' => 'test4',
-		);
-
 		// Load column definition
-		$col = Column::model()->findByPk($pk3);
+		$col = Column::model()->findByPk(array(
+		'TABLE_SCHEMA' => 'columntest',
+		'TABLE_NAME' => 'test',
+		'COLUMN_NAME' => 'test4'
+		));
 		$this->assertEquals('enum',$col->getDataType());
 		$this->assertContains('a',$col->values);
 		$this->assertContains('b',$col->values);
@@ -370,14 +362,14 @@ class ColumnTest extends TestCase
 		$this->assertEquals('utf8_general_ci',$col->getCollation());
 		$this->assertFalse($col->getAutoIncrement());
 
-		$pk4 = array(
-			'TABLE_SCHEMA' => 'columntest',
-			'TABLE_NAME' => 'test',
-			'COLUMN_NAME' => 'test5',
-		);
+
 
 		// Load column definition
-		$col = Column::model()->findByPk($pk4);
+		$col = Column::model()->findByPk(array(
+		'TABLE_SCHEMA' => 'columntest',
+		'TABLE_NAME' => 'test',
+		'COLUMN_NAME' => 'test5'
+		));
 		$this->assertEquals('float',$col->getDataType());
 		$this->assertEquals('5',$col->size);
 		$this->assertEquals('2',$col->scale);
@@ -393,10 +385,6 @@ class ColumnTest extends TestCase
 	/**
 	 * Deletes all Columns and expect a DbException
 	 * "you can't delete all columns"
-	 *
-	 * @expectedException CDbException
-	 * @todo(mburtscher): Maybe you should check if the exception is really thrown
-	 * 	for the last column.
 	 */
 	public function testDeleteAllColumns()
 	{
@@ -405,14 +393,20 @@ class ColumnTest extends TestCase
 			'TABLE_NAME' => 'test',
 		));
 
+		$i = 0;
+		$count = count($cols);
 		foreach($cols AS  $col)
 		{
+			if($i == $count - 1)
+			{
+				$this->setExpectedException('CDbException');
+			}
 
-			$col->delete();
+			$this->assertType('string', $col->delete());
 
+			$i++;
 		}
 
-		$this->assertNull($col);
 	}
 
 
@@ -442,7 +436,7 @@ class ColumnTest extends TestCase
 
 	/**
 	 * alter colums and check it afterwards
-	 *
+	 * set Datatype to float
 	 */
 	public function testAlter()
 	{
@@ -460,9 +454,7 @@ class ColumnTest extends TestCase
 			$col->scale = 2;
 			$col->attribute = "unsigned zerofill";
 			$col->setIsNullable(false);
-			$col->save();
-			$col->refresh();
-
+			$this->assertType('string', $col->save());
 
 			$pk = array(
 			    'TABLE_SCHEMA' => 'columntest',
@@ -480,12 +472,17 @@ class ColumnTest extends TestCase
 			$this->assertNull($col->getCollation());
 			$this->assertfalse($col->getIsNullable());
 
-			/*
-			 * @todo(mburtscher): Use a nicer code formatting ;) Only use short ifs for
-			 * 	variable assignments like $i = (true ? 1 : 2) not as a control structure. 
-			 */
-			($c == 0 ? $this->assertTrue($col->getAutoIncrement()) : $this->assertFalse($col->getAutoIncrement()));
+			// col1 is AutoIncrement
+			if($c == 0)
+			{
+				$this->assertTrue($col->getAutoIncrement());
+			}
+			else
+			{
+				$this->assertFalse($col->getAutoIncrement());
+			}
 
+			// col 1 and 2 are PrimaryKey
 			if($c == 0 || $c==1)
 			{
 				$this->assertTrue($col->getIsPartOfPrimaryKey());
@@ -499,9 +496,7 @@ class ColumnTest extends TestCase
 
 	/**
 	 * alter colums and check it afterwards
-	 *
-	 * @todo(mburtscher): Comment should tell me what the test does! I can't see any
-	 * 	difference to the previous test.
+	 * set Datatype to tinyint
 	 */
 	public function testAlter2()
 	{
@@ -515,17 +510,12 @@ class ColumnTest extends TestCase
 		foreach($cols AS $c => $col)
 		{
 
-
 			$col->setDataType('tinyint');
 			$col->size=1;
 			$col->setIsNullable(true);
 			$col->COLUMN_DEFAULT=2;
-			/*
-			 * @todo(mburtscher): Always assert the save result!
-			 */
-			$col->save();
-			$col->refresh();
 
+			$this->assertType('string', $col->save());
 
 			$pk = array(
 			    'TABLE_SCHEMA' => 'columntest',
@@ -536,96 +526,95 @@ class ColumnTest extends TestCase
 			// Load column definition
 			$col = Column::model()->findByPk($pk);
 
-
 			$this->assertEquals('tinyint',$col->getDataType());
 			$this->assertEquals(1,$col->size);
+
+			//tinyint hasn't got a collation
 			$this->assertNull($col->getCollation());
 
+			//col1 has no ColumnDefault
+			if($c == 0)
+			{
+				$this->assertNull($this->COLUMN_DEFAULT);
+			}
+			else
+			{
+				$this->assertEquals(2,$col->COLUMN_DEFAULT);
+			}
 
-			($c == 0 ? $this->assertNull($this->COLUMN_DEFAULT) : $this->assertEquals(2,$col->COLUMN_DEFAULT));
+			//col1 has AutoIncrement
+			if($c == 0)
+			{
+				$this->assertTrue($col->getAutoIncrement());
+			}
+			else
+			{
+				$this->assertFalse($col->getAutoIncrement());
+			}
 
-			($c == 0 ? $this->assertTrue($col->getAutoIncrement()) : $this->assertFalse($col->getAutoIncrement()));
-
+			//col1 and col2 are Primarykey
 			if($c == 0 || $c==1)
 			{
 				$this->assertTrue($col->getIsPartOfPrimaryKey());
 				$this->assertFalse($col->getIsNullable());
 				$this->assertEquals('unsigned',$col->attribute);
-					
+
 			}
 			else
 			{
 				$this->assertFalse($col->getIsPartOfPrimaryKey());
 				$this->assertTrue($col->getIsNullable());
 				$this->assertEquals('',$col->attribute);
-
 			}
-
 		}
-
 	}
 
 	/**
 	 * alter colums and check it afterwards
-	 * 
-	 * @todo(mburtscher): See previous test about commenting ...
+	 * set DataType to timesamp
+	 *
 	 */
 	public function testAlter3()
 	{
-
 		$cols = Column::model()->findAllByAttributes(array(
 			'TABLE_SCHEMA' => 'columntest',
 			'TABLE_NAME' => 'test',
 		));
 
-
 		foreach($cols AS $c => $col)
 		{
-
 			//primary key can't be timestamp, start at column test3
 			if($c > 1)
 			{
-
-
 				if($c==3)
 				{
 					$fixture='on update current_timestamp';
 					$col->attribute=$fixture;
-
 				}
 
 				$col->setDataType('timestamp');
 				$col->COLUMN_DEFAULT='2008-11-26 04:12:44';
 				$col->setIsNullable(false);
-				$col->save();
-				$col->refresh();
-
-
-				$pk = array(
+				$this->assertType('string', $col->save());
+					
+				// Load column definition
+				$col = Column::model()->findByPk(array(
 			    'TABLE_SCHEMA' => 'columntest',
 			    'TABLE_NAME' => 'test',
-			    'COLUMN_NAME' => $col->COLUMN_NAME,
-				);
-
-				// Load column definition
-				$col = Column::model()->findByPk($pk);
-
+			    'COLUMN_NAME' => $col->COLUMN_NAME
+				));
 
 				$this->assertEquals('timestamp',$col->getDataType());
 				$this->assertFalse($col->getIsNullable());
 				$this->assertEquals('2008-11-26 04:12:44',$col->COLUMN_DEFAULT);
 				$this->assertNull($col->getCollation());
 
-
-				$pk = array(
+				// Load column definition
+				$col = Column::model()->findByPk(array(
 			    'TABLE_SCHEMA' => 'columntest',
 			    'TABLE_NAME' => 'test',
-			    'COLUMN_NAME' => $col->COLUMN_NAME,
-				);
-
-				// Load column definition
-				$col = Column::model()->findByPk($pk);
-
+			    'COLUMN_NAME' => $col->COLUMN_NAME
+				));
 
 				if($c==3)
 				{
@@ -633,118 +622,100 @@ class ColumnTest extends TestCase
 				}
 
 				$this->assertNull($col->size);
-
 			}
-
 		}
 	}
 
 
-	/*
-	 * @todo(mburtscher): No comment at all?
+	/**
+	 * Test to set DataType to ENUM and test it afterwards
 	 */
 	public function testAlter4()
 	{
-
 		$cols = Column::model()->findAllByAttributes(array(
 			'TABLE_SCHEMA' => 'columntest',
 			'TABLE_NAME' => 'test',
 		));
 
-		// @todo(mburtscher): Try with array too
 		$values = "a\nb\nc\nd\ne";
-
-
 
 		foreach($cols AS $c => $col)
 		{
-			// @todo(mburtscher): enum can't be auto_increment, start at column test3
 			if($c > 0)
 			{
-
-
-
-
 				$col->setDataType('ENUM');
 				$col->setIsNullable(true);
 				$col->setCollation('latin1_swedish_ci');
 				$col->values=$values;
 				$col->COLUMN_DEFAULT = 'a';
 					
-				$col->save();
-				$col->refresh();
-
-
-				$pk = array(
-			    'TABLE_SCHEMA' => 'columntest',
-			    'TABLE_NAME' => 'test',
-			    'COLUMN_NAME' => $col->COLUMN_NAME,
-				);
+				$this->assertType('string', $col->save());
 
 				// Load column definition
-				$col = Column::model()->findByPk($pk);
+				$col = Column::model()->findByPk(array(
+				    'TABLE_SCHEMA' => 'columntest',
+				    'TABLE_NAME' => 'test',
+				    'COLUMN_NAME' => $col->COLUMN_NAME
+				));
 
 				$this->assertEquals('enum',$col->getDataType());
 				$this->assertEquals($values, $col->values);
 
-				($c==1 ? $this->assertFalse($col->getIsNullable()) : $this->assertTrue($col->getIsNullable()));
-
+				if($c==1)
+				{
+					$this->assertFalse($col->getIsNullable());
+				}
+				else
+				{
+					$this->assertTrue($col->getIsNullable());
+				}
 			}
-
 		}
 	}
 
-
+	/**
+	 * Test the set DataType and sets the values (array and string)
+	 */
 	public function testAlter5()
 	{
-
 		$cols = Column::model()->findAllByAttributes(array(
 			'TABLE_SCHEMA' => 'columntest',
 			'TABLE_NAME' => 'test',
 		));
 
-
 		$values = "a\nb\nc\nd";
-
-
 		$values_arr = array('a','b','c','d');
 
 		foreach($cols AS $c => $col)
 		{
+			//col1 can't be DataType set
 			if($c > 1)
 			{
 				$col->setDataType('set');
 				$col->setCollation('latin1_swedish_ci');
-				$col->values=($c%2 == 0 ? $values : $values_arr);
-					
-				$col->save();
-				$col->refresh();
+				$col->values = ($c % 2 == 0 ? $values : $values_arr);
 
-
-				$pk = array(
-			    'TABLE_SCHEMA' => 'columntest',
-			    'TABLE_NAME' => 'test',
-			    'COLUMN_NAME' => $col->COLUMN_NAME,
-				);
+				$this->assertType('string',$col->save());
 
 				// Load column definition
-				$col = Column::model()->findByPk($pk);
+				$col = Column::model()->findByPk(array(
+				    'TABLE_SCHEMA' => 'columntest',
+				    'TABLE_NAME' => 'test',
+				    'COLUMN_NAME' => $col->COLUMN_NAME
+				));
 
-				$this->assertEquals('set',$col->getDataType());
-
+				$this->assertEquals('set', $col->getDataType());
 				$this->assertEquals($values, $col->values);
-
 			}
-
-
 		}
 	}
 
 
-
+	/**
+	 * tests to insert a new Column in to the Table
+	 */
 	public function testInsert()
 	{
-
 		$col = new Column();
 		$col->TABLE_SCHEMA = 'columntest';
 		$col->TABLE_NAME = 'test';
@@ -755,87 +726,67 @@ class ColumnTest extends TestCase
 		$col->size=20;
 		$col->scale=5;
 		$col->setCollation('utf8_general_ci');
-			
 
-		$col->save();
-		$col->refresh();
-
-		$pk = array(
-			    'TABLE_SCHEMA' => 'columntest',
-			    'TABLE_NAME' => 'test',
-			    'COLUMN_NAME' => 'testnew',
-		);
-
-
+		$this->assertType('string', $col->save());
 
 		// Load column definition
-		$col = Column::model()->findByPk($pk);
+		$col = Column::model()->findByPk(array(
+			'TABLE_SCHEMA' => 'columntest',
+			'TABLE_NAME' => 'test',
+			'COLUMN_NAME' => 'testnew'
+			));
 
-		$this->assertEquals('double',$col->getDataType());
-		$this->assertEquals(1.00000, $col->COLUMN_DEFAULT);
-		$this->assertNull($col->getCollation());
-		$this->assertEquals(20,$col->size);
-		$this->assertEquals(5,$col->scale);
-
+			$this->assertEquals('double', $col->getDataType());
+			$this->assertEquals(1.00000, $col->COLUMN_DEFAULT);
+			$this->assertNull($col->getCollation());
+			$this->assertEquals(20,$col->size);
+			$this->assertEquals(5,$col->scale);
 
 	}
 
 
+	/**
+	 * tests to insert a new Column with wrong Name
+	 */
 	public function testAlterWrongCOLUMNNAME()
 	{
 		$col = new Column();
 		$col->TABLE_SCHEMA = 'columntest';
 		$col->TABLE_NAME = 'test';
-		$col->COLUMN_NAME = 'test new';
+		$col->COLUMN_NAME = 'test \'`';
 
-		/*
-		 * @todo(mburtscher): How can you know if the error is thrown because 
-		 * 	of the column name if you provide an invalid data type?
-		 */
-		$col->setDataType('FOO');
+		$col->setDataType('float');
 		$col->COLUMN_DEFAULT=1;
-		$col->size=20;
+		$col->size = 10;
 		$col->scale=5;
-		$col->setCollation('utf8_general_ci');
-			
 
 		$this->assertFalse($col->insert());
-
-
 	}
 
 
+	/**
+	 * tests to alter the Column and Set a new Name
+	 */
 	public function testAlterNewCOLUMNNAME()
 	{
-
-		$pk = array(
+		// Load column definition
+		$col = Column::model()->findByPk(array(
 			    'TABLE_SCHEMA' => 'columntest',
 			    'TABLE_NAME' => 'test',
 			    'COLUMN_NAME' => 'test3',
-		);
+		));
 
-
-
-		// Load column definition
-		$col = Column::model()->findByPk($pk);
 		$col->COLUMN_NAME='testnew';
 
-		$col->save();
+		$this->assertType('string', $col->save());
 
-		$col->refresh();
-
-		
-		$pk = array(
+		// Load column definition
+		$col = Column::model()->findByPk(array(
 			    'TABLE_SCHEMA' => 'columntest',
 			    'TABLE_NAME' => 'test',
 			    'COLUMN_NAME' => 'testnew',
-		);
+		));
 
-		// Load column definition
-		$col = Column::model()->findByPk($pk);
-		
-		
-		
 		$this->assertEquals('testnew',$col->COLUMN_NAME);
 	}
 
@@ -859,10 +810,11 @@ class ColumnTest extends TestCase
 		$col->insert();
 	}
 
+	/**
+	 * tests some Config Functions
+	 */
 	public function testConfigFunctions()
 	{
-
-
 		// Create new schema
 		$column = new column();
 
@@ -873,52 +825,4 @@ class ColumnTest extends TestCase
 		$this->assertTrue(is_array($column->relations()));
 		$this->assertTrue(is_array($column->getDataTypes()));
 	}
-
-
-
-
-
-
-
-	/*$fixture_numeric = array(
-	 'bit',
-	 'tinyint',
-	 'bool',
-	 'smallint',
-	 'mediumint',
-	 'int',
-	 'bigint',
-	 'float',
-	 'double',
-	 'decimal'
-	 );
-
-	 $fixture_numeric = array(
-	 'char',
-	 'varchar',
-	 'tinytext',
-	 'text',
-	 'mediumtext',
-	 'longtext',
-	 'tinyblob',
-	 'blob' => 'blob',
-	 'mediumblob',
-	 'longblob',
-	 'binary',
-	 'varbinary',
-	 'enum',
-	 'set'
-	 );
-
-	 $fixture_date = array(
-	 'date',
-	 'datetime',
-	 'timestamp',
-	 'time',
-	 'year'
-	 );*/
-
-
 }
-
-?>

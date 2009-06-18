@@ -163,8 +163,8 @@ class ForeignKey extends CActiveRecord
 			. "\t" . 'ADD FOREIGN KEY (' . self::$db->quoteColumnName($this->COLUMN_NAME) . ')' . "\n"
 			. "\t" . 'REFERENCES '	. self::$db->quoteTableName($this->REFERENCED_TABLE_SCHEMA) . '.' . self::$db->quoteTableName($this->REFERENCED_TABLE_NAME) . ' '
 				.  '(' . self::$db->quoteColumnName($this->REFERENCED_COLUMN_NAME) . ')'
-			. ($this->onUpdate ? "\n\t" . 'ON UPDATE ' . $this->onUpdate : '')
 			. ($this->onDelete ? "\n\t" . 'ON DELETE ' . $this->onDelete : '')
+			. ($this->onUpdate ? "\n\t" . 'ON UPDATE ' . $this->onUpdate : '')
 			. ';';
 		$cmd = self::$db->createCommand($sql);
 		try
