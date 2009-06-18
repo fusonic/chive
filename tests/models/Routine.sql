@@ -18,5 +18,12 @@ DROP PROCEDURE IF EXISTS `routinetest`.`test_procedure`;
 CREATE PROCEDURE `routinetest`.`test_procedure`()
 BEGIN
 
+END;
 
-END
+
+DROP FUNCTION IF EXISTS `routinetest`.`test_function`;
+
+CREATE FUNCTION `routinetest`.`test_function`(value int)
+returns int
+return value + 1;
+
