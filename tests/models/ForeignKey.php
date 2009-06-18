@@ -66,9 +66,8 @@ class ForeignKeyTest extends TestCase
 		$this->assertNull($fk);
 	}
 
-
 	/**
-	 * tries to insert a Foreignkey
+	 * tries to insert a Foreignkey with Datatype int and varchar
 	 */
 	public function testInsert()
 	{
@@ -76,8 +75,11 @@ class ForeignKeyTest extends TestCase
 		$foreignKey->TABLE_SCHEMA = 'tabletest';
 		$foreignKey->TABLE_NAME = 'product';
 		$foreignKey->COLUMN_NAME = 'fk';
-
 		$foreignKey->setReferences('tabletest.product_order.no');
+
+		$foreignKey->onUpdate = 'CASCADE';
+		$foreignKey->onDelete = 'NO ACTION';
+
 		$this->assertType('string', $foreignKey->save());
 
 		$fk = ForeignKey::model()->findBySql('SELECT * FROM KEY_COLUMN_USAGE '
@@ -90,18 +92,68 @@ class ForeignKeyTest extends TestCase
 			'columnName' => 'fk'));
 
 		$this->assertNotNull($fk);
-
 		$this->assertEquals('tabletest.product_order.no',$fk->getReferences());
-	}
+		$this->assertEquals('CASCADE', $fk->onUpdate);
+		$this->assertEquals('NO ACTION', $fk->onDelete);
 
+		$foreignKey = new ForeignKey();
+		$foreignKey->TABLE_SCHEMA = 'tabletest';
+		$foreignKey->TABLE_NAME = 'product3';
+		$foreignKey->COLUMN_NAME = 'fk';
+		$foreignKey->setReferences('tabletest.product4.var');
+
+
+		$foreignKey->onUpdate = 'NO ACTION';
+		$foreignKey->onDelete = 'CASCADE';
+		$this->assertType('string', $foreignKey->save());
+			
+		$fk = ForeignKey::model()->findBySql('SELECT * FROM KEY_COLUMN_USAGE '
+		. 'WHERE TABLE_SCHEMA = :tableSchema '
+		. 'AND TABLE_NAME = :tableName '
+		. 'AND COLUMN_NAME = :columnName '
+		. 'AND REFERENCED_TABLE_SCHEMA IS NOT NULL', array(
+			'tableSchema' => 'tabletest',
+			'tableName' => 'product3',
+			'columnName' => 'fk'));
+
+		$this->assertNotNull($fk);
+		$this->assertEquals('tabletest.product4.var',$fk->getReferences());
+		$this->assertEquals('NO ACTION', $fk->onUpdate);
+		$this->assertEquals('CASCADE', $fk->onDelete);
+
+
+		// add a foreignkey with on update and on delete with set null
+		$foreignKey = new ForeignKey();
+		$foreignKey->TABLE_SCHEMA = 'tabletest';
+		$foreignKey->TABLE_NAME = 'product5';
+		$foreignKey->COLUMN_NAME = 'fk';
+		$foreignKey->setReferences('tabletest.product3.id');
+
+
+		$foreignKey->onUpdate = 'SET NULL';
+		$foreignKey->onDelete = 'SET NULL';
+		$this->assertType('string', $foreignKey->save());
+
+		$fk = ForeignKey::model()->findBySql('SELECT * FROM KEY_COLUMN_USAGE '
+		. 'WHERE TABLE_SCHEMA = :tableSchema '
+		. 'AND TABLE_NAME = :tableName '
+		. 'AND COLUMN_NAME = :columnName '
+		. 'AND REFERENCED_TABLE_SCHEMA IS NOT NULL', array(
+			'tableSchema' => 'tabletest',
+			'tableName' => 'product5',
+			'columnName' => 'fk'));
+
+		$this->assertNotNull($fk);
+		$this->assertEquals('tabletest.product3.id',$fk->getReferences());
+		$this->assertEquals('SET NULL', $fk->onUpdate);
+		$this->assertEquals('SET NULL', $fk->onDelete);
+	}
 
 	/**
 	 * tries to update a foreignkey and add on Update and on Delete properties
 	 */
 	public function testUpdate()
 	{
-
-
 		$fk = ForeignKey::model()->findBySql('SELECT * FROM KEY_COLUMN_USAGE '
 		. 'WHERE TABLE_SCHEMA = :tableSchema '
 		. 'AND TABLE_NAME = :tableName '
@@ -111,12 +163,13 @@ class ForeignKeyTest extends TestCase
 			'tableName' => 'product_order',
 			'columnName' => 'customer_id'));
 			
-		$this->assertEquals('tabletest.customer.id',$fk->getReferences());
+		$this->assertEquals('NO ACTION', $fk->onDelete);
+		$this->assertEquals('CASCADE', $fk->onUpdate);
 
+		$this->assertEquals('tabletest.customer.id',$fk->getReferences());
 
 		$fk->setReferences('tabletest.product2.id');
 
-		// Verschiedene "on update"/"on delete"
 		$fk->onUpdate = 'NO ACTION';
 		$fk->onDelete = 'CASCADE';
 		$this->assertType('string', $fk->update());
@@ -135,6 +188,23 @@ class ForeignKeyTest extends TestCase
 		$this->assertEquals('tabletest.product2.id',$fk->getReferences());
 		$this->assertEquals('NO ACTION', $fk->onUpdate);
 		$this->assertEquals('CASCADE', $fk->onDelete);
+
+		/**
+		 * try to set a foreignkey with on update and
+		 * on delete on a column with propertie not null
+		 */
+		$fk = ForeignKey::model()->findBySql('SELECT * FROM KEY_COLUMN_USAGE '
+		. 'WHERE TABLE_SCHEMA = :tableSchema '
+		. 'AND TABLE_NAME = :tableName '
+		. 'AND COLUMN_NAME = :columnName '
+		. 'AND REFERENCED_TABLE_SCHEMA IS NOT NULL', array(
+			  'tableSchema' => 'tabletest',
+			  'tableName' => 'product_order',
+		      'columnName' => 'customer_id'));
+
+		$fk->onUpdate = 'SET NULL';
+		$fk->onDelete = 'SET NULL';
+		$this->assertFalse($fk->update());
 	}
 
 	/**
@@ -150,7 +220,6 @@ class ForeignKeyTest extends TestCase
 			'tableSchema' => 'tabletest',
 			'tableName' => 'product_order',
 			'columnName' => 'customer_id'));
-			
 
 		$this->assertEquals('tabletest.customer.id',$fk->getReferences());
 
@@ -159,7 +228,6 @@ class ForeignKeyTest extends TestCase
 
 		$this->assertFalse($fk->update());
 	}
-
 
 	/**
 	 * tries to delete a foreignkey which is new
@@ -171,13 +239,10 @@ class ForeignKeyTest extends TestCase
 		$foreignKey->TABLE_SCHEMA = 'tabletest';
 		$foreignKey->TABLE_NAME = 'product';
 		$foreignKey->COLUMN_NAME = 'fk';
-
 		$foreignKey->setReferences('tabletest.product_order.no');
 
 		$foreignKey->delete();
 	}
-
-
 
 	/**
 	 * tries to insert a foreignkey which is not new
@@ -224,10 +289,27 @@ class ForeignKeyTest extends TestCase
 		$foreignKey->TABLE_SCHEMA = 'tabletest';
 		$foreignKey->TABLE_NAME = 'product';
 		$foreignKey->COLUMN_NAME = 'fk';
-
 		$foreignKey->setReferences('tabletest.product_order.no');
 		$foreignKey->delete();
 	}
+
+	/**
+	 * tries to add a foreignkey to a column and references to a column with
+	 * an other datatype
+	 */
+	public function testInsertOnWrongDataType()
+	{
+		$foreignKey = new ForeignKey();
+		$foreignKey->TABLE_SCHEMA = 'tabletest';
+		$foreignKey->TABLE_NAME = 'product3';
+		$foreignKey->COLUMN_NAME = 'price';
+		$foreignKey->setReferences('tabletest.product4.var');
+
+		$this->assertFalse($foreignKey->save());
+	}
+
+
+
 
 
 
