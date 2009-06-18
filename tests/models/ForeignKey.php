@@ -100,41 +100,41 @@ class ForeignKeyTest extends TestCase
 	 */
 	public function testUpdate()
 	{
-		
 
-          $fk = ForeignKey::model()->findBySql('SELECT * FROM KEY_COLUMN_USAGE '
-          . 'WHERE TABLE_SCHEMA = :tableSchema '
-          . 'AND TABLE_NAME = :tableName '
-          . 'AND COLUMN_NAME = :columnName '
-          . 'AND REFERENCED_TABLE_SCHEMA IS NOT NULL', array(
+
+		$fk = ForeignKey::model()->findBySql('SELECT * FROM KEY_COLUMN_USAGE '
+		. 'WHERE TABLE_SCHEMA = :tableSchema '
+		. 'AND TABLE_NAME = :tableName '
+		. 'AND COLUMN_NAME = :columnName '
+		. 'AND REFERENCED_TABLE_SCHEMA IS NOT NULL', array(
 			'tableSchema' => 'tabletest',
 			'tableName' => 'product_order',
 			'columnName' => 'customer_id'));
-           
-          $this->assertEquals('tabletest.customer.id',$fk->getReferences());
+			
+		$this->assertEquals('tabletest.customer.id',$fk->getReferences());
 
 
-          $fk->setReferences('tabletest.product2.id');
+		$fk->setReferences('tabletest.product2.id');
 
-          // Verschiedene "on update"/"on delete"
-          $fk->onUpdate = 'NO ACTION';
-          $fk->onDelete = 'CASCADE';
-        $this->assertType('string', $fk->update());
+		// Verschiedene "on update"/"on delete"
+		$fk->onUpdate = 'NO ACTION';
+		$fk->onDelete = 'CASCADE';
+		$this->assertType('string', $fk->update());
 
-          $this->assertType('string', $fk->update());
+		$this->assertType('string', $fk->update());
 
-          $fk = ForeignKey::model()->findBySql('SELECT * FROM KEY_COLUMN_USAGE '
-          . 'WHERE TABLE_SCHEMA = :tableSchema '
-          . 'AND TABLE_NAME = :tableName '
-          . 'AND COLUMN_NAME = :columnName '
-          . 'AND REFERENCED_TABLE_SCHEMA IS NOT NULL', array(
+		$fk = ForeignKey::model()->findBySql('SELECT * FROM KEY_COLUMN_USAGE '
+		. 'WHERE TABLE_SCHEMA = :tableSchema '
+		. 'AND TABLE_NAME = :tableName '
+		. 'AND COLUMN_NAME = :columnName '
+		. 'AND REFERENCED_TABLE_SCHEMA IS NOT NULL', array(
 			  'tableSchema' => 'tabletest',
 			  'tableName' => 'product_order',
 		      'columnName' => 'customer_id'));
 
-          $this->assertEquals('tabletest.product2.id',$fk->getReferences());
-          $this->assertEquals('NO ACTION', $fk->onUpdate);
-          $this->assertEquals('CASCADE', $fk->onDelete);
+		$this->assertEquals('tabletest.product2.id',$fk->getReferences());
+		$this->assertEquals('NO ACTION', $fk->onUpdate);
+		$this->assertEquals('CASCADE', $fk->onDelete);
 	}
 
 	/**
@@ -195,6 +195,38 @@ class ForeignKeyTest extends TestCase
 			'columnName' => 'customer_id'));
 			
 		$fk->insert();
+	}
+
+	/**
+	 * tries to update a foreignkey which is new
+	 * causes expection: cannot be updated because it is new
+	 * @expectedException CDbException
+	 */
+	public function testUpdateIsNew()
+	{
+		$foreignKey = new ForeignKey();
+		$foreignKey->TABLE_SCHEMA = 'tabletest';
+		$foreignKey->TABLE_NAME = 'product';
+		$foreignKey->COLUMN_NAME = 'fk';
+
+		$foreignKey->setReferences('tabletest.product_order.no');
+		$foreignKey->update();
+	}
+
+	/**
+	 * tries to delete a foreignkey which is new
+	 * causes expection: cannot be deleted because it is new
+	 * @expectedException CDbException
+	 */
+	public function testDeleteIsNew()
+	{
+		$foreignKey = new ForeignKey();
+		$foreignKey->TABLE_SCHEMA = 'tabletest';
+		$foreignKey->TABLE_NAME = 'product';
+		$foreignKey->COLUMN_NAME = 'fk';
+
+		$foreignKey->setReferences('tabletest.product_order.no');
+		$foreignKey->delete();
 	}
 
 
