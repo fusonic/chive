@@ -16,6 +16,10 @@ class RowTest extends TestCase
 		$db->charset='utf8';
 		$db->active = true;
 		Row::$db = $db;
+		Row::$schema = "rowtest";
+		Row::$table = "data";
+
+
 	}
 
 	/**
@@ -23,10 +27,6 @@ class RowTest extends TestCase
 	 */
 	public function testConfig()
 	{
-		$_GET['schema'] = "rowtest";
-		$_GET['table'] = "data";
-
-
 		$this->assertType('array', Row::model()->attributeLabels());
 		$this->assertType('array', Row::model()->attributeNames());
 		$this->assertType('array', Row::model()->safeAttributes());
@@ -44,6 +44,22 @@ class RowTest extends TestCase
 	 *          update auf tabelle mit gleichnamigen spalten
 	 *          upadte auf tabelle mit 1 oder mehreren pks
 	 *
+	 *			1.) Tables with primary keys
+	 *				a.) Single column PKs
+	 *						- int
+	 *						- enum
+	 *						- varchar
+	 *					- NULL
+	 *
+	 *				b.) Muli-column PKs
+	 *						- int, int (nullable) ... 1, NULL
+	 *						- int, enum
+	 *
+	 *			2.) Content types
+	 *
+	 *			3.) Tables without primary keys
+	 *               a) 2 rows besitzen selbe werte .. welches ändert sich?
+	 *
 	 *
 	 */
 
@@ -55,41 +71,40 @@ class RowTest extends TestCase
 
 	public function testUpdate()
 	{
-		$_GET['schema'] = "rowtest";
-		$_GET['table'] = "data";
 
-	 $rows = Row::model()->findAllByAttributes(array('test1'=>1));
 
-	 //	 var_dump($row);
-	 $row = $rows[0];
-	 $row->setAttribute('test2',4);
-	 $row->setAttribute('test3','blub blub blub');
-	 $row->setAttribute('test4',443.56);
+		//$rows = Row::model()->findAllByAttributes(array('test1'=>1));
 
-	 $row->save();
-	 $row->refresh();
+		/* //	 var_dump($row);
+		 $row = $rows[0];
+		 $row->setAttribute('test2',4);
+		 $row->setAttribute('test3','blub blub blub');
+		 $row->setAttribute('test4',443.56);
 
-	 $row = Row::model()->findByAttributes(array('test2'=>4));
-	 $row = $rows[0];
-	 $this->assertEquals(4,$row->getAttribute('test2'));
-	 $this->assertEquals('blub blub blub',$row->getAttribute('test3'));
-	 $this->assertEquals(443.56,$row->getAttribute('test4'));
+		 $row->save();
+		 $row->refresh();
+
+		 $row = Row::model()->findByAttributes(array('test2'=>4));
+		 $row = $rows[0];
+		 $this->assertEquals(4,$row->getAttribute('test2'));
+		 $this->assertEquals('blub blub blub',$row->getAttribute('test3'));
+		 $this->assertEquals(443.56,$row->getAttribute('test4'));*/
 	}
 
-/*
-	public function testUpdate2()
-	{
+	/*
+	 public function testUpdate2()
+	 {
 		$_GET['schema'] = "rowtest";
 		$_GET['table'] = "data2";
 
 	 $row = Row::model()->findByAttributes(array('test1'=>'1'));
 
-	var_dump($row);
+	 var_dump($row);
 
-	}
+	 }
 
 
-	/*
+	 /*
 	 *
 	 *
 	 * $row = new Row();
