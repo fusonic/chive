@@ -17,7 +17,6 @@ class RowTest extends TestCase
 		$db->active = true;
 		Row::$db = $db;
 		Row::$schema = "rowtest";
-		Row::$table = "data";
 
 
 	}
@@ -27,6 +26,8 @@ class RowTest extends TestCase
 	 */
 	public function testConfig()
 	{
+		Row::$table = "data";
+
 		$this->assertType('array', Row::model()->attributeLabels());
 		$this->assertType('array', Row::model()->attributeNames());
 		$this->assertType('array', Row::model()->safeAttributes());
@@ -41,8 +42,7 @@ class RowTest extends TestCase
 	/*
 	 *
 	 * tests:   mehrere Datatypes updaten oder inserten
-	 *          update auf tabelle mit gleichnamigen spalten
-	 *          upadte auf tabelle mit 1 oder mehreren pks
+	 *                upadte auf tabelle mit 1 oder mehreren pks
 	 *
 	 *			1.) Tables with primary keys
 	 *				a.) Single column PKs
@@ -65,17 +65,30 @@ class RowTest extends TestCase
 
 
 	/**
-	 *
-	 * Tests to update row attributes
+	 * tries to read the row values
 	 */
-
-	public function testUpdate()
+	public function testRead()
 	{
 
+		Row::$table = "data";
+		$rows = Row::model()->findAllByAttributes(array('test1'=>1));
 
-		//$rows = Row::model()->findAllByAttributes(array('test1'=>1));
+		$row = $rows[0];
 
-		/* //	 var_dump($row);
+		$this->assertType('numeric',$row->getAttribute('test1'));
+		$this->assertType('numeric',$row->getAttribute('test2'));
+		$this->assertType('string',$row->getAttribute('test3'));
+		$this->assertType('numeric',$row->getAttribute('test4'));
+		$this->assertType('string',$row->getAttribute('test5'));
+		$this->assertType('string',$row->getAttribute('test6'));
+		$this->assertType('numeric',$row->getAttribute('test7'));
+		$this->assertType('string',$row->getAttribute('test8'));
+		$this->assertType('string',$row->getAttribute('test9'));
+
+
+
+
+		/* //
 		 $row = $rows[0];
 		 $row->setAttribute('test2',4);
 		 $row->setAttribute('test3','blub blub blub');
@@ -91,9 +104,40 @@ class RowTest extends TestCase
 		 $this->assertEquals(443.56,$row->getAttribute('test4'));*/
 	}
 
+	/**
+	 * tries to update one row
+	 */
+	public function testUpdate()
+	{
+		/*$pk = array(
+			'TABLE_SCHEMA' => 'rowtest',
+			'TABLE_NAME' => 'data2',
+			'COLUMN_NAME' => 'test1'
+			);
+
+
+			$row = Row::model()->findByPk($pk);*/
+		Row::$table = "data2";
+
+		$row = Row::model()->findAllByAttributes(array('test1'=>1));
+		//var_dump($row);
+		$row = $row[0];
+
+		$row->setAttribute('test1',2);
+		$row->setAttribute('test2',345345);
+		$row->setAttribute('test3','testtesttesttest');
+		$row->setAttribute('test4',433.43);
+		$row->setAttribute('test5','2009-06-11');
+		$row->setAttribute('test6','b');
+		$row->setAttribute('test7','3');
+		$row->setAttribute('test8','neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.');
+		$row->setAttribute('test9','{"firstName": "John", "lastName": "Smith", "address": {"streetAddress": "21 2nd Street", "city": "New York", "state": "NY", "postalCode": 10021}, "phoneNumbers": ["212 555-1234", "646 555-4567"]}');
+
+		$this->assertType('string',$row->update());
+
+	}
+
 	/*
-	 public function testUpdate2()
-	 {
 		$_GET['schema'] = "rowtest";
 		$_GET['table'] = "data2";
 
@@ -101,7 +145,7 @@ class RowTest extends TestCase
 
 	 var_dump($row);
 
-	 }
+
 
 
 	 /*

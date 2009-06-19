@@ -66,7 +66,7 @@ class Row extends CActiveRecord
 	 */
 	public function primaryKey()
 	{
-		return self::$db->getSchema($this->schema)->getTable(self::$table)->primaryKey;
+		return self::$db->getSchema(self::$schema)->getTable(self::$table)->primaryKey;
 	}
 
 
@@ -141,7 +141,7 @@ class Row extends CActiveRecord
 			$sql .= "\n" . ' WHERE ' . "\n";
 			
 			
-			$key = $this->getPrimaryKey();
+			$key = $this->primaryKey();
 			
 			// If there is no PK, update with the original attributes in WHERE criteria
 			if($key === null) 
@@ -179,7 +179,7 @@ class Row extends CActiveRecord
 		}
 		
 		$cmd = new CDbCommand(self::$db, $sql);
-		
+		echo $sql;
 		try
 		{
 			$cmd->prepare();
