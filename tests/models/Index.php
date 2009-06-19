@@ -289,14 +289,12 @@ class IndexTest extends TestCase
 		$this->assertEquals('newname', $index->INDEX_NAME);
 		$this->assertEquals('FULLTEXT', $index->getType());
 
-
 	}
 
 
 
 	public function testUpdatePrimaryKey()
 	{
-
 		// Load index
 		$index = Index::model()->findByAttributes(array(
 			'INDEX_NAME' => 'UNIQUE',
@@ -315,12 +313,6 @@ class IndexTest extends TestCase
 		// Check properties
 		$this->assertEquals('PRIMARY', $index->INDEX_NAME);
 		$this->assertEquals('PRIMARY', $index->getType());
-
-
-
-
 	}
 
 }
-
-?>

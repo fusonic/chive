@@ -170,6 +170,7 @@ class ForeignKeyTest extends TestCase
 
 		$fk->setReferences('tabletest.product2.id');
 
+		// @todo: try setting it to another value
 		$fk->onUpdate = 'NO ACTION';
 		$fk->onDelete = 'CASCADE';
 		$this->assertType('string', $fk->update());
@@ -232,6 +233,7 @@ class ForeignKeyTest extends TestCase
 	/**
 	 * tries to delete a foreignkey which is new
 	 * @expectedException CDbException
+	 * @todo: test testDeleteIsNew does exactly the same ...
 	 */
 	public function testDelete2()
 	{
@@ -307,12 +309,4 @@ class ForeignKeyTest extends TestCase
 
 		$this->assertFalse($foreignKey->save());
 	}
-
-
-
-
-
-
-
-
 }

@@ -287,7 +287,6 @@ class TableTest extends TestCase
 		$this->assertFalse($col->getIsPartOfPrimaryKey());
 		$this->assertEquals('utf8_general_ci',$col->getCollation());
 		$this->assertEquals(250,$col->size);
-			
 	}
 
 	/**
@@ -295,8 +294,6 @@ class TableTest extends TestCase
 	 */
 	public function testHasPrimaryKeyFalse()
 	{
-
-
 		$table = array(
 		 'TABLE_SCHEMA' => 'tabletest',
 		 'TABLE_NAME' => 'tabletest3',
@@ -306,7 +303,6 @@ class TableTest extends TestCase
 		$ta = Table::model()->findByPk($table);
 
 		$this->assertFalse($ta->getHasPrimaryKey());
-
 	}
 
 	/**
@@ -316,12 +312,10 @@ class TableTest extends TestCase
 	 */
 	public function testUpdateException()
 	{
-
 		$table = new Table();
 		$table->setAttribute('TABLE_NAME', 'test2');
 		
 		$table->update();
-		
 	}
 
 
@@ -350,13 +344,10 @@ class TableTest extends TestCase
 		// Load column definition
 		$ta = Table::model()->findByPk($table);
 		$ta->insert($column);
-
 	}
 
 	/**
 	 * Record can't be inserted cause its not new
-	 *
-	 * 
 	 */
 	public function testSqlException()
 	{
@@ -368,11 +359,6 @@ class TableTest extends TestCase
 		
 		// Load column definition
 		$this->assertFalse($table->insert(array()));
-
 	}
-	
-
 
 }
-
-?>

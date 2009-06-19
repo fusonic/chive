@@ -14,6 +14,8 @@ class RoutineTest extends TestCase
 
 	/**
 	 * tests the Model method
+	 * @todo: if testing this, make sure, you retrieve a "Routine" object from model()
+	 * 	e.g. $this->assertType('Routine', Routine::model());
 	 */ 
 	public function testModel()
 	{
@@ -25,10 +27,10 @@ class RoutineTest extends TestCase
 	 */
 	public function testConfig()
 	{
-		$routin = new Routine();
+		$routine = new Routine();
 
-		$this->assertType('array',$routin->primaryKey());
-		$this->assertType('string',$routin->tableName());
+		$this->assertType('array', $routine->primaryKey());
+		$this->assertType('string', $routine->tableName());
 	}
 
 
@@ -38,24 +40,26 @@ class RoutineTest extends TestCase
 	public function testDelete()
 	{
 		$routineObj = Routine::model()->findByPk(array(
-				'ROUTINE_SCHEMA' => 'routinetest',
-				'ROUTINE_NAME' => 'test_procedure',
+			'ROUTINE_SCHEMA' => 'routinetest',
+			'ROUTINE_NAME' => 'test_procedure',
 		));
 
-		$this->assertType('string',$routineObj->delete());
+		$this->assertType('string', $routineObj->delete());
 	}
 
 	/**
 	 * tries to get the create statement of the routine
+	 * @todo: you could delete the routine and then execute the
+	 * 	"create routine" statement to ensure it is o.k.
 	 */
 	public function testGetRoutine()
 	{
 		$routineObj = Routine::model()->findByPk(array(
-				'ROUTINE_SCHEMA' => 'routinetest',
-				'ROUTINE_NAME' => 'test_procedure',
+			'ROUTINE_SCHEMA' => 'routinetest',
+			'ROUTINE_NAME' => 'test_procedure',
 		));
 
-		$this->assertType('string',$routineObj->getCreateRoutine());	
+		$this->assertType('string', $routineObj->getCreateRoutine());	
 	}
 
 	/**
@@ -64,28 +68,27 @@ class RoutineTest extends TestCase
 	public function testDeleteFunction()
 	{
 		$function = Routine::model()->findByPk(array(
-				'ROUTINE_SCHEMA' => 'routinetest',
-				'ROUTINE_NAME' => 'test_function',
+			'ROUTINE_SCHEMA' => 'routinetest',
+			'ROUTINE_NAME' => 'test_function',
 		));
 
-		$this->assertType('string',$function->delete());
+		$this->assertType('string', $function->delete());
 	}
 
 	/**
 	 * tries to get the create statement of a function
+	 * @todo: see testGetRoutine test
 	 */
 	public function testGetRoutineFunction()
 	{
 		$function = Routine::model()->findByPk(array(
-				'ROUTINE_SCHEMA' => 'routinetest',
-				'ROUTINE_NAME' => 'test_function',
+			'ROUTINE_SCHEMA' => 'routinetest',
+			'ROUTINE_NAME' => 'test_function',
 		));
 
-		$this->assertType('string',$function->getCreateRoutine());
+		$this->assertType('string', $function->getCreateRoutine());
 	}
 
 
 
 }
-
-?>

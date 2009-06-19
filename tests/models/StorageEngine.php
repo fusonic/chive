@@ -1,26 +1,24 @@
 <?php
 
-
+/*
+ * @todo: missing test which loads a storage engine and checks all attributes
+ */
 class StorageEngineTest extends TestCase
 {
 
 	public function setup()
 	{
-
 		$db = new CDbConnection('mysql:host='.DB_HOST.';dbname=information_schema', DB_USER, DB_PASSWORD);
 		$db->charset='utf8';
 		$db->active = true;
-
 	}
 
 	/**
-	 *
 	 * test whether getSupportedEngines returns an array
 	 */
 	public function testGetSupportedEngines()
 	{
-
-		$this->assertType('array',StorageEngine::getSupportedEngines());
+		$this->assertType('array', StorageEngine::getSupportedEngines());
 	}
 
 	/**
@@ -29,10 +27,9 @@ class StorageEngineTest extends TestCase
 	 */
 	public function testGetFormattedName()
 	{
-
-		$this->assertEquals('MyISAM',StorageEngine::getFormattedName('myisam'));
-		$this->assertEquals('InnoDB',StorageEngine::getFormattedName('innodb'));
-		$this->assertEquals('BLUB',StorageEngine::getFormattedName('blub'));
+		$this->assertEquals('MyISAM', StorageEngine::getFormattedName('myisam'));
+		$this->assertEquals('InnoDB', StorageEngine::getFormattedName('innodb'));
+		$this->assertEquals('BLUB', StorageEngine::getFormattedName('blub'));
 	}
 
 	/**
@@ -51,16 +48,16 @@ class StorageEngineTest extends TestCase
 		$this->assertFalse(StorageEngine::check('innodb', StorageEngine::SUPPORTS_PACK_KEYS));
 
 		$db_arr = array(
-		'memory',
-		'berkeleydb',
-		'blackhole',
-		'example',
-		'archive',
-		'csv',
-		'ndbcluster',
-		'federated',
-		'mrg_myisam',
-		'isam'	
+			'memory',
+			'berkeleydb',
+			'blackhole',
+			'example',
+			'archive',
+			'csv',
+			'ndbcluster',
+			'federated',
+			'mrg_myisam',
+			'isam',	
 		);
 
 		foreach($db_arr as $db)
@@ -74,38 +71,39 @@ class StorageEngineTest extends TestCase
 
 	public function testGetPackKeyOptions()
 	{
-		$this->assertType('array',StorageEngine::getPackKeyOptions());
+		$this->assertType('array', StorageEngine::getPackKeyOptions());
 	}
 
 
 	public function testConifg()
 	{
-		$this->assertType('array',StorageEngine::attributeNames());
-		$this->assertType('array',StorageEngine::model()->findAll());
+		$this->assertType('array', StorageEngine::attributeNames());
+		/*
+		 * @todo: see RoutineTest::testModel()
+		 */
+		$this->assertType('array', StorageEngine::model()->findAll());
 	}
 
 
 	public function testSupports()
 	{
-
-
 		$db_arr = array(
-		'MEMORY',
-		'BerkeleyDB',
-		'BLACKHOLE',
-		'EXAMPLE',
-		'ARCHIVE',
-		'CSV',
-		'ndbcluster',
-		'FEDERATED',
-		'MRG_MYISAM',
-		'ISAM'	
+			'MEMORY',
+			'BerkeleyDB',
+			'BLACKHOLE',
+			'EXAMPLE',
+			'ARCHIVE',
+			'CSV',
+			'ndbcluster',
+			'FEDERATED',
+			'MRG_MYISAM',
+			'ISAM',	
 		);
 
 		foreach($db_arr as $db)
 		{
 			$se = StorageEngine::model()->findAllByAttributes(array(
-			'Engine' => $db	
+				'Engine' => $db	
 			));
 
 			$this->assertFalse($se[0]->getSupportsChecksum());
@@ -129,9 +127,5 @@ class StorageEngineTest extends TestCase
 		$this->assertFalse($se[0]->getSupportsChecksum());
 		$this->assertFalse($se[0]->getSupportsPackKeys());
 		$this->assertFalse($se[0]->getSupportsDelayKeyWrite());
-
-
 	}
 }
-
-?>
