@@ -126,7 +126,7 @@ class ForeignKey extends CActiveRecord
 		}
 
 		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
-			. "\t" . 'DROP FOREIGN KEY ' . self::$db->quoteColumnName($this->CONSTRAINT_NAME) . ';';
+		. "\t" . 'DROP FOREIGN KEY ' . self::$db->quoteColumnName($this->CONSTRAINT_NAME) . ';';
 		$cmd = self::$db->createCommand($sql);
 		try
 		{
@@ -160,12 +160,12 @@ class ForeignKey extends CActiveRecord
 		}
 
 		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
-			. "\t" . 'ADD FOREIGN KEY (' . self::$db->quoteColumnName($this->COLUMN_NAME) . ')' . "\n"
-			. "\t" . 'REFERENCES '	. self::$db->quoteTableName($this->REFERENCED_TABLE_SCHEMA) . '.' . self::$db->quoteTableName($this->REFERENCED_TABLE_NAME) . ' '
-				.  '(' . self::$db->quoteColumnName($this->REFERENCED_COLUMN_NAME) . ')'
-			. ($this->onDelete ? "\n\t" . 'ON DELETE ' . $this->onDelete : '')
-			. ($this->onUpdate ? "\n\t" . 'ON UPDATE ' . $this->onUpdate : '')
-			. ';';
+		. "\t" . 'ADD FOREIGN KEY (' . self::$db->quoteColumnName($this->COLUMN_NAME) . ')' . "\n"
+		. "\t" . 'REFERENCES '	. self::$db->quoteTableName($this->REFERENCED_TABLE_SCHEMA) . '.' . self::$db->quoteTableName($this->REFERENCED_TABLE_NAME) . ' '
+		.  '(' . self::$db->quoteColumnName($this->REFERENCED_COLUMN_NAME) . ')'
+		. ($this->onDelete ? "\n\t" . 'ON DELETE ' . $this->onDelete : '')
+		. ($this->onUpdate ? "\n\t" . 'ON UPDATE ' . $this->onUpdate : '')
+		. ';';
 		$cmd = self::$db->createCommand($sql);
 		try
 		{
@@ -177,6 +177,7 @@ class ForeignKey extends CActiveRecord
 		}
 		catch(CDbException $ex)
 		{
+		
 			$errorInfo = $cmd->getPdoStatement()->errorInfo();
 			$this->addError('COLUMN_NAME', Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
 			$this->afterSave();
