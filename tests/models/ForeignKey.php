@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * @todo: test ON UPDATE/DELETE RESTRICT
+ */
+
 class ForeignKeyTest extends TestCase
 {
 	/**
@@ -170,7 +174,6 @@ class ForeignKeyTest extends TestCase
 
 		$fk->setReferences('tabletest.product2.id');
 
-		// @todo: try setting it to another value
 		$fk->onUpdate = 'NO ACTION';
 		$fk->onDelete = 'CASCADE';
 		$this->assertType('string', $fk->update());
@@ -228,22 +231,6 @@ class ForeignKeyTest extends TestCase
 		$fk->setReferences('');
 
 		$this->assertFalse($fk->update());
-	}
-
-	/**
-	 * tries to delete a foreignkey which is new
-	 * @expectedException CDbException
-	 * @todo: test testDeleteIsNew does exactly the same ...
-	 */
-	public function testDelete2()
-	{
-		$foreignKey = new ForeignKey();
-		$foreignKey->TABLE_SCHEMA = 'tabletest';
-		$foreignKey->TABLE_NAME = 'product';
-		$foreignKey->COLUMN_NAME = 'fk';
-		$foreignKey->setReferences('tabletest.product_order.no');
-
-		$foreignKey->delete();
 	}
 
 	/**

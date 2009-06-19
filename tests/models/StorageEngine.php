@@ -1,8 +1,5 @@
 <?php
 
-/*
- * @todo: missing test which loads a storage engine and checks all attributes
- */
 class StorageEngineTest extends TestCase
 {
 
@@ -69,22 +66,56 @@ class StorageEngineTest extends TestCase
 		}
 	}
 
-	public function testGetPackKeyOptions()
+
+	/**
+	 * tests some config
+	 */
+	public function testConfig()
 	{
+		$this->assertType('StorageEngine', StorageEngine::model());
 		$this->assertType('array', StorageEngine::getPackKeyOptions());
+
+		$model = StorageEngine::model();
+		$this->assertType('array', $model->attributeNames());
 	}
 
-
-	public function testConifg()
+	/**
+	 * tests to load an engine and checks the attributes
+	 */
+	public function testLoad()
 	{
-		$this->assertType('array', StorageEngine::attributeNames());
-		/*
-		 * @todo: see RoutineTest::testModel()
-		 */
-		$this->assertType('array', StorageEngine::model()->findAll());
+		$engines = array(
+			'MyISAM',
+			'MEMORY',
+			'InnoDB',
+			'BerkeleyDB',
+			'BLACKHOLE',
+			'EXAMPLE',
+			'ARCHIVE',
+			'CSV',
+			'ndbcluster',
+			'FEDERATED',
+			'MRG_MYISAM',
+			'ISAM'
+			);
+
+			foreach($engines as $engine)
+			{
+				$se = StorageEngine::model()->findAllByAttributes(array(
+					'Engine' => $engine	
+				));
+
+				$se = $se[0];
+
+				$this->assertType('StorageEngine', $se);
+				$this->assertType('string', $se->Comment);
+				$this->assertType('string', $se->Support);
+			}
 	}
 
-
+	/**
+	 * tests the return values of the getSupports* methods
+	 */
 	public function testSupports()
 	{
 		$db_arr = array(
@@ -114,18 +145,18 @@ class StorageEngineTest extends TestCase
 
 		$se = StorageEngine::model()->findAllByAttributes(array(
 			'Engine' => 'MyISAM'	
-		));
+			));
 
-		$this->assertTrue($se[0]->getSupportsChecksum());
-		$this->assertTrue($se[0]->getSupportsPackKeys());
-		$this->assertTrue($se[0]->getSupportsDelayKeyWrite());
-			
-		$se = StorageEngine::model()->findAllByAttributes(array(
+			$this->assertTrue($se[0]->getSupportsChecksum());
+			$this->assertTrue($se[0]->getSupportsPackKeys());
+			$this->assertTrue($se[0]->getSupportsDelayKeyWrite());
+
+			$se = StorageEngine::model()->findAllByAttributes(array(
 			'Engine' => 'InnoDB'	
-		));
+			));
 
-		$this->assertFalse($se[0]->getSupportsChecksum());
-		$this->assertFalse($se[0]->getSupportsPackKeys());
-		$this->assertFalse($se[0]->getSupportsDelayKeyWrite());
+			$this->assertFalse($se[0]->getSupportsChecksum());
+			$this->assertFalse($se[0]->getSupportsPackKeys());
+			$this->assertFalse($se[0]->getSupportsDelayKeyWrite());
 	}
 }

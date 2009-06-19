@@ -11,24 +11,15 @@ class RoutineTest extends TestCase
 		Routine::$db = new CDbConnection('mysql:host='.DB_HOST.';dbname=routinetest', DB_USER, DB_PASSWORD);
 		Routine::$db->active = true;
 	}
-
-	/**
-	 * tests the Model method
-	 * @todo: if testing this, make sure, you retrieve a "Routine" object from model()
-	 * 	e.g. $this->assertType('Routine', Routine::model());
-	 */ 
-	public function testModel()
-	{
-		$this->assertType('array',Routine::Model()->findAll());
-	}
-
+	
 	/**
 	 * tests some config 
 	 */
 	public function testConfig()
 	{
+		$this->assertType('Routine', Routine::model());
+		
 		$routine = new Routine();
-
 		$this->assertType('array', $routine->primaryKey());
 		$this->assertType('string', $routine->tableName());
 	}
@@ -49,8 +40,6 @@ class RoutineTest extends TestCase
 
 	/**
 	 * tries to get the create statement of the routine
-	 * @todo: you could delete the routine and then execute the
-	 * 	"create routine" statement to ensure it is o.k.
 	 */
 	public function testGetRoutine()
 	{
@@ -59,7 +48,20 @@ class RoutineTest extends TestCase
 			'ROUTINE_NAME' => 'test_procedure',
 		));
 
-		$this->assertType('string', $routineObj->getCreateRoutine());	
+		$createRoutine = $routineObj->getCreateRoutine();
+		
+		$this->assertType('string', $createRoutine);
+		$this->assertType('string', $routineObj->delete());
+		
+		$cmd = Routine::$db->createCommand($createRoutine);
+		$this->assertEquals(0, $cmd->execute());
+		
+		$routineObj = Routine::model()->findByPk(array(
+			'ROUTINE_SCHEMA' => 'routinetest',
+			'ROUTINE_NAME' => 'test_procedure',
+		));
+		
+		$this->assertType('Routine', $routineObj);
 	}
 
 	/**
@@ -77,7 +79,6 @@ class RoutineTest extends TestCase
 
 	/**
 	 * tries to get the create statement of a function
-	 * @todo: see testGetRoutine test
 	 */
 	public function testGetRoutineFunction()
 	{
@@ -86,9 +87,22 @@ class RoutineTest extends TestCase
 			'ROUTINE_NAME' => 'test_function',
 		));
 
-		$this->assertType('string', $function->getCreateRoutine());
+		$createRoutine = $function->getCreateRoutine();
+		
+		$this->assertType('string', $createRoutine);
+		
+		$this->assertType('string', $createRoutine);
+		$this->assertType('string', $function->delete());
+		
+		$cmd = Routine::$db->createCommand($createRoutine);
+		$this->assertEquals(0, $cmd->execute());
+		
+		$function = Routine::model()->findByPk(array(
+			'ROUTINE_SCHEMA' => 'routinetest',
+			'ROUTINE_NAME' => 'test_function',
+		));
+		
+		$this->assertType('Routine', $function);
 	}
-
-
 
 }
