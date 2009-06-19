@@ -1,6 +1,7 @@
 DROP DATABASE IF EXISTS `triggertest`;
 CREATE DATABASE `triggertest` COLLATE `utf8_general_ci`;
 
+DROP TABLE IF EXISTS `triggertest`.`test`;
 CREATE TABLE `triggertest`.`test` (
 	`test1` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
 	`test2` MEDIUMINT UNSIGNED NOT NULL DEFAULT 3 ,

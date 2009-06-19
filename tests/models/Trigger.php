@@ -27,10 +27,12 @@ class TriggerTest extends TestCase
 
 	/**
 	 * tests return value of getCreateTrigger method
-	 * and tries to insert a trigger
+	 * and tries to insert a triggesr
 	 */
 	public function testGetCreateTrigger()
 	{
+		$this->fail('Deletion of triggers not yet implemented!');
+
 		$triggerObj = Trigger::model()->findByPk(array(
 			'TRIGGER_SCHEMA' => 'triggertest',
 			'TRIGGER_NAME' => 'trigger1'
@@ -41,7 +43,7 @@ class TriggerTest extends TestCase
 		$this->assertType('string', $createTrigger);
 		$this->assertType('string', $triggerObj->delete());
 
-		$this->fail('Deletion of triggers not yet implemented!');
+
 		$cmd = Trigger::$db->createCommand($createTrigger);
 		$this->assertEquals(0, $cmd->execute());
 
