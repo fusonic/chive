@@ -31,7 +31,7 @@ class TriggerTest extends TestCase
 	 */
 	public function testGetCreateTrigger()
 	{
-		$this->fail('Deletion of triggers not yet implemented!');
+
 
 		$triggerObj = Trigger::model()->findByPk(array(
 			'TRIGGER_SCHEMA' => 'triggertest',
@@ -41,6 +41,8 @@ class TriggerTest extends TestCase
 		$createTrigger = $triggerObj->getCreateTrigger();
 
 		$this->assertType('string', $createTrigger);
+
+		$this->fail('Deletion of triggers not yet implemented!');
 		$this->assertType('string', $triggerObj->delete());
 
 
@@ -48,8 +50,8 @@ class TriggerTest extends TestCase
 		$this->assertEquals(0, $cmd->execute());
 
 		$triggerObj = Trigger::model()->findByPk(array(
-			'TRIGGER_SCHEMA' => 'triggertest',
-			'TRIGGER_NAME' => 'trigger1'
+		'TRIGGER_SCHEMA' => 'triggertest',
+		'TRIGGER_NAME' => 'trigger1'
 		));
 
 		$this->assertType('Trigger', $triggerObj);
