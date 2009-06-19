@@ -3,19 +3,14 @@
 class Row extends CActiveRecord
 {
 
-	public $schema;
-	public $table;
 	
 	private $originalAttributes;
 	
 	public static $db;
+	public static $schema;
+	public static $table;
 
 	public function __construct($attributes=array(),$scenario='') {
-
-		$request = Yii::app()->getRequest();
-
-		$this->schema = $request->getParam('schema');
-		$this->table = $request->getParam('table') ? $request->getParam('table') : $request->getParam('view');
 
 		parent::__construct($attributes, $scenario);
 	}
@@ -45,7 +40,7 @@ class Row extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return $this->table;
+		return self::$table;
 	}
 
 	/**
@@ -71,7 +66,7 @@ class Row extends CActiveRecord
 	 */
 	public function primaryKey()
 	{
-		return self::$db->getSchema($this->schema)->getTable($this->table)->primaryKey;
+		return self::$db->getSchema($this->schema)->getTable(self::$table)->primaryKey;
 	}
 
 
@@ -80,16 +75,16 @@ class Row extends CActiveRecord
 	 */
 	public function attributeLabels()
 	{
-		return self::$db->getSchema()->getTable($this->table)->getColumnNames();
+		return self::$db->getSchema()->getTable(self::$table)->getColumnNames();
 	}
 
 	public function attributeNames()
 	{
-		return self::$db->getSchema()->getTable($this->table)->getColumnNames();
+		return self::$db->getSchema()->getTable(self::$table)->getColumnNames();
 	}
 
 	public function safeAttributes() {
-		return self::$db->getSchema()->getTable($this->table)->getColumnNames();
+		return self::$db->getSchema()->getTable(self::$table)->getColumnNames();
 	}
 
 	public function getDbConnection() {
@@ -130,7 +125,7 @@ class Row extends CActiveRecord
 		if($changedAttributesCount > 0)
 		{
 
-			$sql = 'UPDATE ' . self::$db->quoteTableName($this->table) . ' SET ' . "\n";
+			$sql = 'UPDATE ' . self::$db->quoteTableName(self::$table) . ' SET ' . "\n";
 			
 			foreach($changedAttributes AS $column=>$value)
 			{
@@ -212,14 +207,14 @@ class Row extends CActiveRecord
 		}
 
 
-		if($pk = self::$db->getSchema($this->schema)->getTable($this->table)->primaryKey !== null)
+		if($pk = self::$db->getSchema($this->schema)->getTable(self::$table)->primaryKey !== null)
 			$pk = (array)$pk;
 		else
 			$pk = $this->safeAttributes();
 			
 		$pkCount = count($pk);
 		
-		$sql = 'DELETE FROM ' . self::$db->quoteTableName($this->table) . ' WHERE ';
+		$sql = 'DELETE FROM ' . self::$db->quoteTableName(self::$table) . ' WHERE ';
 
 		$i = 0;
 		foreach($pk AS $column)
