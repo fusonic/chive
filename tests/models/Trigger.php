@@ -1,5 +1,8 @@
 <?php
 
+/*
+ * @todo(mburtscher): load trigger and check attributes
+ */
 class TriggerTest extends TestCase
 {
 	/**

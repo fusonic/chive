@@ -20,7 +20,7 @@ class CharacterSetTest extends TestCase
 	 */
 	public function testConfig()
 	{
-		$char = new CharacterSet();
+		$char = CharacterSet::model();
 		$this->assertType('string', $char->tableName());
 		$this->assertType('string', $char->primaryKey());
 		$this->assertType('array', $char->relations());

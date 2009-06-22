@@ -64,7 +64,8 @@ class ViewTest extends TestCase
 	}
 	
 	/**
-	 * tries to alter a view 
+	 * tries to alter a view
+	 * @todo(mburtscher): try to execute it! 
 	 */
 	public function testAlter()
 	{
