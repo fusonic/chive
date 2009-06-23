@@ -12,7 +12,7 @@
 			
 			if(this.tagName == "TABLE")
 			{
-				return $(this).find("tbody tr:last").appendForm(url);
+				return $(this).children("tbody").children("tr:last").appendForm(url);
 			}
 			else if(this.tagName != "TR")
 			{

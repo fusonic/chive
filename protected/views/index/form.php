@@ -17,7 +17,7 @@
 					<?php echo CHtml::activeLabel($index,'INDEX_NAME'); ?>
 				</td>
 				<td colspan="2">
-					<?php echo CHtml::activeTextField($index, 'INDEX_NAME', ($index->getType() == 'PRIMARY' && !$index->getIsNewRecord() ? array('disabled' => true) : '')); ?>
+					<?php echo CHtml::activeTextField($index, 'INDEX_NAME', ($index->getType() == 'PRIMARY' && !$index->getIsNewRecord() ? array('readonly' => true) : '')); ?>
 				</td>
 			</tr>
 			<tr>

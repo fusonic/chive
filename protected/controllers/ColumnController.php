@@ -65,7 +65,7 @@ class ColumnController extends Controller
 					Yii::t('message', 'successAddColumn', array('{col}' => $column->COLUMN_NAME)),
 					null,
 					$sql);
-				$response->reload = true;
+				$response->refresh = true;
 
 				foreach($addIndices AS $type => $indexName)
 				{
@@ -86,7 +86,6 @@ class ColumnController extends Controller
 							Yii::t('message', 'successCreateIndex', array('{index}' => $index->INDEX_NAME)),
 							null,
 							$sql);
-						$response->reload = true;
 					}
 					catch(DbException $ex)
 					{
@@ -176,7 +175,7 @@ class ColumnController extends Controller
 				Yii::t('message', 'errorMoveColumn', array('{col}' => $column->COLUMN_NAME)),
 				$ex->getText(),
 				$ex->getSql());
-			$response->reload = true;
+			$response->refresh = true;
 		}
 		$response->send();
 	}
@@ -207,7 +206,7 @@ class ColumnController extends Controller
 					Yii::t('message', 'errorDropColumn', array('{col}' => $column->COLUMN_NAME)),
 					null,
 					$ex->getText());
-				$response->reload = true;
+				$response->refresh = true;
 			}
 		}
 

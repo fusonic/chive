@@ -45,11 +45,11 @@ var indexForm = {
 		if($('#' + idPrefix + 'Index_type').val() == 'PRIMARY')
 		{
 			$('#' + idPrefix + 'Index_INDEX_NAME').val('PRIMARY');
-			$('#' + idPrefix + 'Index_INDEX_NAME').attr('disabled', true);
+			$('#' + idPrefix + 'Index_INDEX_NAME').attr('readonly', true);
 		}
 		else
 		{
-			$('#' + idPrefix + 'Index_INDEX_NAME').attr('disabled', false);
+			$('#' + idPrefix + 'Index_INDEX_NAME').attr('readonly', false);
 		}
 		
 		// Number of added columns
