@@ -32,6 +32,7 @@ class Controller extends CController
 		$this->db = new CDbConnection('mysql:host=' . Yii::app()->user->host . ';dbname=' . $schema,
 			Yii::app()->user->name,
 			Yii::app()->user->password);
+
 		$this->db->charset='utf8';
 		$this->db->active = true;
 

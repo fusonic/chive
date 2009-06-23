@@ -30,6 +30,10 @@ return array(
 	// application components
 	'components'=>array(
 
+		'request' => array(
+			'enableCookieValidation' => true,
+		),
+
 		// Log database
 		'log'=>array(
 			'class'=>'CLogRouter',

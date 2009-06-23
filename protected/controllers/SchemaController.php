@@ -14,7 +14,7 @@ class SchemaController extends Controller
 	 */
 	public $_schema;
 	public $schema;
-	
+
 	public $isSent = false;
 
 	/**
@@ -37,7 +37,7 @@ class SchemaController extends Controller
 		}
 
 		parent::__construct($id, $module);
-		$this->connectDb($this->schema);
+		$this->connectDb($this->schema ? $this->schema : 'information_schema');
 	}
 
 	/**
@@ -341,7 +341,7 @@ class SchemaController extends Controller
 		$droppedSchemata = $droppedSqls = array();
 
 		Schema::$db = Yii::app()->getDb();
-		
+
 		foreach($schemata AS $schema)
 		{
 			$schemaObj = Schema::model()->findByPk($schema);

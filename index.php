@@ -1,5 +1,8 @@
 <?php
 
+// Set the session save path
+session_save_path('protected/runtime/sessions');
+
 // change the following paths if necessary
 $yii='yii/yii.php';
 $config=dirname(__FILE__).'/protected/config/main.php';

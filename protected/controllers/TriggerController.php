@@ -78,36 +78,36 @@ class TriggerController extends Controller
 	{
 		$response = new AjaxResponse();
 		$response->refresh = true;
-		$routines = (array)$_POST['routines'];
-		$droppedRoutines = $droppedSqls = array();
+		$triggers = (array)$_POST['trigger'];
+		$droppedTriggers = $droppedSqls = array();
 
-		foreach($routines AS $routine)
+		foreach($triggers AS $trigger)
 		{
-			$routineObj = Routine::model()->findByPk(array(
-				'ROUTINE_SCHEMA' => $this->schema,
-				'ROUTINE_NAME' => $routine,
+			$triggerObj = Trigger::model()->findByPk(array(
+				'TRIGGER_SCHEMA' => $this->schema,
+				'TRIGGER_NAME' => $trigger,
 			));
 			try
 			{
-				$sql = $routineObj->delete();
-				$droppedRoutines[] = $routine;
+				$sql = $triggerObj->delete();
+				$droppedTriggers[] = $trigger;
 				$droppedSqls[] = $sql;
 			}
 			catch(DbException $ex)
 			{
 				$response->addNotification('error',
-					Yii::t('message', 'errorDropRoutine', array('{routine}' => $routineObj)),
+					Yii::t('message', 'errorDropTrigger', array('{trigger}' => $trigger)),
 					$ex->getText(),
 					$ex->getSql());
 			}
 		}
 
-		$count = count($droppedRoutines);
+		$count = count($droppedTriggers);
 		if($count > 0)
 		{
 			$response->addNotification('success',
-				Yii::t('message', 'successDropRoutine', array($count, '{routine}' => $droppedRoutines[0], '{routineCount}' => $count)),
-				($count > 1 ? implode(', ', $droppedRoutines) : null),
+				Yii::t('message', 'successDropTrigger', array($count, '{trigger}' => $droppedTriggers[0], '{triggerCount}' => $count)),
+				($count > 1 ? implode(', ', $droppedTriggers) : null),
 				implode("\n", $droppedSqls));
 		}
 

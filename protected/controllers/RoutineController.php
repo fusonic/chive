@@ -97,7 +97,7 @@ class RoutineController extends Controller
 			catch(DbException $ex)
 			{
 				$response->addNotification('error',
-					Yii::t('message', 'errorDropRoutine', array('{routine}' => $routineObj)),
+					Yii::t('message', 'errorDropRoutine', array('{routine}' => $routine)),
 					$ex->getText(),
 					$ex->getSql());
 			}

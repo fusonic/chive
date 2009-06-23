@@ -32,6 +32,27 @@ class Trigger extends CActiveRecord
 	}
 
 	/**
+	 * @see		CActiveRecord::delete()
+	 */
+	public function delete()
+	{
+		$sql = 'DROP TRIGGER ' . self::$db->quoteTableName($this->TRIGGER_NAME) . ';';
+		$cmd = self::$db->createCommand($sql);
+
+		// Execute
+		try
+		{
+			$cmd->prepare();
+			$cmd->execute();
+			return $sql;
+		}
+		catch(CDbException $ex)
+		{
+			throw new DbException($cmd);
+		}
+	}
+
+	/**
 	 * Returns the CREATE TRIGGER statement for this trigger.
 	 *
 	 * @return	string
