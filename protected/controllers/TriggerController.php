@@ -76,41 +76,31 @@ class TriggerController extends Controller
 	 */
 	public function actionDrop()
 	{
+		// Get post vars
+		$triggerName = Yii::app()->request->getPost('trigger');
+
 		$response = new AjaxResponse();
-		$response->refresh = true;
-		$triggers = (array)$_POST['trigger'];
-		$droppedTriggers = $droppedSqls = array();
-
-		foreach($triggers AS $trigger)
+		try
 		{
-			$triggerObj = Trigger::model()->findByPk(array(
+			$trigger = Trigger::model()->findByPk(array(
 				'TRIGGER_SCHEMA' => $this->schema,
-				'TRIGGER_NAME' => $trigger,
+				'TRIGGER_NAME' => $triggerName,
 			));
-			try
-			{
-				$sql = $triggerObj->delete();
-				$droppedTriggers[] = $trigger;
-				$droppedSqls[] = $sql;
-			}
-			catch(DbException $ex)
-			{
-				$response->addNotification('error',
-					Yii::t('message', 'errorDropTrigger', array('{trigger}' => $trigger)),
-					$ex->getText(),
-					$ex->getSql());
-			}
-		}
-
-		$count = count($droppedTriggers);
-		if($count > 0)
-		{
+			$sql = $trigger->delete();
 			$response->addNotification('success',
-				Yii::t('message', 'successDropTrigger', array($count, '{trigger}' => $droppedTriggers[0], '{triggerCount}' => $count)),
-				($count > 1 ? implode(', ', $droppedTriggers) : null),
-				implode("\n", $droppedSqls));
+				Yii::t('message', 'successDropTrigger', array('{trigger}' => $trigger->TRIGGER_NAME)),
+				null,
+				$sql);
+			$response->addData('success', true);
 		}
-
+		catch(DbException $ex)
+		{
+			$response->addNotification('error',
+				Yii::t('message', 'errorDropTrigger', array('{trigger}' => $triggerName)),
+				$ex->getText(),
+				$ex->getSql());
+			$response->addData('success', false);
+		}
 		$response->send();
 	}
 

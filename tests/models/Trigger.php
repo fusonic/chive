@@ -11,8 +11,8 @@ class TriggerTest extends TestCase
 		$db->active = true;
 		Trigger::$db = $db;
 	}
-	
-	
+
+
 	/**
 	 * tries to load a trigger and check the attributes
 	 */
@@ -22,11 +22,11 @@ class TriggerTest extends TestCase
 			'TRIGGER_SCHEMA' => 'triggertest',
 			'TRIGGER_NAME' => 'trigger1'
 		));
-		
+
 		$this->assertType('trigger', $triggerObj);
 		$this->assertEquals('triggertest',$triggerObj->TRIGGER_SCHEMA);
 		$this->assertEquals('trigger1',$triggerObj->TRIGGER_NAME);
-	
+
 	}
 
 	/**
@@ -58,7 +58,7 @@ class TriggerTest extends TestCase
 
 		$this->assertType('string', $createTrigger);
 
-		$this->fail('Deletion of triggers not yet implemented!');
+
 		$this->assertType('string', $triggerObj->delete());
 
 
@@ -66,8 +66,8 @@ class TriggerTest extends TestCase
 		$this->assertEquals(0, $cmd->execute());
 
 		$triggerObj = Trigger::model()->findByPk(array(
-		'TRIGGER_SCHEMA' => 'triggertest',
-		'TRIGGER_NAME' => 'trigger1'
+			'TRIGGER_SCHEMA' => 'triggertest',
+			'TRIGGER_NAME' => 'trigger1'
 		));
 
 		$this->assertType('Trigger', $triggerObj);
