@@ -138,6 +138,7 @@ class UserSettingsManagerTest extends TestCase
 		$mgr->set('bookmarks', $bookmarks, 'database', 'test');
 		$this->assertType('array',$mgr->get('bookmarks', 'database', 'test', 'id', 1));
 		$this->assertEquals(3,count($mgr->get('bookmarks', 'database', 'test', 'id', 1)));
+		$this->assertFalse($mgr->get('bookmarks', 'database', 'test', 'id', 3));
 		
 	}
 
