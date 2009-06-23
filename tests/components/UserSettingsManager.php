@@ -109,6 +109,16 @@ class UserSettingsManagerTest extends TestCase
 		$this->assertEquals($random, $mgr->get('sidebarState'));
 		$this->assertEquals('a:2:{i:0;i:' . $rand . ';i:1;i:' . $rand2 . ';}', serialize($this->mgr->get('pageSize', 'schema.tables')));
 	}
+	
+	/**
+	 * test if the getJsObject method returns the correct values
+	 */
+	public function testGetJsObject()
+	{
+		$this->assertType('string',$this->mgr->getJsObject());	
+	}
+	
+	
 
 }
 
