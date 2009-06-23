@@ -3,9 +3,9 @@
 class Row extends CActiveRecord
 {
 
-	
+
 	private $originalAttributes;
-	
+
 	public static $db;
 	public static $schema;
 	public static $table;
@@ -22,10 +22,10 @@ class Row extends CActiveRecord
 	{
 		$res = parent::instantiate($attributes);
 		$res->originalAttributes = $attributes;
-		
+
 		return $res;
 	}
-	
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return CActiveRecord the static model class
@@ -103,7 +103,7 @@ class Row extends CActiveRecord
 		}
 
 		$sql = '';
-		
+
 		// Check if there has been changed any attribute
 		$changedAttributes = array();
 		foreach($this->originalAttributes AS $column=>$value)
@@ -115,36 +115,36 @@ class Row extends CActiveRecord
 				{
 					$this->setAttribute($column, implode(",", $newValue));
 				}
-				
+
 				$changedAttributes[$column] = $this->getAttribute($column);
 			}
 		}
-		
+
 		$changedAttributesCount = count($changedAttributes);
-		
+
 		if($changedAttributesCount > 0)
 		{
 
 			$sql = 'UPDATE ' . self::$db->quoteTableName(self::$table) . ' SET ' . "\n";
-			
+				
 			foreach($changedAttributes AS $column=>$value)
 			{
 				$sql .= "\t" . self::$db->quoteColumnName($column) . ' = ' . (is_null($value) ? 'NULL' : self::$db->quoteValue($value));
-				
+
 				$changedAttributesCount--;
-				
+
 				if($changedAttributesCount > 0)
-					$sql .= ',' . "\n";
-				
+				$sql .= ',' . "\n";
+
 			}
-			
+				
 			$sql .= "\n" . ' WHERE ' . "\n";
-			
-			
+				
+				
 			$key = $this->primaryKey();
-			
+				
 			// If there is no PK, update with the original attributes in WHERE criteria
-			if($key === null) 
+			if($key === null)
 			{
 				$key = $this->originalAttributes;
 			}
@@ -154,11 +154,11 @@ class Row extends CActiveRecord
 				$key = array();
 				$key[$this->primaryKey()] = $value;
 			}
-			
+				
 			// Create find criteria
 			$i = count($key);
 			foreach($key AS $column=>$value) {
-				
+
 				if(is_null($value))
 				{
 					$sql .= "\t" . self::$db->quoteColumnName($column) . ' IS NULL ';
@@ -167,19 +167,18 @@ class Row extends CActiveRecord
 				{
 					$sql .= "\t" . self::$db->quoteColumnName($column) . ' = ' . self::$db->quoteValue($this->originalAttributes[$column]) . ' ';
 				}
-				
+
 				$i--;
-	
+
 				if($i > 0)
-					$sql .= 'AND ' . "\n";
+				$sql .= 'AND ' . "\n";
 			}
-			
+				
 			$sql .= "\n" . 'LIMIT 1';
-			
+				
 		}
-		
+
 		$cmd = new CDbCommand(self::$db, $sql);
-		echo $sql;
 		try
 		{
 			$cmd->prepare();
@@ -191,9 +190,9 @@ class Row extends CActiveRecord
 		{
 			throw new DbException($cmd);
 		}
-		
+
 	}
-	
+
 	public function delete()
 	{
 
@@ -208,12 +207,12 @@ class Row extends CActiveRecord
 
 
 		if($pk = self::$db->getSchema($this->schema)->getTable(self::$table)->primaryKey !== null)
-			$pk = (array)$pk;
+		$pk = (array)$pk;
 		else
-			$pk = $this->safeAttributes();
+		$pk = $this->safeAttributes();
 			
 		$pkCount = count($pk);
-		
+
 		$sql = 'DELETE FROM ' . self::$db->quoteTableName(self::$table) . ' WHERE ';
 
 		$i = 0;
@@ -223,10 +222,10 @@ class Row extends CActiveRecord
 			$i++;
 
 			if($i < $pkCount)
-				$sql .= ' AND';
+			$sql .= ' AND';
 
 		}
-		
+
 		$sql .= "\n" . 'LIMIT 1';
 
 		$cmd = self::$db->createCommand($sql);

@@ -1,8 +1,4 @@
 <?php
-
-/*
- * @todo(mburtscher): load trigger and check attributes
- */
 class TriggerTest extends TestCase
 {
 	/**
@@ -14,6 +10,23 @@ class TriggerTest extends TestCase
 		$db = new CDbConnection('mysql:host='.DB_HOST.';dbname=triggertest', DB_USER, DB_PASSWORD);
 		$db->active = true;
 		Trigger::$db = $db;
+	}
+	
+	
+	/**
+	 * tries to load a trigger and check the attributes
+	 */
+	public function testLoad()
+	{
+		$triggerObj = Trigger::model()->findByPk(array(
+			'TRIGGER_SCHEMA' => 'triggertest',
+			'TRIGGER_NAME' => 'trigger1'
+		));
+		
+		$this->assertType('trigger', $triggerObj);
+		$this->assertEquals('triggertest',$triggerObj->TRIGGER_SCHEMA);
+		$this->assertEquals('trigger1',$triggerObj->TRIGGER_NAME);
+	
 	}
 
 	/**

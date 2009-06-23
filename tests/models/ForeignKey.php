@@ -70,6 +70,38 @@ class ForeignKeyTest extends TestCase
 		$this->assertNull($fk);
 	}
 
+
+	/**
+	 * tries to insert a Foreignkey with Datatype int and varchar
+	 */
+	public function testOnUDRestrict()
+	{
+		$foreignKey = new ForeignKey();
+		$foreignKey->TABLE_SCHEMA = 'tabletest';
+		$foreignKey->TABLE_NAME = 'product';
+		$foreignKey->COLUMN_NAME = 'fk';
+		$foreignKey->setReferences('tabletest.product_order.no');
+
+		$foreignKey->onUpdate = 'CASCADE';
+		$foreignKey->onDelete = 'RESTRICT';
+
+		$this->assertType('string', $foreignKey->save());
+
+		$fk = ForeignKey::model()->findBySql('SELECT * FROM KEY_COLUMN_USAGE '
+		. 'WHERE TABLE_SCHEMA = :tableSchema '
+		. 'AND TABLE_NAME = :tableName '
+		. 'AND COLUMN_NAME = :columnName '
+		. 'AND REFERENCED_TABLE_SCHEMA IS NOT NULL', array(
+			'tableSchema' => 'tabletest',
+			'tableName' => 'product',
+			'columnName' => 'fk'));
+
+		$this->assertNotNull($fk);
+		$this->assertEquals('tabletest.product_order.no',$fk->getReferences());
+		$this->assertEquals('CASCADE', $fk->onUpdate);
+		$this->assertEquals('RESTRICT', $fk->onDelete);
+	}
+
 	/**
 	 * tries to insert a Foreignkey with Datatype int and varchar
 	 */
@@ -110,7 +142,7 @@ class ForeignKeyTest extends TestCase
 		$foreignKey->onUpdate = 'NO ACTION';
 		$foreignKey->onDelete = 'CASCADE';
 		$this->assertType('string', $foreignKey->save());
-			
+
 		$fk = ForeignKey::model()->findBySql('SELECT * FROM KEY_COLUMN_USAGE '
 		. 'WHERE TABLE_SCHEMA = :tableSchema '
 		. 'AND TABLE_NAME = :tableName '
@@ -166,7 +198,7 @@ class ForeignKeyTest extends TestCase
 			'tableSchema' => 'tabletest',
 			'tableName' => 'product_order',
 			'columnName' => 'customer_id'));
-			
+
 		$this->assertEquals('NO ACTION', $fk->onDelete);
 		$this->assertEquals('CASCADE', $fk->onUpdate);
 
@@ -247,7 +279,7 @@ class ForeignKeyTest extends TestCase
 			'tableSchema' => 'tabletest',
 			'tableName' => 'product_order',
 			'columnName' => 'customer_id'));
-			
+
 		$fk->insert();
 	}
 

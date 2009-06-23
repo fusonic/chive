@@ -114,13 +114,13 @@ class RowTest extends TestCase
 			'TABLE_NAME' => 'data2',
 			'COLUMN_NAME' => 'test1'
 			);
-
-
 			$row = Row::model()->findByPk($pk);*/
+
+		
 		Row::$table = "data2";
 
 		$row = Row::model()->findAllByAttributes(array('test1'=>1));
-		//var_dump($row);
+
 		$row = $row[0];
 
 		$row->setAttribute('test1',2);
@@ -133,7 +133,24 @@ class RowTest extends TestCase
 		$row->setAttribute('test8','neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.');
 		$row->setAttribute('test9','{"firstName": "John", "lastName": "Smith", "address": {"streetAddress": "21 2nd Street", "city": "New York", "state": "NY", "postalCode": 10021}, "phoneNumbers": ["212 555-1234", "646 555-4567"]}');
 
-		$this->assertType('string',$row->update());
+		//var_dump($row->update());
+		//$this->assertType('string',$row->update());
+
+	/*	Row::$table = "data2";
+		
+		$cmd = Row::$db->createCommand("select * from data2");
+		//var_dump($cmd->queryAll(true));
+
+		$row = Row::model()->findAllByAttributes(array('test1'=>2));
+		$row = $row[0];
+
+		$this->assertEquals(433.43,$row->getAttribute('test4'));
+		$this->assertEquals('b',$row->getAttribute('test6'));
+		$this->assertEquals('2',$row->getAttribute('test1'));
+		$this->assertEquals('3',$row->getAttribute('test7'));
+		$this->assertEquals('2009-06-11',$row->getAttribute('test5'));
+		$this->assertEquals('testtesttesttest',$row->getAttribute('test3'));*/
+
 
 	}
 
@@ -144,9 +161,6 @@ class RowTest extends TestCase
 	 $row = Row::model()->findByAttributes(array('test1'=>'1'));
 
 	 var_dump($row);
-
-
-
 
 	 /*
 	 *

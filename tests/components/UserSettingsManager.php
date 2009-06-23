@@ -118,7 +118,28 @@ class UserSettingsManagerTest extends TestCase
 		$this->assertType('string',$this->mgr->getJsObject());	
 	}
 	
-	
+	public function testArray()
+	{
+		$bookmarks = array(
+			array(
+				'id' => 1,
+				'name' => 'Bookmark 1', 
+				'query' => 'select bla ...',
+			),
+			array(
+				'id' => 2,
+				'name' => 'Bookmark 2',
+				'query' => 'select bla2 ...',
+			),
+		);
+		
+		$mgr = new UserSettingsManager(self::$host, self::$user);
+		
+		$mgr->set('bookmarks', $bookmarks, 'database', 'test');
+		$this->assertType('array',$mgr->get('bookmarks', 'database', 'test', 'id', 1));
+		$this->assertEquals(3,count($mgr->get('bookmarks', 'database', 'test', 'id', 1)));
+		
+	}
 
 }
 
