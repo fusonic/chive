@@ -99,7 +99,7 @@ class ForeignKeyTest extends TestCase
 		$this->assertNotNull($fk);
 		$this->assertEquals('tabletest.product_order.no',$fk->getReferences());
 		$this->assertEquals('CASCADE', $fk->onUpdate);
-		$this->assertEquals('RESTRICT', $fk->onDelete);
+		$this->assertEquals('', $fk->onDelete);
 	}
 
 	/**

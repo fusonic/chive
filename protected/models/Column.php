@@ -245,7 +245,24 @@ class Column extends CActiveRecord
 			$collate = '';
 		}
 
-		$db = new CDbConnection();
+		if($this->attribute)
+		{
+			if(($this->attribute == 'unsigned' && !DataType::check($this->DATA_TYPE, DataType::SUPPORTS_UNSIGNED))
+				|| $this->attribute == 'unsigned_zerofill' && !DataType::check($this->DATA_TYPE, DataType::SUPPORTS_UNSIGNED_ZEROFILL)
+				|| $this->attribute == 'on update current_timestamp' && !DataType::check($this->DATA_TYPE, DataType::SUPPORTS_ON_UPDATE_CURRENT_TIMESTAMP))
+			{
+				$attribute = '';
+			}
+			else
+			{
+				$attribute = ' ' . $this->attribute;
+			}
+		}
+		else
+		{
+			$attribute = '';
+		}
+
 		if(strlen($this->COLUMN_DEFAULT) > 0 && $this->EXTRA != 'auto_increment')
 		{
 			$default = ' DEFAULT ' . self::$db->quoteValue($this->COLUMN_DEFAULT);
@@ -261,7 +278,7 @@ class Column extends CActiveRecord
 
 		return trim(
 			self::$db->quoteColumnName($this->COLUMN_NAME)
-			. ' ' . $this->getColumnType() . $collate . ($this->attribute ? ' ' . $this->attribute : '')
+			. ' ' . $this->getColumnType() . $attribute . $collate
 			. ($this->getIsNullable() ? ' NULL' : ' NOT NULL')
 			. $default
 			. ($this->EXTRA == 'auto_increment' ? ' AUTO_INCREMENT' : '')
@@ -320,7 +337,9 @@ class Column extends CActiveRecord
 		}
 		catch(CDbException $ex)
 		{
+			echo $sql;
 			$errorInfo = $cmd->getPdoStatement()->errorInfo();
+			echo "\n" . $errorInfo[2];
 			$this->addError(null, Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
 			$this->afterSave();
 			return false;

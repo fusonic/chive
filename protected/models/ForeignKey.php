@@ -27,6 +27,7 @@ class ForeignKey extends CActiveRecord
 		));
 
 		$match = '/^\s+constraint `' . $attributes['CONSTRAINT_NAME'] . '` .+?$/im';
+
 		if(preg_match($match, $res->table->getShowCreateTable(), $result))
 		{
 			if(preg_match('/on delete (CASCADE|NO ACTION|SET NULL|RESTRICT)/i', $result[0], $result2))
@@ -177,7 +178,7 @@ class ForeignKey extends CActiveRecord
 		}
 		catch(CDbException $ex)
 		{
-		
+
 			$errorInfo = $cmd->getPdoStatement()->errorInfo();
 			$this->addError('COLUMN_NAME', Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
 			$this->afterSave();

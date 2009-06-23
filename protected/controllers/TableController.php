@@ -98,18 +98,18 @@ class TableController extends Controller
 	{
 
 		$browsePage = new BrowsePage();
-		
+
 		$browsePage->schema = $this->schema;
 		$browsePage->table = $this->table;
 		$browsePage->db = $this->db;
 		$browsePage->route = '#tables/' . $this->table . '/browse';
-		
+
 		$browsePage->run();
-		
+
 		$this->render('../global/browse', array(
 			'model' => $browsePage
 		));
-		
+
 	}
 
 	public function actionCreate()
@@ -211,15 +211,15 @@ class TableController extends Controller
 		$query = Yii::app()->getRequest()->getParam('query');
 
 		$browsePage = new BrowsePage($query);
-		
+
 		$browsePage->schema = $this->schema;
 		$browsePage->table = $this->table;
 		$browsePage->db = $this->db;
 		$browsePage->route = '#tables/' . $this->table . '/browse';
 		$browsePage->execute = (bool)$query;
-		
+
 		$browsePage->run();
-		
+
 		$this->render('../global/browse', array(
 			'model' => $browsePage
 		));

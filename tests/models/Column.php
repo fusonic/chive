@@ -596,7 +596,7 @@ class ColumnTest extends TestCase
 				$col->COLUMN_DEFAULT='2008-11-26 04:12:44';
 				$col->setIsNullable(false);
 				$this->assertType('string', $col->save());
-					
+
 				// Load column definition
 				$col = Column::model()->findByPk(array(
 			    'TABLE_SCHEMA' => 'columntest',
@@ -648,7 +648,7 @@ class ColumnTest extends TestCase
 				$col->setCollation('latin1_swedish_ci');
 				$col->values=$values;
 				$col->COLUMN_DEFAULT = 'a';
-					
+
 				$this->assertType('string', $col->save());
 
 				// Load column definition
