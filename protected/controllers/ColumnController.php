@@ -16,7 +16,9 @@ class ColumnController extends Controller
 		$request = Yii::app()->getRequest();
 
 		if($request->isAjaxRequest)
+		{
 			$this->layout = false;
+		}
 
 		$this->schema = $request->getParam('schema');
 		$this->table = $request->getParam('table');

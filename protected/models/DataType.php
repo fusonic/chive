@@ -49,7 +49,7 @@ class DataType
 
 		'date'			=> array(	'date',		false,	true,	true,	false,	false,	false,	false,	false,	false,	false,	false,	'date'),
 		'datetime'		=> array(	'date',		false,	true,	true,	false,	false,	false,	false,	false,	false,	false,	false,	'datetime'),
-		'timestamp'		=> array(	'date',		false,	true,	true,	false,	false,	false,	false,	false,	false,	false,	false,	'single'),
+		'timestamp'		=> array(	'date',		false,	true,	true,	false,	false,	false,	false,	false,	false,	true,	false,	'single'),
 		'time'			=> array(	'date',		false,	true,	true,	false,	false,	false,	false,	false,	false,	false,	false,	'single'),
 		'year'			=> array(	'date',		false,	true,	true,	true,	false,	false,	false,	false,	false,	false,	false,	'number'),
 
@@ -65,7 +65,7 @@ class DataType
 		preg_match('/^\w+/', $dataType, $res);
 		return strtolower($res[0]);
 	}
-	
+
 	public static function getInputType($dataType) {
 		return self::$types[self::getBaseType($dataType)][self::INPUT_TYPE];
 	}

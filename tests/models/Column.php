@@ -12,6 +12,7 @@ class ColumnTest extends TestCase
 		Column::$db = new CDbConnection('mysql:host='.DB_HOST.';dbname=columntest', DB_USER, DB_PASSWORD);
 		Column::$db->charset='utf8';
 		Column::$db->active = true;
+		Table::$db = Column::$db;
 	}
 
 	/**

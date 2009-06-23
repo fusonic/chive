@@ -13,6 +13,7 @@ var columnForm = {
 		// Attributes
 		$('#' + idPrefix + 'Column_attribute_unsigned').attr('disabled', !dataType.check(type, dataType.SUPPORTS_UNSIGNED));
 		$('#' + idPrefix + 'Column_attribute_unsignedzerofill').attr('disabled', !dataType.check(type, dataType.SUPPORTS_UNSIGNED_ZEROFILL));
+		$('#' + idPrefix + 'Column_attribute_on_update_current_timestamp').attr('disabled', !dataType.check(type, dataType.SUPPORTS_ON_UPDATE_CURRENT_TIMESTAMP));
 		
 		// Indices
 		$('#' + idPrefix + 'createIndex').attr('disabled', !dataType.check(type, dataType.SUPPORTS_INDEX));

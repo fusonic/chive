@@ -43,6 +43,7 @@
 	<entry id="noAttribute">No attribute</entry>
 	<entry id="unsigned">Unsigned</entry>
 	<entry id="unsignedZerofill">Unsigned Zerofill</entry>
+	<entry id="onUpdateCurrentTimestamp">On update current_timestamp</entry>
 	<entry id="createIndex">Create index</entry>
 	
 	<entry id="operator">Operator</entry>

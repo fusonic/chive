@@ -72,6 +72,20 @@ class Column extends CActiveRecord
 			{
 				$res->attribute = 'unsigned zerofill';
 			}
+
+			// On update current_timestamp
+			elseif($attributes['COLUMN_TYPE'] == 'timestamp')
+			{
+				$table = Table::model()->findByPk(array(
+					'TABLE_SCHEMA' => $attributes['TABLE_SCHEMA'],
+					'TABLE_NAME' => $attributes['TABLE_NAME'],
+				));
+				$match = '/^\s+`' . $attributes['COLUMN_NAME'] . '` timestamp.+?on update CURRENT_TIMESTAMP.+?$/im';
+				if(preg_match($match, $table->getShowCreateTable(), $result))
+				{
+					$res->attribute = 'on update current_timestamp';
+				}
+			}
 		}
 
 		return $res;
@@ -109,7 +123,7 @@ class Column extends CActiveRecord
 	public function relations()
 	{
 		return array(
-			'table' => array(self::BELONGS_TO, 'Table', 'TABLE_NAME'),
+			'table' => array(self::BELONGS_TO, 'Table', 'TABLE_SCHEMA, TABLE_NAME'),
 			'indices' => array(self::HAS_MANY, 'Index', 'TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME'),
 			'collation' => array(self::BELONGS_TO, 'Collation', 'COLLATION_NAME'),
 			#'constraint' => array(self::MANY_MANY, 'Constraint', 'COLUMN_NAME'),

@@ -118,6 +118,13 @@
 				<?php echo CHtml::label(Yii::t('database', 'unsignedZerofill'), 'Column_attribute_unsignedzerofill'); ?>
 			</td>
 		</tr>
+		<tr>
+			<td />
+			<td colspan="2">
+				<?php echo CHtml::activeRadioButton($column, 'attribute', array('value' => 'on update current_timestamp', 'id' => CHtml::$idPrefix . 'Column_attribute_on_update_current_timestamp')); ?>
+				<?php echo CHtml::label(Yii::t('database', 'onUpdateCurrentTimestamp'), 'Column_attribute_on_update_current_timestamp'); ?>
+			</td>
+		</tr>
 		<?php if($column->isNewRecord) { ?>
 			<tr id="<?php echo CHtml::$idPrefix; ?>settingSize">
 				<td>
