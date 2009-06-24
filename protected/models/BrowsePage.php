@@ -248,6 +248,7 @@ class BrowsePage extends CModel
 				$cmd->prepare();
 				$profileData = $cmd->queryAll();
 
+				
 				if(count($profileData))
 				{
 					$test = '<table>';

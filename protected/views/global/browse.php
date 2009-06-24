@@ -164,5 +164,5 @@
 
 <script type="text/javascript">
 	tableBrowse.setup();
-	AjaxResponse.handle(<?php echo $response; ?>);
+	AjaxResponse.handle(<?php echo $model->response; ?>);
 </script>
