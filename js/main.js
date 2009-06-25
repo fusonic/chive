@@ -58,7 +58,7 @@ function init()
 			tBody.rows[i].className += ' ' + currentClass;
 		}
 	});
-	
+	/*
 	$('div.ui-layout-center form').ajaxForm({
 		success: function(responseText, statusText) {
 			AjaxResponse.handle(responseText);
@@ -66,6 +66,7 @@ function init()
 			init();
 		}
 	});
+	*/
 
 	// @todo(mburtscher): do this in a more elegant way
 	if(currentLocation.match(/schema\/(\w+)#tables\/(\w+)\//))
@@ -199,6 +200,7 @@ $(document).ready(function()
 	// ERROR
 	$(document).ajaxError(function() {
 		Notification.add('warning', 'Ajax request failed', 'Click <a href="javascript:void(0);" onclick="reload();">here</a> to reload site.', null);
+		$('#loading').css({'background-image': 'url(' + baseUrl + '/images/loading5.gif)'}).fadeOut();
 	});
 
 	/*

@@ -4,6 +4,10 @@ class Pagination extends CPagination
 {
 
 	public $pageSizeVar = 'pageSize';
+	
+	public $postVars;
+	
+	private $_currentPage;
 
 	/**
 	 * Creates the URL suitable for pagination.
@@ -27,7 +31,9 @@ class Pagination extends CPagination
 		{
 			$params[$this->pageSizeVar] = $pageSize;
 		}
+		
 		return $controller->createUrl($this->route,$params);
+		
 	}
 
 	/**
@@ -49,6 +55,39 @@ class Pagination extends CPagination
 			$this->setPageSize(Yii::app()->user->settings->get($pageSizeSettingName, $pageSizeSettingScope));
 		}
 		return $this->getPageSize();
+	}
+	
+	/**
+	 * @param boolean whether to recalculate the current page based on the page size and item count.
+	 * @return integer the zero-based index of the current page. Defaults to 0.
+	 */
+	public function getCurrentPage($recalculate=true)
+	{
+		if($this->_currentPage===null || $recalculate)
+		{
+			if(isset($_REQUEST[$this->pageVar]))
+			{
+				$this->_currentPage=(int)$_REQUEST[$this->pageVar]-1;
+				$pageCount=$this->getPageCount();
+				if($this->_currentPage>=$pageCount)
+					$this->_currentPage=$pageCount-1;
+				if($this->_currentPage<0)
+					$this->_currentPage=0;
+			}
+			else
+				$this->_currentPage=0;
+		}
+		
+		return $this->_currentPage;
+	}
+
+	/**
+	 * @param integer the zero-based index of the current page.
+	 */
+	public function setCurrentPage($value)
+	{
+		$this->_currentPage=$value;
+		$_REQUEST[$this->pageVar]=$value+1;
 	}
 
 }

@@ -1,7 +1,7 @@
 <h2><?php Yii::t('core', 'search'); ?></h2>
 
 <div class="form">
-<?php echo CHtml::form(); ?>
+<?php echo CHtml::form('', 'post', array('id' => 'searchForm')); ?>
 
 <table class="list">
 	<colgroup>
@@ -40,5 +40,15 @@
 		<span><?php echo Yii::t('core', 'search'); ?></span>
 	</a>
 </div>
+
+<script type="text/javascript">
+$('#searchForm').ajaxForm({
+	success: function(responseText, statusText) {
+		AjaxResponse.handle(responseText);
+		$('div.ui-layout-center').html(responseText);
+		init();
+	}
+});
+</script>
 
 <?php echo CHtml::endForm(); ?>

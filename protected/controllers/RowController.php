@@ -10,58 +10,24 @@ class RowController extends Controller
 	 */
 	public $layout = 'schema';
 
-	/*
-	 * @var Available database functions
-	 */
-	public static $functions = array(
-			'',
-			'ASCII',
-			'CHAR',
-			'MD5',
-			'SHA1',
-			'ENCRYPT',
-			'RAND',
-			'LAST_INSERT_ID',
-			'UNIX_TIMESTAMP',
-			'COUNT',
-			'AVG',
-			'SUM',
-			'SOUNDEX',
-			'LCASE',
-			'UCASE',
-			'NOW',
-			'PASSWORD',
-			'OLD_PASSWORD',
-			'COMPRESS',
-			'UNCOMPRESS',
-			'CURDATE',
-			'CURTIME',
-			'UTC_DATE',
-			'UTC_TIME',
-			'UTC_TIMESTAMP',
-			'FROM_DAYS',
-			'FROM_UNIXTIME',
-			'PERIOD_ADD',
-			'PERIOD_DIFF',
-			'TO_DAYS',
-			'USER',
-			'WEEKDAY',
-			'CONCAT',
-			'HEX',
-			'UNHEX',
-	);
-	
 	public function __construct($id, $module=null)
 	{
 		if(Yii::app()->request->isAjaxRequest)
 			$this->layout = false;
 
 		$request = Yii::app()->getRequest();
-		$this->schema = $request->getParam('schema');
-		$this->table = $request->getParam('table');
-
+		
+		$this->schema =	Row::$schema =	$request->getParam('schema');
+		$this->table = 	Row::$table = 	$request->getParam('table');
+		
 		parent::__construct($id, $module);
 		$this->connectDb($this->schema);
+		
+		// Set row values
+		Row::$db = $this->db;
+		Row::$schema = $this->schema;
+		Row::$table = $this->table;
+		
 	}
 
 	/**
@@ -70,98 +36,79 @@ class RowController extends Controller
 	 */
 	public function actionInsert()
 	{
-
+		$response = new AjaxResponse();
+		
 		$this->layout = '_table';
-		$db = $this->db;
 
-		$row = new Row;
-
+		$row = new Row();
+		
 		if(isset($_POST['Row']))
 		{
-
-			$row->isNewRecord = true;
-			$row->attributes = $_POST['Row'];
-
-			$sql = 'INSERT INTO ' . $db->quoteTableName($this->table) . ' (';
-
-			$attributesCount = count($row->getAttributes());
-
-			$i = 0;
-			foreach($row->getAttributes() AS $attribute=>$value)
-			{
-				$sql .= "\n\t" . $db->quoteColumnName($attribute);
-
-				$i++;
-
-				if($i < $attributesCount)
-					$sql .= ', ';
-			}
-
-			$sql .= "\n" . ') VALUES (';
-
-			$i = 0;
-			foreach($row->getAttributes() AS $attribute=>$value)
+			foreach($_POST['Row'] AS $attribute=>$value) 
 			{
 				// NULL value
 				if(isset($_POST[$attribute]['null']))
 				{
-					$sql .= "\n\t" . 'NULL';
+					$row->setAttribute($attribute, null);
 				}
-
-				// FUNCTION
-				elseif(isset($_POST[$attribute]['function']) && $_POST[$attribute]['function'])
-				{
-					$sql .= "\n\t" . $functions[$_POST[$attribute]['function']] . '(' . $db->quoteValue($value) . ')';
-				}
-
+	
 				// RAW
+				// @todo (rponudic) implement multiple sets
+				elseif('type' == 'multiple_set')
+				{
+				}
+				
+				// FILE
+				elseif(isset($_FILES['Row']['name'][$attribute]))
+				{
+					
+					$file = file_get_contents($_FILES['Row']['tmp_name'][$attribute]);
+					$row->setAttribute($attribute, $file);
+					
+				}
+				
+				// DEFAULT
 				else
 				{
-					if($attribute == 'multiple_set')
-					{
-						var_dump($value);
-						die();
-						
-						
-					}
-					$sql .= "\n\t" . $db->quoteValue($value);
+					$row->setAttribute($attribute, $value);
 				}
-
-				$i++;
-
-				if($i < $attributesCount)
-					$sql .= ', ';
-
-
+				
+				// FUNCTIONS
+				if(isset($_POST[$attribute]['function']) && $_POST[$attribute]['function'])
+				{
+					$row->setFunction($attribute, $_POST[$attribute]['function']);
+				}
+				
 			}
-
-			$sql .= "\n" . ')';
-
-			$cmd = $db->createCommand($sql);
-			$response = new AjaxResponse();
-
-			try
+			
+			try 
 			{
-				$cmd->prepare();
-				$cmd->execute();
-
+				$sql = $row->insert();
 				$response->addNotification('success', Yii::t('message', 'successInsertRow'), null, $sql);
-				$response->redirectUrl = '#tables/' . $this->table . '/browse';
-
+				
+				if($_POST['insertAndReturn'])
+				{
+					$response->refresh = true;		
+				}
+				else
+				{
+					$response->redirectUrl = '#tables/' . $this->table . '/browse';
+				}
+				
 			}
-			catch (CDbException $ex)
+			catch (DbException $ex) 
 			{
-				$ex = new DbException($cmd);
-				$response->addNotification('error', Yii::t('message', 'errorInsertRow'), $ex->getText(), $sql);
+				$response->refresh = true;
+				$response->addNotification('error', Yii::t('message', 'errorInsertRow'), $ex->getText(), $ex->getSql());
 			}
-
+			
 			$response->send();
-
+		
 		}
-
+		
 		$data = array(
 			'row' => $row,
-			'functions' => self::$functions,
+			'functions' => Row::$functions,
 		);
 		
 		$data['formBody'] = $this->renderPartial('formBody', $data, true);
@@ -175,12 +122,12 @@ class RowController extends Controller
 	public function actionUpdate()
 	{
 
-		$db = $this->db;
-		
-		$pk = CPropertyValue::ensureArray($db->getSchema()->getTable($this->table)->primaryKey);
+		$response = new AjaxResponse();
+
+		// Take other solution::
+		$newValue = Yii::app()->getRequest()->getParam('value');
 		$column = Yii::app()->getRequest()->getParam('column');
-		$newValue = json_decode(Yii::app()->getRequest()->getParam('value'), true);
-		$null = Yii::app()->getRequest()->getParam('isNull');
+		$isNull = Yii::app()->getRequest()->getParam('isNull');
 		$attributes = json_decode(Yii::app()->getRequest()->getParam('attributes'), true);
 
 		// SET datatype
@@ -188,18 +135,20 @@ class RowController extends Controller
 		{
 			$newValue = implode(',', $newValue);
 		}
+		
+		// FILE (blob)
+		elseif(isset($_FILES['value']))
+		{
+			$newValue = file_get_contents($_FILES['value']['tmp_name']);
+		}
 
-		$attributesCount = count($pk);
-
-		if($null)
+		// NULL
+		if($isNull)
 		{
 			$newValue = null;
 		}
-
-		$response = new AjaxResponse();
-
-		Row::$db = $db;
-
+		
+		$attributesCount = count($pk);
 		$rows = Row::model()->findAllByAttributes($attributes);
 		$row = $rows[0];
 		
@@ -211,28 +160,45 @@ class RowController extends Controller
 			$response->addData(null, array(
 				'value' => ($null ? 'NULL' : htmlspecialchars($row->getAttribute($column))),
 				'column' => $column,
-				'isPrimary' => in_array($column, $pk),
+				'identifier' => $row->getIdentifier(),
 				'isNull' => $null,
 				'visibleValue' => ($null ? '<span class="null">NULL</span>' : htmlspecialchars($row->getAttribute($column)))
 			));
 
+			// @todo (rponudic) check which method should be used here
+			// Refresh the page if the row could not be found in database anymore
+			/* 
 			$rows = Row::model()->findAllByAttributes($attributes);
 			$row = $rows[0];
 			
-			// Refresh the page if the row could not be found in database anymore
 			if($rows === null || count($rows) > 1 || $row === null || $row->getAttribute($column) != $newValue) {
 				$response->refresh = true;
 
-				// @todo (rponudic) check if a notification is necessary in this case
-				//$response->addNotification('warning', 'type does not match');
+				
+				$response->addNotification('warning', 'type does not match');
 			}
-
+			
+			*/
+			
+			$cmd = new CDbCommand($this->db, 'SHOW WARNINGS');
+			$warnings = $cmd->queryAll(true);
+			
+			if(count($warnings) > 0)
+			{
+				$response->refresh = true;
+				foreach($warnings AS $warning)
+				{
+					$response->addNotification('warning', $warning['Message'], null);
+				}
+			}
+			
 			$response->addNotification('success', Yii::t('message', 'successUpdateRow'), null, $sql);
+
 
 		}
 		catch (DbException $ex)
 		{
-			$response->addNotification('error', Yii::t('message', 'errorUpdateRow'), $ex->getText(), $sql);
+			$response->addNotification('error', Yii::t('message', 'errorUpdateRow'), $ex->getText(), $ex->getSql());
 			$response->addData(null, array('error'=>true));
 		}
 
@@ -289,19 +255,10 @@ class RowController extends Controller
 
 	public function actionEdit() 
 	{
-		Row::$db = $this->db;
 		
 		$attributes = json_decode(Yii::app()->getRequest()->getParam('attributes'), true);
-		$kvAttributes = $attributes;
 		
-		
-		// Single PK
-		if(count($attributes) == 1)
-		{
-			$attributes = array_pop($attributes);
-		}
-		
-		$row = Row::model()->findByPk($attributes);
+		$row = Row::model()->findByAttributes($attributes);
 
 		if($newRow = Yii::app()->getRequest()->getParam('Row')) 
 		{
@@ -310,13 +267,25 @@ class RowController extends Controller
 			
 			foreach($newRow AS $name=>$value)
 			{
+
+				// SET
+				if(is_array($value))
+				{
+					$value = implode("," , $value);
+				} 
 				
-				if(isset($_FILES['Row']['name'][$name]))
+				// FILE
+				elseif(isset($_FILES['Row']['name'][$name]))
 				{
 					$value = file_get_contents($_FILES['Row']['tmp_name'][$name]);
 				}
 				
 				$options = Yii::app()->getRequest()->getParam($name);
+				
+				if($options['function'])
+				{
+					$row->setFunction($name, $options['function']);
+				}
 				
 				if($options['null'])
 				{
@@ -337,8 +306,7 @@ class RowController extends Controller
 			}
 			catch(DbException $ex) 
 			{
-				predie($ex);
-				$response->addNOtification('error', Yii::t('message', 'updatingRowFailed'), $ex->getText());
+				$response->addNotification('error', Yii::t('message', 'updatingRowFailed'), $ex->getText(), $ex->getSql());
 			}
 			
 			$response->send();
@@ -349,8 +317,8 @@ class RowController extends Controller
 		
 		$data = array(
 			'row' => $row,
-			'attributes' => $kvAttributes,
-			'functions' => self::$functions,
+			'functions' => Row::$functions,
+			'attributes' => $attributes,
 		);
 		
 		$data['formBody'] = $this->renderPartial('formBody', $data, true);
@@ -366,13 +334,8 @@ class RowController extends Controller
 		$key = json_decode(Yii::app()->getRequest()->getParam('key'), true);
 		$column = Yii::app()->getRequest()->getParam('column');
 		
-		if(count($key) == 1)
-		{
-			$key = array_pop($key);
-		}
-		
 		header('Content-Disposition: attachment; filename="'.$column.'"');
-		echo  Row::model()->findByPk($key)->getAttribute($column);
+		echo  Row::model()->findByAttributes($key)->getAttribute($column);
 	}
 	
 	public function actionExport()

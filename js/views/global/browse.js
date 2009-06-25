@@ -1,7 +1,7 @@
 /*
  * View functions
  */
-var tableBrowse = {
+var globalBrowse = {
 	
 	// Add column
 	deleteRow: function(row)

@@ -21,7 +21,11 @@
 			<tr>
 				<td style="font-weight: bold;"><?php echo $column->name; ?></td>
 				<td><?php echo $column->dbType; ?></td>
-				<td><?php echo CHtml::dropDownList($column->name . '[function]','',$functions); ?></td>
+				<td>
+					<?php if(!in_array(DataType::getBaseType($column->dbType), array('set', 'enum'))) { ?>
+						<?php echo CHtml::dropDownList($column->name . '[function]','',$functions); ?>
+					<?php } ?>
+				</td>
 				<td class="center">
 					<?php echo ($column->allowNull ? CHtml::checkBox($column->name.'[null]', is_null($row->getAttribute($column->name))) : ''); ?>
 				</td>
@@ -36,5 +40,3 @@
 		<?php } ?>
 	</tbody>
 </table>
-
-<?php echo CHtml::endForm(); ?>

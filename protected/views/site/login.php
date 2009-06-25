@@ -55,7 +55,7 @@
 
 <div id="login">
 
-	<div style="background: url('http://blog.fusonic.net/wp-admin/css/../images/logo-login.gif') no-repeat; padding-bottom: 15px; height: 67px;"></div>
+	<div style="background: url('http://ablog.fusonic.net/wp-admin/css/../images/logo-login.gif') no-repeat; padding-bottom: 15px; height: 67px;"></div>
 
 	<div id="loginform">
 		<?php echo CHtml::form(); ?>

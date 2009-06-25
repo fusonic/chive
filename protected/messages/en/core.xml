@@ -68,4 +68,7 @@
 	<entry id="entriesPerPage">Entries per page</entry>
 	<entry id="event">Event</entry>
 	<entry id="ok">OK</entry>
+	
+	<entry id="insertAndReturnToThisPage">Insert and return to this page</entry>
+	<entry id="setNull">Set NULL</entry>
 </category>

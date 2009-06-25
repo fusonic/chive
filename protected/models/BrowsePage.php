@@ -19,7 +19,10 @@ class BrowsePage extends CModel
 	private $sort;
 	private $data;
 	private $response;
+	private $isEditable = null;
 
+	private $lastResultSetQuery;
+	
 	private $originalQueries = array();
 	private $executedQueries = array();
 
@@ -42,6 +45,7 @@ class BrowsePage extends CModel
 
 	public function __construct()
 	{
+		$this->query = Yii::app()->getRequest()->getParam('query');
 	}
 
 	public function attributeNames()
@@ -56,10 +60,8 @@ class BrowsePage extends CModel
 
 	public function run()
 	{
-
 		$response = new AjaxResponse();
-
-		// Profiling
+		
 		$profiling = Yii::app()->user->settings->get('profiling');
 
 		if(!$this->query)
@@ -83,6 +85,7 @@ class BrowsePage extends CModel
 
 		}
 
+
 		if($this->execute)
 		{
 			$queryCount = count($queries);
@@ -102,33 +105,45 @@ class BrowsePage extends CModel
 					$pages = new Pagination();
 					$pageSize = $pages->setupPageSize('pageSize', 'schema.table.browse');
 					$pages->route = $this->route;
-
+					
 					// Sorting
-					$sort = new Sort($db);
+					$sort = new Sort($this->db);
 					$sort->multiSort = false;
 					$sort->route = $this->route;
 
 					$sqlQuery->applyCalculateFoundRows();
 
-					$limit = $sqlQuery->getLimit();
-
-					// Apply limit
-					if(!$limit)
+					$offset = ($_REQUEST['page'] ? $_REQUEST['page'] : 1) * $pageSize - $pageSize;
+					$sqlQuery->applyLimit($pageSize, $offset, true);
+					
+					/*
+					 * Old version
+					if($limit)
 					{
-						$offset = (isset($_GET['page']) ? (int)$_GET['page'] : 1) * $pageSize - $pageSize;
+						$offset = ($_REQUEST['page'] ? $_REQUEST['page'] : 1) * $pageSize - $pageSize;
 						$sqlQuery->applyLimit($pageSize, $offset, true);
+						
+						
 					}
 					else
 					{
 						$pages->setPageSize($limit['Length']);
+						$pageSize = $limit['Length'];
+						Yii::app()->user->settings->set('pageSize', $limit['Length'], 'schema.table.browse');
 					}
-
+					*/
+					
 					// Apply sort
-					$sqlQuery->applySort($sort->getOrder(), true);
-
+					$order = $sqlQuery->getOrder();
+					
+					if(!$order)
+					{
+						$sqlQuery->applySort($sort->getOrder(), true);
+					}
+					
 
 				}
-
+				
 				// OTHER
 				elseif($type == "insert" || $type == "update" || $type == "delete")
 				{
@@ -167,8 +182,12 @@ class BrowsePage extends CModel
 
 				$this->executedQueries[] = $sqlQuery->getQuery();
 				$this->originalQueries[] = $sqlQuery->getOriginalQuery();
+				
 
-
+				$pages->postVars = array(
+					'query' => $sqlQuery->getOriginalQuery()
+				);
+				
 				// Prepare query for execution
 				$cmd = $this->db->createCommand($sqlQuery->getQuery());
 				$cmd->prepare();
@@ -185,26 +204,27 @@ class BrowsePage extends CModel
 						{
 							$total = (int)$this->db->createCommand('SELECT FOUND_ROWS()')->queryScalar();
 							$pages->setItemCount($total);
-
+							
 							$keyData = array();
 						}
 
 						$columns = array();
 
 						// Fetch column headers
-						if($total > 0 || isset($data[0]))
+						if(isset($data[0]))
 						{
 							$columns = array_keys($data[0]);
 						}
 
 						$isSent = true;
-
+						
+						$this->lastResultSetQuery = $sqlQuery->getOriginalQuery();
 
 					}
 					catch (CDbException $ex)
 					{
 						$ex = new DbException($cmd);
-						$response->addNotification('error', Yii::t('message', 'executingQueryFailed'), $ex->getText());
+						$response->addNotification('error', Yii::t('message', 'executingQueryFailed'), $ex->getText(), $ex->getSql());
 					}
 
 
@@ -217,7 +237,7 @@ class BrowsePage extends CModel
 						// Measure time
 						$start = microtime(true);
 						$result = $cmd->execute();
-						$time = round(microtime(true) - $start, 10);
+						$time = round(microtime(true) - $start, 6);
 
 						$response->addNotification('success', Yii::t('message', 'successExecuteQuery'), Yii::t('message', 'affectedRowsQueryTime', array($result,  '{rows}'=>$result, '{time}'=>$time)), $sqlQuery->getQuery());
 
@@ -276,7 +296,7 @@ class BrowsePage extends CModel
 			}
 
 		}
-
+		
 		// Assign local variables to class properties
 		$this->pagination = $pages;
 		$this->sort = $sort;
@@ -284,7 +304,7 @@ class BrowsePage extends CModel
 		$this->columns = $columns;
 		$this->data = $data;
 		$this->response = $response;
-
+		
 	}
 
 	public function hasResultSet()
@@ -325,6 +345,39 @@ class BrowsePage extends CModel
 	public function getResponse()
 	{
 		return $this->response;
+	}
+
+	public function getIsEditable()
+	{
+		if($this->isEditable === null)
+		{
+			$this->isEditable = false;	
+				
+			$parser = new Sql_Parser();
+			
+			try 
+			{
+				$query = $parser->parse($this->query);
+				
+				if($query['Command'] == "select" &&
+						count($query['TableNames']) == 1 &&
+						!$query['ColumnAliases'][0] &&
+						!$query['Joins'][0]
+					)
+				{
+					$this->isEditable = true;
+				}
+			}
+			catch (Exception $ex)
+			{
+				var_dump($ex);
+				$this->isEditable = false;
+			}
+			
+		}
+		
+		return $this->isEditable;
+			
 	}
 
 	public function getExecutedQueries()

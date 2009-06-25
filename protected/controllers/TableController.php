@@ -45,9 +45,9 @@ class TableController extends Controller
 		{
 			$foreignKeys = array();
 			$sql = 'SELECT * FROM KEY_COLUMN_USAGE '
-				. 'WHERE TABLE_SCHEMA = :tableSchema '
-				. 'AND TABLE_NAME = :tableName '
-				. 'AND REFERENCED_TABLE_SCHEMA IS NOT NULL';
+			. 'WHERE TABLE_SCHEMA = :tableSchema '
+			. 'AND TABLE_NAME = :tableName '
+			. 'AND REFERENCED_TABLE_SCHEMA IS NOT NULL';
 			$table->foreignKeys = ForeignKey::model()->findAllBySql($sql, array(
 				'tableSchema' => $table->TABLE_SCHEMA,
 				'tableName' => $table->TABLE_NAME,
@@ -64,10 +64,10 @@ class TableController extends Controller
 
 		// Indices
 		$sql = 'SELECT * FROM STATISTICS '
-			. 'WHERE TABLE_SCHEMA = :tableSchema '
-			. 'AND TABLE_NAME = :tableName '
-			. 'GROUP BY INDEX_NAME '
-			. 'ORDER BY INDEX_NAME = \'PRIMARY\' DESC, INDEX_NAME';
+		. 'WHERE TABLE_SCHEMA = :tableSchema '
+		. 'AND TABLE_NAME = :tableName '
+		. 'GROUP BY INDEX_NAME '
+		. 'ORDER BY INDEX_NAME = \'PRIMARY\' DESC, INDEX_NAME';
 		$table->indices = Index::model()->findAllBySql($sql, array(
 			'tableSchema' => $table->TABLE_SCHEMA,
 			'tableName' => $table->TABLE_NAME,
@@ -102,7 +102,12 @@ class TableController extends Controller
 		$browsePage->schema = $this->schema;
 		$browsePage->table = $this->table;
 		$browsePage->db = $this->db;
-		$browsePage->route = '#tables/' . $this->table . '/browse';
+		$browsePage->route = 'schema/' . $this->schema . '/tables/' . $this->table . '/browse';
+		
+		if($_query)
+		{
+			$browsePage->query = $_query;
+		}
 
 		$browsePage->run();
 
@@ -148,9 +153,9 @@ class TableController extends Controller
 			{
 				$response = new AjaxResponse();
 				$response->addNotification('success',
-					Yii::t('message', 'successAddTable', array('{table}' => $table->TABLE_NAME)),
-					null,
-					$sql);
+				Yii::t('message', 'successAddTable', array('{table}' => $table->TABLE_NAME)),
+				null,
+				$sql);
 				$response->redirectUrl = '#tables/' . $table->TABLE_NAME . '/structure';
 
 				foreach($addIndices AS $type => $indexName)
@@ -169,17 +174,17 @@ class TableController extends Controller
 						$sql = $index->save();
 
 						$response->addNotification('success',
-							Yii::t('message', 'successCreateIndex', array('{index}' => $index->INDEX_NAME)),
-							null,
-							$sql);
+						Yii::t('message', 'successCreateIndex', array('{index}' => $index->INDEX_NAME)),
+						null,
+						$sql);
 						$response->reload = true;
 					}
 					catch(DbException $ex)
 					{
 						$response->addNotification('error',
-							Yii::t('message', 'errorCreateIndex', array('{index}' => $index->INDEX_NAME)),
-							$ex->getText(),
-							$ex->getSql());
+						Yii::t('message', 'errorCreateIndex', array('{index}' => $index->INDEX_NAME)),
+						$ex->getText(),
+						$ex->getSql());
 					}
 				}
 
@@ -190,10 +195,10 @@ class TableController extends Controller
 		$collations = Collation::model()->findAll(array(
 			'order' => 'COLLATION_NAME',
 			'select' => 'COLLATION_NAME, CHARACTER_SET_NAME AS collationGroup'
-		));
+			));
 
 		CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3);
-		$data = array(
+			$data = array(
 			'table' => $table,
 			'column' => $column,
 			'collations' => $collations,
@@ -208,15 +213,13 @@ class TableController extends Controller
 	 */
 	public function actionSql() {
 
-		$query = Yii::app()->getRequest()->getParam('query');
-
-		$browsePage = new BrowsePage($query);
+		$browsePage = new BrowsePage();
 
 		$browsePage->schema = $this->schema;
 		$browsePage->table = $this->table;
 		$browsePage->db = $this->db;
-		$browsePage->route = '#tables/' . $this->table . '/browse';
-		$browsePage->execute = (bool)$query;
+		$browsePage->route = '#tables/' . $this->table . '/sql';
+		$browsePage->execute = (bool)Yii::app()->getRequest()->getParam('query');
 
 		$browsePage->run();
 
@@ -239,15 +242,16 @@ class TableController extends Controller
 			'IS NOT NULL',
 		);
 
+		Row::$db = $this->db;
+		Row::$schema = $this->schema;
+		Row::$table = $this->table;
+		
 		$row = new Row;
 
-		$db = $this->db;
 		$commandBuilder = $this->db->getCommandBuilder();
 
 		if(isset($_POST['Row']))
 		{
-
-			$this->isSent = true;
 
 			$criteria = new CDbCriteria;
 
@@ -257,16 +261,27 @@ class TableController extends Controller
 				if($value)
 				{
 					$operator = $operators[$_POST['operator'][$column]];
-					$criteria->condition .= ($i>0 ? ' AND ' : ' ') . $db->quoteColumnName($column) . ' ' . $operator . ' ' . $db->quoteValue($value);
+					$criteria->condition .= ($i>0 ? ' AND ' : ' ') . $this->db->quoteColumnName($column) . ' ' . $operator . ' ' . $this->db->quoteValue($value);
 
 					$i++;
 				}
 
 			}
+			
+			$browsePage = new BrowsePage();
 
-			$query = $db->getCommandBuilder()->createFindCommand($this->table, $criteria)->getText();
-
-			self::actionBrowse($query);
+			$browsePage->schema = $this->schema;
+			$browsePage->table = $this->table;
+			$browsePage->db = $this->db;
+			$browsePage->route = '#tables/' . $this->table . '/sql';
+			$browsePage->execute = true;
+			$browsePage->query = $this->db->getCommandBuilder()->createFindCommand($this->table, $criteria)->getText();
+			
+			$browsePage->run();
+			
+			$this->render('../global/browse', array(
+				'model' => $browsePage
+			));
 
 		}
 		else
@@ -305,9 +320,9 @@ class TableController extends Controller
 			catch(DbException $ex)
 			{
 				$response->addNotification('error',
-					Yii::t('message', 'errorTruncateTable', array('{table}' => $this->table)),
-					$ex->getText(),
-					$ex->getSql());
+				Yii::t('message', 'errorTruncateTable', array('{table}' => $this->table)),
+				$ex->getText(),
+				$ex->getSql());
 			}
 		}
 
@@ -315,9 +330,9 @@ class TableController extends Controller
 		if($count > 0)
 		{
 			$response->addNotification('success',
-				Yii::t('message', 'successTruncateTable', array($count, '{table}' => $truncatedTables[0], '{tableCount}' => $count)),
-				($count > 1 ? implode(', ', $truncatedTables) : null),
-				implode("\n", $truncatedSqls));
+			Yii::t('message', 'successTruncateTable', array($count, '{table}' => $truncatedTables[0], '{tableCount}' => $count)),
+			($count > 1 ? implode(', ', $truncatedTables) : null),
+			implode("\n", $truncatedSqls));
 		}
 
 		$response->send();
@@ -348,9 +363,9 @@ class TableController extends Controller
 			catch(DbException $ex)
 			{
 				$response->addNotification('error',
-					Yii::t('message', 'errorDropTable', array('{table}' => $table)),
-					$ex->getText(),
-					$ex->getSql());
+				Yii::t('message', 'errorDropTable', array('{table}' => $table)),
+				$ex->getText(),
+				$ex->getSql());
 			}
 		}
 
@@ -358,9 +373,9 @@ class TableController extends Controller
 		if($count > 0)
 		{
 			$response->addNotification('success',
-				Yii::t('message', 'successDropTable', array($count, '{table}' => $droppedTables[0], '{tableCount}' => $count)),
-				($count > 1 ? implode(', ', $droppedTables) : null),
-				implode("\n", $droppedSqls));
+			Yii::t('message', 'successDropTable', array($count, '{table}' => $droppedTables[0], '{tableCount}' => $count)),
+			($count > 1 ? implode(', ', $droppedTables) : null),
+			implode("\n", $droppedSqls));
 		}
 
 		$response->send();
@@ -393,16 +408,16 @@ class TableController extends Controller
 		$collations = Collation::model()->findAll(array(
 			'order' => 'COLLATION_NAME',
 			'select'=>'COLLATION_NAME, CHARACTER_SET_NAME AS collationGroup'
-		));
+			));
 
-		CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3);
-		$this->render('form', array(
+			CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3);
+			$this->render('form', array(
 			'table' => $table,
 			'collations' => $collations,
 			'storageEngines' => StorageEngine::getSupportedEngines(),
 			'isSubmitted' => $isSubmitted,
 			'sql' => $sql,
-		));
+			));
 	}
 
 	/**

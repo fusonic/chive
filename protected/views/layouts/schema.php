@@ -34,7 +34,6 @@ $scriptFiles = array(
 	'js/jquery/jquery.selectboxes.js',
 	'js/jquery/jquery.hotkey.js',
 	'js/jquery/jquery.tableForm.js',
-	#'js/jquery/jquery.ajaxfileupload.js',
 	'js/lib/json.js',
 	'js/main.js',
 	'js/bookmark.js',
@@ -54,6 +53,7 @@ $scriptFiles = array(
 	'js/views/table/general.js',
 	'js/views/table/browse.js',
 	'js/views/table/form.js',
+	'js/views/global/browse.js',
 	'js/views/table/structure.js',
 	'js/views/view/general.js',
 	'protected/extensions/CodePress/codepress/codepress.js',		// @todo (rponudic) change this to valid path

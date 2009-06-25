@@ -161,4 +161,45 @@ class LinkPager extends CLinkPager
 		return $this->getPages()->createPageUrl($this->getController(), $page, $pageSize);
 	}
 
+	/**
+	 * Creates a page button.
+	 * You may override this method to customize the page buttons.
+	 * @param string the text label for the button
+	 * @param integer the page number
+	 * @param string the CSS class for the page button. This could be 'page', 'first', 'last', 'next' or 'previous'.
+	 * @param boolean whether this page button is visible
+	 * @param boolean whether this page button is selected
+	 * @return string the generated button
+	 */
+	protected function createPageButton($label,$page,$class,$hidden,$selected)
+	{
+		if($hidden || $selected)
+			$class.=' '.($hidden ? self::CSS_HIDDEN_PAGE : self::CSS_SELECTED_PAGE);
+			
+		$postVars = $this->getPages()->postVars;	
+			
+		if($postVars === null)
+		{
+			return '<li class="'.$class.'">'.CHtml::link($label,$this->createPageUrl($page)).'</li>';
+		}
+		else
+		{
+			$postVars += array(
+				'page' => $page+1,
+				'schema' => $this->getController()->schema,
+				'table' => $this->getController()->table,
+			);
+			
+			$json = json_encode($postVars);
+			
+			return '<li class="'.$class.'">'.CHtml::link($label,'javascript:void(0);', array(
+				'onclick'=>'$.post("'.BASEURL . '/' . $this->getPages()->route.'", '.$json.', function(responseText) {
+					$("div.ui-layout-center").html(responseText);
+					init();
+				})'
+			)).'</li>';
+		}
+			
+	}
+	
 }

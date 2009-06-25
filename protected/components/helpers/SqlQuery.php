@@ -41,15 +41,13 @@ class SqlQuery {
 		{
 			$this->sqlParser = new Sql_Parser($this->query);
 			$this->parsedQuery = $this->parsedOriginalQuery = $this->sqlParser->parse();
-
-			#predie($this->parsedQuery);
+			#pre($this->parsedQuery);
 
 		}
 		catch (Exception $ex)
 		{
 			// Query is no select / insert / update / delete statement - handle it anyway
 			// var_dump($ex);
-
 		}
 
 		self::analyze();
@@ -146,10 +144,7 @@ class SqlQuery {
 		}
 		else
 		{
-			$this->query .= "\n\t" . 'LIMIT ' . $start . ', ' . $length;
-
-			if($_applyToOriginal)
-				$this->originalQuery .= "\n\t" . 'LIMIT ' . $start . ', ' . $length;
+			
 
 			//throw new NotImplementedException();
 		}
@@ -162,8 +157,12 @@ class SqlQuery {
 		{
 			$this->parsedQuery['SortOrder'] = $_sorting;
 
+			
 			if($_applyToOriginal)
-				$this->parsedOriginalQuery['SortOrder'] = $this->parsedQuery['SortOrder'];
+			{
+				$this->parsedOriginalQuery['SortOrder'] = $_sorting;
+			}
+				
 		}
 		else
 		{
@@ -221,26 +220,76 @@ class SqlQuery {
 		}
 		else
 		{
+			preg_match_all('/LIMIT (\d+)(, (\d+))?/im', $this->query, $res);
+			
+			if(!count($res))
+			{
+				return false;
+			}
+			else
+			{
+				$key = count($res[0])-1;
+				
+				$start = ($res[3][$key] ? $res[1][$key] : 0);
+				$length = ($res[3][$key] ? $res[3][$key] : $res[1][$key]);
+				
+				return array(
+					'Start' => $start,
+					'Length' => $length
+				);
+				
+			}
 			/*
 			var_dump($this->query);
 			$this->query = ' SELECT *, (SELECT * FROM test LIMIT 0, 20) FROM test LIMIT 0, 10';
 			preg_match('/SELECT(.*)FROM(.*)LIMIT (\d+)(,)? (\d+)?/i', $this->query, $res);
 			predie($res);
 			*/
-			return null;
+		}
+	}
+	
+	public function getOrder()
+	{
+
+		if($this->parsedQuery)
+		{
+			return isset($this->parsedQuery['SortOrder']) ? $this->parsedQuery['SortOrder'] : false;
+		}
+		else
+		{
+			return false;
+			/*
+			preg_match_all('/LIMIT (\d+)(, (\d+))?/im', $this->query, $res);
+			
+			if(!count($res))
+			{
+				return false;
+			}
+			else
+			{
+				$key = count($res[0])-1;
+				
+				$start = ($res[3][$key] ? $res[1][$key] : 0);
+				$length = ($res[3][$key] ? $res[3][$key] : $res[1][$key]);
+				
+				return array(
+					'Start' => $start,
+					'Length' => $length
+				);
+				
+			}
+			/*
+			var_dump($this->query);
+			$this->query = ' SELECT *, (SELECT * FROM test LIMIT 0, 20) FROM test LIMIT 0, 10';
+			preg_match('/SELECT(.*)FROM(.*)LIMIT (\d+)(,)? (\d+)?/i', $this->query, $res);
+			predie($res);
+			*/
 		}
 	}
 
 	public function returnsResultset()
 	{
-		if(in_array($this->getType(), $this->resultSetTypes))
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return in_array($this->getType(), $this->resultSetTypes);
 	}
 
 	/*

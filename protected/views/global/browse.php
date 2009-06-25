@@ -1,4 +1,3 @@
-<?php echo CHtml::form($model->formTarget, 'post'); ?>
 
 <div id="deleteRowDialog" title="<?php echo Yii::t('message', 'deleteRows'); ?>" style="display: none">
 	<?php echo Yii::t('message', 'doYouReallyWantToDeleteSelectedRows'); ?>
@@ -6,6 +5,7 @@
 
 <?php if($model->showInput) { ?>
 
+	<?php echo CHtml::form($model->formTarget, 'post', array('id' => 'queryForm')); ?>
 	<table style="width: 100%;">
 		<tr>
 			<td style="width: 80%;">
@@ -51,6 +51,17 @@
 	</table>
 	
 	<?php echo CHtml::endForm(); ?>
+	
+	<script type="text/javascript">
+		$('#queryForm').ajaxForm({
+			success: 	function(responseText)
+			{
+				AjaxResponse.handle(responseText);
+				$('div.ui-layout-center').html(responseText);
+				init();
+			}
+		});
+	</script>
 
 <?php } ?>
 
@@ -62,7 +73,7 @@
 		</div>
 
 		<?php $i = 0; ?>
-		<table class="list <?php if($model->getQueryType() == 'select') { ?>addCheckboxes editable<?php } ?>" style="width: auto;" id="browse">
+		<table class="list <?php if($model->getIsEditable()) { ?>addCheckboxes editable<?php } ?>" style="width: auto;" id="browse">
 			<colgroup>
 				<col class="checkbox" />
 				<?php if($type == 'select') { ?>
@@ -95,24 +106,24 @@
 								<input type="checkbox" name="browse[]" value="row_<?php echo $i; ?>" />
 							</td>
 							<td class="action">
-								<a href="javascript:void(0);" class="icon" onclick="tableBrowse.deleteRow(<?php echo $i; ?>);">
+								<a href="javascript:void(0);" class="icon" onclick="globalBrowse.deleteRow(<?php echo $i; ?>);">
 									<com:Icon name="delete" size="16" text="core.delete" />
 								</a>
 							</td>
 							<td class="action">
-								<a href="javascript:void(0);" class="icon" onclick="tableBrowse.editRow(<?php echo $i; ?>);">
+								<a href="javascript:void(0);" class="icon" onclick="globalBrowse.editRow(<?php echo $i; ?>);">
 									<com:Icon name="edit" size="16" text="core.edit" />
 								</a>
 							</td>
 							<td class="action">
-								<a href="javascript:void(0);" class="icon" onclick="tableBrowse.deleteRow(<?php echo $i; ?>);">
+								<a href="javascript:void(0);" class="icon" onclick="globalBrowse.deleteRow(<?php echo $i; ?>);">
 									<com:Icon name="insert" size="16" text="core.insert" />
 								</a>
 							</td>
 						<?php } ?>
 						<?php foreach($row AS $key=>$value) { ?>
 							<td class="<?php echo $key; ?>">
-								<?php if(DataType::getBaseType($table->columns[$key]->dbType) == "blob" && $value) { ?>
+								<?php if(DataType::getBaseType($model->getTable()->columns[$key]->dbType) == "blob" && $value) { ?>
 									<a href="javascript:void(0);" class="icon" onclick="download('<?php echo BASEURL; ?>/row/download', {key: JSON.stringify(keyData[<?php echo $i; ?>]), column: '<?php echo $column; ?>', table: '<?php echo $this->table; ?>', schema: '<?php echo $this->schema; ?>'})">
 										<com:Icon name="save" text="core.download" size="16" />
 										<?php echo Yii::t('core', 'download'); ?>
@@ -121,7 +132,7 @@
 									<span><?php echo is_null($value) ? '<span class="null">NULL</span>' : (Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $this->schema . '.' .  $this->table) ? str_replace(array('<','>'),array('&lt;','&gt;'),$value) : StringUtil::cutText(str_replace(array('<','>'),array('&lt;','&gt;'),$value), 100)); ?></span>
 								<?php } ?>
 							</td>
-							<?php if($model->getQueryType() == 'select' && ($model->getTable()->primaryKey === null || in_array($key, (array)$model->getTable()->primaryKey))) { ?>
+							<?php if($model->getIsEditable() && (in_array($key, $model->getTable()->primaryKey) || $model->getTable()->primaryKey === null)) { ?>
 								<?php $keyData[$i][$key] = is_null($value) ? null : $value; ?>
 							<?php } ?>
 						<?php } ?>
@@ -138,11 +149,11 @@
 					<com:Icon name="arrow_turn_090" size="16" />
 					<span><?php echo Yii::t('core', 'withSelected'); ?></span>
 				</span>
-				<a class="icon button" href="javascript:void(0)" onclick="tableBrowse.deleteRows()">
+				<a class="icon button" href="javascript:void(0)" onclick="globalBrowse.deleteRows()">
 					<com:Icon name="delete" size="16" text="core.delete" />
 					<span><?php echo Yii::t('core', 'delete'); ?></span>
 				</a>
-				<a class="icon button" href="javascript:void(0)" onclick="tableBrowse.exportRows()">
+				<a class="icon button" href="javascript:void(0)" onclick="globalBrowse.exportRows()">
 					<com:Icon name="save" size="16" text="core.export" />
 					<span><?php echo Yii::t('core', 'export'); ?></span>
 				</a>
@@ -163,6 +174,6 @@
 <?php } ?>
 
 <script type="text/javascript">
-	tableBrowse.setup();
-	AjaxResponse.handle(<?php echo $model->response; ?>);
+	globalBrowse.setup();
+	AjaxResponse.handle(<?php echo $model->getResponse(); ?>);
 </script>

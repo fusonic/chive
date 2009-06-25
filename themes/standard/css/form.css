@@ -19,33 +19,6 @@
 		font-weight: bold;
 	}
 	
-	input.icon {
-		background-repeat: no-repeat;
-		background-position: 3px center;
-		padding-left: 20px;
-	}
-	
-	input.icon.save {
-		background-image: url('../../../images/icons/fugue/16/save.png');
-	}
-	
-	input.icon.delete {
-		background-image: url('../../../images/icons/fugue/16/delete.png');
-	}
-	
-	input.icon.cancel {
-		background-image: url('../../../images/icons/fugue/16/delete.png');
-	}
-	
-	input.icon.null {
-		background-image: url('../../../images/icons/fugue/16/null.png');
-	}
-	
-	input.icon.execute {
-		background-image: url('../../../images/icons/fugue/16/execute.png');
-	}
-
-	
 	/*
 	 * Buttons
 	 */
@@ -57,6 +30,12 @@
 		background: url('../images/forms/button-bg.png') repeat-x;
 		cursor: pointer;
 		margin-right: 5px;
+	}
+	
+	.button.primary 
+	{
+		background: url('../images/forms/button-primary-bg.png') repeat-x;
+		padding: 7px 15px;
 	}
 	
 	div.buttonContainer div.right .button {

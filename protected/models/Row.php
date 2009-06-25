@@ -5,15 +5,53 @@ class Row extends CActiveRecord
 
 
 	private $originalAttributes;
+	
+	private $_functions;
 
 	public static $db;
 	public static $schema;
 	public static $table;
-
-	public function __construct($attributes=array(),$scenario='') {
-
-		parent::__construct($attributes, $scenario);
-	}
+	
+	/*
+	 * @var Available database functions
+	 */
+	public static $functions = array(
+			'',
+			'ASCII',
+			'CHAR',
+			'MD5',
+			'SHA1',
+			'ENCRYPT',
+			'RAND',
+			'LAST_INSERT_ID',
+			'UNIX_TIMESTAMP',
+			'COUNT',
+			'AVG',
+			'SUM',
+			'SOUNDEX',
+			'LCASE',
+			'UCASE',
+			'NOW',
+			'PASSWORD',
+			'OLD_PASSWORD',
+			'COMPRESS',
+			'UNCOMPRESS',
+			'CURDATE',
+			'CURTIME',
+			'UTC_DATE',
+			'UTC_TIME',
+			'UTC_TIMESTAMP',
+			'FROM_DAYS',
+			'FROM_UNIXTIME',
+			'PERIOD_ADD',
+			'PERIOD_DIFF',
+			'TO_DAYS',
+			'USER',
+			'WEEKDAY',
+			'CONCAT',
+			'HEX',
+			'UNHEX',
+	);
 
 	/**
 	 * @see CActiveRecord::instantiate()
@@ -69,7 +107,42 @@ class Row extends CActiveRecord
 		return self::$db->getSchema(self::$schema)->getTable(self::$table)->primaryKey;
 	}
 
+	/**
+	 * @return array key value pairs of primary key (if no primary key, all column values will be returned)
+	 */
+	public function getIdentifier() 
+	{
+		$table=$this->getMetaData()->tableSchema;
+		if(is_string($table->primaryKey))
+		{
+			return array(
+				$table->primaryKey => $this->{$table->primaryKey}
+			);
+		}
+		else if(is_array($table->primaryKey))
+		{
+			$values=array();
+			foreach($table->primaryKey as $name)
+				$values[$name]=$this->$name;
+			return $values;
+		}
+		else
+		{
+			$values = array();
+			foreach($table->columns AS $name)
+			{
+				$values[$name] = $this->$name;					
+			}
+			return $values;
+		}
+	}
 
+	public function getAttributeAsArray($_attribute)
+	{
+		$value = explode(",", $this->$_attribute);
+		return $value; 
+	}
+	
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
@@ -91,6 +164,70 @@ class Row extends CActiveRecord
 		return self::$db;
 	}
 
+	public function insert() 
+	{
+		$attributesCount = count($this->getAttributes());
+		$sql = 'INSERT INTO ' . self::$db->quoteTableName(self::$table) . ' (';
+
+		$i = 0;
+		foreach($this->getAttributes() AS $attribute=>$value)
+		{
+			$sql .= "\n\t" . self::$db->quoteColumnName($attribute);
+
+			$i++;
+
+			if($i < $attributesCount)
+				$sql .= ', ';
+		}
+
+		$sql .= "\n" . ') VALUES (';
+
+		$i = 0;
+		foreach($this->getAttributes() AS $attribute=>$value)
+		{
+			$function = $this->getFunction($attribute);
+			
+			if($function !== null)
+			{
+				$sql .= "\n\t" . self::$functions[$function] . '(' . ($value === null ? 'NULL' : self::$db->quoteValue($value))  . ')';
+			}
+			elseif($value === null)
+			{
+				$sql .= "\n\t" . 'NULL';
+			}
+
+			// DEFAULT
+			else
+			{
+				$sql .= "\n\t" . self::$db->quoteValue($value);
+			}
+			
+			$i++;
+			
+			if($i < $attributesCount)
+				$sql .= ', ';
+
+		}
+
+		$sql .= "\n" . ')';
+		
+		$cmd = new CDbCommand(self::$db, $sql);
+		
+		try
+		{
+			$this->beforeSave();
+			$cmd->prepare();
+			$cmd->execute();
+			$this->afterSave();
+			return $sql;
+		}
+		catch(CDbException $ex)
+		{
+			throw new DbException($cmd);
+		}
+		
+	}
+	
 	public function update()
 	{
 		if($this->getIsNewRecord())
@@ -108,20 +245,15 @@ class Row extends CActiveRecord
 		$changedAttributes = array();
 		foreach($this->originalAttributes AS $column=>$value)
 		{
-			if($newValue = $this->getAttribute($column) !== $value)
+			if($this->getAttribute($column) !== $value || $this->getFunction($column))
 			{
 				// SET datatype
-				if(is_array($newValue))
-				{
-					$this->setAttribute($column, implode(",", $newValue));
-				}
-
 				$changedAttributes[$column] = $this->getAttribute($column);
 			}
 		}
-
+		
 		$changedAttributesCount = count($changedAttributes);
-
+		
 		if($changedAttributesCount > 0)
 		{
 
@@ -129,35 +261,31 @@ class Row extends CActiveRecord
 				
 			foreach($changedAttributes AS $column=>$value)
 			{
-				$sql .= "\t" . self::$db->quoteColumnName($column) . ' = ' . (is_null($value) ? 'NULL' : self::$db->quoteValue($value));
+				$function = $this->getFunction($column);
+				
+				if($function !== null)
+				{
+					$sql .= "\t" . self::$db->quoteColumnName($column) . ' = ' . self::$functions[$function] . '(' . ($value === null ? 'NULL' : self::$db->quoteValue($value))  . ')';
+				}
+				else
+				{
+					$sql .= "\t" . self::$db->quoteColumnName($column) . ' = ' . (is_null($value) ? 'NULL' : self::$db->quoteValue($value));
+				}
 
 				$changedAttributesCount--;
 
 				if($changedAttributesCount > 0)
-				$sql .= ',' . "\n";
+					$sql .= ',' . "\n";
 
 			}
 				
 			$sql .= "\n" . ' WHERE ' . "\n";
 				
-				
-			$key = $this->primaryKey();
-				
-			// If there is no PK, update with the original attributes in WHERE criteria
-			if($key === null)
-			{
-				$key = $this->originalAttributes;
-			}
-			elseif(!is_array($key))
-			{
-				$value = $key;
-				$key = array();
-				$key[$this->primaryKey()] = $value;
-			}
+			$identifier = $this->getIdentifier();
 				
 			// Create find criteria
-			$i = count($key);
-			foreach($key AS $column=>$value) {
+			$count = count($identifier);
+			foreach($identifier AS $column=>$value) {
 
 				if(is_null($value))
 				{
@@ -168,10 +296,12 @@ class Row extends CActiveRecord
 					$sql .= "\t" . self::$db->quoteColumnName($column) . ' = ' . self::$db->quoteValue($this->originalAttributes[$column]) . ' ';
 				}
 
-				$i--;
+				$count--;
 
-				if($i > 0)
-				$sql .= 'AND ' . "\n";
+				if($count > 0)
+				{
+					$sql .= 'AND ' . "\n";
+				}
 			}
 				
 			$sql .= "\n" . 'LIMIT 1';
@@ -179,6 +309,7 @@ class Row extends CActiveRecord
 		}
 
 		$cmd = new CDbCommand(self::$db, $sql);
+		
 		try
 		{
 			$cmd->prepare();
@@ -205,24 +336,21 @@ class Row extends CActiveRecord
 			return false;
 		}
 
-
-		if($pk = self::$db->getSchema($this->schema)->getTable(self::$table)->primaryKey !== null)
-		$pk = (array)$pk;
-		else
-		$pk = $this->safeAttributes();
+		$identifier = $this->getIdentifier();
 			
-		$pkCount = count($pk);
-
 		$sql = 'DELETE FROM ' . self::$db->quoteTableName(self::$table) . ' WHERE ';
 
-		$i = 0;
-		foreach($pk AS $column)
+		$count = count($identifier);
+		foreach($identifier AS $column => $value)
 		{
-			$sql .= "\n\t" . self::$db->quoteColumnName($column) . (is_null($this->getAttribute($column)) ? ' IS NULL' :  ' = ' . self::$db->quoteValue($this->getAttribute($column)));
-			$i++;
+			$sql .= "\n\t" . self::$db->quoteColumnName($column) . (is_null($value) ? ' IS NULL' :  ' = ' . self::$db->quoteValue($value));
+			
+			$count--;
 
-			if($i < $pkCount)
-			$sql .= ' AND';
+			if($count > 0)
+			{
+				$sql .= ' AND';
+			}
 
 		}
 
@@ -243,6 +371,29 @@ class Row extends CActiveRecord
 			return false;
 		}
 
+	}
+
+
+	
+	
+	public function setFunction($_attribute, $_function)
+	{
+		if(isset(self::$functions[$_function]))
+		{
+			$this->_functions[$_attribute] = $_function;
+		}
+	}
+	
+	public function getFunction($_attribute)
+	{
+		if(isset($this->_functions[$_attribute]))
+		{
+			return $this->_functions[$_attribute];
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 }

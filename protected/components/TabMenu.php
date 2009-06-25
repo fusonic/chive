@@ -42,15 +42,6 @@ class TabMenu extends CWidget
 
 			$item2['htmlOptions'] = isset($item['htmlOptions']) ? $item['htmlOptions'] : array();
 
-			if($this->isActive($item['link']['url'],$action->id))
-			{
-				if(isset($item['htmlOptions']['class']))
-					$item2['htmlOptions']['class'] .= ' active';
-				else
-					$item2['htmlOptions']['class'] = 'active';
-
-			}
-
 			$item2['a']['htmlOptions'] = array();
 			$item2['a']['htmlOptions'] = $item['link']['htmlOptions'];
 
@@ -69,6 +60,18 @@ class TabMenu extends CWidget
 			$item2['icon'] = isset($item['icon']) ? $item['icon'] : null;
 			$item2['a']['htmlOptions']['href'] = $item['link']['url'];
 
+			if($this->isActive($item['link']['url'], $action->id))
+			{
+				if(isset($item['htmlOptions']['class']))
+					$item2['htmlOptions']['class'] .= ' active';
+				else
+					$item2['htmlOptions']['class'] = 'active';
+
+				$item2['a']['htmlOptions']['href'] = 'javascript:void(0);';
+				$item2['a']['htmlOptions']['onclick'] = 'refresh();';
+			}
+			
+			
 			$items[]=$item2;
 		}
 		
