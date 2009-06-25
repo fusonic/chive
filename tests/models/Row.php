@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * @todo(mburtscher): Write tests ;)
+ * - Assert values when reading rows
+ * - Update row (with 1-col pk, multi-col pk, no pk, with auto_increment and without)
+ * -- Try to set the value of a int to 99999999999999999 and look what happens ...
+ * - Insert row (with 1-col pk, multi-col pk, no pk, with auto_increment and without)
+ * - Delete row (with 1-col pk, multi-col pk, no pk)  
+ */
+
 class RowTest extends TestCase
 {
 
@@ -85,6 +94,9 @@ class RowTest extends TestCase
 		$this->assertType('string',$row->getAttribute('test8'));
 		$this->assertType('string',$row->getAttribute('test9'));
 
+		/*
+		 * @todo(mburtscher): Why don't you assert the values?
+		 */
 
 
 
@@ -132,6 +144,10 @@ class RowTest extends TestCase
 		$row->setAttribute('test7','3');
 		$row->setAttribute('test8','neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.');
 		$row->setAttribute('test9','{"firstName": "John", "lastName": "Smith", "address": {"streetAddress": "21 2nd Street", "city": "New York", "state": "NY", "postalCode": 10021}, "phoneNumbers": ["212 555-1234", "646 555-4567"]}');
+		
+		/*
+		 * @todo(mburtscher): Seems not to be finished ...
+		 */
 
 		//var_dump($row->update());
 		//$this->assertType('string',$row->update());
