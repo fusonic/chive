@@ -9,6 +9,9 @@ class LinkPager extends CLinkPager
 	const CSS_LAST_ELEMENT = 'last-element';
 	const CSS_SETTINGS = 'settings';
 
+	public static $generateJsPage = true;
+	public static $generateJsPageSize = true;
+	
 	/**
 	 * Executes the widget.
 	 * This overrides the parent implementation by displaying the generated page buttons.
@@ -132,6 +135,36 @@ class LinkPager extends CLinkPager
 			{
 				$content .= '&nbsp;' . $size . '&nbsp;';
 			}
+			elseif($this->getPages()->postVars !== null)
+			{
+				if(self::$generateJsPageSize)
+				{
+					$data = json_encode($this->getPages()->postVars);
+					
+					$script = '
+						function setPageSize(_pageSize) {
+						
+							var data = ' . $data . ';
+							data.pageSize = _pageSize; 
+						
+							$.post("'.BASEURL . '/' . $this->getPages()->route.'", data, function(responseText) {
+								$("div.ui-layout-center").html(responseText);
+								init();
+							});
+						
+						}
+					';
+					
+					Yii::app()->getClientScript()->registerScript('LinkPager_pageSize', $script);
+					
+					self::$generateJsPageSize = false;
+				}
+				
+				$content .= '&nbsp;' . CHtml::link($size, 'javascript:void(0)', array(
+					'onclick' => 'setPageSize(' . $size . ');',
+				));
+				
+			}
 			else
 			{
 				$content .= '&nbsp;<a href="' . $this->createPageUrl($this->getCurrentPage(), $size) . '">' . $size . '</a>&nbsp;';
@@ -184,19 +217,34 @@ class LinkPager extends CLinkPager
 		}
 		else
 		{
-			$postVars += array(
-				'page' => $page+1,
-				'schema' => $this->getController()->schema,
-				'table' => $this->getController()->table,
-			);
 			
-			$json = json_encode($postVars);
+			if(self::$generateJsPage)
+			{
+				
+				$data = json_encode($postVars);
+				
+				$script = '
+					function navigateToPage(_page) {
+					
+						var data = ' . $data . ';
+						data.page = _page; 
+					
+						$.post("'.BASEURL . '/' . $this->getPages()->route.'", data, function(responseText) {
+							$("div.ui-layout-center").html(responseText);
+							init();
+						});
+					
+					}
+				';
+				
+				
+				Yii::app()->getClientScript()->registerScript('LinkPager_page', $script);
+				
+				self::$generateJsPage = false;
+			}
 			
 			return '<li class="'.$class.'">'.CHtml::link($label,'javascript:void(0);', array(
-				'onclick'=>'$.post("'.BASEURL . '/' . $this->getPages()->route.'", '.$json.', function(responseText) {
-					$("div.ui-layout-center").html(responseText);
-					init();
-				})'
+				'onclick'=>'navigateToPage(' . ($page + 1) . ');'
 			)).'</li>';
 		}
 			

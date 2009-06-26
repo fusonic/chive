@@ -103,6 +103,7 @@ class TableController extends Controller
 		$browsePage->table = $this->table;
 		$browsePage->db = $this->db;
 		$browsePage->route = 'schema/' . $this->schema . '/tables/' . $this->table . '/browse';
+		$browsePage->formTarget = 'schema/' . $this->schema . '/tables/' . $this->table . '/sql';
 		
 		if($_query)
 		{
@@ -231,22 +232,26 @@ class TableController extends Controller
 
 	public function actionSearch() {
 
-		$operators = array(
-			'LIKE',
-			'NOT LIKE',
-			'=',
-			'!=',
-			'REGEXP',
-			'NOT REGEXP',
-			'IS NULL',
-			'IS NOT NULL',
+		
+		$operatorConfig = array(				// needs value
+			'LIKE'				=> 		array( 'needsValue' => true ),
+			'NOT LIKE'			=> 		array( 'needsValue' => true ),
+			'='					=> 		array( 'needsValue' => true ),
+			'!=' 				=> 		array( 'needsValue' => true ),
+			'REGEXP'			=> 		array( 'needsValue' => "?" ),
+			'NOT REGEXP'		=> 		array( 'needsValue' => "?" ),
+			'IS NULL'			=> 		array( 'needsValue' => false ),
+			'IS NOT NULL' 		=> 		array( 'needsValue' => false ),
 		);
+		
+		$operators = array_keys($operatorConfig);
+		$config = array_values($operatorConfig);
 
 		Row::$db = $this->db;
 		Row::$schema = $this->schema;
 		Row::$table = $this->table;
 		
-		$row = new Row;
+		$row = new Row();
 
 		$commandBuilder = $this->db->getCommandBuilder();
 
@@ -256,15 +261,24 @@ class TableController extends Controller
 			$criteria = new CDbCriteria;
 
 			$i = 0;
-			foreach($_POST['Row'] AS $column=>$value) {
-
+			foreach($_POST['Row'] AS $column=>$value) 
+			{
+				$operator = $operators[$_POST['operator'][$column]];
+				
 				if($value)
 				{
-					$operator = $operators[$_POST['operator'][$column]];
 					$criteria->condition .= ($i>0 ? ' AND ' : ' ') . $this->db->quoteColumnName($column) . ' ' . $operator . ' ' . $this->db->quoteValue($value);
 
 					$i++;
 				}
+				elseif(isset($_POST['operator'][$column]) && $config[$_POST['operator'][$column]]['needsValue'] === false)
+				{
+					$criteria->condition .= ($i>0 ? ' AND ' : ' ') . $this->db->quoteColumnName($column) . ' ' . $operator;
+					
+					$i++;
+				}
+				
+				
 
 			}
 			
@@ -273,7 +287,8 @@ class TableController extends Controller
 			$browsePage->schema = $this->schema;
 			$browsePage->table = $this->table;
 			$browsePage->db = $this->db;
-			$browsePage->route = '#tables/' . $this->table . '/sql';
+			$browsePage->route = 'schema/' . $this->schema . '/tables/' . $this->table . '/browse';
+			$browsePage->formTarget = 'schema/' . $this->schema . '/tables/' . $this->table . '/sql';
 			$browsePage->execute = true;
 			$browsePage->query = $this->db->getCommandBuilder()->createFindCommand($this->table, $criteria)->getText();
 			
@@ -288,7 +303,7 @@ class TableController extends Controller
 		{
 			$this->render('search', array(
 				'row' => $row,
-				'operators'=>$operators,
+				'operators'=> $operators,
 			));
 		}
 

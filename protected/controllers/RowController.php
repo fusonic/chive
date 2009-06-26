@@ -158,7 +158,7 @@ class RowController extends Controller
 			$sql = $row->save();
 			
 			$response->addData(null, array(
-				'value' => ($null ? 'NULL' : htmlspecialchars($row->getAttribute($column))),
+				'value' => ($null ? 'NULL' : $row->getAttribute($column)),
 				'column' => $column,
 				'identifier' => $row->getIdentifier(),
 				'isNull' => $null,
@@ -235,6 +235,7 @@ class RowController extends Controller
 
 	public function actionInput()
 	{
+		
 		$attributes = json_decode(Yii::app()->getRequest()->getParam('attributes'), true);
 		$column = Yii::app()->getRequest()->getParam('column');
 		$oldValue = Yii::app()->getRequest()->getParam('oldValue');

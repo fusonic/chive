@@ -5,7 +5,7 @@
 
 <?php if($model->showInput) { ?>
 
-	<?php echo CHtml::form($model->formTarget, 'post', array('id' => 'queryForm')); ?>
+	<?php echo CHtml::form(BASURL . '/' . $model->formTarget, 'post', array('id' => 'queryForm')); ?>
 	<table style="width: 100%;">
 		<tr>
 			<td style="width: 80%;">

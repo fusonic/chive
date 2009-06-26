@@ -25,17 +25,14 @@
 							responseObj = JSON.parse(response);
 							
 							if(responseObj.data.error) {
-								$('#input_<?php echo $id; ?>').parent().parent().html(<?php echo json_encode($oldValue); ?>);
+								reset();
 								AjaxResponse.handle(response);
 								return false;
 							}
 				
 							$('#input_<?php echo $id; ?>').parent().parent().html(responseObj.data.visibleValue);
 							
-							if(responseObj.data.isIdentifier) 
-							{
-								keyData[rowIndex] = response.data.identifier;
-							}
+							keyData[rowIndex] = responseObj.data.identifier;
 
 							AjaxResponse.handle(response);
 							
