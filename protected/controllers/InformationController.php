@@ -35,7 +35,7 @@ class InformationController extends Controller
 		$ids = json_decode(Yii::app()->getRequest()->getParam('ids'));
 
 		$response = new AjaxResponse();
-		$response->reload = true;
+		$response->refresh = true;
 
 		foreach($ids AS $id)
 		{

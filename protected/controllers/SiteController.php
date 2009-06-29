@@ -127,53 +127,6 @@ class SiteController extends Controller
 		));
 	}
 
-	/**
-	 * Shows all currently running processes on the MySQL server.
-	 */
-	public function actionProcesses()
-	{
-		$cmd = $this->db->createCommand('SHOW PROCESSLIST');
-		$processes = $cmd->queryAll();
-
-		$this->render('processes', array(
-			'processes' => $processes,
-		));
-	}
-
-	/**
-	 * Kills a process on the server.
-	 */
-	public function actionKillProcess()
-	{
-		$ids = json_decode(Yii::app()->getRequest()->getParam('ids'));
-
-		$response = new AjaxResponse();
-		$response->reload = true;
-
-		foreach($ids AS $id)
-		{
-			$sql = 'KILL ' . $id;
-
-			try
-			{
-				$cmd = $this->db->createCommand($sql);
-
-				$cmd->prepare();
-				$cmd->execute();
-
-				$response->addNotification('success', Yii::t('message', 'successKillProcess', array('{id}' => $id)), null, $sql);
-			}
-			catch(CDbException $ex)
-			{
-				$ex = new DbException($cmd);
-				$response->addNotification('error', Yii::t('message', 'errorKillProcess', array('{id}' => $id)), $ex->getText(), $sql);
-			}
-
-		}
-
-		$response->send();
-	}
-
 	public function actionKeepAlive()
 	{
 		Yii::app()->end('OK');

@@ -178,7 +178,7 @@ class TableController extends Controller
 						Yii::t('message', 'successCreateIndex', array('{index}' => $index->INDEX_NAME)),
 						null,
 						$sql);
-						$response->reload = true;
+						$response->refresh = true;
 					}
 					catch(DbException $ex)
 					{
@@ -315,7 +315,7 @@ class TableController extends Controller
 	public function actionTruncate()
 	{
 		$response = new AjaxResponse();
-		$response->reload = true;
+		$response->refresh = true;
 		$tables = (array)$_POST['tables'];
 		$truncatedTables = $truncatedSqls = array();
 
@@ -359,7 +359,7 @@ class TableController extends Controller
 	public function actionDrop()
 	{
 		$response = new AjaxResponse();
-		$response->reload = true;
+		$response->refresh = true;
 		$tables = (array)$_POST['tables'];
 		$droppedTables = $droppedSqls = array();
 

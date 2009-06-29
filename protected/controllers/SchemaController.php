@@ -282,7 +282,7 @@ class SchemaController extends Controller
 					Yii::t('message', 'successAddSchema', array('{schema}' => $schema->SCHEMA_NAME)),
 					null,
 					$sql);
-				$response->reload = true;
+				$response->refresh = true;
 				$response->send();
 			}
 		}
@@ -336,7 +336,7 @@ class SchemaController extends Controller
 	public function actionDrop()
 	{
 		$response = new AjaxResponse();
-		$response->reload = true;
+		$response->refresh = true;
 		$schemata = (array)$_POST['schemata'];
 		$droppedSchemata = $droppedSqls = array();
 
