@@ -3,11 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <title><?php echo $this->pageTitle; ?></title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <!-- (en) Add your meta data here -->
 <!-- (de) Fuegen Sie hier ihre Meta-Daten ein -->
-<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" />
-<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->getBaseUrl(); ?>/css/style.css" />
+<link rel="stylesheet" type="text/css"
+	href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" />
+<link rel="stylesheet" type="text/css"
+	href="<?php echo Yii::app()->theme->getBaseUrl(); ?>/css/style.css" />
 <!--[if lte IE 7]>
 <link rel="stylesheet" type="text/css" href="<?php echo BASEURL; ?>/css/patch/ie7.css"/>
 <![endif]-->
@@ -43,7 +45,9 @@ $scriptFiles = array(
 	'js/views/schema/list.js',
 	'js/views/information/processes.js',
 	'js/views/information/storageEngines.js',
-	'assets/lang_js/' . Yii::app()->getLanguage() . '.js',
+	'js/components/EditArea/edit_area_full.js',
+'js/components/EditArea/fusonic_extensions/editarea_autogrow.js',
+   	'assets/lang_js/' . Yii::app()->getLanguage() . '.js',
 );
 foreach($scriptFiles AS $file)
 {
@@ -56,67 +60,51 @@ foreach($scriptFiles AS $file)
 </head>
 <body>
 
-  <div id="loading">
-  	<?php echo Yii::t('core', 'loading'); ?>...
-  </div>
+<div id="loading"><?php echo Yii::t('core', 'loading'); ?>...</div>
 
-  <div class="ui-layout-north">
-	<div id="header">
-		<div id="headerLeft">
-			<ul class="breadCrumb">
-				<li>
-					<a href="<?php echo Yii::app()->baseUrl . '/#schemata'; ?>" style="float:left; margin-right: 5px;">
-						<img src="<?php echo Yii::app()->baseUrl . "/images/logo.png"; ?>" />
-					</a>
-				</li>
-			</ul>
-		</div>
-		<div id="headerRight">
-			<?php $this->widget('application.components.MainMenu',array(
+<div class="ui-layout-north">
+<div id="header">
+<div id="headerLeft">
+<ul class="breadCrumb">
+	<li><a href="<?php echo Yii::app()->baseUrl . '/#schemata'; ?>"
+		style="float: left; margin-right: 5px;"> <img
+		src="<?php echo Yii::app()->baseUrl . "/images/logo.png"; ?>" /> </a>
+	</li>
+</ul>
+</div>
+<div id="headerRight"><?php $this->widget('application.components.MainMenu',array(
 				'items'=>array(
-					array('label'=>'Home', 'icon'=>'home', 'url'=>array('/site/index'), 'visible'=>!Yii::app()->user->isGuest),
-					array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
-					array('label'=>'Refresh','icon'=>'refresh', 'url'=>'javascript:void(0)', 'htmlOptions'=>array('onclick'=>'return refresh();'), 'visible'=>!Yii::app()->user->isGuest),
-					array('label'=>'Logout', 'icon'=>'logout', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
-				),
-			)); ?>
-		</div>
-	</div>
-  </div>
-  <div class="ui-layout-west">
+array('label'=>'Home', 'icon'=>'home', 'url'=>array('/site/index'), 'visible'=>!Yii::app()->user->isGuest),
+array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
+array('label'=>'Refresh','icon'=>'refresh', 'url'=>'javascript:void(0)', 'htmlOptions'=>array('onclick'=>'return refresh();'), 'visible'=>!Yii::app()->user->isGuest),
+array('label'=>'Logout', 'icon'=>'logout', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
+),
+)); ?></div>
+</div>
+</div>
+<div class="ui-layout-west">
 
-  <div id="sideBar">
-  		<div class="sidebarHeader">
-			<a class="icon">
-				<com:Icon name="database" size="24" text="database.schemata" />
-				<span><?php echo Yii::t('database','schemata'); ?></span>
-			</a>
-		</div>
-		<div class="sidebarContent">
+<div id="sideBar">
+<div class="sidebarHeader"><a class="icon"> <com:Icon name="database"
+	size="24" text="database.schemata" /> <span><?php echo Yii::t('database','schemata'); ?></span>
+</a></div>
+<div class="sidebarContent"><input type="text" id="schemaSearch"
+	class="search text" />
 
-			<input type="text" id="schemaSearch" class="search text" />
+<ul id="schemaList" class="list icon">
+<?php foreach(Schema::model()->findAll(array('order' => 'SCHEMA_NAME ASC')) AS $schema) { ?>
+	<li class="nowrap"><a
+		href="<?php echo Yii::app()->baseUrl; ?>/schema/<?php echo $schema->SCHEMA_NAME; ?>"
+		class="icon"> <com:Icon name="database" size="16" /> <span><?php echo $schema->SCHEMA_NAME; ?></span>
+	</a></li>
+	<?php } ?>
+</ul>
 
-			<ul id="schemaList" class="list icon">
-				<?php foreach(Schema::model()->findAll(array('order' => 'SCHEMA_NAME ASC')) AS $schema) { ?>
-					<li class="nowrap">
-						<a href="<?php echo Yii::app()->baseUrl; ?>/schema/<?php echo $schema->SCHEMA_NAME; ?>" class="icon">
-							<com:Icon name="database" size="16" />
-							<span><?php echo $schema->SCHEMA_NAME; ?></span>
-						</a>
-					</li>
-				<?php } ?>
-			</ul>
-
-		</div>
-  		<div class="sidebarHeader">
-			<a class="icon">
-				<com:Icon name="privilege" size="24" />
-				<span>Privileges</span>
-			</a>
-		</div>
-		<div class="sidebarContent">
-		</div>
-		<!--- TRIGGERS
+</div>
+<div class="sidebarHeader"><a class="icon"> <com:Icon name="privilege"
+	size="24" /> <span>Privileges</span> </a></div>
+<div class="sidebarContent"></div>
+<!--- TRIGGERS
   		<div class="sidebarHeader">
 			<a class="icon">
 				<img src="images/icons/script_fav_24.png" />
@@ -127,52 +115,31 @@ foreach($scriptFiles AS $file)
 			triggers
 		</div>
 		--->
-  		<div class="sidebarHeader">
-			<a class="icon">
-				<com:Icon name="info" size="24" />
-				<span>Information</span>
-			</a>
-		</div>
-		<div class="sidebarContent">
-			<ul id="statusList" class="list icon">
-				<li class="nowrap">
-					<a class="icon" href="#information/status">
-						<com:Icon name="chart" size="16" />
-						<?php echo Yii::t('core', 'status'); ?>
-					</a>
-				</li>
-				<li class="nowrap">
-					<a class="icon" href="#information/variables">
-						<com:Icon name="variable" size="16" />
-						<?php echo Yii::t('database', 'variables'); ?>
-					</a>
-				</li>
-				<li class="nowrap">
-					<a class="icon" href="#information/characterSets">
-						<com:Icon name="charset" size="16" />
-						<?php echo Yii::t('database', 'characterSets'); ?>
-					</a>
-				</li>
-				<li class="nowrap">
-					<a class="icon" href="#information/storageEngines">
-						<com:Icon name="engine" size="16" />
-						<?php echo Yii::t('database', 'storageEngines'); ?>
-					</a>
-				</li>
-				<li class="nowrap">
-					<a class="icon" href="#information/processes">
-						<com:Icon name="process" size="16" />
-						<?php echo Yii::t('database', 'processes'); ?>
-					</a>
-				</li>
-			</ul>
-		</div>
+<div class="sidebarHeader"><a class="icon"> <com:Icon name="info"
+	size="24" /> <span>Information</span> </a></div>
+<div class="sidebarContent">
+<ul id="statusList" class="list icon">
+	<li class="nowrap"><a class="icon" href="#information/status"> <com:Icon
+		name="chart" size="16" /> <?php echo Yii::t('core', 'status'); ?> </a>
+	</li>
+	<li class="nowrap"><a class="icon" href="#information/variables"> <com:Icon
+		name="variable" size="16" /> <?php echo Yii::t('database', 'variables'); ?>
+	</a></li>
+	<li class="nowrap"><a class="icon" href="#information/characterSets"> <com:Icon
+		name="charset" size="16" /> <?php echo Yii::t('database', 'characterSets'); ?>
+	</a></li>
+	<li class="nowrap"><a class="icon" href="#information/storageEngines">
+	<com:Icon name="engine" size="16" /> <?php echo Yii::t('database', 'storageEngines'); ?>
+	</a></li>
+	<li class="nowrap"><a class="icon" href="#information/processes"> <com:Icon
+		name="process" size="16" /> <?php echo Yii::t('database', 'processes'); ?>
+	</a></li>
+</ul>
+</div>
 
-	</div>
-  </div>
-  <div class="ui-layout-center" id="content">
-  	<?php echo $content; ?>
-  </div>
+</div>
+</div>
+<div class="ui-layout-center" id="content"><?php echo $content; ?></div>
 
 </body>
 </html>

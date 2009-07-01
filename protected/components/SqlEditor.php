@@ -1,5 +1,8 @@
 <?php
 
+// @todo (rponudic) check this...
+Yii::import('application.extensions.EditArea.*');
+
 /**
  * An editor to edit sql statements.
  *
@@ -7,7 +10,7 @@
  * or an editor with syntax highlighting etc. (We are still looking for a
  * good solution on this problem).
  */
-class SqlEditor extends CInputWidget
+class SqlEditor extends EditArea
 {
 
 	public $width = "100%";
@@ -22,11 +25,21 @@ class SqlEditor extends CInputWidget
 	public function run()
 	{
 
-		list($name, $id) = $this->resolveNameID();
-		$this->htmlOptions['id'] = $id;
-		$this->htmlOptions['style'] = "width: " . $this->width . "; height: " . $this->height;
-
-		echo CHtml::textArea($name, $this->value, $this->htmlOptions);
+		if(false)
+		{
+			list($name, $id) = $this->resolveNameID();
+			$this->htmlOptions['id'] = $id;
+			$this->htmlOptions['style'] = "width: " . $this->width . "; height: " . $this->height;
+	
+			echo CHtml::textArea($name, $this->value, $this->htmlOptions);
+			
+		}
+		else
+		{
+			
+			parent::run();
+			
+		}
 
 	}
 

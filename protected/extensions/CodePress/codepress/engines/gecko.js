@@ -130,7 +130,7 @@ CodePress = {
 	},
 	
 	snippets : function(evt) {
-		var snippets = Language.snippets;	
+		/*var snippets = Language.snippets;	
 		var trigger = this.getLastWord();
 		var range = window.getSelection().getRangeAt(0);
 
@@ -141,8 +141,23 @@ CodePress = {
 		range.insertNode(ele);
 		range.setStartAfter(ele);
 		
-		evt.preventDefault();
-	},
+		evt.preventDefault();*/
+		
+		
+		var snippets = Language.snippets;	
+		var trigger = this.getLastWord();
+		for (var i=0; i<snippets.length; i++) {
+			if(snippets[i].input == trigger) {
+				var content = snippets[i].output.replace(/</g,'&lt;');
+				content = content.replace(/>/g,'&gt;');
+				if(content.indexOf('$0')<0) content += cc;
+				else content = content.replace(/\$0/,cc);
+				content = content.replace(/\n/g,'<br>');
+				var pattern = new RegExp(trigger+cc,'gi');
+				evt.preventDefault(); // prevent the tab key from being added
+				this.syntaxHighlight('snippets',pattern,content);
+			}
+		}	},
 	
 	readOnly : function() {
 		document.designMode = (arguments[0]) ? 'off' : 'on';
