@@ -42,7 +42,7 @@ function setupEditAreaAutoGrow(_id){
         
         // set the new height of the iframe 
         // lineheight * number of lines + 25px savety-height + the height of the two toolbars
-        var newHeight = (lineHeight * lines) + 25 +
+        var newHeight = (lineHeight * lines)+18+
         toolbar1.offsetHeight +
         toolbar2.offsetHeight;
         
