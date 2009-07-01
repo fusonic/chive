@@ -119,13 +119,13 @@ body,html,table,form,textarea {
 #line_number {
 	position: absolute;
 	overflow: hidden;
-	border-right: solid black 1px;
+	border-right: solid #CCCCCC 1px;
 	z-index: 8;
 	width: 38px;
 	padding: 0 5px 0 0;
 	margin: 0 0 0 -45px;
 	text-align: right;
-	color: #AAAAAA;
+	color: #CCCCCC;
 }
 
 #test_font_size {
@@ -265,7 +265,7 @@ div#area_search_replace  #area_search_msg {
 #toolbar_1 {
 	-moz-border-radius-topleft: 4px;
 	-moz-border-radius-topright: 4px;
-}
+	}
 
 #toolbar_2 {
 	-moz-border-radius-bottomleft: 4px;
