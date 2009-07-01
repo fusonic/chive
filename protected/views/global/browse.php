@@ -5,7 +5,7 @@
 
 <?php if($model->showInput) { ?>
 
-	<?php echo CHtml::form(BASURL . '/' . $model->formTarget, 'post', array('id' => 'queryForm')); ?>
+	<?php echo CHtml::form(BASEURL . '/' . $model->formTarget, 'post', array('id' => 'queryForm')); ?>
 	<table style="width: 100%;">
 		<tr>
 			<td style="width: 80%;">
@@ -139,7 +139,7 @@
 									<span><?php echo is_null($value) ? '<span class="null">NULL</span>' : (Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $this->schema . '.' .  $this->table) ? str_replace(array('<','>'),array('&lt;','&gt;'),$value) : StringUtil::cutText(str_replace(array('<','>'),array('&lt;','&gt;'),$value), 100)); ?></span>
 								<?php } ?>
 							</td>
-							<?php if($model->getIsEditable() && (in_array($key, $model->getTable()->primaryKey) || $model->getTable()->primaryKey === null)) { ?>
+							<?php if($model->getIsEditable() && (in_array($key, (array)$model->getTable()->primaryKey) || $model->getTable()->primaryKey === null)) { ?>
 								<?php $keyData[$i][$key] = is_null($value) ? null : $value; ?>
 							<?php } ?>
 						<?php } ?>

@@ -134,12 +134,7 @@ class BrowsePage extends CModel
 					*/
 					
 					// Apply sort
-					$order = $sqlQuery->getOrder();
-					
-					if(!$order)
-					{
-						$sqlQuery->applySort($sort->getOrder(), true);
-					}
+					$sqlQuery->applySort($sort->getOrder(), true);
 					
 
 				}
@@ -184,7 +179,8 @@ class BrowsePage extends CModel
 				$this->originalQueries[] = $sqlQuery->getOriginalQuery();
 				
 
-				$pages->postVars = array(
+				$pages->postVars = 
+				$sort->postVars = array(
 					'query' => $sqlQuery->getOriginalQuery()
 				);
 				
@@ -215,6 +211,7 @@ class BrowsePage extends CModel
 						{
 							$columns = array_keys($data[0]);
 						}
+						
 
 						$isSent = true;
 						
