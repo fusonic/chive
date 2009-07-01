@@ -260,12 +260,13 @@ div#area_search_replace  #area_search_msg{
 	/*height: 21px; */
 	margin: 0; 
 	padding: 0;
-	background-color: #ECE9D8;
+	background-color: #FFFFFF;
 	text-align: center;
 }
 
 .area_toolbar, .area_toolbar table{
 	font: 11px sans-serif;
+	
 }
 
 .area_toolbar img{

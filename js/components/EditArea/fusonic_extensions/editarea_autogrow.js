@@ -35,8 +35,8 @@ function setupEditAreaAutoGrow(_id){
     
     var lineHeight = parseInt(frame.contentWindow.document.getElementById('line_1').offsetHeight);
     
-    function autoGrowHandler(){
-			
+    var autoGrowHandler = function() {
+    
         // get the number of lines
         var lines = parseInt(nbLineDiv.innerHTML);
         
@@ -58,23 +58,24 @@ function setupEditAreaAutoGrow(_id){
         frame.style.height = newHeight + "px";
     }
     
+    //sets up an interval and calls all 500 milliseconds the autoGrowHandler()
+    setInterval(autoGrowHandler, 500);
+    
     // calls the autoGrowHandler 
     // to set the correct editor height at the start
     autoGrowHandler();
     
     if (document.addEventListener) {
-   
+    
         frame.contentWindow.document.addEventListener('keyup', autoGrowHandler, true);
-        frame.contentWindow.document.getElementById('undo').addEventListener('onmousedown', autoGrowHandler, true);
-        frame.contentWindow.document.getElementById('redo').addEventListener('onmousedown', autoGrowHandler, true);
+        
     }
     else 
         if (document.attachEvent) {
         
-		
+        
             frame.contentWindow.document.attachEvent('onkeyup', autoGrowHandler, true);
-            frame.contentWindow.document.getElementById('undo').addEventListener('onmousedown', autoGrowHandler, true);
-            frame.contentWindow.document.getElementById('redo').addEventListener('onmousedown', autoGrowHandler, true);
+            
         }
     
 }

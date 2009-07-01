@@ -84,7 +84,6 @@ class BrowsePage extends CModel
 
 			$splitter = new SqlSplitter($this->query);
 			$queries = $splitter->getQueries();
-
 		}
 
 

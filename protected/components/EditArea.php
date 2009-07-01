@@ -19,20 +19,21 @@ class EditArea extends CInputWidget
 	public function init()
 	{
 		list($name, $this->id) = $this->resolveNameID();
-		
+
 		$this->id .= StringUtil::getRandom(5);
-		
+
 		// Publish CodePress
-		/*		
+		/*
 		if($autogrow == true)
 		{
-			$cs->registerScriptFile($this->_editAreaPath . DIRECTORY_SEPARATOR . "fusonic_extensions/editarea_autogrow.js");
+		$cs->registerScriptFile($this->_editAreaPath . DIRECTORY_SEPARATOR . "fusonic_extensions/editarea_autogrow.js");
 		}
 		*/
-		
+
 		$cs = Yii::app()->getClientScript();
 
 		$jsInit = '
+		
 			editAreaLoader.init({
 			 id : "'.$this->id.'"		// textarea id
 			,syntax: "'.$this->syntax.'"			// syntax to be uses for highlighting
@@ -48,10 +49,18 @@ class EditArea extends CInputWidget
 				
 			});
 			
-						
+
+			$("#' . $this->id . '").closest("form").submit(function() {
+				var content = editAreaLoader.getValue("'.$this->id.'");
+				$("#' . $this->id . '").val(content);
+			});
+		
+			
+				
+				
 			';
 
-		$cs->registerScript('Yii.EditArea.' . $this->id, $jsInit);
+		$cs->registerScript('Yii.EditArea.' . $this->id, $jsInit, CClientScript::POS_BEGIN);
 
 		parent::init();
 	}
