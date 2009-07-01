@@ -11,12 +11,12 @@
 <link rel="stylesheet" type="text/css" href="<?php echo BASEURL; ?>/css/patch/ie7.css"/>
 <![endif]-->
 
-<link rel="shortcut icon" href="<?php echo Yii::app()->baseUrl; ?>/images/favicon.ico" />
+<link rel="shortcut icon" href="<?php echo BASEURL; ?>/images/favicon.ico" />
 
 <script type="text/javascript">
 // Set global javascript variables
-var baseUrl = '<?php echo Yii::app()->baseUrl; ?>';
-var iconPath = '<?php echo Yii::app()->baseUrl . '/images/icons/fugue'; ?>';
+var baseUrl = '<?php echo BASEURL; ?>';
+var iconPath = '<?php echo BASEURL . '/images/icons/fugue'; ?>';
 </script>
 
 <?php

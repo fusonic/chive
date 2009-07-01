@@ -100,6 +100,9 @@ class Sort extends CComponent
 	public $separators=array('-','.');
 
 	private $_db;
+	private static $generateJs = true;
+	
+	public $postVars = array();
 
 	private $_directions;
 
@@ -121,6 +124,7 @@ class Sort extends CComponent
 	{
 
 		$directions=$this->getDirections();
+		
 		if(empty($directions))
 			$order=$this->defaultOrder;
 		else
@@ -134,11 +138,14 @@ class Sort extends CComponent
 				else
 					$attribute=$schema->quoteColumnName($attribute);
 
-				$orders[$attribute] = $descending? 'DESC' : 'ASC';
+				$orders[$attribute] = $descending ? 'DESC' : 'ASC';
 			}
+			
 			return $orders;
 		}
 
+		
+		
 
 	}
 
@@ -171,8 +178,43 @@ class Sort extends CComponent
 			$label = $attribute;
 
 		$url=$this->createUrl(Yii::app()->getController(),$directions);
+		
+		if($this->postVars)
+		{
+			if(self::$generateJs)
+			{
+				$data = json_encode($this->postVars);
+				
+				$script = '
+					function setSort(_field, _direction) {
+					
+						var data = ' . $data . ';
+						data.'.$this->sortVar.' = _field + (_direction ? "." + _direction : ""); 
+					
+						$.post("'.BASEURL . '/' . $this->route .'", data, function(responseText) {
+							$("div.ui-layout-center").html(responseText);
+							init();
+						});
+					
+					}
+				';
+				
+				Yii::app()->getClientScript()->registerScript('Sort_setSort', $script);
+				
+				self::$generateJs = false;
+			}
+			
+			return CHtml::link($label, 'javascript:void(0)', array(
+				'onclick' => 'setSort("' . $attribute . '"' . ($descending ? ', "desc"' : '') . ');',
+			));
+			
+		}
+		else
+		{
+			return $this->createLink($attribute,$label,$url,$htmlOptions);
+		}
+		
 
-		return $this->createLink($attribute,$label,$url,$htmlOptions);
 	}
 
 	/**
@@ -186,9 +228,9 @@ class Sort extends CComponent
 		if($this->_directions===null)
 		{
 			$this->_directions=array();
-			if(isset($_GET[$this->sortVar]))
+			if(isset($_REQUEST[$this->sortVar]))
 			{
-				$attributes=explode($this->separators[0],$_GET[$this->sortVar]);
+				$attributes=explode($this->separators[0],$_REQUEST[$this->sortVar]);
 				foreach($attributes as $attribute)
 				{
 					if(($pos=strpos($attribute,$this->separators[1]))!==false)
@@ -210,7 +252,7 @@ class Sort extends CComponent
 				}
 			}
 		}
-
+		
 		return $this->_directions;
 	}
 
@@ -231,7 +273,7 @@ class Sort extends CComponent
 				$attribute=$this->attributes[$attribute];
 			$sorts[]=$descending ? $attribute.$this->separators[1].'desc' : $attribute;
 		}
-		$params=$_GET;
+		$params=$_REQUEST;
 		$params[$this->sortVar]=implode($this->separators[0],$sorts);
 		return $controller->createUrl($this->route,$params);
 	}
@@ -248,17 +290,6 @@ class Sort extends CComponent
 	protected function validateAttribute($attribute)
 	{
 		return true;
-
-		if(empty($this->attributes))
-			$attributes=CActiveRecord::model($this->modelClass)->attributeNames();
-		else
-			$attributes=$this->attributes;
-		foreach($attributes as $name=>$alias)
-		{
-			if($alias===$attribute)
-				return is_string($name) ? $name : $alias;
-		}
-		return false;
 	}
 
 	/**

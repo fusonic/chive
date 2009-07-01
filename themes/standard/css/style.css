@@ -215,10 +215,11 @@
    * Breadcrumb
    */
   ul.breadCrumb li {
-  	/*background: url('../images/breadcrumb/bg.png') top right;*/
-  	background: #FFF url(../images/table/head-bg.png);
+  	background: url('../images/breadcrumb/bg.png') top right;
   	padding-left: 10px;
-  	padding-right: 10px;
+  	padding-right: 15px;
+  	min-width: 130px;
+  	text-align: left !important;
   } 
   
   ul.breadCrumb li:hover {

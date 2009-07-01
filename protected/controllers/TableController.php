@@ -103,7 +103,7 @@ class TableController extends Controller
 		$browsePage->table = $this->table;
 		$browsePage->db = $this->db;
 		$browsePage->route = 'schema/' . $this->schema . '/tables/' . $this->table . '/browse';
-		$browsePage->formTarget = 'schema/' . $this->schema . '/tables/' . $this->table . '/sql';
+		$browsePage->formTarget = 'schema/' . $this->schema . '/tables/' . $this->table . '/browse';
 		
 		if($_query)
 		{
