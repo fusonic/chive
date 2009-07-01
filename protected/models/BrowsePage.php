@@ -60,8 +60,6 @@ class BrowsePage extends CModel
 
 	public function run()
 	{
-		predie($_POST);
-		
 		$response = new AjaxResponse();
 		
 		$profiling = Yii::app()->user->settings->get('profiling');
@@ -104,8 +102,8 @@ class BrowsePage extends CModel
 
 					// Pagination
 					$pages = new Pagination();
-					$pageSize = $pages->setupPageSize('pageSize', 'schema.table.browse');
 					$pages->route = $this->route;
+					$pageSize = $pages->setupPageSize('pageSize', 'schema.table.browse');
 					
 					// Sorting
 					$sort = new Sort($this->db);
@@ -113,31 +111,30 @@ class BrowsePage extends CModel
 					$sort->route = $this->route;
 
 					$sqlQuery->applyCalculateFoundRows();
-
-					$offset = ($_REQUEST['page'] ? $_REQUEST['page'] : 1) * $pageSize - $pageSize;
-					$sqlQuery->applyLimit($pageSize, $offset, true);
 					
-					/*
-					 * Old version
-					if($limit)
+					$limit = $sqlQuery->getLimit();
+					
+					if($_REQUEST['page'])
 					{
-						$offset = ($_REQUEST['page'] ? $_REQUEST['page'] : 1) * $pageSize - $pageSize;
+						$offset = $_REQUEST['page'] * $pageSize - $pageSize;
 						$sqlQuery->applyLimit($pageSize, $offset, true);
-						
-						
 					}
-					else
+					
+					if($limit && !$_REQUEST[$pages->pageSizeVar])
 					{
-						$pages->setPageSize($limit['Length']);
-						$pageSize = $limit['Length'];
-						Yii::app()->user->settings->set('pageSize', $limit['Length'], 'schema.table.browse');
+						$_REQUEST[$pages->pageSizeVar] = $limit['Length'];
+						$pageSize = $pages->setupPageSize('pageSize', 'schema.table.browse');
 					}
-					*/
+					elseif(!$limit)
+					{
+						$offset = 0;
+						$sqlQuery->applyLimit($pageSize, $offset, true);
+					}
+					
 					
 					// Apply sort
 					$sqlQuery->applySort($sort->getOrder(), true);
 					
-
 				}
 				
 				// OTHER
@@ -178,7 +175,6 @@ class BrowsePage extends CModel
 
 				$this->executedQueries[] = $sqlQuery->getQuery();
 				$this->originalQueries[] = $sqlQuery->getOriginalQuery();
-				
 
 				$pages->postVars = 
 				$sort->postVars = array(

@@ -7,104 +7,15 @@
  * @copyright Copyright &copy; 2008-2009 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
-
-/**
- * CSort represents information relevant to sorting.
- *
- * When data needs to be sorted according to one or several attributes,
- * we can use CSort to represent the sorting information and generate
- * appropriate hyperlinks that can lead to sort actions.
- *
- * CSort is designed to be used together with {@link CActiveRecord}.
- * When creating a CSort instance, you need to specify {@link modelClass}.
- * You can use CSort to generate hyperlinks by calling {@link link}.
- * You can also use CSort to modify a {@link CDbCriteria} instance so that
- * it can cause the query results to be sorted according to the specified
- * attributes.
- *
- * CSort is primarily used for active record involving a single DB table.
- * In order to use it with relational active record, special care needs to be taken.
- * We use an example to illustrate this use case. Assume 'Post' is the main
- * active record class, and 'author' is one of its related attributes. We would
- * like to sort by post's title as well as its author's name. First, we need
- * to define aliases for the two attributes by setting the {@link attributes} property:
- * <pre>
- * array(
- *     'title',
- *     'author.name'=>'authorName',
- * )
- * </pre>
- *
- * We also need to modify the 'author' relation in 'Post' class and explicitly
- * specify the 'alias' option with value 'author':
- * <pre>
- * 'author'=>array(self::BELONGS_TO, 'User', 'alias'=>'author')
- * </pre>
- *
- * Finally, we can use the following code to generate hyperlinks:
- * <pre>
- * echo CSort::link('title');
- * echo CSort::link('author.name');
- * </pre>
- *
- * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CSort.php 699 2009-02-17 21:25:52Z qiang.xue $
- * @package system.web
- * @since 1.0.1
- */
-class Sort extends CComponent
+class Sort extends CSort
 {
-	/**
-	 * @var boolean whether the sorting can be applied to multiple attributes simultaneously.
-	 * Defaults to true. If false, each time the data can only be sorted by one attribute.
-	 */
-	public $multiSort=true;
-	/**
-	 * @var string the class name of data models that need to be sorted.
-	 * This should be a child class of {@link CActiveRecord}.
-	 */
-	public $modelClass;
-	/**
-	 * @var array list of attributes that are allowed to be sorted.
-	 * For example, array('user_id','create_time') would specify that only 'user_id'
-	 * and 'create_time' can be sorted.
-	 * Defaults to null, meaning all attributes of the {@link modelClass} can be sorted.
-	 * This property can also be used to specify attribute aliases that should appear
-	 * in the 'sort' GET parameter in place of the original attribute names.
-	 * In this case, the aliases should be array values while the attribute names
-	 * should be the corresponding array keys. Do not use '-' and '.' in the aliases
-	 * as they are used as {@link separators}.
-	 */
-	public $attributes;
-	/**
-	 * @var string the name of the GET parameter that specifies which attributes to be sorted
-	 * in which direction. Defaults to 'sort'.
-	 */
-	public $sortVar='sort';
-	/**
-	 * @var string the default order that should be applied to the query criteria when
-	 * the current request does not specify any sort.
-	 */
-	public $defaultOrder;
-	/**
-	 * @var string the route (controller ID and action ID) for generating the sorted contents.
-	 * Defaults to empty string, meaning using the currently requested route.
-	 */
-	public $route='';
-	/**
-	 * @var array separators used in the generated URL. This must be an array consisting of
-	 * two elements. The first element specifies the character separating different
-	 * attributes, while the second element specifies the character separating attribute name
-	 * and the corresponding sort direction. Defaults to array('-','.').
-	 */
-	public $separators=array('-','.');
 
 	private $_db;
+	private $_directions;
 	private static $generateJs = true;
 	
 	public $postVars = array();
-
-	private $_directions;
+	
 
 	/**
 	 * Constructor.
@@ -117,8 +28,7 @@ class Sort extends CComponent
 	}
 
 	/**
-	 * Modifies the query criteria by changing its ORDER BY property.
-	 * @param CDbCriteria the query criteria
+	 * @see 
 	 */
 	public function getOrder()
 	{
@@ -129,23 +39,17 @@ class Sort extends CComponent
 			$order=$this->defaultOrder;
 		else
 		{
-			$orders=array();
+			$order=array();
 			$schema = $this->_db->getSchema();
-			foreach($directions as $attribute=>$descending)
+			foreach($directions as $attribute=>$direction)
 			{
-				if(($pos=strpos($attribute,'.'))!==false)
-					$attribute=$schema->quoteTableName(substr($attribute,0,$pos)).'.'.$schema->quoteColumnName(substr($attribute,$pos+1));
-				else
-					$attribute=$schema->quoteColumnName($attribute);
-
-				$orders[$attribute] = $descending ? 'DESC' : 'ASC';
+				$attribute=$schema->quoteColumnName($attribute);
+				$order[$attribute] = strtoupper($direction);
 			}
 			
-			return $orders;
 		}
-
 		
-		
+		return $order;
 
 	}
 
@@ -164,15 +68,16 @@ class Sort extends CComponent
 		$directions=$this->getDirections();
 		if(isset($directions[$attribute]))
 		{
-			$descending=!$directions[$attribute];
+			$direction= $directions[$attribute] == 'asc' ? 'desc' : 'asc';
 			unset($directions[$attribute]);
 		}
 		else
-			$descending=false;
+			$direction = 'asc';
+			
 		if($this->multiSort)
-			$directions=array_merge(array($attribute=>$descending),$directions);
+			$directions=array_merge(array($attribute=>$direction),$directions);
 		else
-			$directions=array($attribute=>$descending);
+			$directions=array($attribute=>$direction);
 
 		if($label===null)
 			$label = $attribute;
@@ -189,7 +94,7 @@ class Sort extends CComponent
 					function setSort(_field, _direction) {
 					
 						var data = ' . $data . ';
-						data.'.$this->sortVar.' = _field + (_direction ? "." + _direction : ""); 
+						data.'.$this->sortVar.' = _field + "." + _direction; 
 					
 						$.post("'.BASEURL . '/' . $this->route .'", data, function(responseText) {
 							$("div.ui-layout-center").html(responseText);
@@ -205,7 +110,7 @@ class Sort extends CComponent
 			}
 			
 			return CHtml::link($label, 'javascript:void(0)', array(
-				'onclick' => 'setSort("' . $attribute . '"' . ($descending ? ', "desc"' : '') . ');',
+				'onclick' => 'setSort("' . $attribute . '", "' . $direction . '");',
 			));
 			
 		}
@@ -233,22 +138,28 @@ class Sort extends CComponent
 				$attributes=explode($this->separators[0],$_REQUEST[$this->sortVar]);
 				foreach($attributes as $attribute)
 				{
-					if(($pos=strpos($attribute,$this->separators[1]))!==false)
+					if(($pos=strrpos($attribute,$this->separators[1]))!==false)
 					{
-						$descending=substr($attribute,$pos+1)==='desc';
-						$attribute=substr($attribute,0,$pos);
+						$direction = substr($attribute,$pos+1);
+						
+						if($direction != 'desc' && $direction != 'asc')
+						{
+							$direction = 'asc';
+						}
+						else
+							$attribute=substr($attribute,0,$pos);
 					}
 					else
-						$descending=false;
+						$order = 'asc';
 
 					if(($this->validateAttribute($attribute))!==false) {
-						$this->_directions[$attribute]=$descending;
+						$this->_directions[$attribute]=$direction;
 					}
 				}
 				if(!$this->multiSort)
 				{
-					foreach($this->_directions as $attribute=>$descending)
-						return $this->_directions=array($attribute=>$descending);
+					foreach($this->_directions as $attribute=>$direction)
+						return $this->_directions=array($attribute=>$direction);
 				}
 			}
 		}
@@ -267,11 +178,11 @@ class Sort extends CComponent
 	public function createUrl($controller,$directions)
 	{
 		$sorts=array();
-		foreach($directions as $attribute=>$descending)
+		foreach($directions as $attribute=>$direction)
 		{
 			if(is_array($this->attributes) && isset($this->attributes[$attribute]))
 				$attribute=$this->attributes[$attribute];
-			$sorts[]=$descending ? $attribute.$this->separators[1].'desc' : $attribute;
+			$sorts[]= $attribute.$this->separators[1].$direction;
 		}
 		$params=$_REQUEST;
 		$params[$this->sortVar]=implode($this->separators[0],$sorts);

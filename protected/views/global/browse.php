@@ -14,8 +14,8 @@
 				    'allowToggle' => false,
 					'htmlOptions' => array('name' => 'query'),
 					'value' => $model->getOriginalQueries(),
+					'allowToggle' => true,
 				)); ?>
-			
 				<?php /*<textarea name="query" style="width: 99%; height: 90px;" id="query"><?php echo $model->getOriginalQueries(); ?></textarea> */ ?>
 				<div class="buttons">
 					<a href="javascript:void(0);" onclick="$('#queryForm').submit();" class="icon button">
