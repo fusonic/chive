@@ -18,7 +18,7 @@
 			
 				<?php /*<textarea name="query" style="width: 99%; height: 90px;" id="query"><?php echo $model->getOriginalQueries(); ?></textarea> */ ?>
 				<div class="buttons">
-					<a href="javascript:void(0);" onclick="$('form').submit();" class="icon button">
+					<a href="javascript:void(0);" onclick="$('#queryForm').submit();" class="icon button">
 						<com:Icon size="16" name="execute" text="core.execute" />
 						<span><?php echo Yii::t('core', 'execute'); ?></span>
 					</a>

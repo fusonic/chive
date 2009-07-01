@@ -60,6 +60,8 @@ class BrowsePage extends CModel
 
 	public function run()
 	{
+		predie($_POST);
+		
 		$response = new AjaxResponse();
 		
 		$profiling = Yii::app()->user->settings->get('profiling');
