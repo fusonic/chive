@@ -56,7 +56,8 @@ $scriptFiles = array(
 	'js/views/global/browse.js',
 	'js/views/table/structure.js',
 	'js/views/view/general.js',
-	'protected/extensions/CodePress/codepress/codepress.js',		// @todo (rponudic) change this to valid path
+	'js/components/EditArea/edit_area_full.js',
+    'js/components/EditArea/fusonic_extensions/editarea_autogrow.js',
 	'assets/lang_js/' . Yii::app()->getLanguage() . '.js',
 );
 foreach($scriptFiles AS $file)

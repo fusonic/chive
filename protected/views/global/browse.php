@@ -9,7 +9,14 @@
 	<table style="width: 100%;">
 		<tr>
 			<td style="width: 80%;">
-				<textarea name="query" style="width: 99%; height: 90px;" id="query"><?php echo $model->getOriginalQueries(); ?></textarea>
+				<?php $this->widget("SqlEditor", array(
+					'autogrow' => true,
+				    'allowToggle' => false,
+					'htmlOptions' => array('name' => 'query'),
+					'value' => $model->getOriginalQueries(),
+				)); ?>
+			
+				<?php /*<textarea name="query" style="width: 99%; height: 90px;" id="query"><?php echo $model->getOriginalQueries(); ?></textarea> */ ?>
 				<div class="buttons">
 					<a href="javascript:void(0);" onclick="$('form').submit();" class="icon button">
 						<com:Icon size="16" name="execute" text="core.execute" />
