@@ -10,6 +10,7 @@
 		<tr>
 			<td style="width: 80%;">
 				<?php $this->widget("SqlEditor", array(
+				    'id' => 'query',
 					'autogrow' => true,
 				    'allowToggle' => false,
 					'htmlOptions' => array('name' => 'query'),
@@ -52,6 +53,13 @@
 						<com:Icon size="16" name="square_red" />
 					<?php } ?>
 					<span><?php echo Yii::t('core', 'showFullColumnContent'); ?></span>
+				</a>
+				<br/><br/>
+				<a class="icon button" href="javascript:void(0);" onclick="toggleEditor('query');">
+					
+						<com:Icon size="16" name="square_green" text="core.on" />
+					
+					<span><?php echo "Toggle editor" ?></span>
 				</a>
 			</td>
 		</tr>

@@ -15,8 +15,7 @@ function setupEditAreaAutoGrow(_id){
     
     // getting the minheight, saved in the textarea's style attribute
     var minHeight = parseInt($('#' + _id).css('min-height'));
-    
-    
+       
     // setting maxheight of the iframe
     $('#frame_' + _id).css('max-height', maxHeight);
     
@@ -34,15 +33,19 @@ function setupEditAreaAutoGrow(_id){
     var nbLineDiv = frame.contentWindow.document.getElementById('nbLine');
     
     var lineHeight = parseInt(frame.contentWindow.document.getElementById('line_1').offsetHeight);
+  
+    // set overflow-y of the resultDiv auto
+	    // resultDiv.style.border = "1px solid black";
+    //$(resultDiv).css('border','1px solid black;');   
     
-    var autoGrowHandler = function() {
+    var autoGrowHandler = function(){
     
         // get the number of lines
         var lines = parseInt(nbLineDiv.innerHTML);
         
         // set the new height of the iframe 
         // lineheight * number of lines + 25px savety-height + the height of the two toolbars
-        var newHeight = (lineHeight * lines)+18+
+        var newHeight = (lineHeight * lines) + 18 +
         toolbar1.offsetHeight +
         toolbar2.offsetHeight;
         
@@ -51,11 +54,18 @@ function setupEditAreaAutoGrow(_id){
             newHeight = minHeight;
         }
         
-        // set overflow-y of the resultDiv auto
-        resultDiv.style.overflowY = "auto";
         
         // set the height of the editor iframe 
         frame.style.height = newHeight + "px";
+        
+        // sets the overflow att of the result Div to auto if 
+        // the new textarea height is greater then its max height
+        if (newHeight > maxHeight) {
+            resultDiv.style.overflowY = "auto";
+        }
+        else {
+            resultDiv.style.overflowY = "";
+        }
     }
     
     //sets up an interval and calls all 500 milliseconds the autoGrowHandler()
@@ -66,16 +76,32 @@ function setupEditAreaAutoGrow(_id){
     autoGrowHandler();
     
     if (document.addEventListener) {
-    
         frame.contentWindow.document.addEventListener('keyup', autoGrowHandler, true);
-        
     }
     else 
         if (document.attachEvent) {
-        
-        
             frame.contentWindow.document.attachEvent('onkeyup', autoGrowHandler, true);
-            
         }
     
+}
+
+/**
+ * this function sets the overflow attribute to auto if the
+ * editarea is not allowed to autogrow
+ * its called by the EditArea EA_load_callback
+ * @param: _id =  id of the textarea
+ * @return void
+ */
+function setoverflow(_id){
+    // select the iframe
+    var frame = $('#frame_' + _id).get(0);
+    var resultDiv = frame.contentWindow.document.getElementById('result');
+    resultDiv.style.overflowY = "auto";
+}
+
+
+function toggleEditor(id){
+
+eAL.toggle(id);
+
 }

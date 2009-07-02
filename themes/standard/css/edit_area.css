@@ -14,6 +14,7 @@ body,html,table,form,textarea {
 	border: 1px solid #CCCCCC;
 	background-color: #F7F7F7;
 	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
 }
 
 #editor { /*border: solid #888 1px;*/
@@ -22,11 +23,11 @@ body,html,table,form,textarea {
 
 #result {
 	z-index: 4;
-	/*overflow-x: auto;
-	overflow-y: scroll;*/ /*border-top: solid #888 1px;*/
+	/*overflow-y: scroll;*/ /*border-top: solid #888 1px;*/
 	/*border-bottom: solid #888 1px;*/
 	position: relative;
 	clear: both;
+		
 }
 
 #result.empty {
@@ -253,7 +254,7 @@ div#area_search_replace  #area_search_msg {
 /* area_toolbar_top */
 .area_toolbar {
 	width: 100%;
-	/*height: 21px; */
+	height: 21px; 
 	margin: 0;
 	padding: 0;
 	text-align: center;
@@ -334,11 +335,11 @@ table.statusbar {
 /* toolbar buttons */
 .editAreaButtonNormal,.editAreaButtonOver,.editAreaButtonDown,.editAreaSeparator,.editAreaSeparatorLine,.editAreaButtonDisabled,.editAreaButtonSelected
 	{
-	border: 0;
 	margin: 0;
+	border: 0;
 	padding: 0;
 	background: transparent;
-	margin-top: 0;
+	margin-top: 2px;
 	margin-left: 1px;
 	padding: 0;
 }
