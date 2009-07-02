@@ -58,7 +58,7 @@ $scriptFiles = array(
 	'js/views/table/structure.js',
 	'js/views/view/general.js',
 	'js/components/EditArea/edit_area_full.js',
-    'js/components/EditArea/fusonic_extensions/editarea_autogrow.js',
+    'js/components/EditArea/fusonic_extensions/editarea.js',
 	'assets/lang_js/' . Yii::app()->getLanguage() . '.js',
 );
 foreach($scriptFiles AS $file)

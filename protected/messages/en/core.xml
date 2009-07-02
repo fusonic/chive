@@ -72,4 +72,5 @@
 	
 	<entry id="insertAndReturnToThisPage">Insert and return to this page</entry>
 	<entry id="setNull">Set NULL</entry>
+	<entry id="toggleEditor">Toggle editor</entry>
 </category>

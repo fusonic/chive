@@ -59,7 +59,7 @@
 					<?php } else { ?>
 						<com:Icon size="16" name="square_red" />
 					<?php } ?>
-					<span><?php echo "Toggle editor" ?></span>
+					<span><?php echo Yii::t('core', 'toggleEditor'); ?></span>
 				</a>
 			</td>
 		</tr>

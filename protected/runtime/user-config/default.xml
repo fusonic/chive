@@ -5,6 +5,7 @@
 	<sidebarState>open</sidebarState>
 	<sidebarWidth>250</sidebarWidth>
 	<profiling>0</profiling>
+	<sqlEditorOn>1</sqlEditorOn>
 	<pageSize scope="schemata">50</pageSize>
 	<pageSize scope="schema.tables">50</pageSize>
 	<pageSize scope="schema.views">50</pageSize>
