@@ -14,8 +14,7 @@
 					'autogrow' => true,
 				   	'htmlOptions' => array('name' => 'query'),
 					'value' => $model->getOriginalQueries(),
-					'allowToggle' => true,
-				)); ?>
+					)); ?>
 				<?php /*<textarea name="query" style="width: 99%; height: 90px;" id="query"><?php echo $model->getOriginalQueries(); ?></textarea> */ ?>
 				<div class="buttons">
 					<a href="javascript:void(0);" onclick="$('#queryForm').submit();" class="icon button">
@@ -54,10 +53,12 @@
 					<span><?php echo Yii::t('core', 'showFullColumnContent'); ?></span>
 				</a>
 				<br/><br/>
-				<a class="icon button" href="javascript:void(0);" onclick="toggleEditor('query');">
-					
-						<com:Icon size="16" name="square_green" text="core.on" />
-					
+				<a id="aToggleEditor" class="icon button" href="javascript:void(0);" onclick="toggleEditor('query');">
+					<?php if( Yii::app()->user->settings->get('sqlEditorOn') == '1') {?>
+						<com:Icon size="16" name="square_green" />
+					<?php } else { ?>
+						<com:Icon size="16" name="square_red" />
+					<?php } ?>
 					<span><?php echo "Toggle editor" ?></span>
 				</a>
 			</td>

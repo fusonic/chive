@@ -26,6 +26,9 @@ class EditArea extends CInputWidget
 		$autogrow = ($this->autogrow  ? 'setupEditAreaAutoGrow' : 'setoverflow');
 
 
+		$display = (Yii::app()->user->settings->get('sqlEditorOn') == '1' ? 'onload' :'later');
+
+
 
 		// Publish CodePress
 		/*
@@ -33,6 +36,8 @@ class EditArea extends CInputWidget
 		{
 		$cs->registerScriptFile($this->_editAreaPath . DIRECTORY_SEPARATOR . "fusonic_extensions/editarea_autogrow.js");
 		}
+
+
 		*/
 
 		$cs = Yii::app()->getClientScript();
@@ -52,13 +57,13 @@ class EditArea extends CInputWidget
 			,show_line_colors: true
 			,toolbar: " '.$this->toolbar.'"
 			,word_wrap: "'.$this->wordWrap.'"
-			,allow_toggle: "false"
+			,allow_toggle: false
 			,EA_load_callback: "'.$autogrow.'"
 			,min_height:"'.$this->minHeight.'"
 			,allow_resize: "'.$this->allowResize.'"
 			,min_width:"'.$this->minWidth.'"
-				
-			});
+			,display: "'.$display.'"
+				});
 			';
 
 		$cs->registerScript('Yii.EditArea.' . $this->id, $jsInit, CClientScript::POS_BEGIN);
