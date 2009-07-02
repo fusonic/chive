@@ -12,8 +12,7 @@
 				<?php $this->widget("SqlEditor", array(
 				    'id' => 'query',
 					'autogrow' => true,
-				    'allowToggle' => false,
-					'htmlOptions' => array('name' => 'query'),
+				   	'htmlOptions' => array('name' => 'query'),
 					'value' => $model->getOriginalQueries(),
 					'allowToggle' => true,
 				)); ?>

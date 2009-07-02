@@ -11,7 +11,6 @@ class EditArea extends CInputWidget
 	public $autogrow = false;    // allow autogrow
 	public $toolbar = " undo, redo";  //comma seperated string for the config of the toolbar
 	public $wordWrap = "true";  // allow word wrap at the end of line
-	public $allowToggle = "true";  // allows toggle the editor
 	public $allowResize = "false";  // allows to resize the editor
 	public $minHeight = "100px";  // min-height of the editor
 	public $minWidth = "200px";  // min-width of the editor
@@ -53,7 +52,7 @@ class EditArea extends CInputWidget
 			,show_line_colors: true
 			,toolbar: " '.$this->toolbar.'"
 			,word_wrap: "'.$this->wordWrap.'"
-			,allow_toggle: "'.$this->allowToggle.'"
+			,allow_toggle: "false"
 			,EA_load_callback: "'.$autogrow.'"
 			,min_height:"'.$this->minHeight.'"
 			,allow_resize: "'.$this->allowResize.'"
