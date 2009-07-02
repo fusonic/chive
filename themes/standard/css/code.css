@@ -1,0 +1,13 @@
+@CHARSET "UTF-8";
+
+@media screen, projection
+{
+  
+  code.literal
+  {
+  	color: #026789;
+  	font-family: monospace, fixed;
+	font-weight: bold;
+  }
+  
+}

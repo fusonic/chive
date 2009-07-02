@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<category id="core">
+	<entry id="exportStructure">Export structure</entry>
+	<entry id="exportData">Export data</entry>
+	<entry id="addDropObject">Add &lt;code class="literal"&gt;DROP [TABLE | VIEW | ROUTINE]&lt;/code&gt;</entry>
+	<entry id="addIfNotExists">Add &lt;code class="literal"&gt;IF NOT EXISTS&lt;/code&gt;</entry>
+	<entry id="useCompleteInserts">Complete inserts</entry>
+	<entry id="useInsertIgnore">Use &lt;code class="literal"&gt;[INSERT | REPLACE] IGNORE&lt;/code&gt;</entry>
+	<entry id="id">ID</entry>
+	<entry id="id">ID</entry>
+</category>

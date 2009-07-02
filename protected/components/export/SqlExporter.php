@@ -1,0 +1,443 @@
+<?php
+
+/**
+ * Exporter to create a sql dump file.
+ */
+class SqlExporter implements IExporter
+{
+	private $items = array();
+	private $mode;
+	private $schema;
+	private $settings = array(
+		'addDropObject' => true,		// Adds DROP TABLE statement
+		'addIfNotExists' => true,		// Adds IF NOT EXISTS to CREATE TABLE statement
+		'completeInserts' => true,		// Adds column names to insert statement
+		'exportStructure' => true,		// Export structure
+		'exportTriggers' => true,		// Exporter triggers
+		'exportData' => true,			// Export data
+		'ignoreInserts' => false,		// Adds IGNORE to insert statement (INSERT IGNORE ...)
+		'insertCommand' => 'INSERT',	// Specifies the command for data (INSERT/REPLACE)
+		'rowsPerInsert' => 1000,		// Specifies the number of rows per INSERT statement
+	);
+	private $stepCount;
+
+	private $result;
+
+	/**
+	 * @see		IExporter::__construct()
+	 */
+	public function __construct($mode)
+	{
+		$this->mode = $mode;
+
+		// Reload settings from request
+		if($r = $_REQUEST['Export']['settings']['SqlExporter'])
+		{
+			foreach($this->settings AS $key => $value)
+			{
+				if(is_bool($this->settings[$key]))
+				{
+					$this->settings[$key] = isset($r[$key]);
+				}
+				elseif(isset($r[$key]))
+				{
+					$this->settings[$key] = $r[$key];
+				}
+			}
+		}
+	}
+
+	/**
+	 * @see		IExporter::getSettingsView()
+	 * @todo	implementation ...
+	 */
+	public function getSettingsView()
+	{
+		$r = '';
+
+		// Structure
+		$r .= '<fieldset>';
+
+		$r .= '<legend>'
+			. CHtml::checkBox('Export[settings][SqlExporter][exportStructure]', $this->settings['exportStructure']) . ' '
+			. CHtml::label(Yii::t('export', 'exportStructure'), 'Export_settings_SqlExporter_exportStructure')
+			. '</legend>';
+
+		$r .= CHtml::checkBox('Export[settings][SqlExporter][addDropObject]', $this->settings['addDropObject']) . ' '
+			. CHtml::label(Yii::t('export', 'addDropObject'), 'Export_settings_SqlExporter_addDropObject') . '<br />'
+			. CHtml::checkBox('Export[settings][SqlExporter][addIfNotExists]', $this->settings['addIfNotExists']) . ' '
+			. CHtml::label(Yii::t('export', 'addIfNotExists'), 'Export_settings_SqlExporter_addIfNotExists');
+
+		$r .= '</fieldset>';
+
+		// Data
+		$r .= '<fieldset>';
+
+		$r .= '<legend>'
+			. CHtml::checkBox('Export[settings][SqlExporter][exportData]', $this->settings['exportData']) . ' '
+			. CHtml::label(Yii::t('export', 'exportData'), 'Export_settings_SqlExporter_exportData')
+			. '</legend>';
+
+		$r .= CHtml::label(Yii::t('export', 'insertCommand'), 'Export_settings_SqlExporter_insertCommand') . ': '
+			. CHtml::dropDownList('Export[settings][SqlExporter][insertCommand]', $this->settings['insertCommand'], array(
+					'INSERT' => 'INSERT',
+					'REPLACE' => 'REPLACE',
+				)) . '<br />'
+			. CHtml::checkBox('Export[settings][SqlExporter][completeInserts]', $this->settings['completeInserts']) . ' '
+			. CHtml::label(Yii::t('export', 'useCompleteInserts'), 'Export_settings_SqlExporter_completeInserts') . '<br />'
+			. CHtml::checkBox('Export[settings][SqlExporter][ignoreInserts]', $this->settings['ignoreInserts']) . ' '
+			. CHtml::label(Yii::t('export', 'useInsertIgnore'), 'Export_settings_SqlExporter_ignoreInserts') . '<br />';
+
+		$r .= '</fieldset>';
+
+		return $r;
+	}
+
+	/**
+	 * @see		IExporter::calculateStepCount()
+	 */
+	public function calculateStepCount()
+	{
+		// We're currently only supporting one-step-exports ...
+		$this->stepCount = 1;
+		return $this->stepCount;
+	}
+
+	/**
+	 * @see		IExporter::getStepCount()
+	 */
+	public function getStepCount()
+	{
+		return $this->stepCount;
+	}
+
+	/**
+	 * @see		IExporter::setItems()
+	 */
+	public function setItems(array $items, $schema = null)
+	{
+		$this->items = $items;
+		$this->schema = $schema;
+	}
+
+	/**
+	 * @see		IExporter::runStep()
+	 */
+	public function runStep($i, $collect = false)
+	{
+		if($collect)
+		{
+			ob_start();
+		}
+
+		switch($this->mode)
+		{
+			case 'objects':
+				$this->exportObjects($i);
+				break;
+		}
+
+		if($collect)
+		{
+			$this->result = ob_get_contents();
+			ob_end_clean();
+		}
+	}
+
+	/**
+	 * @see		IExporter::getResult()
+	 */
+	public function getResult()
+	{
+		return $this->result;
+	}
+
+	/**
+	 * @see		IExporter::getSupportedModes()
+	 */
+	public static function getSupportedModes()
+	{
+		return array('objects');
+	}
+
+	/**
+	 * @see		IExporter::getTitle()
+	 */
+	public static function getTitle()
+	{
+		return 'SQL';
+	}
+
+
+	/**
+	 * Exports all specified database objects (tables, views, routines, ...).
+	 *
+	 * @return	boolean
+	 */
+	private function exportObjects()
+	{
+		// Find elements
+		$tables = $views = $routines = array();
+		foreach($this->items AS $item)
+		{
+			switch($item{0})
+			{
+				case 't':
+					$tables[] = substr($item, 2);
+					break;
+				case 'v':
+					$views[] = substr($item, 2);
+					break;
+				case 'r':
+					$routines[] = substr($item, 2);
+					break;
+			}
+		}
+
+		// Export everything
+		if(count($tables) > 0)
+		{
+			$this->exportTables($tables);
+		}
+		if(count($views) > 0 && $this->settings['exportStructure'])
+		{
+			$this->exportViews($views);
+		}
+		if(count($routines) > 0 && $this->settings['exportStructure'])
+		{
+			$this->exportRoutines($routines);
+		}
+	}
+
+	/**
+	 * Exports all tables of the given array and writes the dump to the output buffer.
+	 * @todo	constraints
+	 *
+	 * @param	array					list of tables
+	 */
+	private function exportTables($tables)
+	{
+		// Escape all table names
+		$tableNames = array();
+		foreach($tables AS $table)
+		{
+			$tableNames[] = Yii::app()->db->quoteValue($table);
+		}
+
+		// Find all tables
+		$tables = Table::model()->findAll('TABLE_NAME IN (' . implode(',', $tableNames) . ') '
+			. 'AND TABLE_SCHEMA = ' . Yii::app()->db->quoteValue($this->schema));
+
+		foreach($tables AS $table)
+		{
+			if($this->settings['exportStructure'])
+			{
+				$this->comment('Structure for table ' . $table->TABLE_NAME);
+				echo "\n\n";
+
+				// Structure
+				if($this->settings['addDropObject'])
+				{
+					echo 'DROP TABLE IF EXISTS ', Yii::app()->db->quoteTableName($table->TABLE_NAME), ";\n";
+				}
+
+				$tableStructure = $table->getShowCreateTable();
+				if($this->settings['addIfNotExists'])
+				{
+					$tableStructure = 'CREATE TABLE IF NOT EXISTS' . substr($tableStructure, 12);
+				}
+				echo $tableStructure, ";\n\n";
+
+				// Triggers
+				if($this->settings['exportTriggers'])
+				{
+					$triggers = Trigger::model()->findAllByAttributes(array(
+						'EVENT_OBJECT_SCHEMA' => $table->TABLE_SCHEMA,
+						'EVENT_OBJECT_TABLE' => $table->TABLE_NAME,
+					));
+					foreach($triggers AS $trigger)
+					{
+						$this->comment('Trigger ' . $trigger->TRIGGER_NAME . ' on table ' . $table->TABLE_NAME);
+						echo "\n\n";
+
+						if($this->settings['addDropObject'])
+						{
+							echo 'DROP TRIGGER IF EXISTS ', Yii::app()->db->quoteTableName($trigger->TRIGGER_NAME), ";\n";
+						}
+
+						echo $trigger->getCreateTrigger(), ";\n\n";
+					}
+				}
+			}
+
+			if($this->settings['exportData'])
+			{
+				// Data
+				$this->comment('Data for table ' . $table->TABLE_NAME);
+				echo "\n\n";
+				$this->exportTableData($table);
+			}
+		}
+	}
+
+	/**
+	 * Exports data of the specified table and writes the sql dump to the output buffer.
+	 *
+	 * @param	string					name of table
+	 */
+	private function exportTableData($table)
+	{
+		$rowsPerInsert = (int)$this->settings['rowsPerInsert'];
+		$db = Yii::app()->db;
+		$pdo = $db->getPdoInstance();
+
+		// Find all rows
+		$sql = 'SELECT * FROM ' . Yii::app()->db->quoteTableName($this->schema) . '.' . Yii::app()->db->quoteTableName($table->TABLE_NAME);
+		$statement = $pdo->query($sql);
+		$statement->setFetchMode(PDO::FETCH_ASSOC);
+		$rowCount = $statement->rowCount();
+
+		// Cycle rows
+		$i = $k = 0;
+		$insert = null;
+		while($row = $statement->fetch())
+		{
+			if(!$insert)
+			{
+				// Create INSERT statement
+				if($this->settings['completeInserts'])
+				{
+					$columns = array_keys($row);
+					for($j = 0; $j < count($columns); $j++)
+					{
+						$columns[$j] = $db->quoteColumnName($columns[$j]);
+					}
+					$columns = ' (' . implode(', ', $columns) . ')';
+				}
+				else
+				{
+					$columns = '';
+				}
+				$insert = $this->settings['insertCommand']
+					. ($this->settings['ignoreInserts'] ? ' IGNORE' : '')
+					. ' INTO '
+					. $db->quoteTableName($table->TABLE_NAME)
+					. $columns
+					. ' VALUES';
+				echo $insert;
+			}
+
+			// Escape all contents
+			foreach($row AS $key => $value)
+			{
+				if($value === null)
+				{
+					$row[$key] = 'NULL';
+				}
+				else
+				{
+					$row[$key] = $pdo->quote($value);
+				}
+			}
+
+			// Add this row
+			echo "\n  (", implode(', ', $row), ')';
+
+			if($i == $rowCount - 1)
+			{
+				echo ";\n\n";
+			}
+			elseif($k == $rowsPerInsert)
+			{
+				echo ";\n\n", $insert;
+				$k = 0;
+			}
+			else
+			{
+				echo ',';
+			}
+			$i++;
+			$k++;
+		}
+	}
+
+	/**
+	 * Exports all views of the given array and writes the dump to the output buffer.
+	 *
+	 * @param	array					list of views
+	 */
+	private function exportViews($views)
+	{
+		// Escape all view names
+		$viewNames = array();
+		foreach($views AS $view)
+		{
+			$viewNames[] = Yii::app()->db->quoteValue($view);
+		}
+
+		// Find all views
+		$views = View::model()->findAll('TABLE_NAME IN (' . implode(',', $viewNames) . ') '
+			. 'AND TABLE_SCHEMA = ' . Yii::app()->db->quoteValue($this->schema));
+
+		foreach($views AS $view)
+		{
+			$this->comment('View ' . $view->TABLE_NAME);
+			echo "\n\n";
+
+			// Structure
+			if($this->settings['addDropObject'])
+			{
+				echo 'DROP VIEW IF EXISTS ', Yii::app()->db->quoteTableName($view->TABLE_NAME), ";\n";
+			}
+			echo $view->getCreateView(), ";\n\n";
+		}
+	}
+	/**
+	 * Exports all routines of the given array and writes the dump to the output buffer.
+	 *
+	 * @param	array					list of routines
+	 */
+	private function exportRoutines($routines)
+	{
+		// Escape all routine names
+		$routineNames = array();
+		foreach($routines AS $routine)
+		{
+			$routineNames[] = Yii::app()->db->quoteValue($routine);
+		}
+
+		// Find all routines
+		$routines = Routine::model()->findAll('ROUTINE_NAME IN (' . implode(',', $routineNames) . ') '
+			. 'AND ROUTINE_SCHEMA = ' . Yii::app()->db->quoteValue($this->schema));
+
+		foreach($routines AS $routine)
+		{
+			$this->comment(ucfirst(strtolower($routine->ROUTINE_TYPE)) . ' ' . $routine->ROUTINE_NAME);
+			echo "\n\n";
+
+			if($this->settings['addDropObject'])
+			{
+				echo 'DROP ', strtoupper($routine->ROUTINE_TYPE), ' IF EXISTS ', Yii::app()->db->quoteTableName($routine->ROUTINE_NAME), ";\n";
+			}
+
+			echo $routine->getCreateRoutine(), ";\n\n";
+		}
+	}
+
+	/**
+	 * Writes a sql comment to the output buffer.
+	 *
+	 * @param	array					lines of comment
+	 */
+	private function comment($items)
+	{
+		$items = (array)$items;
+		echo "-- \n";
+		foreach($items AS $item)
+		{
+			echo '-- ', $item, "\n";
+		}
+		echo '-- ';
+	}
+
+}
