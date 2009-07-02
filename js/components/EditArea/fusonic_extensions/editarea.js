@@ -112,19 +112,19 @@ function toggleEditor(id){
 	    if (isFrameVisible == 'none') 
 		{
 	        value = 1;
-			var img = 'square_green.png'
+			var img = 'square_green.png';
 			var class = 'icon icon16 icon_square_green';
 	    }
 	    else {
 	        value = 0;
-			var img = 'square_red.png'
+			var img = 'square_red.png';
 			var class = 'icon icon16 icon_square_red';
 	    }
 	}
 	else
 	{
 		 value = 1;
-		 var img = 'square_green.png'
+		 var img = 'square_green.png';
 		 var class = 'icon icon16 icon_square_green';
 	}
 	
