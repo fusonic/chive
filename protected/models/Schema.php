@@ -67,7 +67,7 @@ class Schema extends CActiveRecord
 			'tables' => array(self::HAS_MANY, 'Table', 'TABLE_SCHEMA', 'condition' => '??.TABLE_TYPE IS NULL OR ??.TABLE_TYPE NOT IN (\'VIEW\')'),
 			'views' => array(self::HAS_MANY, 'View', 'TABLE_SCHEMA'),
 			'collation' => array(self::BELONGS_TO, 'Collation', 'DEFAULT_COLLATION_NAME'),
-			'routines' => array(self::HAS_MANY, 'Routine', 'TABLE_SCHEMA'),
+			'routines' => array(self::HAS_MANY, 'Routine', 'ROUTINE_SCHEMA'),
 		);
 	}
 

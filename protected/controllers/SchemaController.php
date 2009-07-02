@@ -451,8 +451,14 @@ class SchemaController extends Controller
 	 */
 	public function actionExport()
 	{
+		$exportPage = new ExportPage('objects', $this->schema);
+		$exportPage->run();
 
+		$this->render('../global/export', array(
+			'model' => $exportPage,
+		));
 
+/*
 		if(!$_POST['tables'])
 		{
 			$criteria = new CDbCriteria;
@@ -479,6 +485,7 @@ class SchemaController extends Controller
 		$this->render('export', array(
 			'tables'=>$tables
 		));
+		*/
 	}
 
 	/**

@@ -59,7 +59,7 @@ class Routine extends CActiveRecord
 	 */
 	public function getCreateRoutine()
 	{
-		$cmd = self::$db->createCommand('SHOW CREATE ' . strtoupper($this->ROUTINE_TYPE) . ' ' . self::$db->quoteTableName($this->ROUTINE_NAME));
+		$cmd = self::$db->createCommand('SHOW CREATE ' . strtoupper($this->ROUTINE_TYPE) . ' ' . self::$db->quoteTableName($this->ROUTINE_SCHEMA) . '.' . self::$db->quoteTableName($this->ROUTINE_NAME));
 		$res = $cmd->queryRow(false);
 		return $res[2];
 	}

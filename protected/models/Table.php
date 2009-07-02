@@ -190,7 +190,7 @@ class Table extends CActiveRecord
 	{
 		if(!$this->showCreateTable)
 		{
-			$cmd = self::$db->createCommand('SHOW CREATE TABLE ' . self::$db->quoteTableName($this->TABLE_NAME));
+			$cmd = self::$db->createCommand('SHOW CREATE TABLE ' . self::$db->quoteTableName($this->TABLE_SCHEMA) . '.' . self::$db->quoteTableName($this->TABLE_NAME));
 			$res = $cmd->queryAll();
 			$this->showCreateTable = $res[0]['Create Table'];
 		}

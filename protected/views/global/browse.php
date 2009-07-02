@@ -56,9 +56,9 @@
 			</td>
 		</tr>
 	</table>
-	
+
 	<?php echo CHtml::endForm(); ?>
-	
+
 	<script type="text/javascript">
 		$('#queryForm').ajaxForm({
 			success: 	function(responseText)

@@ -59,7 +59,7 @@ class Trigger extends CActiveRecord
 	 */
 	public function getCreateTrigger()
 	{
-		return 'CREATE TRIGGER ' . self::$db->quoteTableName($this->TRIGGER_NAME) . "\n"
+		return 'CREATE TRIGGER ' . self::$db->quoteTableName($this->TRIGGER_SCHEMA) . '.' . self::$db->quoteTableName($this->TRIGGER_NAME) . "\n"
 			. $this->ACTION_TIMING . ' ' . $this->EVENT_MANIPULATION . "\n"
 			. 'ON ' . self::$db->quoteTableName($this->EVENT_OBJECT_TABLE) . ' FOR EACH ROW' . "\n"
 			. $this->ACTION_STATEMENT;

@@ -22,6 +22,7 @@ return array(
 		'application.components.*',
 		'application.components.helpers.*',
 		'application.components.helpers.utils.*',
+		'application.components.export.*',
 		'application.controllers.*',
 		'application.db.*',
 		'application.extensions.*',

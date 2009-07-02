@@ -2,6 +2,7 @@
 <category id="message">
 	<entry id="authenticationFailed">Connection could not be established:&lt;br/&gt;{message}</entry>
 	<entry id="sqlErrorOccured">A SQL error occured ({errno}): &lt;span class="sql"&gt;{errmsg}&lt;/span&gt;</entry>
+	<entry id="xDebugExportWarning">XDebug profiling is enabled on this server.&lt;br /&gt;Exporting large databases may crash your system!</entry>
 	
 	<!-- Queries -->
 	<entry id="successExecuteQuery">Executed query</entry>

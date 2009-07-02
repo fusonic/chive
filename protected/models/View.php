@@ -79,7 +79,7 @@ class View extends CActiveRecord
 	 */
 	public function getCreateView()
 	{
-		$cmd = self::$db->createCommand('SHOW CREATE VIEW ' . self::$db->quoteTableName($this->TABLE_NAME));
+		$cmd = self::$db->createCommand('SHOW CREATE VIEW ' . self::$db->quoteTableName($this->TABLE_SCHEMA) . '.' . self::$db->quoteTableName($this->TABLE_NAME));
 		$res = $cmd->queryRow(false);
 		return $res[1];
 	}
