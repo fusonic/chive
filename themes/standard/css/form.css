@@ -76,4 +76,22 @@
 		padding: 5px 0px;
 	}
 	
+	/*
+	 * Fieldset
+	 */
+	
+	fieldset 
+	{
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		border: solid 1px #C0C0C0;
+		padding: 5px 10px;
+		margin-bottom: 10px;
+	}
+	
+	fieldset > legend
+	{
+		margin-left: -2px;
+	}
+	
 }

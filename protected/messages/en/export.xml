@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<category id="core">
+<category id="export">
 	<entry id="exportStructure">Export structure</entry>
 	<entry id="exportData">Export data</entry>
-	<entry id="addDropObject">Add &lt;code class="literal"&gt;DROP [TABLE | VIEW | ROUTINE]&lt;/code&gt;</entry>
+	<entry id="addDropObject">Add &lt;code class="literal"&gt;DROP [TABLE|VIEW|PROCEDURE|FUNCTION]&lt;/code&gt;</entry>
 	<entry id="addIfNotExists">Add &lt;code class="literal"&gt;IF NOT EXISTS&lt;/code&gt;</entry>
 	<entry id="useCompleteInserts">Complete inserts</entry>
-	<entry id="useInsertIgnore">Use &lt;code class="literal"&gt;[INSERT | REPLACE] IGNORE&lt;/code&gt;</entry>
-	<entry id="id">ID</entry>
-	<entry id="id">ID</entry>
+	<entry id="useInsertIgnore">Use &lt;code class="literal"&gt;[INSERT|REPLACE] IGNORE&lt;/code&gt;</entry>
+	<entry id="useDelayedInserts">Use &lt;code class="literal"&gt;[INSERT|REPLACE] DELAYED&lt;/code&gt;</entry>
+	<entry id="command">Command</entry>
+	<entry id="rowsPerInsert">Rows per &lt;code class="literal"&gt;[INSERT|REPLACE]&lt;/code&gt;</entry>
+	<entry id="useHexForBlob">Use hexadecimal for &lt;code class="literal"&gt;BLOB&lt;/code&gt;</entry>
+	<entry id="show">Display dump</entry>
+	<entry id="download">Download</entry>
 </category>

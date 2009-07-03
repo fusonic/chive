@@ -104,7 +104,7 @@ class TableController extends Controller
 		$browsePage->db = $this->db;
 		$browsePage->route = 'schema/' . $this->schema . '/tables/' . $this->table . '/browse';
 		$browsePage->formTarget = 'schema/' . $this->schema . '/tables/' . $this->table . '/browse';
-		
+
 		if($_query)
 		{
 			$browsePage->query = $_query;
@@ -232,7 +232,7 @@ class TableController extends Controller
 
 	public function actionSearch() {
 
-		
+
 		$operatorConfig = array(				// needs value
 			'LIKE'				=> 		array( 'needsValue' => true ),
 			'NOT LIKE'			=> 		array( 'needsValue' => true ),
@@ -243,14 +243,14 @@ class TableController extends Controller
 			'IS NULL'			=> 		array( 'needsValue' => false ),
 			'IS NOT NULL' 		=> 		array( 'needsValue' => false ),
 		);
-		
+
 		$operators = array_keys($operatorConfig);
 		$config = array_values($operatorConfig);
 
 		Row::$db = $this->db;
 		Row::$schema = $this->schema;
 		Row::$table = $this->table;
-		
+
 		$row = new Row();
 
 		$commandBuilder = $this->db->getCommandBuilder();
@@ -261,10 +261,10 @@ class TableController extends Controller
 			$criteria = new CDbCriteria;
 
 			$i = 0;
-			foreach($_POST['Row'] AS $column=>$value) 
+			foreach($_POST['Row'] AS $column=>$value)
 			{
 				$operator = $operators[$_POST['operator'][$column]];
-				
+
 				if($value)
 				{
 					$criteria->condition .= ($i>0 ? ' AND ' : ' ') . $this->db->quoteColumnName($column) . ' ' . $operator . ' ' . $this->db->quoteValue($value);
@@ -274,14 +274,14 @@ class TableController extends Controller
 				elseif(isset($_POST['operator'][$column]) && $config[$_POST['operator'][$column]]['needsValue'] === false)
 				{
 					$criteria->condition .= ($i>0 ? ' AND ' : ' ') . $this->db->quoteColumnName($column) . ' ' . $operator;
-					
+
 					$i++;
 				}
-				
-				
+
+
 
 			}
-			
+
 			$browsePage = new BrowsePage();
 
 			$browsePage->schema = $this->schema;
@@ -291,9 +291,9 @@ class TableController extends Controller
 			$browsePage->formTarget = 'schema/' . $this->schema . '/tables/' . $this->table . '/sql';
 			$browsePage->execute = true;
 			$browsePage->query = $this->db->getCommandBuilder()->createFindCommand($this->table, $criteria)->getText();
-			
+
 			$browsePage->run();
-			
+
 			$this->render('../global/browse', array(
 				'model' => $browsePage
 			));
@@ -433,6 +433,20 @@ class TableController extends Controller
 			'isSubmitted' => $isSubmitted,
 			'sql' => $sql,
 			));
+	}
+
+	/**
+	 * Shows the export page for this table.
+	 */
+	public function actionExport()
+	{
+		$exportPage = new ExportPage('objects', $this->schema);
+		$exportPage->setSelectedObjects('t:' . $this->table);
+		$exportPage->run();
+
+		$this->render('../global/export', array(
+			'model' => $exportPage,
+		));
 	}
 
 	/**

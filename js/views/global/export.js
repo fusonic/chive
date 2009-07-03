@@ -15,9 +15,20 @@ var globalExport = {
 		});
 	},
 	
-	save: function()
+	save: function(compression)
 	{
 		$('#Export_action').val('save');
+		
+		// Compression
+		if(compression)
+		{
+			$('#Export_compression').val(compression);
+		}
+		else
+		{
+			$('#Export_compression').val('');
+		}
+		
 		$('#Export').submit();
 	},
 	

@@ -16,8 +16,10 @@ class SqlExporter implements IExporter
 		'exportTriggers' => true,		// Exporter triggers
 		'exportData' => true,			// Export data
 		'ignoreInserts' => false,		// Adds IGNORE to insert statement (INSERT IGNORE ...)
+		'delayedInserts' => false,		// Adds DELAYED to insert statement (INSERT DELAYED ...)
 		'insertCommand' => 'INSERT',	// Specifies the command for data (INSERT/REPLACE)
 		'rowsPerInsert' => 1000,		// Specifies the number of rows per INSERT statement
+		'hexBlobs' => true,				// Use HEX for blob fields
 	);
 	private $stepCount;
 
@@ -78,15 +80,21 @@ class SqlExporter implements IExporter
 			. CHtml::label(Yii::t('export', 'exportData'), 'Export_settings_SqlExporter_exportData')
 			. '</legend>';
 
-		$r .= CHtml::label(Yii::t('export', 'insertCommand'), 'Export_settings_SqlExporter_insertCommand') . ': '
-			. CHtml::dropDownList('Export[settings][SqlExporter][insertCommand]', $this->settings['insertCommand'], array(
+		$r .= CHtml::label(Yii::t('export', 'command'), 'Export_settings_SqlExporter_insertCommand') . ': '
+			. CHtml::radioButtonList('Export[settings][SqlExporter][insertCommand]', $this->settings['insertCommand'], array(
 					'INSERT' => 'INSERT',
 					'REPLACE' => 'REPLACE',
-				)) . '<br />'
+				), array('separator' => ' &nbsp; ')) . '<br />'
+			. CHtml::label(Yii::t('export', 'rowsPerInsert'), 'Export_settings_SqlExporter_rowsPerInsert') . ': '
+			. CHtml::textField('Export[settings][SqlExporter][rowsPerInsert]', $this->settings['rowsPerInsert']) . '<br />'
 			. CHtml::checkBox('Export[settings][SqlExporter][completeInserts]', $this->settings['completeInserts']) . ' '
 			. CHtml::label(Yii::t('export', 'useCompleteInserts'), 'Export_settings_SqlExporter_completeInserts') . '<br />'
 			. CHtml::checkBox('Export[settings][SqlExporter][ignoreInserts]', $this->settings['ignoreInserts']) . ' '
-			. CHtml::label(Yii::t('export', 'useInsertIgnore'), 'Export_settings_SqlExporter_ignoreInserts') . '<br />';
+			. CHtml::label(Yii::t('export', 'useInsertIgnore'), 'Export_settings_SqlExporter_ignoreInserts') . '<br />'
+			. CHtml::checkBox('Export[settings][SqlExporter][delayedInserts]', $this->settings['delayedInserts']) . ' '
+			. CHtml::label(Yii::t('export', 'useDelayedInserts'), 'Export_settings_SqlExporter_delayedInserts') . '<br />'
+			. CHtml::checkBox('Export[settings][SqlExporter][hexBlobs]', $this->settings['hexBlobs']) . ' '
+			. CHtml::label(Yii::t('export', 'useHexForBlob'), 'Export_settings_SqlExporter_hexBlobs') . '<br />';
 
 		$r .= '</fieldset>';
 
@@ -217,6 +225,9 @@ class SqlExporter implements IExporter
 	 */
 	private function exportTables($tables)
 	{
+		// Get DbConnection object
+		$db = Yii::app()->db;
+
 		// Escape all table names
 		$tableNames = array();
 		foreach($tables AS $table)
@@ -232,13 +243,13 @@ class SqlExporter implements IExporter
 		{
 			if($this->settings['exportStructure'])
 			{
-				$this->comment('Structure for table ' . $table->TABLE_NAME);
+				$this->comment('Structure for table ' . $db->quoteTableName($table->TABLE_NAME));
 				echo "\n\n";
 
 				// Structure
 				if($this->settings['addDropObject'])
 				{
-					echo 'DROP TABLE IF EXISTS ', Yii::app()->db->quoteTableName($table->TABLE_NAME), ";\n";
+					echo 'DROP TABLE IF EXISTS ', $db->quoteTableName($table->TABLE_NAME), ";\n";
 				}
 
 				$tableStructure = $table->getShowCreateTable();
@@ -257,12 +268,12 @@ class SqlExporter implements IExporter
 					));
 					foreach($triggers AS $trigger)
 					{
-						$this->comment('Trigger ' . $trigger->TRIGGER_NAME . ' on table ' . $table->TABLE_NAME);
+						$this->comment('Trigger ' . $db->quoteTableName($trigger->TRIGGER_NAME) . ' on table ' . $db->quoteTablename($table->TABLE_NAME));
 						echo "\n\n";
 
 						if($this->settings['addDropObject'])
 						{
-							echo 'DROP TRIGGER IF EXISTS ', Yii::app()->db->quoteTableName($trigger->TRIGGER_NAME), ";\n";
+							echo 'DROP TRIGGER IF EXISTS ', $db->quoteTableName($trigger->TRIGGER_NAME), ";\n";
 						}
 
 						echo $trigger->getCreateTrigger(), ";\n\n";
@@ -273,8 +284,6 @@ class SqlExporter implements IExporter
 			if($this->settings['exportData'])
 			{
 				// Data
-				$this->comment('Data for table ' . $table->TABLE_NAME);
-				echo "\n\n";
 				$this->exportTableData($table);
 			}
 		}
@@ -287,43 +296,64 @@ class SqlExporter implements IExporter
 	 */
 	private function exportTableData($table)
 	{
-		$rowsPerInsert = (int)$this->settings['rowsPerInsert'];
 		$db = Yii::app()->db;
 		$pdo = $db->getPdoInstance();
+
+		// Columns
+		$cols = Column::model()->findAllByAttributes(array(
+			'TABLE_NAME' => $table->TABLE_NAME,
+			'TABLE_SCHEMA' => $table->TABLE_SCHEMA,
+		));
+		$blobCols = array();
+
+		// Create insert statement
+		if($this->settings['completeInserts'])
+		{
+			$columns = array();
+			$i = 0;
+			foreach($cols AS $col)
+			{
+				$columns[] = $db->quoteColumnName($col->COLUMN_NAME);
+				if(in_array(DataType::getBaseType($col->DATA_TYPE), array('smallblob', 'blob', 'mediumblob', 'longblob')))
+				{
+					$blobCols[] = $i;
+				}
+				$i++;
+			}
+			$columns = ' (' . implode(', ', $columns) . ')';
+		}
+		else
+		{
+			$columns = '';
+		}
+		$insert = $this->settings['insertCommand']
+			. ($this->settings['delayedInserts'] ? ' DELAYED' : '')
+			. ($this->settings['ignoreInserts'] ? ' IGNORE' : '')
+			. ' INTO '
+			. $db->quoteTableName($table->TABLE_NAME)
+			. $columns
+			. ' VALUES';
 
 		// Find all rows
 		$sql = 'SELECT * FROM ' . Yii::app()->db->quoteTableName($this->schema) . '.' . Yii::app()->db->quoteTableName($table->TABLE_NAME);
 		$statement = $pdo->query($sql);
-		$statement->setFetchMode(PDO::FETCH_ASSOC);
+		$statement->setFetchMode(PDO::FETCH_NUM);
 		$rowCount = $statement->rowCount();
 
+		// Settings
+		$hexBlobs = $this->settings['hexBlobs'];
+		$rowsPerInsert = (int)$this->settings['rowsPerInsert'];
+
 		// Cycle rows
-		$i = $k = 0;
-		$insert = null;
+		$i = 0;
+		$k = 1;
 		while($row = $statement->fetch())
 		{
-			if(!$insert)
+			// Add comment
+			if($i == 0)
 			{
-				// Create INSERT statement
-				if($this->settings['completeInserts'])
-				{
-					$columns = array_keys($row);
-					for($j = 0; $j < count($columns); $j++)
-					{
-						$columns[$j] = $db->quoteColumnName($columns[$j]);
-					}
-					$columns = ' (' . implode(', ', $columns) . ')';
-				}
-				else
-				{
-					$columns = '';
-				}
-				$insert = $this->settings['insertCommand']
-					. ($this->settings['ignoreInserts'] ? ' IGNORE' : '')
-					. ' INTO '
-					. $db->quoteTableName($table->TABLE_NAME)
-					. $columns
-					. ' VALUES';
+				$this->comment('Data for table ' . $db->quoteTableName($table->TABLE_NAME));
+				echo "\n\n";
 				echo $insert;
 			}
 
@@ -333,6 +363,10 @@ class SqlExporter implements IExporter
 				if($value === null)
 				{
 					$row[$key] = 'NULL';
+				}
+				elseif($hexBlobs && in_array($key, $blobCols) && $value)
+				{
+					$row[$key] = '0x' . bin2hex($value);
 				}
 				else
 				{
@@ -368,6 +402,9 @@ class SqlExporter implements IExporter
 	 */
 	private function exportViews($views)
 	{
+		// Get DbConnection object
+		$db = Yii::app()->db;
+
 		// Escape all view names
 		$viewNames = array();
 		foreach($views AS $view)
@@ -381,13 +418,13 @@ class SqlExporter implements IExporter
 
 		foreach($views AS $view)
 		{
-			$this->comment('View ' . $view->TABLE_NAME);
+			$this->comment('View ' . $db->quoteTableName($view->TABLE_NAME));
 			echo "\n\n";
 
 			// Structure
 			if($this->settings['addDropObject'])
 			{
-				echo 'DROP VIEW IF EXISTS ', Yii::app()->db->quoteTableName($view->TABLE_NAME), ";\n";
+				echo 'DROP VIEW IF EXISTS ', $db->quoteTableName($view->TABLE_NAME), ";\n";
 			}
 			echo $view->getCreateView(), ";\n\n";
 		}
@@ -399,6 +436,9 @@ class SqlExporter implements IExporter
 	 */
 	private function exportRoutines($routines)
 	{
+		// Get DbConnection object
+		$db = Yii::app()->db;
+
 		// Escape all routine names
 		$routineNames = array();
 		foreach($routines AS $routine)
@@ -408,16 +448,16 @@ class SqlExporter implements IExporter
 
 		// Find all routines
 		$routines = Routine::model()->findAll('ROUTINE_NAME IN (' . implode(',', $routineNames) . ') '
-			. 'AND ROUTINE_SCHEMA = ' . Yii::app()->db->quoteValue($this->schema));
+			. 'AND ROUTINE_SCHEMA = ' . $db->quoteValue($this->schema));
 
 		foreach($routines AS $routine)
 		{
-			$this->comment(ucfirst(strtolower($routine->ROUTINE_TYPE)) . ' ' . $routine->ROUTINE_NAME);
+			$this->comment(ucfirst(strtolower($routine->ROUTINE_TYPE)) . ' ' . $db->quoteTableName($routine->ROUTINE_NAME));
 			echo "\n\n";
 
 			if($this->settings['addDropObject'])
 			{
-				echo 'DROP ', strtoupper($routine->ROUTINE_TYPE), ' IF EXISTS ', Yii::app()->db->quoteTableName($routine->ROUTINE_NAME), ";\n";
+				echo 'DROP ', strtoupper($routine->ROUTINE_TYPE), ' IF EXISTS ', $db->quoteTableName($routine->ROUTINE_NAME), ";\n";
 			}
 
 			echo $routine->getCreateRoutine(), ";\n\n";

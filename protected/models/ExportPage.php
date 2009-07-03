@@ -6,35 +6,59 @@
  */
 class ExportPage extends CModel
 {
-
 	private $exporters;
 	private $mode;
 	private $objects;
+	private $selectedObjects = null;
 	private $result;
 	private $schema;
 	private $view = 'form';
+	private $compressionChunkSize = 8192;
+	private $compression = null;
 
+	/**
+	 * Constructor
+	 *
+	 * @param	string					mode (objects/schemata)
+	 * @param	string					selected schema (when mode == objects)
+	 */
 	public function __construct($mode, $schema = null)
 	{
 		$this->mode = $mode;
 		$this->schema = $schema;
 	}
 
+	/**
+	 * @see		CModel::attributeNames()
+	 */
 	public function attributeNames()
 	{
 		return array();
 	}
 
+	/**
+	 * @see		CModel::safeAttributes()
+	 */
 	public function safeAttributes()
 	{
 		return array();
 	}
 
+	/**
+	 * Runs the ExportPage decides wether to show form or do export.
+	 */
 	public function run()
 	{
 		if(isset($_POST['Export']))
 		{
 			$this->view = 'result';
+
+			// Check for compression
+			if(isset($_POST['Export']['compression']) && $_POST['Export']['compression'])
+			{
+				$this->compression = $_POST['Export']['compression'];
+			}
+
 			$this->runSubmit();
 		}
 		else
@@ -44,6 +68,9 @@ class ExportPage extends CModel
 		}
 	}
 
+	/**
+	 * Performs the actual export functions.
+	 */
 	public function runSubmit()
 	{
 		// Initialize exporter
@@ -60,10 +87,36 @@ class ExportPage extends CModel
 		// If it was not an ajax request, we have to serve the file for download
 		if(!Yii::app()->getRequest()->isAjaxRequest)
 		{
-			header('Content-type: text/plain');
-			header('Content-disposition: attachment; filename="Dump.sql"');
-			ini_set('output_buffering', false);
-			ini_set('implicit_flush', true);
+			if($this->compression == 'gzip' && function_exists('gzencode'))
+			{
+				$mimeType = 'application/x-gzip';
+				$filenameSuffix = '.gz';
+			}
+			elseif($this->compression == 'bzip2' && function_exists('bzcompress'))
+			{
+				$mimeType = 'application/x-bzip2';
+				$filenameSuffix = '.bz2';
+			}
+			else
+			{
+				$mimeType = 'text/plain';
+				$filenameSuffix = '';
+			}
+
+			// Send headers
+			header('Content-type: ' . $mimeType);
+			header('Content-disposition: attachment; filename="Dump.sql' . $filenameSuffix . '"');
+
+			// Set handlers
+			if($this->compression == 'gzip' && function_exists('gzencode'))
+			{
+				ob_start(array('ExportPage', 'gzEncode'), $this->compressionChunkSize);
+			}
+			elseif($this->compression == 'bzip2' && function_exists('bzcompress'))
+			{
+				ob_start(array('ExportPage', 'bz2Encode'), $this->compressionChunkSize);
+			}
+
 			$collect = false;
 		}
 		else
@@ -85,6 +138,7 @@ class ExportPage extends CModel
 		// Die after file output when downloading ...
 		if(!$collect)
 		{
+			ob_end_flush();
 			die();
 		}
 
@@ -92,6 +146,9 @@ class ExportPage extends CModel
 		$this->result = $exporter->getResult();
 	}
 
+	/**
+	 * Runs the form.
+	 */
 	private function runForm()
 	{
 		// @todo: Load all exporters
@@ -153,11 +210,21 @@ class ExportPage extends CModel
 		}
 	}
 
+	/**
+	 * Returns all selectable objects.
+	 *
+	 * @return	array
+	 */
 	public function getObjects()
 	{
 		return $this->objects;
 	}
 
+	/**
+	 * Returns all keys of selectable objects.
+	 *
+	 * @return	array
+	 */
 	public function getObjectKeys()
 	{
 		$keys = array();
@@ -178,6 +245,45 @@ class ExportPage extends CModel
 		return $keys;
 	}
 
+	/**
+	 * Returns keys of all selected objects.
+	 *
+	 * @return	array
+	 */
+	public function getSelectedObjects()
+	{
+		if($this->selectedObjects)
+		{
+			return $this->selectedObjects;
+		}
+		else
+		{
+			return $this->getObjectKeys();
+		}
+	}
+
+	/**
+	 * Sets the selected object keys.
+	 *
+	 * @param	mixed					selected objects
+	 */
+	public function setSelectedObjects($objects)
+	{
+		if($objects)
+		{
+			$this->selectedObjects = (array)$objects;
+		}
+		else
+		{
+			$this->selectedObjects = null;
+		}
+	}
+
+	/**
+	 * Returns all exporter names.
+	 *
+	 * @return	array
+	 */
 	public function getExporters()
 	{
 		$data = array();
@@ -188,19 +294,55 @@ class ExportPage extends CModel
 		return $data;
 	}
 
+	/**
+	 * Returns all exporter instances.
+	 *
+	 * @return	array
+	 */
 	public function getExporterInstances()
 	{
 		return $this->exporters;
 	}
 
+	/**
+	 * Returns the current view type.
+	 *
+	 * @return	string
+	 */
 	public function getView()
 	{
 		return $this->view;
 	}
 
+	/**
+	 * Returns the export result.
+	 *
+	 * @return	string
+	 */
 	public function getResult()
 	{
 		return $this->result;
 	}
 
+	/**
+	 * Callback for output handler to "gzencode".
+	 *
+	 * @param	string					content to encode
+	 * @return	string					encoded content
+	 */
+	public static function gzEncode($content)
+	{
+		return gzencode($content, 1);
+	}
+
+	/**
+	 * Callback for output handler to "bzcompress".
+	 *
+	 * @param	string					content to encode
+	 * @return	string					encoded content
+	 */
+	public static function bz2Encode($content)
+	{
+		return bzcompress($content);
+	}
 }

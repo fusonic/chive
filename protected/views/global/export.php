@@ -3,14 +3,16 @@
 	<?php echo CHtml::form('', 'post', array('id' => 'Export')); ?>
 		<div style="float: left; width: 250px">
 			<?php if($model->objects) { ?>
-				<?php echo CHtml::dropDownList('Export[objects][]', $model->objectKeys, $model->objects, array('size' => 20, 'multiple' => true, 'style' => 'width: 100%')); ?>
+				<?php echo CHtml::dropDownList('Export[objects][]', $model->selectedObjects, $model->objects, array('size' => 20, 'multiple' => true, 'style' => 'width: 100%')); ?>
 			<?php } ?>
 		</div>
-		<div style="margin-left: 260px">
+		<div style="margin-left: 260px; width: 600px">
 			<?php $firstExporter = current(array_keys($model->exporters)); ?>
 			<div id="exporterType">
-				<?php echo Yii::t('core', 'type'); ?>: &nbsp;
-				<?php echo CHtml::radioButtonList('Export[exporter]', $firstExporter, $model->exporters, array('separator' => ' &nbsp; ')); ?>
+				<fieldset>
+					<legend><?php echo Yii::t('core', 'type'); ?></legend>
+					<?php echo CHtml::radioButtonList('Export[exporter]', $firstExporter, $model->exporters, array('separator' => ' &nbsp; ')); ?>
+				</fieldset>
 			</div>
 			<div id="exporterSettings">
 				<?php foreach($model->exporterInstances AS $exporter) { ?>
@@ -19,18 +21,31 @@
 					</div>
 				<?php } ?>
 			</div>
-		</div>
-		<div class="buttonContainer">
-			<a href="javascript:void(0)" onclick="globalExport.view()" class="icon button">
-				<com:Icon size="16" name="search" text="core.view" />
-				<span><?php echo Yii::t('core', 'view'); ?></span>
-			</a>
-			<a href="javascript:void(0)" onclick="globalExport.save()" class="icon button">
-				<com:Icon size="16" name="save" text="core.save" />
-				<span><?php echo Yii::t('core', 'save'); ?></span>
-			</a>
+			<div>
+				<a href="javascript:void(0)" onclick="globalExport.view()" class="icon button">
+					<com:Icon size="16" name="search" text="export.show" />
+					<span><?php echo Yii::t('export', 'show'); ?></span>
+				</a>
+				<a href="javascript:void(0)" onclick="globalExport.save()" class="icon button">
+					<com:Icon size="16" name="save" text="export.download" />
+					<span><?php echo Yii::t('export', 'download'); ?></span>
+				</a>
+				<?php if(function_exists('gzencode')) { ?>
+					<a href="javascript:void(0)" onclick="globalExport.save('gzip')" class="icon button">
+						<com:Icon size="16" name="save" text="export.download" />
+						<span>Gzip</span>
+					</a>
+				<?php } ?>
+				<?php if(function_exists('bzcompress')) { ?>
+					<a href="javascript:void(0)" onclick="globalExport.save('bzip2')" class="icon button">
+						<com:Icon size="16" name="save" text="export.download" />
+						<span>Bzip2</span>
+					</a>
+				<?php } ?>
 
-			<?php echo CHtml::hiddenField('Export[action]', ''); ?>
+				<?php echo CHtml::hiddenField('Export[action]', ''); ?>
+				<?php echo CHtml::hiddenField('Export[compression]', ''); ?>
+			</div>
 		</div>
 	<?php echo CHtml::endForm(); ?>
 
@@ -45,6 +60,9 @@
 
 <?php } else { ?>
 
-	<?php echo CHtml::textArea('result', $model->result, array('rows' => 30)); ?>
+	<?php
+	// If we use the Yii textarea htmlspecialchars is called with the charset parameter > htmlspecialchars returns an empty string.
+	echo CHtml::tag('textarea', array('style' => 'height: 500px', 'wrap' => 'off'), htmlspecialchars($model->result, ENT_QUOTES));
+	?>
 
 <?php } ?>

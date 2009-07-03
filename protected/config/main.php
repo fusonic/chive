@@ -128,6 +128,7 @@ return array(
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/search'=>'table/search',
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/insert'=>'row/insert',
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/update'=>'table/update',
+					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/export'=>'table/export',
 
 						// ColumnActions
 						'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columnAction/create'=>'column/create',

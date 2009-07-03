@@ -447,7 +447,7 @@ class SchemaController extends Controller
 	}
 
 	/**
-	 * @todo(mburtscher): What's going on here?
+	 * Shows the export page for this schema.
 	 */
 	public function actionExport()
 	{
@@ -457,35 +457,6 @@ class SchemaController extends Controller
 		$this->render('../global/export', array(
 			'model' => $exportPage,
 		));
-
-/*
-		if(!$_POST['tables'])
-		{
-			$criteria = new CDbCriteria;
-			$criteria->condition = 'TABLE_SCHEMA = :schema';
-			$criteria->params = array(
-				':schema' => $this->schema,
-			);
-
-			$tables = Table::model()->findAll($criteria);
-
-		}
-		else
-		{
-
-
-
-			foreach($_POST['tables'] AS $table)
-			{
-
-			}
-
-		}
-
-		$this->render('export', array(
-			'tables'=>$tables
-		));
-		*/
 	}
 
 	/**
