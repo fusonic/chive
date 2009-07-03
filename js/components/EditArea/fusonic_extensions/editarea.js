@@ -106,14 +106,11 @@ function setoverflow(_id){
  */
 function toggleEditor(id){
 
-    var isFrameVisible = $('#frame_' + id).css('display');
-	var isThere = $('#frame_' + id).length;
-	var value;
+	var frame = document.getElementById('frame_' + id);
 	
-	
-	if(isThere != 0)
+	if(frame)
 	{
-	    if (isFrameVisible == 'none') 
+	    if (frame.style.display == 'none') 
 		{
 	        value = 1;
 			var img = 'square_green.png';
@@ -136,8 +133,7 @@ function toggleEditor(id){
         name: 'sqlEditorOn',
         value: value
     }, function(){
-		$('#aToggleEditor img').attr('src',baseUrl+'/images/icons/fugue/16/'+img);
-		$('#aToggleEditor img').attr('class',classname);
-        eAL.toggle(id);
+		$('#aToggleEditor>img').attr('src',baseUrl+'/images/icons/fugue/16/'+img).attr('class',classname);;
+	        eAL.toggle(id);
     });
 }
