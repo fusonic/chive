@@ -117,19 +117,19 @@ function toggleEditor(id){
 		{
 	        value = 1;
 			var img = 'square_green.png';
-			var class = 'icon icon16 icon_square_green';
+			var classname = 'icon icon16 icon_square_green';
 	    }
 	    else {
 	        value = 0;
 			var img = 'square_red.png';
-			var class = 'icon icon16 icon_square_red';
+			var classname = 'icon icon16 icon_square_red';
 	    }
 	}
 	else
 	{
 		 value = 1;
 		 var img = 'square_green.png';
-		 var class = 'icon icon16 icon_square_green';
+		 var classname = 'icon icon16 icon_square_green';
 	}
 	
     $.post(baseUrl + '/ajaxSettings/set', {
@@ -137,7 +137,7 @@ function toggleEditor(id){
         value: value
     }, function(){
 		$('#aToggleEditor img').attr('src',baseUrl+'/images/icons/fugue/16/'+img);
-		$('#aToggleEditor img').attr('class',class);
+		$('#aToggleEditor img').attr('class',classname);
         eAL.toggle(id);
     });
 }

@@ -50,6 +50,7 @@ class EditArea extends CInputWidget
 			';
 
 		$jsInit2 = '
+	
 	     editAreaLoader.init({
 			 id : "'.$this->id.'"		// textarea id
 			,syntax: "'.$this->syntax.'"			// syntax to be uses for highlighting
@@ -59,9 +60,9 @@ class EditArea extends CInputWidget
 			,word_wrap: "'.$this->wordWrap.'"
 			,allow_toggle: false
 			,EA_load_callback: "'.$autogrow.'"
-			,min_height:"'.$this->minHeight.'"
+			
 			,allow_resize: "'.$this->allowResize.'"
-			,min_width:"'.$this->minWidth.'"
+		
 			,display: "'.$display.'"
 				});
 			';
