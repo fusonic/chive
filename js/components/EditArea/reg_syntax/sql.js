@@ -1,17 +1,32 @@
 editAreaLoader.load_syntax["sql"] = {
-	'COMMENT_SINGLE' : {1 : '--'}
+	'COMMENT_SINGLE' : {1 : '--', 2:'#'}
 	,'COMMENT_MULTI' : {'/*' : '*/'}
 	,'QUOTEMARKS' : {1: "'", 2: '"', 3: '`'}
 	,'KEYWORD_CASE_SENSITIVE' : false
 	,'KEYWORDS' : {
 		'statements' : [
-			'select', 'SELECT', 'where', 'order', 'by',
+			'select', 'SELECT', 'where', 'order', 'by','set',
 			'insert', 'from', 'update', 'grant', 'left join', 'right join', 
-            'union', 'group', 'having', 'limit', 'alter', 'LIKE','IN','CASE'
+            'union', 'group', 'having', 'limit', 'alter', 'LIKE','IN','CASE','CREATE','VIEW','add', 'after', 'aggregate', 
+			'alias', 'all', 'and', 'as', 'authorization', 'between', 'by', 'cascade', 'cache', 'cache', 'called', 'case', 
+			'charset', 'check', 'column', 'comment', 'constraint', 'createdb', 'createuser', 'cycle', 'database', 'default',
+			 'deferrable', 'deferred', 'diagnostics', 'distinct', 'domain', 'each', 'else', 'elseif', 'elsif', 'encrypted', 
+			 'engine', 'except', 'exception', 'for', 'foreign', 'from', 'full', 'function', 'get', 'group', 'having', 'if', 
+			 'immediate', 'immutable', 'in', 'increment', 'initially', 'increment', 'index', 'inherits', 'inner', 'input',
+			  'intersect', 'into', 'invoker', 'is', 'join', 'key', 'language', 'left', 'like', 'limit', 'local', 'loop', 'match',
+			   'maxvalue', 'minvalue', 'natural', 'nextval', 'no', 'nocreatedb', 'nocreateuser', 'not', 'of', 'offset',
+			    'oids', 'on', 'only', 'operator', 'or', 'order', 'outer', 'owner', 'partial', 'password', 'perform', 'plpgsql',
+				 'primary', 'record', 'references', 'replace', 'restrict', 'return', 'returns', 'right', 'row', 'rule', 'schema',
+				  'security', 'sequence', 'session', 'sql', 'stable', 'statistics', 'sum', 'table', 'temp', 'temporary', 'then',
+				   'time', 'to', 'transaction', 'trigger', 'type', 'unencrypted', 'union', 'unique', 'user', 'using', 'valid', 'value', 
+			       'values', 'view', 'volatile', 'when', 'where', 'with', 'without', 'zone'
 		]
 		,'reserved' : [
-			'null', 'enum', 'int', 'boolean', 'add', 'varchar'
-			
+			'binary','null', 'enum', 'int', 'boolean', 'add', 'varchar','bigint', 'bigserial', 'bit', 'bytea', 'char', 'character', 
+			'cidr', 'circle', 'date', 'datetime', 'decimal', 'double', 'float4', 'float8', 'inet', 'int2', 'int4', 'int8', 
+			'integer', 'interval', 'line', 'lseg', 'macaddr', 'mediumint', 'money', 'numeric', 'oid', 'path', 'point', 'polygon', 
+			'precision', 'real', 'refcursor', 'serial', 'serial4', 'serial8', 'smallint', 'text', 'timestamp', 'varbit'
+    
 		]
 		,'functions' : [
    'ABS','ACOS','ADDDATE','ADDTIME','AES_DECRYPT','AES_ENCRYPT','ASCII','ASIN','ATAN2 ATAN','ATAN','AVG','BENCHMARK','DISTINCT','BIN','BIT_AND','BIT_COUNT','BIT_LENGTH','BIT_OR','BIT_XOR','CAST','CEILING CEIL','CHAR_LENGTH','CHAR',
@@ -24,7 +39,7 @@ editAreaLoader.load_syntax["sql"] = {
 		]
 	}
 	,'OPERATORS' :[
-     'AND','&&','BETWEEN','BINARY','&','|','^','/','DIV','<=>','=','>=','>','<<','>>','IS','NULL','<=','<','-','%','!=','<>','!','||','OR','+','REGEXP','RLIKE','XOR','~','*'
+     'AND','&&','BETWEEN','&','|','^','/','DIV','<=>','=','>=','>','<<','>>','IS','<=','<','-','%','!=','<>','!','||','OR','+','REGEXP','RLIKE','XOR','~','*'
 	]
 	,'DELIMITERS' :[
 		'(', ')', '[', ']', '{', '}'
@@ -39,8 +54,26 @@ editAreaLoader.load_syntax["sql"] = {
 		}
 	}
 	,'STYLES' : {
-		'COMMENTS': 'color: #AAAAAA;'
-		,'QUOTESMARKS': 'color: #879EFA;'
+		'COMMENTS': 'color: #969696;'
+		,'QUOTESMARKS': 'color: #CE7B00;'
+		,'KEYWORDS' : {
+			'reserved' : 'color: #259D9D;'
+			,'functions' : 'color: #259D9D;'
+			,'statements' : 'color: #0000E6;'
+			}
+		,'OPERATORS' : 'color: #000000;'
+		,'DELIMITERS' : 'color: #000000;'
+		,'REGEXPS' : {
+			'variables' : 'color: #E0BD54;'
+		}		
+	}
+};
+
+
+/* Original colors
+ ,'STYLES' : {
+		'COMMENTS': 'color: #969696;'
+		,'QUOTESMARKS': 'color: #CE7B00;'
 		,'KEYWORDS' : {
 			'reserved' : 'color: #48BDDF;'
 			,'functions' : 'color: #0040FD;'
@@ -52,4 +85,5 @@ editAreaLoader.load_syntax["sql"] = {
 			'variables' : 'color: #E0BD54;'
 		}		
 	}
-};
+	 
+ */

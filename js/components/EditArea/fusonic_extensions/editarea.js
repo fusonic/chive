@@ -9,7 +9,7 @@ function setupEditAreaAutoGrow(_id){
     
     // select the iframe
     var frame = $('#frame_' + _id).get(0);
-    
+   
     // getting the maxheight, saved in the textarea's style attribute
     var maxHeight = parseInt($('#' + _id).css('max-height'));
     
@@ -99,7 +99,11 @@ function setoverflow(_id){
     resultDiv.style.overflowY = "auto";
 }
 
-
+/**
+ * this function toggles the editarea editor on and off
+ * @param: id =  id of the textarea
+ * @return void
+ */
 function toggleEditor(id){
 
     var isFrameVisible = $('#frame_' + id).css('display');
