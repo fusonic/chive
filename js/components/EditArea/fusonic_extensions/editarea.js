@@ -1,7 +1,7 @@
 /**
  * this function sets up the autogrow functionality for the EditArea
  * its called by the EditArea EA_load_callback
- * @param: _id =  id of the textarea
+ * @param: _id  id of the textarea
  * @return void
  */
 function setupEditAreaAutoGrow(_id){
@@ -89,7 +89,7 @@ function setupEditAreaAutoGrow(_id){
  * this function sets the overflow attribute to auto if the
  * editarea is not allowed to autogrow
  * its called by the EditArea EA_load_callback
- * @param: _id =  id of the textarea
+ * @param: _id  id of the textarea
  * @return void
  */
 function setoverflow(_id){
@@ -101,10 +101,11 @@ function setoverflow(_id){
 
 /**
  * this function toggles the editarea editor on and off
- * @param: id =  id of the textarea
+ * @param: id  id of the textarea
+ * @param iconId id of the icon that should be changed
  * @return void
  */
-function toggleEditor(id){
+function toggleEditor(id,iconId){
 
 	var frame = document.getElementById('frame_' + id);
 	
@@ -133,7 +134,7 @@ function toggleEditor(id){
         name: 'sqlEditorOn',
         value: value
     }, function(){
-		$('#aToggleEditor>img').attr('src',baseUrl+'/images/icons/fugue/16/'+img).attr('class',classname);;
+		$('#'+iconId+'>img').attr('src',baseUrl+'/images/icons/fugue/16/'+img).attr('class',classname);;
 	        eAL.toggle(id);
     });
 }

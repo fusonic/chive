@@ -5,7 +5,7 @@ editAreaLoader.load_syntax["sql"] = {
 	,'KEYWORD_CASE_SENSITIVE' : false
 	,'KEYWORDS' : {
 		'statements' : [
-			'select', 'SELECT', 'where', 'order', 'by','set','DROP','DEFINER','BEGIN','END',
+			'select', 'SELECT', 'where', 'order', 'by','set','DROP','DEFINER','BEGIN','END','BEFORE','DELETE',
 			'insert', 'from', 'update', 'grant', 'left join', 'right join', 
             'union', 'group', 'having', 'limit', 'alter', 'LIKE','IN','CASE','CREATE','VIEW','add', 'after', 'aggregate', 
 			'alias', 'all', 'and', 'as', 'authorization', 'between', 'by', 'cascade', 'cache', 'cache', 'called', 'case', 
