@@ -14,11 +14,11 @@ class RowController extends Controller
 	{
 		if(Yii::app()->request->isAjaxRequest)
 			$this->layout = false;
-
+			
 		$request = Yii::app()->getRequest();
 		
-		$this->schema =	Row::$schema =	$request->getParam('schema');
-		$this->table = 	Row::$table = 	$request->getParam('table');
+		$this->schema =	$request->getParam('schema');
+		$this->table = $request->getParam('table');
 		
 		parent::__construct($id, $module);
 		$this->connectDb($this->schema);
@@ -62,7 +62,8 @@ class RowController extends Controller
 				elseif(isset($_FILES['Row']['name'][$attribute]))
 				{
 					
-					$file = file_get_contents($_FILES['Row']['tmp_name'][$attribute]);
+					$file = '0x' . bin2hex(file_get_contents($_FILES['Row']['tmp_name'][$attribute]));
+					$row->setHex($attribute);
 					$row->setAttribute($attribute, $file);
 					
 				}
@@ -105,6 +106,12 @@ class RowController extends Controller
 			$response->send();
 		
 		}
+		elseif(isset($_POST['attributes']))
+		{
+			$attributes = json_decode($_POST['attributes'], true);
+			$fromRow = Row::model()->findByAttributes($attributes);
+			$row->attributes = $fromRow->attributes;
+		}
 		
 		$data = array(
 			'row' => $row,
@@ -129,7 +136,11 @@ class RowController extends Controller
 		$column = Yii::app()->getRequest()->getParam('column');
 		$isNull = Yii::app()->getRequest()->getParam('isNull');
 		$attributes = json_decode(Yii::app()->getRequest()->getParam('attributes'), true);
-
+		
+		$attributesCount = count($pk);
+		$rows = Row::model()->findAllByAttributes($attributes);
+		$row = $rows[0];
+		
 		// SET datatype
 		if(is_array($newValue))
 		{
@@ -139,7 +150,8 @@ class RowController extends Controller
 		// FILE (blob)
 		elseif(isset($_FILES['value']))
 		{
-			$newValue = file_get_contents($_FILES['value']['tmp_name']);
+			$row->setHex($column);
+			$newValue = '0x' . bin2hex(file_get_contents($_FILES['value']['tmp_name']));
 		}
 
 		// NULL
@@ -148,9 +160,7 @@ class RowController extends Controller
 			$newValue = null;
 		}
 		
-		$attributesCount = count($pk);
-		$rows = Row::model()->findAllByAttributes($attributes);
-		$row = $rows[0];
+		
 		
 		try {
 

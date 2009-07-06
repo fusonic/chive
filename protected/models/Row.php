@@ -7,6 +7,7 @@ class Row extends CActiveRecord
 	private $originalAttributes;
 	
 	private $_functions;
+	private $_hexvalues = array();
 
 	public static $db;
 	public static $schema;
@@ -195,6 +196,9 @@ class Row extends CActiveRecord
 			{
 				$sql .= "\n\t" . 'NULL';
 			}
+			elseif($this->isHex($attribute)){
+				$sql .= "\n\t" . $value;
+			}
 
 			// DEFAULT
 			else
@@ -263,13 +267,19 @@ class Row extends CActiveRecord
 			{
 				$function = $this->getFunction($column);
 				
+				$sql .= "\t" . self::$db->quoteColumnName($column) . ' = ';
+				
 				if($function !== null)
 				{
-					$sql .= "\t" . self::$db->quoteColumnName($column) . ' = ' . self::$functions[$function] . '(' . ($value === null ? 'NULL' : self::$db->quoteValue($value))  . ')';
+					$sql .= self::$functions[$function] . '(' . ($value === null ? 'NULL' : self::$db->quoteValue($value))  . ')';
+				}
+				elseif($this->isHex($column))
+				{
+					$sql .= $value;
 				}
 				else
 				{
-					$sql .= "\t" . self::$db->quoteColumnName($column) . ' = ' . (is_null($value) ? 'NULL' : self::$db->quoteValue($value));
+					$sql .= (is_null($value) ? 'NULL' : self::$db->quoteValue($value));
 				}
 
 				$changedAttributesCount--;
@@ -394,6 +404,21 @@ class Row extends CActiveRecord
 		{
 			return null;
 		}
+	}
+	
+	public function setHex($_attribute)
+	{
+		$this->_hexvalues[$_attribute] = true;
+	}
+	
+	public function isHex($_attribute)
+	{
+		if(isset($this->_hexvalues[$_attribute]) && $this->_hexvalues[$_attribute] === true)
+		{
+			return true;
+		}
+		
+		return false;
 	}
 
 }
