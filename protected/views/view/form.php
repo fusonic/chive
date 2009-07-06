@@ -13,5 +13,13 @@
 			<com:Icon name="delete" size="16" />
 			<span><?php echo Yii::t('action', 'cancel'); ?></span>
 		</a>
+		<a id="aToggleEditor<?php echo CHtml::$idPrefix;?>" class="icon button" href="javascript:void(0);" onclick="toggleEditor('<?php echo CHtml::$idPrefix;?>query','aToggleEditor<?php echo CHtml::$idPrefix;?>');">
+					<?php if( Yii::app()->user->settings->get('sqlEditorOn') == '1') {?>
+						<com:Icon size="16" name="square_green" />
+					<?php } else { ?>
+						<com:Icon size="16" name="square_red" />
+					<?php } ?>
+					<span><?php echo Yii::t('core', 'toggleEditor'); ?></span>
+				</a>
 	</div>
 </form>

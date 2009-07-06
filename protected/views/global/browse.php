@@ -53,7 +53,7 @@
 					<span><?php echo Yii::t('core', 'showFullColumnContent'); ?></span>
 				</a>
 				<br/><br/>
-				<a id="aToggleEditor" class="icon button" href="javascript:void(0);" onclick="toggleEditor('query');">
+				<a id="aToggleEditor" class="icon button" href="javascript:void(0);" onclick="toggleEditor('query','aToggleEditor');">
 					<?php if( Yii::app()->user->settings->get('sqlEditorOn') == '1') {?>
 						<com:Icon size="16" name="square_green" />
 					<?php } else { ?>
