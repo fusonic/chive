@@ -7,6 +7,7 @@
  * -- Try to set the value of a int to 99999999999999999 and look what happens ...
  * - Insert row (with 1-col pk, multi-col pk, no pk, with auto_increment and without)
  * - Delete row (with 1-col pk, multi-col pk, no pk)
+ *
  */
 
 class RowTest extends TestCase
@@ -48,30 +49,6 @@ class RowTest extends TestCase
 	}
 
 
-	/*
-	 *
-	 * tests:   mehrere Datatypes updaten oder inserten
-	 *                upadte auf tabelle mit 1 oder mehreren pks
-	 *
-	 *			1.) Tables with primary keys
-	 *				a.) Single column PKs
-	 *						- int
-	 *						- enum
-	 *						- varchar
-	 *					- NULL
-	 *
-	 *				b.) Muli-column PKs
-	 *						- int, int (nullable) ... 1, NULL
-	 *						- int, enum
-	 *
-	 *			2.) Content types
-	 *
-	 *			3.) Tables without primary keys
-	 *               a) 2 rows besitzen selbe werte .. welches ändert sich?
-	 *
-	 *
-	 */
-
 
 	/**
 	 * tries to read the row values
@@ -111,15 +88,8 @@ class RowTest extends TestCase
 	 */
 	public function testUpdate()
 	{
-		/*$pk = array(
-			'TABLE_SCHEMA' => 'rowtest',
-			'TABLE_NAME' => 'data2',
-			'COLUMN_NAME' => 'test1'
-			);
-			$row = Row::model()->findByPk($pk);*/
 
-
-		Row::$table = "data2";
+		Row::$table = "data";
 
 		$row = Row::model()->findByAttributes(array('test1'=>1));
 
@@ -135,12 +105,41 @@ class RowTest extends TestCase
 
 		$test = Row::model()->findByAttributes(array('test1'=>2));
 			
-		
-	/*	
-	 * @todo(dmoesslang): cant select data2
-	 */
+		$this->assertEquals('2',$row->getAttribute('test1'));
+		$this->assertEquals('345345',$row->getAttribute('test2'));
+		$this->assertEquals('testtesttesttest',$row->getAttribute('test3'));
+		$this->assertEquals('433.43',$row->getAttribute('test4'));
+		$this->assertEquals('2009-06-11',$row->getAttribute('test5'));
+		$this->assertEquals('b',$row->getAttribute('test6'));
+		$this->assertEquals('3',$row->getAttribute('test7'));
+		$this->assertContains('neque porro quisquam est, qu',$row->getAttribute('test8'));
+		$this->assertContains('{"firstName": "John", "l',$row->getAttribute('test9'));
+			
 
-		/*	$this->assertEquals('2',$row->getAttribute('test1'));
+
+		/*
+		 * @todo(dmoesslang): cant select data2
+		 *
+		 Row::$table = "data2";
+
+		 $row = Row::model()->findByAttributes(array('test1'=>1));
+
+		 $row->setAttribute('test1', '2');
+		 $row->setAttribute('test2', '345345');
+		 $row->setAttribute('test3','testtesttesttest');
+		 $row->setAttribute('test4', '433.43');
+		 $row->setAttribute('test5','2009-06-11');
+		 $row->setAttribute('test6','b');
+		 $row->setAttribute('test7','3');
+		 $row->setAttribute('test8','neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.');
+		 $row->setAttribute('test9','{"firstName": "John", "lastName": "Smith", "address": {"streetAddress": "21 2nd Street", "city": "New York", "state": "NY", "postalCode": 10021}, "phoneNumbers": ["212 555-1234", "646 555-4567"]}');
+
+		 $test = Row::model()->findByAttributes(array('test1'=>2));
+
+
+
+
+		 $this->assertEquals('2',$row->getAttribute('test1'));
 		 $this->assertEquals('345345',$row->getAttribute('test2'));
 		 $this->assertEquals('testtesttesttest',$row->getAttribute('test3'));
 		 $this->assertEquals('433.43',$row->getAttribute('test4'));
@@ -149,36 +148,34 @@ class RowTest extends TestCase
 		 $this->assertEquals('3',$row->getAttribute('test7'));
 		 $this->assertContains('neque porro quisquam est, qu',$row->getAttribute('test8'));
 		 $this->assertContains('{"firstName": "John", "l',$row->getAttribute('test9'));
-		 */
+
+		 Row::$table = "data3";
+
+		 $row = Row::model()->findByAttributes(array('test1'=>1));
+
+		 $row->setAttribute('test1', '2');
+		 $row->setAttribute('test2', '345345');
+		 $row->setAttribute('test3','testtesttesttest');
+		 $row->setAttribute('test4', '433.43');
+		 $row->setAttribute('test5','2009-06-11');
+		 $row->setAttribute('test6','b');
+		 $row->setAttribute('test7','3');
+		 $row->setAttribute('test8','neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.');
+		 $row->setAttribute('test9','{"firstName": "John", "lastName": "Smith", "address": {"streetAddress": "21 2nd Street", "city": "New York", "state": "NY", "postalCode": 10021}, "phoneNumbers": ["212 555-1234", "646 555-4567"]}');
+
+		 $row->save();
+
+		 $urow = Row::model()->findByAttributes(array('test1'=>2));
 
 
-		Row::$table = "data3";
-
-		$row = Row::model()->findByAttributes(array('test1'=>1));
-
-		$row->setAttribute('test1', '2');
-		$row->setAttribute('test2', '345345');
-		$row->setAttribute('test3','testtesttesttest');
-		$row->setAttribute('test4', '433.43');
-		$row->setAttribute('test5','2009-06-11');
-		$row->setAttribute('test6','b');
-		$row->setAttribute('test7','3');
-		$row->setAttribute('test8','neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.');
-		$row->setAttribute('test9','{"firstName": "John", "lastName": "Smith", "address": {"streetAddress": "21 2nd Street", "city": "New York", "state": "NY", "postalCode": 10021}, "phoneNumbers": ["212 555-1234", "646 555-4567"]}');
-
-		$row->save();
-
-		$urow = Row::model()->findByAttributes(array('test1'=>2));
-
-
-		//$row = new Row();
-		//var_dump($row);
+		 //$row = new Row();
+		 //var_dump($row);
 
 
 
 
 
-		/*
+		 /*
 		 * @todo(mburtscher): Seems not to be finished ...
 		 */
 
@@ -206,6 +203,7 @@ class RowTest extends TestCase
 
 	public function testDelete()
 	{
+
 		Row::$table = "data";
 
 		$row = Row::model()->findByAttributes(array('test1'=>1));
@@ -213,125 +211,68 @@ class RowTest extends TestCase
 		$row->delete();
 
 		$this->assertNull(Row::model()->findByAttributes(array('test1'=>1)));
+
 			
-	/*	@todo(dmoesslang): cant select data2
-	 * 
-	 * Row::$table = "data2";
+		/*	@todo(dmoesslang): cant select data2
+		 	
+		Row::$table = "data2";
 
 		$row = Row::model()->findAllByAttributes(array('test1'=>1));
 		die(var_dump(count($row)));
 
-		//die(var_dump($row));
-		
-		$row->delete();
-
-		$this->assertNull(Row::model()->findByAttributes(array('test1'=>1)));*/
-
-		Row::$table = "data3";
-
-		$row = Row::model()->findByAttributes(array('test1'=>1));
+		die(var_dump($row));
 
 		$row->delete();
 
 		$this->assertNull(Row::model()->findByAttributes(array('test1'=>1)));
 
+		Row::$table = "data3";
+
+
+
+		$row = Row::model()->findByPk(array('test1'=>1, 'test2'=>123412));
+		die(var_dump($row));
+		$row->delete();
+
+		$this->assertNull(Row::model()->findByAttributes(array('test1'=>1)));*/
+
 	}
 
-	/*
-		$_GET['schema'] = "rowtest";
-		$_GET['table'] = "data2";
+	public function testInsert()
+	{
+		Row::$table = "data";
 
-	 $row = Row::model()->findByAttributes(array('test1'=>'1'));
+		$row = new Row();
 
-	 var_dump($row);
-
-	 /*
-	 *
-	 *
-	 * $row = new Row();
-
-		$row->setAttribute('spaltenname', 123);
+		$row->setAttribute('test1', '2');
+		$row->setAttribute('test2', '345345');
+		$row->setAttribute('test3','testtesttesttest');
+		$row->setAttribute('test4', '433.43');
+		$row->setAttribute('test5','2009-06-11');
+		$row->setAttribute('test6','b');
+		$row->setAttribute('test7','3');
+		$row->setAttribute('test8','neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.');
+		$row->setAttribute('test9','{"firstName": "John", "lastName": "Smith", "address": {"streetAddress": "21 2nd Street", "city": "New York", "state": "NY", "postalCode": 10021}, "phoneNumbers": ["212 555-1234", "646 555-4567"]}');
 
 		$row->save();
 
-		$newRow = Row::model()->findByPk($pk);
+		$urow = Row::model()->findByAttributes(array('test1'=>2));
 
-		$row = Row::model()->findByPk(3);
+		$this->assertEquals('2',$row->getAttribute('test1'));
+		$this->assertEquals('345345',$row->getAttribute('test2'));
+		$this->assertEquals('testtesttesttest',$row->getAttribute('test3'));
+		$this->assertEquals('433.43',$row->getAttribute('test4'));
+		$this->assertEquals('2009-06-11',$row->getAttribute('test5'));
+		$this->assertEquals('b',$row->getAttribute('test6'));
+		$this->assertEquals('3',$row->getAttribute('test7'));
+		$this->assertEquals('neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.',$row->getAttribute('test8'));
+		$this->assertEquals('{"firstName": "John", "lastName": "Smith", "address": {"streetAddress": "21 2nd Street", "city": "New York", "state": "NY", "postalCode": 10021}, "phoneNumbers": ["212 555-1234", "646 555-4567"]}',$row->getAttribute('test9'));
+			
 
-		$row = Row::model()->findByPk(array('id'=>3, 'description'=>'test'));
+	}
 
 
 
-		$this->assertType('string',$row->tableName());
-
-	   Tests to read database information.
-
-	 public function testRead()
-	 {
-		// Load schema
-		$row = Row::model()->findAll();
-
-		die($row);
-
-		// Check properties
-		$this->assertEquals('schematest2', $schema->SCHEMA_NAME);
-		$this->assertEquals('latin7', $schema->DEFAULT_CHARACTER_SET_NAME);
-		$this->assertEquals('latin7_general_cs', $schema->DEFAULT_COLLATION_NAME);
-		}
-
-		public function testInsert()
-		{
-		// Create new schema
-		$schema = new Schema();
-
-		// Set properties
-		$schema->SCHEMA_NAME = 'schematest1';
-		$schema->DEFAULT_COLLATION_NAME = 'latin1_swedish_ci';
-
-		// Save
-		$this->assertEquals(true, $schema->save());
-
-		// Load again
-		$schema = Schema::model()->findByPk('schematest1');
-
-		// Check properties
-		$this->assertEquals('schematest1', $schema->SCHEMA_NAME);
-		$this->assertEquals('latin1', $schema->DEFAULT_CHARACTER_SET_NAME);
-		$this->assertEquals('latin1_swedish_ci', $schema->DEFAULT_COLLATION_NAME);
-		}
-
-		public function testUpdate()
-		{
-		// Load schema
-		$schema = Schema::model()->findByPk('schematest2');
-
-		// Set properties
-		$schema->DEFAULT_COLLATION_NAME = 'latin1_swedish_ci';
-
-		// Save
-		$this->assertEquals(true, $schema->save());
-
-		// Load again
-		$schema = Schema::model()->findByPk('schematest2');
-
-		// Check properties
-		$this->assertEquals('schematest2', $schema->SCHEMA_NAME);
-		$this->assertEquals('latin1', $schema->DEFAULT_CHARACTER_SET_NAME);
-		$this->assertEquals('latin1_swedish_ci', $schema->DEFAULT_COLLATION_NAME);
-		}
-
-		public function testDrop()
-		{
-		// Load schema
-		$schema = Schema::model()->findByPk('schematest2');
-
-		// Drop
-		$this->assertEquals(true, $schema->delete());
-
-		// Load again
-		$this->assertEquals(null, Schema::model()->findByPk('schematest2'));
-		}
-		*/
 }
 
 ?>
