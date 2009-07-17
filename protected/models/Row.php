@@ -130,9 +130,9 @@ class Row extends CActiveRecord
 		else
 		{
 			$values = array();
-			foreach($table->columns AS $name)
+			foreach($table->columns AS $column)
 			{
-				$values[$name] = $this->$name;					
+				$values[$column->name] = $this->getAttribute($column->name);					
 			}
 			return $values;
 		}

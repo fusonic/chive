@@ -45,7 +45,7 @@
 		}
 	
 		$('#input_<?php echo $id; ?>').select().focus();
-		editing = true;
+		editing = '<?php echo $id; ?>';
 
 	</script>
 	

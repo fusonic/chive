@@ -111,7 +111,7 @@ class TableController extends Controller
 		}
 
 		$browsePage->run();
-
+		
 		$this->render('../global/browse', array(
 			'model' => $browsePage
 		));
@@ -219,7 +219,8 @@ class TableController extends Controller
 		$browsePage->schema = $this->schema;
 		$browsePage->table = $this->table;
 		$browsePage->db = $this->db;
-		$browsePage->route = '#tables/' . $this->table . '/sql';
+		$browsePage->route = 'schema/' . $this->schema . '/tables/' . $this->table . '/sql';
+		$browsePage->formTarget = 'schema/' . $this->schema . '/tables/' . $this->table . '/sql';
 		$browsePage->execute = (bool)Yii::app()->getRequest()->getParam('query');
 
 		$browsePage->run();

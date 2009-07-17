@@ -58,6 +58,7 @@ class SiteController extends Controller
 
 		die();
 */
+		
 		$this->render('index');
 	}
 

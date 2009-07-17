@@ -17,8 +17,10 @@
 			
 			tbodyObj.dblclick(function(e) {
 				
-				if(editing)
-					return;
+				if(editing) {
+					reset();
+					//$('#form_' + editing).submit();
+				}
 					
 				if(e.target.tagName == 'TD')
 				{
@@ -39,8 +41,6 @@
 							
 					});
 					
-					editing = true;
-						
 				}
 				else
 				{

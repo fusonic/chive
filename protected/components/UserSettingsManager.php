@@ -63,6 +63,7 @@ class UserSettingsManager
 	public function get($name, $scope = null, $object = null, $attribute = null, $value = null)
 	{
 		$id = $this->getSettingId($name, $scope);
+		
 		if(isset($this->userSettings[$id]))
 		{
 			if(isset($this->userSettings[$id][$object]))

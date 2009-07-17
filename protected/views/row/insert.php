@@ -1,5 +1,5 @@
 <div class="form">
-<?php echo CHtml::form(); ?>
+<?php echo CHtml::form(BASEURL . '/schema/' . $this->schema . '/tables/' . $this->table . '/insert'); ?>
 
 <?php echo $formBody; ?>
 
@@ -24,5 +24,6 @@
 	});
 </script>
 
+<input type="submit" name="submit" style="display: none;" />
 
 <?php echo CHtml::endForm(); ?>

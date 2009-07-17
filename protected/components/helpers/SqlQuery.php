@@ -189,6 +189,16 @@ class SqlQuery {
 		return $res[1];
 
 	}
+	
+	public function getTable() 
+	{
+		if($this->parsedQuery && count($this->parsedQuery['TableNames']) == 1)
+		{
+			return $this->parsedQuery['TableNames'][0];
+		}
+		else
+			return null;
+	}
 
 	private function stripEmptyLines(&$_string)
 	{

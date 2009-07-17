@@ -24,7 +24,7 @@
 				</div>
 			</td>
 			<td style="vertical-align: top; padding: 2px 5px;">
-				<a class="icon button" href="javascript:void(0);" onclick="Bookmark.add('<?php echo $this->schema; ?>', $('#query').val());">
+				<a class="icon button" href="javascript:void(0);" onclick="Bookmark.add('<?php echo $model->schema; ?>', (editAreaLoader ? editAreaLoader.getValue('query') : $('#query').val()));">
 					<com:Icon size="16" name="bookmark_add" />
 					<span><?php echo Yii::t('core', 'bookmark'); ?></span>
 				</a>
@@ -131,20 +131,22 @@
 								</a>
 							</td>
 							<td class="action">
-								<a href="javascript:void(0);" class="icon" onclick="globalBrowse.deleteRow(<?php echo $i; ?>);">
+								<a href="javascript:void(0);" class="icon" onclick="globalBrowse.insertAsNewRow(<?php echo $i; ?>);">
 									<com:Icon name="insert" size="16" text="core.insert" />
 								</a>
 							</td>
 						<?php } ?>
 						<?php foreach($row AS $key=>$value) { ?>
 							<td class="<?php echo $key; ?>">
-								<?php if(DataType::getBaseType($model->getTable()->columns[$key]->dbType) == "blob" && $value) { ?>
-									<a href="javascript:void(0);" class="icon" onclick="download('<?php echo BASEURL; ?>/row/download', {key: JSON.stringify(keyData[<?php echo $i; ?>]), column: '<?php echo $column; ?>', table: '<?php echo $this->table; ?>', schema: '<?php echo $this->schema; ?>'})">
+								<?php if(DataType::getInputType($model->getTable()->columns[$key]->dbType) == "file" && $value) { ?>
+									<a href="javascript:void(0);" class="icon" onclick="download('<?php echo BASEURL; ?>/row/download', {key: JSON.stringify(keyData[<?php echo $i; ?>]), column: '<?php echo $column; ?>', table: '<?php echo $model->table; ?>', schema: '<?php echo $model->schema; ?>'})">
 										<com:Icon name="save" text="core.download" size="16" />
 										<?php echo Yii::t('core', 'download'); ?>
 									</a>
+								<?php } elseif($model->table !== null) { ?>
+									<span><?php echo is_null($value) ? '<span class="null">NULL</span>' : (Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $model->schema . '.' .  $model->table) ? str_replace(array('<','>'),array('&lt;','&gt;'), $value) : StringUtil::cutText(str_replace(array('<','>'),array('&lt;','&gt;'),$value), 100)); ?></span>
 								<?php } else { ?>
-									<span><?php echo is_null($value) ? '<span class="null">NULL</span>' : (Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $this->schema . '.' .  $this->table) ? str_replace(array('<','>'),array('&lt;','&gt;'),$value) : StringUtil::cutText(str_replace(array('<','>'),array('&lt;','&gt;'),$value), 100)); ?></span>
+									<span><?php echo is_null($value) ? '<span class="null">NULL</span>' : (Yii::app()->user->settings->get('showFullColumnContent', 'schema.browse', $model->schema) ? str_replace(array('<','>'),array('&lt;','&gt;'), $value) : StringUtil::cutText(str_replace(array('<','>'),array('&lt;','&gt;'),$value), 100)); ?></span>
 								<?php } ?>
 							</td>
 							<?php if($model->getIsEditable() && (in_array($key, (array)$model->getTable()->primaryKey) || $model->getTable()->primaryKey === null)) { ?>
@@ -155,6 +157,13 @@
 					<?php $i++; ?>
 				<?php } ?>
 			</tbody>
+			<tfoot>
+				<tr>
+					<th colspan="<?php echo 4 + count($row); ?>">
+						<?php echo Yii::t('database', 'showingRowsOfRows', array('{start}' => $model->getStart(), '{end}' => $model->getStart() + $model->getPagination()->getPagesize(), '{total}' => $model->getTotal())); ?>
+					</th>
+				</tr>
+			</tfoot>
 		</table>
 
 	<div class="buttonContainer">

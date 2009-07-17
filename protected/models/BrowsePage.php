@@ -20,6 +20,9 @@ class BrowsePage extends CModel
 	private $data;
 	private $response;
 	private $isEditable = null;
+	private $start = 0;
+	private $pageSize = 0;
+	private $total = 0;
 
 	private $lastResultSetQuery;
 	
@@ -31,8 +34,8 @@ class BrowsePage extends CModel
 	 */
 	public $query = '';
 	public $db;
-	public $schema;
-	public $table;
+	public $schema = null;
+	public $table = null;
 	public $route;
 	public $formTarget = '';
 
@@ -78,12 +81,12 @@ class BrowsePage extends CModel
 
 				$cmd = $this->db->createCommand('SET PROFILING = 1');
 				$cmd->execute();
+				
 			}
 
 			$splitter = new SqlSplitter($this->query);
 			$queries = $splitter->getQueries();
 		}
-
 
 		if($this->execute)
 		{
@@ -95,6 +98,12 @@ class BrowsePage extends CModel
 
 				$sqlQuery = new SqlQuery($query);
 				$type = $sqlQuery->getType();
+				
+				// Get table from query if table is not specified by URL
+				if(!$this->table)
+				{
+					$this->table = $sqlQuery->getTable();
+				}
 
 				// SELECT
 				if($type == "select")
@@ -114,23 +123,34 @@ class BrowsePage extends CModel
 					
 					$limit = $sqlQuery->getLimit();
 					
-					if($_REQUEST['page'])
+					if(isset($_REQUEST['page']))
 					{
 						$offset = $_REQUEST['page'] * $pageSize - $pageSize;
 						$sqlQuery->applyLimit($pageSize, $offset, true);
 					}
 					
-					if($limit && !$_REQUEST[$pages->pageSizeVar])
+					// Set pagesize from query limit
+					if($limit && !isset($_REQUEST[$pages->pageSizeVar]))
 					{
 						$_REQUEST[$pages->pageSizeVar] = $limit['Length'];
 						$pageSize = $pages->setupPageSize('pageSize', 'schema.table.browse');
 					}
+					// Apply standard limit
 					elseif(!$limit)
 					{
 						$offset = 0;
 						$sqlQuery->applyLimit($pageSize, $offset, true);
 					}
 					
+					// New pagesize has been set, apply new pagesize
+					elseif(isset($_REQUEST[$pages->pageSizeVar]))
+					{
+						$pageSize = $pages->setupPageSize('pageSize', 'schema.table.browse');
+						$offset = 0;
+						$sqlQuery->applyLimit($pageSize, $offset, true);
+					}
+					
+					$this->start = $offset;
 					
 					// Apply sort
 					$sqlQuery->applySort($sort->getOrder(), true);
@@ -142,7 +162,7 @@ class BrowsePage extends CModel
 				{
 					#predie("insert / update / delete statement");
 					$response->refresh = true;
-
+					
 				}
 				elseif($type == "show")
 				{
@@ -197,6 +217,7 @@ class BrowsePage extends CModel
 						{
 							$total = (int)$this->db->createCommand('SELECT FOUND_ROWS()')->queryScalar();
 							$pages->setItemCount($total);
+							$this->total = $total;
 							
 							$keyData = array();
 						}
@@ -208,7 +229,6 @@ class BrowsePage extends CModel
 						{
 							$columns = array_keys($data[0]);
 						}
-						
 
 						$isSent = true;
 						
@@ -218,14 +238,13 @@ class BrowsePage extends CModel
 					catch (CDbException $ex)
 					{
 						$ex = new DbException($cmd);
-						$response->addNotification('error', Yii::t('message', 'executingQueryFailed'), $ex->getText(), $ex->getSql());
+						$response->addNotification('error', Yii::t('message', 'errorExecuteQuery'), $ex->getText(), $ex->getSql());
 					}
 
 
 				}
 				else
 				{
-
 					try
 					{
 						// Measure time
@@ -240,7 +259,7 @@ class BrowsePage extends CModel
 					catch(CDbException $ex)
 					{
 						$dbException = new DbException($cmd);
-						$response->addNotification('error', Yii::t('message', 'sqlErrorOccured', array('{errno}'=>$dbException->getCode(), '{errmsg}'=>$dbException->getText())));
+						$response->addNotification('error', Yii::t('message', 'errorExecuteQuery'), Yii::t('message', 'sqlErrorOccured', array('{errno}'=>$dbException->getNumber(), '{errmsg}'=>$dbException->getText())));
 					}
 
 				}
@@ -254,37 +273,33 @@ class BrowsePage extends CModel
 				$cmd = $this->db->createCommand('select
 						state,
 						SUM(duration) as total,
-						count(*)
+						COUNT(*) AS count
 					FROM information_schema.profiling
 					GROUP BY state
 					ORDER by total desc');
 
 				$cmd->prepare();
 				$profileData = $cmd->queryAll();
-
+				
 				
 				if(count($profileData))
 				{
-					$test = '<table>';
+					$results = '<table class="profiling">';
 
 					foreach($profileData AS $item)
 					{
-						$test .= '<tr>';
+						$results .= '<tr>';
+						
+						$results .= '<td class="state">' . ucfirst($item['state']) . '</td>';
+						$results .= '<td class="time">' . $item['total'] . '</td>';
+						$results .= '<td class="count">(' . $item['count'] . ')</td>';
 
-						$i = 0;
-						foreach($item AS $value)
-						{
-							$test .= '<td style="padding: 2px; min-width: 80px;">' . ($i == 0 ? '<b>' . ucfirst($value) . '</b>' : $value)  . '</td>';
-							$i++;
-						}
-
-
-						$test .= '</tr>';
+						$results .= '</tr>';
 					}
 
-					$test .= '</table>';
+					$results .= '</table>';
 
-					$response->addNotification('info', 'Profling results (sorted by execution time)', $test, null);
+					$response->addNotification('info', Yii::t('core', 'profilingResultsSortedByExecutionTime'), $results, null);
 				}
 
 			}
@@ -340,7 +355,17 @@ class BrowsePage extends CModel
 	{
 		return $this->response;
 	}
-
+	
+	public function getStart()
+	{
+		return $this->start;
+	}
+	
+	public function getTotal()
+	{
+		return $this->total;
+	}
+	
 	public function getIsEditable()
 	{
 		if($this->isEditable === null)

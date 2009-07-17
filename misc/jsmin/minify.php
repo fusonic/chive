@@ -9,7 +9,7 @@ $mergedJs = '';
 
 while($file = readdir($handler))
 {
-	if($file == '.' || $file == '..')
+	if($file == '.' || $file == '..' || $file == 'all.js' || substr($file, 0, 1) == ".")
 		continue;
 
 	echo 'reading ' . $dir . '/' . $file . '<br/>';

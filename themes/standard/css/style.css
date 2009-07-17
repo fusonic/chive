@@ -226,4 +226,15 @@
   ul.breadCrumb li:hover {
   	background: #ffd900;
   }   
+  
+  table.profiling td  {
+  	padding: 2px;
+  }
+  
+  table.profiling td.state {
+  	min-width: 100px;
+  	font-weight: bold;
+  	padding-right: 20px;
+  } 
+  
 }

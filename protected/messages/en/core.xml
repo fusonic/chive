@@ -73,4 +73,5 @@
 	<entry id="insertAndReturnToThisPage">Insert and return to this page</entry>
 	<entry id="setNull">Set NULL</entry>
 	<entry id="toggleEditor">Toggle editor</entry>
+	<entry id="profilingResultsSortedByExecutionTime">Profiling results sorted by execution time</entry>
 </category>

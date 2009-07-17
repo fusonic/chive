@@ -6,7 +6,7 @@
 	
 	<!-- Queries -->
 	<entry id="successExecuteQuery">Executed query</entry>
-	<entry id="successExecuteQuery">Executing query failed</entry>
+	<entry id="errorExecuteQuery">Executing query failed</entry>
 	<entry id="emptyResultSet">An empty resultset has been returned.</entry>
 	<entry id="affectedRowsQueryTime">0#No rows affected. Query took {time} seconds.|1#{rows} row affected. Query took {time} seconds.|n>1#{rows} rows affected. Query took {time} seconds.</entry>
 

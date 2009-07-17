@@ -31,7 +31,7 @@
 				</td>
 				<td>
 					<?php $this->widget('InputField', array('row' => $row, 'column'=>$column, 'htmlOptions'=>array(
-						'onfocus' => '$("#'.$column->name.'_null").attr("checked", "").change();',
+						'onkeyup' => '$(this).val() ? $("#'.$column->name.'_null").attr("checked", "").change() : void(0);',
 						'tabIndex' => $i,
 					))); ?>
 				</td>
@@ -40,3 +40,7 @@
 		<?php } ?>
 	</tbody>
 </table>
+
+<script type="text/javascript">
+	$('table.list tbody input:first').focus();
+</script>

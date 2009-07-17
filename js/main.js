@@ -58,15 +58,6 @@ function init()
 			tBody.rows[i].className += ' ' + currentClass;
 		}
 	});
-	/*
-	$('div.ui-layout-center form').ajaxForm({
-		success: function(responseText, statusText) {
-			AjaxResponse.handle(responseText);
-			$('div.ui-layout-center').html(responseText);
-			init();
-		}
-	});
-	*/
 
 	// @todo(mburtscher): do this in a more elegant way
 	if(currentLocation.match(/schema\/(\w+)#tables\/(\w+)\//))
@@ -259,7 +250,7 @@ var AjaxResponse = {
 		{
 			data = JSON.parse(data);
 		}
-		catch(Exception) {}
+		catch(err) {}
 		
 		if(data.redirectUrl) 
 		{
@@ -338,7 +329,7 @@ var lang = {
 			{
 				for(var key in parameters)
 				{
-					variable = variable.replace(key, parameters[key]);
+					variable = variable.replace('{' + key + '}', parameters[key]);
 				}
 			}
 		}

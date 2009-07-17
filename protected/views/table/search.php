@@ -49,6 +49,11 @@ $('#searchForm').ajaxForm({
 		init();
 	}
 });
+
+$('table.list input:first').focus();
+
 </script>
+
+<input type="submit" name="submit" style="display: none;" />
 
 <?php echo CHtml::endForm(); ?>

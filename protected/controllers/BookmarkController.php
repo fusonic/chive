@@ -29,7 +29,6 @@ class BookmarkController extends Controller
 
 		$oldValue = Yii::app()->user->settings->get('bookmarks', 'database', $schema);
 
-
 		$exists = (bool)Yii::app()->user->settings->get('bookmarks', 'database', $schema, 'name', $name);
 
 		if($exists)
@@ -54,7 +53,7 @@ class BookmarkController extends Controller
 		Yii::app()->user->settings->set('bookmarks', $oldValue, 'database', $schema);
 		Yii::app()->user->settings->saveSettings();
 
-		$response->addNotification('success', Yii::t('message', 'successAddBookmark', array('{name}'=>$name)));
+		$response->addNotification('success', Yii::t('message', 'successAddBookmark', array('{name}'=>$name)), null, $query);
 
 		$response->addData(null, array(
 			'id' => $id,
@@ -91,6 +90,7 @@ class BookmarkController extends Controller
 
 		$response->addNotification('success', Yii::t('message', 'successDeleteBookmark', array('{name}'=>$name)));
 		$response->send();
+		
 	}
 
 	/**

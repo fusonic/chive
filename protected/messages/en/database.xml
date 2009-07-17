@@ -7,6 +7,7 @@
 	<entry id="tables">Tables</entry>
 	<entry id="views">Views</entry>
 	<entry id="Xrows">{amount}  rows</entry>
+	<entry id="showingRowsOfRows">Showing rows {start} - {end} ({total} total)</entry>
 	
 	<entry id="field">Field</entry>
 	<entry id="type">Type</entry>

@@ -62,6 +62,7 @@ class SchemaController extends Controller
 		$this->render('index', array(
 			'bookmarks' => $bookmarks,
 		));
+
 	}
 
 	/**
@@ -195,73 +196,21 @@ class SchemaController extends Controller
 	 */
 	public function actionSql($_query = false, $_execute = true) {
 
-		$db = $this->db;
+		$query = Yii::app()->getRequest()->getParam('query');
+		
+		$browsePage = new BrowsePage();
+		
+		$browsePage->schema = $this->schema;
+		$browsePage->db = $this->db;
+		$browsePage->query = $query;
+		$browsePage->route = 'schema/' . $this->schema . '/sql';
+		$browsePage->formTarget = 'schema/' . $this->schema . '/sql';
+		$browsePage->execute = (bool)$query;
+		
+		$browsePage->run();
 
-		$request = Yii::app()->getRequest();
-		$query = $_query ? $_query : $request->getParam('query');
-
-		if($query)
-		{
-
-			$pages = new Pagination;
-			$pageSize = $pages->setupPageSize('pageSize', 'schema.sql');
-
-			$sort = new Sort($db);
-			$sort->multiSort = false;
-
-			$sort->route = '/schema/sql';
-
-			$oSql = new SqlQuery($query);
-			$oSql->applyCalculateFoundRows();
-
-			if(!$oSql->hasLimit)
-			{
-				$offset = (isset($_GET['page']) ? (int)$_GET['page'] : 1) * $pageSize - $pageSize;
-				$oSql->applyLimit($pageSize, $offset, true);
-			}
-
-			$oSql->applySort($sort->getOrder(), true);
-
-			$query = $oSql->getOriginalQuery();
-
-			if($_execute)
-			{
-
-				$cmd = $db->createCommand($oSql->getQuery());
-
-				try
-				{
-					// Fetch data
-					$data = $cmd->queryAll();
-
-					$total = (int)$db->createCommand('SELECT FOUND_ROWS()')->queryScalar();
-					$pages->setItemCount($total);
-
-					$columns = array();
-
-					// Fetch column headers
-					if($total > 0)
-					{
-						$columns = array_keys($data[0]);
-					}
-				}
-				catch (Exception $ex)
-				{
-					$error = $ex->getMessage();
-				}
-
-			}
-
-		}
-
-		$this->render('sql', array(
-			'data' => $data,
-			'columns' => $columns,
-			'query' => $query,
-			'pages' => $pages,
-			'sort' => $sort,
-			'error' => $error,
-			'isSent' => $_execute,
+		$this->render('../global/browse', array(
+			'model' => $browsePage
 		));
 
 	}
@@ -441,9 +390,23 @@ class SchemaController extends Controller
 
 		$id = Yii::app()->getRequest()->getParam('id');
 		$bookmark = Yii::app()->user->settings->get('bookmarks', 'database', $this->schema, 'id', $id);
+		$query = Yii::app()->getRequest()->getParam('query');
+		
+		$browsePage = new BrowsePage();
+		
+		$browsePage->schema = $this->schema;
+		$browsePage->db = $this->db;
+		$browsePage->query = !$query ? $bookmark['query'] : $query;
+		$browsePage->route = 'schema/' . $this->schema . '/bookmark/show/' . $id;
+		$browsePage->formTarget = 'schema/' . $this->schema . '/bookmark/show/' . $id;
+		$browsePage->execute = (bool)$query;
+		
+		$browsePage->run();
 
-		self::actionSql($bookmark['query'], false);
-
+		$this->render('../global/browse', array(
+			'model' => $browsePage
+		));
+		
 	}
 
 	/**
