@@ -168,11 +168,11 @@ class RowController extends Controller
 			$sql = $row->save();
 			
 			$response->addData(null, array(
-				'value' => ($null ? 'NULL' : $row->getAttribute($column)),
+				'value' => ($isNull ? 'NULL' : $row->getAttribute($column)),
 				'column' => $column,
 				'identifier' => $row->getIdentifier(),
-				'isNull' => $null,
-				'visibleValue' => ($null ? '<span class="null">NULL</span>' : htmlspecialchars($row->getAttribute($column)))
+				'isNull' => $isNull,
+				'visibleValue' => ($isNull ? '<span class="null">NULL</span>' : htmlspecialchars($row->getAttribute($column)))
 			));
 
 			// @todo (rponudic) check which method should be used here
@@ -349,10 +349,22 @@ class RowController extends Controller
 		echo  Row::model()->findByAttributes($key)->getAttribute($column);
 	}
 	
+	/**
+	 * Shows the export page for this table.
+	 */
 	public function actionExport()
 	{
-
-
+		
+		$rows = json_decode($_POST['data'], true);
+		
+		$exportPage = new ExportPage('rows', $this->schema, $this->table);
+		$exportPage->setRows($rows);
+		//$exportPage->setSelectedObjects(array('t:' . $this->table));
+		$exportPage->run();
+		
+		$this->render('../global/export', array(
+			'model' => $exportPage,
+		));
 	}
 
 }

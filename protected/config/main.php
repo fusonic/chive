@@ -176,9 +176,7 @@ return array(
 					'schema/<schema:' . URL_MATCH . '>/routines/<routine:' . URL_MATCH . '>/update' => 'routine/update',
 
 					// Row
-					#'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/row/load'=>'row/load',
-					#'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/row/update'=>'row/update',
-					#'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/row/delete'=>'row/delete',
+					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/row/export'=>'row/export',
             ),
         ),
 

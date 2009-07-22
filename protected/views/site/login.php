@@ -57,6 +57,8 @@
 
 	<div style="background: url('../images/logo-big.png') no-repeat 15px 0px; padding-bottom: 35px; height: 67px;"></div>
 
+	<?php echo CHtml::errorSummary($form, '', ''); ?>
+
 	<div id="loginform">
 		<?php echo CHtml::form(); ?>
 		<div class="formItems non-floated" style="text-align: left;">

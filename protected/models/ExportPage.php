@@ -9,9 +9,12 @@ class ExportPage extends CModel
 	private $exporters;
 	private $mode;
 	private $objects;
+	private $rows;
 	private $selectedObjects = null;
+	private $selectedRows = null;
 	private $result;
 	private $schema;
+	private $table;
 	private $view = 'form';
 	private $compressionChunkSize = 8192;
 	private $compression = null;
@@ -22,10 +25,11 @@ class ExportPage extends CModel
 	 * @param	string					mode (objects/schemata)
 	 * @param	string					selected schema (when mode == objects)
 	 */
-	public function __construct($mode, $schema = null)
+	public function __construct($mode, $schema = null, $table = null)
 	{
 		$this->mode = $mode;
 		$this->schema = $schema;
+		$this->table = $table;
 	}
 
 	/**
@@ -80,6 +84,17 @@ class ExportPage extends CModel
 		// Load items and assign to exporter
 		$items = (array)$_POST['Export']['objects'];
 		$exporter->setItems($items, $this->schema);
+		
+		// Load rows and assign to exporter
+		$rowAttributes = json_decode($_POST['Export']['rows'], true);
+		$rows = array();
+		
+		foreach($rowAttributes AS $row) 
+		{
+			$rows[] = Row::model()->findByAttributes($row);
+		}
+
+		$exporter->setRows($rows, $this->table, $this->schema);
 
 		// Calculate step count
 		$exporter->calculateStepCount();
@@ -208,6 +223,7 @@ class ExportPage extends CModel
 				$this->objects[Yii::t('database', 'routines')] = $data;
 			}
 		}
+		
 	}
 
 	/**
@@ -278,7 +294,26 @@ class ExportPage extends CModel
 			$this->selectedObjects = null;
 		}
 	}
-
+	
+	/**
+	 * Sets the chosen row attributes.
+	 *
+	 * @param	mixed					row attributes
+	 */
+	public function setRows($rows)
+	{
+		$this->rows = (array)$rows;
+	}
+	
+	/**
+	 * Gets the chosen row attributes.
+	 *
+	 */
+	public function getRows()
+	{
+		return $this->rows;
+	}
+	
 	/**
 	 * Returns all exporter names.
 	 *

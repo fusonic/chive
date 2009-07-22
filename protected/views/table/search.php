@@ -26,7 +26,8 @@
 				<td><?php echo $column->dbType; ?></td>
 				<td><?php echo CHtml::dropDownList('operator['.$column->name.']','', $operators); ?></td>
 				<td>
-					<?php echo CHtml::activeTextField($row, $column->name, array('class'=>'text', 'tabIndex'=>$tabIndex)); ?>
+					<?php #echo CHtml::activeTextField($row, $column->name, array('class'=>'text', 'tabIndex'=>$tabIndex)); ?>
+					<?php echo CHtml::textField('Row[' . $column->name . ']', '', array('class'=>'text', 'tabIndex'=>$tabIndex)); ?>
 				</td>
 			</tr>
 			<?php $tabIndex++; ?>

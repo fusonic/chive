@@ -92,9 +92,9 @@ var table = '<?php echo $this->table; ?>';
 ?>
 
 <div id="truncateTableDialog" title="<?php echo Yii::t('database', 'truncateTable'); ?>" style="display: none">
-	<?php echo Yii::t('message', 'doYouReallyWantToTruncateTable'); ?>
+	<?php echo Yii::t('message', 'doYouReallyWantToTruncateTable', array('tableName' => $this->table)); ?>
 </div>
-<div id="dropTableDialog" title="<?php echo Yii::t('database', 'dropTable'); ?>" style="display: none">
+<div id="dropTableDialog" title="<?php echo Yii::t('database', 'dropTable', array('tableName' => $this->table)); ?>" style="display: none">
 	<?php echo Yii::t('message', 'doYouReallyWantToDropTable'); ?>
 </div>
 

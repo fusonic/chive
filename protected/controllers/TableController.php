@@ -255,7 +255,7 @@ class TableController extends Controller
 		$row = new Row();
 
 		$commandBuilder = $this->db->getCommandBuilder();
-
+		
 		if(isset($_POST['Row']))
 		{
 
@@ -278,8 +278,6 @@ class TableController extends Controller
 
 					$i++;
 				}
-
-
 
 			}
 
@@ -444,7 +442,7 @@ class TableController extends Controller
 		$exportPage = new ExportPage('objects', $this->schema);
 		$exportPage->setSelectedObjects('t:' . $this->table);
 		$exportPage->run();
-
+		
 		$this->render('../global/export', array(
 			'model' => $exportPage,
 		));

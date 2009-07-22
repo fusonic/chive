@@ -31,9 +31,7 @@
 							}
 				
 							$('#input_<?php echo $id; ?>').parent().parent().html(responseObj.data.visibleValue);
-							
 							keyData[rowIndex] = responseObj.data.identifier;
-
 							AjaxResponse.handle(response);
 							
 						}

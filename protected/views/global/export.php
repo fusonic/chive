@@ -1,12 +1,14 @@
 <?php if($model->view == 'form') { ?>
 
 	<?php echo CHtml::form('', 'post', array('id' => 'Export')); ?>
+		<?php if($model->selectedObjects) { ?>
 		<div style="float: left; width: 250px">
 			<?php if($model->objects) { ?>
 				<?php echo CHtml::dropDownList('Export[objects][]', $model->selectedObjects, $model->objects, array('size' => 20, 'multiple' => true, 'style' => 'width: 100%')); ?>
 			<?php } ?>
 		</div>
-		<div style="margin-left: 260px; width: 600px">
+		<?php } ?>
+		<div style="<?php if($model->selectedObjects) { echo "margin-left: 260px;"; } ?> width: 600px">
 			<?php $firstExporter = current(array_keys($model->exporters)); ?>
 			<div id="exporterType">
 				<fieldset>
@@ -45,6 +47,7 @@
 
 				<?php echo CHtml::hiddenField('Export[action]', ''); ?>
 				<?php echo CHtml::hiddenField('Export[compression]', ''); ?>
+				<?php echo CHtml::hiddenField('Export[rows]', json_encode($model->getRows())); ?>
 			</div>
 		</div>
 	<?php echo CHtml::endForm(); ?>

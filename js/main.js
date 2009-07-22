@@ -1,6 +1,7 @@
 var currentLocation = window.location.href;
 var sideBar;
 var editing = false;
+var globalPost = {};
 
 function checkLocation() 
 {
@@ -22,7 +23,7 @@ function refresh()
 		.replace(/\?(.+)#/, '')
 		.replace('#', '/')					// Replace # with /
 		.replace(/([^:])\/+/g, '$1/');		// Remove multiple slashes
-	$.post(newLocation, {}, function(response) {
+	$.post(newLocation, globalPost, function(response) {
 		var content = document.getElementById('content');
 		content.innerHTML = response;
 		var scripts = content.getElementsByTagName('script');
@@ -31,6 +32,7 @@ function refresh()
 			$.globalEval(scripts[i].innerHTML);
 		}
 		init();
+		var globalPost = {};
 		AjaxResponse.handle(response);
 	});
 	return false;
@@ -97,6 +99,14 @@ function init()
 	
 	// Unset editing
 	editing = false;
+}
+
+function navigateTo(_url, _post)
+{
+	globalPost = _post;
+	window.location.href = _url;
+	
+	return false;
 }
 
 $(document).ready(function()

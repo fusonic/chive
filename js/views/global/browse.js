@@ -23,7 +23,17 @@ var globalBrowse = {
 	{
 		if($('#browse input[name="browse[]"]:checked').length > 0) 
 		{
-			console.log("implement export");
+			selectedKeyData = new Array();
+			
+			$('#browse input[name="browse[]"]:checked').each(function() {
+				selectedKeyData.push(keyData[this.value.match(/\d+/)]);
+			});
+			
+			navigateTo(baseUrl + '/schema/' + schema + '#tables/' + table + '/row/export', { 
+				data	: 	JSON.stringify(selectedKeyData),
+				schema	: 	schema,
+				table	: 	table
+			});
 		}
 	},
 	

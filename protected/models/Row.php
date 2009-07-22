@@ -137,6 +137,36 @@ class Row extends CActiveRecord
 			return $values;
 		}
 	}
+	
+	/**
+	 * @return array key value pairs of primary key (if no primary key, all column values will be returned)
+	 */
+	public function getOriginalIdentifier() 
+	{
+		$table=$this->getMetaData()->tableSchema;
+		if(is_string($table->primaryKey))
+		{
+			return array(
+				$table->primaryKey => $this->originalAttributes[$table->primaryKey]
+			);
+		}
+		else if(is_array($table->primaryKey))
+		{
+			$values=array();
+			foreach($table->primaryKey as $name)
+				$values[$name]=$this->originalAttributes[$name];
+			return $values;
+		}
+		else
+		{
+			$values = array();
+			foreach($table->columns AS $column)
+			{
+				$values[$column->name] = $this->originalAttributes[$column->name];					
+			}
+			return $values;
+		}
+	}
 
 	public function getAttributeAsArray($_attribute)
 	{
@@ -291,7 +321,7 @@ class Row extends CActiveRecord
 				
 			$sql .= "\n" . ' WHERE ' . "\n";
 				
-			$identifier = $this->getIdentifier();
+			$identifier = $this->getOriginalIdentifier();
 				
 			// Create find criteria
 			$count = count($identifier);

@@ -303,8 +303,12 @@
 	font-weight: bold;
   }
   
-  #login div.errorSummary {
-  	font-size: 90%;
+  div.errorSummary {
+  	padding: 10px;
+  	border: 1px solid #FF0000;
+  	background: #FFFFFF;
+  	-moz-border-radius: 5px;
+  	margin-bottom: 10px;
   }
   
   ul.select, ul.select li {

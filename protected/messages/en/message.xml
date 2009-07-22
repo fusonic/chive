@@ -26,9 +26,9 @@
 	<entry id="successEditTable">Saved table »{table}«</entry>
 
 	<entry id="dropTable">Drop table</entry>
-	<entry id="doYouReallyWantToDropTable">Do you really want to drop the table?</entry>
+	<entry id="doYouReallyWantToDropTable">Do you really want to drop the table &amp;raquo;{tableName}&amp;laquo;?</entry>
 	<entry id="truncateTable">Truncate table</entry>
-	<entry id="doYouReallyWantToTruncateTable">Do you really want to truncate the table?</entry>
+	<entry id="doYouReallyWantToTruncateTable">Do you really want to truncate the table &amp;raquo;{tableName}&amp;laquo;?</entry>
 	<entry id="successAlterView">Saved view »{view}«</entry>
 	
 	<!-- Views -->

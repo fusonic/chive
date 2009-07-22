@@ -63,7 +63,6 @@ class UserIdentity extends CUserIdentity
 		}
 		catch (Exception $ex)
 		{
-			var_dump($ex);
 			$this->errorCode = self::ERROR_AUTHENTICATION_FAILED;
 			$this->errorMessage = $ex->getMessage();
 		}

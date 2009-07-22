@@ -6,8 +6,10 @@
 class SqlExporter implements IExporter
 {
 	private $items = array();
+	private $rows = array();
 	private $mode;
 	private $schema;
+	private $table;
 	private $settings = array(
 		'addDropObject' => true,		// Adds DROP TABLE statement
 		'addIfNotExists' => true,		// Adds IF NOT EXISTS to CREATE TABLE statement
@@ -127,6 +129,16 @@ class SqlExporter implements IExporter
 		$this->items = $items;
 		$this->schema = $schema;
 	}
+	
+	/**
+	 * @see		IExporter::setItems()
+	 */
+	public function setRows(array $rows, $table = null, $schema = null)
+	{
+		$this->rows = $rows;
+		$this->table = $table;
+		$this->schema = $schema;
+	}
 
 	/**
 	 * @see		IExporter::runStep()
@@ -143,6 +155,9 @@ class SqlExporter implements IExporter
 			case 'objects':
 				$this->exportObjects($i);
 				break;
+				
+			case 'rows':
+				$this->exportRows($i);
 		}
 
 		if($collect)
@@ -165,7 +180,7 @@ class SqlExporter implements IExporter
 	 */
 	public static function getSupportedModes()
 	{
-		return array('objects');
+		return array('objects', 'rows');
 	}
 
 	/**
@@ -186,19 +201,23 @@ class SqlExporter implements IExporter
 	{
 		// Find elements
 		$tables = $views = $routines = array();
-		foreach($this->items AS $item)
+		if(count($this->items) > 0)
 		{
-			switch($item{0})
+			foreach($this->items AS $item)
 			{
-				case 't':
-					$tables[] = substr($item, 2);
-					break;
-				case 'v':
-					$views[] = substr($item, 2);
-					break;
-				case 'r':
-					$routines[] = substr($item, 2);
-					break;
+				switch($item{0})
+				{
+					case 't':
+						$tables[] = substr($item, 2);
+						break;
+					case 'v':
+						$views[] = substr($item, 2);
+						break;
+					case 'r':
+						$routines[] = substr($item, 2);
+						break;
+						
+				}
 			}
 		}
 
@@ -216,7 +235,23 @@ class SqlExporter implements IExporter
 			$this->exportRoutines($routines);
 		}
 	}
-
+	
+	/**
+	 * Exports (selected) rows
+	 *
+	 * @return	boolean
+	 */
+	private function exportRows()
+	{
+		if($this->settings['exportStructure'])
+		{
+			$table = Table::model()->findByPk(array('TABLE_SCHEMA' => $this->schema, 'TABLE_NAME' => $this->table));
+			$this->exportTableStructure($table);
+		}
+		
+		$this->exportRowData();
+	}
+	
 	/**
 	 * Exports all tables of the given array and writes the dump to the output buffer.
 	 * @todo	constraints
@@ -241,44 +276,10 @@ class SqlExporter implements IExporter
 
 		foreach($tables AS $table)
 		{
+			
 			if($this->settings['exportStructure'])
 			{
-				$this->comment('Structure for table ' . $db->quoteTableName($table->TABLE_NAME));
-				echo "\n\n";
-
-				// Structure
-				if($this->settings['addDropObject'])
-				{
-					echo 'DROP TABLE IF EXISTS ', $db->quoteTableName($table->TABLE_NAME), ";\n";
-				}
-
-				$tableStructure = $table->getShowCreateTable();
-				if($this->settings['addIfNotExists'])
-				{
-					$tableStructure = 'CREATE TABLE IF NOT EXISTS' . substr($tableStructure, 12);
-				}
-				echo $tableStructure, ";\n\n";
-
-				// Triggers
-				if($this->settings['exportTriggers'])
-				{
-					$triggers = Trigger::model()->findAllByAttributes(array(
-						'EVENT_OBJECT_SCHEMA' => $table->TABLE_SCHEMA,
-						'EVENT_OBJECT_TABLE' => $table->TABLE_NAME,
-					));
-					foreach($triggers AS $trigger)
-					{
-						$this->comment('Trigger ' . $db->quoteTableName($trigger->TRIGGER_NAME) . ' on table ' . $db->quoteTablename($table->TABLE_NAME));
-						echo "\n\n";
-
-						if($this->settings['addDropObject'])
-						{
-							echo 'DROP TRIGGER IF EXISTS ', $db->quoteTableName($trigger->TRIGGER_NAME), ";\n";
-						}
-
-						echo $trigger->getCreateTrigger(), ";\n\n";
-					}
-				}
+				$this->exportTableStructure($table);
 			}
 
 			if($this->settings['exportData'])
@@ -287,6 +288,51 @@ class SqlExporter implements IExporter
 				$this->exportTableData($table);
 			}
 		}
+	}
+	
+	private function exportTableStructure($table)
+	{
+
+		// Get DbConnection object
+		$db = Yii::app()->db;
+
+		$this->comment('Structure for table ' . $db->quoteTableName($table->TABLE_NAME));
+		echo "\n\n";
+
+		// Structure
+		if($this->settings['addDropObject'])
+		{
+			echo 'DROP TABLE IF EXISTS ', $db->quoteTableName($table->TABLE_NAME), ";\n";
+		}
+
+		$tableStructure = $table->getShowCreateTable();
+		if($this->settings['addIfNotExists'])
+		{
+			$tableStructure = 'CREATE TABLE IF NOT EXISTS' . substr($tableStructure, 12);
+		}
+		echo $tableStructure, ";\n\n";
+
+		// Triggers
+		if($this->settings['exportTriggers'])
+		{
+			$triggers = Trigger::model()->findAllByAttributes(array(
+				'EVENT_OBJECT_SCHEMA' => $table->TABLE_SCHEMA,
+				'EVENT_OBJECT_TABLE' => $table->TABLE_NAME,
+			));
+			foreach($triggers AS $trigger)
+			{
+				$this->comment('Trigger ' . $db->quoteTableName($trigger->TRIGGER_NAME) . ' on table ' . $db->quoteTablename($table->TABLE_NAME));
+				echo "\n\n";
+
+				if($this->settings['addDropObject'])
+				{
+					echo 'DROP TRIGGER IF EXISTS ', $db->quoteTableName($trigger->TRIGGER_NAME), ";\n";
+				}
+
+				echo $trigger->getCreateTrigger(), ";\n\n";
+			}
+		}
+		
 	}
 
 	/**
@@ -394,7 +440,7 @@ class SqlExporter implements IExporter
 			$k++;
 		}
 	}
-
+	
 	/**
 	 * Exports all views of the given array and writes the dump to the output buffer.
 	 *
@@ -429,6 +475,7 @@ class SqlExporter implements IExporter
 			echo $view->getCreateView(), ";\n\n";
 		}
 	}
+	
 	/**
 	 * Exports all routines of the given array and writes the dump to the output buffer.
 	 *
@@ -462,6 +509,111 @@ class SqlExporter implements IExporter
 
 			echo $routine->getCreateRoutine(), ";\n\n";
 		}
+	}
+	
+	/**
+	 * Exports all rows of the given array and writes the dump to the output buffer.
+	 *
+	 * @param	array					array with identifiers of rows
+	 */
+	private function exportRowData()
+	{
+		$db = Yii::app()->db;
+		$pdo = $db->getPdoInstance();
+
+		// Columns
+		$cols = Column::model()->findAllByAttributes(array(
+			'TABLE_NAME' => $this->table,
+			'TABLE_SCHEMA' => $this->schema,
+		));
+		$blobCols = array();
+
+		// Create insert statement
+		if($this->settings['completeInserts'])
+		{
+			$columns = array();
+			$i = 0;
+			foreach($cols AS $col)
+			{
+				$columns[] = $db->quoteColumnName($col->COLUMN_NAME);
+				if(in_array(DataType::getBaseType($col->DATA_TYPE), array('smallblob', 'blob', 'mediumblob', 'longblob')))
+				{
+					$blobCols[] = $i;
+				}
+				$i++;
+			}
+			$columns = ' (' . implode(', ', $columns) . ')';
+		}
+		else
+		{
+			$columns = '';
+		}
+		$insert = $this->settings['insertCommand']
+			. ($this->settings['delayedInserts'] ? ' DELAYED' : '')
+			. ($this->settings['ignoreInserts'] ? ' IGNORE' : '')
+			. ' INTO '
+			. $db->quoteTableName($this->table)
+			. $columns
+			. ' VALUES';
+
+		// Find all rows
+		$rowCount = count($this->rows);
+
+		// Settings
+		$hexBlobs = $this->settings['hexBlobs'];
+		$rowsPerInsert = (int)$this->settings['rowsPerInsert'];
+
+		// Cycle rows
+		$i = 0;
+		$k = 1;
+		
+		foreach($this->rows AS $row)
+		{
+			// Add comment
+			if($i == 0)
+			{
+				$this->comment('Data for table ' . $db->quoteTableName($this->table));
+				echo "\n\n";
+				echo $insert;
+			}
+
+			// Escape all contents
+			foreach($row->getAttributes() AS $key => $value)
+			{
+				if($value === null)
+				{
+					$row[$key] = 'NULL';
+				}
+				elseif($hexBlobs && in_array($key, $blobCols) && $value)
+				{
+					$row[$key] = '0x' . bin2hex($value);
+				}
+				else
+				{
+					$row[$key] = $pdo->quote($value);
+				}
+			}
+
+			// Add this row
+			echo "\n  (", implode(', ', $row->getAttributes()), ')';
+
+			if($i == $rowCount - 1)
+			{
+				echo ";\n\n";
+			}
+			elseif($k == $rowsPerInsert)
+			{
+				echo ";\n\n", $insert;
+				$k = 0;
+			}
+			else
+			{
+				echo ',';
+			}
+			$i++;
+			$k++;
+		}
+		
 	}
 
 	/**
