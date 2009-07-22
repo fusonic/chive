@@ -81,20 +81,25 @@ class ExportPage extends CModel
 		$exporterName = $_POST['Export']['exporter'];
 		$exporter = new $exporterName($this->mode);
 
-		// Load items and assign to exporter
-		$items = (array)$_POST['Export']['objects'];
-		$exporter->setItems($items, $this->schema);
-		
-		// Load rows and assign to exporter
-		$rowAttributes = json_decode($_POST['Export']['rows'], true);
-		$rows = array();
-		
-		foreach($rowAttributes AS $row) 
+		if(isset($_POST['Export']['objects']))
 		{
-			$rows[] = Row::model()->findByAttributes($row);
+			// Load items and assign to exporter
+			$items = (array)$_POST['Export']['objects'];
+			$exporter->setItems($items, $this->schema);
 		}
+		elseif(isset($_POST['Export']['rows']))
+		{
+			// Load rows and assign to exporter
+			$rowAttributes = json_decode($_POST['Export']['rows'], true);
+			$rows = array();
 
-		$exporter->setRows($rows, $this->table, $this->schema);
+			foreach($rowAttributes AS $row)
+			{
+				$rows[] = Row::model()->findByAttributes($row);
+			}
+
+			$exporter->setRows($rows, $this->table, $this->schema);
+		}
 
 		// Calculate step count
 		$exporter->calculateStepCount();
@@ -223,7 +228,7 @@ class ExportPage extends CModel
 				$this->objects[Yii::t('database', 'routines')] = $data;
 			}
 		}
-		
+
 	}
 
 	/**
@@ -294,7 +299,7 @@ class ExportPage extends CModel
 			$this->selectedObjects = null;
 		}
 	}
-	
+
 	/**
 	 * Sets the chosen row attributes.
 	 *
@@ -304,7 +309,7 @@ class ExportPage extends CModel
 	{
 		$this->rows = (array)$rows;
 	}
-	
+
 	/**
 	 * Gets the chosen row attributes.
 	 *
@@ -313,7 +318,7 @@ class ExportPage extends CModel
 	{
 		return $this->rows;
 	}
-	
+
 	/**
 	 * Returns all exporter names.
 	 *

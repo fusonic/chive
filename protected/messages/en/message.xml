@@ -93,4 +93,8 @@
 	<entry id="successDropTrigger">Dropped trigger »{trigger}«</entry>
 	<entry id="errorDropTrigger">Dropping trigger »{trigger}« failed</entry>
 	<entry id="successAlterTrigger">Altered trigger</entry>
+	
+	<!-- Users -->
+	<entry id="successAddUser">Added user '{user}'@'{host}'</entry>
+	<entry id="successUpdateUser">Updated user '{user}'@'{host}'</entry>
 </category>

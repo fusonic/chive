@@ -47,6 +47,8 @@ $scriptFiles = array(
 	'js/views/schema/list.js',
 	'js/views/information/processes.js',
 	'js/views/information/storageEngines.js',
+	'js/views/privileges/users.js',
+	'js/views/privileges/userForm.js',
 	'js/components/EditArea/edit_area_full.js',
 	'js/components/EditArea/fusonic_extensions/editarea_autogrow.js',
    	'assets/lang_js/' . Yii::app()->getLanguage() . '.js',
@@ -103,40 +105,46 @@ array('label'=>'Logout', 'icon'=>'logout', 'url'=>array('/site/logout'), 'visibl
 </ul>
 
 </div>
-<div class="sidebarHeader"><a class="icon"> <com:Icon name="privilege"
-	size="24" /> <span>Privileges</span> </a></div>
-<div class="sidebarContent"></div>
-<!--- TRIGGERS
-  		<div class="sidebarHeader">
-			<a class="icon">
-				<img src="images/icons/script_fav_24.png" />
-				<span>Triggers</span>
-			</a>
-		</div>
-		<div class="sidebarContent">
-			triggers
-		</div>
-		--->
-<div class="sidebarHeader"><a class="icon"> <com:Icon name="info"
-	size="24" /> <span>Information</span> </a></div>
+<div class="sidebarHeader">
+	<a class="icon">
+		<com:Icon name="privilege" size="24" />
+		<span>Privileges</span>
+	</a>
+</div>
 <div class="sidebarContent">
-<ul id="statusList" class="list icon">
-	<li class="nowrap"><a class="icon" href="#information/status"> <com:Icon
-		name="chart" size="16" /> <?php echo Yii::t('core', 'status'); ?> </a>
-	</li>
-	<li class="nowrap"><a class="icon" href="#information/variables"> <com:Icon
-		name="variable" size="16" /> <?php echo Yii::t('database', 'variables'); ?>
-	</a></li>
-	<li class="nowrap"><a class="icon" href="#information/characterSets"> <com:Icon
-		name="charset" size="16" /> <?php echo Yii::t('database', 'characterSets'); ?>
-	</a></li>
-	<li class="nowrap"><a class="icon" href="#information/storageEngines">
-	<com:Icon name="engine" size="16" /> <?php echo Yii::t('database', 'storageEngines'); ?>
-	</a></li>
-	<li class="nowrap"><a class="icon" href="#information/processes"> <com:Icon
-		name="process" size="16" /> <?php echo Yii::t('database', 'processes'); ?>
-	</a></li>
-</ul>
+	<ul id="statusList" class="list icon">
+		<li class="nowrap">
+			<a class="icon" href="#privileges/users">
+				<com:Icon name="user" size="16" />
+				<?php echo Yii::t('core', 'users'); ?>
+			</a>
+		</li>
+	</ul>
+</div>
+<div class="sidebarHeader">
+	<a class="icon">
+		<com:Icon name="info" size="24" />
+		<span>Information</span>
+	</a>
+</div>
+<div class="sidebarContent">
+	<ul id="statusList" class="list icon">
+		<li class="nowrap"><a class="icon" href="#information/status"> <com:Icon
+			name="chart" size="16" /> <?php echo Yii::t('core', 'status'); ?> </a>
+		</li>
+		<li class="nowrap"><a class="icon" href="#information/variables"> <com:Icon
+			name="variable" size="16" /> <?php echo Yii::t('database', 'variables'); ?>
+		</a></li>
+		<li class="nowrap"><a class="icon" href="#information/characterSets"> <com:Icon
+			name="charset" size="16" /> <?php echo Yii::t('database', 'characterSets'); ?>
+		</a></li>
+		<li class="nowrap"><a class="icon" href="#information/storageEngines">
+		<com:Icon name="engine" size="16" /> <?php echo Yii::t('database', 'storageEngines'); ?>
+		</a></li>
+		<li class="nowrap"><a class="icon" href="#information/processes"> <com:Icon
+			name="process" size="16" /> <?php echo Yii::t('database', 'processes'); ?>
+		</a></li>
+	</ul>
 </div>
 
 </div>

@@ -19,6 +19,7 @@ return array(
 	// autoloading model and component classes
 	'import'=>array(
 		'application.models.*',
+		'application.models.privileges.*',
 		'application.components.*',
 		'application.components.helpers.*',
 		'application.components.helpers.utils.*',
@@ -85,22 +86,28 @@ return array(
                 'login'=>'site/login',
 
 				// Site
-                'site/changeLanguage/<id:(.*)>'=>'site/changeLanguage',
-                'site/changeTheme/<id:(.*)>'=>'site/changeTheme',
+                'site/changeLanguage/<id:(.*)>' => 'site/changeLanguage',
+                'site/changeTheme/<id:(.*)>' => 'site/changeTheme',
 
 				// schemas
-				'schemata'=>'schema/list',
-				'schemata/create'=>'schema/create',
-				'schemata/update'=>'schema/update',
-				'schemata/drop'=>'schema/drop',
+				'schemata' => 'schema/list',
+				'schemata/create' => 'schema/create',
+				'schemata/update' => 'schema/update',
+				'schemata/drop' => 'schema/drop',
 
 				// Information
-				'information/status'=>'information/status',
-				'information/variables'=>'information/variables',
-				'information/characterSets'=>'information/characterSets',
+				'information/status' => 'information/status',
+				'information/variables' => 'information/variables',
+				'information/characterSets' => 'information/characterSets',
 				'information/storageEngines' => 'information/storageEngines',
 				'information/processes' => 'information/processes',
 				'information/processes/kill' => 'information/killProcess',
+
+				// Privileges
+				'privileges/users' => 'privileges/users',
+				'privileges/userActions/create' => 'privileges/createUser',
+				'privileges/userActions/update' => 'privileges/updateUser',
+				'privileges/userActions/drop' => 'privileges/dropUsers',
 
 				// schema
                	'schema'=>'schema/list',

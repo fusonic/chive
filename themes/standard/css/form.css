@@ -15,6 +15,11 @@
 		padding: 4px;
 	}
 	
+	input[disabled],
+	textarea[disabled] {
+		opacity: 0.5;
+	}
+	
 	input[type="submit"] {
 		font-weight: bold;
 	}
