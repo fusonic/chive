@@ -9,7 +9,9 @@ var privilegesUsers = {
 	// Edit user
 	editUser: function(id, user, host)
 	{
-		$('#users_' + id).appendForm(baseUrl + '/privileges/userActions/update?user=' + user + '&host=' + host);
+		$('#users_' + id).appendForm(baseUrl + '/privileges/users/'
+			+ encodeURIComponent(user) + '/'
+			+ encodeURIComponent(host) + '/update');
 	},
 	
 	// Drop user

@@ -1,4 +1,4 @@
-<div id="dropUsersDialog" title="<?php echo Yii::t('database', 'dropUser'); ?>" style="display: none">
+<div id="dropUsersDialog" title="<?php echo Yii::t('database', 'dropUsers'); ?>" style="display: none">
 	<?php echo Yii::t('database', 'doYouReallyWantToDropUsers'); ?>
 </div>
 
@@ -28,6 +28,7 @@
 			<col />
 			<col class="action" />
 			<col class="action" />
+			<col class="action" />
 		</colgroup>
 		<thead>
 			<tr>
@@ -35,7 +36,7 @@
 				<th><?php echo $sort->link('User'); ?></th>
 				<th><?php echo $sort->link('Host'); ?></th>
 				<th><?php echo Yii::t('core', 'password'); ?></th>
-				<th colspan="3"><?php echo Yii::t('core', 'privileges'); ?></th>
+				<th colspan="4"><?php echo Yii::t('database', 'privileges'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -57,6 +58,11 @@
 						<?php echo implode(', ', $user->getGlobalPrivileges()); ?>
 					</td>
 					<td>
+						<a href="#privileges/users/<?php echo urlencode($user->User ? $user->User : '%'); ?>/<?php echo urlencode($user->Host); ?>/schemata" class="icon">
+							<com:Icon name="database" size="16" text="database.schemaSpecificPrivileges" />
+						</a>
+					</td>
+					<td>
 						<a href="javascript:void(0)" onclick="privilegesUsers.editUser('<?php echo $user->Id; ?>', '<?php echo $user->User; ?>', '<?php echo $user->Host; ?>')" class="icon">
 							<com:Icon name="edit" size="16" text="core.edit" />
 						</a>
@@ -73,6 +79,9 @@
 
 	<div class="buttonContainer">
 		<div class="left withSelected">
+			<span class="icon">
+				<img height="16" width="16" alt="unknown" src="/dublin/trunk/images/icons/fugue/16/arrow_turn_090.png" title="unknown" class="icon icon16 icon_arrow_turn_090"/>				<span>With selected: </span>
+			</span>
 			<a class="icon button" href="javascript:void(0)" onclick="privilegesUsers.dropUsers()">
 				<com:Icon name="delete" size="16" />
 				<span><?php echo Yii::t('database', 'drop'); ?></span>

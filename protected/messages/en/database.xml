@@ -167,4 +167,19 @@
 	<entry id="noRoutines">No visible routines in this schema.</entry>
 	<entry id="dropRoutines">Drop routines</entry>
 	<entry id="doYouReallyWantToDropRoutines">Do you really want to drop the selected routines?</entry>
+	
+	<!-- Users -->
+	<entry id="addUser">Add user</entry>
+	<entry id="editUser">Edit user</entry>
+	<entry id="dropUsers">Drop users</entry>
+	<entry id="doYouReallyWantToDropUsers">Do you really want to drop the selected users?</entry>
+	
+	<!-- Privileges -->
+	<entry id="schemaSpecificPrivileges">Schema-specific privileges</entry>
+	<entry id="tableSpecificPrivileges">Table-specific privileges</entry>
+	<entry id="privileges">Privileges</entry>
+	<entry id="addSchemaSpecificPrivileges">Add schema-specific privileges</entry>
+	<entry id="noSchemaSpecificPrivileges">No schema-specific privileges for this user.</entry>
+	<entry id="dropSchemaSpecificPrivileges">Drop schema-specific privileges</entry>
+	<entry id="doYouReallyWantToDropSchemaSpecificPrivileges">Do you really want to drop privileges for the selected schemata?</entry>
 </category>

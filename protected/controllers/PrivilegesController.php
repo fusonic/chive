@@ -8,6 +8,8 @@ class PrivilegesController extends Controller
 	 */
 	public $layout = 'schema';
 
+	private $user, $host, $schema;
+
 	public function __construct($id, $module = null)
 	{
 		$request = Yii::app()->getRequest();
@@ -16,6 +18,12 @@ class PrivilegesController extends Controller
 		{
 			$this->layout = false;
 		}
+
+		// Get parameters from request
+		$request = Yii::app()->getRequest();
+		$this->user = $request->getParam('user');
+		$this->host = $request->getParam('host');
+		$this->schema = $request->getParam('schema');
 
 		parent::__construct($id, $module);
 		$this->connectDb();
@@ -37,7 +45,8 @@ class PrivilegesController extends Controller
 		$this->db->active = true;
 
 		// Assign to all models which need it
-		User::$db = $this->db;
+		User::$db =
+		SchemaPrivilege::$db = $this->db;
 
 		// Return connection
 		return $this->db;
@@ -45,6 +54,7 @@ class PrivilegesController extends Controller
 
 	public function actionUsers()
 	{
+		// Create criteria
 		$criteria = new CDbCriteria();
 
 		// Pagination
@@ -64,10 +74,52 @@ class PrivilegesController extends Controller
 		$sort->route = '#privileges/users';
 		$sort->applyOrder($criteria);
 
+		// Fetch users
 		$users = User::model()->findAll($criteria);
 
+		// Render
 		$this->render('users', array(
 			'users' => $users,
+			'pages' => $pages,
+			'sort' => $sort,
+		));
+	}
+
+	public function actionUserSchemata()
+	{
+		// Create criteria
+		$criteria = new CDbCriteria();
+		$criteria->condition = 'Host = :host AND User = :user';
+		$criteria->params = array(
+			':host' => $this->host,
+			':user' => $this->user,
+		);
+
+		// Pagination
+		$pages = new Pagination(User::model()->count($criteria));
+		$pages->setupPageSize('pageSize', 'privileges.userSchemata');
+		$pages->applyLimit($criteria);
+		$pages->route = '#privileges/users/' . urlencode($this->user) . '/' . urlencode($this->host) . '/schemata';
+
+		// Sort
+		$sort = new CSort('User');
+		$sort->attributes = array(
+			'User' => 'username',
+			'Host' => 'host',
+			'Password = \'\'' => 'password',
+		);
+		$sort->defaultOrder = 'User ASC';
+		$sort->route = '#privileges/users/' . urlencode($this->user) . '/' . urlencode($this->host) . '/schemata';
+		$sort->applyOrder($criteria);
+
+		// Fetch schemata
+		$schemata = SchemaPrivilege::model()->findAll($criteria);
+
+		// Render
+		$this->render('userSchemata', array(
+			'schemata' => $schemata,
+			'user' => $this->user,
+			'host' => $this->host,
 			'pages' => $pages,
 			'sort' => $sort,
 		));
@@ -143,8 +195,8 @@ class PrivilegesController extends Controller
 	public function actionUpdateUser()
 	{
 		$user = User::model()->findByPk(array(
-			'User' => $_GET['user'],
-			'Host' => $_GET['host'],
+			'User' => $this->user,
+			'Host' => $this->host,
 		));
 		if(isset($_POST['User']))
 		{
@@ -164,6 +216,126 @@ class PrivilegesController extends Controller
 		$this->render('userForm', array(
 			'user' => $user,
 		));
+	}
+
+	public function actionCreateSchemaPrivilege()
+	{
+		$schema = new SchemaPrivilege();
+		$schema->User = $this->user;
+		$schema->Host = $this->host;
+		if(isset($_POST['SchemaPrivilege']))
+		{
+			$schema->attributes = $_POST['SchemaPrivilege'];
+			if($sql = $schema->save())
+			{
+				$response = new AjaxResponse();
+				$response->addNotification('success',
+					Yii::t('message', 'successAddSchemaSpecificPrivileges', array('{user}' => $schema->User, '{host}' => $schema->Host, '{schema}' => $schema->Db)),
+					null/*,
+					$sql*/);
+				$response->refresh = true;
+				$response->send();
+			}
+		}
+
+		// Prepare all schemata
+		$schemata = $existing = array();
+		$allSchemata = Schema::model()->findAll();
+		$allExisting = SchemaPrivilege::model()->findAllByAttributes(array(
+			'User' => $this->user,
+			'Host' => $this->host,
+		));
+		foreach($allExisting AS $existing1)
+		{
+			$existing[] = $existing1->Db;
+		}
+		foreach($allSchemata AS $schema1)
+		{
+			if(array_search($schema1->SCHEMA_NAME, $existing) === false)
+			{
+				$schemata[$schema1->SCHEMA_NAME] = $schema1->SCHEMA_NAME;
+			}
+		}
+
+		$this->render('schemaPrivilegeForm', array(
+			'schema' => $schema,
+			'schemata' => $schemata,
+		));
+	}
+
+	public function actionUpdateSchemaPrivilege()
+	{
+		$schema = SchemaPrivilege::model()->findByPk(array(
+			'Host' => $this->host,
+			'User' => $this->user,
+			'Db' => $this->schema,
+		));
+		if(isset($_POST['SchemaPrivilege']))
+		{
+			$schema->attributes = $_POST['SchemaPrivilege'];
+			if($sql = $schema->save())
+			{
+				$response = new AjaxResponse();
+				$response->addNotification('success',
+					Yii::t('message', 'successUpdateSchemaSpecificPrivileges', array('{user}' => $schema->User, '{host}' => $schema->Host, '{schema}' => $schema->Db)),
+					null/*,
+					$sql*/);
+				$response->refresh = true;
+				$response->send();
+			}
+		}
+
+		$this->render('schemaPrivilegeForm', array(
+			'schema' => $schema,
+		));
+	}
+
+	public function actionDropSchemaPrivileges()
+	{
+		$response = new AjaxResponse();
+		$response->refresh = true;
+		$schemata = (array)$_POST['schemata'];
+		$droppedSchemata = $droppedSqls = array();
+
+		foreach($schemata AS $schema)
+		{
+			$schemaObj = SchemaPrivilege::model()->findByPk(array(
+				'Host' => $this->host,
+				'User' => $this->user,
+				'Db' => $schema,
+			));
+			try
+			{
+				$sql = $schemaObj->delete();
+				$droppedSchemata[] = $schema;
+				$droppedSqls[] = $sql;
+			}
+			catch(DbException $ex)
+			{
+				$response->addNotification('error',
+					Yii::t('message', 'errorDropSchemaSpecificPrivileges', array('{user}' => $user)),
+					$ex->getText()/*,
+					$ex->getSql()*/);
+			}
+		}
+
+		$count = count($droppedSchemata);
+		if($count > 0)
+		{
+			$tArgs = array(
+				$count,
+				'{user}' => $this->user,
+				'{host}' => $this->host,
+				'{schema}' => $droppedSchemata[0],
+				'{schemaCount}' => $count,
+			);
+			$response->addNotification('success',
+				Yii::t('message', 'successDropSchemaSpecificPrivileges', $tArgs),
+				($count > 1 ? implode(', ', $droppedSchemata) : null)/*,
+				implode("\n", $droppedSqls)*/);
+		}
+
+		$response->send();
 	}
 
 }

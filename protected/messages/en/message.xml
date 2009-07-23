@@ -97,4 +97,10 @@
 	<!-- Users -->
 	<entry id="successAddUser">Added user '{user}'@'{host}'</entry>
 	<entry id="successUpdateUser">Updated user '{user}'@'{host}'</entry>
+	<entry id="successDropUser">1#Dropped user {user}|n>1#Dropped {userCount} users</entry>
+	
+	<!-- Privileges -->
+	<entry id="successAddSchemaSpecificPrivileges">Added privileges on schema »{schema}«</entry>
+	<entry id="successUpdateSchemaSpecificPrivileges">Updated privileges on schema »{schema}«</entry>
+	<entry id="successDropSchemaSpecificPrivileges">1#Dropped privileges on schema »{schema}«|n>1#Dropped privileges on {schemaCount} schemata</entry>
 </category>
