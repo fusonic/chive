@@ -40,8 +40,10 @@ var Bookmark = {
 		this.id = _id;
 		
 		// Set text of dialog
-		$('#deleteBookmarkDialog').html(lang.get('message', 'doYouReallyWantToDeleteBookmark', {name: $('#bookmark_' + _id + ' a span').html()}));
-		
+	
+		$('#deleteBookmarkDialog').html(lang.get('message', 'doYouReallyWantToDeleteBookmark')+'<ul></ul>');
+		var ulObj= $('#deleteBookmarkDialog ul');
+		ulObj.append('<li>'+$('#bookmark_' + _id + ' a span').html()+'</li>');
 		$('#deleteBookmarkDialog').dialog("open");
 	},
 	

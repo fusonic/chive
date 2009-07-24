@@ -67,6 +67,10 @@ foreach($scriptFiles AS $file)
 }
 ?>
 
+<script type="text/javascript">
+$.ui.dialog.defaults.width = 400;
+</script>
+
 <?php Yii::app()->clientScript->registerScript('userSettings', Yii::app()->user->settings->getJsObject(), CClientScript::POS_HEAD); ?>
 
 </head>
@@ -87,6 +91,7 @@ foreach($scriptFiles AS $file)
 
   <div id="deleteBookmarkDialog" title="<?php echo Yii::t('core', 'deleteBookmark'); ?>" style="display: none">
   	<?php echo Yii::t('message', 'doYouReallyWantToDeleteBookmark'); ?>
+  	<ul></ul>
   </div>
 
   <div class="ui-layout-north">

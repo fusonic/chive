@@ -68,10 +68,10 @@
 	<entry id="addTable">Add table</entry>
 	<entry id="truncateTable">Truncate table</entry>
 	<entry id="truncateTables">Truncate tables</entry>
-	<entry id="doYouReallyWantToTruncateTables">Do you really want to truncate the selected tables?</entry>
+	<entry id="doYouReallyWantToTruncateTables">Do you really want to truncate the selected table(s)?</entry>
 	<entry id="dropTable">Drop table</entry>
 	<entry id="dropTables">Drop tables</entry>
-	<entry id="doYouReallyWantToDropTables">Do you really want to drop the selected tables?</entry>
+	<entry id="doYouReallyWantToDropTables">Do you really want to drop the selected table(s)?</entry>
 
 	<entry id="dropSchemata">Drop schemata</entry>
 	<entry id="doYouReallyWantToDropSchemata">Do you really want to drop the selected schemata?</entry>
@@ -94,7 +94,7 @@
 	<entry id="overhead">Overhead</entry>
 	<entry id="selectColumnToAdd">Select a column to add</entry>
 	<entry id="dropColumns">Drop columns</entry>
-	<entry id="doYouReallyWantToDropColumns">Do you really want to drop the selected columns?</entry>
+	<entry id="doYouReallyWantToDropColumns">Do you really want to drop the selected column(s)?</entry>
 	
 	<!-- Indices -->
 	<entry id="noIndices">No indices in this table.</entry>
@@ -102,7 +102,7 @@
 	<entry id="addIndex">Add index</entry>
 	<entry id="enterNameForNewIndex">Please enter a name for the new index:</entry>
 	<entry id="dropIndex">Drop index</entry>
-	<entry id="doYouReallyWantToDropIndex">Do you really want to drop the index »{index}«?</entry>
+	<entry id="doYouReallyWantToDropIndex">Do you really want to drop the index?</entry>
 	<entry id="editIndex">Edit index</entry>
 
 	<!-- Fulltext indices -->	
@@ -110,14 +110,14 @@
 	<entry id="addFulltextIndex">Add fulltext index</entry>
 	<entry id="enterNameForNewFulltextIndex">Please enter a name for the new fulltext index:</entry>
 	<entry id="dropFulltextIndex">Drop fulltext index</entry>
-	<entry id="doYouReallyWantToDropFulltextIndex">Do you really want to drop the fulltext index »{index}«?</entry>
+	<entry id="doYouReallyWantToDropFulltextIndex">Do you really want to drop the fulltext index?</entry>
 	
 	<!-- Unique keys -->
 	<entry id="uniqueKey">Unique key</entry>
 	<entry id="addUniqueKey">Add unique key</entry>
 	<entry id="enterNameForNewUniqueKey">Please enter a name for the new unique key:</entry>
 	<entry id="dropUniqueKey">Drop unique key</entry>
-	<entry id="doYouReallyWantToDropUniqueKey">Do you really want to drop the unique key »{index}«?</entry>
+	<entry id="doYouReallyWantToDropUniqueKey">Do you really want to drop the unique key?</entry>
 	
 	<!-- Primary keys -->
 	<entry id="primaryKey">Primary key</entry>
@@ -150,7 +150,7 @@
 	<entry id="amountViews">1#{amount}  View|n>1#{amount}  Views</entry>
 	<entry id="addView">Add view</entry>
 	<entry id="dropViews">Drop views</entry>
-	<entry id="doYouReallyWantToDropViews">Do you really want to drop the selected views?</entry>
+	<entry id="doYouReallyWantToDropViews">Do you really want to drop the selected view(s)?</entry>
 	<entry id="noViews">No visible views in this schema.</entry>
 	<entry id="addView">Add view</entry>
 	<entry id="editView">Edit view</entry>
@@ -166,13 +166,13 @@
 	<entry id="addProcedure">Add procedure</entry>
 	<entry id="noRoutines">No visible routines in this schema.</entry>
 	<entry id="dropRoutines">Drop routines</entry>
-	<entry id="doYouReallyWantToDropRoutines">Do you really want to drop the selected routines?</entry>
+	<entry id="doYouReallyWantToDropRoutines">Do you really want to drop the selected routine(s)?</entry>
 	
 	<!-- Users -->
 	<entry id="addUser">Add user</entry>
 	<entry id="editUser">Edit user</entry>
 	<entry id="dropUsers">Drop users</entry>
-	<entry id="doYouReallyWantToDropUsers">Do you really want to drop the selected users?</entry>
+	<entry id="doYouReallyWantToDropUsers">Do you really want to drop the selected user(s)?</entry>
 	
 	<!-- Privileges -->
 	<entry id="schemaSpecificPrivileges">Schema-specific privileges</entry>

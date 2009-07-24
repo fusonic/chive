@@ -53,6 +53,7 @@ var view = '<?php echo $this->view; ?>';
 
 <div id="dropViewDialog" title="<?php echo Yii::t('database', 'dropView'); ?>" style="display: none">
 	<?php echo Yii::t('message', 'doYouReallyWantToDropView'); ?>
+	<ul></ul>
 </div>
 
 <div>

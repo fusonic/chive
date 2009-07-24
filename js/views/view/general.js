@@ -3,6 +3,10 @@ var viewGeneral = {
 	// Drop view
 	drop: function()
 	{
+		var  ulObj =  $('#dropViewDialog ul');
+		
+		ulObj.append('<li>'+view+'</li>');
+		
 		$('#dropViewDialog').dialog('open');
 	},
 	

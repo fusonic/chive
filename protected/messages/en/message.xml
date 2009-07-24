@@ -26,9 +26,9 @@
 	<entry id="successEditTable">Saved table »{table}«</entry>
 
 	<entry id="dropTable">Drop table</entry>
-	<entry id="doYouReallyWantToDropTable">Do you really want to drop the table &amp;raquo;{tableName}&amp;laquo;?</entry>
+	<entry id="doYouReallyWantToDropTable">Do you really want to drop the table?</entry>
 	<entry id="truncateTable">Truncate table</entry>
-	<entry id="doYouReallyWantToTruncateTable">Do you really want to truncate the table &amp;raquo;{tableName}&amp;laquo;?</entry>
+	<entry id="doYouReallyWantToTruncateTable">Do you really want to truncate the table?</entry>
 	<entry id="successAlterView">Saved view »{view}«</entry>
 	
 	<!-- Views -->
@@ -41,7 +41,7 @@
 	<entry id="successAddBookmark">Saved bookmark »{name}«</entry>
 	<entry id="successExecuteBookmark">Executed bookmark »{name}«</entry>
 	<entry id="successDeleteBookmark">Deleted bookmark »{name}«</entry>
-	<entry id="doYouReallyWantToDeleteBookmark">Do you really want to delete the bookmark »{name}«?</entry>
+	<entry id="doYouReallyWantToDeleteBookmark">Do you really want to delete the bookmark?</entry>
 	<entry id="errorBookmarkWithThisNameAlreadyExists">There is already a bookmark named »{name}«</entry>
 	<entry id="enterAName">Enter a name</entry>
 	
