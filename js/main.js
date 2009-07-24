@@ -339,7 +339,7 @@ var lang = {
 			{
 				for(var key in parameters)
 				{
-					variable = variable.replace('{' + key + '}', parameters[key]);
+					variable = variable.replace(key, parameters[key]);
 				}
 			}
 		}

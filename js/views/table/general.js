@@ -3,12 +3,18 @@ var tableGeneral = {
 	// Truncate table
 	truncate: function()
 	{
+		var ulObj = $('#truncateTableDialog ul');
+		ulObj.html("");
+		ulObj.append('<li>'+table+'</li>')
 		$('#truncateTableDialog').dialog('open');
 	},
 	
 	// Drop table
 	drop: function()
 	{
+		var ulObj = $('#dropTableDialog ul');
+		ulObj.html("");
+		ulObj.append('<li>'+table+'</li>')
 		$('#dropTableDialog').dialog('open');
 	},
 	

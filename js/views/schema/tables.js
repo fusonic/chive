@@ -21,10 +21,18 @@ var schemaTables = {
 	},
 	dropTables: function()
 	{
-		if($('#tables input[name="tables[]"]:checked').length > 0) 
+		var tables = schemaTables.getSelectedIds();
+		if(tables.length > 0)
 		{
+			var ulObj = $('#dropTablesDialog ul');
+			ulObj.html('');
+			for(var i = 0; i < tables.length; i++)
+			{
+				ulObj.append('<li>' + tables[i] + '</li>');
+			}
 			$('#dropTablesDialog').dialog("open");
 		}
+		
 	},
 	
 	// Truncate table
@@ -36,8 +44,15 @@ var schemaTables = {
 	},
 	truncateTables: function()
 	{
-		if($('#tables input[name="tables[]"]:checked').length > 0) 
+		var tables = schemaTables.getSelectedIds();
+		if(tables.length > 0)
 		{
+			var ulObj = $('#truncateTablesDialog ul');
+			ulObj.html('');
+			for(var i = 0; i < tables.length; i++)
+			{
+				ulObj.append('<li>' + tables[i] + '</li>');
+			}
 			$('#truncateTablesDialog').dialog("open");
 		}
 	},

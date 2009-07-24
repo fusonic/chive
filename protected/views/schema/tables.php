@@ -1,8 +1,10 @@
 <div id="truncateTablesDialog" title="<?php echo Yii::t('database', 'truncateTables'); ?>" style="display: none">
 	<?php echo Yii::t('database', 'doYouReallyWantToTruncateTables'); ?>
+	<ul></ul>
 </div>
 <div id="dropTablesDialog" title="<?php echo Yii::t('database', 'dropTables'); ?>" style="display: none">
 	<?php echo Yii::t('database', 'doYouReallyWantToDropTables'); ?>
+	<ul></ul>
 </div>
 
 <div class="list">

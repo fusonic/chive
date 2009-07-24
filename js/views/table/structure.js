@@ -24,10 +24,19 @@ var tableStructure = {
 	},
 	dropColumns: function()
 	{
-		if($('#columns input[name="columns[]"]:checked').length > 0) 
+		
+		var columns = tableStructure.getSelectedIds();
+		if(columns.length > 0)
 		{
+			var ulObj = $('#dropColumnsDialog ul');
+			ulObj.html('');
+			for(var i = 0; i < columns.length; i++)
+			{
+				ulObj.append('<li>' + columns[i] + '</li>');
+			}
 			$('#dropColumnsDialog').dialog("open");
 		}
+
 	},
 	
 	// Edit relation
@@ -108,20 +117,29 @@ var tableStructure = {
 		tableStructure.dropIndexName = name;
 		tableStructure.dropIndexType = $('#indices_' + name).children('td:eq(1)').html().trim();
 			
+			
+		
+					var ulObj;
 		// Set title/text in dialog
 		switch(tableStructure.dropIndexType.toLowerCase())
 		{
 			case 'fulltext':
 				var dialogTitle = lang.get('database', 'dropFulltextIndex');
-				$('#dropIndexDialog').html(lang.get('database', 'doYouReallyWantToDropFulltextIndex', {'{index}' : name}));
+				$('#dropIndexDialog').html(lang.get('database', 'doYouReallyWantToDropFulltextIndex') + '<ul></ul>');
+				var ulObj = $('#dropIndexDialog ul');
+				ulObj.append('<li>'+name+'</li>');
 				break;
 			case 'unique':
 				var dialogTitle = lang.get('database', 'dropUniqueKey');
-				$('#dropIndexDialog').html(lang.get('database', 'doYouReallyWantToDropUniqueKey', {'{index}' : name}));
+				$('#dropIndexDialog').html(lang.get('database', 'doYouReallyWantToDropUniqueKey') + '<ul></ul>');
+				ulObj = $('#dropIndexDialog ul');
+				ulObj.append('<li>'+name+'</li>');
 				break;
 			default:
 				var dialogTitle = lang.get('database', 'dropIndex');
-				$('#dropIndexDialog').html(lang.get('database', 'doYouReallyWantToDropIndex', {'{index}' : name}));
+				$('#dropIndexDialog').html(lang.get('database', 'doYouReallyWantToDropIndex') + '<ul></ul>');
+				ulObj = $('#dropIndexDialog ul');
+				ulObj.append('<li>'+name+'</li>');
 				break;
 		}
 		
@@ -146,6 +164,8 @@ var tableStructure = {
 	dropTrigger: function(name)
 	{
 		tableStructure.dropTriggerName = name;
+		$('#dropTriggerDialog ul').html("");
+		$('#dropTriggerDialog ul').append("<li>"+name+"</li>")
 		$('#dropTriggerDialog').dialog('open');
 	},
 	

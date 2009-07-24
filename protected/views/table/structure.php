@@ -1,15 +1,17 @@
 <div id="dropColumnsDialog" title="<?php echo Yii::t('database', 'dropColumns'); ?>" style="display: none">
 	<?php echo Yii::t('database', 'doYouReallyWantToDropColumns'); ?>
+	<ul></ul>
 </div>
 <div id="addIndexDialog" title="<?php echo Yii::t('database', 'addIndex'); ?>" style="display: none">
 	<div><?php echo Yii::t('database', 'enterNameForNewIndex'); ?></div>
 	<input type="text" id="newIndexName" name="newIndexName" />
 </div>
 <div id="dropIndexDialog" title="<?php echo Yii::t('database', 'dropIndex'); ?>" style="display: none">
-	<?php echo Yii::t('database', 'doYouReallyWantToDropIndex'); ?>
+	<?php echo Yii::t('database', 'doYouReallyWantToDropIndex');?>
 </div>
 <div id="dropTriggerDialog" title="<?php echo Yii::t('database', 'dropTrigger'); ?>" style="display: none">
 	<?php echo Yii::t('database', 'doYouReallyWantToDropTrigger'); ?>
+	<ul></ul>
 </div>
 
 <div class="list">

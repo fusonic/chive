@@ -15,16 +15,33 @@ var schemaList = {
 	// Drop schema
 	dropSchemata: function() 
 	{
-		if($('#schemata input[name="schemata[]"]:checked').length > 0) 
+		var schemata = schemaList.getSelectedIds();
+		if(schemata.length > 0)
 		{
+			var ulObj = $('#dropSchemataDialog ul');
+			ulObj.html('');
+			for(var i = 0; i < schemata.length; i++)
+			{
+				ulObj.append('<li>' + schemata[i] + '</li>');
+			}
 			$('#dropSchemataDialog').dialog("open");
-		}
+		}	
 	},
 	dropSchema: function(db)
-	{
+	{	
 		$('#schemata input[type="checkbox"]').attr('checked', false).change();
 		$('#schemata input[type="checkbox"][value="' + db + '"]').attr('checked', true).change();
 		schemaList.dropSchemata();
+	},
+	
+		// Get selected id's
+	getSelectedIds: function()
+	{
+			var ids = [];
+			$('#schemata input[name="schemata[]"]:checked').each(function() {
+				ids.push($(this).val());
+			});
+		return ids;		
 	},
 	
 	// Setup dialogs
@@ -40,11 +57,9 @@ var schemaList = {
 		}; 
 		buttons[lang.get('core', 'yes')] = function() 
 		{
-			// Collect ids
-			var ids = [];
-			$('#schemata input[name="schemata[]"]:checked').each(function() {
-				ids.push($(this).val());
-			});
+			
+				// Collect ids
+			var ids = schemaList.getSelectedIds();
 			
 			// Do drop request
 			$.post(baseUrl + '/schemata/drop', {

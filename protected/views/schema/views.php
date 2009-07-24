@@ -1,5 +1,6 @@
 <div id="dropViewsDialog" title="<?php echo Yii::t('database', 'dropViews'); ?>" style="display: none">
 	<?php echo Yii::t('database', 'doYouReallyWantToDropViews'); ?>
+	<ul></ul>
 </div>
 
 <div class="list">

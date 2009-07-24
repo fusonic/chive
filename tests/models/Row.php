@@ -102,8 +102,10 @@ class RowTest extends TestCase
 		$row->setAttribute('test7','3');
 		$row->setAttribute('test8','neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.');
 		$row->setAttribute('test9','{"firstName": "John", "lastName": "Smith", "address": {"streetAddress": "21 2nd Street", "city": "New York", "state": "NY", "postalCode": 10021}, "phoneNumbers": ["212 555-1234", "646 555-4567"]}');
-
-		$row->update();
+        $row->setFunction('test3',4);
+ 
+		
+		$row->save();
 		
 		$test = Row::model()->findByAttributes(array('test1'=>2));
 			
@@ -116,9 +118,10 @@ class RowTest extends TestCase
 		$this->assertEquals('3',$row->getAttribute('test7'));
 		$this->assertContains('neque porro quisquam est, qu',$row->getAttribute('test8'));
 		$this->assertContains('{"firstName": "John", "l',$row->getAttribute('test9'));
-			
 
-
+		$this->assertEquals(4,$row->getFunction('test3'));
+		
+		$this->assertType('array',$row->getIdentifier());
 		/*
 		 * @todo(dmoesslang): cant select data2
 		 *

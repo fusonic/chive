@@ -3,6 +3,10 @@ var schemaGeneral = {
 	// Drop schema
 	dropSchema: function()
 	{
+		var ulObj = $('#dropSchemaDialog ul');
+		
+		ulObj.append("<li>"+schema+"</li>")
+		
 		$('#dropSchemaDialog').dialog('open');
 	},
 	

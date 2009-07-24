@@ -1,5 +1,6 @@
 <div id="dropRoutinesDialog" title="<?php echo Yii::t('database', 'dropRoutines'); ?>" style="display: none">
 	<?php echo Yii::t('database', 'doYouReallyWantToDropRoutines'); ?>
+	<ul></ul>
 </div>
 
 <div class="list">

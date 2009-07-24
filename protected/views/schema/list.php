@@ -1,5 +1,6 @@
 <div id="dropSchemataDialog" title="<?php echo Yii::t('database', 'dropSchemata'); ?>" style="display: none">
 	<?php echo Yii::t('database', 'doYouReallyWantToDropSchemata'); ?>
+	<ul></ul>
 </div>
 
 <div class="list">
