@@ -6,6 +6,7 @@
  */
 class ExportPage extends CModel
 {
+
 	private $exporters;
 	private $mode;
 	private $objects;
@@ -385,4 +386,5 @@ class ExportPage extends CModel
 	{
 		return bzcompress($content);
 	}
+
 }

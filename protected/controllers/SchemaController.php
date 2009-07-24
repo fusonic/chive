@@ -197,16 +197,16 @@ class SchemaController extends Controller
 	public function actionSql($_query = false, $_execute = true) {
 
 		$query = Yii::app()->getRequest()->getParam('query');
-		
+
 		$browsePage = new BrowsePage();
-		
+
 		$browsePage->schema = $this->schema;
 		$browsePage->db = $this->db;
 		$browsePage->query = $query;
 		$browsePage->route = 'schema/' . $this->schema . '/sql';
 		$browsePage->formTarget = 'schema/' . $this->schema . '/sql';
 		$browsePage->execute = (bool)$query;
-		
+
 		$browsePage->run();
 
 		$this->render('../global/browse', array(
@@ -294,6 +294,7 @@ class SchemaController extends Controller
 		foreach($schemata AS $schema)
 		{
 			$schemaObj = Schema::model()->findByPk($schema);
+			$schemaObj->throwExceptions = true;
 			try
 			{
 				$sql = $schemaObj->delete();
@@ -391,22 +392,22 @@ class SchemaController extends Controller
 		$id = Yii::app()->getRequest()->getParam('id');
 		$bookmark = Yii::app()->user->settings->get('bookmarks', 'database', $this->schema, 'id', $id);
 		$query = Yii::app()->getRequest()->getParam('query');
-		
+
 		$browsePage = new BrowsePage();
-		
+
 		$browsePage->schema = $this->schema;
 		$browsePage->db = $this->db;
 		$browsePage->query = !$query ? $bookmark['query'] : $query;
 		$browsePage->route = 'schema/' . $this->schema . '/bookmark/show/' . $id;
 		$browsePage->formTarget = 'schema/' . $this->schema . '/bookmark/show/' . $id;
 		$browsePage->execute = (bool)$query;
-		
+
 		$browsePage->run();
 
 		$this->render('../global/browse', array(
 			'model' => $browsePage
 		));
-		
+
 	}
 
 	/**

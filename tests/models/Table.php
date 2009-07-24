@@ -236,11 +236,11 @@ class TableTest extends TestCase
 		$col2->setDataType('varchar');
 		$col2->setCollation('utf8_general_ci');
 		$col2->size=250;
-			
+
 		$columns = array($col1,$col2);
 
 		$table = new Table();
-			
+
 		// Set some properties and save
 		$table->TABLE_NAME = 'innodb2';
 		$table->TABLE_SCHEMA = 'tabletest';
@@ -251,8 +251,9 @@ class TableTest extends TestCase
 		$table->TABLE_COLLATION = 'utf8_general_ci';
 		$table->comment = 'mein testkommentar';
 
-		$table->insert($columns);
-			
+		$table->columns = $columns;
+		$table->insert();
+
 		$this->assertTrue(is_string($table->showCreateTable));
 
 		$pk = array(
@@ -270,7 +271,7 @@ class TableTest extends TestCase
 		$this->assertFalse($col->getIsNullable());
 		$this->assertTrue($col->getIsPartOfPrimaryKey());
 		$this->assertEquals(20,$col->size);
-			
+
 		$pk = array(
 		 'TABLE_SCHEMA' => 'tabletest',
 		 'TABLE_NAME' => 'innodb2',
@@ -314,7 +315,7 @@ class TableTest extends TestCase
 	{
 		$table = new Table();
 		$table->setAttribute('TABLE_NAME', 'test2');
-		
+
 		$table->update();
 	}
 
@@ -344,21 +345,6 @@ class TableTest extends TestCase
 		// Load column definition
 		$ta = Table::model()->findByPk($table);
 		$ta->insert($column);
-	}
-
-	/**
-	 * Record can't be inserted cause its not new
-	 */
-	public function testSqlException()
-	{
-		// Create table
-		$table = new Table();
-
-		$table->setAttribute('TABLE_SCHEMA', 'tabletest');
-		$table->setAttribute('TABLE_NAME', '#ÖÜÖöä test3');
-		
-		// Load column definition
-		$this->assertFalse($table->insert(array()));
 	}
 
 }

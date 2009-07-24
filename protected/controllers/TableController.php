@@ -111,7 +111,7 @@ class TableController extends Controller
 		}
 
 		$browsePage->run();
-		
+
 		$this->render('../global/browse', array(
 			'model' => $browsePage
 		));
@@ -150,7 +150,11 @@ class TableController extends Controller
 				$addIndices['FULLTEXT'] = $column->COLUMN_NAME . (array_search($column->COLUMN_NAME, $addIndices) !== false ? '_fulltext' : '');
 			}
 
-			if($sql = $table->insert(array($column)))
+			$table->columns = array(
+				$column,
+			);
+
+			if($sql = $table->insert())
 			{
 				$response = new AjaxResponse();
 				$response->addNotification('success',
@@ -255,7 +259,7 @@ class TableController extends Controller
 		$row = new Row();
 
 		$commandBuilder = $this->db->getCommandBuilder();
-		
+
 		if(isset($_POST['Row']))
 		{
 
@@ -368,6 +372,7 @@ class TableController extends Controller
 				'TABLE_SCHEMA' => $this->schema,
 				'TABLE_NAME' => $table
 			));
+			$tableObj->throwExceptions = true;
 			try
 			{
 				$sql = $tableObj->delete();
@@ -442,7 +447,7 @@ class TableController extends Controller
 		$exportPage = new ExportPage('objects', $this->schema);
 		$exportPage->setSelectedObjects('t:' . $this->table);
 		$exportPage->run();
-		
+
 		$this->render('../global/export', array(
 			'model' => $exportPage,
 		));

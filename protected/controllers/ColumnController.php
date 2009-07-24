@@ -194,6 +194,7 @@ class ColumnController extends Controller
 				'COLUMN_NAME' => $column,
 			);
 			$column = Column::model()->findByPk($pk);
+			$column->throwExceptions = true;
 			try
 			{
 				$sql = $column->delete();

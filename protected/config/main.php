@@ -109,10 +109,10 @@ return array(
 				'privileges/userActions/create' => 'privileges/createUser',
 				'privileges/userActions/drop' => 'privileges/dropUsers',
 
-				'privileges/users/<user:' . URL_MATCH . '>/<host:' . URL_MATCH . '>/schemata' => 'privileges/userSchemata',
-				'privileges/users/<user:' . URL_MATCH . '>/<host:' . URL_MATCH . '>/schemata/<schema:' . URL_MATCH . '>/update' => 'privileges/updateSchemaPrivilege',
-				'privileges/users/<user:' . URL_MATCH . '>/<host:' . URL_MATCH . '>/schemaActions/create' => 'privileges/createSchemaPrivilege',
-				'privileges/users/<user:' . URL_MATCH . '>/<host:' . URL_MATCH . '>/schemaActions/drop' => 'privileges/dropSchemaPrivileges',
+				'privileges/users/<user:' . URL_MATCH . '>/<host:' . URL_MATCH . '>/schemata' => 'privileges/schemata',
+				'privileges/users/<user:' . URL_MATCH . '>/<host:' . URL_MATCH . '>/schemata/<schema:' . URL_MATCH . '>/update' => 'privileges/updateSchema',
+				'privileges/users/<user:' . URL_MATCH . '>/<host:' . URL_MATCH . '>/schemaActions/create' => 'privileges/createSchema',
+				'privileges/users/<user:' . URL_MATCH . '>/<host:' . URL_MATCH . '>/schemaActions/drop' => 'privileges/dropSchema',
 
 				// schema
                	'schema'=>'schema/list',

@@ -13,22 +13,29 @@ var idPrefix = '<?php echo CHtml::$idPrefix; ?>';
 			<col class="col1"/>
 			<col class="col2" />
 			<col class="col3" />
+			<col style="width: 100px" />
 		</colgroup>
 		<tbody>
 			<tr>
 				<td>
 					<?php echo CHtml::activeLabel($user, 'User'); ?>
 				</td>
-				<td colspan="2">
+				<td colspan="3">
 					<?php echo CHtml::activeTextField($user, 'User'); ?>
+					<a href="javascript:void(0)" onclick="$('#<?php echo CHtml::$idPrefix; ?>User_User').val('')" class="button">
+						<span><?php echo Yii::t('database', 'anyUser'); ?></span>
+					</a>
 				</td>
 			</tr>
 			<tr>
 				<td>
 					<?php echo CHtml::activeLabel($user, 'Host'); ?>
 				</td>
-				<td colspan="2">
+				<td colspan="3">
 					<?php echo CHtml::activeTextField($user, 'Host'); ?>
+					<a href="javascript:void(0)" onclick="$('#<?php echo CHtml::$idPrefix; ?>User_Host').val('%')" class="button">
+						<span><?php echo Yii::t('database', 'anyHost'); ?></span>
+					</a>
 				</td>
 			</tr>
 			<tr>

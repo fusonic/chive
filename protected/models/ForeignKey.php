@@ -1,8 +1,7 @@
 <?php
 
-class ForeignKey extends CActiveRecord
+class ForeignKey extends ActiveRecord
 {
-	public static $db;
 
 	public $onDelete, $onUpdate, $table;
 
@@ -113,107 +112,37 @@ class ForeignKey extends CActiveRecord
 	}
 
 	/**
-	 * @see		CActiveRecord::delete()
+	 * @see		ActiveRecord::getUpdateSql()
 	 */
-	public function delete()
+	protected function getUpdateSql()
 	{
-		if($this->getIsNewRecord())
-		{
-			throw new CDbException(Yii::t('yii','The active record cannot be deleted because it is new.'));
-		}
-		if(!$this->beforeDelete())
-		{
-			return false;
-		}
-
-		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
-		. "\t" . 'DROP FOREIGN KEY ' . self::$db->quoteColumnName($this->CONSTRAINT_NAME) . ';';
-		$cmd = self::$db->createCommand($sql);
-		try
-		{
-			$cmd->prepare();
-			$cmd->execute();
-			$this->afterDelete();
-			$this->setIsNewRecord(true);
-			return $sql;
-		}
-		catch(CDbException $ex)
-		{
-			$errorInfo = $cmd->getPdoStatement()->errorInfo();
-			$this->addError(null, Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
-			$this->afterSave();
-			return false;
-		}
+		return array(
+			$this->getDeleteSql(),
+			$this->getInsertSql(),
+		);
 	}
 
 	/**
-	 * @see		CActiveRecord::insert()
+	 * @see		ActiveRecord::getInsertSql()
 	 */
-	public function insert()
+	protected function getInsertSql()
 	{
-		if(!$this->getIsNewRecord())
-		{
-			throw new CDbException(Yii::t('yii','The active record cannot be inserted to database because it is not new.'));
-		}
-		if(!$this->beforeSave())
-		{
-			return false;
-		}
-
-		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
-		. "\t" . 'ADD FOREIGN KEY (' . self::$db->quoteColumnName($this->COLUMN_NAME) . ')' . "\n"
-		. "\t" . 'REFERENCES '	. self::$db->quoteTableName($this->REFERENCED_TABLE_SCHEMA) . '.' . self::$db->quoteTableName($this->REFERENCED_TABLE_NAME) . ' '
-		.  '(' . self::$db->quoteColumnName($this->REFERENCED_COLUMN_NAME) . ')'
-		. ($this->onDelete ? "\n\t" . 'ON DELETE ' . $this->onDelete : '')
-		. ($this->onUpdate ? "\n\t" . 'ON UPDATE ' . $this->onUpdate : '')
-		. ';';
-		$cmd = self::$db->createCommand($sql);
-		try
-		{
-			$cmd->prepare();
-			$cmd->execute();
-			$this->afterSave();
-			$this->setIsNewRecord(false);
-			return $sql;
-		}
-		catch(CDbException $ex)
-		{
-
-			$errorInfo = $cmd->getPdoStatement()->errorInfo();
-			$this->addError('COLUMN_NAME', Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
-			$this->afterSave();
-			return false;
-		}
+		return 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
+			. "\t" . 'ADD FOREIGN KEY (' . self::$db->quoteColumnName($this->COLUMN_NAME) . ')' . "\n"
+			. "\t" . 'REFERENCES '	. self::$db->quoteTableName($this->REFERENCED_TABLE_SCHEMA) . '.' . self::$db->quoteTableName($this->REFERENCED_TABLE_NAME) . ' '
+			.  '(' . self::$db->quoteColumnName($this->REFERENCED_COLUMN_NAME) . ')'
+			. ($this->onDelete ? "\n\t" . 'ON DELETE ' . $this->onDelete : '')
+			. ($this->onUpdate ? "\n\t" . 'ON UPDATE ' . $this->onUpdate : '')
+			. ';';
 	}
 
 	/**
-	 * @see		CActiveRecord::update()
+	 * @see		ActiveRecord::getDeleteSql()
 	 */
-	public function update()
+	protected function getDeleteSql()
 	{
-		if($this->getIsNewRecord())
-		{
-			throw new CDbException(Yii::t('yii','The active record cannot be updated because it is new.'));
-		}
-		if(!$this->beforeSave())
-		{
-			return false;
-		}
-
-		if($sql1 = $this->delete())
-		{
-			if($sql2 = $this->insert())
-			{
-				return $sql1 . "\n" . $sql2;
-			}
-			else
-			{
-				return false;
-			}
-		}
-		else
-		{
-			return false;
-		}
+		return 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
+			. "\t" . 'DROP FOREIGN KEY ' . self::$db->quoteColumnName($this->CONSTRAINT_NAME) . ';';
 	}
+
 }

@@ -1,10 +1,7 @@
 <?php
 
-class Table extends CActiveRecord
+class Table extends ActiveRecord
 {
-	public static $db;
-
-	public $originalAttributes;
 	public $optionChecksum = '0', $originalOptionChecksum = '0';
 	public $optionDelayKeyWrite = '0', $originalOptionDelayKeyWrite = '0';
 	public $optionPackKeys = 'DEFAULT', $originalOptionPackKeys = 'DEFAULT';
@@ -27,7 +24,6 @@ class Table extends CActiveRecord
 	public function instantiate($attributes)
 	{
 		$res = parent::instantiate($attributes);
-		$res->originalAttributes = $attributes;
 
 		// Check options
 		$options = strtolower($attributes['CREATE_OPTIONS']);
@@ -222,27 +218,6 @@ class Table extends CActiveRecord
 	}
 
 	/**
-	 * @see		CActiveRecord::delete()
-	 */
-	public function delete() {
-
-		$sql = 'DROP TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . ';';
-		$cmd = self::$db->createCommand($sql);
-
-		// Execute
-		try
-		{
-			$cmd->prepare();
-			$cmd->execute();
-			return $sql;
-		}
-		catch(CDbException $ex)
-		{
-			throw new DbException($cmd);
-		}
-	}
-
-	/**
 	 * Returns the query string for all options which need to be saved.
 	 *
 	 * @return	string
@@ -290,78 +265,36 @@ class Table extends CActiveRecord
 	}
 
 	/**
-	 * @see		CActiveRecord::update()
+	 * @see		ActiveRecord::getDeleteSql()
 	 */
-	public function update()
+	protected function getDeleteSql()
 	{
-		if($this->getIsNewRecord())
-		{
-			throw new CDbException(Yii::t('yii','The active record cannot be updated because it is new.'));
-		}
-		if(!$this->beforeSave())
-		{
-			return false;
-		}
-
-		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->originalAttributes['TABLE_NAME']) . $this->getSaveDefinition() . ';';
-		$cmd = new CDbCommand(self::$db, $sql);
-		try
-		{
-			$cmd->prepare();
-			$cmd->execute();
-			$this->afterSave();
-			$this->refresh();
-			return $sql;
-		}
-		catch(CDbException $ex)
-		{
-			$errorInfo = $cmd->getPdoStatement()->errorInfo();
-			$this->addError(null, Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
-			$this->afterSave();
-			return false;
-		}
+		return 'DROP TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . ';';
 	}
 
 	/**
-	 * @see		CActiveRecord::insert()
+	 * @see		ActiveRecord::getUpdateSql()
 	 */
-	public function insert(array $columns)
+	protected function getUpdateSql()
 	{
-		if(!$this->getIsNewRecord())
-		{
-			throw new CDbException(Yii::t('yii','The active record cannot be inserted to database because it is not new.'));
-		}
-		if(!$this->beforeSave())
-		{
-			return false;
-		}
+		return 'ALTER TABLE ' . self::$db->quoteTableName($this->originalAttributes['TABLE_NAME']) . $this->getSaveDefinition() . ';';
+	}
 
+	/**
+	 * @see		ActiveRecord::getInsertSql()
+	 */
+	protected function getInsertSql()
+	{
 		$columnDefinitions = array();
-		foreach($columns AS $column)
+		foreach($this->columns AS $column)
 		{
 			$columnDefinitions[] = $column->getColumnDefinition();
 		}
 
-		$sql = 'CREATE TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . '( ' . "\n\t"
+		return 'CREATE TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . '( ' . "\n\t"
 			. implode(",\n\t", $columnDefinitions) . "\n"
 			. ')'
 			. str_replace("\t", '', $this->getSaveDefinition()) . ';';
-		$cmd = new CDbCommand(self::$db, $sql);
-		try
-		{
-			$cmd->prepare();
-			$cmd->execute();
-			$this->afterSave();
-			$this->refresh();
-			return $sql;
-		}
-		catch(CDbException $ex)
-		{
-			$errorInfo = $cmd->getPdoStatement()->errorInfo();
-			$this->addError(null, Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
-			$this->afterSave();
-			return false;
-		}
 	}
 
 	/**

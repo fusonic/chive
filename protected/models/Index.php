@@ -1,12 +1,9 @@
 <?php
 
-class Index extends CActiveRecord
+class Index extends ActiveRecord
 {
-	public static $db;
 
-	public $originalIndexName;
 	public $NON_UNIQUE = 1;
-	public $throwExceptions = false;
 
 	/**
 	 * @see		CActiveRecord::model()
@@ -14,19 +11,6 @@ class Index extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
-	}
-
-	/**
-	 * @see		CActiveRecord::instantiate()
-	 */
-	public function instantiate($attributes)
-	{
-		$res = parent::instantiate($attributes);
-		if(isset($attributes['INDEX_NAME']))
-		{
-			$res->originalIndexName = $attributes['INDEX_NAME'];
-		}
-		return $res;
 	}
 
 	/**
@@ -135,19 +119,21 @@ class Index extends CActiveRecord
 	}
 
 	/**
-	 * @see		CActiveRecord::insert()
+	 * @see		ActiveRecord::getUpdateSql()
 	 */
-	public function insert()
+	protected function getUpdateSql()
 	{
-		if(!$this->getIsNewRecord())
-		{
-			throw new CDbException(Yii::t('yii','The active record cannot be inserted to database because it is not new.'));
-		}
-		if(!$this->beforeSave())
-		{
-			return false;
-		}
+		return array(
+			$this->getDeleteSql(),
+			$this->getInsertSql(),
+		);
+	}
 
+	/**
+	 * @see		ActiveRecord::getInsertSql()
+	 */
+	protected function getInsertSql()
+	{
 		// Prepare columns
 		$columns = array();
 		foreach($this->columns AS $column)
@@ -169,134 +155,17 @@ class Index extends CActiveRecord
 			$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
 				. "\t" . 'ADD ' . $type . ' ' . self::$db->quoteColumnName($this->INDEX_NAME) . ' (' . $columns . ');';
 		}
-		$cmd = self::$db->createCommand($sql);
 
-		// Execute
-		try
-		{
-			$cmd->prepare();
-			$cmd->execute();
-			$this->afterSave();
-			$this->setIsNewRecord(false);
-			$this->refresh();
-			return $sql;
-		}
-		catch(CDbException $ex)
-		{
-			if($this->throwExceptions)
-			{
-				throw new DbException($cmd);
-			}
-			else
-			{
-				$errorInfo = $cmd->getPdoStatement()->errorInfo();
-				$this->addError('COLUMN_NAME', Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
-				$this->afterSave();
-				return false;
-			}
-		}
+		return $sql;
 	}
 
 	/**
-	 * @see		CActiveRecord::delete()
+	 * @see		ActiveRecord::getDeleteSql()
 	 */
-	public function delete()
+	protected function getDeleteSql()
 	{
-		if($this->getIsNewRecord())
-		{
-			throw new CDbException(Yii::t('yii','The active record cannot be deleted because it is new.'));
-		}
-		if(!$this->beforeDelete())
-		{
-			return false;
-		}
-
-		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
-			. "\t" . 'DROP INDEX ' . self::$db->quoteColumnName($this->originalIndexName) . ';';
-		$cmd = self::$db->createCommand($sql);
-		try
-		{
-			$cmd->prepare();
-			$cmd->execute();
-			$this->afterDelete();
-			$this->refresh();
-			return $sql;
-		}
-		catch(CDbException $ex)
-		{
-			if($this->throwExceptions)
-			{
-				throw new DbException($cmd);
-			}
-			else
-			{
-				$errorInfo = $cmd->getPdoStatement()->errorInfo();
-				$this->addError('COLUMN_NAME', Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
-				$this->afterSave();
-				return false;
-			}
-		}
+		return 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
+			. "\t" . 'DROP INDEX ' . self::$db->quoteColumnName($this->originalAttributes['INDEX_NAME']) . ';';
 	}
 
-	/**
-	 * @see		CActiveRecord::update()
-	 */
-	public function update()
-	{
-		if($this->getIsNewRecord())
-		{
-			throw new CDbException(Yii::t('yii','The active record cannot be updated because it is new.'));
-		}
-		if(!$this->beforeSave())
-		{
-			return false;
-		}
-
-		// Prepare columns
-		$columns = array();
-		foreach($this->columns AS $column)
-		{
-			$columns[] = self::$db->quoteColumnName($column->COLUMN_NAME)
-				. (!is_null($column->SUB_PART) ? '(' . (int)$column->SUB_PART . ')' : '');
-		}
-		$columns = implode(', ', $columns);
-
-		// Create command
-		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
-			. "\t" . 'DROP INDEX ' . self::$db->quoteColumnName($this->originalIndexName) . ',' . "\n";
-		$type = $this->getType();
-		if($type == 'PRIMARY')
-		{
-			$sql .= "\t" . 'ADD PRIMARY KEY (' . $columns . ');';
-		}
-		else
-		{
-			$sql .= "\t" . 'ADD ' . $type . ' ' . self::$db->quoteColumnName($this->INDEX_NAME) . ' (' . $columns . ');';
-		}
-		$cmd = self::$db->createCommand($sql);
-
-		// Execute
-		try
-		{
-			$cmd->prepare();
-			$cmd->execute();
-			$this->afterSave();
-			$this->refresh();
-			return $sql;
-		}
-		catch(CDbException $ex)
-		{
-			if($this->throwExceptions)
-			{
-				throw new DbException($cmd);
-			}
-			else
-			{
-				$errorInfo = $cmd->getPdoStatement()->errorInfo();
-				$this->addError('COLUMN_NAME', Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
-				$this->afterSave();
-				return false;
-			}
-		}
-	}
 }

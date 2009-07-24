@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Represents a character set installed on the MySql server.
+ */
 class CharacterSet extends CActiveRecord
 {
 	/**

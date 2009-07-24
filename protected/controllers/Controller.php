@@ -37,13 +37,9 @@ class Controller extends CController
 		$this->db->active = true;
 
 		// Assign to all models which need it
-		Column::$db =
-		ForeignKey::$db =
-		Index::$db =
+		ActiveRecord::$db =
 		Routine::$db =
 		Row::$db =
-		Schema::$db =
-		Table::$db =
 		Trigger::$db =
 		View::$db = $this->db;
 

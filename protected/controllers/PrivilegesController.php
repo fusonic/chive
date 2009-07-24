@@ -21,9 +21,9 @@ class PrivilegesController extends Controller
 
 		// Get parameters from request
 		$request = Yii::app()->getRequest();
-		$this->user = $request->getParam('user');
-		$this->host = $request->getParam('host');
-		$this->schema = $request->getParam('schema');
+		$this->user = trim($request->getParam('user'));
+		$this->host = trim($request->getParam('host'));
+		$this->schema = trim($request->getParam('schema'));
 
 		parent::__construct($id, $module);
 		$this->connectDb();
@@ -45,7 +45,7 @@ class PrivilegesController extends Controller
 		$this->db->active = true;
 
 		// Assign to all models which need it
-		User::$db =
+		ActiveRecord::$db =
 		SchemaPrivilege::$db = $this->db;
 
 		// Return connection
@@ -85,7 +85,7 @@ class PrivilegesController extends Controller
 		));
 	}
 
-	public function actionUserSchemata()
+	public function actionSchemata()
 	{
 		// Create criteria
 		$criteria = new CDbCriteria();
@@ -136,6 +136,7 @@ class PrivilegesController extends Controller
 		{
 			$pk = User::splitId($user);
 			$userObj = User::model()->findByPk($pk);
+			$userObj->throwExceptions = true;
 			try
 			{
 				$sql = $userObj->delete();
@@ -146,8 +147,8 @@ class PrivilegesController extends Controller
 			{
 				$response->addNotification('error',
 					Yii::t('message', 'errorDropUser', array('{user}' => $user)),
-					$ex->getText()/*,
-					$ex->getSql()*/);
+					$ex->getText(),
+					$ex->getSql());
 			}
 		}
 
@@ -156,8 +157,8 @@ class PrivilegesController extends Controller
 		{
 			$response->addNotification('success',
 				Yii::t('message', 'successDropUser', array($count, '{user}' => $droppedUsers[0], '{userCount}' => $count)),
-				($count > 1 ? implode(', ', $droppedUsers) : null)/*,
-				implode("\n", $droppedSqls)*/);
+				($count > 1 ? implode(', ', $droppedUsers) : null),
+				implode("\n", $droppedSqls));
 		}
 
 		$response->send();
@@ -177,8 +178,8 @@ class PrivilegesController extends Controller
 				$response = new AjaxResponse();
 				$response->addNotification('success',
 					Yii::t('message', 'successAddUser', array('{user}' => $user->User, '{host}' => $user->Host)),
-					null/*,
-					$sql*/);
+					null,
+					$sql);
 				$response->refresh = true;
 				$response->send();
 			}
@@ -206,8 +207,8 @@ class PrivilegesController extends Controller
 				$response = new AjaxResponse();
 				$response->addNotification('success',
 					Yii::t('message', 'successUpdateUser', array('{user}' => $user->User, '{host}' => $user->Host)),
-					null/*,
-					$sql*/);
+					null,
+					$sql);
 				$response->refresh = true;
 				$response->send();
 			}
@@ -218,7 +219,7 @@ class PrivilegesController extends Controller
 		));
 	}
 
-	public function actionCreateSchemaPrivilege()
+	public function actionCreateSchema()
 	{
 		$schema = new SchemaPrivilege();
 		$schema->User = $this->user;
@@ -263,7 +264,7 @@ class PrivilegesController extends Controller
 		));
 	}
 
-	public function actionUpdateSchemaPrivilege()
+	public function actionUpdateSchema()
 	{
 		$schema = SchemaPrivilege::model()->findByPk(array(
 			'Host' => $this->host,
@@ -290,7 +291,7 @@ class PrivilegesController extends Controller
 		));
 	}
 
-	public function actionDropSchemaPrivileges()
+	public function actionDropSchema()
 	{
 		$response = new AjaxResponse();
 		$response->refresh = true;

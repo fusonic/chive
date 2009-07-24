@@ -1,9 +1,7 @@
 <?php
 
-class User extends CActiveRecord
+class User extends ActiveRecord
 {
-
-	public static $db;
 	public $plainPassword;
 
 	public static function splitId($id)
@@ -27,14 +25,6 @@ class User extends CActiveRecord
 	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
-	}
-
-	/**
-	 * @see		CActiveRecord::getDbConnection()
-	 */
-	public function getDbConnection()
-	{
-		return self::$db;
 	}
 
 	/**
@@ -64,15 +54,6 @@ class User extends CActiveRecord
 			'GlobalPrivileges',
 		);
 	}
-
-	/**
-	 * @return array relational rules.
-	 */
-	public function relations()
-	{
-		return array(
-		);
-    }
 
 	/**
 	 * @return array customized attribute labels (name=>label)
@@ -110,20 +91,28 @@ class User extends CActiveRecord
 
 	public function getId()
 	{
-		return md5($this->User . '@' . $this->Host);
+		return '\'' . $this->User . '\'@\'' . $this->Host . '\'';
+	}
+
+	public function getDomId()
+	{
+		return md5($this->getId());
 	}
 
 	/**
 	 * Returns an array containing all global privileges of the user.
 	 *
 	 * @return	array					global privileges
+	 * @return	array					do not summarize to ALL PRIVILEGES
 	 */
-	public function getGlobalPrivileges($group = null)
+	public function getGlobalPrivileges($group = null, $notAllPrivileges = false)
 	{
 		$res = array();
 
+		// Retrieve all privileges
 		$privs = array_keys(self::getAllGlobalPrivileges($group));
 
+		// Check all privileges for this user
 		foreach($privs AS $priv)
 		{
 			if($this->checkGlobalPrivilege($priv))
@@ -132,15 +121,50 @@ class User extends CActiveRecord
 			}
 		}
 
-		if(count($res) == count($privs))
+		// Return USAGE if user has no privileges
+		if(count($res) == 0)
 		{
 			return array(
-				'ALL PRIVILEGES',
+				'USAGE',
 			);
+		}
+		elseif(count($res) == 1 && $res[0] == 'GRANT')
+		{
+			return array(
+				'USAGE',
+				'GRANT',
+			);
+		}
+
+		if($group || $notAllPrivileges)
+		{
+			// Return result if we are only looking for a group
+			return $res;
 		}
 		else
 		{
-			return $res;
+			// Remove GRANT privilege from privs array
+			$resWithoutGrant = array_diff($res, array('GRANT'));
+
+			// Compare privilege count
+			if(count($resWithoutGrant) == count($privs) - 1)
+			{
+				// User has ALL PRIVILEGES
+				$userPrivs = array(
+					'ALL PRIVILEGES',
+				);
+				// Also check GRANT privilege
+				if(array_search('GRANT', $res) !== false)
+				{
+					$userPrivs[] = 'GRANT';
+				}
+				return $userPrivs;
+			}
+			else
+			{
+				// User doesn't have ALL PRIVILEGES
+				return $res;
+			}
 		}
 	}
 
@@ -206,15 +230,66 @@ class User extends CActiveRecord
 		}
 	}
 
-	protected function afterSave()
+	/**
+	 * @see		ActiveRecord::getInsertSql()
+	 */
+	protected function getInsertSql()
 	{
-		if(!is_null($this->plainPassword))
+		$privileges = $this->getGlobalPrivileges();
+		$canGrant = array_search('GRANT', $privileges);
+
+		return 'GRANT ' . implode(', ', array_diff($privileges, array('GRANT'))) . "\n"
+			. "\tON *.*\n"
+			. "\tTO " . self::$db->quoteValue($this->User) . '@' . self::$db->quoteValue($this->Host)
+			. ($this->plainPassword !== null ? "\n\tIDENTIFIED BY " . self::$db->quoteValue($this->plainPassword) : '')
+			. ($canGrant ? "\n\tWITH GRANT OPTION" : '') . ';';
+	}
+
+	/**
+	 * @see		ActiveRecord::getUpdateSql()
+	 */
+	protected function getUpdateSql()
+	{
+		// Rename user or not
+		if($this->originalAttributes['User'] != $this->User || $this->originalAttributes['Host'] != $this->Host)
 		{
-			$cmd = self::$db->createCommand('UPDATE `user` SET `Password` = PASSWORD(' . self::$db->quoteValue($this->plainPassword) . ')
-				WHERE `User` = ' . self::$db->quoteValue($this->User) . '
-				AND `Host` = ' . self::$db->quoteValue($this->Host));
-			$cmd->execute();
+			$sql = array(
+				'RENAME USER ' . self::$db->quoteValue($this->originalAttributes['User']) . '@' . self::$db->quoteValue($this->originalAttributes['Host'])
+					. ' TO ' . self::$db->quoteValue($this->User) . '@' . self::$db->quoteValue($this->Host) . ';',
+			);
 		}
+		else
+		{
+			$sql = array();
+		}
+
+		// Revoke global privileges
+		$sql[] = 'REVOKE ALL PRIVILEGES' . "\n"
+			. "\tON *.*\n"
+			. "\tFROM " . self::$db->quoteValue($this->User) . '@' . self::$db->quoteValue($this->Host) . ';';
+
+		// Revoke global grant option
+		$sql[] = 'REVOKE GRANT OPTION' . "\n"
+			. "\tON *.*\n"
+			. "\tFROM " . self::$db->quoteValue($this->User) . '@' . self::$db->quoteValue($this->Host) . ';';
+
+		// Grant new privileges
+		$sql[] = $this->getInsertSql();
+
+		return $sql;
+	}
+
+	/**
+	 * @see		ActiveRecord::getDeleteSql()
+	 */
+	protected function getDeleteSql()
+	{
+		return 'DROP USER ' . self::$db->quoteValue($this->User) . '@' . self::$db->quoteValue($this->Host) . ';';
+	}
+
+	public function getDbConnection()
+	{
+		return self::$db;
 	}
 
 }

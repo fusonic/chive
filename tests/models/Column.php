@@ -9,10 +9,10 @@ class ColumnTest extends TestCase
 	protected function setUp()
 	{
 		$this->executeSqlFile('models/Column.sql');
-		Column::$db = new CDbConnection('mysql:host='.DB_HOST.';dbname=columntest', DB_USER, DB_PASSWORD);
-		Column::$db->charset='utf8';
-		Column::$db->active = true;
-		Table::$db = Column::$db;
+		ActiveRecord::$db = new CDbConnection('mysql:host='.DB_HOST.';dbname=columntest', DB_USER, DB_PASSWORD);
+		ActiveRecord::$db->charset='utf8';
+		ActiveRecord::$db->active = true;
+		Table::$db = ActiveRecord::$db;
 	}
 
 	/**
@@ -56,6 +56,7 @@ class ColumnTest extends TestCase
 
 		// Drop first column
 		$col = $table->columns[0];
+		$col->throwExceptions = true;
 		$this->assertType('string', $col->delete());
 
 		// Load table definition
@@ -398,6 +399,8 @@ class ColumnTest extends TestCase
 		$count = count($cols);
 		foreach($cols AS  $col)
 		{
+			$col->throwExceptions = true;
+
 			if($i == $count - 1)
 			{
 				$this->setExpectedException('CDbException');

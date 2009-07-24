@@ -41,4 +41,5 @@ class IndexColumn extends CActiveRecord
 			'index' => array(self::BELONGS_TO, 'Index', 'TABLE_SCHEMA, TABLE_NAME, INDEX_NAME'),
 		);
 	}
+
 }

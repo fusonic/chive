@@ -1,17 +1,14 @@
 <?php
 
-class Column extends CActiveRecord
+class Column extends ActiveRecord
 {
 
-	public $originalColumnName;
 	public $COLLATION_NAME = Collation::DEFAULT_COLLATION;
 	public $scale, $size;
 	public $_values = array();
 	public $attribute = '';
 	public $createPrimaryKey, $createUniqueKey;
 	public $DATA_TYPE = 'varchar';
-
-	public static $db;
 
 	/**
 	 * @see		CActiveRecord::model()
@@ -27,12 +24,6 @@ class Column extends CActiveRecord
 	public function instantiate($attributes)
 	{
 		$res = parent::instantiate($attributes);
-
-		// Oringinal column name
-		if(isset($attributes['COLUMN_NAME']))
-		{
-			$res->originalColumnName = $attributes['COLUMN_NAME'];
-		}
 
 		/*
 		 * We have to set some properties by hand
@@ -320,105 +311,39 @@ class Column extends CActiveRecord
 		}
 	}
 
-	public function update()
+	/**
+	 * @see		ActiveRecord::getUpdateSql()
+	 */
+	protected function getUpdateSql()
 	{
-		if($this->getIsNewRecord())
-		{
-			throw new CDbException(Yii::t('yii','The active record cannot be updated because it is new.'));
-		}
-		if(!$this->beforeSave())
-		{
-			return false;
-		}
-
 		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n";
-		if($this->originalColumnName == $this->COLUMN_NAME)
+		if($this->originalAttributes['COLUMN_NAME'] == $this->COLUMN_NAME)
 		{
 			$sql .= "\t" . 'MODIFY ' . $this->getColumnDefinition() . ';';
 		}
 		else
 		{
-			$sql .= "\t" . 'CHANGE ' . self::$db->quoteColumnName($this->originalColumnName) . ' ' . $this->getColumnDefinition() . ';';
+			$sql .= "\t" . 'CHANGE ' . self::$db->quoteColumnName($this->originalAttributes['COLUMN_NAME']) . ' ' . $this->getColumnDefinition() . ';';
 		}
-		$cmd = new CDbCommand(self::$db, $sql);
-		try
-		{
-			$cmd->prepare();
-			$cmd->execute();
-			$this->afterSave();
-			$this->refresh();
-			return $sql;
-		}
-		catch(CDbException $ex)
-		{
-			echo $sql;
-			$errorInfo = $cmd->getPdoStatement()->errorInfo();
-			echo "\n" . $errorInfo[2];
-			$this->addError(null, Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
-			$this->afterSave();
-			return false;
-		}
+		return $sql;
 	}
 
-	public function insert()
+	/**
+	 * @see		ActiveRecord::getInsertSql()
+	 */
+	protected function getInsertSql()
 	{
-		if(!$this->getIsNewRecord())
-		{
-			throw new CDbException(Yii::t('yii','The active record cannot be inserted to database because it is not new.'));
-		}
-		if(!$this->beforeSave())
-		{
-			return false;
-		}
-
-		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
+		return 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
 			. "\t" . 'ADD ' . $this->getColumnDefinition() . ';';
-		$cmd = new CDbCommand(self::$db, $sql);
-		try
-		{
-			$cmd->prepare();
-			$cmd->execute();
-			$this->afterSave();
-			$this->setIsNewRecord(false);
-			$this->refresh();
-			return $sql;
-		}
-		catch(CDbException $ex)
-		{
-			$errorInfo = $cmd->getPdoStatement()->errorInfo();
-			$this->addError('COLUMN_NAME', Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
-			$this->afterSave();
-			return false;
-		}
 	}
 
-	public function delete()
+	/**
+	 * @see		ActiveRecord::getDeleteSql()
+	 */
+	protected function getDeleteSql()
 	{
-		if($this->getIsNewRecord())
-		{
-			throw new CDbException(Yii::t('yii','The active record cannot be deleted because it is new.'));
-		}
-		if(!$this->beforeDelete())
-		{
-			return false;
-		}
-
-		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
+		return 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
 			. "\t" . 'DROP ' . self::$db->quoteColumnName($this->COLUMN_NAME) . ';';
-		$cmd = self::$db->createCommand($sql);
-		try
-		{
-			$cmd->prepare();
-			$cmd->execute();
-			$this->afterDelete();
-			$this->refresh();
-			return $sql;
-		}
-		catch(CDbException $ex)
-		{
-			$this->afterDelete();
-			throw new DbException($cmd);
-		}
 	}
 
 	public static function getDataTypes()

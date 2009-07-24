@@ -1,12 +1,9 @@
 <?php
 
-class Schema extends CActiveRecord
+class Schema extends ActiveRecord
 {
-	public static $db;
 
 	public $tableCount;
-	public $originalSchemaName;
-
 	public $DEFAULT_CHARACTER_SET_NAME = Collation::DEFAULT_CHARACTER_SET;
 	public $DEFAULT_COLLATION_NAME = Collation::DEFAULT_COLLATION;
 
@@ -16,19 +13,6 @@ class Schema extends CActiveRecord
 	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
-	}
-
-	/**
-	 * @see		CActiveRecord::instantiate()
-	 */
-	public function instantiate($attributes)
-	{
-		$res = parent::instantiate($attributes);
-		if(isset($attributes['SCHEMA_NAME']))
-		{
-			$res->originalSchemaName = $attributes['SCHEMA_NAME'];
-		}
-		return $res;
 	}
 
 	/**
@@ -84,99 +68,29 @@ class Schema extends CActiveRecord
 	}
 
 	/**
-	 * @see		CActiveRecord::insert()
+	 * @see		ActiveRecord::getUpdateSql()
 	 */
-	public function insert()
+	protected function getUpdateSql()
 	{
-		if(!$this->getIsNewRecord())
-		{
-			throw new CDbException(Yii::t('yii','The active record cannot be inserted to database because it is not new.'));
-		}
-		if(!$this->beforeSave())
-		{
-			return false;
-		}
-
-		$sql = 'CREATE DATABASE ' . self::$db->quoteTableName($this->SCHEMA_NAME) . "\n"
+		return 'ALTER DATABASE ' . self::$db->quoteTableName($this->SCHEMA_NAME) . "\n"
 			. "\t" . 'DEFAULT COLLATE = ' . self::$db->quoteValue($this->DEFAULT_COLLATION_NAME) . ';';
-		$cmd = self::$db->createCommand($sql);
-		try
-		{
-			$cmd->prepare();
-			$cmd->execute();
-			$this->afterSave();
-			$this->setIsNewRecord(false);
-			return $sql;
-		}
-		catch(CDbException $ex)
-		{
-			$errorInfo = $cmd->getPdoStatement()->errorInfo();
-			$this->addError('SCHEMA_NAME', Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
-			$this->afterSave();
-			return false;
-		}
 	}
 
 	/**
-	 * @see		CActiveRecord::update()
+	 * @see		ActiveRecord::getInsertSql()
 	 */
-	public function update()
+	protected function getInsertSql()
 	{
-		if($this->getIsNewRecord())
-		{
-			throw new CDbException(Yii::t('yii','The active record cannot be updated because it is new.'));
-		}
-		if(!$this->beforeSave())
-		{
-			return false;
-		}
-
-		$sql = 'ALTER DATABASE ' . self::$db->quoteTableName($this->SCHEMA_NAME) . "\n"
+		return 'CREATE DATABASE ' . self::$db->quoteTableName($this->SCHEMA_NAME) . "\n"
 			. "\t" . 'DEFAULT COLLATE = ' . self::$db->quoteValue($this->DEFAULT_COLLATION_NAME) . ';';
-		$cmd = self::$db->createCommand($sql);
-		try
-		{
-			$cmd->prepare();
-			$cmd->execute();
-			$this->afterSave();
-			return $sql;
-		}
-		catch(CDbException $ex)
-		{
-			$errorInfo = $cmd->getPdoStatement()->errorInfo();
-			$this->addError('SCHEMA_NAME', Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
-			$this->afterSave();
-			return false;
-		}
 	}
 
 	/**
-	 * @see		CActiveRecord::delete()
+	 * @see		ActiveRecord::getDeleteSql()
 	 */
-	public function delete()
+	protected function getDeleteSql()
 	{
-		if($this->getIsNewRecord())
-		{
-			throw new CDbException(Yii::t('yii','The active record cannot be deleted because it is new.'));
-		}
-		if(!$this->beforeDelete())
-		{
-			return false;
-		}
-
-		$sql = 'DROP DATABASE ' . self::$db->quoteTableName($this->SCHEMA_NAME) . ';';
-		$cmd = self::$db->createCommand($sql);
-		try
-		{
-			$cmd->prepare();
-			$cmd->execute();
-			$this->afterDelete();
-			return $sql;
-		}
-		catch(CDbException $ex)
-		{
-			$this->afterDelete();
-			throw new DbException($cmd);
-		}
+		return 'DROP DATABASE ' . self::$db->quoteTableName($this->SCHEMA_NAME) . ';';
 	}
+
 }

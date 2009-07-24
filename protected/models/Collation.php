@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Represents a collation installed on the MySql server.
+ */
 class Collation extends CActiveRecord
 {
 	const DEFAULT_CHARACTER_SET = 'utf8';

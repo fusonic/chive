@@ -41,7 +41,7 @@
 		</thead>
 		<tbody>
 			<?php foreach($users as $user) { ?>
-				<tr id="users_<?php echo $user->Id; ?>">
+				<tr id="users_<?php echo $user->getDomId(); ?>">
 					<td>
 						<input type="checkbox" name="users[]" value="<?php echo '\'' . $user->User . '\'@\'' . $user->Host . '\''; ?>" />
 					</td>
@@ -58,12 +58,12 @@
 						<?php echo implode(', ', $user->getGlobalPrivileges()); ?>
 					</td>
 					<td>
-						<a href="#privileges/users/<?php echo urlencode($user->User ? $user->User : '%'); ?>/<?php echo urlencode($user->Host); ?>/schemata" class="icon">
+						<a href="#privileges/users/<?php echo urlencode($user->User ? $user->User : '%'); ?>/<?php echo urlencode($user->Host ? $user->Host : ' '); ?>/schemata" class="icon">
 							<com:Icon name="database" size="16" text="database.schemaSpecificPrivileges" />
 						</a>
 					</td>
 					<td>
-						<a href="javascript:void(0)" onclick="privilegesUsers.editUser('<?php echo $user->Id; ?>', '<?php echo $user->User; ?>', '<?php echo $user->Host; ?>')" class="icon">
+						<a href="javascript:void(0)" onclick="privilegesUsers.editUser('<?php echo $user->getDomId(); ?>', '<?php echo $user->User; ?>', '<?php echo $user->Host; ?>')" class="icon">
 							<com:Icon name="edit" size="16" text="core.edit" />
 						</a>
 					</td>

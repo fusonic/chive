@@ -66,10 +66,9 @@ class DataType
 		return strtolower($res[0]);
 	}
 
-	public static function getInputType($dataType) {
+	public static function getInputType($dataType)
+	{
 		return self::$types[self::getBaseType($dataType)][self::INPUT_TYPE];
 	}
 
 }
-
-?>
