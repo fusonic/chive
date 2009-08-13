@@ -229,29 +229,50 @@
   }
   
   
-  /*
-   * Breadcrumb
-   */
-  ul.breadCrumb li {
-  	background: url('../images/breadcrumb/bg.png') top right;
-  	padding-left: 10px;
-  	padding-right: 15px;
-  	min-width: 130px;
-  	text-align: left !important;
-  } 
+	/*
+	 * Breadcrumb
+	 */
+	ul.breadCrumb li {
+		background: url('../images/breadcrumb/bg.png') top right;
+		text-align: left !important;
+	} 
+	
+	ul.breadCrumb li:hover {
+		background: #ffd900;
+	} 
+	
+	ul.breadCrumb li>a
+	{
+		padding: 0px 5px;
+	}  
+	
+	table.profiling td  {
+		padding: 2px;
+	}
+	
+	table.profiling td.state {
+		min-width: 100px;
+		font-weight: bold;
+		padding-right: 20px;
+	} 
   
-  ul.breadCrumb li:hover {
-  	background: #ffd900;
-  }   
   
-  table.profiling td  {
-  	padding: 2px;
-  }
+	/*
+	 * Menu
+	 */
   
-  table.profiling td.state {
-  	min-width: 100px;
-  	font-weight: bold;
-  	padding-right: 20px;
-  } 
+	#sideBar div.sidebarHeader img.loading
+	{
+		display: none;
+		margin-top: -8px;
+		position: absolute;
+		right: 5px;
+		top: 50%;
+	}
+	
+	#sideBar ul>li.template
+	{
+		display: none;
+	}
   
 }

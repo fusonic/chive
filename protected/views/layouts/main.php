@@ -14,7 +14,7 @@
 <link rel="stylesheet" type="text/css" href="<?php echo BASEURL; ?>/css/patch/ie7.css"/>
 <![endif]-->
 
-<link rel="shortcut icon" href="<?php echo BASEURL; ?>/images/favicon.ico" />
+<link rel="icon" href="<?php echo BASEURL; ?>/images/favicon.ico" />
 
 <script type="text/javascript">
 // Set global javascript variables
@@ -38,6 +38,7 @@ $scriptFiles = array(
 	'js/jquery/jquery.tableForm.js',
 	'js/lib/json.js',
 	'js/main.js',
+	'js/sideBar.js',
 	'js/bookmark.js',
 	'js/dataType.js',
 	'js/notification.js',
@@ -61,7 +62,13 @@ foreach($scriptFiles AS $file)
 ?>
 
 <?php Yii::app()->clientScript->registerScript('userSettings', Yii::app()->user->settings->getJsObject(), CClientScript::POS_HEAD); ?>
-
+<script type="text/javascript">
+$(document).ready(function() {
+	sideBar.loadSchemata(function() {
+		$('#schemaList').reloadListFilter($('#schemaSearch'));
+	});
+});
+</script>
 </head>
 <body>
 
@@ -71,9 +78,10 @@ foreach($scriptFiles AS $file)
 <div id="header">
 <div id="headerLeft">
 <ul class="breadCrumb">
-	<li><a href="<?php echo Yii::app()->baseUrl . '/#schemata'; ?>"
-		style="float: left; margin-right: 5px;"> <img
-		src="<?php echo Yii::app()->baseUrl . "/images/logo.png"; ?>" /> </a>
+	<li>
+		<a href="<?php echo Yii::app()->baseUrl . '/#schemata'; ?>">
+			<img src="<?php echo Yii::app()->baseUrl . "/images/logo.png"; ?>" />
+		</a>
 	</li>
 </ul>
 </div>
@@ -90,20 +98,34 @@ array('label'=>'Logout', 'icon'=>'logout', 'url'=>array('/site/logout'), 'visibl
 <div class="ui-layout-west">
 
 <div id="sideBar">
-<div class="sidebarHeader"><a class="icon"> <com:Icon name="database"
-	size="24" text="database.schemata" /> <span><?php echo Yii::t('database','schemata'); ?></span>
-</a></div>
-<div class="sidebarContent"><input type="text" id="schemaSearch"
-	class="search text" />
+<div class="sidebarHeader schemaList">
+	<a class="icon" href="javascript:void(0)">
+		<com:Icon name="database" size="24" text="database.schemata" />
+		<span><?php echo Yii::t('database','schemata'); ?></span>
+	</a>
+	<img class="loading" src="images/loading.gif" alt="<?php echo Yii::t('core', 'loading'); ?>..." />
+</div>
+<div class="sidebarContent schemaList">
+	<input type="text" id="schemaSearch" class="search text" />
 
-<ul id="schemaList" class="list icon">
-<?php foreach(Schema::model()->findAll(array('order' => 'SCHEMA_NAME ASC')) AS $schema) { ?>
-	<li class="nowrap"><a
-		href="<?php echo Yii::app()->baseUrl; ?>/schema/<?php echo $schema->SCHEMA_NAME; ?>"
-		class="icon"> <com:Icon name="database" size="16" /> <span><?php echo $schema->SCHEMA_NAME; ?></span>
-	</a></li>
-	<?php } ?>
-</ul>
+	<ul id="schemaList" class="list icon">
+		<!---
+		<?php foreach(Schema::model()->findAll(array('order' => 'SCHEMA_NAME ASC')) AS $schema) { ?>
+			<li class="nowrap">
+				<a href="<?php echo Yii::app()->baseUrl; ?>/schema/<?php echo $schema->SCHEMA_NAME; ?>" class="icon">
+					<com:Icon name="database" size="16" />
+					<span><?php echo $schema->SCHEMA_NAME; ?></span>
+				</a>
+			</li>
+		<?php } ?>
+		--->
+		<li class="nowrap template">
+			<a href="<?php echo Yii::app()->baseUrl; ?>/schema/#schemaName#" class="icon">
+				<com:Icon name="database" size="16" />
+				<span>#schemaName#</span>
+			</a>
+		</li>
+	</ul>
 
 </div>
 <div class="sidebarHeader">

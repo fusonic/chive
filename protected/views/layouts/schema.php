@@ -11,7 +11,7 @@
 <link rel="stylesheet" type="text/css" href="<?php echo BASEURL; ?>/css/patch/ie7.css"/>
 <![endif]-->
 
-<link rel="shortcut icon" href="<?php echo BASEURL; ?>/images/favicon.ico" />
+<link rel="icon" href="<?php echo BASEURL; ?>/images/favicon.ico" />
 
 <script type="text/javascript">
 // Set global javascript variables
@@ -37,6 +37,7 @@ $scriptFiles = array(
 	'js/jquery/jquery.tableForm.js',
 	'js/lib/json.js',
 	'js/main.js',
+	'js/sideBar.js',
 	'js/bookmark.js',
 	'js/dataType.js',
 	'js/notification.js',
@@ -69,6 +70,13 @@ foreach($scriptFiles AS $file)
 
 <script type="text/javascript">
 $.ui.dialog.defaults.width = 400;
+
+$(document).ready(function() {
+	sideBar.loadTables(<?php echo json_encode($this->_schema->SCHEMA_NAME); ?>, function() {
+		$('#tableList').setupListFilter($('#tableSearch'));
+		$('#bookmarkList').setupListFilter($('#bookmarkSearch'));
+	});
+});
 </script>
 
 <?php Yii::app()->clientScript->registerScript('userSettings', Yii::app()->user->settings->getJsObject(), CClientScript::POS_HEAD); ?>
@@ -99,21 +107,17 @@ $.ui.dialog.defaults.width = 400;
 		<div id="headerLeft">
 			<ul class="breadCrumb">
 				<li>
-					<a href="<?php echo Yii::app()->baseUrl . '/#schemata'; ?>" style="float:left; margin-right: 5px;">
+					<a href="<?php echo Yii::app()->baseUrl . '/#schemata'; ?>">
 						<img src="<?php echo Yii::app()->baseUrl . "/images/logo.png"; ?>" alt="logo" />
 					</a>
 				</li>
-				<?php if($this->schema) { ?>
-					<li id="bc-schema">
-						<!---<span>&raquo;</span>--->
-						<a class="icon" href="<?php echo Yii::app()->baseUrl; ?>/schema/<?php echo $this->schema; ?>">
-							<com:Icon name="database" size="24" />
-							<span><?php echo $_GET['schema']; ?></span>
-						</a>
-					</li>
-				<?php } ?>
+				<li id="bc-schema">
+					<a class="icon" href="<?php echo Yii::app()->baseUrl; ?>/schema/<?php echo $this->schema; ?>">
+						<com:Icon name="database" size="24" />
+						<span><?php echo $_GET['schema']; ?></span>
+					</a>
+				</li>
 				<li id="bc-table" style="display: none;">
-					<!---<span>&raquo;</span>--->
 					<a class="icon" href="<?php echo Yii::app()->baseUrl; ?>/database/<?php $this->schema; ?>">
 						<com:Icon name="table" size="24" />
 						<span></span>
@@ -138,17 +142,19 @@ $.ui.dialog.defaults.width = 400;
   <div class="ui-layout-west">
 
   	<div id="sideBar">
-  		<div class="sidebarHeader">
+  		<div class="sidebarHeader tableList">
 			<a class="icon">
 				<com:Icon name="table" size="24" text="database.tables" />
 				<span><?php echo Yii::t('database', 'tables'); ?></span>
 			</a>
+			<img class="loading" src="images/loading.gif" alt="<?php echo Yii::t('core', 'loading'); ?>..." />
 		</div>
-		<div class="sidebarContent">
+		<div class="sidebarContent tableList">
 
 			<input type="text" id="tableSearch" class="search text" />
 
 			<ul class="list icon nowrap" id="tableList">
+				<!---
 				<?php foreach($this->_schema->tables AS $table) { ?>
 					<li>
 						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/<?php echo ($table->getRowCount() ? 'browse' : 'structure'); ?>" class="icon">
@@ -164,6 +170,20 @@ $.ui.dialog.defaults.width = 400;
 						</div>
 					</li>
 				<?php } ?>
+				--->
+				<li class="nowrap template">
+					<a href="#tables/#tableName#/browse" class="icon">
+						<com:Icon name="browse" size="16" text="plain:#rowCountText#" />
+					</a>
+					<a href="#tables/#tableName#/structure" class="icon">
+						<span>#tableName#</span>
+					</a>
+					<div class="listIconContainer">
+						<a href="#tables/#tableName#/insert">
+							<com:Icon name="add" size="16" text="core.insertNewRow" />
+						</a>
+					</div>
+				</li>
 			</ul>
 
 		</div>

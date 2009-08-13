@@ -14,6 +14,9 @@
 		$('#' + idPrefix).parents("tr").remove();
 	});
 	Notification.add('success', '<?php echo Yii::t('message', 'successEditTable', array('{table}' => $table->TABLE_NAME)); ?>', null, <?php echo json_encode($sql); ?>);
+
+	// Reload sideBar
+	sideBar.loadTables(schema);
 	</script>
 <?php } ?>
 

@@ -1,5 +1,4 @@
 var currentLocation = window.location.href;
-var sideBar;
 var editing = false;
 var globalPost = {};
 
@@ -111,6 +110,9 @@ function navigateTo(_url, _post)
 
 $(document).ready(function()
 {
+	// Load sideBar
+	var sideBar = $("#sideBar");
+	
 	$('body').layout({
 		
 		// General
@@ -163,7 +165,7 @@ $(document).ready(function()
 	
 
 	// ACCORDION - inside the West pane
-	sideBar = $("#sideBar").accordion({
+	sideBar.accordion({
 		animated: "slide",
 		addClasses: false,
 		autoHeight: true,
@@ -174,12 +176,6 @@ $(document).ready(function()
 	
 	// Trigger resize event for sidebar accordion - doesn't work in webkit-based browsers
 	sideBar.accordion('resize');
-	
-	// Setup list filters
-
-	$('#schemaList').setupListFilter($('#schemaSearch'));
-	$('#tableList').setupListFilter($('#tableSearch'));
-	$('#bookmarkList').setupListFilter($('#bookmarkSearch'));
 	
 	
 	/*
@@ -262,6 +258,7 @@ var AjaxResponse = {
 		}
 		catch(err) {}
 		
+		
 		if(data.redirectUrl) 
 		{
 			window.location.href = data.redirectUrl;
@@ -280,10 +277,16 @@ var AjaxResponse = {
 		if(data.notifications && data.notifications.length > 0) 
 		{
 			$.each(data.notifications, function() {
-				
 				Notification.add(this.type, this.title, this.message, this.code, this.options);
-				
 			});
+		}
+		
+		if($.isArray(data.js))
+		{
+			for(var i = 0; i < data.js.length; i++)
+			{
+				eval(data.js[i]);
+			}
 		}
 	}
 	

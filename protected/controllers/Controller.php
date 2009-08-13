@@ -21,6 +21,9 @@ class Controller extends CController
 	 */
 	protected function connectDb($schema)
 	{
+		// Assign request
+		$this->request = Yii::app()->getRequest();
+
 		// Check parameter
 		if(is_null($schema))
 		{
@@ -29,12 +32,13 @@ class Controller extends CController
 		}
 
 		// Connect to database
-		$this->db = new CDbConnection('mysql:host=' . Yii::app()->user->host . ';dbname=' . $schema,
-			Yii::app()->user->name,
-			Yii::app()->user->password);
-
+		$this->db = new CDbConnection('mysql:host=' . Yii::app()->user->host . ';dbname=information_schema',
+			utf8_decode(Yii::app()->user->name),
+			utf8_decode(Yii::app()->user->password));
+		$this->db->setAttribute(PDO::MYSQL_ATTR_INIT_COMMAND, 'SET NAMES \'utf8\'');
 		$this->db->charset='utf8';
 		$this->db->active = true;
+		$this->db->createCommand('USE ' . $this->db->quoteTableName($schema))->execute();
 
 		// Assign to all models which need it
 		ActiveRecord::$db =

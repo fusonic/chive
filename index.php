@@ -1,5 +1,4 @@
 <?php
-
 // Set the session save path
 session_save_path('protected/runtime/sessions');
 

@@ -16,9 +16,16 @@ class AjaxResponse
 	 */
 	private $data;
 	private $notifications;
+	private $jsCode = array();
 
-	/*
-	 * Notifications
+	/**
+	 * Adds a notification to the response which will be shown on the client's UI.
+	 *
+	 * @param	string					Type
+	 * @param	string					Title
+	 * @param	string					Message
+	 * @param	string					Code
+	 * @param	string					Options
 	 */
 	public function addNotification($type, $title, $message = false, $code = false, $options = false)
 	{
@@ -31,10 +38,12 @@ class AjaxResponse
 		);
 	}
 
-	/*
-	 * Data
+	/**
+	 * Adds data to the response.
+	 *
+	 * @param	string					Key
+	 * @param	string					Value
 	 */
-
 	public function addData($name, $value)
 	{
 		if($name !== null)
@@ -54,29 +63,41 @@ class AjaxResponse
 		}
 	}
 
+	/**
+	 * Adds JavaScript code to be executed on the client side.
+	 *
+	 * @param	string					JavaScript code to execute
+	 */
+	public function executeJavaScript($code)
+	{
+		$this->jsCode[] = $code;
+	}
+
+	/**
+	 * Sends the response to the client and ends the application.
+	 */
 	public function send()
 	{
 		Yii::app()->end($this);
 	}
 
-
-	public function get()
+	/**
+	 * Returns the JSON representation of the response.
+	 *
+	 * @return	string
+	 */
+	public function __toString()
 	{
-		return $this;
-	}
-
-	public function __toString() {
-
 		$data = array(
-			'redirectUrl'=>$this->redirectUrl,
-			'reload'=>$this->reload,
-			'refresh'=>$this->refresh,
-			'notifications'=>$this->notifications,
+			'redirectUrl' => $this->redirectUrl,
+			'reload' => $this->reload,
+			'refresh' => $this->refresh,
+			'notifications' => $this->notifications,
 			'data' => $this->data,
+			'js' => $this->jsCode,
 		);
 
 		return json_encode($data);
-
 	}
 
 }

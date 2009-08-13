@@ -1,5 +1,22 @@
 (function($) {
 	
+	$.fn.reloadListFilter = function(inputObj) {
+		
+		return this.each(function()
+		{
+			var func = $(this).data('listFilterSetup');
+			if($.isFunction(func))
+			{
+				func();
+			}
+			else
+			{
+				$(this).setupListFilter(inputObj);
+			}
+		});
+		
+	}
+	
 	$.fn.setupListFilter = function(inputObj) {
 		
 		return this.each(function() 
@@ -147,32 +164,35 @@
 				selectResult(selectedNow);
 			}
 			
-			
-			/*
-			 * Setup
-			 */
-			list.children("li").each(function() {
-				var item = $(this);
-				items.push([
-					item.text().toLowerCase(),
-					item
-				]);
-			});
-			
-			
-			/*
-			 * Bind event handlers
-			 */
-			input.keyup(keyUp);
-			input.keydown(keyDown);
-			input.blur(function() {
-				selectResult(null); 
-			});
-			
-			if(input.val() != '')
+			function setup()
 			{
-				doFilter();
+				items = [];
+				list.children("li").not(".template").each(function() {
+					console.log("setup");
+					var item = $(this);
+					items.push([
+						item.text().toLowerCase(),
+						item
+					]);
+				});
+				
+				/*
+				 * Bind event handlers
+				 */
+				input.keyup(keyUp);
+				input.keydown(keyDown);
+				input.blur(function() {
+					selectResult(null); 
+				});
+				
+				if(input.val() != '')
+				{
+					doFilter();
+				}
 			}
+			
+			setup();
+			list.data('listFilterSetup', setup);
 			
 		});
 		

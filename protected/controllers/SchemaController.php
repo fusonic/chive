@@ -79,35 +79,54 @@ class SchemaController extends Controller
 			':schema' => $this->schema,
 		);
 
-		// Pagination
-		$pages = new Pagination(Table::model()->count($criteria));
-		$pages->setupPageSize('pageSize', 'schema.tables');
-		$pages->applyLimit($criteria);
-		$pages->route = '#tables';
+		if($this->request->getParam('sideBar'))
+		{
+			$tables = array();
 
-		// Sort
-		$sort = new CSort('Table');
-		$sort->attributes = array(
-			'TABLE_NAME' => 'name',
-			'TABLE_ROWS' => 'rows',
-			'TABLE_COLLATION' => 'collation',
-			'ENGINE' => 'engine',
-			'DATA_LENGTH' => 'datalength',
-			'DATA_FREE' => 'datafree',
-		);
-		$sort->route = '#tables';
-		$sort->applyOrder($criteria);
+			foreach(Table::model()->findAll($criteria) AS $table)
+			{
+				$tables[] = array(
+					'tableName' => $table->TABLE_NAME,
+					'rowCount' => $table->getRowCount(),
+					'rowCountText' => Yii::t('database', 'Xrows', array($table->getRowCount(), '{amount}' => $table->getRowCount())),
+				);
+			}
 
-		// Load data
-		$schema->tables = Table::model()->findAll($criteria);
+			Yii::app()->end(json_encode($tables));
+		}
+		else
+		{
 
-		// Render
-		$this->render('tables', array(
-			'schema' => $schema,
-			'tableCount' => count($schema->tables),
-			'pages' => $pages,
-			'sort' => $sort,
-		));
+			// Pagination
+			$pages = new Pagination(Table::model()->count($criteria));
+			$pages->setupPageSize('pageSize', 'schema.tables');
+			$pages->applyLimit($criteria);
+			$pages->route = '#tables';
+
+			// Sort
+			$sort = new CSort('Table');
+			$sort->attributes = array(
+				'TABLE_NAME' => 'name',
+				'TABLE_ROWS' => 'rows',
+				'TABLE_COLLATION' => 'collation',
+				'ENGINE' => 'engine',
+				'DATA_LENGTH' => 'datalength',
+				'DATA_FREE' => 'datafree',
+			);
+			$sort->route = '#tables';
+			$sort->applyOrder($criteria);
+
+			// Load data
+			$schema->tables = Table::model()->findAll($criteria);
+
+			// Render
+			$this->render('tables', array(
+				'schema' => $schema,
+				'tableCount' => count($schema->tables),
+				'pages' => $pages,
+				'sort' => $sort,
+			));
+		}
 	}
 
 	/**
@@ -327,39 +346,55 @@ class SchemaController extends Controller
 	 */
 	public function actionList()
 	{
-		$criteria = new CDbCriteria();
+		// Create list for sideBar usage
+		if($this->request->getParam('sideBar'))
+		{
+			$schemata = array();
 
-		// Pagination
-		$pages = new Pagination(Schema::model()->count($criteria));
-		$pages->setupPageSize('pageSize', 'schemata');
-		$pages->applyLimit($criteria);
-		$pages->route = '#schemata';
+			foreach(Schema::model()->findAll() AS $schema)
+			{
+				$schemata[] = $schema->SCHEMA_NAME;
+			}
 
-		// Sort
-		$sort = new CSort('Schema');
-		$sort->attributes = array(
-			'SCHEMA_NAME' => 'name',
-			'tableCount' => 'tableCount',
-			'DEFAULT_COLLATION_NAME' => 'collation',
-		);
-		$sort->defaultOrder = 'SCHEMA_NAME ASC';
-		$sort->route = '#schemata';
-		$sort->applyOrder($criteria);
+			Yii::app()->end(json_encode($schemata));
+		}
+		// Show the page
+		else
+		{
+			$criteria = new CDbCriteria();
 
-		$criteria->group = 'SCHEMA_NAME';
-		$criteria->select = 'SCHEMA_NAME, DEFAULT_COLLATION_NAME, COUNT(*) AS tableCount';
+			// Pagination
+			$pages = new Pagination(Schema::model()->count($criteria));
+			$pages->setupPageSize('pageSize', 'schemata');
+			$pages->applyLimit($criteria);
+			$pages->route = '#schemata';
 
-		$schemaList = Schema::model()->with(array(
-			'tables' => array('select' => 'COUNT(??.TABLE_NAME) AS tableCount'),
-		))->together()->findAll($criteria);
+			// Sort
+			$sort = new CSort('Schema');
+			$sort->attributes = array(
+				'SCHEMA_NAME' => 'name',
+				'tableCount' => 'tableCount',
+				'DEFAULT_COLLATION_NAME' => 'collation',
+			);
+			$sort->defaultOrder = 'SCHEMA_NAME ASC';
+			$sort->route = '#schemata';
+			$sort->applyOrder($criteria);
 
-		$this->render('list',array(
-			'schemaList' => $schemaList,
-			'schemaCount' => $pages->getItemCount(),
-			'schemaCountThisPage' => min($pages->getPageSize(), $pages->getItemCount() - $pages->getCurrentPage() * $pages->getPageSize()),
-			'pages' => $pages,
-			'sort' => $sort,
-		));
+			$criteria->group = 'SCHEMA_NAME';
+			$criteria->select = 'SCHEMA_NAME, DEFAULT_COLLATION_NAME, COUNT(*) AS tableCount';
+
+			$schemaList = Schema::model()->with(array(
+				'tables' => array('select' => 'COUNT(??.TABLE_NAME) AS tableCount'),
+			))->together()->findAll($criteria);
+
+			$this->render('list',array(
+				'schemaList' => $schemaList,
+				'schemaCount' => $pages->getItemCount(),
+				'schemaCountThisPage' => min($pages->getPageSize(), $pages->getItemCount() - $pages->getCurrentPage() * $pages->getPageSize()),
+				'pages' => $pages,
+				'sort' => $sort,
+			));
+		}
 	}
 
 	/**

@@ -162,6 +162,7 @@ class TableController extends Controller
 				null,
 				$sql);
 				$response->redirectUrl = '#tables/' . $table->TABLE_NAME . '/structure';
+				$response->executeJavaScript('sideBar.loadTables(schema);');
 
 				foreach($addIndices AS $type => $indexName)
 				{
@@ -187,9 +188,9 @@ class TableController extends Controller
 					catch(DbException $ex)
 					{
 						$response->addNotification('error',
-						Yii::t('message', 'errorCreateIndex', array('{index}' => $index->INDEX_NAME)),
-						$ex->getText(),
-						$ex->getSql());
+							Yii::t('message', 'errorCreateIndex', array('{index}' => $index->INDEX_NAME)),
+							$ex->getText(),
+							$ex->getSql());
 					}
 				}
 
@@ -319,6 +320,7 @@ class TableController extends Controller
 	{
 		$response = new AjaxResponse();
 		$response->refresh = true;
+		$response->executeJavaScript('sideBar.loadTables(schema);');
 		$tables = (array)$_POST['tables'];
 		$truncatedTables = $truncatedSqls = array();
 
@@ -363,6 +365,8 @@ class TableController extends Controller
 	{
 		$response = new AjaxResponse();
 		$response->refresh = true;
+		$response->executeJavaScript('sideBar.loadTables(schema);');
+
 		$tables = (array)$_POST['tables'];
 		$droppedTables = $droppedSqls = array();
 

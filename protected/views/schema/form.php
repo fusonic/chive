@@ -16,14 +16,31 @@
 		<?php echo Yii::t('database', ($schema->isNewRecord ? 'addSchema' : 'editSchema')); ?>
 	</h1>
 	<?php echo CHtml::errorSummary($schema, false); ?>
-	<fieldset style="float: left; width: 200px">
-		<legend><?php echo CHtml::activeLabel($schema,'SCHEMA_NAME'); ?></legend>
-		<?php echo CHtml::activeTextField($schema, 'SCHEMA_NAME', ($schema->isNewRecord ? array() : array('disabled' =>  true))); ?>
-	</fieldset>
-	<fieldset style="float: left; width: 200px">
-		<legend><?php echo CHtml::activeLabel($schema,'DEFAULT_COLLATION_NAME'); ?></legend>
-		<?php echo CHtml::activeDropDownList($schema, 'DEFAULT_COLLATION_NAME', CHtml::listData($collations, 'COLLATION_NAME', 'COLLATION_NAME', 'collationGroup')); ?>
-	</fieldset>
+	<table class="form" style="float: left; margin-right: 20px">
+		<colgroup>
+			<col class="col1"/>
+			<col class="col2" />
+			<col class="col3" />
+		</colgroup>
+		<tbody>
+			<tr>
+				<td>
+					<?php echo CHtml::activeLabel($schema,'SCHEMA_NAME'); ?>
+				</td>
+				<td colspan="2">
+					<?php echo CHtml::activeTextField($schema, 'SCHEMA_NAME', ($schema->isNewRecord ? array() : array('disabled' =>  true))); ?>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<?php echo CHtml::activeLabel($schema,'DEFAULT_COLLATION_NAME'); ?>
+				</td>
+				<td colspan="2">
+					<?php echo CHtml::activeDropDownList($schema, 'DEFAULT_COLLATION_NAME', CHtml::listData($collations, 'COLLATION_NAME', 'COLLATION_NAME', 'collationGroup')); ?>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 	<div class="buttonContainer">
 		<a href="javascript:void(0)" onclick="$('#<?php echo CHtml::$idPrefix; ?>').submit()" class="icon button">
 			<com:Icon name="save" size="16" />
