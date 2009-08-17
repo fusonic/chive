@@ -168,7 +168,6 @@
 			{
 				items = [];
 				list.children("li").not(".template").each(function() {
-					console.log("setup");
 					var item = $(this);
 					items.push([
 						item.text().toLowerCase(),

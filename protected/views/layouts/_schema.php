@@ -75,4 +75,11 @@ var schema = '<?php echo $this->schema; ?>';
 
 <script type="text/javascript">
 schemaGeneral.setupDialogs();
+breadCrumb.set([
+	{
+		icon: 'database',
+		href: baseUrl + '/schema/' + schema,
+		text: schema
+	}
+]);
 </script>

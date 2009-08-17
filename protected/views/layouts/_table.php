@@ -106,4 +106,16 @@ var table = '<?php echo $this->table; ?>';
 
 <script type="text/javascript">
 tableGeneral.setupDialogs();
+breadCrumb.set([
+	{
+		icon: 'database',
+		href: baseUrl + '/schema/' + schema,
+		text: schema
+	},
+	{
+		icon: 'table',
+		href: baseUrl + '/schema/' + schema + '#tables/' + table + '/structure',
+		text: table
+	}
+]);
 </script>

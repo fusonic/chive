@@ -2,7 +2,7 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title><?php echo $this->pageTitle; ?></title>
+<title>Chive</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <!-- (en) Add your meta data here -->
 <!-- (de) Fuegen Sie hier ihre Meta-Daten ein -->
@@ -14,7 +14,7 @@
 <link rel="stylesheet" type="text/css" href="<?php echo BASEURL; ?>/css/patch/ie7.css"/>
 <![endif]-->
 
-<link rel="icon" href="<?php echo BASEURL; ?>/images/favicon.ico" />
+<link rel="shortcut icon" href="<?php echo BASEURL; ?>/images/favicon.ico" type="image/x-icon" />
 
 <script type="text/javascript">
 // Set global javascript variables
@@ -38,6 +38,7 @@ $scriptFiles = array(
 	'js/jquery/jquery.tableForm.js',
 	'js/lib/json.js',
 	'js/main.js',
+	'js/breadCrumb.js',
 	'js/sideBar.js',
 	'js/bookmark.js',
 	'js/dataType.js',
