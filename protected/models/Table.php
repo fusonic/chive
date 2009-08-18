@@ -315,4 +315,13 @@ class Table extends ActiveRecord
 		}
 		return $types;
 	}
+	
+	/**
+	 * Returns true, because all tables are updatable.
+	 * @return bool
+	 */
+	public function getIsUpdatable()
+	{
+		return true;
+	}
 }

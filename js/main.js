@@ -151,6 +151,15 @@ $(document).ready(function()
 	// Trigger resize event for sidebar accordion - doesn't work in webkit-based browsers
 	sideBar.accordion('resize');
 	
+
+	// Setup list filters
+
+	$('#schemaList').setupListFilter($('#schemaSearch'));
+	$('#tableList').setupListFilter($('#tableSearch'));
+	$('#viewList').setupListFilter($('#viewSearch'));
+	$('#bookmarkList').setupListFilter($('#bookmarkSearch'));
+	
+
 	
 	/*
 	 * Ajax functions

@@ -122,8 +122,6 @@ class RowController extends Controller
 		
 		$this->render('insert', $data);
 
-
-
 	}
 	
 	public function actionUpdate()
@@ -167,12 +165,21 @@ class RowController extends Controller
 			$row->setAttribute($column, $newValue);
 			$sql = $row->save();
 			
+			$showFullColumnContent = Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $this->schema . '.' . $this->table);
+			
+			$visibleValue = ($isNull ? '<span class="null">NULL</span>' : htmlspecialchars($row->getAttribute($column)));
+			
+			if(!$showFullColumnContent && !$isNull)
+			{
+				$visibleValue = StringUtil::cutText($visibleValue, 100);
+			}
+			
 			$response->addData(null, array(
 				'value' => ($isNull ? 'NULL' : $row->getAttribute($column)),
 				'column' => $column,
 				'identifier' => $row->getIdentifier(),
 				'isNull' => $isNull,
-				'visibleValue' => ($isNull ? '<span class="null">NULL</span>' : htmlspecialchars($row->getAttribute($column)))
+				'visibleValue' => $visibleValue
 			));
 
 			// @todo (rponudic) check which method should be used here

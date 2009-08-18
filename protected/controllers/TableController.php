@@ -237,8 +237,7 @@ class TableController extends Controller
 	}
 
 	public function actionSearch() {
-
-
+	
 		$operatorConfig = array(				// needs value
 			'LIKE'				=> 		array( 'needsValue' => true ),
 			'NOT LIKE'			=> 		array( 'needsValue' => true ),
@@ -305,7 +304,7 @@ class TableController extends Controller
 		}
 		else
 		{
-			$this->render('search', array(
+			$this->render('../table/search', array(
 				'row' => $row,
 				'operators'=> $operators,
 			));

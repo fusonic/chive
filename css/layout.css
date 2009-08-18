@@ -329,6 +329,8 @@
   
   ul.list li {
   	list-style-type: none;
+  	height: 20px;
+  	padding: 2px 0px;
   }
   
   ul.list li a img {

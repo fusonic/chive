@@ -88,7 +88,7 @@
 		</div>
 
 		<?php $i = 0; ?>
-		<table class="list <?php if($model->getIsEditable()) { ?>addCheckboxes editable<?php } ?>" style="width: auto;" id="browse">
+		<table class="list <?php if($model->getIsUpdatable()) { ?>addCheckboxes editable<?php } ?>" style="width: auto;" id="browse">
 			<colgroup>
 				<col class="checkbox" />
 				<?php if($type == 'select') { ?>
@@ -144,12 +144,12 @@
 										<?php echo Yii::t('core', 'download'); ?>
 									</a>
 								<?php } elseif($model->table !== null) { ?>
-									<span><?php echo is_null($value) ? '<span class="null">NULL</span>' : (Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $model->schema . '.' .  $model->table) ? str_replace(array('<','>'),array('&lt;','&gt;'), $value) : StringUtil::cutText(str_replace(array('<','>'),array('&lt;','&gt;'),$value), 100)); ?></span>
+									<span><?php echo is_null($value) ? '<span class="null">NULL</span>' : (Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $model->schema . '.' .  $model->table) ? htmlspecialchars($value) : StringUtil::cutText(htmlspecialchars($value), 100)); ?></span>
 								<?php } else { ?>
-									<span><?php echo is_null($value) ? '<span class="null">NULL</span>' : (Yii::app()->user->settings->get('showFullColumnContent', 'schema.browse', $model->schema) ? str_replace(array('<','>'),array('&lt;','&gt;'), $value) : StringUtil::cutText(str_replace(array('<','>'),array('&lt;','&gt;'),$value), 100)); ?></span>
+									<span><?php echo is_null($value) ? '<span class="null">NULL</span>' : (Yii::app()->user->settings->get('showFullColumnContent', 'schema.browse', $model->schema) ? htmlspecialchars($value) : StringUtil::cutText(htmlspecialchars($value), 100)); ?></span>
 								<?php } ?>
 							</td>
-							<?php if($model->getIsEditable() && (in_array($key, (array)$model->getTable()->primaryKey) || $model->getTable()->primaryKey === null)) { ?>
+							<?php if($model->getIsUpdatable() && (in_array($key, (array)$model->getTable()->primaryKey) || $model->getTable()->primaryKey === null)) { ?>
 								<?php $keyData[$i][$key] = is_null($value) ? null : $value; ?>
 							<?php } ?>
 						<?php } ?>

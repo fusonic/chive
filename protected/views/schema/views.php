@@ -53,7 +53,7 @@
 						</a>
 					</td>
 					<td>
-						<a href="#tables/<?php echo $view->TABLE_NAME; ?>/browse" class="icon">
+						<a href="#views/<?php echo $view->TABLE_NAME; ?>/browse" class="icon">
 							<com:Icon name="browse" size="16" text="database.browse" />
 						</a>
 					</td>

@@ -146,7 +146,7 @@ $(document).ready(function() {
 				<!---
 				<?php foreach($this->_schema->tables AS $table) { ?>
 					<li>
-						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/<?php echo ($table->getRowCount() ? 'browse' : 'structure'); ?>" class="icon">
+						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/browse" class="icon">
 							<?php $this->widget('Icon', array('name'=>'browse', 'size'=>16, 'disabled'=>!$table->getRowCount(), 'title'=>Yii::t('database', 'Xrows', array('{amount}'=>$table->getRowCount() ? $table->getRowCount() : 0)))); ?>
 						</a>
 						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/structure" class="icon">
@@ -183,7 +183,10 @@ $(document).ready(function() {
 			</a>
 		</div>
 		<div class="sidebarContent">
-			<ul class="list icon nowrap">
+			
+			<input type="text" id="viewSearch" class="search text" />
+		
+			<ul class="list icon nowrap" id="viewList">
 				<?php foreach($this->_schema->views AS $view) { ?>
 					<li>
 						<a href="#views/<?php echo $view->TABLE_NAME; ?>/browse" class="icon">

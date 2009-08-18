@@ -19,15 +19,21 @@ class BrowsePage extends CModel
 	private $sort;
 	private $data;
 	private $response;
-	private $isEditable = null;
+	private $isUpdatable = null;
 	private $start = 0;
 	private $pageSize = 0;
 	private $total = 0;
-
+	private $_table;
+	
 	private $lastResultSetQuery;
 	
 	private $originalQueries = array();
 	private $executedQueries = array();
+	
+	private $nonEditableSchemas = array(
+		'information_schema'
+		#'mysql'
+	);
 
 	/*
 	 * Properties
@@ -104,6 +110,8 @@ class BrowsePage extends CModel
 				{
 					$this->table = $sqlQuery->getTable();
 				}
+				
+				
 
 				// SELECT
 				if($type == "select")
@@ -366,12 +374,18 @@ class BrowsePage extends CModel
 		return $this->total;
 	}
 	
-	public function getIsEditable()
+	public function getIsUpdatable()
 	{
-		if($this->isEditable === null)
+		
+		if($this->isUpdatable === null)
 		{
-			$this->isEditable = false;	
-				
+			$this->isUpdatable = false;	
+			
+			if(in_array($this->schema, $this->nonEditableSchemas) || !$this->loadTable()->getIsUpdatable())
+			{
+				return $this->isUpdatable;
+			}
+			
 			$parser = new Sql_Parser();
 			
 			try 
@@ -384,18 +398,18 @@ class BrowsePage extends CModel
 						!$query['Joins'][0]
 					)
 				{
-					$this->isEditable = true;
+					$this->isUpdatable = true;
 				}
 			}
 			catch (Exception $ex)
 			{
 				var_dump($ex);
-				$this->isEditable = false;
+				$this->isUpdatable = false;
 			}
 			
 		}
 		
-		return $this->isEditable;
+		return $this->isUpdatable;
 			
 	}
 
@@ -411,7 +425,7 @@ class BrowsePage extends CModel
 		else
 			return $this->query;
 	}
-
+	
 	/*
 	 * Private functions
 	 */
@@ -419,6 +433,36 @@ class BrowsePage extends CModel
 	{
 		return 'SELECT * FROM ' . $this->db->quoteTableName($this->table) .
 			"\n\t" . 'WHERE 1';
+	}
+	
+	/**
+	 * Loads the current table.
+	 *
+	 * @return	Table
+	 */
+	public function loadTable()
+	{
+		if(is_null($this->_table))
+		{
+			$pk = array(
+				'TABLE_SCHEMA' => $this->schema,
+				'TABLE_NAME' => $this->table,
+			);
+			$this->_table = Table::model()->findByPk($pk);
+			
+			if($this->_table->TABLE_TYPE == "VIEW")
+			{
+				$this->_table = View::model()->findByPk($pk);	
+			}
+			
+			$this->_table->columns = Column::model()->findAllByAttributes($pk);
+
+			if(is_null($this->_table))
+			{
+				throw new CHttpException(500, 'The requested table does not exist.');
+			}
+		}
+		return $this->_table;
 	}
 
 }

@@ -30,7 +30,7 @@ class View extends CActiveRecord
 			'TABLE_NAME',
 		);
 	}
-
+	
 	/**
 	 * @see		CActiveRecord::relations()
 	 */
@@ -92,5 +92,17 @@ class View extends CActiveRecord
 	public function getAlterView()
 	{
 		return 'ALTER' . substr($this->getCreateView(), 6);
+	}
+	
+	public function getIsUpdatable()
+	{
+		if($this->getAttribute('IS_UPDATABLE') === "YES")
+		{
+			return true;	
+		}	
+		else
+		{
+			return false;
+		}
 	}
 }

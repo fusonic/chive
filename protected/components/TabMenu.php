@@ -33,9 +33,9 @@ class TabMenu extends CWidget
 
 		foreach($this->items as $item)
 		{
+
 			if(isset($item['visible']) && !$item['visible'])
 				continue;
-
 
 			$item2=array();
 			$item2['label']=$item['label'];

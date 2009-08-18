@@ -177,7 +177,7 @@ return array(
 					'schema/<schema:' . URL_MATCH . '>/views/<view:' . URL_MATCH . '>/structure' => 'view/structure',
 					'schema/<schema:' . URL_MATCH . '>/views/<view:' . URL_MATCH . '>/sql' => 'view/sql',
 					'schema/<schema:' . URL_MATCH . '>/views/<view:' . URL_MATCH . '>/search' => 'view/search',
-					'schema/<schema:' . URL_MATCH . '>/views/<view:' . URL_MATCH . '>/insert' => 'view/insert',
+					'schema/<schema:' . URL_MATCH . '>/views/<table:' . URL_MATCH . '>/insert' => 'row/insert',
 					'schema/<schema:' . URL_MATCH . '>/views/<view:' . URL_MATCH . '>/update' => 'view/update',
 
 					// Routine actions

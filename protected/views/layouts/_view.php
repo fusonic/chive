@@ -1,6 +1,9 @@
 <script type="text/javascript">
 var schema = '<?php echo $this->schema; ?>';
-var view = '<?php echo $this->view; ?>';
+var table = '<?php echo $this->view; ?>';
+
+sideBar.accordion('activate', 1);
+
 </script>
 
 <?php $this->widget('TabMenu', array(
@@ -39,6 +42,15 @@ var view = '<?php echo $this->view; ?>';
 						'url'=> '#views/' . $this->view . '/insert',
 						'htmlOptions'=> array('class'=>'icon'),
 					),
+					'visible' => $this->loadView()->getIsUpdatable(),
+			),
+			array(	'label'=>Yii::t('database','truncate'),
+					'icon'=>'truncate',
+					'link'=>array(
+						'url'=> 'javascript:void(0)',
+						'htmlOptions'=> array('class'=>'icon', 'onclick'=>'tableGeneral.truncate()'),
+					),
+					'visible'=>Yii::app()->user->privileges->checkTable($this->schema, $this->view, 'DELETE'),
 			),
 			array(	'label'=>Yii::t('database','drop'),
 					'icon'=>'delete',
@@ -46,6 +58,7 @@ var view = '<?php echo $this->view; ?>';
 						'url'=> 'javascript:void(0)',
 						'htmlOptions'=> array('class'=>'icon', 'onclick'=>'viewGeneral.drop("'.$this->schema.'","'.$this->view.'");'),
 					),
+					'visible'=>Yii::app()->user->privileges->checkTable($this->schema, $this->view, 'DROP'),
 			),
 		),
 	));
