@@ -75,4 +75,16 @@ sideBar.accordion('activate', 1);
 
 <script type="text/javascript">
 viewGeneral.setupDialogs();
+breadCrumb.set([
+	{
+		icon: 'database',
+		href: baseUrl + '/schema/' + schema,
+		text: schema
+	},
+	{
+		icon: 'view',
+		href: baseUrl + '/schema/' + schema + '#views/' + view + '/structure',
+		text: view
+	}
+]);
 </script>

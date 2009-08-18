@@ -20,6 +20,11 @@
 
 var sideBar = {
 	
+	activate: function(index)
+	{
+		$('#sideBar').accordion('activate', index);
+	},
+	
 	loadSchemata: function(callback)
 	{
 		var loadingIcon = $('div.sidebarHeader.schemaList img.loading');

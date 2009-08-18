@@ -60,7 +60,7 @@ class BookmarkController extends Controller
 
 		if($oldValue && !is_array($oldValue))
 		{
-			$oldValue = (array)$oldValue;
+			$oldValue = array();
 		}
 
 		$id = substr(md5(microtime(true)),0, 10);
@@ -111,7 +111,7 @@ class BookmarkController extends Controller
 
 		$response->addNotification('success', Yii::t('message', 'successDeleteBookmark', array('{name}'=>$name)));
 		$response->send();
-		
+
 	}
 
 	/**

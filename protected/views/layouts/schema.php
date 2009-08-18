@@ -210,8 +210,7 @@ $(document).ready(function() {
 			<input type="text" id="bookmarkSearch" class="search text" />
 
 			<ul class="list icon nowrap" id="bookmarkList">
-			<?php $bookmarks = Yii::app()->user->settings->get('bookmarks', 'database', $this->schema); ?>
-			<?php if($bookmarks) { ?>
+			<?php if($bookmarks = Yii::app()->user->settings->get('bookmarks', 'database', $this->schema)) { ?>
 				<?php foreach($bookmarks AS $key => $bookmark) { ?>
 					<li id="bookmark_<?php echo $bookmark['id']; ?>">
 						<a href="#bookmark/show/<?php echo $bookmark['id']; ?>" class="icon" title="<?php echo $bookmark['query']; ?>">

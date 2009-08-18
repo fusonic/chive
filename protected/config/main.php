@@ -21,24 +21,18 @@
  */
 
 
-// uncomment the following to define a path alias
-// Yii::setPathOfAlias('local','path/to/local-folder');
-
-// This is the main Web application configuration. Any writable
-// CWebApplication properties can be configured here.
-
 define('URL_MATCH', '([^\/]*)');
 
 return array(
-	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'Dublin - database management',
-	'theme'=>'standard',
+	'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
+	'name' => 'Dublin - database management',
+	'theme' => 'standard',
 
 	// preloading 'log' component
-	'preload'=>array('log'),
+	'preload' => array('log'),
 
 	// autoloading model and component classes
-	'import'=>array(
+	'import' => array(
 		'application.models.*',
 		'application.models.privileges.*',
 		'application.components.*',
@@ -51,23 +45,23 @@ return array(
 	),
 
 	// application components
-	'components'=>array(
+	'components' => array(
 
 		'request' => array(
 			'enableCookieValidation' => true,
 		),
 
 		// Log database
-		'log'=>array(
-			'class'=>'CLogRouter',
-			'routes'=>array(
+		'log' => array(
+			'class' => 'CLogRouter',
+			'routes' => array(
 				array(
-					'class'=>'CFileLogRoute',
-					'levels'=>'error, warning, info, trace',
+					'class' => 'CFileLogRoute',
+					'levels' => 'error, warning, info, trace',
 				),
 				array(
-					'class'=>'CProfileLogRoute',
-					'levels'=>'error, warning, info, trace',
+					'class' => 'CProfileLogRoute',
+					'levels' => 'error, warning, info, trace',
 					'showInFireBug'=>false,
 				),
 				array(
@@ -79,32 +73,32 @@ return array(
 		),
 
 		// User settings
-		'user'=>array(
+		'user' => array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
 		),
 
 		// Database settings
-		'db'=>array(
+		'db' => array(
 			'class' => 'CDbConnection',
 			'connectionString' => 'mysql:host=localhost;dbname=information_schema',
 			'charset' => 'utf8',
 			'autoConnect' => false,
-			'schemaCachingDuration'=>3600,
+			'schemaCachingDuration' => 3600,
 		),
 
-		'messages'=>array(
-		    'class'=>'application.components.messages.CXmlMessageSource',
+		'messages' => array(
+		    'class' => 'application.components.messages.CXmlMessageSource',
 			'cachingDuration' => 0,
 		),
 
 		// URL - Manager (for SEO-friendly URLs)
-		'urlManager'=>array(
-            'urlFormat'=>'path',
+		'urlManager' => array(
+            'urlFormat' => 'path',
 			'showScriptName' => false,
-            'rules'=>array(
+            'rules' => array(
 				// Login
-                'login'=>'site/login',
+                'login' => 'site/login',
 
 				// Site
                 'site/changeLanguage/<id:(.*)>' => 'site/changeLanguage',
@@ -228,19 +222,17 @@ return array(
         */
 
         // View Renderer (template engine)
-        'viewRenderer'=>array(
-            'class'=>'CPradoViewRenderer',
+        'viewRenderer' => array(
+            'class' => 'CPradoViewRenderer',
         ),
 
 	),
 
-	// application-level parameters that can be accessed
-	// using Yii::app()->params['paramName']
-	'params'=>array(
-		// this is used in contact page
-		'adminEmail'=>'webmaster@example.com',
-		'iconpack'=>'images/icons/fugue',
+	// application-level parameters
+	'params' => array(
+		'iconpack' => 'images/icons/fugue',
 	),
 
-	'sourceLanguage'=>'xxx',
+	// There is no source language ...
+	'sourceLanguage' => 'xxx',
 );

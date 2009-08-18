@@ -52,7 +52,7 @@ class UserSettingsManager
 	{
 		$jsSettings = 'var userSettings = {};' . "\n";
 		foreach($this->defaultSettings AS $key => $value) {
-			
+
 			$value = $value[null];
 			if(is_array($value))
 			{
@@ -84,7 +84,7 @@ class UserSettingsManager
 	public function get($name, $scope = null, $object = null, $attribute = null, $value = null)
 	{
 		$id = $this->getSettingId($name, $scope);
-		
+
 		if(isset($this->userSettings[$id]))
 		{
 			if(isset($this->userSettings[$id][$object]))
@@ -168,8 +168,8 @@ class UserSettingsManager
 			{
 				$value = (string)$setting;
 			}
-			$scope = (isset($setting['scope']) ? $setting['scope'] : null);
-			$object = (isset($settings['object']) ? $settings['object'] : null);
+			$scope = (isset($setting['scope']) ? (string)$setting['scope'] : null);
+			$object = (isset($setting['object']) ? (string)$setting['object'] : null);
 
 			$id = $this->getSettingId($name, $scope);
 
@@ -227,10 +227,10 @@ class UserSettingsManager
 
 	private function getSettingNameScope($id)
 	{
-		$return = explode('_', $id);
+		$return = explode('__', $id);
 		if(is_array($return))
 		{
-			$return[1] = str_replace("__", ".", $return[1]);
+			$return[1] = str_replace("_", ".", $return[1]);
 			return $return;
 		}
 		else

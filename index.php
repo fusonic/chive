@@ -1,10 +1,12 @@
 <?php
-// Set the session save path
+
+// Set session properties
+session_name('chiveSession');
 session_save_path('protected/runtime/sessions');
 
-// change the following paths if necessary
-$yii='yii/yii.php';
-$config=dirname(__FILE__).'/protected/config/main.php';
+// Paths
+$yii = 'yii/yii.php';
+$config = dirname(__FILE__) . '/protected/config/main.php';
 
 function pre($_value) {
 	echo "<pre>";
@@ -17,14 +19,10 @@ function predie($_value) {
 	Yii::app()->end();
 }
 
-// remove the following line when in production mode
+// Yii debug mode
 defined('YII_DEBUG') or define('YII_DEBUG', true);
 
-$console = false;
-
-if($console == true)
-	$config = dirname(__FILE__).'/protected/config/dev.php';
-
+// Create Yii application
 require_once($yii);
 $app = Yii::createWebApplication($config);
 
@@ -63,10 +61,12 @@ elseif(!preg_match('/^(' . implode('|', $validPaths) . ')/i', $request->getPathI
 
 }
 
+// Language
 $language = $session->itemAt('language') ? $session->itemAt('language') : $request->getPreferredLanguage();
-$theme = $session->itemAt('theme') ? $session->itemAt('theme') : 'standard';
-
 $app->setLanguage($language);
+
+// Theme
+$theme = $session->itemAt('theme') ? $session->itemAt('theme') : 'standard';
 $app->setTheme($theme);
 
 // Unset jQuery in Ajax requests
@@ -76,6 +76,8 @@ if($request->isAjaxRequest)
 	$app->clientScript->scriptMap['jquery.min.js'] = false;
 }
 
+// Publis messages for javascript usage
 Yii::app()->getComponent('messages')->publishJavaScriptMessages();
 
+// Run application
 $app->run();

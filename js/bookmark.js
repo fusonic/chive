@@ -34,8 +34,7 @@ var Bookmark = {
 	
 	addToList: function(_id, _schema, _name, _query) 
 	{
-		
-		sideBar.accordion('activate', 2);
+		sideBar.activate(2);
 		$('#bookmarkList').append('<li id="bookmark_' + _id + '">' +
 										'<a class="icon" href="#bookmark/show/' + _id + '" title="' + _query + '"> ' + 
 											'<img src="' + iconPath + '/16/bookmark.png" alt="bookmark" title="' + _query + '" class="icon icon16 icon_bookmark" />' +
