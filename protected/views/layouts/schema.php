@@ -121,7 +121,7 @@ $(document).ready(function() {
 			<?php $this->widget('application.components.MainMenu',array(
 				'items'=>array(
 					array('label'=>'Home', 'icon'=>'home', 'url'=>array('/site/index')),
-					array('label'=>'Refresh','icon'=>'refresh', 'url'=>'javascript:chive:refresh()'),
+					array('label'=>'Refresh','icon'=>'refresh', 'url'=>'javascript:chive.refresh()'),
 					array('label'=>'Logout', 'icon'=>'logout', 'url'=>array('/site/logout'))
 				),
 			)); ?>

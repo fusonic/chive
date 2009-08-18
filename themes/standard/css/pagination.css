@@ -18,13 +18,9 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-@CHARSET "UTF-8";
-
 /*
  * Reset everything
  */
-
-
 
 ul.yiiPager {
 	height: 24px;
