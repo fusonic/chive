@@ -1,21 +1,42 @@
-<div id="dropRoutinesDialog" title="<?php echo Yii::t('database', 'dropRoutines'); ?>" style="display: none">
-	<?php echo Yii::t('database', 'doYouReallyWantToDropRoutines'); ?>
+<?php
+
+/*
+ * Chive - web based MySQL database management
+ * Copyright (C) 2009 Fusonic GmbH
+ * 
+ * This file is part of Chive.
+ *
+ * Chive is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * Chive is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ */
+<div id="dropRoutinesDialog" title=" echo Yii::t('database', 'dropRoutines'); ?>" style="display: none">
+	 echo Yii::t('database', 'doYouReallyWantToDropRoutines'); ?>
 	<ul></ul>
 </div>
 
 <div class="list">
 	<div class="buttonContainer">
 		<div class="left">
-			<?php $this->widget('LinkPager', array('pages' => $pages)); ?>
+			 $this->widget('LinkPager', array('pages' => $pages)); ?>
 		</div>
 		<div class="right">
 			<a href="javascript:void(0)" class="icon button" onclick="schemaRoutines.addProcedure()">
 				<com:Icon name="add" size="16" />
-				<span><?php echo Yii::t('database', 'addProcedure'); ?></span>
+				<span> echo Yii::t('database', 'addProcedure'); ?></span>
 			</a>
 			<a href="javascript:void(0)" class="icon button" onclick="schemaRoutines.addFunction()">
 				<com:Icon name="add" size="16" />
-				<span><?php echo Yii::t('database', 'addFunction'); ?></span>
+				<span> echo Yii::t('database', 'addFunction'); ?></span>
 			</a>
 		</div>
 	</div>
@@ -30,30 +51,30 @@
 		<thead>
 			<tr>
 				<th><input type="checkbox" /></th>
-				<th colspan="3"><?php echo $sort->link('ROUTINE_NAME', Yii::t('database', 'routine')); ?></th>
+				<th colspan="3"> echo $sort->link('ROUTINE_NAME', Yii::t('database', 'routine')); ?></th>
 			</tr>
 		</thead>
 		<tbody>
-			<?php if($routineCount < 1) { ?>
+			 if($routineCount < 1) { ?>
 				<tr>
 					<td class="noEntries" colspan="4">
-						<?php echo Yii::t('database', 'noRoutines'); ?>
+						 echo Yii::t('database', 'noRoutines'); ?>
 					</td>
 				</tr>
-			<?php } ?>
-			<?php foreach($schema->routines AS $routine) { ?>
-				<tr id="routines_<?php echo $routine->ROUTINE_NAME; ?>">
+			 } ?>
+			 foreach($schema->routines AS $routine) { ?>
+				<tr id="routines_ echo $routine->ROUTINE_NAME; ?>">
 					<td>
-						<input type="checkbox" name="routines[]" value="<?php echo $routine->ROUTINE_NAME; ?>" />
+						<input type="checkbox" name="routines[]" value=" echo $routine->ROUTINE_NAME; ?>" />
 					</td>
 					<td>
-						<a href="#views/<?php echo $routine->ROUTINE_NAME; ?>/structure" class="icon">
-							<?php if($routine->ROUTINE_TYPE == 'PROCEDURE') { ?>
+						<a href="#views/ echo $routine->ROUTINE_NAME; ?>/structure" class="icon">
+							 if($routine->ROUTINE_TYPE == 'PROCEDURE') { ?>
 								<com:Icon name="procedure" size="16" text="database.procedure" />
-							<?php } else { ?>
+							 } else { ?>
 								<com:Icon name="function" size="16" text="database.function" />
-							<?php } ?>
-							<?php echo $routine->ROUTINE_NAME; ?>
+							 } ?>
+							 echo $routine->ROUTINE_NAME; ?>
 						</a>
 					</td>
 					<td>
@@ -67,12 +88,12 @@
 						</a>
 					</td>
 				</tr>
-			<?php } ?>
+			 } ?>
 		</tbody>
 		<tfoot>
 			<tr>
 				<th><input type="checkbox" /></th>
-				<th colspan="3"><?php echo Yii::t('database', 'amountRoutines', array($routineCount, '{amount} '=> $routineCount)); ?></th>
+				<th colspan="3"> echo Yii::t('database', 'amountRoutines', array($routineCount, '{amount} '=> $routineCount)); ?></th>
 			</tr>
 		</tfoot>
 	</table>
@@ -81,21 +102,21 @@
 		<div class="left withSelected">
 			<span class="icon">
 				<com:Icon name="arrow_turn_090" size="16" />
-				<span><?php echo Yii::t('core', 'withSelected'); ?></span>
+				<span> echo Yii::t('core', 'withSelected'); ?></span>
 			</span>
 			<a href="javascript:void(0)" onclick="schemaRoutines.dropRoutines()" class="icon button">
 				<com:Icon name="delete" size="16" />
-				<span><?php echo Yii::t('database', 'drop'); ?></span>
+				<span> echo Yii::t('database', 'drop'); ?></span>
 			</a>
 		</div>
 		<div class="right">
 			<a href="javascript:void(0)" class="icon button" onclick="schemaRoutines.addProcedure()">
 				<com:Icon name="add" size="16" />
-				<span><?php echo Yii::t('database', 'addProcedure'); ?></span>
+				<span> echo Yii::t('database', 'addProcedure'); ?></span>
 			</a>
 			<a href="javascript:void(0)" class="icon button" onclick="schemaRoutines.addFunction()">
 				<com:Icon name="add" size="16" />
-				<span><?php echo Yii::t('database', 'addFunction'); ?></span>
+				<span> echo Yii::t('database', 'addFunction'); ?></span>
 			</a>
 		</div>
 	</div>

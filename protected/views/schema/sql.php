@@ -1,10 +1,31 @@
-<?php echo CHtml::form(Yii::app()->baseUrl . '/schema/' . $this->schema . '/sql' , 'post'); ?>
+<?php
 
-<?php if($error) { ?>
+/*
+ * Chive - web based MySQL database management
+ * Copyright (C) 2009 Fusonic GmbH
+ * 
+ * This file is part of Chive.
+ *
+ * Chive is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * Chive is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ */
+ echo CHtml::form(Yii::app()->baseUrl . '/schema/' . $this->schema . '/sql' , 'post'); ?>
+
+ if($error) { ?>
 	<div class="errorSummary">
-		<?php echo $error; ?>
+		 echo $error; ?>
 	</div>
-<?php } ?>
+ } ?>
 
 <table style="width: 100%;">
 	<tr>
@@ -12,30 +33,30 @@
 			<com:application.extensions.CodePress.CodePress language="sql" name="query" width="100%" height="80px" autogrow="true" value={$query} />
 		</td>
 		<td style="vertical-align: top; padding: 10px;">
-			<a class="icon" href="javascript:void(0);" onclick="Bookmark.add('<?php echo $this->schema; ?>', query.getCode());">
+			<a class="icon" href="javascript:void(0);" onclick="Bookmark.add(' echo $this->schema; ?>', query.getCode());">
 				<com:Icon size="16" name="bookmark_add" />
-				<span><?php echo Yii::t('core', 'bookmark'); ?></span>
+				<span> echo Yii::t('core', 'bookmark'); ?></span>
 			</a>
 			<br/><br/>
 			<a class="icon" href="javascript:void(0);" onclick="">
 				<com:Icon size="16" name="chart" />
-				<span><?php echo Yii::t('database', 'profiling'); ?></span>
+				<span> echo Yii::t('database', 'profiling'); ?></span>
 			</a>
 		</td>
 	</tr>
 </table>
 
 <div class="buttons">
-	<?php echo CHtml::submitButton('Execute'); ?>
+	 echo CHtml::submitButton('Execute'); ?>
 </div>
 
 
-<?php echo CHtml::endForm(); ?>
+ echo CHtml::endForm(); ?>
 
-<?php if(count($data)) { ?>
+ if(count($data)) { ?>
 
 	<div class="pager top">
-	<?php $this->widget('LinkPager',array('pages'=>$pages)); ?>
+	 $this->widget('LinkPager',array('pages'=>$pages)); ?>
 	</div>
 
 	<br/>
@@ -44,21 +65,21 @@
 		<colgroup>
 			<col class="action" />
 			<col class="action" />
-			<?php foreach ($columns AS $column) { ?>
-				<?php echo '<col class="date" />'; ?>
-			<?php } ?>
+			 foreach ($columns AS $column) { ?>
+				 echo '<col class="date" />'; ?>
+			 } ?>
 		</colgroup>
 		<thead>
 			<tr>
 				<th></th>
 				<th></th>
-				<?php foreach ($columns AS $column) { ?>
-					<th><?php echo $sort->link($column); ?></th>
-				<?php } ?>
+				 foreach ($columns AS $column) { ?>
+					<th> echo $sort->link($column); ?></th>
+				 } ?>
 			</tr>
 		</thead>
 		<tbody>
-			<?php foreach($data AS $row) { ?>
+			 foreach($data AS $row) { ?>
 				<tr>
 					<td>
 						<a href="" class="icon">
@@ -70,20 +91,20 @@
 							<com:Icon name="delete" size="16" text="core.edit" />
 						</a>
 					</td>
-					<?php foreach($row AS $key=>$value) { ?>
+					 foreach($row AS $key=>$value) { ?>
 						<td>
-							<?php echo (is_null($value) ? '<i>NULL</i>' : substr(str_replace(array('<','>'),array('&lt;','&gt;'),$value), 0, 100)); ?>
+							 echo (is_null($value) ? '<i>NULL</i>' : substr(str_replace(array('<','>'),array('&lt;','&gt;'),$value), 0, 100)); ?>
 						</td>
-					<?php } ?>
+					 } ?>
 				</tr>
-			<?php } ?>
+			 } ?>
 		</tbody>
 	</table>
 
 	<div class="pager bottom">
-	<?php $this->widget('LinkPager',array('pages'=>$pages)); ?>
+	 $this->widget('LinkPager',array('pages'=>$pages)); ?>
 	</div>
 
-<?php }  elseif($isSent) { ?>
+ }  elseif($isSent) { ?>
 	Es wurden keine Enträge gefunden!
-<?php } ?>
+ } ?>

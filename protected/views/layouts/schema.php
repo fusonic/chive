@@ -1,3 +1,24 @@
+<?php
+
+/*
+ * Chive - web based MySQL database management
+ * Copyright (C) 2009 Fusonic GmbH
+ * 
+ * This file is part of Chive.
+ *
+ * Chive is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * Chive is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ */
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -5,22 +26,22 @@
 <title>Chive</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" />
-<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->getBaseUrl(); ?>/css/style.css" />
+<link rel="stylesheet" type="text/css" href=" echo Yii::app()->request->baseUrl; ?>/css/main.css" />
+<link rel="stylesheet" type="text/css" href=" echo Yii::app()->theme->getBaseUrl(); ?>/css/style.css" />
 <!--[if lte IE 7]>
-<link rel="stylesheet" type="text/css" href="<?php echo BASEURL; ?>/css/patch/ie7.css"/>
+<link rel="stylesheet" type="text/css" href=" echo BASEURL; ?>/css/patch/ie7.css"/>
 <![endif]-->
 
-<link rel="shortcut icon" href="<?php echo BASEURL; ?>/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href=" echo BASEURL; ?>/images/favicon.ico" type="image/x-icon" />
 
 <script type="text/javascript">
 // Set global javascript variables
-var baseUrl = '<?php echo BASEURL; ?>';
-var iconPath = '<?php echo BASEURL . '/images/icons/fugue'; ?>';
-var themeUrl = '<?php echo Yii::app()->theme->baseUrl; ?>';
+var baseUrl = ' echo BASEURL; ?>';
+var iconPath = ' echo BASEURL . '/images/icons/fugue'; ?>';
+var themeUrl = ' echo Yii::app()->theme->baseUrl; ?>';
 </script>
 
-<?php
+
 $scriptFiles = array(
 	'js/jquery/jquery.js',
 	'js/jquery/jquery-ui-1.7.1.custom.min.js',
@@ -73,33 +94,33 @@ foreach($scriptFiles AS $file)
 $.ui.dialog.defaults.width = 400;
 
 $(document).ready(function() {
-	sideBar.loadTables(<?php echo json_encode($this->_schema->SCHEMA_NAME); ?>, function() {
+	sideBar.loadTables( echo json_encode($this->_schema->SCHEMA_NAME); ?>, function() {
 		$('#tableList').setupListFilter($('#tableSearch'));
 		$('#bookmarkList').setupListFilter($('#bookmarkSearch'));
 	});
 });
 </script>
 
-<?php Yii::app()->clientScript->registerScript('userSettings', Yii::app()->user->settings->getJsObject(), CClientScript::POS_HEAD); ?>
+ Yii::app()->clientScript->registerScript('userSettings', Yii::app()->user->settings->getJsObject(), CClientScript::POS_HEAD); ?>
 
 </head>
 <body>
 
   <!---
-  <div id="loading2" style="display: none; width: 100%; height: 100%; opacity: 0.4; background: #000 no-repeat url(<?php echo Yii::app()->baseUrl ?>/images/loading3.gif) center center; position: absolute; z-index: 99999999 !important; top: 0px; left: 0px;">
+  <div id="loading2" style="display: none; width: 100%; height: 100%; opacity: 0.4; background: #000 no-repeat url( echo Yii::app()->baseUrl ?>/images/loading3.gif) center center; position: absolute; z-index: 99999999 !important; top: 0px; left: 0px;">
   	loading
   </div>
   --->
 
-  <div id="loading"><?php echo Yii::t('core', 'loading'); ?>...</div>
+  <div id="loading"> echo Yii::t('core', 'loading'); ?>...</div>
 
-  <div id="addBookmarkDialog" title="<?php echo Yii::t('core', 'addBookmark'); ?>" style="display: none">
-	<?php echo Yii::t('message', 'enterAName'); ?><br />
+  <div id="addBookmarkDialog" title=" echo Yii::t('core', 'addBookmark'); ?>" style="display: none">
+	 echo Yii::t('message', 'enterAName'); ?><br />
 	<input type="text" id="newBookmarkName" name="newBookmarkName" />
   </div>
 
-  <div id="deleteBookmarkDialog" title="<?php echo Yii::t('core', 'deleteBookmark'); ?>" style="display: none">
-  	<?php echo Yii::t('message', 'doYouReallyWantToDeleteBookmark'); ?>
+  <div id="deleteBookmarkDialog" title=" echo Yii::t('core', 'deleteBookmark'); ?>" style="display: none">
+  	 echo Yii::t('message', 'doYouReallyWantToDeleteBookmark'); ?>
   	<ul></ul>
   </div>
 
@@ -108,8 +129,8 @@ $(document).ready(function() {
 		<div id="headerLeft">
 			<ul class="breadCrumb">
 				<li>
-					<a href="<?php echo Yii::app()->baseUrl . '/#schemata'; ?>">
-						<img src="<?php echo Yii::app()->baseUrl . "/images/logo.png"; ?>" alt="logo" />
+					<a href=" echo Yii::app()->baseUrl . '/#schemata'; ?>">
+						<img src=" echo Yii::app()->baseUrl . "/images/logo.png"; ?>" alt="logo" />
 					</a>
 				</li>
 			</ul>
@@ -117,7 +138,7 @@ $(document).ready(function() {
 		<div id="headerLogo">
 		</div>
 		<div id="headerRight">
-			<?php $this->widget('application.components.MainMenu',array(
+			 $this->widget('application.components.MainMenu',array(
 				'items'=>array(
 					array('label'=>'Home', 'icon'=>'home', 'url'=>array('/site/index'), 'visible'=>!Yii::app()->user->isGuest),
 					array('label'=>'Refresh','icon'=>'refresh', 'url'=>'javascript:void(0)', 'htmlOptions'=>array('onclick'=>'return refresh();'), 'visible'=>!Yii::app()->user->isGuest),
@@ -134,9 +155,9 @@ $(document).ready(function() {
   		<div class="sidebarHeader tableList">
 			<a class="icon">
 				<com:Icon name="table" size="24" text="database.tables" />
-				<span><?php echo Yii::t('database', 'tables'); ?></span>
+				<span> echo Yii::t('database', 'tables'); ?></span>
 			</a>
-			<img class="loading" src="images/loading.gif" alt="<?php echo Yii::t('core', 'loading'); ?>..." />
+			<img class="loading" src="images/loading.gif" alt=" echo Yii::t('core', 'loading'); ?>..." />
 		</div>
 		<div class="sidebarContent tableList">
 
@@ -144,21 +165,21 @@ $(document).ready(function() {
 
 			<ul class="list icon nowrap" id="tableList">
 				<!---
-				<?php foreach($this->_schema->tables AS $table) { ?>
+				 foreach($this->_schema->tables AS $table) { ?>
 					<li>
-						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/browse" class="icon">
-							<?php $this->widget('Icon', array('name'=>'browse', 'size'=>16, 'disabled'=>!$table->getRowCount(), 'title'=>Yii::t('database', 'Xrows', array('{amount}'=>$table->getRowCount() ? $table->getRowCount() : 0)))); ?>
+						<a href="#tables/ echo $table->TABLE_NAME; ?>/browse" class="icon">
+							 $this->widget('Icon', array('name'=>'browse', 'size'=>16, 'disabled'=>!$table->getRowCount(), 'title'=>Yii::t('database', 'Xrows', array('{amount}'=>$table->getRowCount() ? $table->getRowCount() : 0)))); ?>
 						</a>
-						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/structure" class="icon">
-							<span><?php echo $table->TABLE_NAME; ?></span>
+						<a href="#tables/ echo $table->TABLE_NAME; ?>/structure" class="icon">
+							<span> echo $table->TABLE_NAME; ?></span>
 						</a>
 						<div class="listIconContainer">
-							<a href="#tables/<?php echo $table->TABLE_NAME; ?>/insert">
+							<a href="#tables/ echo $table->TABLE_NAME; ?>/insert">
 								<com:Icon name="add" size="16" text="core.insertNewRow" />
 							</a>
 						</div>
 					</li>
-				<?php } ?>
+				 } ?>
 				--->
 				<li class="nowrap template">
 					<a href="#tables/#tableName#/browse" class="icon">
@@ -179,7 +200,7 @@ $(document).ready(function() {
   		<div class="sidebarHeader">
 			<a class="icon" href="#views">
 				<com:Icon name="view" size="24" text="database.views" />
-				<span><?php echo Yii::t('database', 'views'); ?></span>
+				<span> echo Yii::t('database', 'views'); ?></span>
 			</a>
 		</div>
 		<div class="sidebarContent">
@@ -187,22 +208,22 @@ $(document).ready(function() {
 			<input type="text" id="viewSearch" class="search text" />
 		
 			<ul class="list icon nowrap" id="viewList">
-				<?php foreach($this->_schema->views AS $view) { ?>
+				 foreach($this->_schema->views AS $view) { ?>
 					<li>
-						<a href="#views/<?php echo $view->TABLE_NAME; ?>/browse" class="icon">
+						<a href="#views/ echo $view->TABLE_NAME; ?>/browse" class="icon">
 							<com:Icon name="view" size="16" text="database.browse" />
 						</a>
-						<a href="#views/<?php echo $view->TABLE_NAME; ?>/structure" class="icon">
-							<span><?php echo $view->TABLE_NAME; ?></span>
+						<a href="#views/ echo $view->TABLE_NAME; ?>/structure" class="icon">
+							<span> echo $view->TABLE_NAME; ?></span>
 						</a>
 					</li>
-				<?php } ?>
+				 } ?>
 			</ul>
 		</div>
   		<div class="sidebarHeader">
 			<a class="icon">
 				<com:Icon name="bookmark" size="24" text="core.bookmarks" />
-				<span><?php echo Yii::t('core', 'bookmarks') ?></span>
+				<span> echo Yii::t('core', 'bookmarks') ?></span>
 			</a>
 		</div>
 		<div class="sidebarContent">
@@ -210,31 +231,31 @@ $(document).ready(function() {
 			<input type="text" id="bookmarkSearch" class="search text" />
 
 			<ul class="list icon nowrap" id="bookmarkList">
-			<?php $bookmarks = Yii::app()->user->settings->get('bookmarks', 'database', $this->schema); ?>
-			<?php if($bookmarks) { ?>
-				<?php foreach($bookmarks AS $key => $bookmark) { ?>
-					<li id="bookmark_<?php echo $bookmark['id']; ?>">
-						<a href="#bookmark/show/<?php echo $bookmark['id']; ?>" class="icon" title="<?php echo $bookmark['query']; ?>">
+			 $bookmarks = Yii::app()->user->settings->get('bookmarks', 'database', $this->schema); ?>
+			 if($bookmarks) { ?>
+				 foreach($bookmarks AS $key => $bookmark) { ?>
+					<li id="bookmark_ echo $bookmark['id']; ?>">
+						<a href="#bookmark/show/ echo $bookmark['id']; ?>" class="icon" title=" echo $bookmark['query']; ?>">
 							<com:Icon size="16" name="bookmark" />
-							<span><?php echo $bookmark['name']; ?></span>
+							<span> echo $bookmark['name']; ?></span>
 						</a>
 						<div class="listIconContainer">
-							<a href="javascript:void(0);" onclick="Bookmark.remove('<?php echo $this->schema; ?>', '<?php echo $bookmark['id']; ?>');">
+							<a href="javascript:void(0);" onclick="Bookmark.remove(' echo $this->schema; ?>', ' echo $bookmark['id']; ?>');">
 								<com:Icon name="delete" size="16" title="core.delete" disabled={true} />
 							</a>
-							<a href="javascript:void(0);" onclick="Bookmark.execute('<?php echo $this->schema; ?>', '<?php echo $bookmark['id']; ?>');">
+							<a href="javascript:void(0);" onclick="Bookmark.execute(' echo $this->schema; ?>', ' echo $bookmark['id']; ?>');">
 								<com:Icon name="execute" size="16" title="action.execute" />
 							</a>
 						</div>
 					</li>
-				<?php } ?>
-			<?php } ?>
+				 } ?>
+			 } ?>
 			</ul>
 		</div>
 	</div>
   </div>
   <div class="ui-layout-center" id="content">
-  	<?php echo $content; ?>
+  	 echo $content; ?>
   </div>
 
 </body>

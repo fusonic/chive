@@ -1,3 +1,24 @@
+<?php
+
+/*
+ * Chive - web based MySQL database management
+ * Copyright (C) 2009 Fusonic GmbH
+ * 
+ * This file is part of Chive.
+ *
+ * Chive is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * Chive is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ */
 <div class="list">
 
 	<table id="columns" class="list addCheckboxes">
@@ -14,67 +35,67 @@
 		<thead>
 			<tr>
 				<th><input type="checkbox" /></th>
-				<th><?php echo Yii::t('database','field'); ?></th>
-				<th><?php echo Yii::t('database','type'); ?></th>
-				<th><?php echo Yii::t('database','collation'); ?></th>
-				<th><?php echo Yii::t('database','null'); ?></th>
-				<th><?php echo Yii::t('database','default'); ?></th>
-				<th colspan="2"><?php echo Yii::t('database','extra'); ?></th>
+				<th> echo Yii::t('database','field'); ?></th>
+				<th> echo Yii::t('database','type'); ?></th>
+				<th> echo Yii::t('database','collation'); ?></th>
+				<th> echo Yii::t('database','null'); ?></th>
+				<th> echo Yii::t('database','default'); ?></th>
+				<th colspan="2"> echo Yii::t('database','extra'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
-			<?php if(count($view->columns) < 1) { ?>
+			 if(count($view->columns) < 1) { ?>
 				<tr>
 					<td class="noEntries" colspan="7">
-						<?php echo Yii::t('database', 'noColumns'); ?>
+						 echo Yii::t('database', 'noColumns'); ?>
 					</td>
 				</tr>
-			<?php } ?>
-			<?php foreach($view->columns AS $column) { ?>
-				<tr id="columns_<?php echo $column->COLUMN_NAME; ?>">
+			 } ?>
+			 foreach($view->columns AS $column) { ?>
+				<tr id="columns_ echo $column->COLUMN_NAME; ?>">
 					<td>
-						<input type="checkbox" name="columns[]" value="<?php echo $column->COLUMN_NAME; ?>" />
+						<input type="checkbox" name="columns[]" value=" echo $column->COLUMN_NAME; ?>" />
 					</td>
 					<td>
-						<?php if($column->getIsPartOfPrimaryKey($table->indices)): ?>
-							<span class="primaryKey"><?php echo $column->COLUMN_NAME; ?></span>
-						<?php else: ?>
-							<?php echo $column->COLUMN_NAME; ?>
-						<?php endif; ?>
+						 if($column->getIsPartOfPrimaryKey($table->indices)): ?>
+							<span class="primaryKey"> echo $column->COLUMN_NAME; ?></span>
+						 else: ?>
+							 echo $column->COLUMN_NAME; ?>
+						 endif; ?>
 					</td>
 					<td>
-						<?php echo $column->COLUMN_TYPE; ?>
+						 echo $column->COLUMN_TYPE; ?>
 					</td>
 					<td>
-						<?php if(!is_null($column->COLLATION_NAME)) { ?>
-							<dfn class="collation" title="<?php echo Collation::getDefinition($column->COLLATION_NAME); ?>">
-								<?php echo $column->COLLATION_NAME; ?>
+						 if(!is_null($column->COLLATION_NAME)) { ?>
+							<dfn class="collation" title=" echo Collation::getDefinition($column->COLLATION_NAME); ?>">
+								 echo $column->COLLATION_NAME; ?>
 							</dfn>
-						<?php } ?>
+						 } ?>
 					</td>
 					<td>
-						<?php echo Yii::t('core', strtolower($column->IS_NULLABLE)); ?>
+						 echo Yii::t('core', strtolower($column->IS_NULLABLE)); ?>
 					</td>
 					<td>
-						<?php if(is_null($column->COLUMN_DEFAULT) && $column->IS_NULLABLE == 'YES') { ?>
+						 if(is_null($column->COLUMN_DEFAULT) && $column->IS_NULLABLE == 'YES') { ?>
 							<span class="null">NULL</span>
-						<?php } else { ?>
-							<?php echo $column->COLUMN_DEFAULT; ?>
-						<?php } ?>
+						 } else { ?>
+							 echo $column->COLUMN_DEFAULT; ?>
+						 } ?>
 					</td>
-					<td><?php echo $column->EXTRA; ?></td>
+					<td> echo $column->EXTRA; ?></td>
 					<td>
 						<span class="icon">
 							<com:Icon disabled="true" name="browse" size="16" text="schema.browseDistinctValues" title={Yii::t('database','browseDistinctValues')} />
 						</span>
 					</td>
 				</tr>
-			<?php } ?>
+			 } ?>
 		</tbody>
 		<tfoot>
 			<tr>
 				<th><input type="checkbox" /></th>
-				<th colspan="7"><?php echo Yii::t('database', 'XColumns', array('{count}' => count($view->columns))); ?></th>
+				<th colspan="7"> echo Yii::t('database', 'XColumns', array('{count}' => count($view->columns))); ?></th>
 			</tr>
 		</tfoot>
 	</table>

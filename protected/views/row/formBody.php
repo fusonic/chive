@@ -1,3 +1,24 @@
+<?php
+
+/*
+ * Chive - web based MySQL database management
+ * Copyright (C) 2009 Fusonic GmbH
+ * 
+ * This file is part of Chive.
+ *
+ * Chive is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * Chive is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ */
 <table class="list">
 	<colgroup>
 		<col style="width: 100px;" />
@@ -8,36 +29,36 @@
 	</colgroup>
 	<thead>
 		<tr>
-			<th><?php echo Yii::t('database', 'field'); ?></th>
-			<th><?php echo Yii::t('database', 'type'); ?></th>
-			<th><?php echo Yii::t('database', 'function'); ?></th>
-			<th><?php echo Yii::t('database', 'null'); ?></th>
-			<th><?php echo Yii::t('core', 'value'); ?></th>
+			<th> echo Yii::t('database', 'field'); ?></th>
+			<th> echo Yii::t('database', 'type'); ?></th>
+			<th> echo Yii::t('database', 'function'); ?></th>
+			<th> echo Yii::t('database', 'null'); ?></th>
+			<th> echo Yii::t('core', 'value'); ?></th>
 		</tr>
 	</thead>
 	<tbody>
-		<?php $i = 10; ?>
-		<?php foreach($row->getMetaData()->tableSchema->columns AS $column) { ?>
+		 $i = 10; ?>
+		 foreach($row->getMetaData()->tableSchema->columns AS $column) { ?>
 			<tr>
-				<td style="font-weight: bold;"><?php echo $column->name; ?></td>
-				<td><?php echo $column->dbType; ?></td>
+				<td style="font-weight: bold;"> echo $column->name; ?></td>
+				<td> echo $column->dbType; ?></td>
 				<td>
-					<?php if(!in_array(DataType::getBaseType($column->dbType), array('set', 'enum'))) { ?>
-						<?php echo CHtml::dropDownList($column->name . '[function]','',$functions); ?>
-					<?php } ?>
+					 if(!in_array(DataType::getBaseType($column->dbType), array('set', 'enum'))) { ?>
+						 echo CHtml::dropDownList($column->name . '[function]','',$functions); ?>
+					 } ?>
 				</td>
 				<td class="center">
-					<?php echo ($column->allowNull ? CHtml::checkBox($column->name.'[null]', is_null($row->getAttribute($column->name))) : ''); ?>
+					 echo ($column->allowNull ? CHtml::checkBox($column->name.'[null]', is_null($row->getAttribute($column->name))) : ''); ?>
 				</td>
 				<td>
-					<?php $this->widget('InputField', array('row' => $row, 'column'=>$column, 'htmlOptions'=>array(
+					 $this->widget('InputField', array('row' => $row, 'column'=>$column, 'htmlOptions'=>array(
 						'onkeyup' => '$(this).val() ? $("#'.$column->name.'_null").attr("checked", "").change() : void(0);',
 						'tabIndex' => $i,
 					))); ?>
 				</td>
 			</tr>
-			<?php $i++; ?>
-		<?php } ?>
+			 $i++; ?>
+		 } ?>
 	</tbody>
 </table>
 
