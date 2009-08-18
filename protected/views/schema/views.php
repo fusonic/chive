@@ -1,38 +1,17 @@
-<?php
-
-/*
- * Chive - web based MySQL database management
- * Copyright (C) 2009 Fusonic GmbH
- * 
- * This file is part of Chive.
- *
- * Chive is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * Chive is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library. If not, see <http://www.gnu.org/licenses/>.
- */
-<div id="dropViewsDialog" title=" echo Yii::t('database', 'dropViews'); ?>" style="display: none">
-	 echo Yii::t('database', 'doYouReallyWantToDropViews'); ?>
+<div id="dropViewsDialog" title="<?php echo Yii::t('database', 'dropViews'); ?>" style="display: none">
+	<?php echo Yii::t('database', 'doYouReallyWantToDropViews'); ?>
 	<ul></ul>
 </div>
 
 <div class="list">
 	<div class="buttonContainer">
 		<div class="left">
-			 $this->widget('LinkPager', array('pages' => $pages)); ?>
+			<?php $this->widget('LinkPager', array('pages' => $pages)); ?>
 		</div>
 		<div class="right">
 			<a href="javascript:void(0)" class="icon button" onclick="schemaViews.addView()">
 				<com:Icon name="add" size="16" />
-				<span> echo Yii::t('database', 'addView'); ?></span>
+				<span><?php echo Yii::t('database', 'addView'); ?></span>
 			</a>
 		</div>
 	</div>
@@ -51,72 +30,72 @@
 		<thead>
 			<tr>
 				<th><input type="checkbox" /></th>
-				<th colspan="6"> echo $sort->link('TABLE_NAME', Yii::t('database', 'view')); ?></th>
-				<th> echo $sort->link('IS_UPDATABLE'); ?></th>
+				<th colspan="6"><?php echo $sort->link('TABLE_NAME', Yii::t('database', 'view')); ?></th>
+				<th><?php echo $sort->link('IS_UPDATABLE'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
-			 if($viewCount < 1) { ?>
+			<?php if($viewCount < 1) { ?>
 				<tr>
 					<td class="noEntries" colspan="14">
-						 echo Yii::t('database', 'noViews'); ?>
+						<?php echo Yii::t('database', 'noViews'); ?>
 					</td>
 				</tr>
-			 } ?>
-			 foreach($schema->views AS $view) { ?>
-				<tr id="views_ echo $view->TABLE_NAME; ?>">
+			<?php } ?>
+			<?php foreach($schema->views AS $view) { ?>
+				<tr id="views_<?php echo $view->TABLE_NAME; ?>">
 					<td>
-						<input type="checkbox" name="views[]" value=" echo $view->TABLE_NAME; ?>" />
+						<input type="checkbox" name="views[]" value="<?php echo $view->TABLE_NAME; ?>" />
 					</td>
 					<td>
-						<a href="#views/ echo $view->TABLE_NAME; ?>/structure">
-							 echo $view->TABLE_NAME; ?>
+						<a href="#views/<?php echo $view->TABLE_NAME; ?>/structure">
+							<?php echo $view->TABLE_NAME; ?>
 						</a>
 					</td>
 					<td>
-						<a href="#views/ echo $view->TABLE_NAME; ?>/browse" class="icon">
+						<a href="#views/<?php echo $view->TABLE_NAME; ?>/browse" class="icon">
 							<com:Icon name="browse" size="16" text="database.browse" />
 						</a>
 					</td>
 					<td>
-						<a href="#tables/ echo $view->TABLE_NAME; ?>/structure" class="icon">
+						<a href="#tables/<?php echo $view->TABLE_NAME; ?>/structure" class="icon">
 							<com:Icon name="structure" size="16" text="database.structure" />
 						</a>
 					</td>
 					<td>
-						<a href="#tables/ echo $table->TABLE_NAME; ?>/search" class="icon">
+						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/search" class="icon">
 							<com:Icon name="search" size="16" text="core.search" />
 						</a>
 					</td>
 					<td>
-						 if(Yii::app()->user->privileges->checkTable($view->TABLE_SCHEMA, $view->TABLE_NAME, 'ALTER')) { ?>
+						<?php if(Yii::app()->user->privileges->checkTable($view->TABLE_SCHEMA, $view->TABLE_NAME, 'ALTER')) { ?>
 							<a href="javascript:void(0);" onclick="schemaViews.editView($(this).closest('tr').attr('id').substr(6))" class="icon">
 								<com:Icon name="edit" size="16" text="core.edit" />
 							</a>
-						 } else { ?>
+						<?php } else { ?>
 							<com:Icon name="edit" size="16" text="core.edit" disabled="true" />
-						 } ?>
+						<?php } ?>
 					</td>
 					<td>
-						 if(Yii::app()->user->privileges->checkTable($view->TABLE_SCHEMA, $view->TABLE_NAME, 'DROP')) { ?>
+						<?php if(Yii::app()->user->privileges->checkTable($view->TABLE_SCHEMA, $view->TABLE_NAME, 'DROP')) { ?>
 							<a href="javascript:void(0);" onclick="schemaViews.dropView($(this).closest('tr').attr('id').substr(6))" class="icon">
 								<com:Icon name="delete" size="16" text="database.drop" />
 							</a>
-							 $canDrop = true; ?>
-						 } else { ?>
+							<?php $canDrop = true; ?>
+						<?php } else { ?>
 							<com:Icon name="delete" size="16" text="database.drop" disabled="true" />
-						 } ?>
+						<?php } ?>
 					</td>
 					<td>
-						 echo Yii::t('core', strtolower($view->IS_UPDATABLE)); ?>
+						<?php echo Yii::t('core', strtolower($view->IS_UPDATABLE)); ?>
 					</td>
 				</tr>
-			 } ?>
+			<?php } ?>
 		</tbody>
 		<tfoot>
 			<tr>
 				<th><input type="checkbox" /></th>
-				<th colspan="7"> echo Yii::t('database', 'amountViews', array($viewCount, '{amount} '=> $viewCount)); ?></th>
+				<th colspan="7"><?php echo Yii::t('database', 'amountViews', array($viewCount, '{amount} '=> $viewCount)); ?></th>
 			</tr>
 		</tfoot>
 	</table>
@@ -125,24 +104,24 @@
 		<div class="left withSelected">
 			<span class="icon">
 				<com:Icon name="arrow_turn_090" size="16" />
-				<span> echo Yii::t('core', 'withSelected'); ?></span>
+				<span><?php echo Yii::t('core', 'withSelected'); ?></span>
 			</span>
-			 if($canDrop) { ?>
+			<?php if($canDrop) { ?>
 				<a href="javascript:void(0)" onclick="schemaViews.dropViews()" class="icon button">
 					<com:Icon name="delete" size="16" />
-					<span> echo Yii::t('database', 'drop'); ?></span>
+					<span><?php echo Yii::t('database', 'drop'); ?></span>
 				</a>
-			 } else { ?>
+			<?php } else { ?>
 				<span class="icon button">
 					<com:Icon name="delete" size="16" disabled="true" />
-					<span> echo Yii::t('database', 'drop'); ?></span>
+					<span><?php echo Yii::t('database', 'drop'); ?></span>
 				</span>
-			 } ?>
+			<?php } ?>
 		</div>
 		<div class="right">
 			<a href="javascript:void(0)" class="icon button" onclick="schemaViews.addView()">
 				<com:Icon name="add" size="16" />
-				<span> echo Yii::t('database', 'addView'); ?></span>
+				<span><?php echo Yii::t('database', 'addView'); ?></span>
 			</a>
 		</div>
 	</div>

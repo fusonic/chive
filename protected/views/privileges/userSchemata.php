@@ -1,26 +1,5 @@
-<?php
-
-/*
- * Chive - web based MySQL database management
- * Copyright (C) 2009 Fusonic GmbH
- * 
- * This file is part of Chive.
- *
- * Chive is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * Chive is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library. If not, see <http://www.gnu.org/licenses/>.
- */
-<div id="dropSchemaPrivilegesDialog" title=" echo Yii::t('database', 'dropSchemaSpecificPrivileges'); ?>" style="display: none">
-	 echo Yii::t('database', 'doYouReallyWantToDropSchemaSpecificPrivileges'); ?>
+<div id="dropSchemaPrivilegesDialog" title="<?php echo Yii::t('database', 'dropSchemaSpecificPrivileges'); ?>" style="display: none">
+	<?php echo Yii::t('database', 'doYouReallyWantToDropSchemaSpecificPrivileges'); ?>
 </div>
 
 <div class="list">
@@ -28,12 +7,12 @@
 	<div class="buttonContainer">
 
 		<div class="left">
-			 $this->widget('LinkPager', array('pages' => $pages)); ?>
+			<?php $this->widget('LinkPager', array('pages' => $pages)); ?>
 		</div>
 		<div class="right">
 			<a href="javascript:void(0)" onclick="privilegesUserSchemata.addSchemaPrivilege()" class="icon button">
 				<com:Icon name="add" size="16" />
-				<span> echo Yii::t('database', 'addSchemaSpecificPrivileges'); ?></span>
+				<span><?php echo Yii::t('database', 'addSchemaSpecificPrivileges'); ?></span>
 			</a>
 		</div>
 	</div>
@@ -52,46 +31,46 @@
 		<thead>
 			<tr>
 				<th><input type="checkbox" /></th>
-				<th> echo $sort->link('Schema'); ?></th>
-				<th colspan="4"> echo Yii::t('database', 'privileges'); ?></th>
+				<th><?php echo $sort->link('Schema'); ?></th>
+				<th colspan="4"><?php echo Yii::t('database', 'privileges'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
-			 if(count($schemata) < 1) { ?>
+			<?php if(count($schemata) < 1) { ?>
 				<tr>
 					<td class="noEntries" colspan="14">
-						 echo Yii::t('database', 'noSchemaSpecificPrivileges'); ?>
+						<?php echo Yii::t('database', 'noSchemaSpecificPrivileges'); ?>
 					</td>
 				</tr>
-			 } ?>
-			 foreach($schemata as $schema) { ?>
-				<tr id="schemata_ echo $schema->Db; ?>">
+			<?php } ?>
+			<?php foreach($schemata as $schema) { ?>
+				<tr id="schemata_<?php echo $schema->Db; ?>">
 					<td>
-						<input type="checkbox" name="schemata[]" value=" echo $schema->Db; ?>" />
+						<input type="checkbox" name="schemata[]" value="<?php echo $schema->Db; ?>" />
 					</td>
 					<td>
-						 echo $schema->Db; ?>
+						<?php echo $schema->Db; ?>
 					</td>
 					<td>
-						 echo implode(', ', $schema->getPrivileges()); ?>
+						<?php echo implode(', ', $schema->getPrivileges()); ?>
 					</td>
 					<td>
-						<a href="#privileges/users/ echo urlencode($schema->User ? $schema->User : '%'); ?>/ echo urlencode($schema->Host); ?>/schemata/ echo urlencode($schema->Db); ?>/tables" class="icon">
+						<a href="#privileges/users/<?php echo urlencode($schema->User ? $schema->User : '%'); ?>/<?php echo urlencode($schema->Host); ?>/schemata/<?php echo urlencode($schema->Db); ?>/tables" class="icon">
 							<com:Icon name="table" size="16" text="database.tableSpecificPrivileges" />
 						</a>
 					</td>
 					<td>
-						<a href="javascript:void(0)" onclick="privilegesUserSchemata.editSchemaPrivilege(' echo $schema->Db; ?>')" class="icon">
+						<a href="javascript:void(0)" onclick="privilegesUserSchemata.editSchemaPrivilege('<?php echo $schema->Db; ?>')" class="icon">
 							<com:Icon name="edit" size="16" text="core.edit" />
 						</a>
 					</td>
 					<td>
-						<a href="javascript:void(0)" onclick="privilegesUserSchemata.dropSchemaPrivilege(' echo $schema->Db; ?>')" class="icon">
+						<a href="javascript:void(0)" onclick="privilegesUserSchemata.dropSchemaPrivilege('<?php echo $schema->Db; ?>')" class="icon">
 							<com:Icon name="delete" size="16" text="database.drop" />
 						</a>
 					</td>
 				</tr>
-			 } ?>
+			<?php } ?>
 		</tbody>
 	</table>
 
@@ -102,13 +81,13 @@
 			</span>
 			<a class="icon button" href="javascript:void(0)" onclick="privilegesUserSchemata.dropSchemaPrivileges()">
 				<com:Icon name="delete" size="16" />
-				<span> echo Yii::t('database', 'drop'); ?></span>
+				<span><?php echo Yii::t('database', 'drop'); ?></span>
 			</a>
 		</div>
 		<div class="right">
 			<a href="javascript:void(0)" onclick="privilegesUserSchemata.addSchemaPrivilege()" class="icon button">
 				<com:Icon name="add" size="16" />
-				<span> echo Yii::t('database', 'addSchemaSpecificPrivileges'); ?></span>
+				<span><?php echo Yii::t('database', 'addSchemaSpecificPrivileges'); ?></span>
 			</a>
 		</div>
 	</div>
@@ -116,8 +95,8 @@
 
 <script type="text/javascript">
 setTimeout(function() {
-	privilegesUserSchemata.user = ' echo $user; ?>';
-	privilegesUserSchemata.host = ' echo $host; ?>';
+	privilegesUserSchemata.user = '<?php echo $user; ?>';
+	privilegesUserSchemata.host = '<?php echo $host; ?>';
 	privilegesUserSchemata.setup();
 }, 500);
 </script>

@@ -1,36 +1,15 @@
-<?php
+<?php echo CHtml::form('', 'post', array('enctype'=>'multipart/form-data')); ?>
 
-/*
- * Chive - web based MySQL database management
- * Copyright (C) 2009 Fusonic GmbH
- * 
- * This file is part of Chive.
- *
- * Chive is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * Chive is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library. If not, see <http://www.gnu.org/licenses/>.
- */
- echo CHtml::form('', 'post', array('enctype'=>'multipart/form-data')); ?>
+<?php echo CHtml::fileField('file', ''); ?>
 
- echo CHtml::fileField('file', ''); ?>
+<?php echo CHtml::submitButton(Yii::t('core', 'import')); ?>
 
- echo CHtml::submitButton(Yii::t('core', 'import')); ?>
-
- echo CHtml::endForm(); ?>
+<?php echo CHtml::endForm(); ?>
 
 
- if($file) { ?>
+<?php if($file) { ?>
 	a file has been uploaded
- } ?>
+<?php } ?>
 
 
 
@@ -126,11 +105,11 @@ var FeaturesDemoHandlers = {
 
 </script>
 
- echo CHtml::form(null, null, array('enctype'=>'multipart/form-data')); ?>
+<?php echo CHtml::form(null, null, array('enctype'=>'multipart/form-data')); ?>
 
 <span id="testbutton">testasdf</span>
 
- $this->widget('application.extensions.SWFUpload.SWFUpload', array('settings' => array(
+<?php $this->widget('application.extensions.SWFUpload.SWFUpload', array('settings' => array(
 	'debug' => true,
 	'upload_url' => Yii::app()->baseUrl . '/schema/' . $this->schema . '/import/upload',
 	'button_placeholder_id' => 'testbutton',
@@ -149,6 +128,6 @@ var FeaturesDemoHandlers = {
 	'upload_complete_handler' => '{FeaturesDemoHandlers.uploadSuccess}',
 ))); ?>
 
- echo CHtml::endForm(); ?>
+<?php echo CHtml::endForm(); ?>
 
 --->

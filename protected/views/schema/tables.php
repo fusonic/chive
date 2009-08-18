@@ -1,42 +1,21 @@
-<?php
-
-/*
- * Chive - web based MySQL database management
- * Copyright (C) 2009 Fusonic GmbH
- * 
- * This file is part of Chive.
- *
- * Chive is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * Chive is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library. If not, see <http://www.gnu.org/licenses/>.
- */
-<div id="truncateTablesDialog" title=" echo Yii::t('database', 'truncateTables'); ?>" style="display: none">
-	 echo Yii::t('database', 'doYouReallyWantToTruncateTables'); ?>
+<div id="truncateTablesDialog" title="<?php echo Yii::t('database', 'truncateTables'); ?>" style="display: none">
+	<?php echo Yii::t('database', 'doYouReallyWantToTruncateTables'); ?>
 	<ul></ul>
 </div>
-<div id="dropTablesDialog" title=" echo Yii::t('database', 'dropTables'); ?>" style="display: none">
-	 echo Yii::t('database', 'doYouReallyWantToDropTables'); ?>
+<div id="dropTablesDialog" title="<?php echo Yii::t('database', 'dropTables'); ?>" style="display: none">
+	<?php echo Yii::t('database', 'doYouReallyWantToDropTables'); ?>
 	<ul></ul>
 </div>
 
 <div class="list">
 	<div class="buttonContainer">
 		<div class="left">
-			 $this->widget('LinkPager', array('pages' => $pages)); ?>
+			<?php $this->widget('LinkPager', array('pages' => $pages)); ?>
 		</div>
 		<div class="right">
 			<a href="javascript:void(0)" class="icon button" onclick="schemaTables.addTable()">
 				<com:Icon name="add" size="16" />
-				<span> echo Yii::t('database', 'addTable'); ?></span>
+				<span><?php echo Yii::t('database', 'addTable'); ?></span>
 			</a>
 		</div>
 	</div>
@@ -61,113 +40,113 @@
 		<thead>
 			<tr>
 				<th><input type="checkbox" /></th>
-				<th colspan="8"> echo $sort->link('TABLE_NAME', Yii::t('database', 'table')); ?></th>
-				<th> echo $sort->link('TABLE_ROWS', Yii::t('database', 'rows')); ?></th>
-				<th> echo $sort->link('ENGINE', Yii::t('database', 'engine')); ?></th>
-				<th> echo $sort->link('TABLE_COLLATION', Yii::t('database', 'collation')); ?></th>
-				<th> echo $sort->link('DATA_LENGTH', Yii::t('core', 'size')); ?></th>
-				<th> echo $sort->link('DATA_FREE', Yii::t('database', 'overhead')); ?></th>
+				<th colspan="8"><?php echo $sort->link('TABLE_NAME', Yii::t('database', 'table')); ?></th>
+				<th><?php echo $sort->link('TABLE_ROWS', Yii::t('database', 'rows')); ?></th>
+				<th><?php echo $sort->link('ENGINE', Yii::t('database', 'engine')); ?></th>
+				<th><?php echo $sort->link('TABLE_COLLATION', Yii::t('database', 'collation')); ?></th>
+				<th><?php echo $sort->link('DATA_LENGTH', Yii::t('core', 'size')); ?></th>
+				<th><?php echo $sort->link('DATA_FREE', Yii::t('database', 'overhead')); ?></th>
 			</tr>
 		</thead>
 		<tbody>
-			 $totalRowCount = $totalDataLength = $totalDataFree = 0;?>
-			 $canDrop = $canTruncate = false; ?>
-			 if($tableCount < 1) { ?>
+			<?php $totalRowCount = $totalDataLength = $totalDataFree = 0;?>
+			<?php $canDrop = $canTruncate = false; ?>
+			<?php if($tableCount < 1) { ?>
 				<tr>
 					<td class="noEntries" colspan="14">
-						 echo Yii::t('database', 'noTables'); ?>
+						<?php echo Yii::t('database', 'noTables'); ?>
 					</td>
 				</tr>
-			 } ?>
-			 foreach($schema->tables AS $table) { ?>
-				<tr id="tables_ echo $table->TABLE_NAME; ?>">
+			<?php } ?>
+			<?php foreach($schema->tables AS $table) { ?>
+				<tr id="tables_<?php echo $table->TABLE_NAME; ?>">
 					<td>
-						<input type="checkbox" name="tables[]" value=" echo $table->TABLE_NAME; ?>" />
+						<input type="checkbox" name="tables[]" value="<?php echo $table->TABLE_NAME; ?>" />
 					</td>
 					<td>
-						<a href="#tables/ echo $table->TABLE_NAME; ?>/structure">
-							 echo $table->TABLE_NAME; ?>
+						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/structure">
+							<?php echo $table->TABLE_NAME; ?>
 						</a>
 					</td>
 					<td>
-						<a href="#tables/ echo $table->TABLE_NAME; ?>/browse" class="icon">
+						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/browse" class="icon">
 							<com:Icon name="browse" size="16" text="database.browse" />
 						</a>
 					</td>
 					<td>
-						<a href="#tables/ echo $table->TABLE_NAME; ?>/structure" class="icon">
+						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/structure" class="icon">
 							<com:Icon name="structure" size="16" text="database.structure" />
 						</a>
 					</td>
 					<td>
-						<a href="#tables/ echo $table->TABLE_NAME; ?>/search" class="icon">
+						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/search" class="icon">
 							<com:Icon name="search" size="16" text="core.search" />
 						</a>
 					</td>
 					<td>
-						<a href="#tables/ echo $table->TABLE_NAME; ?>/insert" class="icon">
+						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/insert" class="icon">
 							<com:Icon name="insert" size="16" text="database.insert" />
 						</a>
 					</td>
 					<td>
-						 if(Yii::app()->user->privileges->checkTable($table->TABLE_SCHEMA, $table->TABLE_NAME, 'ALTER')) { ?>
+						<?php if(Yii::app()->user->privileges->checkTable($table->TABLE_SCHEMA, $table->TABLE_NAME, 'ALTER')) { ?>
 							<a href="javascript:void(0);" onclick="schemaTables.editTable($(this).closest('tr').attr('id').substr(7))" class="icon">
 								<com:Icon name="edit" size="16" text="core.edit" />
 							</a>
-						 } else { ?>
+						<?php } else { ?>
 							<com:Icon name="edit" size="16" text="core.edit" disabled="true" />
-						 } ?>
+						<?php } ?>
 					</td>
 					<td>
-						 if(Yii::app()->user->privileges->checkTable($table->TABLE_SCHEMA, $table->TABLE_NAME, 'DELETE')) { ?>
+						<?php if(Yii::app()->user->privileges->checkTable($table->TABLE_SCHEMA, $table->TABLE_NAME, 'DELETE')) { ?>
 							<a href="javascript:void(0);" onclick="schemaTables.truncateTable($(this).closest('tr').attr('id').substr(7))" class="icon">
 								<com:Icon name="truncate" size="16" text="database.truncate" />
 							</a>
-							 $canTruncate = true; ?>
-						 } else { ?>
+							<?php $canTruncate = true; ?>
+						<?php } else { ?>
 							<com:Icon name="truncate" size="16" text="database.truncate" disabled="true" />
-						 } ?>
+						<?php } ?>
 					</td>
 					<td>
-						 if(Yii::app()->user->privileges->checkTable($table->TABLE_SCHEMA, $table->TABLE_NAME, 'DROP')) { ?>
+						<?php if(Yii::app()->user->privileges->checkTable($table->TABLE_SCHEMA, $table->TABLE_NAME, 'DROP')) { ?>
 							<a href="javascript:void(0);" onclick="schemaTables.dropTable($(this).closest('tr').attr('id').substr(7))" class="icon">
 								<com:Icon name="delete" size="16" text="database.drop" />
 							</a>
-							 $canDrop = true; ?>
-						 } else { ?>
+							<?php $canDrop = true; ?>
+						<?php } else { ?>
 							<com:Icon name="delete" size="16" text="database.drop" disabled="true" />
-						 } ?>
+						<?php } ?>
 					</td>
 					<td>
-						 echo $table->getRowCount(); ?>
+						<?php echo $table->getRowCount(); ?>
 					</td>
 					<td>
-						 echo $table->ENGINE; ?>
+						<?php echo $table->ENGINE; ?>
 					</td>
 					<td>
-						<dfn title=" echo Collation::getDefinition($table->TABLE_COLLATION); ?>"> echo $table->TABLE_COLLATION; ?></dfn>
+						<dfn title="<?php echo Collation::getDefinition($table->TABLE_COLLATION); ?>"><?php echo $table->TABLE_COLLATION; ?></dfn>
 					</td>
 					<td style="text-align: right">
-						 echo Formatter::fileSize($table->DATA_LENGTH + $table->INDEX_LENGTH); ?>
+						<?php echo Formatter::fileSize($table->DATA_LENGTH + $table->INDEX_LENGTH); ?>
 					</td>
 					<td style="text-align: right">
-						 echo Formatter::fileSize($table->DATA_FREE); ?>
+						<?php echo Formatter::fileSize($table->DATA_FREE); ?>
 					</td>
 				</tr>
-			 $totalRowCount += $table->getRowCount(); ?>
-			 $totalDataLength += $table->DATA_LENGTH; ?>
-			 $totalDataFree += $table->DATA_FREE; ?>
-			 } ?>
+			<?php $totalRowCount += $table->getRowCount(); ?>
+			<?php $totalDataLength += $table->DATA_LENGTH; ?>
+			<?php $totalDataFree += $table->DATA_FREE; ?>
+			<?php } ?>
 		</tbody>
 		<tfoot>
 			<tr>
 				<th><input type="checkbox" /></th>
-				<th colspan="8"> echo Yii::t('database', 'amountTables', array($tableCount, '{amount} '=> $tableCount)); ?></th>
-				<th> echo $totalRowCount; ?></th>
+				<th colspan="8"><?php echo Yii::t('database', 'amountTables', array($tableCount, '{amount} '=> $tableCount)); ?></th>
+				<th><?php echo $totalRowCount; ?></th>
 				<th></th>
 				<th></th>
-				<th style="text-align: right"> echo Formatter::fileSize($totalDataLength); ?></th>
-				<th style="text-align: right"> echo Formatter::fileSize($totalDataFree); ?></th>
+				<th style="text-align: right"><?php echo Formatter::fileSize($totalDataLength); ?></th>
+				<th style="text-align: right"><?php echo Formatter::fileSize($totalDataFree); ?></th>
 			</tr>
 		</tfoot>
 	</table>
@@ -176,35 +155,35 @@
 		<div class="left withSelected">
 			<span class="icon">
 				<com:Icon name="arrow_turn_090" size="16" />
-				<span> echo Yii::t('core', 'withSelected'); ?></span>
+				<span><?php echo Yii::t('core', 'withSelected'); ?></span>
 			</span>
-			 if($canDrop) { ?>
+			<?php if($canDrop) { ?>
 				<a href="javascript:void(0)" onclick="schemaTables.dropTables()" class="icon button">
 					<com:Icon name="delete" size="16" />
-					<span> echo Yii::t('database', 'drop'); ?></span>
+					<span><?php echo Yii::t('database', 'drop'); ?></span>
 				</a>
-			 } else { ?>
+			<?php } else { ?>
 				<span class="icon button">
 					<com:Icon name="delete" size="16" disabled="true" />
-					<span> echo Yii::t('database', 'drop'); ?></span>
+					<span><?php echo Yii::t('database', 'drop'); ?></span>
 				</span>
-			 } ?>
-			 if($canTruncate) { ?>
+			<?php } ?>
+			<?php if($canTruncate) { ?>
 				<a href="javascript:void(0)" onclick="schemaTables.truncateTables()" class="icon button">
 					<com:Icon name="truncate" size="16" />
-					<span> echo Yii::t('database', 'truncate'); ?></span>
+					<span><?php echo Yii::t('database', 'truncate'); ?></span>
 				</a>
-			 } else { ?>
+			<?php } else { ?>
 				<span class="icon button">
 					<com:Icon name="truncate" size="16" disabled="true" />
-					<span> echo Yii::t('database', 'truncate'); ?></span>
+					<span><?php echo Yii::t('database', 'truncate'); ?></span>
 				</span>
-			 } ?>
+			<?php } ?>
 		</div>
 		<div class="right">
 			<a href="javascript:void(0)" class="icon button" onclick="schemaTables.addTable()">
 				<com:Icon name="add" size="16" />
-				<span> echo Yii::t('database', 'addTable'); ?></span>
+				<span><?php echo Yii::t('database', 'addTable'); ?></span>
 			</a>
 		</div>
 	</div>

@@ -1,33 +1,12 @@
-<?php
-
-/*
- * Chive - web based MySQL database management
- * Copyright (C) 2009 Fusonic GmbH
- * 
- * This file is part of Chive.
- *
- * Chive is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * Chive is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library. If not, see <http://www.gnu.org/licenses/>.
- */
 <script type="text/javascript">
-var schema = ' echo $this->schema; ?>';
-var table = ' echo $this->view; ?>';
+var schema = '<?php echo $this->schema; ?>';
+var table = '<?php echo $this->view; ?>';
 
 sideBar.accordion('activate', 1);
 
 </script>
 
- $this->widget('TabMenu', array(
+<?php $this->widget('TabMenu', array(
 		'items'=>array(
 			array(	'label'=> Yii::t('database','browse'),
 					'icon'=>'browse',
@@ -85,13 +64,13 @@ sideBar.accordion('activate', 1);
 	));
 ?>
 
-<div id="dropViewDialog" title=" echo Yii::t('database', 'dropView'); ?>" style="display: none">
-	 echo Yii::t('message', 'doYouReallyWantToDropView'); ?>
+<div id="dropViewDialog" title="<?php echo Yii::t('database', 'dropView'); ?>" style="display: none">
+	<?php echo Yii::t('message', 'doYouReallyWantToDropView'); ?>
 	<ul></ul>
 </div>
 
 <div>
-	 echo $content; ?>
+	<?php echo $content; ?>
 </div>
 
 <script type="text/javascript">
