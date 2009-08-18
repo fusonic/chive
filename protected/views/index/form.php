@@ -2,7 +2,7 @@
 
 <?php echo CHtml::form('', 'post', array('id' => CHtml::$idPrefix)); ?>
 	<h1>
-		<?php echo Yii::t('database', ($index->isNewRecord ? 'addIndex' : 'editIndex')); ?>
+		<?php echo Yii::t('core', ($index->isNewRecord ? 'addIndex' : 'editIndex')); ?>
 	</h1>
 	<?php echo CHtml::errorSummary($index, false); ?>
 	<table class="form">
@@ -30,7 +30,7 @@
 			</tr>
 			<tr>
 				<td>
-					<?php echo Yii::t('database', 'columns'); ?>
+					<?php echo Yii::t('core', 'columns'); ?>
 				</td>
 				<td colspan="2">
 					<table class="formList" id="<?php echo CHtml::$idPrefix; ?>columns">
@@ -49,7 +49,7 @@
 						<tbody class="noItems">
 							<tr>
 								<td colspan="3">
-									<?php echo Yii::t('database', 'noColumnsAddedYet'); ?>
+									<?php echo Yii::t('core', 'noColumnsAddedYet'); ?>
 								</td>
 							</tr>
 						</tbody>
@@ -91,11 +91,11 @@
 	<div class="buttonContainer">
 		<a href="javascript:void(0)" onclick="$('#<?php echo CHtml::$idPrefix; ?>').submit()" class="icon button">
 			<com:Icon name="save" size="16" />
-			<span><?php echo Yii::t('action', 'save'); ?></span>
+			<span><?php echo Yii::t('core', 'save'); ?></span>
 		</a>
 		<a href="javascript:void(0)" onclick="$('#<?php echo CHtml::$idPrefix; ?>').slideUp(500, function() { $(this).parents('tr').remove(); })" class="icon button">
 			<com:Icon name="delete" size="16" />
-			<span><?php echo Yii::t('action', 'cancel'); ?></span>
+			<span><?php echo Yii::t('core', 'cancel'); ?></span>
 		</a>
 	</div>
 </form>

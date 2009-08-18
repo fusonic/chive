@@ -85,13 +85,13 @@ class SqlExporter implements IExporter
 
 		$r .= '<legend>'
 			. CHtml::checkBox('Export[settings][SqlExporter][exportStructure]', $this->settings['exportStructure']) . ' '
-			. CHtml::label(Yii::t('export', 'exportStructure'), 'Export_settings_SqlExporter_exportStructure')
+			. CHtml::label(Yii::t('core', 'exportStructure'), 'Export_settings_SqlExporter_exportStructure')
 			. '</legend>';
 
 		$r .= CHtml::checkBox('Export[settings][SqlExporter][addDropObject]', $this->settings['addDropObject']) . ' '
-			. CHtml::label(Yii::t('export', 'addDropObject'), 'Export_settings_SqlExporter_addDropObject') . '<br />'
+			. CHtml::label(Yii::t('core', 'addDropObject'), 'Export_settings_SqlExporter_addDropObject') . '<br />'
 			. CHtml::checkBox('Export[settings][SqlExporter][addIfNotExists]', $this->settings['addIfNotExists']) . ' '
-			. CHtml::label(Yii::t('export', 'addIfNotExists'), 'Export_settings_SqlExporter_addIfNotExists');
+			. CHtml::label(Yii::t('core', 'addIfNotExists'), 'Export_settings_SqlExporter_addIfNotExists');
 
 		$r .= '</fieldset>';
 
@@ -100,24 +100,24 @@ class SqlExporter implements IExporter
 
 		$r .= '<legend>'
 			. CHtml::checkBox('Export[settings][SqlExporter][exportData]', $this->settings['exportData']) . ' '
-			. CHtml::label(Yii::t('export', 'exportData'), 'Export_settings_SqlExporter_exportData')
+			. CHtml::label(Yii::t('core', 'exportData'), 'Export_settings_SqlExporter_exportData')
 			. '</legend>';
 
-		$r .= CHtml::label(Yii::t('export', 'command'), 'Export_settings_SqlExporter_insertCommand') . ': '
+		$r .= CHtml::label(Yii::t('core', 'command'), 'Export_settings_SqlExporter_insertCommand') . ': '
 			. CHtml::radioButtonList('Export[settings][SqlExporter][insertCommand]', $this->settings['insertCommand'], array(
 					'INSERT' => 'INSERT',
 					'REPLACE' => 'REPLACE',
 				), array('separator' => ' &nbsp; ')) . '<br />'
-			. CHtml::label(Yii::t('export', 'rowsPerInsert'), 'Export_settings_SqlExporter_rowsPerInsert') . ': '
+			. CHtml::label(Yii::t('core', 'rowsPerInsert'), 'Export_settings_SqlExporter_rowsPerInsert') . ': '
 			. CHtml::textField('Export[settings][SqlExporter][rowsPerInsert]', $this->settings['rowsPerInsert']) . '<br />'
 			. CHtml::checkBox('Export[settings][SqlExporter][completeInserts]', $this->settings['completeInserts']) . ' '
-			. CHtml::label(Yii::t('export', 'useCompleteInserts'), 'Export_settings_SqlExporter_completeInserts') . '<br />'
+			. CHtml::label(Yii::t('core', 'useCompleteInserts'), 'Export_settings_SqlExporter_completeInserts') . '<br />'
 			. CHtml::checkBox('Export[settings][SqlExporter][ignoreInserts]', $this->settings['ignoreInserts']) . ' '
-			. CHtml::label(Yii::t('export', 'useInsertIgnore'), 'Export_settings_SqlExporter_ignoreInserts') . '<br />'
+			. CHtml::label(Yii::t('core', 'useInsertIgnore'), 'Export_settings_SqlExporter_ignoreInserts') . '<br />'
 			. CHtml::checkBox('Export[settings][SqlExporter][delayedInserts]', $this->settings['delayedInserts']) . ' '
-			. CHtml::label(Yii::t('export', 'useDelayedInserts'), 'Export_settings_SqlExporter_delayedInserts') . '<br />'
+			. CHtml::label(Yii::t('core', 'useDelayedInserts'), 'Export_settings_SqlExporter_delayedInserts') . '<br />'
 			. CHtml::checkBox('Export[settings][SqlExporter][hexBlobs]', $this->settings['hexBlobs']) . ' '
-			. CHtml::label(Yii::t('export', 'useHexForBlob'), 'Export_settings_SqlExporter_hexBlobs') . '<br />';
+			. CHtml::label(Yii::t('core', 'useHexForBlob'), 'Export_settings_SqlExporter_hexBlobs') . '<br />';
 
 		$r .= '</fieldset>';
 

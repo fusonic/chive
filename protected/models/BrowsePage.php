@@ -208,7 +208,7 @@ class BrowsePage extends CModel
 					if($queryCount == 1 && $name && $this->schema != $name)
 					{
 						$response->redirectUrl = Yii::app()->baseUrl . '/schema/' . $name . '#sql';
-						$response->addNotification('success', Yii::t('message', 'successChangeDatabase', array('{name}' => $name)));
+						$response->addNotification('success', Yii::t('core', 'successChangeDatabase', array('{name}' => $name)));
 					}
 				}
 				elseif($type == "create")
@@ -267,7 +267,7 @@ class BrowsePage extends CModel
 					catch (CDbException $ex)
 					{
 						$ex = new DbException($cmd);
-						$response->addNotification('error', Yii::t('message', 'errorExecuteQuery'), $ex->getText(), $ex->getSql());
+						$response->addNotification('error', Yii::t('core', 'errorExecuteQuery'), $ex->getText(), $ex->getSql());
 					}
 
 
@@ -281,14 +281,14 @@ class BrowsePage extends CModel
 						$result = $cmd->execute();
 						$time = round(microtime(true) - $start, 6);
 
-						$response->addNotification('success', Yii::t('message', 'successExecuteQuery'), Yii::t('message', 'affectedRowsQueryTime', array($result,  '{rows}'=>$result, '{time}'=>$time)), $sqlQuery->getQuery());
+						$response->addNotification('success', Yii::t('core', 'successExecuteQuery'), Yii::t('core', 'affectedRowsQueryTime', array($result,  '{rows}'=>$result, '{time}'=>$time)), $sqlQuery->getQuery());
 
 
 					}
 					catch(CDbException $ex)
 					{
 						$dbException = new DbException($cmd);
-						$response->addNotification('error', Yii::t('message', 'errorExecuteQuery'), Yii::t('message', 'sqlErrorOccured', array('{errno}'=>$dbException->getNumber(), '{errmsg}'=>$dbException->getText())));
+						$response->addNotification('error', Yii::t('core', 'errorExecuteQuery'), Yii::t('core', 'sqlErrorOccured', array('{errno}'=>$dbException->getNumber(), '{errmsg}'=>$dbException->getText())));
 					}
 
 				}

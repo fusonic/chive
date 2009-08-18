@@ -70,12 +70,12 @@ class InformationController extends Controller
 				$cmd->prepare();
 				$cmd->execute();
 
-				$response->addNotification('success', Yii::t('message', 'successKillProcess', array('{id}' => $id)), null, $sql);
+				$response->addNotification('success', Yii::t('core', 'successKillProcess', array('{id}' => $id)), null, $sql);
 			}
 			catch(CDbException $ex)
 			{
 				$ex = new DbException($cmd);
-				$response->addNotification('error', Yii::t('message', 'errorKillProcess', array('{id}' => $id)), $ex->getText(), $sql);
+				$response->addNotification('error', Yii::t('core', 'errorKillProcess', array('{id}' => $id)), $ex->getText(), $sql);
 			}
 
 		}

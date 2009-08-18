@@ -83,7 +83,7 @@ class ColumnController extends Controller
 			{
 				$response = new AjaxResponse();
 				$response->addNotification('success',
-					Yii::t('message', 'successAddColumn', array('{col}' => $column->COLUMN_NAME)),
+					Yii::t('core', 'successAddColumn', array('{col}' => $column->COLUMN_NAME)),
 					null,
 					$sql);
 				$response->refresh = true;
@@ -104,14 +104,14 @@ class ColumnController extends Controller
 						$sql = $index->save();
 
 						$response->addNotification('success',
-							Yii::t('message', 'successCreateIndex', array('{index}' => $index->INDEX_NAME)),
+							Yii::t('core', 'successCreateIndex', array('{index}' => $index->INDEX_NAME)),
 							null,
 							$sql);
 					}
 					catch(DbException $ex)
 					{
 						$response->addNotification('error',
-							Yii::t('message', 'errorCreateIndex', array('{index}' => $index->INDEX_NAME)),
+							Yii::t('core', 'errorCreateIndex', array('{index}' => $index->INDEX_NAME)),
 							$ex->getText(),
 							$ex->getSql());
 					}
@@ -186,14 +186,14 @@ class ColumnController extends Controller
 		{
 			$command = $column->move($_POST['command']);
 			$response->addNotification('success',
-				Yii::t('message', 'successMoveColumn', array('{col}' => $column->COLUMN_NAME)),
+				Yii::t('core', 'successMoveColumn', array('{col}' => $column->COLUMN_NAME)),
 				null,
 				$command);
 		}
 		catch(DbException $ex)
 		{
 			$response->addNotification('error',
-				Yii::t('message', 'errorMoveColumn', array('{col}' => $column->COLUMN_NAME)),
+				Yii::t('core', 'errorMoveColumn', array('{col}' => $column->COLUMN_NAME)),
 				$ex->getText(),
 				$ex->getSql());
 			$response->refresh = true;
@@ -225,7 +225,7 @@ class ColumnController extends Controller
 			catch(DbException $ex)
 			{
 				$response->addNotification('error',
-					Yii::t('message', 'errorDropColumn', array('{col}' => $column->COLUMN_NAME)),
+					Yii::t('core', 'errorDropColumn', array('{col}' => $column->COLUMN_NAME)),
 					null,
 					$ex->getText());
 				$response->refresh = true;
@@ -236,7 +236,7 @@ class ColumnController extends Controller
 		if($count > 0)
 		{
 			$response->addNotification('success',
-				Yii::t('message', 'successDropColumn', array($count, '{col}' => $droppedColumns[0], '{colCount}' => $count)),
+				Yii::t('core', 'successDropColumn', array($count, '{col}' => $droppedColumns[0], '{colCount}' => $count)),
 				($count > 1 ? implode(', ', $droppedColumns) : null),
 				implode("\n", $droppedSqls));
 		}

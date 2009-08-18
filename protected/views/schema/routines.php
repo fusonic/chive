@@ -1,5 +1,5 @@
-<div id="dropRoutinesDialog" title="<?php echo Yii::t('database', 'dropRoutines'); ?>" style="display: none">
-	<?php echo Yii::t('database', 'doYouReallyWantToDropRoutines'); ?>
+<div id="dropRoutinesDialog" title="<?php echo Yii::t('core', 'dropRoutines'); ?>" style="display: none">
+	<?php echo Yii::t('core', 'doYouReallyWantToDropRoutines'); ?>
 	<ul></ul>
 </div>
 
@@ -11,11 +11,11 @@
 		<div class="right">
 			<a href="javascript:void(0)" class="icon button" onclick="schemaRoutines.addProcedure()">
 				<com:Icon name="add" size="16" />
-				<span><?php echo Yii::t('database', 'addProcedure'); ?></span>
+				<span><?php echo Yii::t('core', 'addProcedure'); ?></span>
 			</a>
 			<a href="javascript:void(0)" class="icon button" onclick="schemaRoutines.addFunction()">
 				<com:Icon name="add" size="16" />
-				<span><?php echo Yii::t('database', 'addFunction'); ?></span>
+				<span><?php echo Yii::t('core', 'addFunction'); ?></span>
 			</a>
 		</div>
 	</div>
@@ -30,14 +30,14 @@
 		<thead>
 			<tr>
 				<th><input type="checkbox" /></th>
-				<th colspan="3"><?php echo $sort->link('ROUTINE_NAME', Yii::t('database', 'routine')); ?></th>
+				<th colspan="3"><?php echo $sort->link('ROUTINE_NAME', Yii::t('core', 'routine')); ?></th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php if($routineCount < 1) { ?>
 				<tr>
 					<td class="noEntries" colspan="4">
-						<?php echo Yii::t('database', 'noRoutines'); ?>
+						<?php echo Yii::t('core', 'noRoutines'); ?>
 					</td>
 				</tr>
 			<?php } ?>
@@ -72,7 +72,7 @@
 		<tfoot>
 			<tr>
 				<th><input type="checkbox" /></th>
-				<th colspan="3"><?php echo Yii::t('database', 'amountRoutines', array($routineCount, '{amount} '=> $routineCount)); ?></th>
+				<th colspan="3"><?php echo Yii::t('core', 'amountRoutines', array($routineCount, '{amount} '=> $routineCount)); ?></th>
 			</tr>
 		</tfoot>
 	</table>
@@ -85,17 +85,17 @@
 			</span>
 			<a href="javascript:void(0)" onclick="schemaRoutines.dropRoutines()" class="icon button">
 				<com:Icon name="delete" size="16" />
-				<span><?php echo Yii::t('database', 'drop'); ?></span>
+				<span><?php echo Yii::t('core', 'drop'); ?></span>
 			</a>
 		</div>
 		<div class="right">
 			<a href="javascript:void(0)" class="icon button" onclick="schemaRoutines.addProcedure()">
 				<com:Icon name="add" size="16" />
-				<span><?php echo Yii::t('database', 'addProcedure'); ?></span>
+				<span><?php echo Yii::t('core', 'addProcedure'); ?></span>
 			</a>
 			<a href="javascript:void(0)" class="icon button" onclick="schemaRoutines.addFunction()">
 				<com:Icon name="add" size="16" />
-				<span><?php echo Yii::t('database', 'addFunction'); ?></span>
+				<span><?php echo Yii::t('core', 'addFunction'); ?></span>
 			</a>
 		</div>
 	</div>

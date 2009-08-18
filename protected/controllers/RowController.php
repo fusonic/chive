@@ -106,7 +106,7 @@ class RowController extends Controller
 			try 
 			{
 				$sql = $row->insert();
-				$response->addNotification('success', Yii::t('message', 'successInsertRow'), null, $sql);
+				$response->addNotification('success', Yii::t('core', 'successInsertRow'), null, $sql);
 				
 				if($_POST['insertAndReturn'])
 				{
@@ -121,7 +121,7 @@ class RowController extends Controller
 			catch (DbException $ex) 
 			{
 				$response->refresh = true;
-				$response->addNotification('error', Yii::t('message', 'errorInsertRow'), $ex->getText(), $ex->getSql());
+				$response->addNotification('error', Yii::t('core', 'errorInsertRow'), $ex->getText(), $ex->getSql());
 			}
 			
 			$response->send();
@@ -230,13 +230,13 @@ class RowController extends Controller
 				}
 			}
 			
-			$response->addNotification('success', Yii::t('message', 'successUpdateRow'), null, $sql);
+			$response->addNotification('success', Yii::t('core', 'successUpdateRow'), null, $sql);
 
 
 		}
 		catch (DbException $ex)
 		{
-			$response->addNotification('error', Yii::t('message', 'errorUpdateRow'), $ex->getText(), $ex->getSql());
+			$response->addNotification('error', Yii::t('core', 'errorUpdateRow'), $ex->getText(), $ex->getSql());
 			$response->addData(null, array('error'=>true));
 		}
 
@@ -262,11 +262,11 @@ class RowController extends Controller
 		}
 		catch (DbException $ex)
 		{
-			$response->addNotification('error', Yii::t('message', 'errorDeleteRow'), $ex->getText(), $sql, array('isSticky'=>true));
+			$response->addNotification('error', Yii::t('core', 'errorDeleteRow'), $ex->getText(), $sql, array('isSticky'=>true));
 		}
 
 		$response->refresh = true;
-		$response->addNotification('success', Yii::t('message', 'successDeleteRows', array(count($data), '{rowCount}' => count($data))), null, $sql);
+		$response->addNotification('success', Yii::t('core', 'successDeleteRows', array(count($data), '{rowCount}' => count($data))), null, $sql);
 
 		$response->send();
 	}
@@ -340,12 +340,12 @@ class RowController extends Controller
 				
 				$sql = $row->save();
 				$response->refresh = true;
-				$response->addNotification('success', Yii::t('message', 'successUpdateRow'), null, $sql);
+				$response->addNotification('success', Yii::t('core', 'successUpdateRow'), null, $sql);
 				
 			}
 			catch(DbException $ex) 
 			{
-				$response->addNotification('error', Yii::t('message', 'updatingRowFailed'), $ex->getText(), $ex->getSql());
+				$response->addNotification('error', Yii::t('core', 'updatingRowFailed'), $ex->getText(), $ex->getSql());
 			}
 			
 			$response->send();

@@ -266,7 +266,7 @@ class Row extends CActiveRecord
 	{
 		if($this->getIsNewRecord())
 		{
-			throw new CDbException(Yii::t('yii','The active record cannot be updated because it is new.'));
+			throw new CDbException(Yii::t('core','The active record cannot be updated because it is new.'));
 		}
 		if(!$this->beforeSave())
 		{
@@ -369,7 +369,7 @@ class Row extends CActiveRecord
 
 		if($this->getIsNewRecord())
 		{
-			throw new CDbException(Yii::t('yii','The active record cannot be deleted because it is new.'));
+			throw new CDbException(Yii::t('core','The active record cannot be deleted because it is new.'));
 		}
 		if(!$this->beforeDelete())
 		{

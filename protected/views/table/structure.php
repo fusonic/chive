@@ -1,16 +1,16 @@
-<div id="dropColumnsDialog" title="<?php echo Yii::t('database', 'dropColumns'); ?>" style="display: none">
-	<?php echo Yii::t('database', 'doYouReallyWantToDropColumns'); ?>
+<div id="dropColumnsDialog" title="<?php echo Yii::t('core', 'dropColumns'); ?>" style="display: none">
+	<?php echo Yii::t('core', 'doYouReallyWantToDropColumns'); ?>
 	<ul></ul>
 </div>
-<div id="addIndexDialog" title="<?php echo Yii::t('database', 'addIndex'); ?>" style="display: none">
-	<div><?php echo Yii::t('database', 'enterNameForNewIndex'); ?></div>
+<div id="addIndexDialog" title="<?php echo Yii::t('core', 'addIndex'); ?>" style="display: none">
+	<div><?php echo Yii::t('core', 'enterNameForNewIndex'); ?></div>
 	<input type="text" id="newIndexName" name="newIndexName" />
 </div>
-<div id="dropIndexDialog" title="<?php echo Yii::t('database', 'dropIndex'); ?>" style="display: none">
-	<?php echo Yii::t('database', 'doYouReallyWantToDropIndex');?>
+<div id="dropIndexDialog" title="<?php echo Yii::t('core', 'dropIndex'); ?>" style="display: none">
+	<?php echo Yii::t('core', 'doYouReallyWantToDropIndex');?>
 </div>
-<div id="dropTriggerDialog" title="<?php echo Yii::t('database', 'dropTrigger'); ?>" style="display: none">
-	<?php echo Yii::t('database', 'doYouReallyWantToDropTrigger'); ?>
+<div id="dropTriggerDialog" title="<?php echo Yii::t('core', 'dropTrigger'); ?>" style="display: none">
+	<?php echo Yii::t('core', 'doYouReallyWantToDropTrigger'); ?>
 	<ul></ul>
 </div>
 
@@ -39,19 +39,19 @@
 		<thead>
 			<tr>
 				<th><input type="checkbox" /></th>
-				<th><?php echo Yii::t('database','field'); ?></th>
-				<th><?php echo Yii::t('database','type'); ?></th>
-				<th><?php echo Yii::t('database','collation'); ?></th>
-				<th><?php echo Yii::t('database','null'); ?></th>
-				<th><?php echo Yii::t('database','default'); ?></th>
-				<th colspan="<?php if(is_array($foreignKeys)) { ?>9<?php } else { ?>8<?php } ?>"><?php echo Yii::t('database','extra'); ?></th>
+				<th><?php echo Yii::t('core','field'); ?></th>
+				<th><?php echo Yii::t('core','type'); ?></th>
+				<th><?php echo Yii::t('core','collation'); ?></th>
+				<th><?php echo Yii::t('core','null'); ?></th>
+				<th><?php echo Yii::t('core','default'); ?></th>
+				<th colspan="<?php if(is_array($foreignKeys)) { ?>9<?php } else { ?>8<?php } ?>"><?php echo Yii::t('core','extra'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php if(count($table->columns) < 1) { ?>
 				<tr>
 					<td class="noEntries" colspan="15">
-						<?php echo Yii::t('database', 'noColumns'); ?>
+						<?php echo Yii::t('core', 'noColumns'); ?>
 					</td>
 				</tr>
 			<?php } ?>
@@ -176,7 +176,7 @@
 		<tfoot>
 			<tr>
 				<th><input type="checkbox" /></th>
-				<th colspan="<?php if(is_array($foreignKeys)) { ?>15<?php } else { ?>14<?php } ?>"><?php echo Yii::t('database', 'XColumns', array('{count}' => count($table->columns))); ?></th>
+				<th colspan="<?php if(is_array($foreignKeys)) { ?>15<?php } else { ?>14<?php } ?>"><?php echo Yii::t('core', 'XColumns', array('{count}' => count($table->columns))); ?></th>
 			</tr>
 		</tfoot>
 	</table>
@@ -191,48 +191,48 @@
 			<?php if($canAlter) { ?>
 				<a href="javascript:void(0)" onclick="tableStructure.dropColumns()" class="icon button">
 					<com:Icon name="delete" size="16" />
-					<span><?php echo Yii::t('database', 'drop'); ?></span>
+					<span><?php echo Yii::t('core', 'drop'); ?></span>
 				</a>
 				<?php if(!$table->getHasPrimaryKey()) { ?>
 					<a href="javascript:void(0)" onclick="tableStructure.addIndex('primary')" class="icon button">
 						<com:Icon name="key_primary" size="16" text="database.primaryKey" />
-						<span><?php echo Yii::t('database', 'primaryKey'); ?></span>
+						<span><?php echo Yii::t('core', 'primaryKey'); ?></span>
 					</a>
 				<?php } ?>
 				<a href="javascript:void(0)" onclick="tableStructure.addIndex('index')" class="icon button">
 					<com:Icon name="key_index" size="16" text="database.index" />
-					<span><?php echo Yii::t('database', 'index'); ?></span>
+					<span><?php echo Yii::t('core', 'index'); ?></span>
 				</a>
 				<a href="javascript:void(0)" onclick="tableStructure.addIndex('unique')" class="icon button">
 					<com:Icon name="key_unique" size="16" text="database.uniqueKey" />
-					<span><?php echo Yii::t('database', 'uniqueKey'); ?></span>
+					<span><?php echo Yii::t('core', 'uniqueKey'); ?></span>
 				</a>
 				<a href="javascript:void(0)" onclick="tableStructure.addIndex('fulltext')" class="icon button">
 					<com:Icon name="key_fulltext" size="16" text="database.fulltextIndex" />
-					<span><?php echo Yii::t('database', 'fulltextIndex'); ?></span>
+					<span><?php echo Yii::t('core', 'fulltextIndex'); ?></span>
 				</a>
 			<?php } else { ?>
 				<span class="icon button">
 					<com:Icon name="delete" size="16" disabled="true" />
-					<span><?php echo Yii::t('database', 'drop'); ?></span>
+					<span><?php echo Yii::t('core', 'drop'); ?></span>
 				</span>
 				<?php if(!$table->getHasPrimaryKey()) { ?>
 					<span class="icon button">
 						<com:Icon name="key_primary" size="16" text="database.primaryKey" disabled="true" />
-						<span><?php echo Yii::t('database', 'primaryKey'); ?></span>
+						<span><?php echo Yii::t('core', 'primaryKey'); ?></span>
 					</span>
 				<?php } ?>
 				<span class="icon button">
 					<com:Icon name="key_index" size="16" text="database.index" disabled="true" />
-					<span><?php echo Yii::t('database', 'index'); ?></span>
+					<span><?php echo Yii::t('core', 'index'); ?></span>
 				</span>
 				<span class="icon button">
 					<com:Icon name="key_unique" size="16" text="database.uniqueKey" disabled="true" />
-					<span><?php echo Yii::t('database', 'uniqueKey'); ?></span>
+					<span><?php echo Yii::t('core', 'uniqueKey'); ?></span>
 				</span>
 				<span class="icon button">
 					<com:Icon name="key_fulltext" size="16" text="database.fulltextIndex" disabled="true" />
-					<span><?php echo Yii::t('database', 'fulltextIndex'); ?></span>
+					<span><?php echo Yii::t('core', 'fulltextIndex'); ?></span>
 				</span>
 			<?php } ?>
 		</div>
@@ -241,12 +241,12 @@
 			<?php if($canAlter) { ?>
 				<a href="javascript:void(0)" onclick="tableStructure.addColumn()" class="icon button">
 					<com:Icon name="add" size="16" />
-					<span><?php echo Yii::t('database', 'addColumn'); ?></span>
+					<span><?php echo Yii::t('core', 'addColumn'); ?></span>
 				</a>
 			<?php } else { ?>
 				<span class="icon button">
 					<com:Icon name="add" size="16" disabled="true" />
-					<span><?php echo Yii::t('database', 'addColumn'); ?></span>
+					<span><?php echo Yii::t('core', 'addColumn'); ?></span>
 				</span>
 			<?php } ?>
 		</div>
@@ -272,17 +272,17 @@
 					</colgroup>
 					<thead>
 						<tr>
-							<th><?php echo Yii::t('database', 'index'); ?></th>
-							<th><?php echo Yii::t('database', 'type'); ?></th>
-							<th><?php echo Yii::t('database', 'cardinality'); ?></th>
-							<th colspan="3"><?php echo Yii::t('database', 'field'); ?></th>
+							<th><?php echo Yii::t('core', 'index'); ?></th>
+							<th><?php echo Yii::t('core', 'type'); ?></th>
+							<th><?php echo Yii::t('core', 'cardinality'); ?></th>
+							<th colspan="3"><?php echo Yii::t('core', 'field'); ?></th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php if(count($table->indices) < 1) { ?>
 							<tr>
 								<td class="noEntries" colspan="6">
-									<?php echo Yii::t('database', 'noIndices'); ?>
+									<?php echo Yii::t('core', 'noIndices'); ?>
 								</td>
 							</tr>
 						<?php } ?>
@@ -339,12 +339,12 @@
 						<?php if($canAlter) { ?>
 							<a href="javascript:void(0)" onclick="tableStructure.addIndexForm()" class="icon button">
 								<com:Icon name="add" size="16" />
-								<span><?php echo Yii::t('database', 'addIndex'); ?></span>
+								<span><?php echo Yii::t('core', 'addIndex'); ?></span>
 							</a>
 						<?php } else { ?>
 							<span class="icon button">
 								<com:Icon name="add" size="16" disabled="disabled" />
-								<span><?php echo Yii::t('database', 'addIndex'); ?></span>
+								<span><?php echo Yii::t('core', 'addIndex'); ?></span>
 							</span>
 						<?php } ?>
 					</div>
@@ -363,7 +363,7 @@
 					</colgroup>
 					<thead>
 						<tr>
-							<th><?php echo Yii::t('database', 'trigger'); ?></th>
+							<th><?php echo Yii::t('core', 'trigger'); ?></th>
 							<th colspan="3"><?php echo Yii::t('core', 'event'); ?></th>
 						</tr>
 					</thead>
@@ -371,7 +371,7 @@
 						<?php if(count($table->triggers) < 1) { ?>
 							<tr>
 								<td class="noEntries" colspan="4">
-									<?php echo Yii::t('database', 'noTriggers'); ?>
+									<?php echo Yii::t('core', 'noTriggers'); ?>
 								</td>
 							</tr>
 						<?php } ?>
@@ -400,7 +400,7 @@
 					<div class="right">
 						<a href="javascript:void(0)" onclick="tableStructure.addTrigger()" class="icon button">
 							<com:Icon name="add" size="16" />
-							<span><?php echo Yii::t('database', 'addTrigger'); ?></span>
+							<span><?php echo Yii::t('core', 'addTrigger'); ?></span>
 						</a>
 					</div>
 				</div>
@@ -420,16 +420,16 @@
 				</colgroup>
 				<thead>
 					<tr>
-						<th colspan="2"><?php echo Yii::t('database', 'spaceUsage'); ?></th>
+						<th colspan="2"><?php echo Yii::t('core', 'spaceUsage'); ?></th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td><?php echo Yii::t('database', 'data'); ?></td>
+						<td><?php echo Yii::t('core', 'data'); ?></td>
 						<td class="right"><?php echo Formatter::fileSize($table->DATA_LENGTH); ?></td>
 					</tr>
 					<tr>
-						<td><?php echo Yii::t('database', 'index'); ?></td>
+						<td><?php echo Yii::t('core', 'index'); ?></td>
 						<td class="right"><?php echo Formatter::fileSize($table->INDEX_LENGTH); ?></td>
 					</tr>
 					<tr>
@@ -459,15 +459,15 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td><?php echo Yii::t('database', 'storageEngine'); ?></td>
+						<td><?php echo Yii::t('core', 'storageEngine'); ?></td>
 						<td><?php echo $table->ENGINE; ?></td>
 					</tr>
 					<tr>
-						<td><?php echo Yii::t('database', 'format'); ?></td>
+						<td><?php echo Yii::t('core', 'format'); ?></td>
 						<td><?php echo $table->ROW_FORMAT; ?></td>
 					</tr>
 					<tr>
-						<td><?php echo Yii::t('database', 'collation'); ?></td>
+						<td><?php echo Yii::t('core', 'collation'); ?></td>
 						<td>
 							<dfn class="collation" title="<?php echo Collation::getDefinition($table->TABLE_COLLATION); ?>">
 								<?php echo $table->TABLE_COLLATION; ?>
@@ -475,20 +475,20 @@
 						</td>
 					</tr>
 					<tr>
-						<td><?php echo Yii::t('database', 'rows'); ?></td>
+						<td><?php echo Yii::t('core', 'rows'); ?></td>
 						<td><?php echo $table->getRowCount(); ?></td>
 					</tr>
 					<tr>
-						<td><?php echo Yii::t('database', 'averageRowLength'); ?></td>
+						<td><?php echo Yii::t('core', 'averageRowLength'); ?></td>
 						<td><?php echo $table->AVG_ROW_LENGTH; ?></td>
 					</tr>
 					<tr>
-						<td><?php echo Yii::t('database', 'averageRowSize'); ?></td>
+						<td><?php echo Yii::t('core', 'averageRowSize'); ?></td>
 						<td><?php echo Formatter::fileSize($table->getAverageRowSize()); ?></td>
 					</tr>
 					<?php if ($table->AUTO_INCREMENT) { ?>
 						<tr>
-							<td><?php echo Yii::t('database', 'nextAutoincrementValue'); ?></td>
+							<td><?php echo Yii::t('core', 'nextAutoincrementValue'); ?></td>
 							<td><?php echo $table->AUTO_INCREMENT; ?></td>
 						</tr>
 					<?php } ?>

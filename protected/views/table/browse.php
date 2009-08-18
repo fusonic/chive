@@ -1,7 +1,7 @@
 #<?php echo CHtml::form(Yii::app()->baseUrl . '/' . str_replace('browse', 'sql', Yii::app()->getRequest()->pathInfo), 'post'); ?>
 
-<div id="deleteRowDialog" title="<?php echo Yii::t('message', 'deleteRows'); ?>" style="display: none">
-	<?php echo Yii::t('message', 'doYouReallyWantToDeleteSelectedRows'); ?>
+<div id="deleteRowDialog" title="<?php echo Yii::t('core', 'deleteRows'); ?>" style="display: none">
+	<?php echo Yii::t('core', 'doYouReallyWantToDeleteSelectedRows'); ?>
 </div>
 
 <table style="width: 100%;">
@@ -30,7 +30,7 @@
 				<?php } else { ?>
 					<com:Icon size="16" name="square_red" text="core.off" htmlOptions={array('id'=>'profiling_indicator')} />
 				<?php } ?>
-				<span><?php echo Yii::t('database', 'profiling'); ?></span>
+				<span><?php echo Yii::t('core', 'profiling'); ?></span>
 			</a>
 			<br/><br/>
 			<a class="icon button" href="javascript:void(0);" onclick="$.post(baseUrl + '/ajaxSettings/toggle', {
@@ -163,7 +163,7 @@
 	</div>
 
 <?php } elseif($isSent) { ?>
-	<?php echo Yii::t('message', 'emptyResultSet'); ?>
+	<?php echo Yii::t('core', 'emptyResultSet'); ?>
 <?php } ?>
 
 <script type="text/javascript">

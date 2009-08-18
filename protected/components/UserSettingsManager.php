@@ -124,7 +124,7 @@ class UserSettingsManager
 		}
 		else
 		{
-			throw new CException(Yii::t('yii','The setting {setting} does not exist.',
+			throw new CException(Yii::t('core','The setting {setting} does not exist.',
 				array('{setting}' => $id)));
 		}
 	}
@@ -138,7 +138,7 @@ class UserSettingsManager
 		}
 		else
 		{
-			throw new CException(Yii::t('yii','The setting {setting} does not exist.',
+			throw new CException(Yii::t('core','The setting {setting} does not exist.',
 				array('{setting}'=>$id)));
 		}
 	}

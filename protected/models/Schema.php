@@ -83,8 +83,8 @@ class Schema extends ActiveRecord
 	{
 		return array(
 			'SCHEMA_NAME' => Yii::t('core', 'name'),
-			'DEFAULT_COLLATION_NAME' => Yii::t('database', 'collation'),
-			'tableCount' => Yii::t('database', 'tables'),
+			'DEFAULT_COLLATION_NAME' => Yii::t('core', 'collation'),
+			'tableCount' => Yii::t('core', 'tables'),
 		);
 	}
 

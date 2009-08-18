@@ -179,7 +179,7 @@ class TableController extends Controller
 			{
 				$response = new AjaxResponse();
 				$response->addNotification('success',
-				Yii::t('message', 'successAddTable', array('{table}' => $table->TABLE_NAME)),
+				Yii::t('core', 'successAddTable', array('{table}' => $table->TABLE_NAME)),
 				null,
 				$sql);
 				$response->redirectUrl = '#tables/' . $table->TABLE_NAME . '/structure';
@@ -201,7 +201,7 @@ class TableController extends Controller
 						$sql = $index->save();
 
 						$response->addNotification('success',
-						Yii::t('message', 'successCreateIndex', array('{index}' => $index->INDEX_NAME)),
+						Yii::t('core', 'successCreateIndex', array('{index}' => $index->INDEX_NAME)),
 						null,
 						$sql);
 						$response->refresh = true;
@@ -209,7 +209,7 @@ class TableController extends Controller
 					catch(DbException $ex)
 					{
 						$response->addNotification('error',
-							Yii::t('message', 'errorCreateIndex', array('{index}' => $index->INDEX_NAME)),
+							Yii::t('core', 'errorCreateIndex', array('{index}' => $index->INDEX_NAME)),
 							$ex->getText(),
 							$ex->getSql());
 					}
@@ -360,7 +360,7 @@ class TableController extends Controller
 			catch(DbException $ex)
 			{
 				$response->addNotification('error',
-				Yii::t('message', 'errorTruncateTable', array('{table}' => $this->table)),
+				Yii::t('core', 'errorTruncateTable', array('{table}' => $this->table)),
 				$ex->getText(),
 				$ex->getSql());
 			}
@@ -370,7 +370,7 @@ class TableController extends Controller
 		if($count > 0)
 		{
 			$response->addNotification('success',
-			Yii::t('message', 'successTruncateTable', array($count, '{table}' => $truncatedTables[0], '{tableCount}' => $count)),
+			Yii::t('core', 'successTruncateTable', array($count, '{table}' => $truncatedTables[0], '{tableCount}' => $count)),
 			($count > 1 ? implode(', ', $truncatedTables) : null),
 			implode("\n", $truncatedSqls));
 		}
@@ -406,7 +406,7 @@ class TableController extends Controller
 			catch(DbException $ex)
 			{
 				$response->addNotification('error',
-				Yii::t('message', 'errorDropTable', array('{table}' => $table)),
+				Yii::t('core', 'errorDropTable', array('{table}' => $table)),
 				$ex->getText(),
 				$ex->getSql());
 			}
@@ -416,7 +416,7 @@ class TableController extends Controller
 		if($count > 0)
 		{
 			$response->addNotification('success',
-			Yii::t('message', 'successDropTable', array($count, '{table}' => $droppedTables[0], '{tableCount}' => $count)),
+			Yii::t('core', 'successDropTable', array($count, '{table}' => $droppedTables[0], '{tableCount}' => $count)),
 			($count > 1 ? implode(', ', $droppedTables) : null),
 			implode("\n", $droppedSqls));
 		}

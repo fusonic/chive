@@ -100,54 +100,54 @@
 		</tr>
 		<tr>
 			<td>
-				<?php echo Yii::t('database', 'attribute'); ?>
+				<?php echo Yii::t('core', 'attribute'); ?>
 			</td>
 			<td colspan="2">
 				<?php echo CHtml::activeRadioButton($column, 'attribute', array('value' => '', 'id' => CHtml::$idPrefix . 'Column_attribute_')); ?>
-				<?php echo CHtml::label(Yii::t('database', 'noAttribute'), 'Column_attribute_', array('style' => 'font-style: italic')); ?>
+				<?php echo CHtml::label(Yii::t('core', 'noAttribute'), 'Column_attribute_', array('style' => 'font-style: italic')); ?>
 			</td>
 		</tr>
 		<tr>
 			<td />
 			<td>
 				<?php echo CHtml::activeRadioButton($column, 'attribute', array('value' => 'unsigned', 'id' => CHtml::$idPrefix . 'Column_attribute_unsigned')); ?>
-				<?php echo CHtml::label(Yii::t('database', 'unsigned'), 'Column_attribute_unsigned'); ?>
+				<?php echo CHtml::label(Yii::t('core', 'unsigned'), 'Column_attribute_unsigned'); ?>
 			</td>
 			<td>
 				<?php echo CHtml::activeRadioButton($column, 'attribute', array('value' => 'unsigned zerofill', 'id' => CHtml::$idPrefix . 'Column_attribute_unsignedzerofill')); ?>
-				<?php echo CHtml::label(Yii::t('database', 'unsignedZerofill'), 'Column_attribute_unsignedzerofill'); ?>
+				<?php echo CHtml::label(Yii::t('core', 'unsignedZerofill'), 'Column_attribute_unsignedzerofill'); ?>
 			</td>
 		</tr>
 		<tr>
 			<td />
 			<td colspan="2">
 				<?php echo CHtml::activeRadioButton($column, 'attribute', array('value' => 'on update current_timestamp', 'id' => CHtml::$idPrefix . 'Column_attribute_on_update_current_timestamp')); ?>
-				<?php echo CHtml::label(Yii::t('database', 'onUpdateCurrentTimestamp'), 'Column_attribute_on_update_current_timestamp'); ?>
+				<?php echo CHtml::label(Yii::t('core', 'onUpdateCurrentTimestamp'), 'Column_attribute_on_update_current_timestamp'); ?>
 			</td>
 		</tr>
 		<?php if($column->isNewRecord) { ?>
 			<tr id="<?php echo CHtml::$idPrefix; ?>settingSize">
 				<td>
-					<?php echo Yii::t('database', 'createIndex'); ?>
+					<?php echo Yii::t('core', 'createIndex'); ?>
 				</td>
 				<td>
 					<?php echo CHtml::checkBox('createIndexPrimary', isset($_POST['createIndexPrimary'])); ?>
-					<?php echo CHtml::label(Yii::t('database', 'primaryKey'), 'createIndexPrimary', array('disabled' => $table->getHasPrimaryKey())); ?>
+					<?php echo CHtml::label(Yii::t('core', 'primaryKey'), 'createIndexPrimary', array('disabled' => $table->getHasPrimaryKey())); ?>
 				</td>
 				<td>
 					<?php echo CHtml::checkBox('createIndex', isset($_POST['createIndex'])); ?>
-					<?php echo CHtml::label(Yii::t('database', 'index'), 'createIndex'); ?>
+					<?php echo CHtml::label(Yii::t('core', 'index'), 'createIndex'); ?>
 				</td>
 			</tr>
 			<tr id="<?php echo CHtml::$idPrefix; ?>settingScale">
 				<td />
 				<td>
 					<?php echo CHtml::checkBox('createIndexUnique', isset($_POST['createIndexUnique'])); ?>
-					<?php echo CHtml::label(Yii::t('database', 'uniqueKey'), 'createIndexUnique'); ?>
+					<?php echo CHtml::label(Yii::t('core', 'uniqueKey'), 'createIndexUnique'); ?>
 				</td>
 				<td>
 					<?php echo CHtml::checkBox('createIndexFulltext', isset($_POST['createIndexFulltext'])); ?>
-					<?php echo CHtml::label(Yii::t('database', 'fulltextIndex'), 'createIndexFulltext'); ?>
+					<?php echo CHtml::label(Yii::t('core', 'fulltextIndex'), 'createIndexFulltext'); ?>
 				</td>
 			</tr>
 		<?php } ?>

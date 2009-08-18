@@ -223,7 +223,7 @@ class ExportPage extends CModel
 				{
 					$data['t:' . $table->TABLE_NAME] = $table->TABLE_NAME;
 				}
-				$this->objects[Yii::t('database', 'tables')] = $data;
+				$this->objects[Yii::t('core', 'tables')] = $data;
 			}
 
 			// Views
@@ -235,7 +235,7 @@ class ExportPage extends CModel
 				{
 					$data['v:' . $view->TABLE_NAME] = $view->TABLE_NAME;
 				}
-				$this->objects[Yii::t('database', 'views')] = $data;
+				$this->objects[Yii::t('core', 'views')] = $data;
 			}
 
 			// Routines
@@ -247,7 +247,7 @@ class ExportPage extends CModel
 				{
 					$data['r:' . $routine->ROUTINE_NAME] = $routine->ROUTINE_NAME;
 				}
-				$this->objects[Yii::t('database', 'routines')] = $data;
+				$this->objects[Yii::t('core', 'routines')] = $data;
 			}
 		}
 

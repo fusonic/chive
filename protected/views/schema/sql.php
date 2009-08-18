@@ -19,7 +19,7 @@
 			<br/><br/>
 			<a class="icon" href="javascript:void(0);" onclick="">
 				<com:Icon size="16" name="chart" />
-				<span><?php echo Yii::t('database', 'profiling'); ?></span>
+				<span><?php echo Yii::t('core', 'profiling'); ?></span>
 			</a>
 		</td>
 	</tr>

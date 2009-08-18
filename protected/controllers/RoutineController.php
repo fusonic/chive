@@ -63,7 +63,7 @@ class RoutineController extends Controller
 
 				$response = new AjaxResponse();
 				$response->addNotification('success',
-					Yii::t('message', 'successAdd' . ucfirst($type)),
+					Yii::t('core', 'successAdd' . ucfirst($type)),
 					null,
 					$query);
 				$response->refresh = true;
@@ -72,7 +72,7 @@ class RoutineController extends Controller
 			catch(CDbException $ex)
 			{
 				$errorInfo = $cmd->getPdoStatement()->errorInfo();
-				$routine->addError(null, Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
+				$routine->addError(null, Yii::t('core', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
 			}
 		}
 		else
@@ -118,7 +118,7 @@ class RoutineController extends Controller
 			catch(DbException $ex)
 			{
 				$response->addNotification('error',
-					Yii::t('message', 'errorDropRoutine', array('{routine}' => $routine)),
+					Yii::t('core', 'errorDropRoutine', array('{routine}' => $routine)),
 					$ex->getText(),
 					$ex->getSql());
 			}
@@ -128,7 +128,7 @@ class RoutineController extends Controller
 		if($count > 0)
 		{
 			$response->addNotification('success',
-				Yii::t('message', 'successDropRoutine', array($count, '{routine}' => $droppedRoutines[0], '{routineCount}' => $count)),
+				Yii::t('core', 'successDropRoutine', array($count, '{routine}' => $droppedRoutines[0], '{routineCount}' => $count)),
 				($count > 1 ? implode(', ', $droppedRoutines) : null),
 				implode("\n", $droppedSqls));
 		}
@@ -171,7 +171,7 @@ class RoutineController extends Controller
 
 				$response = new AjaxResponse();
 				$response->addNotification('success',
-					Yii::t('message', 'successAlterRoutine', array('{routine}' => $routine->ROUTINE_NAME)),
+					Yii::t('core', 'successAlterRoutine', array('{routine}' => $routine->ROUTINE_NAME)),
 					null,
 					$query);
 				$response->refresh = true;
@@ -180,7 +180,7 @@ class RoutineController extends Controller
 			catch(CDbException $ex)
 			{
 				$errorInfo = $cmd->getPdoStatement()->errorInfo();
-				$routine->addError(null, Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
+				$routine->addError(null, Yii::t('core', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
 			}
 		}
 		else

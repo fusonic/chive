@@ -95,12 +95,12 @@ $(document).ready(function() {
   <div id="loading"><?php echo Yii::t('core', 'loading'); ?>...</div>
 
   <div id="addBookmarkDialog" title="<?php echo Yii::t('core', 'addBookmark'); ?>" style="display: none">
-	<?php echo Yii::t('message', 'enterAName'); ?><br />
+	<?php echo Yii::t('core', 'enterAName'); ?><br />
 	<input type="text" id="newBookmarkName" name="newBookmarkName" />
   </div>
 
   <div id="deleteBookmarkDialog" title="<?php echo Yii::t('core', 'deleteBookmark'); ?>" style="display: none">
-  	<?php echo Yii::t('message', 'doYouReallyWantToDeleteBookmark'); ?>
+  	<?php echo Yii::t('core', 'doYouReallyWantToDeleteBookmark'); ?>
   	<ul></ul>
   </div>
 
@@ -134,7 +134,7 @@ $(document).ready(function() {
   		<div class="sidebarHeader tableList">
 			<a class="icon">
 				<com:Icon name="table" size="24" text="database.tables" />
-				<span><?php echo Yii::t('database', 'tables'); ?></span>
+				<span><?php echo Yii::t('core', 'tables'); ?></span>
 			</a>
 			<img class="loading" src="images/loading.gif" alt="<?php echo Yii::t('core', 'loading'); ?>..." />
 		</div>
@@ -147,7 +147,7 @@ $(document).ready(function() {
 				<?php foreach($this->_schema->tables AS $table) { ?>
 					<li>
 						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/browse" class="icon">
-							<?php $this->widget('Icon', array('name'=>'browse', 'size'=>16, 'disabled'=>!$table->getRowCount(), 'title'=>Yii::t('database', 'Xrows', array('{amount}'=>$table->getRowCount() ? $table->getRowCount() : 0)))); ?>
+							<?php $this->widget('Icon', array('name'=>'browse', 'size'=>16, 'disabled'=>!$table->getRowCount(), 'title'=>Yii::t('core', 'Xrows', array('{amount}'=>$table->getRowCount() ? $table->getRowCount() : 0)))); ?>
 						</a>
 						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/structure" class="icon">
 							<span><?php echo $table->TABLE_NAME; ?></span>
@@ -179,7 +179,7 @@ $(document).ready(function() {
   		<div class="sidebarHeader">
 			<a class="icon" href="#views">
 				<com:Icon name="view" size="24" text="database.views" />
-				<span><?php echo Yii::t('database', 'views'); ?></span>
+				<span><?php echo Yii::t('core', 'views'); ?></span>
 			</a>
 		</div>
 		<div class="sidebarContent">

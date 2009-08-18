@@ -12,9 +12,9 @@
 	</colgroup>
 	<thead>
 		<tr>
-			<th><?php echo Yii::t('database', 'field'); ?></th>
-			<th><?php echo Yii::t('database', 'type'); ?></th>
-			<th><?php echo Yii::t('database', 'operator'); ?></th>
+			<th><?php echo Yii::t('core', 'field'); ?></th>
+			<th><?php echo Yii::t('core', 'type'); ?></th>
+			<th><?php echo Yii::t('core', 'operator'); ?></th>
 			<th><?php echo Yii::t('core', 'value'); ?></th>
 		</tr>
 	</thead>

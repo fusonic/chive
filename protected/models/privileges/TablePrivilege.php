@@ -91,7 +91,7 @@ class TablePrivilege extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'Db' => Yii::t('database', 'schema'),
+			'Db' => Yii::t('core', 'schema'),
 		);
 	}
 

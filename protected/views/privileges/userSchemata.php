@@ -1,5 +1,5 @@
-<div id="dropSchemaPrivilegesDialog" title="<?php echo Yii::t('database', 'dropSchemaSpecificPrivileges'); ?>" style="display: none">
-	<?php echo Yii::t('database', 'doYouReallyWantToDropSchemaSpecificPrivileges'); ?>
+<div id="dropSchemaPrivilegesDialog" title="<?php echo Yii::t('core', 'dropSchemaSpecificPrivileges'); ?>" style="display: none">
+	<?php echo Yii::t('core', 'doYouReallyWantToDropSchemaSpecificPrivileges'); ?>
 </div>
 
 <div class="list">
@@ -12,7 +12,7 @@
 		<div class="right">
 			<a href="javascript:void(0)" onclick="privilegesUserSchemata.addSchemaPrivilege()" class="icon button">
 				<com:Icon name="add" size="16" />
-				<span><?php echo Yii::t('database', 'addSchemaSpecificPrivileges'); ?></span>
+				<span><?php echo Yii::t('core', 'addSchemaSpecificPrivileges'); ?></span>
 			</a>
 		</div>
 	</div>
@@ -32,14 +32,14 @@
 			<tr>
 				<th><input type="checkbox" /></th>
 				<th><?php echo $sort->link('Schema'); ?></th>
-				<th colspan="4"><?php echo Yii::t('database', 'privileges'); ?></th>
+				<th colspan="4"><?php echo Yii::t('core', 'privileges'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php if(count($schemata) < 1) { ?>
 				<tr>
 					<td class="noEntries" colspan="14">
-						<?php echo Yii::t('database', 'noSchemaSpecificPrivileges'); ?>
+						<?php echo Yii::t('core', 'noSchemaSpecificPrivileges'); ?>
 					</td>
 				</tr>
 			<?php } ?>
@@ -81,13 +81,13 @@
 			</span>
 			<a class="icon button" href="javascript:void(0)" onclick="privilegesUserSchemata.dropSchemaPrivileges()">
 				<com:Icon name="delete" size="16" />
-				<span><?php echo Yii::t('database', 'drop'); ?></span>
+				<span><?php echo Yii::t('core', 'drop'); ?></span>
 			</a>
 		</div>
 		<div class="right">
 			<a href="javascript:void(0)" onclick="privilegesUserSchemata.addSchemaPrivilege()" class="icon button">
 				<com:Icon name="add" size="16" />
-				<span><?php echo Yii::t('database', 'addSchemaSpecificPrivileges'); ?></span>
+				<span><?php echo Yii::t('core', 'addSchemaSpecificPrivileges'); ?></span>
 			</a>
 		</div>
 	</div>
@@ -103,7 +103,7 @@ breadCrumb.set([
 	{
 		icon: 'privileges',
 		href: 'javascript:chive.goto(\'privileges/users\')',
-		text: '<?php echo Yii::t('database', 'privileges'); ?>'
+		text: '<?php echo Yii::t('core', 'privileges'); ?>'
 	},
 	{
 		icon: 'user',

@@ -1,9 +1,9 @@
-<div id="truncateTablesDialog" title="<?php echo Yii::t('database', 'truncateTables'); ?>" style="display: none">
-	<?php echo Yii::t('database', 'doYouReallyWantToTruncateTables'); ?>
+<div id="truncateTablesDialog" title="<?php echo Yii::t('core', 'truncateTables'); ?>" style="display: none">
+	<?php echo Yii::t('core', 'doYouReallyWantToTruncateTables'); ?>
 	<ul></ul>
 </div>
-<div id="dropTablesDialog" title="<?php echo Yii::t('database', 'dropTables'); ?>" style="display: none">
-	<?php echo Yii::t('database', 'doYouReallyWantToDropTables'); ?>
+<div id="dropTablesDialog" title="<?php echo Yii::t('core', 'dropTables'); ?>" style="display: none">
+	<?php echo Yii::t('core', 'doYouReallyWantToDropTables'); ?>
 	<ul></ul>
 </div>
 
@@ -15,7 +15,7 @@
 		<div class="right">
 			<a href="javascript:void(0)" class="icon button" onclick="schemaTables.addTable()">
 				<com:Icon name="add" size="16" />
-				<span><?php echo Yii::t('database', 'addTable'); ?></span>
+				<span><?php echo Yii::t('core', 'addTable'); ?></span>
 			</a>
 		</div>
 	</div>
@@ -40,12 +40,12 @@
 		<thead>
 			<tr>
 				<th><input type="checkbox" /></th>
-				<th colspan="8"><?php echo $sort->link('TABLE_NAME', Yii::t('database', 'table')); ?></th>
-				<th><?php echo $sort->link('TABLE_ROWS', Yii::t('database', 'rows')); ?></th>
-				<th><?php echo $sort->link('ENGINE', Yii::t('database', 'engine')); ?></th>
-				<th><?php echo $sort->link('TABLE_COLLATION', Yii::t('database', 'collation')); ?></th>
+				<th colspan="8"><?php echo $sort->link('TABLE_NAME', Yii::t('core', 'table')); ?></th>
+				<th><?php echo $sort->link('TABLE_ROWS', Yii::t('core', 'rows')); ?></th>
+				<th><?php echo $sort->link('ENGINE', Yii::t('core', 'engine')); ?></th>
+				<th><?php echo $sort->link('TABLE_COLLATION', Yii::t('core', 'collation')); ?></th>
 				<th><?php echo $sort->link('DATA_LENGTH', Yii::t('core', 'size')); ?></th>
-				<th><?php echo $sort->link('DATA_FREE', Yii::t('database', 'overhead')); ?></th>
+				<th><?php echo $sort->link('DATA_FREE', Yii::t('core', 'overhead')); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -54,7 +54,7 @@
 			<?php if($tableCount < 1) { ?>
 				<tr>
 					<td class="noEntries" colspan="14">
-						<?php echo Yii::t('database', 'noTables'); ?>
+						<?php echo Yii::t('core', 'noTables'); ?>
 					</td>
 				</tr>
 			<?php } ?>
@@ -141,7 +141,7 @@
 		<tfoot>
 			<tr>
 				<th><input type="checkbox" /></th>
-				<th colspan="8"><?php echo Yii::t('database', 'amountTables', array($tableCount, '{amount} '=> $tableCount)); ?></th>
+				<th colspan="8"><?php echo Yii::t('core', 'amountTables', array($tableCount, '{amount} '=> $tableCount)); ?></th>
 				<th><?php echo $totalRowCount; ?></th>
 				<th></th>
 				<th></th>
@@ -160,30 +160,30 @@
 			<?php if($canDrop) { ?>
 				<a href="javascript:void(0)" onclick="schemaTables.dropTables()" class="icon button">
 					<com:Icon name="delete" size="16" />
-					<span><?php echo Yii::t('database', 'drop'); ?></span>
+					<span><?php echo Yii::t('core', 'drop'); ?></span>
 				</a>
 			<?php } else { ?>
 				<span class="icon button">
 					<com:Icon name="delete" size="16" disabled="true" />
-					<span><?php echo Yii::t('database', 'drop'); ?></span>
+					<span><?php echo Yii::t('core', 'drop'); ?></span>
 				</span>
 			<?php } ?>
 			<?php if($canTruncate) { ?>
 				<a href="javascript:void(0)" onclick="schemaTables.truncateTables()" class="icon button">
 					<com:Icon name="truncate" size="16" />
-					<span><?php echo Yii::t('database', 'truncate'); ?></span>
+					<span><?php echo Yii::t('core', 'truncate'); ?></span>
 				</a>
 			<?php } else { ?>
 				<span class="icon button">
 					<com:Icon name="truncate" size="16" disabled="true" />
-					<span><?php echo Yii::t('database', 'truncate'); ?></span>
+					<span><?php echo Yii::t('core', 'truncate'); ?></span>
 				</span>
 			<?php } ?>
 		</div>
 		<div class="right">
 			<a href="javascript:void(0)" class="icon button" onclick="schemaTables.addTable()">
 				<com:Icon name="add" size="16" />
-				<span><?php echo Yii::t('database', 'addTable'); ?></span>
+				<span><?php echo Yii::t('core', 'addTable'); ?></span>
 			</a>
 		</div>
 	</div>

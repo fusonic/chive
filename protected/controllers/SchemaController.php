@@ -109,7 +109,7 @@ class SchemaController extends Controller
 				$tables[] = array(
 					'tableName' => $table->TABLE_NAME,
 					'rowCount' => $table->getRowCount(),
-					'rowCountText' => Yii::t('database', 'Xrows', array($table->getRowCount(), '{amount}' => $table->getRowCount())),
+					'rowCountText' => Yii::t('core', 'Xrows', array($table->getRowCount(), '{amount}' => $table->getRowCount())),
 				);
 			}
 
@@ -268,7 +268,7 @@ class SchemaController extends Controller
 			{
 				$response = new AjaxResponse();
 				$response->addNotification('success',
-					Yii::t('message', 'successAddSchema', array('{schema}' => $schema->SCHEMA_NAME)),
+					Yii::t('core', 'successAddSchema', array('{schema}' => $schema->SCHEMA_NAME)),
 					null,
 					$sql);
 				$response->refresh = true;
@@ -344,7 +344,7 @@ class SchemaController extends Controller
 			catch(DbException $ex)
 			{
 				$response->addNotification('error',
-					Yii::t('message', 'errorDropSchema', array('{schema}' => $schema)),
+					Yii::t('core', 'errorDropSchema', array('{schema}' => $schema)),
 					$ex->getText(),
 					$ex->getSql());
 			}
@@ -354,7 +354,7 @@ class SchemaController extends Controller
 		if($count > 0)
 		{
 			$response->addNotification('success',
-				Yii::t('message', 'successDropSchema', array($count, '{schema}' => $droppedSchemata[0], '{schemaCount}' => $count)),
+				Yii::t('core', 'successDropSchema', array($count, '{schema}' => $droppedSchemata[0], '{schemaCount}' => $count)),
 				($count > 1 ? implode(', ', $droppedSchemata) : null),
 				implode("\n", $droppedSqls));
 		}

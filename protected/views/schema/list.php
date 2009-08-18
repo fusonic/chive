@@ -1,5 +1,5 @@
-<div id="dropSchemataDialog" title="<?php echo Yii::t('database', 'dropSchemata'); ?>" style="display: none">
-	<?php echo Yii::t('database', 'doYouReallyWantToDropSchemata'); ?>
+<div id="dropSchemataDialog" title="<?php echo Yii::t('core', 'dropSchemata'); ?>" style="display: none">
+	<?php echo Yii::t('core', 'doYouReallyWantToDropSchemata'); ?>
 	<ul></ul>
 </div>
 
@@ -14,12 +14,12 @@
 			<?php if(Yii::app()->user->privileges->checkGlobal('CREATE')) { ?>
 				<a href="javascript:void(0)" onclick="schemaList.addSchema()" class="icon button">
 					<com:Icon name="add" size="16" />
-					<span><?php echo Yii::t('database', 'addSchema'); ?></span>
+					<span><?php echo Yii::t('core', 'addSchema'); ?></span>
 				</a>
 			<?php } else { ?>
 				<span class="icon button">
 					<com:Icon name="add" size="16" disabled="disabled" />
-					<span><?php echo Yii::t('database', 'addSchema'); ?></span>
+					<span><?php echo Yii::t('core', 'addSchema'); ?></span>
 				</span>
 			<?php } ?>
 		</div>
@@ -93,7 +93,7 @@
 			<tr>
 				<th><input type="checkbox" /></th>
 				<th colspan="6">
-					<?php echo Yii::t('database', 'showingXSchemata', array('{count}' => $schemaCountThisPage, '{total}' => $schemaCount)); ?>
+					<?php echo Yii::t('core', 'showingXSchemata', array('{count}' => $schemaCountThisPage, '{total}' => $schemaCount)); ?>
 				</th>
 			</tr>
 		</tfoot>
@@ -108,12 +108,12 @@
 			<?php if($canDrop) { ?>
 				<a class="icon button" href="javascript:void(0)" onclick="schemaList.dropSchemata()">
 					<com:Icon name="delete" size="16" />
-					<span><?php echo Yii::t('database', 'drop'); ?></span>
+					<span><?php echo Yii::t('core', 'drop'); ?></span>
 				</a>
 			<?php } else { ?>
 				<span class="icon button">
 					<com:Icon name="delete" size="16" disabled="true" />
-					<span><?php echo Yii::t('database', 'drop'); ?></span>
+					<span><?php echo Yii::t('core', 'drop'); ?></span>
 				</span>
 			<?php } ?>
 		</div>
@@ -121,12 +121,12 @@
 			<?php if(Yii::app()->user->privileges->checkGlobal('CREATE')) { ?>
 				<a href="javascript:void(0)" onclick="schemaList.addSchema()" class="icon button">
 					<com:Icon name="add" size="16" />
-					<span><?php echo Yii::t('database', 'addSchema'); ?></span>
+					<span><?php echo Yii::t('core', 'addSchema'); ?></span>
 				</a>
 			<?php } else { ?>
 				<span class="icon button">
 					<com:Icon name="add" size="16" disabled="disabled" />
-					<span><?php echo Yii::t('database', 'addSchema'); ?></span>
+					<span><?php echo Yii::t('core', 'addSchema'); ?></span>
 				</span>
 			<?php } ?>
 		</div>

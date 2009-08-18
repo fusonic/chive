@@ -14,7 +14,7 @@
 			<br/><br/>
 			<a class="icon" href="javascript:void(0);" onclick="Profiling.toggle();">
 				<com:Icon size="16" name="chart" />
-				<span><?php echo Yii::t('database', 'toggleProfiling'); ?></span>
+				<span><?php echo Yii::t('core', 'toggleProfiling'); ?></span>
 			</a>
 			<br/><br/>
 			<a class="icon" href="javascript:void(0);" onclick="$.post(baseUrl + '/ajaxSettings/toggle', {
@@ -26,10 +26,10 @@
 				});;">
 				<?php if( Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $this->schema . '.' .  $this->view)) {?>
 					<com:Icon size="16" name="square_green" />
-					<span><?php echo Yii::t('database', 'cutColumnContent'); ?></span>
+					<span><?php echo Yii::t('core', 'cutColumnContent'); ?></span>
 				<?php } else { ?>
 					<com:Icon size="16" name="square_red" />
-					<span><?php echo Yii::t('database', 'showFullColumnContent'); ?></span>
+					<span><?php echo Yii::t('core', 'showFullColumnContent'); ?></span>
 				<?php } ?>
 			</a>
 		</td>

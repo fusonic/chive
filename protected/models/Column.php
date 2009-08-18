@@ -149,7 +149,7 @@ class Column extends ActiveRecord
 	{
 		return array(
 			'COLUMN_NAME' => Yii::t('core', 'name'),
-			'COLLATION_NAME' => Yii::t('database', 'collation'),
+			'COLLATION_NAME' => Yii::t('core', 'collation'),
 			'COLUMN_COMMENT' => Yii::t('core', 'comment'),
 			'size' => Yii::t('core', 'size'),
 		);
@@ -373,7 +373,7 @@ class Column extends ActiveRecord
 		$types = array();
 
 		// Numeric
-		$types[Yii::t('dataTypes', 'numeric')] =  array(
+		$types[Yii::t('core', 'numeric')] =  array(
 			'bit' => 'bit',
 			'tinyint' => 'tinyint',
 			'bool' => 'bool',
@@ -387,7 +387,7 @@ class Column extends ActiveRecord
 		);
 
 		// Strings
-		$types[Yii::t('dataTypes', 'strings')] = array(
+		$types[Yii::t('core', 'strings')] = array(
 			'char' => 'char',
 			'varchar' => 'varchar',
 			'tinytext' => 'tinytext',
@@ -405,7 +405,7 @@ class Column extends ActiveRecord
 		);
 
 		// Date and time
-		$types[Yii::t('dataTypes', 'dateAndTime')] = array(
+		$types[Yii::t('core', 'dateAndTime')] = array(
 			'date' => 'date',
 			'datetime' => 'datetime',
 			'timestamp' => 'timestamp',

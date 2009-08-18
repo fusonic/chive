@@ -8,10 +8,10 @@
 	</colgroup>
 	<thead>
 		<tr>
-			<th><?php echo Yii::t('database', 'field'); ?></th>
-			<th><?php echo Yii::t('database', 'type'); ?></th>
-			<th><?php echo Yii::t('database', 'function'); ?></th>
-			<th><?php echo Yii::t('database', 'null'); ?></th>
+			<th><?php echo Yii::t('core', 'field'); ?></th>
+			<th><?php echo Yii::t('core', 'type'); ?></th>
+			<th><?php echo Yii::t('core', 'function'); ?></th>
+			<th><?php echo Yii::t('core', 'null'); ?></th>
 			<th><?php echo Yii::t('core', 'value'); ?></th>
 		</tr>
 	</thead>

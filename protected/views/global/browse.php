@@ -1,5 +1,5 @@
-<div id="deleteRowDialog" title="<?php echo Yii::t('message', 'deleteRows'); ?>" style="display: none">
-	<?php echo Yii::t('message', 'doYouReallyWantToDeleteSelectedRows'); ?>
+<div id="deleteRowDialog" title="<?php echo Yii::t('core', 'deleteRows'); ?>" style="display: none">
+	<?php echo Yii::t('core', 'doYouReallyWantToDeleteSelectedRows'); ?>
 </div>
 
 <?php if($model->showInput) { ?>
@@ -34,7 +34,7 @@
 					<?php } else { ?>
 						<com:Icon size="16" name="square_red" text="core.off" htmlOptions={array('id'=>'profiling_indicator')} />
 					<?php } ?>
-					<span><?php echo Yii::t('database', 'profiling'); ?></span>
+					<span><?php echo Yii::t('core', 'profiling'); ?></span>
 				</a>
 				<br/><br/>
 				<a class="icon button" href="javascript:void(0);" onclick="$.post(baseUrl + '/ajaxSettings/toggle', {
@@ -159,7 +159,7 @@
 			<tfoot>
 				<tr>
 					<th colspan="<?php echo 4 + count($row); ?>">
-						<?php echo Yii::t('database', 'showingRowsOfRows', array('{start}' => $model->getStart(), '{end}' => $model->getStart() + $model->getPagination()->getPagesize(), '{total}' => $model->getTotal())); ?>
+						<?php echo Yii::t('core', 'showingRowsOfRows', array('{start}' => $model->getStart(), '{end}' => $model->getStart() + $model->getPagination()->getPagesize(), '{total}' => $model->getTotal())); ?>
 					</th>
 				</tr>
 			</tfoot>
@@ -193,7 +193,7 @@
 	</div>
 
 <?php } elseif($model->execute) { ?>
-	<?php echo Yii::t('message', 'emptyResultSet'); ?>
+	<?php echo Yii::t('core', 'emptyResultSet'); ?>
 <?php } ?>
 
 <script type="text/javascript">

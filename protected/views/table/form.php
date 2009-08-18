@@ -13,7 +13,7 @@
 	$('#' + idPrefix).parent().slideUp(500, function() {
 		$('#' + idPrefix).parents("tr").remove();
 	});
-	Notification.add('success', '<?php echo Yii::t('message', 'successEditTable', array('{table}' => $table->TABLE_NAME)); ?>', null, <?php echo json_encode($sql); ?>);
+	Notification.add('success', '<?php echo Yii::t('core', 'successEditTable', array('{table}' => $table->TABLE_NAME)); ?>', null, <?php echo json_encode($sql); ?>);
 
 	// Reload sideBar
 	sideBar.loadTables(schema);
@@ -22,7 +22,7 @@
 
 <?php echo CHtml::form('', 'post', array('id' => CHtml::$idPrefix)); ?>
 	<h1>
-		<?php echo Yii::t('database', ($table->isNewRecord ? 'addTable' : 'editTable')); ?>
+		<?php echo Yii::t('core', ($table->isNewRecord ? 'addTable' : 'editTable')); ?>
 	</h1>
 	<?php echo CHtml::errorSummary($table, false); ?>
 	<table class="form" style="float: left; margin-right: 20px">
@@ -101,18 +101,18 @@
 	</table>
 	<?php if($table->isNewRecord) { ?>
 		<h1 style="clear: left">
-			<?php echo Yii::t('database', 'addFirstColumn'); ?>
+			<?php echo Yii::t('core', 'addFirstColumn'); ?>
 		</h1>
 		<?php echo $columnForm; ?>
 	<?php } ?>
 	<div class="buttonContainer">
 		<a href="javascript:void(0)" onclick="$('#<?php echo CHtml::$idPrefix; ?>').submit()" class="icon button">
 			<com:Icon name="save" size="16" />
-			<span><?php echo Yii::t('action', 'save'); ?></span>
+			<span><?php echo Yii::t('core', 'save'); ?></span>
 		</a>
 		<a href="javascript:void(0)" onclick="$('#<?php echo CHtml::$idPrefix; ?>').slideUp(500, function() { $(this).parents('tr').remove(); })" class="icon button">
 			<com:Icon name="delete" size="16" />
-			<span><?php echo Yii::t('action', 'cancel'); ?></span>
+			<span><?php echo Yii::t('core', 'cancel'); ?></span>
 		</a>
 	</div>
 </form>

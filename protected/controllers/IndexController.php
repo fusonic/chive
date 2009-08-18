@@ -73,7 +73,7 @@ class IndexController extends Controller
 			{
 				$response = new AjaxResponse();
 				$response->addNotification('success',
-					Yii::t('message', 'successCreateIndex', array('{index}' => $index->INDEX_NAME)),
+					Yii::t('core', 'successCreateIndex', array('{index}' => $index->INDEX_NAME)),
 					null,
 					$sql);
 				$response->refresh = true;
@@ -113,7 +113,7 @@ class IndexController extends Controller
 			$index->columns = $this->getColumnsFromRequest();
 			$sql = $index->save();
 			$response->addNotification('success',
-				Yii::t('message', 'successCreateIndex', array('{index}' => $index->INDEX_NAME)),
+				Yii::t('core', 'successCreateIndex', array('{index}' => $index->INDEX_NAME)),
 				null,
 				$sql);
 			$response->refresh = true;
@@ -121,7 +121,7 @@ class IndexController extends Controller
 		catch(DbException $ex)
 		{
 			$response->addNotification('error',
-				Yii::t('message', 'errorCreateIndex', array('{index}' => $indexName)),
+				Yii::t('core', 'errorCreateIndex', array('{index}' => $indexName)),
 				$ex->getText(),
 				$ex->getSql());
 		}
@@ -149,7 +149,7 @@ class IndexController extends Controller
 			{
 				$response = new AjaxResponse();
 				$response->addNotification('success',
-					Yii::t('message', 'successAlterIndex', array('{index}' => $index->INDEX_NAME)),
+					Yii::t('core', 'successAlterIndex', array('{index}' => $index->INDEX_NAME)),
 					null,
 					$sql);
 				$response->refresh = true;
@@ -182,7 +182,7 @@ class IndexController extends Controller
 			$index->throwExceptions = true;
 			$sql = $index->delete();
 			$response->addNotification('success',
-				Yii::t('message', 'successDropIndex', array('{index}' => $index->INDEX_NAME)),
+				Yii::t('core', 'successDropIndex', array('{index}' => $index->INDEX_NAME)),
 				null,
 				$sql);
 			$response->addData('success', true);
@@ -190,7 +190,7 @@ class IndexController extends Controller
 		catch(DbException $ex)
 		{
 			$response->addNotification('error',
-				Yii::t('message', 'errorDropIndex', array('{index}' => $indexName)),
+				Yii::t('core', 'errorDropIndex', array('{index}' => $indexName)),
 				$ex->getText(),
 				$ex->getSql());
 			$response->addData('success', false);
@@ -201,7 +201,7 @@ class IndexController extends Controller
 	private function getColumnSelect(Table $table)
 	{
 		$data = array(
-			'' => Yii::t('database', 'selectColumnToAdd') . ':',
+			'' => Yii::t('core', 'selectColumnToAdd') . ':',
 		);
 		foreach($table->columns AS $column)
 		{

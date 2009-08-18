@@ -132,10 +132,10 @@ class Index extends ActiveRecord
 	public static function getIndexTypes()
 	{
 		return array(
-			'PRIMARY' => Yii::t('database', 'primaryKey'),
-			'INDEX' => Yii::t('database', 'index'),
-			'UNIQUE' => Yii::t('database', 'uniqueKey'),
-			'FULLTEXT' => Yii::t('database', 'fulltextIndex'),
+			'PRIMARY' => Yii::t('core', 'primaryKey'),
+			'INDEX' => Yii::t('core', 'index'),
+			'UNIQUE' => Yii::t('core', 'uniqueKey'),
+			'FULLTEXT' => Yii::t('core', 'fulltextIndex'),
 		);
 	}
 

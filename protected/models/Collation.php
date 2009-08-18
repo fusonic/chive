@@ -3,7 +3,7 @@
 /*
  * Chive - web based MySQL database management
  * Copyright (C) 2009 Fusonic GmbH
- * 
+ *
  * This file is part of Chive.
  *
  * Chive is free software; you can redistribute it and/or

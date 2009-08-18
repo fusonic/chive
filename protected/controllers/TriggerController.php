@@ -62,7 +62,7 @@ class TriggerController extends Controller
 
 				$response = new AjaxResponse();
 				$response->addNotification('success',
-					Yii::t('message', 'successAddTrigger'),
+					Yii::t('core', 'successAddTrigger'),
 					null,
 					$query);
 				$response->refresh = true;
@@ -71,7 +71,7 @@ class TriggerController extends Controller
 			catch(CDbException $ex)
 			{
 				$errorInfo = $cmd->getPdoStatement()->errorInfo();
-				$trigger->addError(null, Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
+				$trigger->addError(null, Yii::t('core', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
 			}
 		}
 		else
@@ -109,7 +109,7 @@ class TriggerController extends Controller
 			));
 			$sql = $trigger->delete();
 			$response->addNotification('success',
-				Yii::t('message', 'successDropTrigger', array('{trigger}' => $trigger->TRIGGER_NAME)),
+				Yii::t('core', 'successDropTrigger', array('{trigger}' => $trigger->TRIGGER_NAME)),
 				null,
 				$sql);
 			$response->addData('success', true);
@@ -117,7 +117,7 @@ class TriggerController extends Controller
 		catch(DbException $ex)
 		{
 			$response->addNotification('error',
-				Yii::t('message', 'errorDropTrigger', array('{trigger}' => $triggerName)),
+				Yii::t('core', 'errorDropTrigger', array('{trigger}' => $triggerName)),
 				$ex->getText(),
 				$ex->getSql());
 			$response->addData('success', false);
@@ -158,7 +158,7 @@ class TriggerController extends Controller
 
 				$response = new AjaxResponse();
 				$response->addNotification('success',
-					Yii::t('message', 'successAlterTrigger'),
+					Yii::t('core', 'successAlterTrigger'),
 					null,
 					$query);
 				$response->refresh = true;
@@ -167,7 +167,7 @@ class TriggerController extends Controller
 			catch(CDbException $ex)
 			{
 				$errorInfo = $cmd->getPdoStatement()->errorInfo();
-				$trigger->addError(null, Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
+				$trigger->addError(null, Yii::t('core', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
 			}
 		}
 		else

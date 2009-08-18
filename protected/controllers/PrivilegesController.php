@@ -167,7 +167,7 @@ class PrivilegesController extends Controller
 			catch(DbException $ex)
 			{
 				$response->addNotification('error',
-					Yii::t('message', 'errorDropUser', array('{user}' => $user)),
+					Yii::t('core', 'errorDropUser', array('{user}' => $user)),
 					$ex->getText(),
 					$ex->getSql());
 			}
@@ -177,7 +177,7 @@ class PrivilegesController extends Controller
 		if($count > 0)
 		{
 			$response->addNotification('success',
-				Yii::t('message', 'successDropUser', array($count, '{user}' => $droppedUsers[0], '{userCount}' => $count)),
+				Yii::t('core', 'successDropUser', array($count, '{user}' => $droppedUsers[0], '{userCount}' => $count)),
 				($count > 1 ? implode(', ', $droppedUsers) : null),
 				implode("\n", $droppedSqls));
 		}
@@ -198,7 +198,7 @@ class PrivilegesController extends Controller
 			{
 				$response = new AjaxResponse();
 				$response->addNotification('success',
-					Yii::t('message', 'successAddUser', array('{user}' => $user->User, '{host}' => $user->Host)),
+					Yii::t('core', 'successAddUser', array('{user}' => $user->User, '{host}' => $user->Host)),
 					null,
 					$sql);
 				$response->refresh = true;
@@ -227,7 +227,7 @@ class PrivilegesController extends Controller
 			{
 				$response = new AjaxResponse();
 				$response->addNotification('success',
-					Yii::t('message', 'successUpdateUser', array('{user}' => $user->User, '{host}' => $user->Host)),
+					Yii::t('core', 'successUpdateUser', array('{user}' => $user->User, '{host}' => $user->Host)),
 					null,
 					$sql);
 				$response->refresh = true;
@@ -252,7 +252,7 @@ class PrivilegesController extends Controller
 			{
 				$response = new AjaxResponse();
 				$response->addNotification('success',
-					Yii::t('message', 'successAddSchemaSpecificPrivileges', array('{user}' => $schema->User, '{host}' => $schema->Host, '{schema}' => $schema->Db)),
+					Yii::t('core', 'successAddSchemaSpecificPrivileges', array('{user}' => $schema->User, '{host}' => $schema->Host, '{schema}' => $schema->Db)),
 					null/*,
 					$sql*/);
 				$response->refresh = true;
@@ -299,7 +299,7 @@ class PrivilegesController extends Controller
 			{
 				$response = new AjaxResponse();
 				$response->addNotification('success',
-					Yii::t('message', 'successUpdateSchemaSpecificPrivileges', array('{user}' => $schema->User, '{host}' => $schema->Host, '{schema}' => $schema->Db)),
+					Yii::t('core', 'successUpdateSchemaSpecificPrivileges', array('{user}' => $schema->User, '{host}' => $schema->Host, '{schema}' => $schema->Db)),
 					null/*,
 					$sql*/);
 				$response->refresh = true;
@@ -335,7 +335,7 @@ class PrivilegesController extends Controller
 			catch(DbException $ex)
 			{
 				$response->addNotification('error',
-					Yii::t('message', 'errorDropSchemaSpecificPrivileges', array('{user}' => $user)),
+					Yii::t('core', 'errorDropSchemaSpecificPrivileges', array('{user}' => $user)),
 					$ex->getText()/*,
 					$ex->getSql()*/);
 			}
@@ -352,7 +352,7 @@ class PrivilegesController extends Controller
 				'{schemaCount}' => $count,
 			);
 			$response->addNotification('success',
-				Yii::t('message', 'successDropSchemaSpecificPrivileges', $tArgs),
+				Yii::t('core', 'successDropSchemaSpecificPrivileges', $tArgs),
 				($count > 1 ? implode(', ', $droppedSchemata) : null)/*,
 				implode("\n", $droppedSqls)*/);
 		}

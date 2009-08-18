@@ -93,7 +93,7 @@ class ViewController extends TableController
 
 				$response = new AjaxResponse();
 				$response->addNotification('success',
-					Yii::t('message', 'successAddView'),
+					Yii::t('core', 'successAddView'),
 					null,
 					$query);
 				$response->refresh = true;
@@ -102,7 +102,7 @@ class ViewController extends TableController
 			catch(CDbException $ex)
 			{
 				$errorInfo = $cmd->getPdoStatement()->errorInfo();
-				$view->addError(null, Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
+				$view->addError(null, Yii::t('core', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
 			}
 		}
 		else
@@ -144,7 +144,7 @@ class ViewController extends TableController
 			catch(DbException $ex)
 			{
 				$response->addNotification('error',
-					Yii::t('message', 'errorDropView', array('{view}' => $view)),
+					Yii::t('core', 'errorDropView', array('{view}' => $view)),
 					$ex->getText(),
 					$ex->getSql());
 			}
@@ -154,7 +154,7 @@ class ViewController extends TableController
 		if($count > 0)
 		{
 			$response->addNotification('success',
-				Yii::t('message', 'successDropView', array($count, '{view}' => $droppedViews[0], '{viewCount}' => $count)),
+				Yii::t('core', 'successDropView', array($count, '{view}' => $droppedViews[0], '{viewCount}' => $count)),
 				($count > 1 ? implode(', ', $droppedViews) : null),
 				implode("\n", $droppedSqls));
 		}
@@ -184,7 +184,7 @@ class ViewController extends TableController
 				$cmd->execute();
 				$response = new AjaxResponse();
 				$response->addNotification('success',
-					Yii::t('message', 'successAlterView', array('{view}' => $view->TABLE_NAME)),
+					Yii::t('core', 'successAlterView', array('{view}' => $view->TABLE_NAME)),
 					null,
 					$query);
 				$response->refresh = true;
@@ -193,7 +193,7 @@ class ViewController extends TableController
 			catch(CDbException $ex)
 			{
 				$errorInfo = $cmd->getPdoStatement()->errorInfo();
-				$view->addError(null, Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
+				$view->addError(null, Yii::t('core', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
 			}
 		}
 		else

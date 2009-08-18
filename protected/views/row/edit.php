@@ -8,17 +8,17 @@
 	<input type="hidden" name="schema" value="<?php echo $this->schema; ?>" />
 	<input type="hidden" name="table" value="<?php echo $this->table; ?>" />
 	<h1>
-		<?php echo Yii::t('database', ($row->isNewRecord ? 'insertRow' : 'editRow')); ?>
+		<?php echo Yii::t('core', ($row->isNewRecord ? 'insertRow' : 'editRow')); ?>
 	</h1>
 	<?php echo $formBody; ?>
 	<div class="buttonContainer">
 		<a href="javascript:void(0)" onclick="$('#<?php echo CHtml::$idPrefix; ?>').submit();" class="icon button">
 			<com:Icon name="save" size="16" />
-			<span><?php echo Yii::t('action', 'save'); ?></span>
+			<span><?php echo Yii::t('core', 'save'); ?></span>
 		</a>
 		<a href="javascript:void(0)" onclick="$('#<?php echo CHtml::$idPrefix; ?>').slideUp(500, function() { $(this).parents('tr').remove(); })" class="icon button">
 			<com:Icon name="delete" size="16" />
-			<span><?php echo Yii::t('action', 'cancel'); ?></span>
+			<span><?php echo Yii::t('core', 'cancel'); ?></span>
 		</a>
 	</div>
 <?php echo CHtml::endForm(); ?>

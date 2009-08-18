@@ -26,11 +26,11 @@
 			<div>
 				<a href="javascript:void(0)" onclick="globalExport.view()" class="icon button">
 					<com:Icon size="16" name="search" text="export.show" />
-					<span><?php echo Yii::t('export', 'show'); ?></span>
+					<span><?php echo Yii::t('core', 'show'); ?></span>
 				</a>
 				<a href="javascript:void(0)" onclick="globalExport.save()" class="icon button">
 					<com:Icon size="16" name="save" text="export.download" />
-					<span><?php echo Yii::t('export', 'download'); ?></span>
+					<span><?php echo Yii::t('core', 'download'); ?></span>
 				</a>
 				<?php if(function_exists('gzencode')) { ?>
 					<a href="javascript:void(0)" onclick="globalExport.save('gzip')" class="icon button">

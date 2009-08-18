@@ -5,7 +5,7 @@ var table = '<?php echo $this->table; ?>';
 
 <?php $this->widget('TabMenu', array(
 		'items'=>array(
-			array(	'label'=> Yii::t('database','browse'),
+			array(	'label'=> Yii::t('core','browse'),
 					'icon'=>'browse',
 					'link'=>array(
 						'url'=> '#tables/' . $this->table . '/browse',
@@ -13,7 +13,7 @@ var table = '<?php echo $this->table; ?>';
 					),
 					'visible'=>true,
 			),
-			array(	'label'=>Yii::t('database','structure'),
+			array(	'label'=>Yii::t('core','structure'),
 					'icon'=>'structure',
 					'link'=>array(
 						'url'=> '#tables/' . $this->table . '/structure',
@@ -21,7 +21,7 @@ var table = '<?php echo $this->table; ?>';
 					),
 					'visible'=>true,
 			),
-			array(	'label'=>Yii::t('database','sql'),
+			array(	'label'=>Yii::t('core','sql'),
 					'icon'=>'structure',
 					'link'=>array(
 						'url'=> '#tables/' . $this->table . '/sql',
@@ -37,7 +37,7 @@ var table = '<?php echo $this->table; ?>';
 					),
 					'visible'=>true,
 			),
-			array(	'label'=>Yii::t('database','insert'),
+			array(	'label'=>Yii::t('core','insert'),
 					'icon'=>'insert',
 					'link'=>array(
 						'url'=> '#tables/' . $this->table . '/insert',
@@ -53,7 +53,7 @@ var table = '<?php echo $this->table; ?>';
 					),
 					'visible'=>true,
 			),
-			array(	'label'=>Yii::t('action','import'),
+			array(	'label'=>Yii::t('core','import'),
 					'icon'=>'import',
 					'link'=>array(
 						'url'=> '#tables/' . $this->table . '/import',
@@ -62,7 +62,7 @@ var table = '<?php echo $this->table; ?>';
 					'visible'=>true,
 			),
 			/*
-			array(	'label'=>Yii::t('database','operations'),
+			array(	'label'=>Yii::t('core','operations'),
 					'icon'=>'operation',
 					'link'=>array(
 						'url'=> '#tables/' . $this->table . '/operations',
@@ -71,7 +71,7 @@ var table = '<?php echo $this->table; ?>';
 					'visible'=>true,
 			),
 			*/
-			array(	'label'=>Yii::t('database','truncate'),
+			array(	'label'=>Yii::t('core','truncate'),
 					'icon'=>'truncate',
 					'link'=>array(
 						'url'=> 'javascript:void(0)',
@@ -79,7 +79,7 @@ var table = '<?php echo $this->table; ?>';
 					),
 					'visible'=>Yii::app()->user->privileges->checkTable($this->schema, $this->table, 'DELETE'),
 			),
-			array(	'label'=>Yii::t('database','drop'),
+			array(	'label'=>Yii::t('core','drop'),
 					'icon'=>'delete',
 					'link'=>array(
 						'url'=> 'javascript:void(0)',
@@ -91,12 +91,12 @@ var table = '<?php echo $this->table; ?>';
 	));
 ?>
 
-<div id="truncateTableDialog" title="<?php echo Yii::t('database', 'truncateTable'); ?>" style="display: none">
-	<?php echo Yii::t('message', 'doYouReallyWantToTruncateTable', array('{tableName}' => $this->table)); ?>
+<div id="truncateTableDialog" title="<?php echo Yii::t('core', 'truncateTable'); ?>" style="display: none">
+	<?php echo Yii::t('core', 'doYouReallyWantToTruncateTable', array('{tableName}' => $this->table)); ?>
 	<ul></ul>
 </div>
-<div id="dropTableDialog" title="<?php echo Yii::t('database', 'dropTable'); ?>" style="display: none">
-	<?php echo Yii::t('message', 'doYouReallyWantToDropTable', array('{tableName}' => $this->table)); ?>
+<div id="dropTableDialog" title="<?php echo Yii::t('core', 'dropTable'); ?>" style="display: none">
+	<?php echo Yii::t('core', 'doYouReallyWantToDropTable', array('{tableName}' => $this->table)); ?>
 	<ul></ul>
 </div>
 

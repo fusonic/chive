@@ -146,13 +146,13 @@ class Table extends ActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'optionPackKeys' => Yii::t('database', 'packKeys'),
-			'optionDelayKeyWrite' => Yii::t('database', 'delayKeyWrite'),
+			'optionPackKeys' => Yii::t('core', 'packKeys'),
+			'optionDelayKeyWrite' => Yii::t('core', 'delayKeyWrite'),
 			'optionChecksum' => Yii::t('core', 'checksum'),
-			'TABLE_COLLATION' => Yii::t('database', 'collation'),
+			'TABLE_COLLATION' => Yii::t('core', 'collation'),
 			'TABLE_COMMENT' => Yii::t('core', 'comment'),
 			'TABLE_NAME' => Yii::t('core', 'name'),
-			'ENGINE' => Yii::t('database', 'storageEngine'),
+			'ENGINE' => Yii::t('core', 'storageEngine'),
 		);
 	}
 
@@ -326,13 +326,13 @@ class Table extends ActiveRecord
 	public function getSupportedIndexTypes()
 	{
 		$types = array(
-			'PRIMARY' => Yii::t('database', 'primaryKey'),
-			'INDEX' => Yii::t('database', 'index'),
-			'UNIQUE' => Yii::t('database', 'uniqueKey'),
+			'PRIMARY' => Yii::t('core', 'primaryKey'),
+			'INDEX' => Yii::t('core', 'index'),
+			'UNIQUE' => Yii::t('core', 'uniqueKey'),
 		);
 		if($this->ENGINE != 'InnoDB')
 		{
-			$types['FULLTEXT'] = Yii::t('database', 'fulltextIndex');
+			$types['FULLTEXT'] = Yii::t('core', 'fulltextIndex');
 		}
 		return $types;
 	}

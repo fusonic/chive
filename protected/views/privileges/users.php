@@ -1,5 +1,5 @@
-<div id="dropUsersDialog" title="<?php echo Yii::t('database', 'dropUsers'); ?>" style="display: none">
-	<?php echo Yii::t('database', 'doYouReallyWantToDropUsers'); ?>
+<div id="dropUsersDialog" title="<?php echo Yii::t('core', 'dropUsers'); ?>" style="display: none">
+	<?php echo Yii::t('core', 'doYouReallyWantToDropUsers'); ?>
 </div>
 
 <div class="list">
@@ -12,7 +12,7 @@
 		<div class="right">
 			<a href="javascript:void(0)" onclick="privilegesUsers.addUser()" class="icon button">
 				<com:Icon name="add" size="16" />
-				<span><?php echo Yii::t('database', 'addUser'); ?></span>
+				<span><?php echo Yii::t('core', 'addUser'); ?></span>
 			</a>
 		</div>
 	</div>
@@ -36,7 +36,7 @@
 				<th><?php echo $sort->link('User'); ?></th>
 				<th><?php echo $sort->link('Host'); ?></th>
 				<th><?php echo Yii::t('core', 'password'); ?></th>
-				<th colspan="4"><?php echo Yii::t('database', 'privileges'); ?></th>
+				<th colspan="4"><?php echo Yii::t('core', 'privileges'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -84,13 +84,13 @@
 			</span>
 			<a class="icon button" href="javascript:void(0)" onclick="privilegesUsers.dropUsers()">
 				<com:Icon name="delete" size="16" />
-				<span><?php echo Yii::t('database', 'drop'); ?></span>
+				<span><?php echo Yii::t('core', 'drop'); ?></span>
 			</a>
 		</div>
 		<div class="right">
 			<a href="javascript:void(0)" onclick="privilegesUsers.addUser()" class="icon button">
 				<com:Icon name="add" size="16" />
-				<span><?php echo Yii::t('database', 'addUser'); ?></span>
+				<span><?php echo Yii::t('core', 'addUser'); ?></span>
 			</a>
 		</div>
 	</div>
@@ -104,7 +104,7 @@ breadCrumb.set([
 	{
 		icon: 'privileges',
 		href: 'javascript:chive.goto(\'privileges/users\')',
-		text: '<?php echo Yii::t('database', 'privileges'); ?>'
+		text: '<?php echo Yii::t('core', 'privileges'); ?>'
 	}
 ]);
 </script>

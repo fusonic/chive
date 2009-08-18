@@ -99,7 +99,7 @@ abstract class ActiveRecord extends CActiveRecord
 			else
 			{
 				$errorInfo = $cmd->getPdoStatement()->errorInfo();
-				$this->addError(null, Yii::t('message', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
+				$this->addError(null, Yii::t('core', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
 				return false;
 			}
 		}
@@ -113,7 +113,7 @@ abstract class ActiveRecord extends CActiveRecord
 	{
 		if($this->getIsNewRecord())
 		{
-			throw new CDbException(Yii::t('yii','The active record cannot be updated because it is new.'));
+			throw new CDbException(Yii::t('core','The active record cannot be updated because it is new.'));
 		}
 		if(!$this->beforeSave())
 		{
@@ -130,7 +130,7 @@ abstract class ActiveRecord extends CActiveRecord
 	{
 		if(!$this->getIsNewRecord())
 		{
-			throw new CDbException(Yii::t('yii','The active record cannot be inserted to database because it is not new.'));
+			throw new CDbException(Yii::t('core','The active record cannot be inserted to database because it is not new.'));
 		}
 		if(!$this->beforeSave())
 		{
@@ -147,7 +147,7 @@ abstract class ActiveRecord extends CActiveRecord
 	{
 		if($this->getIsNewRecord())
 		{
-			throw new CDbException(Yii::t('yii','The active record cannot be deleted because it is new.'));
+			throw new CDbException(Yii::t('core','The active record cannot be deleted because it is new.'));
 		}
 		if(!$this->beforeDelete())
 		{

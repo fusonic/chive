@@ -1,5 +1,5 @@
-<div id="dropViewsDialog" title="<?php echo Yii::t('database', 'dropViews'); ?>" style="display: none">
-	<?php echo Yii::t('database', 'doYouReallyWantToDropViews'); ?>
+<div id="dropViewsDialog" title="<?php echo Yii::t('core', 'dropViews'); ?>" style="display: none">
+	<?php echo Yii::t('core', 'doYouReallyWantToDropViews'); ?>
 	<ul></ul>
 </div>
 
@@ -11,7 +11,7 @@
 		<div class="right">
 			<a href="javascript:void(0)" class="icon button" onclick="schemaViews.addView()">
 				<com:Icon name="add" size="16" />
-				<span><?php echo Yii::t('database', 'addView'); ?></span>
+				<span><?php echo Yii::t('core', 'addView'); ?></span>
 			</a>
 		</div>
 	</div>
@@ -30,7 +30,7 @@
 		<thead>
 			<tr>
 				<th><input type="checkbox" /></th>
-				<th colspan="6"><?php echo $sort->link('TABLE_NAME', Yii::t('database', 'view')); ?></th>
+				<th colspan="6"><?php echo $sort->link('TABLE_NAME', Yii::t('core', 'view')); ?></th>
 				<th><?php echo $sort->link('IS_UPDATABLE'); ?></th>
 			</tr>
 		</thead>
@@ -38,7 +38,7 @@
 			<?php if($viewCount < 1) { ?>
 				<tr>
 					<td class="noEntries" colspan="14">
-						<?php echo Yii::t('database', 'noViews'); ?>
+						<?php echo Yii::t('core', 'noViews'); ?>
 					</td>
 				</tr>
 			<?php } ?>
@@ -95,7 +95,7 @@
 		<tfoot>
 			<tr>
 				<th><input type="checkbox" /></th>
-				<th colspan="7"><?php echo Yii::t('database', 'amountViews', array($viewCount, '{amount} '=> $viewCount)); ?></th>
+				<th colspan="7"><?php echo Yii::t('core', 'amountViews', array($viewCount, '{amount} '=> $viewCount)); ?></th>
 			</tr>
 		</tfoot>
 	</table>
@@ -109,19 +109,19 @@
 			<?php if($canDrop) { ?>
 				<a href="javascript:void(0)" onclick="schemaViews.dropViews()" class="icon button">
 					<com:Icon name="delete" size="16" />
-					<span><?php echo Yii::t('database', 'drop'); ?></span>
+					<span><?php echo Yii::t('core', 'drop'); ?></span>
 				</a>
 			<?php } else { ?>
 				<span class="icon button">
 					<com:Icon name="delete" size="16" disabled="true" />
-					<span><?php echo Yii::t('database', 'drop'); ?></span>
+					<span><?php echo Yii::t('core', 'drop'); ?></span>
 				</span>
 			<?php } ?>
 		</div>
 		<div class="right">
 			<a href="javascript:void(0)" class="icon button" onclick="schemaViews.addView()">
 				<com:Icon name="add" size="16" />
-				<span><?php echo Yii::t('database', 'addView'); ?></span>
+				<span><?php echo Yii::t('core', 'addView'); ?></span>
 			</a>
 		</div>
 	</div>

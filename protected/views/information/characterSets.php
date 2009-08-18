@@ -27,7 +27,7 @@ breadCrumb.set([
 	{
 		icon: 'charset',
 		href: 'javascript:chive.goto(\'information/characterSets\')',
-		text: '<?php echo Yii::t('database', 'characterSets'); ?>'
+		text: '<?php echo Yii::t('core', 'characterSets'); ?>'
 	}
 ]);
 </script>

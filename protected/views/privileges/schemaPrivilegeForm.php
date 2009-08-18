@@ -2,7 +2,7 @@
 
 <?php echo CHtml::form('', 'post', array('id' => CHtml::$idPrefix)); ?>
 	<h1>
-		<?php echo Yii::t('database', ($schema->isNewRecord ? 'addSchemaSpecificPrivileges' : 'editSchemaSpecificPrivileges')); ?>
+		<?php echo Yii::t('core', ($schema->isNewRecord ? 'addSchemaSpecificPrivileges' : 'editSchemaSpecificPrivileges')); ?>
 	</h1>
 	<?php echo CHtml::errorSummary($schema, false); ?>
 	<table class="form">
@@ -28,14 +28,14 @@
 	</table>
 	<div style="overflow: hidden">
 		<fieldset style="float: left">
-			<legend><?php echo Yii::t('database', 'data'); ?></legend>
+			<legend><?php echo Yii::t('core', 'data'); ?></legend>
 			<?php foreach(array_keys(SchemaPrivilege::getAllPrivileges('data')) AS $priv) { ?>
 				<?php echo CHtml::checkBox('SchemaPrivilege[Privileges][' . $priv . ']', $schema->checkPrivilege($priv)); ?>
 				<?php echo CHtml::label($priv, 'SchemaPrivilege_Privileges_' . $priv); ?><br />
 			<?php } ?>
 		</fieldset>
 		<fieldset style="float: left; margin-left: 10px">
-			<legend><?php echo Yii::t('database', 'structure'); ?></legend>
+			<legend><?php echo Yii::t('core', 'structure'); ?></legend>
 			<?php foreach(array_keys(SchemaPrivilege::getAllPrivileges('structure')) AS $priv) { ?>
 				<?php echo CHtml::checkBox('SchemaPrivilege[Privileges][' . $priv . ']', $schema->checkPrivilege($priv)); ?>
 				<?php echo CHtml::label($priv, 'SchemaPrivilege_Privileges_' . $priv); ?><br />
@@ -52,11 +52,11 @@
 	<div class="buttonContainer">
 		<a href="javascript:void(0)" onclick="$('#<?php echo CHtml::$idPrefix; ?>').submit()" class="icon button">
 			<com:Icon name="save" size="16" />
-			<span><?php echo Yii::t('action', 'save'); ?></span>
+			<span><?php echo Yii::t('core', 'save'); ?></span>
 		</a>
 		<a href="javascript:void(0)" onclick="$('#<?php echo CHtml::$idPrefix; ?>').slideUp(500, function() { $(this).parents('tr').remove(); })" class="icon button">
 			<com:Icon name="delete" size="16" />
-			<span><?php echo Yii::t('action', 'cancel'); ?></span>
+			<span><?php echo Yii::t('core', 'cancel'); ?></span>
 		</a>
 	</div>
 </form>

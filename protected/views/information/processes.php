@@ -1,5 +1,5 @@
-<div id="killProcessDialog" title="<?php echo Yii::t('message', 'killProcess'); ?>" style="display: none">
-	<?php echo Yii::t('message', 'doYouReallyWantToKillSelectedProcesses'); ?>
+<div id="killProcessDialog" title="<?php echo Yii::t('core', 'killProcess'); ?>" style="display: none">
+	<?php echo Yii::t('core', 'doYouReallyWantToKillSelectedProcesses'); ?>
 </div>
 
 <div class="list">
@@ -24,11 +24,11 @@
 				<th><?php echo Yii::t('core', 'id'); ?></th>
 				<th><?php echo Yii::t('core', 'user'); ?></th>
 				<th><?php echo Yii::t('core', 'host'); ?></th>
-				<th><?php echo Yii::t('database', 'schema'); ?></th>
-				<th><?php echo Yii::t('database', 'command'); ?></th>
+				<th><?php echo Yii::t('core', 'schema'); ?></th>
+				<th><?php echo Yii::t('core', 'command'); ?></th>
 				<th><?php echo Yii::t('core', 'time'); ?></th>
 				<th><?php echo Yii::t('core', 'status'); ?></th>
-				<th><?php echo Yii::t('database', 'query'); ?></th>
+				<th><?php echo Yii::t('core', 'query'); ?></th>
 			</tr>
 		</thead>
 		<tbody>

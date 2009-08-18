@@ -14,19 +14,19 @@
 		<thead>
 			<tr>
 				<th><input type="checkbox" /></th>
-				<th><?php echo Yii::t('database','field'); ?></th>
-				<th><?php echo Yii::t('database','type'); ?></th>
-				<th><?php echo Yii::t('database','collation'); ?></th>
-				<th><?php echo Yii::t('database','null'); ?></th>
-				<th><?php echo Yii::t('database','default'); ?></th>
-				<th colspan="2"><?php echo Yii::t('database','extra'); ?></th>
+				<th><?php echo Yii::t('core','field'); ?></th>
+				<th><?php echo Yii::t('core','type'); ?></th>
+				<th><?php echo Yii::t('core','collation'); ?></th>
+				<th><?php echo Yii::t('core','null'); ?></th>
+				<th><?php echo Yii::t('core','default'); ?></th>
+				<th colspan="2"><?php echo Yii::t('core','extra'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php if(count($view->columns) < 1) { ?>
 				<tr>
 					<td class="noEntries" colspan="7">
-						<?php echo Yii::t('database', 'noColumns'); ?>
+						<?php echo Yii::t('core', 'noColumns'); ?>
 					</td>
 				</tr>
 			<?php } ?>
@@ -65,7 +65,7 @@
 					<td><?php echo $column->EXTRA; ?></td>
 					<td>
 						<span class="icon">
-							<com:Icon disabled="true" name="browse" size="16" text="schema.browseDistinctValues" title={Yii::t('database','browseDistinctValues')} />
+							<com:Icon disabled="true" name="browse" size="16" text="schema.browseDistinctValues" title={Yii::t('core','browseDistinctValues')} />
 						</span>
 					</td>
 				</tr>
@@ -74,7 +74,7 @@
 		<tfoot>
 			<tr>
 				<th><input type="checkbox" /></th>
-				<th colspan="7"><?php echo Yii::t('database', 'XColumns', array('{count}' => count($view->columns))); ?></th>
+				<th colspan="7"><?php echo Yii::t('core', 'XColumns', array('{count}' => count($view->columns))); ?></th>
 			</tr>
 		</tfoot>
 	</table>

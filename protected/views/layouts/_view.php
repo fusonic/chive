@@ -5,21 +5,21 @@ var table = '<?php echo $this->view; ?>';
 
 <?php $this->widget('TabMenu', array(
 		'items'=>array(
-			array(	'label'=> Yii::t('database','browse'),
+			array(	'label'=> Yii::t('core','browse'),
 					'icon'=>'browse',
 					'link'=>array(
 						'url'=> '#views/' . $this->view . '/browse',
 						'htmlOptions'=> array('class'=>'icon'),
 					),
 			),
-			array(	'label'=>Yii::t('database','structure'),
+			array(	'label'=>Yii::t('core','structure'),
 					'icon'=>'structure',
 					'link'=>array(
 						'url'=> '#views/' . $this->view . '/structure',
 						'htmlOptions'=> array('class'=>'icon'),
 					),
 			),
-			array(	'label'=>Yii::t('database','sql'),
+			array(	'label'=>Yii::t('core','sql'),
 					'icon'=>'structure',
 					'link'=>array(
 						'url'=> '#views/' . $this->view . '/sql',
@@ -33,7 +33,7 @@ var table = '<?php echo $this->view; ?>';
 						'htmlOptions'=> array('class'=>'icon'),
 					),
 			),
-			array(	'label'=>Yii::t('database','insert'),
+			array(	'label'=>Yii::t('core','insert'),
 					'icon'=>'insert',
 					'link'=>array(
 						'url'=> '#views/' . $this->view . '/insert',
@@ -41,7 +41,7 @@ var table = '<?php echo $this->view; ?>';
 					),
 					'visible' => $this->loadView()->getIsUpdatable(),
 			),
-			array(	'label'=>Yii::t('database','truncate'),
+			array(	'label'=>Yii::t('core','truncate'),
 					'icon'=>'truncate',
 					'link'=>array(
 						'url'=> 'javascript:void(0)',
@@ -49,7 +49,7 @@ var table = '<?php echo $this->view; ?>';
 					),
 					'visible'=>Yii::app()->user->privileges->checkTable($this->schema, $this->view, 'DELETE'),
 			),
-			array(	'label'=>Yii::t('database','drop'),
+			array(	'label'=>Yii::t('core','drop'),
 					'icon'=>'delete',
 					'link'=>array(
 						'url'=> 'javascript:void(0)',
@@ -61,8 +61,8 @@ var table = '<?php echo $this->view; ?>';
 	));
 ?>
 
-<div id="dropViewDialog" title="<?php echo Yii::t('database', 'dropView'); ?>" style="display: none">
-	<?php echo Yii::t('message', 'doYouReallyWantToDropView'); ?>
+<div id="dropViewDialog" title="<?php echo Yii::t('core', 'dropView'); ?>" style="display: none">
+	<?php echo Yii::t('core', 'doYouReallyWantToDropView'); ?>
 	<ul></ul>
 </div>
 

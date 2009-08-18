@@ -54,7 +54,7 @@ class BookmarkController extends Controller
 
 		if($exists)
 		{
-			$response->addNotification('error', Yii::t('message', 'errorBookmarkWithThisNameAlreadyExists'));
+			$response->addNotification('error', Yii::t('core', 'errorBookmarkWithThisNameAlreadyExists'));
 			$response->send();
 		}
 
@@ -74,7 +74,7 @@ class BookmarkController extends Controller
 		Yii::app()->user->settings->set('bookmarks', $oldValue, 'database', $schema);
 		Yii::app()->user->settings->saveSettings();
 
-		$response->addNotification('success', Yii::t('message', 'successAddBookmark', array('{name}'=>$name)), null, $query);
+		$response->addNotification('success', Yii::t('core', 'successAddBookmark', array('{name}'=>$name)), null, $query);
 
 		$response->addData(null, array(
 			'id' => $id,
@@ -109,7 +109,7 @@ class BookmarkController extends Controller
 		Yii::app()->user->settings->set('bookmarks', $bookmarks, 'database', $schema);
 		Yii::app()->user->settings->saveSettings();
 
-		$response->addNotification('success', Yii::t('message', 'successDeleteBookmark', array('{name}'=>$name)));
+		$response->addNotification('success', Yii::t('core', 'successDeleteBookmark', array('{name}'=>$name)));
 		$response->send();
 
 	}
@@ -130,7 +130,7 @@ class BookmarkController extends Controller
 		{
 			$cmd = new CDbCommand($this->db, $bookmark['query']);
 			$cmd->execute();
-			$response->addNotification('success', Yii::t('message', 'successExecuteBookmark', array('{name}'=>$bookmark['name'])), null, $bookmark['query']);
+			$response->addNotification('success', Yii::t('core', 'successExecuteBookmark', array('{name}'=>$bookmark['name'])), null, $bookmark['query']);
 		}
 		catch (Exception $ex)
 		{

@@ -31,7 +31,7 @@ breadCrumb.set([
 	{
 		icon: 'engine',
 		href: 'javascript:chive.goto(\'information/storageEngines\')',
-		text: '<?php echo Yii::t('database', 'storageEngines'); ?>'
+		text: '<?php echo Yii::t('core', 'storageEngines'); ?>'
 	}
 ]);
 </script>

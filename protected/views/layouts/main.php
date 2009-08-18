@@ -102,7 +102,7 @@ array('label'=>'Logout', 'icon'=>'logout', 'url'=>array('/site/logout'))
 <div class="sidebarHeader schemaList">
 	<a class="icon" href="javascript:void(0)">
 		<com:Icon name="database" size="24" text="database.schemata" />
-		<span><?php echo Yii::t('database','schemata'); ?></span>
+		<span><?php echo Yii::t('core','schemata'); ?></span>
 	</a>
 	<img class="loading" src="images/loading.gif" alt="<?php echo Yii::t('core', 'loading'); ?>..." />
 </div>
@@ -152,25 +152,25 @@ array('label'=>'Logout', 'icon'=>'logout', 'url'=>array('/site/logout'))
 		<li class="nowrap">
 			<a class="icon" href="javascript:chive.goto('information/variables')">
 				<com:Icon name="variable" size="16" />
-				<span><?php echo Yii::t('database', 'variables'); ?></span>
+				<span><?php echo Yii::t('core', 'variables'); ?></span>
 			</a>
 		</li>
 		<li class="nowrap">
 			<a class="icon" href="javascript:chive.goto('information/characterSets')">
 				<com:Icon name="charset" size="16" />
-				<span><?php echo Yii::t('database', 'characterSets'); ?></span>
+				<span><?php echo Yii::t('core', 'characterSets'); ?></span>
 			</a>
 		</li>
 		<li class="nowrap">
 			<a class="icon" href="javascript:chive.goto('information/storageEngines')">
 				<com:Icon name="engine" size="16" />
-				<span><?php echo Yii::t('database', 'storageEngines'); ?></span>
+				<span><?php echo Yii::t('core', 'storageEngines'); ?></span>
 			</a>
 		</li>
 		<li class="nowrap">
 			<a class="icon" href="javascript:chive.goto('information/processes')">
 				<com:Icon name="process" size="16" />
-				<span><?php echo Yii::t('database', 'processes'); ?></span>
+				<span><?php echo Yii::t('core', 'processes'); ?></span>
 			</a>
 		</li>
 	</ul>

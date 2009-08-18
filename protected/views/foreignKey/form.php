@@ -10,13 +10,13 @@
 	$('#' + idPrefix).parent().slideUp(500, function() {
 		$('#' + idPrefix).parents("tr").remove();
 	});
-	Notification.add('success', '<?php echo Yii::t('message', 'successEditRelation', array('{col}' => $foreignKey->COLUMN_NAME)); ?>', null, <?php echo json_encode($sql); ?>);
+	Notification.add('success', '<?php echo Yii::t('core', 'successEditRelation', array('{col}' => $foreignKey->COLUMN_NAME)); ?>', null, <?php echo json_encode($sql); ?>);
 	</script>
 <?php } ?>
 
 <?php echo CHtml::form('', 'post', array('id' => CHtml::$idPrefix)); ?>
 	<h1>
-		<?php echo Yii::t('database', 'editRelation'); ?>
+		<?php echo Yii::t('core', 'editRelation'); ?>
 	</h1>
 	<?php echo CHtml::errorSummary($foreignKey, false); ?>
 	<table class="form">
@@ -55,11 +55,11 @@
 	<div class="buttonContainer">
 		<a href="javascript:void(0)" onclick="$('#<?php echo CHtml::$idPrefix; ?>').submit()" class="icon button">
 			<com:Icon name="save" size="16" />
-			<span><?php echo Yii::t('action', 'save'); ?></span>
+			<span><?php echo Yii::t('core', 'save'); ?></span>
 		</a>
 		<a href="javascript:void(0)" onclick="$('#<?php echo CHtml::$idPrefix; ?>').slideUp(500, function() { $(this).parents('tr').remove(); })" class="icon button">
 			<com:Icon name="delete" size="16" />
-			<span><?php echo Yii::t('action', 'cancel'); ?></span>
+			<span><?php echo Yii::t('core', 'cancel'); ?></span>
 		</a>
 	</div>
 </form>
