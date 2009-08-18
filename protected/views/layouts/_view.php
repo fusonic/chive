@@ -1,9 +1,6 @@
 <script type="text/javascript">
 var schema = '<?php echo $this->schema; ?>';
 var table = '<?php echo $this->view; ?>';
-
-sideBar.accordion('activate', 1);
-
 </script>
 
 <?php $this->widget('TabMenu', array(
@@ -83,8 +80,9 @@ breadCrumb.set([
 	},
 	{
 		icon: 'view',
-		href: baseUrl + '/schema/' + schema + '#views/' + view + '/structure',
-		text: view
+		href: baseUrl + '/schema/' + schema + '#views/' + table + '/structure',
+		text: table
 	}
 ]);
+sideBar.activate(1);
 </script>

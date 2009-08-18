@@ -37,6 +37,7 @@ $scriptFiles = array(
 	'js/jquery/jquery.tableForm.js',
 	'js/lib/json.js',
 	'js/main.js',
+	'js/chive.js',
 	'js/breadCrumb.js',
 	'js/sideBar.js',
 	'js/bookmark.js',
@@ -119,10 +120,9 @@ $(document).ready(function() {
 		<div id="headerRight">
 			<?php $this->widget('application.components.MainMenu',array(
 				'items'=>array(
-					array('label'=>'Home', 'icon'=>'home', 'url'=>array('/site/index'), 'visible'=>!Yii::app()->user->isGuest),
-					array('label'=>'Refresh','icon'=>'refresh', 'url'=>'javascript:void(0)', 'htmlOptions'=>array('onclick'=>'return refresh();'), 'visible'=>!Yii::app()->user->isGuest),
-					array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
-					array('label'=>'Logout', 'icon'=>'logout', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
+					array('label'=>'Home', 'icon'=>'home', 'url'=>array('/site/index')),
+					array('label'=>'Refresh','icon'=>'refresh', 'url'=>'javascript:chive:refresh()'),
+					array('label'=>'Logout', 'icon'=>'logout', 'url'=>array('/site/logout'))
 				),
 			)); ?>
 		</div>
@@ -161,14 +161,14 @@ $(document).ready(function() {
 				<?php } ?>
 				--->
 				<li class="nowrap template">
-					<a href="#tables/#tableName#/browse" class="icon">
+					<a href="javascript:chive.goto('tables/#tableName#/browse')" class="icon">
 						<com:Icon name="browse" size="16" text="plain:#rowCountText#" />
 					</a>
-					<a href="#tables/#tableName#/structure" class="icon">
+					<a href="javascript:chive.goto('tables/#tableName#/structure')" class="icon">
 						<span>#tableName#</span>
 					</a>
 					<div class="listIconContainer">
-						<a href="#tables/#tableName#/insert">
+						<a href="javascript:chive.goto('tables/#tableName#/insert')">
 							<com:Icon name="add" size="16" text="core.insertNewRow" />
 						</a>
 					</div>
@@ -183,16 +183,16 @@ $(document).ready(function() {
 			</a>
 		</div>
 		<div class="sidebarContent">
-			
+
 			<input type="text" id="viewSearch" class="search text" />
-		
+
 			<ul class="list icon nowrap" id="viewList">
 				<?php foreach($this->_schema->views AS $view) { ?>
 					<li>
-						<a href="#views/<?php echo $view->TABLE_NAME; ?>/browse" class="icon">
+						<a href="javascript:chive.goto('views/<?php echo $view->TABLE_NAME; ?>/browse')" class="icon">
 							<com:Icon name="view" size="16" text="database.browse" />
 						</a>
-						<a href="#views/<?php echo $view->TABLE_NAME; ?>/structure" class="icon">
+						<a href="javascript:chive.goto('views/<?php echo $view->TABLE_NAME; ?>/structure')" class="icon">
 							<span><?php echo $view->TABLE_NAME; ?></span>
 						</a>
 					</li>
@@ -210,24 +210,24 @@ $(document).ready(function() {
 			<input type="text" id="bookmarkSearch" class="search text" />
 
 			<ul class="list icon nowrap" id="bookmarkList">
-			<?php if($bookmarks = Yii::app()->user->settings->get('bookmarks', 'database', $this->schema)) { ?>
-				<?php foreach($bookmarks AS $key => $bookmark) { ?>
-					<li id="bookmark_<?php echo $bookmark['id']; ?>">
-						<a href="#bookmark/show/<?php echo $bookmark['id']; ?>" class="icon" title="<?php echo $bookmark['query']; ?>">
-							<com:Icon size="16" name="bookmark" />
-							<span><?php echo $bookmark['name']; ?></span>
-						</a>
-						<div class="listIconContainer">
-							<a href="javascript:void(0);" onclick="Bookmark.remove('<?php echo $this->schema; ?>', '<?php echo $bookmark['id']; ?>');">
-								<com:Icon name="delete" size="16" title="core.delete" disabled={true} />
+				<?php if($bookmarks = Yii::app()->user->settings->get('bookmarks', 'database', $this->schema)) { ?>
+					<?php foreach($bookmarks AS $key => $bookmark) { ?>
+						<li id="bookmark_<?php echo $bookmark['id']; ?>">
+							<a href="javascript:chive.goto('bookmark/show/<?php echo $bookmark['id']; ?>')" class="icon" title="<?php echo $bookmark['query']; ?>">
+								<com:Icon size="16" name="bookmark" />
+								<span><?php echo $bookmark['name']; ?></span>
 							</a>
-							<a href="javascript:void(0);" onclick="Bookmark.execute('<?php echo $this->schema; ?>', '<?php echo $bookmark['id']; ?>');">
-								<com:Icon name="execute" size="16" title="action.execute" />
-							</a>
-						</div>
-					</li>
+							<div class="listIconContainer">
+								<a href="javascript:void(0);" onclick="Bookmark.remove('<?php echo $this->schema; ?>', '<?php echo $bookmark['id']; ?>');">
+									<com:Icon name="delete" size="16" title="core.delete" disabled={true} />
+								</a>
+								<a href="javascript:void(0);" onclick="Bookmark.execute('<?php echo $this->schema; ?>', '<?php echo $bookmark['id']; ?>');">
+									<com:Icon name="execute" size="16" title="action.execute" />
+								</a>
+							</div>
+						</li>
+					<?php } ?>
 				<?php } ?>
-			<?php } ?>
 			</ul>
 		</div>
 	</div>

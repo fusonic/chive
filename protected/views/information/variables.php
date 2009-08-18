@@ -1,5 +1,3 @@
-<h2>Server variables</h2>
-
 <?php foreach($variables AS $name => $variable) { ?>
 	<div class="list" style="width: 50%">
 		<table class="list">
@@ -23,3 +21,13 @@
 		</table>
 	</div>
 <?php } ?>
+
+<script type="text/javascript">
+breadCrumb.set([
+	{
+		icon: 'variable',
+		href: 'javascript:chive.goto(\'information/variables\')',
+		text: '<?php echo Yii::t('core', 'variables'); ?>'
+	}
+]);
+</script>

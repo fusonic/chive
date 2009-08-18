@@ -18,44 +18,8 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-var currentLocation = window.location.href;
 var editing = false;
 var globalPost = {};
-
-function checkLocation() 
-{
-	if(window.location.href != currentLocation) 
-	{
-		refresh();
-	}
-}
-
-function reload() 
-{
-	location.reload();
-}
-
-function refresh() 
-{
-	currentLocation = window.location.href;
-	newLocation = currentLocation
-		.replace(/\?(.+)#/, '')
-		.replace('#', '/')					// Replace # with /
-		.replace(/([^:])\/+/g, '$1/');		// Remove multiple slashes
-	$.post(newLocation, globalPost, function(response) {
-		var content = document.getElementById('content');
-		content.innerHTML = response;
-		var scripts = content.getElementsByTagName('script');
-		for(var i = 0; i < scripts.length; i++)
-		{
-			$.globalEval(scripts[i].innerHTML);
-		}
-		init();
-		var globalPost = {};
-		AjaxResponse.handle(response);
-	});
-	return false;
-}
 
 function init() 
 {
@@ -214,23 +178,7 @@ $(document).ready(function()
 	/*
 	 * Misc
 	 */
-	setInterval(checkLocation, 100);
-	
-	if(currentLocation.indexOf('#') > -1)
-	{
-		refresh();
-	}
-	
-	/*
-	 * Keepalive packages
-	 */
-	setInterval(function() {
-		$.post(baseUrl + '/site/keepAlive', function(response) {
-			if(response != 'OK') {
-				reload();
-			}
-		});
-	}, 300000);	//Every 5 minutes
+	chive.init();
 	
 })
 .keydown(function(e) 
@@ -243,7 +191,9 @@ $(document).ready(function()
 		var element = $('#tableSearch:visible, #schemaSearch:visible');
 		if(element.length == 1)
 		{
-		element.get(0).focus();
+			element = element.get(0);
+			element.value = '';
+			element.focus();
 		}
 	}
 });
@@ -253,7 +203,9 @@ var AjaxResponse = {
 	handle: function(data)
 	{
 		if(!data)
-			return; 
+		{
+			return;
+		} 
 			
 		try 
 		{
@@ -269,12 +221,12 @@ var AjaxResponse = {
 		
 		if(data.reload)
 		{
-			reload();
+			chive.reload();
 		}
 		
 		if(data.refresh) 
 		{
-			refresh();
+			chive.refresh();
 		}
 		
 		if(data.notifications && data.notifications.length > 0) 
@@ -305,34 +257,10 @@ String.prototype.startsWith = function(str)
 	return (this.match("^"+str)==str);
 }
 
-/*
- * Keyboard shortcuts
- */
-$(document).bind('keydown', 'pageup', function() {
-	if($('ul.yiiPager li.selected').next('li').length > 0)
-	{
-		location.href = $('ul.yiiPager li.selected').next('li').find('a').attr('href');
-	}
-	
-});
-$(document).bind('keydown', 'pagedown', function() {
-	if($('ul.yiiPager li.selected').prev('li').length > 0)
-	{
-		location.href = $('ul.yiiPager li.selected').prev('li').find('a').attr('href');
-	}
-	
-});
-$(document).bind('keydown', 'shift+pagedown', function() {
-	if($('ul.yiiPager li.selected').prev('li').length > 0)
-	{
-		location.href = $('ul.yiiPager li.selected').prev('li').find('a').attr('href');
-	}
-	
-});
+
 /*
  * Language
  */
-
 var lang = {
 	
 	get: function(category, variable, parameters) 

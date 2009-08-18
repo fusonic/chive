@@ -1,5 +1,3 @@
-<h2>Processes</h2>
-
 <div id="killProcessDialog" title="<?php echo Yii::t('message', 'killProcess'); ?>" style="display: none">
 	<?php echo Yii::t('message', 'doYouReallyWantToKillSelectedProcesses'); ?>
 </div>
@@ -79,4 +77,11 @@
 setTimeout(function() {
 	informationProcesses.setup();
 }, 500);
+breadCrumb.set([
+	{
+		icon: 'process',
+		href: 'javascript:chive.goto(\'information/processes\')',
+		text: '<?php echo Yii::t('core', 'processes'); ?>'
+	}
+]);
 </script>

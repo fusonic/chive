@@ -38,6 +38,7 @@ $scriptFiles = array(
 	'js/jquery/jquery.tableForm.js',
 	'js/lib/json.js',
 	'js/main.js',
+	'js/chive.js',
 	'js/breadCrumb.js',
 	'js/sideBar.js',
 	'js/bookmark.js',
@@ -88,10 +89,9 @@ $(document).ready(function() {
 </div>
 <div id="headerRight"><?php $this->widget('application.components.MainMenu',array(
 				'items'=>array(
-array('label'=>'Home', 'icon'=>'home', 'url'=>array('/site/index'), 'visible'=>!Yii::app()->user->isGuest),
-array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
-array('label'=>'Refresh','icon'=>'refresh', 'url'=>'javascript:void(0)', 'htmlOptions'=>array('onclick'=>'return refresh();'), 'visible'=>!Yii::app()->user->isGuest),
-array('label'=>'Logout', 'icon'=>'logout', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
+array('label'=>'Home', 'icon'=>'home', 'url'=>array('/site/index')),
+array('label'=>'Refresh','icon'=>'refresh', 'url'=>'javascript:chive.refresh()'),
+array('label'=>'Logout', 'icon'=>'logout', 'url'=>array('/site/logout'))
 ),
 )); ?></div>
 </div>
@@ -131,43 +131,48 @@ array('label'=>'Logout', 'icon'=>'logout', 'url'=>array('/site/logout'), 'visibl
 </div>
 <div class="sidebarHeader">
 	<a class="icon">
-		<com:Icon name="privilege" size="24" />
-		<span>Privileges</span>
+		<com:Icon name="info" size="24" />
+		<span><?php echo Yii::t('core', 'information'); ?></span>
 	</a>
 </div>
 <div class="sidebarContent">
 	<ul id="statusList" class="list icon">
 		<li class="nowrap">
 			<a class="icon" href="#privileges/users">
-				<com:Icon name="user" size="16" />
-				<?php echo Yii::t('core', 'users'); ?>
+				<com:Icon name="privileges" size="16" />
+				<span><?php echo Yii::t('core', 'privileges'); ?></span>
 			</a>
 		</li>
-	</ul>
-</div>
-<div class="sidebarHeader">
-	<a class="icon">
-		<com:Icon name="info" size="24" />
-		<span>Information</span>
-	</a>
-</div>
-<div class="sidebarContent">
-	<ul id="statusList" class="list icon">
-		<li class="nowrap"><a class="icon" href="#information/status"> <com:Icon
-			name="chart" size="16" /> <?php echo Yii::t('core', 'status'); ?> </a>
+		<li class="nowrap">
+			<a class="icon" href="javascript:chive.goto('information/status')">
+				<com:Icon name="chart" size="16" />
+				<span><?php echo Yii::t('core', 'status'); ?></span>
+			</a>
 		</li>
-		<li class="nowrap"><a class="icon" href="#information/variables"> <com:Icon
-			name="variable" size="16" /> <?php echo Yii::t('database', 'variables'); ?>
-		</a></li>
-		<li class="nowrap"><a class="icon" href="#information/characterSets"> <com:Icon
-			name="charset" size="16" /> <?php echo Yii::t('database', 'characterSets'); ?>
-		</a></li>
-		<li class="nowrap"><a class="icon" href="#information/storageEngines">
-		<com:Icon name="engine" size="16" /> <?php echo Yii::t('database', 'storageEngines'); ?>
-		</a></li>
-		<li class="nowrap"><a class="icon" href="#information/processes"> <com:Icon
-			name="process" size="16" /> <?php echo Yii::t('database', 'processes'); ?>
-		</a></li>
+		<li class="nowrap">
+			<a class="icon" href="javascript:chive.goto('information/variables')">
+				<com:Icon name="variable" size="16" />
+				<span><?php echo Yii::t('database', 'variables'); ?></span>
+			</a>
+		</li>
+		<li class="nowrap">
+			<a class="icon" href="javascript:chive.goto('information/characterSets')">
+				<com:Icon name="charset" size="16" />
+				<span><?php echo Yii::t('database', 'characterSets'); ?></span>
+			</a>
+		</li>
+		<li class="nowrap">
+			<a class="icon" href="javascript:chive.goto('information/storageEngines')">
+				<com:Icon name="engine" size="16" />
+				<span><?php echo Yii::t('database', 'storageEngines'); ?></span>
+			</a>
+		</li>
+		<li class="nowrap">
+			<a class="icon" href="javascript:chive.goto('information/processes')">
+				<com:Icon name="process" size="16" />
+				<span><?php echo Yii::t('database', 'processes'); ?></span>
+			</a>
+		</li>
 	</ul>
 </div>
 

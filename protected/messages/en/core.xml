@@ -39,6 +39,7 @@
 	<entry id="warning">Warning</entry>
 	<entry id="information">Information</entry>
 	<entry id="success">Success</entry>
+	<entry id="privileges">Privileges</entry>
 	
 	<entry id="information">Information</entry>
 	<entry id="creationDate">Creation date</entry>

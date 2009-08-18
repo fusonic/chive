@@ -2,7 +2,7 @@
 $(document).ready(function() {
 	if(location.href.indexOf('#') == -1)
 	{
-		location.href = '#tables';
+		chive.goto('tables');
 	}
 });
 </script>

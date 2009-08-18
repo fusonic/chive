@@ -64,27 +64,27 @@
 						<input type="checkbox" name="tables[]" value="<?php echo $table->TABLE_NAME; ?>" />
 					</td>
 					<td>
-						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/structure">
+						<a href="javascript:chive.goto('tables/<?php echo $table->TABLE_NAME; ?>/structure')">
 							<?php echo $table->TABLE_NAME; ?>
 						</a>
 					</td>
 					<td>
-						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/browse" class="icon">
+						<a href="javascript:chive.goto('tables/<?php echo $table->TABLE_NAME; ?>/browse')" class="icon">
 							<com:Icon name="browse" size="16" text="database.browse" />
 						</a>
 					</td>
 					<td>
-						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/structure" class="icon">
+						<a href="javascript:chive.goto('tables/<?php echo $table->TABLE_NAME; ?>/structure')" class="icon">
 							<com:Icon name="structure" size="16" text="database.structure" />
 						</a>
 					</td>
 					<td>
-						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/search" class="icon">
+						<a href="javascript:chive.goto('tables/<?php echo $table->TABLE_NAME; ?>/search')" class="icon">
 							<com:Icon name="search" size="16" text="core.search" />
 						</a>
 					</td>
 					<td>
-						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/insert" class="icon">
+						<a href="javascript:chive.goto('tables/<?php echo $table->TABLE_NAME; ?>/insert')" class="icon">
 							<com:Icon name="insert" size="16" text="database.insert" />
 						</a>
 					</td>

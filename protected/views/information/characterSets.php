@@ -1,5 +1,3 @@
-<h2>Character sets</h2>
-
 <?php foreach($charsets AS $charset) { ?>
 	<div class="list" style="width: 50%">
 		<table class="list">
@@ -23,3 +21,13 @@
 		</table>
 	</div>
 <?php } ?>
+
+<script type="text/javascript">
+breadCrumb.set([
+	{
+		icon: 'charset',
+		href: 'javascript:chive.goto(\'information/characterSets\')',
+		text: '<?php echo Yii::t('database', 'characterSets'); ?>'
+	}
+]);
+</script>

@@ -32,7 +32,6 @@
 			<col class="action" />
 			<col class="action" />
 			<col class="action" />
-			<col class="action" />
 			<?php if(is_array($foreignKeys)) { ?>
 				<col class="action" />
 			<?php } ?>
@@ -45,7 +44,7 @@
 				<th><?php echo Yii::t('database','collation'); ?></th>
 				<th><?php echo Yii::t('database','null'); ?></th>
 				<th><?php echo Yii::t('database','default'); ?></th>
-				<th colspan="<?php if(is_array($foreignKeys)) { ?>10<?php } else { ?>9<?php } ?>"><?php echo Yii::t('database','extra'); ?></th>
+				<th colspan="<?php if(is_array($foreignKeys)) { ?>9<?php } else { ?>8<?php } ?>"><?php echo Yii::t('database','extra'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -89,11 +88,6 @@
 						<?php } ?>
 					</td>
 					<td><?php echo $column->EXTRA; ?></td>
-					<td>
-						<span class="icon">
-							<com:Icon disabled="true" name="browse" size="16" text="schema.browseDistinctValues" title={Yii::t('database','browseDistinctValues')} />
-						</span>
-					</td>
 					<td>
 						<span class="icon">
 							<com:Icon name="arrow_move" size="16" text="core.move" htmlOptions={array('style'=>'cursor: pointer;')} />

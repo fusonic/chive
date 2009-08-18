@@ -1,5 +1,3 @@
-<h2><?php echo Yii::t('database', 'storageEngines'); ?></h2>
-
 <div class="list">
 	<table class="list selectable">
 		<colgroup>
@@ -27,3 +25,13 @@
 		</tbody>
 	</table>
 </div>
+
+<script type="text/javascript">
+breadCrumb.set([
+	{
+		icon: 'engine',
+		href: 'javascript:chive.goto(\'information/storageEngines\')',
+		text: '<?php echo Yii::t('database', 'storageEngines'); ?>'
+	}
+]);
+</script>

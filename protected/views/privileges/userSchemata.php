@@ -99,4 +99,16 @@ setTimeout(function() {
 	privilegesUserSchemata.host = '<?php echo $host; ?>';
 	privilegesUserSchemata.setup();
 }, 500);
+breadCrumb.set([
+	{
+		icon: 'privileges',
+		href: 'javascript:chive.goto(\'privileges/users\')',
+		text: '<?php echo Yii::t('database', 'privileges'); ?>'
+	},
+	{
+		icon: 'user',
+		href: 'javascript:chive.goto(\'privileges/users/<?php echo urlencode($user ? $user : '%'); ?>/<?php echo urlencode($host ? $host : ' '); ?>/schemata\')',
+		text: '<?php echo ($user ? $user : '%'); ?>@<?php echo ($host ? $host : ' '); ?>'
+	}
+]);
 </script>

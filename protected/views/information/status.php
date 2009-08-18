@@ -1,5 +1,3 @@
-<h2>Status information</h2>
-
 <?php foreach($status AS $name => $variable) { ?>
 	<div class="list" style="width: 50%">
 		<table class="list">
@@ -23,3 +21,13 @@
 		</table>
 	</div>
 <?php } ?>
+
+<script type="text/javascript">
+breadCrumb.set([
+	{
+		icon: 'chart',
+		href: 'javascript:chive.goto(\'information/status\')',
+		text: '<?php echo Yii::t('core', 'status'); ?>'
+	}
+]);
+</script>

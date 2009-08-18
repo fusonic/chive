@@ -118,4 +118,5 @@ breadCrumb.set([
 		text: table
 	}
 ]);
+sideBar.activate(0);
 </script>

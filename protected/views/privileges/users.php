@@ -58,7 +58,7 @@
 						<?php echo implode(', ', $user->getGlobalPrivileges()); ?>
 					</td>
 					<td>
-						<a href="#privileges/users/<?php echo urlencode($user->User ? $user->User : '%'); ?>/<?php echo urlencode($user->Host ? $user->Host : ' '); ?>/schemata" class="icon">
+						<a href="javascript:chive.goto('privileges/users/<?php echo urlencode($user->User ? $user->User : '%'); ?>/<?php echo urlencode($user->Host ? $user->Host : ' '); ?>/schemata')" class="icon">
 							<com:Icon name="database" size="16" text="database.schemaSpecificPrivileges" />
 						</a>
 					</td>
@@ -100,4 +100,11 @@
 setTimeout(function() {
 	privilegesUsers.setup();
 }, 500);
+breadCrumb.set([
+	{
+		icon: 'privileges',
+		href: 'javascript:chive.goto(\'privileges/users\')',
+		text: '<?php echo Yii::t('database', 'privileges'); ?>'
+	}
+]);
 </script>

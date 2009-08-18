@@ -3,7 +3,7 @@
 /*
  * Chive - web based MySQL database management
  * Copyright (C) 2009 Fusonic GmbH
- * 
+ *
  * This file is part of Chive.
  *
  * Chive is free software; you can redistribute it and/or
@@ -72,30 +72,41 @@ class TabMenu extends CWidget
 				$item2['icon']=$item['icon'];
 
 				if(isset($item['htmlOptions']['class']))
+				{
 					$item2['a']['htmlOptions']['class'] .= ' icon';
+				}
 				else
+				{
 					$item2['a']['htmlOptions']['class'] = 'icon';
-
+				}
 			}
 
 			$item2['icon'] = isset($item['icon']) ? $item['icon'] : null;
-			$item2['a']['htmlOptions']['href'] = $item['link']['url'];
+			if($item['link']['url']{0} == '#')
+			{
+				$item2['a']['htmlOptions']['href'] = 'javascript:chive.goto(\'' . substr($item['link']['url'], 1) . '\')';
+			}
+			else
+			{
+				$item2['a']['htmlOptions']['href'] = $item['link']['url'];
+			}
 
 			if($this->isActive($item['link']['url'], $action->id))
 			{
 				if(isset($item['htmlOptions']['class']))
+				{
 					$item2['htmlOptions']['class'] .= ' active';
+				}
 				else
+				{
 					$item2['htmlOptions']['class'] = 'active';
-
-				$item2['a']['htmlOptions']['href'] = 'javascript:void(0);';
-				$item2['a']['htmlOptions']['onclick'] = 'refresh();';
+				}
 			}
-			
-			
+
+
 			$items[]=$item2;
 		}
-		
+
 		$this->render('tabMenu',array('items'=>$items));
 	}
 
