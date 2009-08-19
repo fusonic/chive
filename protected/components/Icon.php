@@ -3,7 +3,7 @@
 /*
  * Chive - web based MySQL database management
  * Copyright (C) 2009 Fusonic GmbH
- * 
+ *
  * This file is part of Chive.
  *
  * Chive is free software; you can redistribute it and/or
@@ -79,7 +79,7 @@ class Icon extends CWidget
 			'height' => $this->size,
 		);
 
-		return CHtml::image(ICONPATH . '/' . $this->size . DIRECTORY_SEPARATOR . $this->name . '.png', $text, $this->htmlOptions);
+		return CHtml::image(ICONPATH . '/' . $this->size . '/' . $this->name . '.png', $text, $this->htmlOptions);
 	}
 
 }
