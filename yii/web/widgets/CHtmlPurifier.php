@@ -9,6 +9,7 @@
  */
 
 require_once(Yii::getPathOfAlias('system.vendors.htmlpurifier').DIRECTORY_SEPARATOR.'HTMLPurifier.standalone.php');
+HTMLPurifier_Bootstrap::registerAutoload();
 
 /**
  * CHtmlPurifier is wrapper of {@link http://htmlpurifier.org HTML Purifier}.
@@ -24,7 +25,7 @@ require_once(Yii::getPathOfAlias('system.vendors.htmlpurifier').DIRECTORY_SEPARA
  * before saving to database.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CHtmlPurifier.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: CHtmlPurifier.php 1074 2009-05-28 21:34:21Z qiang.xue $
  * @package system.web.widgets
  * @since 1.0
  */

@@ -73,14 +73,13 @@
  *         'db'=>array(
  *             'class'=>'CDbConnection',
  *             'connectionString'=>'sqlite:path/to/dbfile',
- *             ),
  *         ),
  *     ),
  * )
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbConnection.php 939 2009-04-15 19:37:34Z qiang.xue@gmail.com $
+ * @version $Id: CDbConnection.php 1218 2009-07-07 17:30:18Z qiang.xue $
  * @package system.db
  * @since 1.0
  */
@@ -130,6 +129,22 @@ class CDbConnection extends CApplicationComponent
 	 * the buggy native prepare support. Note, this property is only effective for PHP 5.1.3 or above.
 	 */
 	public $emulatePrepare=false;
+	/**
+	 * @var boolean whether to log the values that are bound to a prepare SQL statement.
+	 * Defaults to false. During development, you may consider setting this property to true
+	 * so that parameter values bound to SQL statements are logged for debugging purpose.
+	 * You should be aware that logging parameter values could be expensive and have significant
+	 * impact on the performance of your application.
+	 * @since 1.0.5
+	 */
+	public $enableParamLogging=false;
+	/**
+	 * @var boolean whether to enable profiling the SQL statements being executed.
+	 * Defaults to false. This should be mainly enabled and used during development
+	 * to find out the bottleneck of SQL executions.
+	 * @since 1.0.6
+	 */
+	public $enableProfiling=false;
 
 	private $_attributes=array();
 	private $_active=false;
@@ -223,6 +238,7 @@ class CDbConnection extends CApplicationComponent
 				throw new CDbException(Yii::t('yii','CDbConnection.connectionString cannot be empty.'));
 			try
 			{
+				Yii::trace('Opening DB connection','system.db.CDbConnection');
 				$this->_pdo=$this->createPdoInstance();
 				$this->initConnection($this->_pdo);
 				$this->_active=true;
@@ -241,6 +257,7 @@ class CDbConnection extends CApplicationComponent
 	 */
 	protected function close()
 	{
+		Yii::trace('Closing DB connection','system.db.CDbConnection');
 		$this->_pdo=null;
 		$this->_active=false;
 		$this->_schema=null;
@@ -279,8 +296,8 @@ class CDbConnection extends CApplicationComponent
 			$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES,true);
 		if($this->charset!==null)
 		{
-			$stmt=$pdo->prepare('SET NAMES ?');
-			$stmt->execute(array($this->charset));
+			if(strcasecmp($pdo->getAttribute(PDO::ATTR_DRIVER_NAME),'sqlite'))
+				$pdo->exec('SET NAMES '.$pdo->quote($this->charset));
 		}
 	}
 
@@ -601,5 +618,26 @@ class CDbConnection extends CApplicationComponent
 			$this->_pdo->setAttribute($name,$value);
 		else
 			$this->_attributes[$name]=$value;
+	}
+
+	/**
+	 * Returns the statistical results of SQL executions.
+	 * The results returned include the number of SQL statements executed and
+	 * the total time spent.
+	 * In order to use this method, {@link enableProfiling} has to be set true.
+	 * @return array the first element indicates the number of SQL statements executed,
+	 * and the second element the total time spent in SQL execution.
+	 * @since 1.0.6
+	 */
+	public function getStats()
+	{
+		$logger=Yii::getLogger();
+		$timings=$logger->getProfilingResults(null,'system.db.CDbCommand.query');
+		$count=count($timings);
+		$time=array_sum($timings);
+		$timings=$logger->getProfilingResults(null,'system.db.CDbCommand.execute');
+		$count+=count($timings);
+		$time+=array_sum($timings);
+		return array($count,$time);
 	}
 }

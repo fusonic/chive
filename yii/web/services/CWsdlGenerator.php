@@ -76,7 +76,7 @@
  * a primitive type, CWsdlGenerator will look further to find the definition of 'Member'.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CWsdlGenerator.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: CWsdlGenerator.php 1066 2009-05-26 15:23:48Z qiang.xue $
  * @package system.web.services
  * @since 1.0
  */
@@ -228,12 +228,15 @@ class CWsdlGenerator extends CComponent
 		$schema->setAttribute('targetNamespace',$this->_namespace);
 		foreach($this->_types as $phpType=>$xmlType)
 		{
-			if(is_string($xmlType) && strpos($xmlType,'Array')!==strlen($xmlType)-5)
+			if(is_string($xmlType) && strrpos($xmlType,'Array')!==strlen($xmlType)-5)
 				continue;  // simple type
 			$complexType=$dom->createElement('xsd:complexType');
 			if(is_string($xmlType))
 			{
-				$complexType->setAttribute('name',$xmlType);
+				if(($pos=strpos($xmlType,'tns:'))!==false)
+					$complexType->setAttribute('name',substr($xmlType,4));
+				else
+					$complexType->setAttribute('name',$xmlType);
 				$complexContent=$dom->createElement('xsd:complexContent');
 				$restriction=$dom->createElement('xsd:restriction');
 				$restriction->setAttribute('base','soap-enc:Array');

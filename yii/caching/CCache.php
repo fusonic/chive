@@ -41,7 +41,7 @@
  * CCache also implements ArrayAccess so that it can be used like an array.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCache.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: CCache.php 1290 2009-08-06 16:13:11Z qiang.xue $
  * @package system.caching
  * @since 1.0
  */
@@ -85,9 +85,40 @@ abstract class CCache extends CApplicationComponent implements ICache, ArrayAcce
 			if(!is_array($data))
 				return false;
 			if(!($data[1] instanceof ICacheDependency) || !$data[1]->getHasChanged())
+			{
+				Yii::trace('Serving "'.$id.'" from cache','system.caching.'.get_class($this));
 				return $data[0];
+			}
 		}
 		return false;
+	}
+
+	/**
+	 * Retrieves multiple values from cache with the specified keys.
+	 * Some caches (such as memcache, apc) allow retrieving multiple cached values at one time,
+	 * which may improve the performance since it reduces the communication cost.
+	 * In case a cache doesn't support this feature natively, it will be simulated by this method.
+	 * @param array list of keys identifying the cached values
+	 * @return array list of cached values corresponding to the specified keys. The array
+	 * is returned in terms of (key,value) pairs.
+	 * If a value is not cached or expired, the corresponding array value will be false.
+	 * @since 1.0.8
+	 */
+	public function mget($ids)
+	{
+		$values=$this->getValues($ids);
+		$results=array();
+		foreach($values as $id=>$value)
+		{
+			$data=unserialize($value);
+			if(is_array($data) && (!($data[1] instanceof ICacheDependency) || !$data[1]->getHasChanged()))
+			{
+				Yii::trace('Serving "'.$id.'" from cache','system.caching.'.get_class($this));
+				$results[$id]=$data[0];
+			}
+			else
+				$results[$id]=false;
+		}
 	}
 
 	/**
@@ -103,6 +134,7 @@ abstract class CCache extends CApplicationComponent implements ICache, ArrayAcce
 	 */
 	public function set($id,$value,$expire=0,$dependency=null)
 	{
+		Yii::trace('Saving "'.$id.'" to cache','system.caching.'.get_class($this));
 		if($dependency!==null)
 			$dependency->evaluateDependency();
 		$data=array($value,$dependency);
@@ -120,6 +152,7 @@ abstract class CCache extends CApplicationComponent implements ICache, ArrayAcce
 	 */
 	public function add($id,$value,$expire=0,$dependency=null)
 	{
+		Yii::trace('Adding "'.$id.'" to cache','system.caching.'.get_class($this));
 		if($dependency!==null)
 			$dependency->evaluateDependency();
 		$data=array($value,$dependency);
@@ -133,6 +166,7 @@ abstract class CCache extends CApplicationComponent implements ICache, ArrayAcce
 	 */
 	public function delete($id)
 	{
+		Yii::trace('Deleting "'.$id.'" to cache','system.caching.'.get_class($this));
 		return $this->deleteValue($this->generateUniqueKey($id));
 	}
 
@@ -144,14 +178,15 @@ abstract class CCache extends CApplicationComponent implements ICache, ArrayAcce
 	 */
 	public function flush()
 	{
+		Yii::trace('Flushign cache','system.caching.'.get_class($this));
 		throw new CException(Yii::t('yii','{className} does not support flush() functionality.',
 			array('{className}'=>get_class($this))));
 	}
 
 	/**
 	 * Retrieves a value from cache with a specified key.
-	 * This method should be implemented by child classes to store the data
-	 * in specific cache storage. The uniqueness and dependency are handled
+	 * This method should be implemented by child classes to retrieve the data
+	 * from specific cache storage. The uniqueness and dependency are handled
 	 * in {@link get()} already. So only the implementation of data retrieval
 	 * is needed.
 	 * @param string a unique key identifying the cached value
@@ -161,6 +196,24 @@ abstract class CCache extends CApplicationComponent implements ICache, ArrayAcce
 	{
 		throw new CException(Yii::t('yii','{className} does not support get() functionality.',
 			array('{className}'=>get_class($this))));
+	}
+
+	/**
+	 * Retrieves multiple values from cache with the specified keys.
+	 * The default implementation simply calls {@link getValue} multiple
+	 * times to retrieve the cached values one by one.
+	 * If the underlying cache storage supports multiget, this method should
+	 * be overridden to exploit that feature.
+	 * @param array a list of keys identifying the cached values
+	 * @return array a list of cached values indexed by the keys
+	 * @since 1.0.8
+	 */
+	protected function getValues($keys)
+	{
+		$results=array();
+		foreach($keys as $key)
+			$results[$key]=$this->getValue($key);
+		return $results;
 	}
 
 	/**

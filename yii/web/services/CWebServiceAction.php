@@ -24,7 +24,7 @@
  * Note, PHP SOAP extension is required for this action.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CWebServiceAction.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: CWebServiceAction.php 1066 2009-05-26 15:23:48Z qiang.xue $
  * @package system.web.services
  * @since 1.0
  */
@@ -61,7 +61,7 @@ class CWebServiceAction extends CAction
 	 * @var array a list of PHP classes that are declared as complex types in WSDL.
 	 * This should be an array with WSDL types as keys and names of PHP classes as values.
 	 * A PHP class can also be specified as a path alias.
-	 * @see http://www.php.net/manual/en/function.soap-soapserver-construct.php
+	 * @see http://www.php.net/manual/en/soapclient.soapclient.php
 	 */
 	public $classMap;
 	/**

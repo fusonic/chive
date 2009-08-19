@@ -23,7 +23,7 @@
  * See {@link CCache} manual for common cache operations that are supported by CDbCache.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCache.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: CDbCache.php 1290 2009-08-06 16:13:11Z qiang.xue $
  * @package system.caching
  * @since 1.0
  */
@@ -156,6 +156,29 @@ EOD;
 		$time=time();
 		$sql="SELECT value FROM {$this->cacheTableName} WHERE id='$key' AND (expire=0 OR expire>$time)";
 		return $this->getDbConnection()->createCommand($sql)->queryScalar();
+	}
+
+	/**
+	 * Retrieves multiple values from cache with the specified keys.
+	 * @param array a list of keys identifying the cached values
+	 * @return array a list of cached values indexed by the keys
+	 * @since 1.0.8
+	 */
+	protected function getValues($keys)
+	{
+		if(empty($keys))
+			return array();
+
+		$ids=implode("','",$keys);
+		$time=time();
+		$sql="SELECT id, value FROM {$this->cacheTableName} WHERE id IN ('$ids') AND (expire=0 OR expire>$time)";
+		$rows=$this->getDbConnection()->createCommand($sql)->queryRows();
+		$results=array();
+		foreach($keys as $key)
+			$results[$key]=false;
+		foreach($rows as $row)
+			$results[$row['id']]=$results[$row['value']];
+		return $results;
 	}
 
 	/**

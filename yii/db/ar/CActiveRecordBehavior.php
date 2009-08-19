@@ -14,7 +14,7 @@
  * that are only defined by {@link CActiveRecord}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecordBehavior.php 554 2009-01-20 21:20:15Z qiang.xue $
+ * @version $Id: CActiveRecordBehavior.php 1185 2009-06-28 13:06:00Z qiang.xue $
  * @package system.db.ar
  * @since 1.0.2
  */
@@ -41,7 +41,8 @@ class CActiveRecordBehavior extends CModelBehavior
 	/**
 	 * Responds to {@link CActiveRecord::onBeforeSave} event.
 	 * Overrides this method if you want to handle the corresponding event of the {@link CBehavior::owner owner}.
-	 * @param CEvent event parameter
+	 * You may set {@link CModelEvent::isValid} to be false to quit the saving process.
+	 * @param CModelEvent event parameter
 	 */
 	public function beforeSave($event)
 	{
@@ -50,7 +51,7 @@ class CActiveRecordBehavior extends CModelBehavior
 	/**
 	 * Responds to {@link CActiveRecord::onAfterSave} event.
 	 * Overrides this method if you want to handle the corresponding event of the {@link CBehavior::owner owner}.
-	 * @param CEvent event parameter
+	 * @param CModelEvent event parameter
 	 */
 	public function afterSave($event)
 	{
@@ -59,6 +60,7 @@ class CActiveRecordBehavior extends CModelBehavior
 	/**
 	 * Responds to {@link CActiveRecord::onBeforeDelete} event.
 	 * Overrides this method if you want to handle the corresponding event of the {@link CBehavior::owner owner}.
+	 * You may set {@link CModelEvent::isValid} to be false to quit the deletion process.
 	 * @param CEvent event parameter
 	 */
 	public function beforeDelete($event)

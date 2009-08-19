@@ -29,7 +29,7 @@
  * You may also call {@link prepare} to explicitly prepare an SQL statement.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCommand.php 892 2009-03-29 14:34:37Z qiang.xue $
+ * @version $Id: CDbCommand.php 1215 2009-07-06 12:55:11Z qiang.xue $
  * @package system.db
  * @since 1.0
  */
@@ -38,6 +38,7 @@ class CDbCommand extends CComponent
 	private $_connection;
 	private $_text='';
 	private $_statement=null;
+	private $_params;
 
 	/**
 	 * Constructor.
@@ -109,9 +110,11 @@ class CDbCommand extends CComponent
 			try
 			{
 				$this->_statement=$this->getConnection()->getPdoInstance()->prepare($this->getText());
+				$this->_params=array();
 			}
 			catch(Exception $e)
 			{
+				Yii::log('Error in preparing SQL: '.$this->getText(),CLogger::LEVEL_ERROR,'system.db.CDbCommand');
 				throw new CDbException(Yii::t('yii','CDbCommand failed to prepare the SQL statement: {error}',
 					array('{error}'=>$e->getMessage())));
 			}
@@ -135,6 +138,7 @@ class CDbCommand extends CComponent
 	 * @param mixed Name of the PHP variable to bind to the SQL statement parameter
 	 * @param int SQL data type of the parameter. If null, the type is determined by the PHP type of the value.
 	 * @param int length of the data type
+	 * @return CDbCommand the current command being executed (this is available since version 1.0.8)
 	 * @see http://www.php.net/manual/en/function.PDOStatement-bindParam.php
 	 */
 	public function bindParam($name, &$value, $dataType=null, $length=null)
@@ -146,6 +150,9 @@ class CDbCommand extends CComponent
 			$this->_statement->bindParam($name,$value,$dataType);
 		else
 			$this->_statement->bindParam($name,$value,$dataType,$length);
+		if($this->_connection->enableParamLogging)
+			$this->_params[]=$name.'=['.gettype($value).']';
+		return $this;
 	}
 
 	/**
@@ -156,6 +163,7 @@ class CDbCommand extends CComponent
 	 * placeholders, this will be the 1-indexed position of the parameter.
 	 * @param mixed The value to bind to the parameter
 	 * @param int SQL data type of the parameter. If null, the type is determined by the PHP type of the value.
+	 * @return CDbCommand the current command being executed (this is available since version 1.0.8)
 	 * @see http://www.php.net/manual/en/function.PDOStatement-bindValue.php
 	 */
 	public function bindValue($name, $value, $dataType=null)
@@ -165,6 +173,9 @@ class CDbCommand extends CComponent
 			$this->_statement->bindValue($name,$value,$this->_connection->getPdoType(gettype($value)));
 		else
 			$this->_statement->bindValue($name,$value,$dataType);
+		if($this->_connection->enableParamLogging)
+			$this->_params[]=$name.'='.var_export($value,true);
+		return $this;
 	}
 
 	/**
@@ -176,19 +187,31 @@ class CDbCommand extends CComponent
 	 */
 	public function execute()
 	{
-		Yii::trace('Executing SQL: '.$this->getText(),'system.db.CDbCommand');
+		$params=$this->_connection->enableParamLogging && !empty($this->_params) ? '. Bind with parameter ' . implode(', ',$this->_params) : '';
+		Yii::trace('Executing SQL: '.$this->getText().$params,'system.db.CDbCommand');
 		try
 		{
+			if($this->_connection->enableProfiling)
+				Yii::beginProfile('system.db.CDbCommand.execute('.$this->getText().')','system.db.CDbCommand.execute');
+
 			if($this->_statement instanceof PDOStatement)
 			{
 				$this->_statement->execute();
-				return $this->_statement->rowCount();
+				$n=$this->_statement->rowCount();
 			}
 			else
-				return $this->getConnection()->getPdoInstance()->exec($this->getText());
+				$n=$this->getConnection()->getPdoInstance()->exec($this->getText());
+
+			if($this->_connection->enableProfiling)
+				Yii::endProfile('system.db.CDbCommand.execute('.$this->getText().')','system.db.CDbCommand.execute');
+
+			return $n;
 		}
 		catch(Exception $e)
 		{
+			if($this->_connection->enableProfiling)
+				Yii::endProfile('system.db.CDbCommand.execute('.$this->getText().')','system.db.CDbCommand.execute');
+			Yii::log('Error in executing SQL: '.$this->getText().$params,CLogger::LEVEL_ERROR,'system.db.CDbCommand');
 			throw new CDbException(Yii::t('yii','CDbCommand failed to execute the SQL statement: {error}',
 				array('{error}'=>$e->getMessage())));
 		}
@@ -266,22 +289,36 @@ class CDbCommand extends CComponent
 	 */
 	private function queryInternal($method,$mode)
 	{
-		Yii::trace('query with SQL: '.$this->getText(),'system.db.CDbCommand');
+		$params=$this->_connection->enableParamLogging && !empty($this->_params) ? '. Bind with parameter ' . implode(', ',$this->_params) : '';
+		Yii::trace('Querying SQL: '.$this->getText().$params,'system.db.CDbCommand');
 		try
 		{
+			if($this->_connection->enableProfiling)
+				Yii::beginProfile('system.db.CDbCommand.query('.$this->getText().')','system.db.CDbCommand.query');
+
 			if($this->_statement instanceof PDOStatement)
 				$this->_statement->execute();
 			else
 				$this->_statement=$this->getConnection()->getPdoInstance()->query($this->getText());
+
 			if($method==='')
-				return new CDbDataReader($this);
-			$result=$this->_statement->{$method}($mode);
-			$this->_statement->closeCursor();
+				$result=new CDbDataReader($this);
+			else
+			{
+				$result=$this->_statement->{$method}($mode);
+				$this->_statement->closeCursor();
+			}
+
+			if($this->_connection->enableProfiling)
+				Yii::endProfile('system.db.CDbCommand.query('.$this->getText().')','system.db.CDbCommand.query');
+
 			return $result;
 		}
 		catch(Exception $e)
 		{
-			Yii::log('Error in executing SQL: '.$this->getText(),CLogger::LEVEL_ERROR,'system.db.CDbCommand');
+			if($this->_connection->enableProfiling)
+				Yii::endProfile('system.db.CDbCommand.query('.$this->getText().')','system.db.CDbCommand.query');
+			Yii::log('Error in querying SQL: '.$this->getText().$params,CLogger::LEVEL_ERROR,'system.db.CDbCommand');
 			throw new CDbException(Yii::t('yii','CDbCommand failed to execute the SQL statement: {error}',
 				array('{error}'=>$e->getMessage())));
 		}

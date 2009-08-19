@@ -17,7 +17,7 @@
  * He can perform an operation only when it is among his assigned items.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CAuthItem.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: CAuthItem.php 971 2009-04-30 03:00:43Z qiang.xue $
  * @package system.web.auth
  * @since 1.0
  */
@@ -62,6 +62,7 @@ class CAuthItem extends CComponent
 	 */
 	public function checkAccess($itemName,$params=array())
 	{
+		Yii::trace('Checking permission "'.$this->_name.'"','system.web.auth.CAuthItem');
 		if($this->_auth->executeBizRule($this->_bizRule,$params,$this->_data))
 		{
 			if($this->_name==$itemName)

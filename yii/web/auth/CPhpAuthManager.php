@@ -19,7 +19,7 @@
  * Use {@link CDbAuthManager} for more complex authorization data.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CPhpAuthManager.php 951 2009-04-19 21:41:21Z qiang.xue@gmail.com $
+ * @version $Id: CPhpAuthManager.php 970 2009-04-30 02:59:02Z qiang.xue $
  * @package system.web.auth
  * @since 1.0
  */
@@ -71,6 +71,7 @@ class CPhpAuthManager extends CAuthManager
 		foreach($this->getAuthAssignments($userId) as $assignment)
 		{
 			$item=$this->getAuthItem($assignment->getItemName());
+			Yii::trace('Checking permission "'.($item ? $item->getName() : 'unknown').'"','system.web.auth.CPhpAuthManager');
 			if($item!==null && $this->executeBizRule($assignment->getBizRule(),$params,$assignment->getData())
 				&& $this->executeBizRule($item->getBizRule(),$params,$item->getData()))
 			{
@@ -87,6 +88,7 @@ class CPhpAuthManager extends CAuthManager
 			$names=array();
 			foreach($items as $item)
 			{
+				Yii::trace('Checking permission "'.$item->getName().'"','system.web.auth.CPhpAuthManager');
 				if($this->executeBizRule($item->getBizRule(),$params,$item->getData()))
 				{
 					if($item->getName()===$itemName)
@@ -111,6 +113,7 @@ class CPhpAuthManager extends CAuthManager
 	{
 		foreach($this->defaultRoles as $role)
 		{
+			Yii::trace('Checking default role "'.$role.'"','system.web.auth.CPhpAuthManager');			
 			$item=$this->getAuthItem($role);
 			if($item!==null && $item->checkAccess($itemName,$params))
 				return true;

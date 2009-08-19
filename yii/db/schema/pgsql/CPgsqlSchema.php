@@ -12,7 +12,7 @@
  * CPgsqlSchema is the class for retrieving metadata information from a PostgreSQL database.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CPgsqlSchema.php 794 2009-03-07 18:55:49Z qiang.xue $
+ * @version $Id: CPgsqlSchema.php 1111 2009-06-10 19:53:42Z qiang.xue $
  * @package system.db.schema.pgsql
  * @since 1.0
  */
@@ -200,7 +200,7 @@ EOD;
 	 */
 	protected function findPrimaryKey($table,$indices)
 	{
-		$indices=join(', ',split(' ',$indices));
+		$indices=implode(', ',preg_split('/\s+/',$indices));
 		$sql=<<<EOD
 SELECT attnum, attname FROM pg_catalog.pg_attribute WHERE
 	attrelid=(
@@ -275,7 +275,7 @@ EOD;
 			if($schema===self::DEFAULT_SCHEMA)
 				$names[]=$row['table_name'];
 			else
-				$names[]=$row['schema_name'].'.'.$row['table_name'];
+				$names[]=$row['table_schema'].'.'.$row['table_name'];
 		}
 		return $names;
 	}

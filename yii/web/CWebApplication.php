@@ -36,7 +36,7 @@
  * which is in the file 'protected/controller/article.php'.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CWebApplication.php 896 2009-03-30 02:32:08Z qiang.xue $
+ * @version $Id: CWebApplication.php 1053 2009-05-23 02:34:03Z qiang.xue $
  * @package system.web
  * @since 1.0
  */
@@ -437,6 +437,15 @@ class CWebApplication extends CApplication
 	public function getController()
 	{
 		return $this->_controller;
+	}
+
+	/**
+	 * @param CController the currently active controller
+	 * @since 1.0.6
+	 */
+	public function setController($value)
+	{
+		$this->_controller=$value;
 	}
 
 	/**

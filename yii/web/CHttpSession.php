@@ -52,7 +52,7 @@
  * {@link CWebApplication::getSession()}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CHttpSession.php 568 2009-01-23 22:50:14Z qiang.xue $
+ * @version $Id: CHttpSession.php 967 2009-04-29 12:30:14Z qiang.xue $
  * @package system.web
  * @since 1.0
  */
@@ -206,7 +206,10 @@ class CHttpSession extends CApplicationComponent implements IteratorAggregate,Ar
 		$data=session_get_cookie_params();
 		extract($data);
 		extract($value);
-		session_set_cookie_params($lifetime,$path,$domain,$secure);
+		if(isset($httponly))
+			session_set_cookie_params($lifetime,$path,$domain,$secure,$httponly);
+		else
+			session_set_cookie_params($lifetime,$path,$domain,$secure);
 	}
 
 	/**

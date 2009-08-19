@@ -49,7 +49,7 @@
  * when the page is initially loaded, set {@link activeTab} to be the ID of the desired tab.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CTabView.php 742 2009-02-24 21:19:53Z qiang.xue $
+ * @version $Id: CTabView.php 1066 2009-05-26 15:23:48Z qiang.xue $
  * @package system.web.widgets
  * @since 1.0
  */

@@ -6,24 +6,26 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2009 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: ControllerCommand.php 930 2009-04-11 02:28:31Z qiang.xue@gmail.com $
+ * @version $Id: ControllerCommand.php 1266 2009-07-21 20:59:34Z qiang.xue $
  */
 
 /**
  * ControllerCommand generates a controller class.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: ControllerCommand.php 930 2009-04-11 02:28:31Z qiang.xue@gmail.com $
+ * @version $Id: ControllerCommand.php 1266 2009-07-21 20:59:34Z qiang.xue $
  * @package system.cli.commands.shell
  * @since 1.0
  */
 class ControllerCommand extends CConsoleCommand
 {
 	/**
-	 * @var string the template file for the controller class.
-	 * Defaults to null, meaning using 'framework/cli/views/shell/controller/controller.php'.
+	 * @var string the directory that contains templates for the model command.
+	 * Defaults to null, meaning using 'framework/cli/views/shell/controller'.
+	 * If you set this path and some views are missing in the directory,
+	 * the default views will be used.
 	 */
-	public $templateFile;
+	public $templatePath;
 
 	public function getHelp()
 	{
@@ -108,7 +110,7 @@ EOD;
 				$module=$m;
 			else
 			{
-				$controllerFile=$first.'/'.$controllerClass;
+				$controllerFile=$first.'/'.$controllerClass.'.php';
 				$controllerID=$first.'/'.$controllerID;
 			}
 
@@ -118,11 +120,11 @@ EOD;
 		$args[]='index';
 		$actions=array_unique(array_splice($args,1));
 
-		$templateFile=$this->templateFile===null?YII_PATH.'/cli/views/shell/controller/controller.php':$this->templateFile;
+		$templatePath=$this->templatePath===null?YII_PATH.'/cli/views/shell/controller':$this->templatePath;
 
 		$list=array(
 			basename($controllerFile)=>array(
-				'source'=>$templateFile,
+				'source'=>$templatePath.DIRECTORY_SEPARATOR.'controller.php',
 				'target'=>$controllerFile,
 				'callback'=>array($this,'generateController'),
 				'params'=>array($controllerClass, $actions),
@@ -133,8 +135,10 @@ EOD;
 		foreach($actions as $name)
 		{
 			$list[$name.'.php']=array(
-				'source'=>YII_PATH.'/cli/views/shell/controller/view.php',
+				'source'=>$templatePath.DIRECTORY_SEPARATOR.'view.php',
 				'target'=>$viewPath.DIRECTORY_SEPARATOR.$name.'.php',
+				'callback'=>array($this,'generateAction'),
+				'params'=>array(),
 			);
 		}
 
@@ -158,21 +162,15 @@ EOD;
 
 	public function generateController($source,$params)
 	{
-		list($className,$actions)=$params;
-		$content=file_get_contents($source);
-		$actionTemplate=<<<EOD
-
-	public function action{Name}()
-	{
-		\$this->render('{View}');
+		if(!is_file($source))  // fall back to default ones
+			$source=YII_PATH.'/cli/views/shell/controller/'.basename($source);
+		return $this->renderFile($source,array('className'=>$params[0],'actions'=>$params[1]),true);
 	}
 
-EOD;
-		$actionCode='';
-		foreach($actions as $name)
-			$actionCode.=strtr($actionTemplate,array('{Name}'=>ucfirst($name),'{View}'=>$name));
-		return strtr($content,array(
-			'{ClassName}'=>$className,
-			'{Actions}'=>$actionCode));
+	public function generateAction($source,$params)
+	{
+		if(!is_file($source))  // fall back to default ones
+			$source=YII_PATH.'/cli/views/shell/controller/'.basename($source);
+		return $this->renderFile($source,array(),true);
 	}
 }

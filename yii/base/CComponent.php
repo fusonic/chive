@@ -79,7 +79,7 @@
  * be invoked via the component.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CComponent.php 936 2009-04-15 03:50:16Z qiang.xue@gmail.com $
+ * @version $Id: CComponent.php 963 2009-04-28 12:47:01Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -298,8 +298,9 @@ class CComponent
 		if(isset($this->_m[$name]))
 		{
 			$this->_m[$name]->detach($this);
+			$behavior=$this->_m[$name];
 			unset($this->_m[$name]);
-			return $this->_m[$name];
+			return $behavior;
 		}
 	}
 
@@ -544,7 +545,7 @@ class CComponent
  * that are not invoked yet will not be invoked anymore.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CComponent.php 936 2009-04-15 03:50:16Z qiang.xue@gmail.com $
+ * @version $Id: CComponent.php 963 2009-04-28 12:47:01Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -589,7 +590,7 @@ class CEvent extends CComponent
  * TextAlign::Right.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CComponent.php 936 2009-04-15 03:50:16Z qiang.xue@gmail.com $
+ * @version $Id: CComponent.php 963 2009-04-28 12:47:01Z qiang.xue $
  * @package system.base
  * @since 1.0
  */

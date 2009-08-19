@@ -24,7 +24,7 @@
  *   'actions'=>array('edit', 'delete'),
  *   // optional, list of controller IDs (case insensitive) that this rule applies to
  *   // This option is available since version 1.0.3.
- *   'controllers'=>array('post', 'admin.user'),
+ *   'controllers'=>array('post', 'admin/user'),
  *   // optional, list of usernames (case insensitive) that this rule applies to
  *   // Use * to represent all users, ? guest users, and @ authenticated users
  *   'users'=>array('thomas', 'kevin'),
@@ -42,7 +42,7 @@
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CAccessControlFilter.php 954 2009-04-20 21:50:11Z qiang.xue@gmail.com $
+ * @version $Id: CAccessControlFilter.php 1280 2009-07-25 11:16:36Z qiang.xue $
  * @package system.web.auth
  * @since 1.0
  */
@@ -120,7 +120,7 @@ class CAccessControlFilter extends CFilter
 		if($user->getIsGuest())
 			$user->loginRequired();
 		else
-			throw new CHttpException(401,Yii::t('yii','You are not authorized to perform this action.'));
+			throw new CHttpException(403,Yii::t('yii','You are not authorized to perform this action.'));
 	}
 }
 
@@ -129,7 +129,7 @@ class CAccessControlFilter extends CFilter
  * CAccessRule represents an access rule that is managed by {@link CAccessControlFilter}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CAccessControlFilter.php 954 2009-04-20 21:50:11Z qiang.xue@gmail.com $
+ * @version $Id: CAccessControlFilter.php 1280 2009-07-25 11:16:36Z qiang.xue $
  * @package system.web.auth
  * @since 1.0
  */

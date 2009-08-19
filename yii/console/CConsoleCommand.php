@@ -15,7 +15,7 @@
  * You may override {@link getHelp} to provide more detailed description of the command.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CConsoleCommand.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: CConsoleCommand.php 1266 2009-07-21 20:59:34Z qiang.xue $
  * @package system.console
  * @since 1.0
  */
@@ -153,6 +153,29 @@ abstract class CConsoleCommand extends CComponent
 			}
 			file_put_contents($target,$content);
 		}
+	}
+
+	/**
+	 * Converts a word to its plural form.
+	 * @param string the word to be pluralized
+	 * @return string the pluralized word
+	 */
+	public function pluralize($name)
+	{
+		$rules=array(
+			'/(x|ch|ss|sh|us|as|is|os)$/i' => '\1es',
+			'/(?:([^f])fe|([lr])f)$/i' => '\1\2ves',
+			'/(m)an$/i' => '\1en',
+			'/(child)$/i' => '\1ren',
+			'/(r|t|b|d)y$/i' => '\1ies',
+			'/s$/' => 's',
+		);
+		foreach($rules as $rule=>$replacement)
+		{
+			if(preg_match($rule,$name))
+				return preg_replace($rule,$replacement,$name);
+		}
+		return $name.'s';
 	}
 
 	/**

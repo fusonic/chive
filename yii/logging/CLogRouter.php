@@ -44,7 +44,7 @@
  * targets, even if the routes are of the same type.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLogRouter.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: CLogRouter.php 1184 2009-06-28 00:30:10Z qiang.xue $
  * @package system.logging
  * @since 1.0
  */
@@ -59,14 +59,11 @@ class CLogRouter extends CApplicationComponent
 	public function init()
 	{
 		parent::init();
-		foreach($this->_routes as $i=>$route)
+		foreach($this->_routes as $name=>$route)
 		{
-			if(is_array($route))
-			{
-				$route=Yii::createComponent($route);
-				$route->init();
-				$this->_routes[$i]=$route;
-			}
+			$route=Yii::createComponent($route);
+			$route->init();
+			$this->_routes[$name]=$route;
 		}
 		Yii::app()->attachEventHandler('onEndRequest',array($this,'collectLogs'));
 	}
@@ -76,7 +73,7 @@ class CLogRouter extends CApplicationComponent
 	 */
 	public function getRoutes()
 	{
-		return $this->_routes;
+		return new CMap($this->_routes);
 	}
 
 	/**
@@ -89,12 +86,8 @@ class CLogRouter extends CApplicationComponent
 	 */
 	public function setRoutes($config)
 	{
-		foreach($config as $c)
-		{
-			if(is_string($c))
-				$c=array('class'=>$c);
-			$this->_routes[]=$c;
-		}
+		foreach($config as $name=>$route)
+			$this->_routes[$name]=$route;
 	}
 
 	/**
@@ -105,7 +98,10 @@ class CLogRouter extends CApplicationComponent
 	public function collectLogs($param)
 	{
 		$logger=Yii::getLogger();
-		foreach($this->getRoutes() as $route)
-			$route->collectLogs($logger);
+		foreach($this->_routes as $route)
+		{
+			if($route->enabled)
+				$route->collectLogs($logger);
+		}
 	}
 }

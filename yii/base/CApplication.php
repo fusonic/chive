@@ -46,7 +46,7 @@
  * the application will switch to its error handling logic and jump to step 6 afterwards.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CApplication.php 905 2009-03-31 13:40:05Z qiang.xue $
+ * @version $Id: CApplication.php 1301 2009-08-07 13:19:55Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -86,7 +86,7 @@ abstract class CApplication extends CModule
 	 * Constructor.
 	 * @param mixed application configuration.
 	 * If a string, it is treated as the path of the file that contains the configuration;
-	 * If an array or CConfiguration, it is the actual configuration information.
+	 * If an array, it is the actual configuration information.
 	 * Please make sure you specify the {@link getBasePath basePath} property in the configuration,
 	 * which should point to the directory containing all application logic, template and data.
 	 * If not, the directory will be defaulted to 'protected'.
@@ -107,6 +107,7 @@ abstract class CApplication extends CModule
 			$this->setBasePath('protected');
 		Yii::setPathOfAlias('application',$this->getBasePath());
 		Yii::setPathOfAlias('webroot',dirname($_SERVER['SCRIPT_FILENAME']));
+		Yii::setPathOfAlias('ext',$this->getBasePath().DIRECTORY_SEPARATOR.'extensions');
 
 		$this->preinit();
 
@@ -176,7 +177,7 @@ abstract class CApplication extends CModule
 		if($this->_id!==null)
 			return $this->_id;
 		else
-			return $this->_id=md5($this->getBasePath().$this->name);
+			return $this->_id=sprintf('%x',crc32($this->getBasePath().$this->name));
 	}
 
 	/**
@@ -236,15 +237,22 @@ abstract class CApplication extends CModule
 
 	/**
 	 * Returns the root directory that holds all third-party extensions.
-	 * Note, this property cannot be changed or overridden. It is always 'AppBasePath/extensions'.
-	 * @return string the directory that contains all extensions.
+	 * @return string the directory that contains all extensions. Defaults to the 'extensions' directory under 'protected'.
 	 */
-	final public function getExtensionPath()
+	public function getExtensionPath()
 	{
-		if($this->_extensionPath!==null)
-			return $this->_extensionPath;
-		else
-			return $this->_extensionPath=$this->getBasePath().DIRECTORY_SEPARATOR.'extensions';
+		return Yii::getPathOfAlias('ext');
+	}
+
+	/**
+	 * @param string the directory that contains all third-party extensions.
+	 */
+	public function setExtensionPath($path)
+	{
+		if(($extensionPath=realpath($path))===false || !is_dir($extensionPath))
+			throw new CException(Yii::t('yii','Extension path "{path}" does not exist.',
+				array('{path}'=>$path)));
+		Yii::setPathOfAlias('ext',$extensionPath);
 	}
 
 	/**
@@ -500,15 +508,22 @@ abstract class CApplication extends CModule
 			$message.=' REQUEST_URI='.$_SERVER['REQUEST_URI'];
 		Yii::log($message,CLogger::LEVEL_ERROR,$category);
 
-		$event=new CExceptionEvent($this,$exception);
-		$this->onException($event);
-		if(!$event->handled)
+		try
 		{
-			// try an error handler
-			if(($handler=$this->getErrorHandler())!==null)
-				$handler->handle($event);
-			else
-				$this->displayException($exception);
+			$event=new CExceptionEvent($this,$exception);
+			$this->onException($event);
+			if(!$event->handled)
+			{
+				// try an error handler
+				if(($handler=$this->getErrorHandler())!==null)
+					$handler->handle($event);
+				else
+					$this->displayException($exception);
+			}
+		}
+		catch(Exception $e)
+		{
+			$this->displayException($e);
 		}
 		$this->end(1);
 	}
@@ -538,20 +553,44 @@ abstract class CApplication extends CModule
 			restore_error_handler();
 			restore_exception_handler();
 
-			$log="$message ($file:$line)";
+			$log="$message ($file:$line)\nStack trace:\n";
+			$trace=debug_backtrace();
+			// skip the first 3 stacks as they do not tell the error position
+			if(count($trace)>3)
+				$trace=array_slice($trace,3);
+			foreach($trace as $i=>$t)
+			{
+				if(!isset($t['file']))
+					$t['file']='unknown';
+				if(!isset($t['line']))
+					$t['line']=0;
+				if(!isset($t['function']))
+					$t['function']='unknown';
+				$log.="#$i {$t['file']}({$t['line']}): ";
+				if(isset($t['object']) && is_object($t['object']))
+					$log.=get_class($t['object']).'->';
+				$log.="{$t['function']}()\n";
+			}
 			if(isset($_SERVER['REQUEST_URI']))
-				$log.=' REQUEST_URI='.$_SERVER['REQUEST_URI'];
+				$log.='REQUEST_URI='.$_SERVER['REQUEST_URI'];
 			Yii::log($log,CLogger::LEVEL_ERROR,'php');
 
-			$event=new CErrorEvent($this,$code,$message,$file,$line);
-			$this->onError($event);
-			if(!$event->handled)
+			try
 			{
-				// try an error handler
-				if(($handler=$this->getErrorHandler())!==null)
-					$handler->handle($event);
-				else
-					$this->displayError($code,$message,$file,$line);
+				$event=new CErrorEvent($this,$code,$message,$file,$line);
+				$this->onError($event);
+				if(!$event->handled)
+				{
+					// try an error handler
+					if(($handler=$this->getErrorHandler())!==null)
+						$handler->handle($event);
+					else
+						$this->displayError($code,$message,$file,$line);
+				}
+			}
+			catch(Exception $e)
+			{
+				$this->displayException($e);
 			}
 			$this->end(1);
 		}

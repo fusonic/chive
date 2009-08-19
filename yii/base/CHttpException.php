@@ -15,14 +15,14 @@
  * Error handlers may use this status code to decide how to format the error page.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CHttpException.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: CHttpException.php 1049 2009-05-22 20:00:35Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
 class CHttpException extends CException
 {
 	/**
-	 * @var integer HTTP status code, such as 401, 404, 500, etc.
+	 * @var integer HTTP status code, such as 403, 404, 500, etc.
 	 */
 	public $statusCode;
 

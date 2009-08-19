@@ -6,7 +6,7 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2009 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: YiiBase.php 939 2009-04-15 19:37:34Z qiang.xue@gmail.com $
+ * @version $Id: YiiBase.php 1316 2009-08-09 04:11:25Z qiang.xue $
  * @package system
  * @since 1.0
  */
@@ -19,6 +19,12 @@ defined('YII_BEGIN_TIME') or define('YII_BEGIN_TIME',microtime(true));
  * This constant defines whether the application should be in debug mode or not. Defaults to false.
  */
 defined('YII_DEBUG') or define('YII_DEBUG',false);
+/**
+ * This constant defines how much call stack information (file name and line number) should be logged by Yii::trace().
+ * Defaults to 0, meaning no backtrace information. If it is greater than 0,
+ * at most that number of call stacks will be logged. Note, only user application call stacks are considered.
+ */
+defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL',0);
 /**
  * This constant defines whether exception handling should be enabled. Defaults to true.
  */
@@ -39,7 +45,7 @@ defined('YII_PATH') or define('YII_PATH',dirname(__FILE__));
  * you can customize methods of YiiBase.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: YiiBase.php 939 2009-04-15 19:37:34Z qiang.xue@gmail.com $
+ * @version $Id: YiiBase.php 1316 2009-08-09 04:11:25Z qiang.xue $
  * @package system
  * @since 1.0
  */
@@ -48,6 +54,7 @@ class YiiBase
 	private static $_aliases=array('system'=>YII_PATH); // alias => path
 	private static $_imports=array();					// alias => class name or directory
 	private static $_classes=array();
+	private static $_includePaths;						// list of include paths
 	private static $_app;
 	private static $_logger;
 
@@ -57,7 +64,7 @@ class YiiBase
 	 */
 	public static function getVersion()
 	{
-		return '1.0.5-dev';
+		return '1.0.8';
 	}
 
 	/**
@@ -211,7 +218,7 @@ class YiiBase
 		if(isset(self::$_imports[$alias]))  // previously imported
 			return self::$_imports[$alias];
 
-		if(class_exists($alias,false))
+		if(class_exists($alias,false) || interface_exists($alias,false))
 			return self::$_imports[$alias]=$alias;
 
 		if(isset(self::$_coreClasses[$alias]) || ($pos=strrpos($alias,'.'))===false)  // a simple class name
@@ -227,7 +234,7 @@ class YiiBase
 			return $alias;
 		}
 
-		if(($className=(string)substr($alias,$pos+1))!=='*' && class_exists($className,false))
+		if(($className=(string)substr($alias,$pos+1))!=='*' && (class_exists($className,false) || interface_exists($className,false)))
 			return self::$_imports[$alias]=$className;
 
 		if(($path=self::getPathOfAlias($alias))!==false)
@@ -243,7 +250,14 @@ class YiiBase
 			}
 			else  // a directory
 			{
-				set_include_path(get_include_path().PATH_SEPARATOR.$path);
+				if(self::$_includePaths===null)
+				{
+					self::$_includePaths=array_unique(explode(PATH_SEPARATOR,get_include_path()));
+					if(($pos=array_search('.',self::$_includePaths,true))!==false)
+						unset(self::$_includePaths[$pos]);
+				}
+				array_unshift(self::$_includePaths,$path);
+				set_include_path('.'.PATH_SEPARATOR.implode(PATH_SEPARATOR,self::$_includePaths));
 				return self::$_imports[$alias]=$path;
 			}
 		}
@@ -296,6 +310,7 @@ class YiiBase
 	 * Class autoload loader.
 	 * This method is provided to be invoked within an __autoload() magic method.
 	 * @param string class name
+	 * @return boolean whether the class has been loaded successfully
 	 */
 	public static function autoload($className)
 	{
@@ -305,7 +320,11 @@ class YiiBase
 		else if(isset(self::$_classes[$className]))
 			include(self::$_classes[$className]);
 		else
+		{
 			include($className.'.php');
+			return class_exists($className,false) || interface_exists($className,false);
+		}
+		return true;
 	}
 
 	/**
@@ -318,7 +337,27 @@ class YiiBase
 	public static function trace($msg,$category='application')
 	{
 		if(YII_DEBUG)
+		{
+			if(YII_TRACE_LEVEL>0)
+			{
+				$traces=debug_backtrace();
+				$count=0;
+				foreach($traces as $trace)
+				{
+					if(isset($trace['file'],$trace['line']))
+					{
+						$className=substr(basename($trace['file']),0,-4);
+						if(!isset(self::$_coreClasses[$className]) && $className!=='YiiBase')
+						{
+							$msg.="\nin ".$trace['file'].' ('.$trace['line'].')';
+							if(++$count>=YII_TRACE_LEVEL)
+								break;
+						}
+					}
+				}
+			}
 			self::log($msg,CLogger::LEVEL_TRACE,$category);
+		}
 	}
 
 	/**
@@ -391,7 +430,7 @@ class YiiBase
 	 */
 	public static function powered()
 	{
-		return 'Powered by <a href="http://www.yiiframework.com/">Yii Framework</a>.';
+		return 'Powered by <a href="http://www.yiiframework.com/" target="_blank">Yii Framework</a>.';
 	}
 
 	/**
@@ -452,13 +491,16 @@ class YiiBase
 		'CHttpException' => '/base/CHttpException.php',
 		'CModel' => '/base/CModel.php',
 		'CModelBehavior' => '/base/CModelBehavior.php',
+		'CModelEvent' => '/base/CModelEvent.php',
 		'CModule' => '/base/CModule.php',
 		'CSecurityManager' => '/base/CSecurityManager.php',
 		'CStatePersister' => '/base/CStatePersister.php',
 		'CApcCache' => '/caching/CApcCache.php',
 		'CCache' => '/caching/CCache.php',
 		'CDbCache' => '/caching/CDbCache.php',
+		'CDummyCache' => '/caching/CDummyCache.php',
 		'CEAcceleratorCache' => '/caching/CEAcceleratorCache.php',
+		'CFileCache' => '/caching/CFileCache.php',
 		'CMemCache' => '/caching/CMemCache.php',
 		'CXCache' => '/caching/CXCache.php',
 		'CZendDataCache' => '/caching/CZendDataCache.php',
@@ -530,12 +572,13 @@ class YiiBase
 		'CDbLogRoute' => '/logging/CDbLogRoute.php',
 		'CEmailLogRoute' => '/logging/CEmailLogRoute.php',
 		'CFileLogRoute' => '/logging/CFileLogRoute.php',
+		'CLogFilter' => '/logging/CLogFilter.php',
 		'CLogRoute' => '/logging/CLogRoute.php',
 		'CLogRouter' => '/logging/CLogRouter.php',
 		'CLogger' => '/logging/CLogger.php',
 		'CProfileLogRoute' => '/logging/CProfileLogRoute.php',
 		'CWebLogRoute' => '/logging/CWebLogRoute.php',
-		'CDateParser' => '/utils/CDateParser.php',
+		'CDateTimeParser' => '/utils/CDateTimeParser.php',
 		'CFileHelper' => '/utils/CFileHelper.php',
 		'CMarkdownParser' => '/utils/CMarkdownParser.php',
 		'CPropertyValue' => '/utils/CPropertyValue.php',

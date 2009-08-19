@@ -248,7 +248,7 @@ class CSort extends CComponent
 				$attribute=$this->attributes[$attribute];
 			$sorts[]=$descending ? $attribute.$this->separators[1].'desc' : $attribute;
 		}
-		$params=array_intersect_assoc($_GET, $_REQUEST);
+		$params=$_GET;
 		$params[$this->sortVar]=implode($this->separators[0],$sorts);
 		return $controller->createUrl($this->route,$params);
 	}

@@ -24,7 +24,7 @@
  * the {@link setBasePath basePath}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CAssetManager.php 556 2009-01-20 21:59:20Z qiang.xue $
+ * @version $Id: CAssetManager.php 1261 2009-07-20 21:54:24Z qiang.xue $
  * @package system.web
  * @since 1.0
  */
@@ -148,7 +148,7 @@ class CAssetManager extends CApplicationComponent
 
 				return $this->_published[$path]=$this->getBaseUrl()."/$dir/$fileName";
 			}
-			else
+			else if(is_dir($src))
 			{
 				$dir=$this->hash($hashByName ? basename($src) : $src);
 				$dstDir=$this->getBasePath().DIRECTORY_SEPARATOR.$dir;
@@ -159,9 +159,8 @@ class CAssetManager extends CApplicationComponent
 				return $this->_published[$path]=$this->getBaseUrl().'/'.$dir;
 			}
 		}
-		else
-			throw new CException(Yii::t('yii','The asset "{asset}" to be published does not exist.',
-				array('{asset}'=>$path)));
+		throw new CException(Yii::t('yii','The asset "{asset}" to be published does not exist.',
+			array('{asset}'=>$path)));
 	}
 
 	/**

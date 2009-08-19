@@ -12,7 +12,7 @@
  * CDbSchema is the base class for retrieving metadata information.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbSchema.php 487 2009-01-08 03:44:52Z qiang.xue $
+ * @version $Id: CDbSchema.php 1304 2009-08-07 15:02:50Z qiang.xue $
  * @package system.db.schema
  * @since 1.0
  */
@@ -121,7 +121,19 @@ abstract class CDbSchema extends CComponent
 	 */
 	public function refresh()
 	{
+		if(($duration=$this->_connection->schemaCachingDuration)>0 && ($cache=Yii::app()->getCache())!==null)
+		{
+			foreach(array_keys($this->_tables) as $name)
+			{
+				if(!isset($this->_cacheExclude[$name]))
+				{
+					$key='yii:dbschema'.$this->_connection->connectionString.':'.$this->_connection->username.':'.$name;
+					$cache->delete($key);
+				}
+			}
+		}
 		$this->_tables=array();
+		$this->_tableNames=array();
 		$this->_builder=null;
 	}
 

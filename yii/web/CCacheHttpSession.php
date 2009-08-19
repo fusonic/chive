@@ -21,7 +21,7 @@
  * is a better choice.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCacheHttpSession.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: CCacheHttpSession.php 1136 2009-06-17 13:16:14Z qiang.xue $
  * @package system.web
  * @since 1.0
  */
@@ -47,11 +47,11 @@ class CCacheHttpSession extends CHttpSession
 	 */
 	public function init()
 	{
-		parent::init();
 		$this->_cache=Yii::app()->getComponent($this->cacheID);
 		if(!($this->_cache instanceof ICache))
 			throw new CException(Yii::t('yii','CCacheHttpSession.cacheID is invalid. Please make sure "{id}" refers to a valid cache application component.',
 				array('{id}'=>$this->cacheID)));
+		parent::init();
 	}
 
 	/**

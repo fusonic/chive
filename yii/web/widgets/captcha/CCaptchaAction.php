@@ -28,7 +28,7 @@
  * </ol>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCaptchaAction.php 726 2009-02-23 02:20:59Z qiang.xue $
+ * @version $Id: CCaptchaAction.php 1066 2009-05-26 15:23:48Z qiang.xue $
  * @package system.web.widgets.captcha
  * @since 1.0
  */

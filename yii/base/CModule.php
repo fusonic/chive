@@ -14,7 +14,7 @@
  * CModule mainly manages application components and sub-modules.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CModule.php 870 2009-03-22 15:06:23Z qiang.xue $
+ * @version $Id: CModule.php 1091 2009-06-05 00:39:02Z qiang.xue $
  * @package system.base
  * @since 1.0.4
  */
@@ -204,6 +204,31 @@ abstract class CModule extends CComponent
 	}
 
 	/**
+	 * Defines the root aliases.
+	 * @param array list of aliases to be defined. The array keys are root aliases,
+	 * while the array values are paths or aliases corresponding to the root aliases.
+	 * For example,
+	 * <pre>
+	 * array(
+	 *    'models'=>'application.models',              // an existing alias
+	 *    'extensions'=>'application.extensions',      // an existing alias
+	 *    'backend'=>dirname(__FILE__).'/../backend',  // a directory
+	 * )
+	 * </pre>
+	 * @since 1.0.5
+	 */
+	public function setAliases($mappings)
+	{
+		foreach($mappings as $name=>$alias)
+		{
+			if(($path=Yii::getPathOfAlias($alias))!==false)
+				Yii::setPathOfAlias($name,$path);
+			else
+				Yii::setPathOfAlias($name,$alias);
+		}
+	}
+
+	/**
 	 * @return CModule the parent module. Null if this module does not have a parent.
 	 */
 	public function getParentModule()
@@ -307,14 +332,16 @@ abstract class CModule extends CComponent
 	/**
 	 * Retrieves the named application component.
 	 * @param string application component ID (case-sensitive)
+	 * @param boolean whether to create the component if it doesn't exist yet. This parameter
+	 * has been available since version 1.0.6.
 	 * @return IApplicationComponent the application component instance, null if the application component is disabled or does not exist.
 	 * @see hasComponent
 	 */
-	public function getComponent($id)
+	public function getComponent($id,$createIfNull=true)
 	{
 		if(isset($this->_components[$id]))
 			return $this->_components[$id];
-		else if(isset($this->_componentConfig[$id]))
+		else if(isset($this->_componentConfig[$id]) && $createIfNull)
 		{
 			$config=$this->_componentConfig[$id];
 			unset($this->_componentConfig[$id]);

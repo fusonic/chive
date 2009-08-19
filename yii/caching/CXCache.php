@@ -13,10 +13,10 @@
  *
  * To use this application component, the XCache PHP extension must be loaded.
  *
- * See {@link CCache} manual for common cache operations that are supported by CApcCache.
+ * See {@link CCache} manual for common cache operations that are supported by CXCache.
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: CXCache.php 461 2009-01-04 04:20:08Z qiang.xue $
+ * @version $Id: CXCache.php 1084 2009-06-02 17:35:38Z qiang.xue $
  * @package system.caching
  * @since 1.0.1
  */

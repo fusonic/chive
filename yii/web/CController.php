@@ -58,7 +58,7 @@
  * For object-based filters, the '+' and '-' operators are following the class name.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CController.php 916 2009-04-04 21:54:27Z qiang.xue $
+ * @version $Id: CController.php 1158 2009-06-22 16:51:20Z qiang.xue $
  * @package system.web
  * @since 1.0
  */
@@ -72,7 +72,7 @@ class CController extends CBaseController
 	/**
 	 * @var mixed the name of the layout to be applied to this controller's views.
 	 * Defaults to null, meaning the {@link CWebApplication::layout application layout}
-	 * is used. If it is an empty string, no layout will be applied.
+	 * is used. If it is false, no layout will be applied.
 	 * Since version 1.0.3, the {@link CWebModule::layout module layout} will be used
 	 * if the controller belongs to a module and this layout property is null.
 	 */
@@ -81,12 +81,6 @@ class CController extends CBaseController
 	 * @var string the name of the default action. Defaults to 'index'.
 	 */
 	public $defaultAction='index';
-	/**
-	 * @var boolean whether page caching is enabled for the current action.
-	 * Do not modify the value of this property.
-	 * @since 1.0.4
-	 */
-	public $usePageCaching=false;
 
 	private $_id;
 	private $_action;
@@ -107,6 +101,7 @@ class CController extends CBaseController
 	{
 		$this->_id=$id;
 		$this->_module=$module;
+		$this->attachBehaviors($this->behaviors());
 	}
 
 	/**
@@ -207,6 +202,32 @@ class CController extends CBaseController
 	}
 
 	/**
+	 * Returns a list of behaviors that this controller should behave as.
+	 * The return value should be an array of behavior configurations indexed by
+	 * behavior names. Each behavior configuration can be either a string specifying
+	 * the behavior class or an array of the following structure:
+	 * <pre>
+	 * 'behaviorName'=>array(
+	 *     'class'=>'path.to.BehaviorClass',
+	 *     'property1'=>'value1',
+	 *     'property2'=>'value2',
+	 * )
+	 * </pre>
+	 *
+	 * Note, the behavior classes must implement {@link IBehavior} or extend from
+	 * {@link CBehavior}. Behaviors declared in this method will be attached
+	 * to the model when it is instantiated.
+	 *
+	 * For more details about behaviors, see {@link CComponent}.
+	 * @return array the behavior configurations (behavior name=>behavior configuration)
+	 * @since 1.0.6
+	 */
+	public function behaviors()
+	{
+		return array();
+	}
+
+	/**
 	 * Returns the access rules for this controller.
 	 * Override this method if you use the {@link filterAccessControl accessControl} filter.
 	 * @return array list of access rules. See {@link CAccessControlFilter} for details about rule specification.
@@ -297,14 +318,13 @@ class CController extends CBaseController
 		Yii::app()->getClientScript()->render($output);
 
 		// if using page caching, we should delay dynamic output replacement
-		if(!$this->usePageCaching && $this->_dynamicOutput)
+		if($this->_dynamicOutput!==null && $this->isCachingStackEmpty())
 			$output=$this->processDynamicOutput($output);
 
-		if($this->_pageStates!==null || isset($_POST[self::STATE_INPUT_NAME]))
-		{
-			$states=$this->savePageStates();
-			$output=str_replace(CHtml::pageStateField(''),CHtml::pageStateField($states),$output);
-		}
+		if($this->_pageStates===null)
+			$this->_pageStates=$this->loadPageStates();
+		if(!empty($this->_pageStates))
+			$this->savePageStates($this->_pageStates,$output);
 
 		return $output;
 	}
@@ -821,10 +841,13 @@ class CController extends CBaseController
 	 * The effect of this method call is the same as user pressing the
 	 * refresh button on the browser (without post data).
 	 * @param boolean whether to terminate the current application after calling this method
+	 * @param string the anchor that should be appended to the redirection URL.
+	 * Defaults to empty. Make sure the anchor starts with '#' if you want to specify it.
+	 * The parameter has been available since version 1.0.7.
 	 **/
-	public function refresh($terminate=true)
+	public function refresh($terminate=true,$anchor='')
 	{
-		$this->redirect(Yii::app()->getRequest()->getUrl(),$terminate);
+		$this->redirect(Yii::app()->getRequest()->getUrl().$anchor,$terminate);
 	}
 
 	/**
@@ -847,13 +870,25 @@ class CController extends CBaseController
 	}
 
 	/**
+	 * @param boolean whether to create a stack if it does not exist yet. Defaults to true.
 	 * @return CStack stack of {@link COutputCache} objects
 	 */
-	public function getCachingStack()
+	public function getCachingStack($createIfNull=true)
 	{
 		if(!$this->_cachingStack)
 			$this->_cachingStack=new CStack;
 		return $this->_cachingStack;
+	}
+
+	/**
+	 * @return whether the caching stack is empty. If not empty, it means currently there are
+	 * some output cache in effect. Note, the return result of this method may change when it is
+	 * called in different output regions, depending on the partition of output caches.
+	 * @since 1.0.5
+	 */
+	public function isCachingStackEmpty()
+	{
+		return $this->_cachingStack===null || !$this->_cachingStack->getCount();
 	}
 
 	/**
@@ -955,7 +990,7 @@ class CController extends CBaseController
 	public function getPageState($name,$defaultValue=null)
 	{
 		if($this->_pageStates===null)
-			$this->loadPageStates();
+			$this->_pageStates=$this->loadPageStates();
 		return isset($this->_pageStates[$name])?$this->_pageStates[$name]:$defaultValue;
 	}
 
@@ -974,7 +1009,7 @@ class CController extends CBaseController
 	public function setPageState($name,$value,$defaultValue=null)
 	{
 		if($this->_pageStates===null)
-			$this->loadPageStates();
+			$this->_pageStates=$this->loadPageStates();
 		if($value===$defaultValue)
 			unset($this->_pageStates[$name]);
 		else
@@ -994,6 +1029,7 @@ class CController extends CBaseController
 
 	/**
 	 * Loads page states from a hidden input.
+	 * @return array the loaded page states
 	 */
 	protected function loadPageStates()
 	{
@@ -1004,30 +1040,23 @@ class CController extends CBaseController
 				if(extension_loaded('zlib'))
 					$data=@gzuncompress($data);
 				if(($data=Yii::app()->getSecurityManager()->validateData($data))!==false)
-				{
-					$this->_pageStates=unserialize($data);
-					return;
-				}
+					return unserialize($data);
 			}
 		}
-		$this->_pageStates=array();
+		return array();
 	}
 
 	/**
 	 * Saves page states as a base64 string.
+	 * @param array the states to be saved.
+	 * @param string the output to be modified. Note, this is passed by reference.
 	 */
-	protected function savePageStates()
+	protected function savePageStates($states,&$output)
 	{
-		if($this->_pageStates===null)
-			$this->loadPageStates();
-		if(empty($this->_pageStates))
-			return '';
-		else
-		{
-			$data=Yii::app()->getSecurityManager()->hashData(serialize($this->_pageStates));
-			if(extension_loaded('zlib'))
-				$data=gzcompress($data);
-			return base64_encode($data);
-		}
+		$data=Yii::app()->getSecurityManager()->hashData(serialize($states));
+		if(extension_loaded('zlib'))
+			$data=gzcompress($data);
+		$value=base64_encode($data);
+		$output=str_replace(CHtml::pageStateField(''),CHtml::pageStateField($value),$output);
 	}
 }

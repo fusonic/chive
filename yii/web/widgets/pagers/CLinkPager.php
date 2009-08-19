@@ -12,7 +12,7 @@
  * CLinkPager displays a list of hyperlinks that lead to different pages of target.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLinkPager.php 576 2009-01-25 19:42:19Z qiang.xue $
+ * @version $Id: CLinkPager.php 1035 2009-05-20 13:11:46Z qiang.xue $
  * @package system.web.widgets.pagers
  * @since 1.0
  */
@@ -21,7 +21,7 @@ class CLinkPager extends CBasePager
 	const CSS_FIRST_PAGE='first';
 	const CSS_LAST_PAGE='last';
 	const CSS_PREVIOUS_PAGE='previous';
-	const CSS_NEXT_PAGE='previous';
+	const CSS_NEXT_PAGE='next';
 	const CSS_INTERNAL_PAGE='page';
 	const CSS_HIDDEN_PAGE='hidden';
 	const CSS_SELECTED_PAGE='selected';
@@ -74,13 +74,13 @@ class CLinkPager extends CBasePager
 	public function run()
 	{
 		if($this->nextPageLabel===null)
-			$this->nextPageLabel=Yii::t('yii','Next');
+			$this->nextPageLabel=Yii::t('yii','Next &gt;');
 		if($this->prevPageLabel===null)
-			$this->prevPageLabel=Yii::t('yii','Previous');
+			$this->prevPageLabel=Yii::t('yii','&lt; Previous');
 		if($this->firstPageLabel===null)
-			$this->firstPageLabel=Yii::t('yii','First');
+			$this->firstPageLabel=Yii::t('yii','&lt;&lt; First');
 		if($this->lastPageLabel===null)
-			$this->lastPageLabel=Yii::t('yii','Last');
+			$this->lastPageLabel=Yii::t('yii','Last &gt;&gt;');
 		if($this->header===null)
 			$this->header=Yii::t('yii','Go to page: ');
 
@@ -187,7 +187,6 @@ class CLinkPager extends CBasePager
 	 */
 	public static function registerCssFile($url=null)
 	{
-		
 		if($url===null)
 			$url=CHtml::asset(Yii::getPathOfAlias('system.web.widgets.pagers.pager').'.css');
 		Yii::app()->getClientScript()->registerCssFile($url);

@@ -9,12 +9,13 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2009 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: yiic.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: yiic.php 1211 2009-07-05 04:54:10Z qiang.xue $
  */
 
-defined('YII_DEBUG') or define('YII_DEBUG',true);
+// fix for fcgi
+defined('STDIN') or define('STDIN', fopen('php://stdin', 'r'));
 
-// disable E_NOTICE so that "yiic shell" is more friendly
+defined('YII_DEBUG') or define('YII_DEBUG',true);
 error_reporting(E_ALL ^ E_NOTICE);
 
 require_once(dirname(__FILE__).'/yii.php');

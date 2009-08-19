@@ -58,7 +58,7 @@
  * For more advanced variation, override {@link getBaseCacheKey()} method.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: COutputCache.php 916 2009-04-04 21:54:27Z qiang.xue $
+ * @version $Id: COutputCache.php 1087 2009-06-03 17:56:23Z qiang.xue $
  * @package system.web.widgets
  * @since 1.0
  */
@@ -149,8 +149,6 @@ class COutputCache extends CFilterWidget
 	 */
 	public function init()
 	{
-		$this->getController()->usePageCaching=$this->getIsFilter();
-
 		if($this->getIsContentCached())
 			$this->replayActions();
 		else if($this->_cache!==null)
@@ -170,7 +168,12 @@ class COutputCache extends CFilterWidget
 	public function run()
 	{
 		if($this->getIsContentCached())
-			echo $this->getController()->processDynamicOutput($this->_content);
+		{
+			if($this->getController()->isCachingStackEmpty())
+				echo $this->getController()->processDynamicOutput($this->_content);
+			else
+				echo $this->_content;
+		}
 		else if($this->_cache!==null)
 		{
 			$this->_content=ob_get_clean();
@@ -179,7 +182,11 @@ class COutputCache extends CFilterWidget
 			if(is_array($this->dependency))
 				$this->dependency=Yii::createComponent($this->dependency);
 			$this->_cache->set($this->getCacheKey(),$data,$this->duration>0 ? $this->duration : 0,$this->dependency);
-			echo $this->getController()->processDynamicOutput($this->_content);
+
+			if($this->getController()->isCachingStackEmpty())
+				echo $this->getController()->processDynamicOutput($this->_content);
+			else
+				echo $this->_content;
 		}
 	}
 
@@ -229,7 +236,7 @@ class COutputCache extends CFilterWidget
 	 */
 	protected function getBaseCacheKey()
 	{
-		return self::CACHE_KEY_PREFIX.':'.$this->getId().':';
+		return self::CACHE_KEY_PREFIX.$this->getId().'.';
 	}
 
 	/**
@@ -244,7 +251,7 @@ class COutputCache extends CFilterWidget
 			return $this->_key;
 		else
 		{
-			$key=$this->getBaseCacheKey().':';
+			$key=$this->getBaseCacheKey().'.';
 			if($this->varyByRoute)
 			{
 				$controller=$this->getController();
@@ -252,11 +259,11 @@ class COutputCache extends CFilterWidget
 				if(($action=$controller->getAction())!==null)
 					$key.=$action->getId();
 			}
-			$key.=':';
+			$key.='.';
 
 			if($this->varyBySession)
 				$key.=Yii::app()->getSession()->getSessionID();
-			$key.=':';
+			$key.='.';
 
 			if(is_array($this->varyByParam) && isset($this->varyByParam[0]))
 			{
@@ -270,11 +277,11 @@ class COutputCache extends CFilterWidget
 				}
 				$key.=serialize($params);
 			}
-			$key.=':';
+			$key.='.';
 
 			if($this->varyByExpression!==null)
 				$key.=$this->evaluateExpression($this->varyByExpression);
-			$key.=':';
+			$key.='.';
 
 			return $this->_key=$key;
 		}
@@ -306,7 +313,6 @@ class COutputCache extends CFilterWidget
 	{
 		if(empty($this->_actions))
 			return;
-
 		$controller=$this->getController();
 		$cs=Yii::app()->getClientScript();
 		foreach($this->_actions as $action)

@@ -16,7 +16,7 @@
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @author Christophe Boulain <Christophe.Boulain@gmail.com>
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: CMssqlCommandBuilder.php 829 2009-03-12 15:31:45Z qiang.xue $
+ * @version $Id: CMssqlCommandBuilder.php 1281 2009-07-31 21:40:12Z qiang.xue $
  * @package system.db.schema.mssql
  * @since 1.0.4
  */
@@ -77,13 +77,15 @@ class CMssqlCommandBuilder extends CDbCommandBuilder
 		$fields=array();
 		$values=array();
 		$bindByPosition=isset($criteria->params[0]);
+		$i=0;
 		foreach($data as $name=>$value)
 		{
 			if(($column=$table->getColumn($name))!==null)
 			{
 				if ($table->sequenceName !== null && $column->isPrimaryKey === true) continue;
+				if ($column->dbType === 'timestamp') continue;
 				if($value instanceof CDbExpression)
-					$fields[]=$column->rawName.'='.(string)$value;
+					$fields[]=$column->rawName.'='.$value->expression;
 				else if($bindByPosition)
 				{
 					$fields[]=$column->rawName.'=?';
@@ -91,8 +93,9 @@ class CMssqlCommandBuilder extends CDbCommandBuilder
 				}
 				else
 				{
-					$fields[]=$column->rawName.'=:'.$name;
-					$values[':'.$name]=$column->typecast($value);
+					$fields[]=$column->rawName.'='.self::PARAM_PREFIX.$i;
+					$values[self::PARAM_PREFIX.$i]=$column->typecast($value);
+					$i++;
 				}
 			}
 		}

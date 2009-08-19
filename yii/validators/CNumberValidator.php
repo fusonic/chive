@@ -12,7 +12,7 @@
  * CNumberValidator validates that the attribute value is a number.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CNumberValidator.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: CNumberValidator.php 1178 2009-06-26 20:13:31Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -63,7 +63,6 @@ class CNumberValidator extends CValidator
 				$message=$this->message!==null?$this->message:Yii::t('yii','{attribute} must be an integer.');
 				$this->addError($object,$attribute,$message);
 			}
-			$value=(int)$value;
 		}
 		else
 		{
@@ -72,7 +71,6 @@ class CNumberValidator extends CValidator
 				$message=$this->message!==null?$this->message:Yii::t('yii','{attribute} must be a number.');
 				$this->addError($object,$attribute,$message);
 			}
-			$value=(double)$value;
 		}
 		if($this->min!==null && $value<$this->min)
 		{

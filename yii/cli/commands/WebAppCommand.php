@@ -6,14 +6,14 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2009 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: WebAppCommand.php 849 2009-03-18 17:26:07Z qiang.xue $
+ * @version $Id: WebAppCommand.php 1121 2009-06-12 16:40:13Z qiang.xue $
  */
 
 /**
  * WebAppCommand creates an Yii Web application at the specified location.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: WebAppCommand.php 849 2009-03-18 17:26:07Z qiang.xue $
+ * @version $Id: WebAppCommand.php 1121 2009-06-12 16:40:13Z qiang.xue $
  * @package system.cli.commands
  * @since 1.0
  */
@@ -52,7 +52,10 @@ EOD;
 		$dir=realpath(dirname($path));
 		if($dir===false || !is_dir($dir))
 			$this->usageError("The directory '$path' is not valid. Please make sure the parent directory exists.");
-		$this->_rootPath=$path=$dir.DIRECTORY_SEPARATOR.basename($path);
+		if(basename($path)==='.')
+			$this->_rootPath=$path=$dir;
+		else
+			$this->_rootPath=$path=$dir.DIRECTORY_SEPARATOR.basename($path);
 		echo "Create a Web application under '$path'? [Yes|No] ";
 		if(!strncasecmp(trim(fgets(STDIN)),'y',1))
 		{

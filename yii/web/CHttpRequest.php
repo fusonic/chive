@@ -22,7 +22,7 @@
  * accessed via {@link CWebApplication::getRequest()}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CHttpRequest.php 901 2009-03-30 16:55:07Z qiang.xue $
+ * @version $Id: CHttpRequest.php 1283 2009-08-01 01:21:38Z qiang.xue $
  * @package system.web
  * @since 1.0
  */
@@ -50,7 +50,7 @@ class CHttpRequest extends CApplicationComponent
 	/**
 	 * @var array the property values (in name-value pairs) used to initialize the CSRF cookie.
 	 * Any property of {@link CHttpCookie} may be initialized.
-	 * This property is effectively only when {@link enableCsrfValidation} is true.
+	 * This property is effective only when {@link enableCsrfValidation} is true.
 	 */
 	public $csrfCookie;
 
@@ -276,6 +276,8 @@ class CHttpRequest extends CApplicationComponent
 				$this->_scriptUrl=$_SERVER['ORIG_SCRIPT_NAME'];
 			else if(($pos=strpos($_SERVER['PHP_SELF'],'/'.$scriptName))!==false)
 				$this->_scriptUrl=substr($_SERVER['SCRIPT_NAME'],0,$pos).'/'.$scriptName;
+			else if(isset($_SERVER['DOCUMENT_ROOT']) && strpos($_SERVER['SCRIPT_FILENAME'],$_SERVER['DOCUMENT_ROOT'])===0)
+				$this->_scriptUrl=str_replace('\\','/',str_replace($_SERVER['DOCUMENT_ROOT'],'',$_SERVER['SCRIPT_FILENAME']));
 			else
 				throw new CException(Yii::t('yii','CHttpRequest is unable to determine the entry script URL.'));
 		}
@@ -458,12 +460,15 @@ class CHttpRequest extends CApplicationComponent
 	}
 
 	/**
+	 * Returns information about the capabilities of user browser.
+	 * @param string the user agent to be analyzed. Defaults to null, meaning using the
+	 * current User-Agent HTTP header information.
 	 * @return array user browser capabilities.
 	 * @see http://www.php.net/manual/en/function.get-browser.php
 	 */
-	public function getBrowser()
+	public function getBrowser($userAgent=null)
 	{
-		return get_browser();
+		return get_browser($userAgent,true);
 	}
 
 	/**
@@ -640,7 +645,7 @@ class CHttpRequest extends CApplicationComponent
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CHttpRequest.php 901 2009-03-30 16:55:07Z qiang.xue $
+ * @version $Id: CHttpRequest.php 1283 2009-08-01 01:21:38Z qiang.xue $
  * @package system.web
  * @since 1.0
  */

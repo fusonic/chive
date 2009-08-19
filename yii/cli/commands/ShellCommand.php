@@ -6,14 +6,14 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2009 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: ShellCommand.php 902 2009-03-30 19:14:15Z qiang.xue $
+ * @version $Id: ShellCommand.php 1161 2009-06-22 18:36:59Z qiang.xue $
  */
 
 /**
  * ShellCommand executes the specified Web application and provides a shell for interaction.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: ShellCommand.php 902 2009-03-30 19:14:15Z qiang.xue $
+ * @version $Id: ShellCommand.php 1161 2009-06-22 18:36:59Z qiang.xue $
  * @package system.cli.commands
  * @since 1.0
  */
@@ -88,6 +88,9 @@ EOD;
 			Yii::createWebApplication($config);
 		}
 
+		restore_error_handler();
+		restore_exception_handler();
+
 		$yiiVersion=Yii::getVersion();
 		echo <<<EOD
 Yii Interactive Tool v1.0 (based on Yii v{$yiiVersion})
@@ -118,6 +121,9 @@ EOD;
 
 	protected function runShell()
 	{
+		// disable E_NOTICE so that the shell is more friendly
+		error_reporting(E_ALL ^ E_NOTICE);
+
 		$_runner_=new CConsoleCommandRunner;
 		$_runner_->addCommands(dirname(__FILE__).'/shell');
 		$_runner_->addCommands(Yii::getPathOfAlias('application.commands.shell'));

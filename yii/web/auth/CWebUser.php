@@ -44,7 +44,7 @@
  * you should store them directly in session on the server side if needed.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CWebUser.php 947 2009-04-19 00:41:43Z qiang.xue@gmail.com $
+ * @version $Id: CWebUser.php 1193 2009-06-29 19:04:30Z qiang.xue $
  * @package system.web.auth
  * @since 1.0
  */
@@ -52,6 +52,7 @@ class CWebUser extends CApplicationComponent implements IWebUser
 {
 	const FLASH_KEY_PREFIX='Yii.CWebUser.flash.';
 	const FLASH_COUNTERS='Yii.CWebUser.flash.counters';
+	const STATES_VAR='__states';
 
 	/**
 	 * @var boolean whether to enable cookie-based login. Defaults to false.
@@ -66,10 +67,17 @@ class CWebUser extends CApplicationComponent implements IWebUser
 	 * @var string|array the URL for login. If using array, the first element should be
 	 * the route to the login action, and the rest name-value pairs are GET parameters
 	 * to construct the login URL (e.g. array('site/login')). If this property is null,
-	 * a 401 HTTP exception will be raised instead.
+	 * a 403 HTTP exception will be raised instead.
 	 * @see CController::createUrl
 	 */
 	public $loginUrl=array('site/login');
+	/**
+	 * @var array the property values (in name-value pairs) used to initialize the identity cookie.
+	 * Any property of {@link CHttpCookie} may be initialized.
+	 * This property is effective only when {@link allowAutoLogin} is true.
+	 * @since 1.0.5
+	 */
+	public $identityCookie;
 
 	private $_keyPrefix;
 	private $_access=array();
@@ -179,13 +187,21 @@ class CWebUser extends CApplicationComponent implements IWebUser
 
 	/**
 	 * Logs out the current user.
-	 * The session will be destroyed.
+	 * This will remove authentication-related session data.
+	 * If the parameter is true, the whole session will be destroyed as well.
+	 * @param boolean whether to destroy the whole session. Defaults to true. If false,
+	 * then {@link clearStates} will be called, which removes only the data stored via {@link setState}.
+	 * This parameter has been available since version 1.0.7. Before 1.0.7, the behavior
+	 * is to destroy the whole session.
 	 */
-	public function logout()
+	public function logout($destroySession=true)
 	{
 		if($this->allowAutoLogin)
 			Yii::app()->getRequest()->getCookies()->remove($this->getStateKeyPrefix());
-		$this->clearStates();
+		if($destroySession)
+			Yii::app()->getSession()->destroy();
+		else
+			$this->clearStates();
 	}
 
 	/**
@@ -219,7 +235,7 @@ class CWebUser extends CApplicationComponent implements IWebUser
 	 */
 	public function getName()
 	{
-		if(($name=$this->getState('_name'))!==null)
+		if(($name=$this->getState('__name'))!==null)
 			return $name;
 		else
 			return $this->guestName;
@@ -232,7 +248,7 @@ class CWebUser extends CApplicationComponent implements IWebUser
 	 */
 	public function setName($value)
 	{
-		$this->setState('_name',$value);
+		$this->setState('__name',$value);
 	}
 
 	/**
@@ -244,7 +260,7 @@ class CWebUser extends CApplicationComponent implements IWebUser
 	 */
 	public function getReturnUrl()
 	{
-		return $this->getState('_returnUrl',Yii::app()->getRequest()->getScriptUrl());
+		return $this->getState('__returnUrl',Yii::app()->getRequest()->getScriptUrl());
 	}
 
 	/**
@@ -252,7 +268,7 @@ class CWebUser extends CApplicationComponent implements IWebUser
 	 */
 	public function setReturnUrl($value)
 	{
-		$this->setState('_returnUrl',$value);
+		$this->setState('__returnUrl',$value);
 	}
 
 	/**
@@ -278,7 +294,7 @@ class CWebUser extends CApplicationComponent implements IWebUser
 			$request->redirect($url);
 		}
 		else
-			throw new CHttpException(401,Yii::t('yii','Login Required'));
+			throw new CHttpException(403,Yii::t('yii','Login Required'));
 	}
 
 	/**
@@ -314,7 +330,7 @@ class CWebUser extends CApplicationComponent implements IWebUser
 	protected function saveToCookie($duration)
 	{
 		$app=Yii::app();
-		$cookie=new CHttpCookie($this->getStateKeyPrefix(),'');
+		$cookie=$this->createIdentityCookie($this->getStateKeyPrefix());
 		$cookie->expire=time()+$duration;
 		$data=array(
 			$this->getId(),
@@ -326,15 +342,20 @@ class CWebUser extends CApplicationComponent implements IWebUser
 	}
 
 	/**
-	 * Raised when the user identity information is being restored from cookie.
-	 * This event is only raised when {@link allowAutoLogin} is true and when
-	 * the user identity information is being restored from cookie.
-	 * When this event is raised, the user component already has the unique ID available.
-	 * @param CEvent event parameter
+	 * Creates a cookie to store identity information.
+	 * @param string the cookie name
+	 * @return CHttpCookie the cookie used to store identity information
+	 * @since 1.0.5
 	 */
-	public function onRestoreFromCookie($event)
+	protected function createIdentityCookie($name)
 	{
-		$this->raiseEvent('onRestoreFromCookie',$event);
+		$cookie=new CHttpCookie($name,'');
+		if(is_array($this->identityCookie))
+		{
+			foreach($this->identityCookie as $name=>$value)
+				$cookie->$name=$value;
+		}
+		return $cookie;
 	}
 
 	/**
@@ -406,11 +427,18 @@ class CWebUser extends CApplicationComponent implements IWebUser
 
 	/**
 	 * Clears all user identity information from persistent storage.
-	 * The default implementation simply destroys the session.
+	 * This will remove the data stored via {@link setState}.
 	 */
 	public function clearStates()
 	{
-		Yii::app()->getSession()->destroy();
+		$keys=array_keys($_SESSION);
+		$prefix=$this->getStateKeyPrefix();
+		$n=strlen($prefix);
+		foreach($keys as $key)
+		{
+			if(!strncmp($key,$prefix,$n))
+				unset($_SESSION[$key]);
+		}
 	}
 
 	/**
@@ -483,7 +511,7 @@ class CWebUser extends CApplicationComponent implements IWebUser
 	protected function saveIdentityStates()
 	{
 		$states=array();
-		foreach($this->getState('__states',array()) as $name=>$dummy)
+		foreach($this->getState(self::STATES_VAR,array()) as $name=>$dummy)
 			$states[$name]=$this->getState($name);
 		return $states;
 	}
@@ -494,18 +522,16 @@ class CWebUser extends CApplicationComponent implements IWebUser
 	 */
 	protected function loadIdentityStates($states)
 	{
+		$names=array();
 		if(is_array($states))
 		{
-			$names=array();
 			foreach($states as $name=>$value)
 			{
 				$this->setState($name,$value);
 				$names[$name]=true;
 			}
-			$this->setState('__states',$names);
 		}
-		else
-			$this->setState('__states',array());
+		$this->setState(self::STATES_VAR,$names);
 	}
 
 	/**

@@ -12,7 +12,7 @@
  * CClientScript manages JavaScript and CSS stylesheets for views.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CClientScript.php 942 2009-04-16 15:00:20Z qiang.xue@gmail.com $
+ * @version $Id: CClientScript.php 1090 2009-06-04 19:59:55Z qiang.xue $
  * @package system.web
  * @since 1.0
  */
@@ -240,6 +240,7 @@ class CClientScript extends CApplicationComponent
 
 		if($html!=='')
 		{
+			$count=0;
 			$output=preg_replace('/(<title\b[^>]*>|<\\/head\s*>)/is','<###head###>$1',$output,1,$count);
 			if($count)
 				$output=str_replace('<###head###>',$html,$output);
@@ -265,6 +266,7 @@ class CClientScript extends CApplicationComponent
 
 		if($html!=='')
 		{
+			$count=0;
 			$output=preg_replace('/(<body\b[^>]*>)/is','$1<###begin###>',$output,1,$count);
 			if($count)
 				$output=str_replace('<###begin###>',$html,$output);
@@ -283,6 +285,7 @@ class CClientScript extends CApplicationComponent
 			&& !isset($this->scripts[self::POS_READY]) && !isset($this->scripts[self::POS_LOAD]))
 			return;
 
+		$fullPage=0;
 		$output=preg_replace('/(<\\/body\s*>)/is','<###end###>$1',$output,1,$fullPage);
 		$html='';
 		if(isset($this->scriptFiles[self::POS_END]))
@@ -371,7 +374,6 @@ class CClientScript extends CApplicationComponent
 
 	/**
 	 * Registers a CSS file
-	 * @param string ID that uniquely identifies this CSS file
 	 * @param string URL of the CSS file
 	 * @param string media that the CSS file should be applied to. If empty, it means all media types.
 	 */

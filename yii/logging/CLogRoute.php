@@ -25,12 +25,17 @@
  * satisfying both filter conditions will they be returned.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLogRoute.php 639 2009-02-08 16:16:26Z qiang.xue $
+ * @version $Id: CLogRoute.php 1165 2009-06-22 21:23:30Z qiang.xue $
  * @package system.logging
  * @since 1.0
  */
 abstract class CLogRoute extends CComponent
 {
+	/**
+	 * @var boolean whether to enable this log route. Defaults to true.
+	 * @since 1.0.7
+	 */
+	public $enabled=true;
 	/**
 	 * @var string list of levels separated by comma or space. Defaults to empty, meaning all levels.
 	 */
@@ -39,6 +44,16 @@ abstract class CLogRoute extends CComponent
 	 * @var string list of categories separated by comma or space. Defaults to empty, meaning all categories.
 	 */
 	public $categories='';
+	/**
+	 * @var mixed the additional filter (e.g. {@link CLogFilter}) that can be applied to the log messages.
+	 * The value of this property will be passed to {@link Yii::createComponent} to create
+	 * a log filter object. As a result, this can be either a string representing the
+	 * filter class name or an array representing the filter configuration.
+	 * In general, the log filter class should be {@link CLogFilter} or a child class of it.
+	 * Defaults to null, meaning no filter will be used.
+	 * @since 1.0.6
+	 */
+	public $filter;
 
 
 	/**
@@ -70,7 +85,11 @@ abstract class CLogRoute extends CComponent
 	{
 		$logs=$logger->getLogs($this->levels,$this->categories);
 		if(!empty($logs))
+		{
+			if($this->filter!==null)
+				Yii::createComponent($this->filter)->filter($logs);
 			$this->processLogs($logs);
+		}
 	}
 
 	/**

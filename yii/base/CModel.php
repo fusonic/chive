@@ -15,7 +15,7 @@
  * CModel defines the basic framework for data models that need to be validated.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CModel.php 893 2009-03-30 00:10:29Z qiang.xue $
+ * @version $Id: CModel.php 1080 2009-05-31 20:47:16Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -205,8 +205,9 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	 */
 	protected function beforeValidate($scenario)
 	{
-		$this->onBeforeValidate(new CEvent($this));
-		return true;
+		$event=new CModelEvent($this);
+		$this->onBeforeValidate($event);
+		return $event->isValid;
 	}
 
 	/**
@@ -225,7 +226,7 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 
 	/**
 	 * This event is raised before the validation is performed.
-	 * @param CEvent the event parameter
+	 * @param CModelEvent the event parameter
 	 * @since 1.0.2
 	 */
 	public function onBeforeValidate($event)
@@ -371,6 +372,28 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	public function addError($attribute,$error)
 	{
 		$this->_errors[$attribute][]=$error;
+	}
+
+	/**
+	 * Adds a list of errors.
+	 * @param array a list of errors. The array keys must be attribute names.
+	 * The array values should be error messages. If an attribute has multiple errors,
+	 * these errors must be given in terms of an array.
+	 * You may use the result of {@link getErrors} as the value for this parameter.
+	 * @since 1.0.5
+	 */
+	public function addErrors($errors)
+	{
+		foreach($errors as $attribute=>$error)
+		{
+			if(is_array($error))
+			{
+				foreach($error as $e)
+					$this->_errors[$attribute][]=$e;
+			}
+			else
+				$this->_errors[$attribute][]=$error;
+		}
 	}
 
 	/**

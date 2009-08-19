@@ -12,7 +12,7 @@
  * CMysqlColumnSchema class describes the column meta data of a MySQL table.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMysqlColumnSchema.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: CMysqlColumnSchema.php 1196 2009-06-30 15:17:16Z qiang.xue $
  * @package system.db.schema.mysql
  * @since 1.0
  */
@@ -24,12 +24,14 @@ class CMysqlColumnSchema extends CDbColumnSchema
 	 */
 	protected function extractType($dbType)
 	{
-		if(strpos($dbType,'bigint')!==false || strpos($dbType,'float')!==false || strpos($dbType,'double')!==false)
+		if(strncmp($dbType,'enum',4)===0)
+			$this->type='string';
+		else if(strpos($dbType,'bigint')!==false || strpos($dbType,'float')!==false || strpos($dbType,'double')!==false)
 			$this->type='double';
-		else if(strpos($dbType,'int')!==false || strpos($dbType,'bit')!==false)
-			$this->type='integer';
 		else if(strpos($dbType,'bool')!==false)
 			$this->type='boolean';
+		else if(strpos($dbType,'int')!==false || strpos($dbType,'bit')!==false)
+			$this->type='integer';
 		else
 			$this->type='string';
 	}

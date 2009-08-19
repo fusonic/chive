@@ -28,7 +28,7 @@
  * You can use {@link CFileValidator} to validate the file attribute.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFileValidator.php 914 2009-04-04 19:10:16Z qiang.xue $
+ * @version $Id: CFileValidator.php 1271 2009-07-22 20:25:46Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -116,7 +116,7 @@ class CFileValidator extends CValidator
 
 		if($this->minSize!==null && $file->getSize()<$this->minSize)
 		{
-			$message=$this->tooSmall!==null?$this->tooLarge : Yii::t('yii','The file "{file}" is too small. Its size cannot be smaller than {limit} bytes.');
+			$message=$this->tooSmall!==null?$this->tooSmall : Yii::t('yii','The file "{file}" is too small. Its size cannot be smaller than {limit} bytes.');
 			$this->addError($object,$attribute,$message,array('{file}'=>$file->getName(), '{limit}'=>$this->minSize));
 		}
 

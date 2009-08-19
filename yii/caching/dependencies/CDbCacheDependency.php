@@ -17,7 +17,7 @@
  * component. It is this DB connection that is used to perform the query.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCacheDependency.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: CDbCacheDependency.php 1276 2009-07-23 20:19:07Z qiang.xue $
  * @package system.caching.dependencies
  * @since 1.0
  */
@@ -29,6 +29,7 @@ class CDbCacheDependency extends CCacheDependency
 	public $connectionID='db';
 	/**
 	 * @var string the SQL statement whose result is used to determine if the dependency has been changed.
+	 * Note, the SQL statement should return back a single value.
 	 */
 	public $sql;
 

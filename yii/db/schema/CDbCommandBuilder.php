@@ -12,12 +12,14 @@
  * CDbCommandBuilder provides basic methods to create query commands for tables.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCommandBuilder.php 888 2009-03-24 15:54:23Z qiang.xue $
+ * @version $Id: CDbCommandBuilder.php 1302 2009-08-07 13:43:18Z qiang.xue $
  * @package system.db.schema
  * @since 1.0
  */
 class CDbCommandBuilder extends CComponent
 {
+	const PARAM_PREFIX=':yp';
+
 	private $_schema;
 	private $_connection;
 
@@ -128,18 +130,29 @@ class CDbCommandBuilder extends CComponent
 		$fields=array();
 		$values=array();
 		$placeholders=array();
+		$i=0;
 		foreach($data as $name=>$value)
 		{
 			if(($column=$table->getColumn($name))!==null && ($value!==null || $column->allowNull))
 			{
 				$fields[]=$column->rawName;
 				if($value instanceof CDbExpression)
-					$placeholders[]=(string)$value;
+					$placeholders[]=$value->expression;
 				else
 				{
-					$placeholders[]=':'.$name;
-					$values[':'.$name]=$column->typecast($value);
+					$placeholders[]=self::PARAM_PREFIX.$i;
+					$values[self::PARAM_PREFIX.$i]=$column->typecast($value);
+					$i++;
 				}
+			}
+		}
+		if($fields===array())
+		{
+			$pks=is_array($table->primaryKey) ? $table->primaryKey : array($table->primaryKey);
+			foreach($pks as $pk)
+			{
+				$fields[]=$table->getColumn($pk)->rawName;
+				$placeholders[]='NULL';
 			}
 		}
 		$sql="INSERT INTO {$table->rawName} (".implode(', ',$fields).') VALUES ('.implode(', ',$placeholders).')';
@@ -164,12 +177,13 @@ class CDbCommandBuilder extends CComponent
 		$fields=array();
 		$values=array();
 		$bindByPosition=isset($criteria->params[0]);
+		$i=0;
 		foreach($data as $name=>$value)
 		{
 			if(($column=$table->getColumn($name))!==null)
 			{
 				if($value instanceof CDbExpression)
-					$fields[]=$column->rawName.'='.(string)$value;
+					$fields[]=$column->rawName.'='.$value->expression;
 				else if($bindByPosition)
 				{
 					$fields[]=$column->rawName.'=?';
@@ -177,8 +191,9 @@ class CDbCommandBuilder extends CComponent
 				}
 				else
 				{
-					$fields[]=$column->rawName.'=:'.$name;
-					$values[':'.$name]=$column->typecast($value);
+					$fields[]=$column->rawName.'='.self::PARAM_PREFIX.$i;
+					$values[self::PARAM_PREFIX.$i]=$column->typecast($value);
+					$i++;
 				}
 			}
 		}
@@ -453,11 +468,14 @@ class CDbCommandBuilder extends CComponent
 		$bindByPosition=isset($criteria->params[0]);
 		$conditions=array();
 		$values=array();
+		$i=0;
 		foreach($columns as $name=>$value)
 		{
 			if(($column=$table->getColumn($name))!==null)
 			{
-				if($value!==null)
+				if(is_array($value))
+					$conditions[]=$this->createInCondition($table,$name,$value);
+				else if($value!==null)
 				{
 					if($bindByPosition)
 					{
@@ -466,8 +484,9 @@ class CDbCommandBuilder extends CComponent
 					}
 					else
 					{
-						$conditions[]=$table->rawName.'.'.$column->rawName.'=:'.$name;
-						$values[':'.$name]=$value;
+						$conditions[]=$table->rawName.'.'.$column->rawName.'='.self::PARAM_PREFIX.$i;
+						$values[self::PARAM_PREFIX.$i]=$value;
+						$i++;
 					}
 				}
 				else
