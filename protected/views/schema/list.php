@@ -13,12 +13,12 @@
 		<div class="right">
 			<?php if(Yii::app()->user->privileges->checkGlobal('CREATE')) { ?>
 				<a href="javascript:void(0)" onclick="schemaList.addSchema()" class="icon button">
-					<com:Icon name="add" size="16" />
+					<?php echo Html::icon('add'); ?>
 					<span><?php echo Yii::t('core', 'addSchema'); ?></span>
 				</a>
 			<?php } else { ?>
 				<span class="icon button">
-					<com:Icon name="add" size="16" disabled="disabled" />
+					<?php echo Html::icon('add', 16, true); ?>
 					<span><?php echo Yii::t('core', 'addSchema'); ?></span>
 				</span>
 			<?php } ?>
@@ -65,25 +65,25 @@
 						</dfn>
 					</td>
 					<td>
-						<com:Icon name="privileges" size="16" text="core.privileges" disabled="true" />
+						<?php echo Html::icon('privileges', 16, true, 'core.privileges'); ?>
 					</td>
 					<td>
 						<?php if(Yii::app()->user->privileges->checkSchema($model->SCHEMA_NAME, 'ALTER')) { ?>
 							<a href="javascript:void(0)" onclick="schemaList.editSchema('<?php echo $model->SCHEMA_NAME; ?>')" class="icon">
-								<com:Icon name="edit" size="16" text="core.edit" />
+								<?php echo Html::icon('edit', 16, false, 'core.edit'); ?>
 							</a>
 						<?php } else { ?>
-							<com:Icon name="edit" size="16" text="core.edit" disabled="true" />
+							<?php echo Html::icon('edit', 16, true, 'core.edit'); ?>
 						<?php } ?>
 					</td>
 					<td>
 						<?php if(Yii::app()->user->privileges->checkSchema($model->SCHEMA_NAME, 'DROP')) { ?>
 							<?php $canDrop = true; ?>
 							<a href="javascript:void(0)" onclick="schemaList.dropSchema('<?php echo $model->SCHEMA_NAME; ?>')" class="icon">
-								<com:Icon name="delete" size="16" text="database.drop" />
+								<?php echo Html::icon('delete', 16, false, 'database.drop'); ?>
 							</a>
 						<?php } else { ?>
-							<com:Icon name="delete" size="16" text="database.drop" disabled="true" />
+							<?php echo Html::icon('delete', 16, true, 'database.drop'); ?>
 						<?php } ?>
 					</td>
 				</tr>
@@ -102,17 +102,17 @@
 	<div class="buttonContainer">
 		<div class="left withSelected">
 			<span class="icon">
-				<com:Icon name="arrow_turn_090" size="16" />
+				<?php echo Html::icon('arrow_turn_090'); ?>
 				<span><?php echo Yii::t('core', 'withSelected'); ?></span>
 			</span>
 			<?php if($canDrop) { ?>
 				<a class="icon button" href="javascript:void(0)" onclick="schemaList.dropSchemata()">
-					<com:Icon name="delete" size="16" />
+					<?php echo Html::icon('delete'); ?>
 					<span><?php echo Yii::t('core', 'drop'); ?></span>
 				</a>
 			<?php } else { ?>
 				<span class="icon button">
-					<com:Icon name="delete" size="16" disabled="true" />
+					<?php echo Html::icon('delete', 16, true); ?>
 					<span><?php echo Yii::t('core', 'drop'); ?></span>
 				</span>
 			<?php } ?>
@@ -120,12 +120,12 @@
 		<div class="right">
 			<?php if(Yii::app()->user->privileges->checkGlobal('CREATE')) { ?>
 				<a href="javascript:void(0)" onclick="schemaList.addSchema()" class="icon button">
-					<com:Icon name="add" size="16" />
+					<?php echo Html::icon('add'); ?>
 					<span><?php echo Yii::t('core', 'addSchema'); ?></span>
 				</a>
 			<?php } else { ?>
 				<span class="icon button">
-					<com:Icon name="add" size="16" disabled="disabled" />
+					<?php echo Html::icon('add', 16, true); ?>
 					<span><?php echo Yii::t('core', 'addSchema'); ?></span>
 				</span>
 			<?php } ?>

@@ -82,14 +82,7 @@ class TabMenu extends CWidget
 			}
 
 			$item2['icon'] = isset($item['icon']) ? $item['icon'] : null;
-			if($item['link']['url']{0} == '#')
-			{
-				$item2['a']['htmlOptions']['href'] = 'javascript:chive.goto(\'' . substr($item['link']['url'], 1) . '\')';
-			}
-			else
-			{
-				$item2['a']['htmlOptions']['href'] = $item['link']['url'];
-			}
+			$item2['a']['href'] = $item['link']['url'];
 
 			if($this->isActive($item['link']['url'], $action->id))
 			{

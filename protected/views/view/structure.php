@@ -9,7 +9,6 @@
 			<col class="null" />
 			<col />
 			<col />
-			<col class="action" />
 		</colgroup>
 		<thead>
 			<tr>
@@ -19,7 +18,7 @@
 				<th><?php echo Yii::t('core','collation'); ?></th>
 				<th><?php echo Yii::t('core','null'); ?></th>
 				<th><?php echo Yii::t('core','default'); ?></th>
-				<th colspan="2"><?php echo Yii::t('core','extra'); ?></th>
+				<th><?php echo Yii::t('core','extra'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -63,18 +62,13 @@
 						<?php } ?>
 					</td>
 					<td><?php echo $column->EXTRA; ?></td>
-					<td>
-						<span class="icon">
-							<com:Icon disabled="true" name="browse" size="16" text="schema.browseDistinctValues" title={Yii::t('core','browseDistinctValues')} />
-						</span>
-					</td>
 				</tr>
 			<?php } ?>
 		</tbody>
 		<tfoot>
 			<tr>
 				<th><input type="checkbox" /></th>
-				<th colspan="7"><?php echo Yii::t('core', 'XColumns', array('{count}' => count($view->columns))); ?></th>
+				<th colspan="6"><?php echo Yii::t('core', 'XColumns', array('{count}' => count($view->columns))); ?></th>
 			</tr>
 		</tfoot>
 	</table>

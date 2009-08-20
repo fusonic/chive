@@ -52,16 +52,7 @@
 			</tr>
 		</tbody>
 	</table>
-	<div class="buttonContainer">
-		<a href="javascript:void(0)" onclick="$('#<?php echo CHtml::$idPrefix; ?>').submit()" class="icon button">
-			<com:Icon name="save" size="16" />
-			<span><?php echo Yii::t('core', 'save'); ?></span>
-		</a>
-		<a href="javascript:void(0)" onclick="$('#<?php echo CHtml::$idPrefix; ?>').slideUp(500, function() { $(this).parents('tr').remove(); })" class="icon button">
-			<com:Icon name="delete" size="16" />
-			<span><?php echo Yii::t('core', 'cancel'); ?></span>
-		</a>
-	</div>
+	<?php echo Html::submitFormArea(); ?>
 </form>
 
 <script type="text/javascript">

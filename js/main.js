@@ -50,10 +50,15 @@ function init()
 		$('table.addCheckboxes').addCheckboxes().removeClass('addCheckboxes');
 		$('table.editable').editableTable().removeClass('editable');
 	}
-	catch(exception) {
-		// @todo (rponudic) remove
+	catch(ex)
+	{
 	}
 	
+	// Reset favicon
+	/*
+	$('link[rel="shortcut icon"]').attr('href', baseUrl + '/images/favicon2.ico');
+	window.setTimeout(function() { $('link[rel="shortcut icon"]').attr('href', baseUrl + '/images/favicon.ico'); }, 3000);
+	*/
 	// Unset editing
 	editing = false;
 }

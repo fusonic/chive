@@ -90,72 +90,72 @@
 					<td><?php echo $column->EXTRA; ?></td>
 					<td>
 						<span class="icon">
-							<com:Icon name="arrow_move" size="16" text="core.move" htmlOptions={array('style'=>'cursor: pointer;')} />
+							<?php echo Html::icon('arrow_move', 16, false, 'core.move', array('style' => 'cursor: pointer')); ?>
 						</span>
 					</td>
 					<td>
 						<?php if($canAlter) { ?>
 							<a href="javascript:void(0)" onclick="tableStructure.editColumn($(this).closest('tr').attr('id').substr(8))" class="icon">
-								<com:Icon name="edit" size="16" text="core.edit" />
+								<?php echo Html::icon('edit', 16, false, 'core.edit'); ?>
 							</a>
 						<?php } else { ?>
 							<span class="icon">
-								<com:Icon name="edit" size="16" text="core.edit" disabled="true"/>
+								<?php echo Html::icon('edit', 16, true, 'core.edit'); ?>
 							</span>
 						<?php }?>
 					</td>
 					<td>
 						<?php if($canAlter) { ?>
 							<a href="javascript:void(0)" onclick="tableStructure.dropColumn($(this).closest('tr').attr('id').substr(8))" class="icon">
-								<com:Icon name="delete" size="16" text="database.drop" />
+								<?php echo Html::icon('delete', 16, false, 'core.drop'); ?>
 							</a>
 						<?php } else { ?>
 							<span class="icon">
-								<com:Icon name="delete" size="16" text="database.drop" disabled="true" />
+								<?php echo Html::icon('delete', 16, true, 'core.drop'); ?>
 							</span>
 						<?php } ?>
 					</td>
 					<td>
 						<?php if($canAlter && !$table->getHasPrimaryKey()) { ?>
 							<a href="javascript:void(0)" onclick="tableStructure.addIndex1('primary', $(this).closest('tr').attr('id').substr(8))" class="icon">
-								<com:Icon name="key_primary" size="16" text="database.primaryKey" />
+								<?php echo Html::icon('key_primary', 16, false, 'core.primaryKey'); ?>
 							</a>
 						<?php } else { ?>
 							<span class="icon">
-								<com:Icon disabled="true" name="key_primary" size="16" text="database.primaryKey" />
+								<?php echo Html::icon('key_primary', 16, true, 'core.primaryKey'); ?>
 							</span>
 						<?php } ?>
 					</td>
 					<td>
 						<?php if($canAlter && DataType::check($column->DATA_TYPE, DataType::SUPPORTS_INDEX)) { ?>
 							<a href="javascript:void(0)" onclick="tableStructure.addIndex1('index', $(this).closest('tr').attr('id').substr(8))" class="icon">
-								<com:Icon name="key_index" size="16" text="database.index" />
+								<?php echo Html::icon('key_index', 16, false, 'core.index'); ?>
 							</a>
 						<?php } else { ?>
 							<span class="icon">
-								<com:Icon name="key_index" size="16" text="database.index" disabled="true" />
+								<?php echo Html::icon('key_index', 16, true, 'core.index'); ?>
 							</span>
 						<?php }?>
 					</td>
 					<td>
 						<?php if($canAlter && DataType::check($column->DATA_TYPE, DataType::SUPPORTS_UNIQUE)) { ?>
 							<a href="javascript:void(0)" onclick="tableStructure.addIndex1('unique', $(this).closest('tr').attr('id').substr(8))" class="icon">
-								<com:Icon name="key_unique" size="16" text="database.uniqueKey" />
+								<?php echo Html::icon('key_unique', 16, false, 'core.uniqueKey'); ?>
 							</a>
 						<?php } else { ?>
 							<span class="icon">
-								<com:Icon name="key_unique" size="16" text="database.uniqueKey" disabled="true" />
+								<?php echo Html::icon('key_unique', 16, true, 'core.uniqueKey'); ?>
 							</span>
 						<?php }?>
 					</td>
 					<td>
 						<?php if($canAlter && DataType::check($column->DATA_TYPE, DataType::SUPPORTS_FULLTEXT)) { ?>
 							<a href="javascript:void(0)" onclick="tableStructure.addIndex1('fulltext', $(this).closest('tr').attr('id').substr(8))" class="icon">
-								<com:Icon name="key_fulltext" size="16" text="database.fulltextIndex" />
+								<?php echo Html::icon('key_fulltext', 16, false, 'core.fulltextIndex'); ?>
 							</a>
 						<?php } else { ?>
 							<span class="icon">
-								<com:Icon name="key_fulltext" size="16" text="database.fulltextIndex" disabled="true" />
+								<?php echo Html::icon('key_fulltext', 16, true, 'core.fulltextIndex'); ?>
 							</span>
 						<?php }?>
 					</td>
@@ -163,9 +163,9 @@
 						<td>
 							<a href="javascript:void(0)" onclick="tableStructure.editRelation($(this).closest('tr').attr('id').substr(8))" class="icon">
 								<?php if(in_array($column->COLUMN_NAME, $foreignKeys)) { ?>
-									<com:Icon name="relation" size="16" text="database.relation" />
+									<?php echo Html::icon('relation', 16, false, 'core.relation'); ?>
 								<?php } else { ?>
-									<com:Icon name="relation" size="16" text="database.relation" disabled="true" />
+									<?php echo Html::icon('relation', 16, true, 'core.relation'); ?>
 								<?php } ?>
 							</a>
 						</td>
@@ -185,53 +185,53 @@
 
 		<div class="left withSelected">
 			<span class="icon">
-				<com:Icon name="arrow_turn_090" size="16" />
+				<?php echo Html::icon('arrow_turn_090'); ?>
 				<span><?php echo Yii::t('core', 'withSelected'); ?></span>
 			</span>
 			<?php if($canAlter) { ?>
 				<a href="javascript:void(0)" onclick="tableStructure.dropColumns()" class="icon button">
-					<com:Icon name="delete" size="16" />
+					<?php echo Html::icon('delete'); ?>
 					<span><?php echo Yii::t('core', 'drop'); ?></span>
 				</a>
 				<?php if(!$table->getHasPrimaryKey()) { ?>
 					<a href="javascript:void(0)" onclick="tableStructure.addIndex('primary')" class="icon button">
-						<com:Icon name="key_primary" size="16" text="database.primaryKey" />
+						<?php echo Html::icon('key_primary', 16, false, 'database.primaryKey'); ?>
 						<span><?php echo Yii::t('core', 'primaryKey'); ?></span>
 					</a>
 				<?php } ?>
 				<a href="javascript:void(0)" onclick="tableStructure.addIndex('index')" class="icon button">
-					<com:Icon name="key_index" size="16" text="database.index" />
+					<?php echo Html::icon('key_index', 16, false, 'database.index'); ?>
 					<span><?php echo Yii::t('core', 'index'); ?></span>
 				</a>
 				<a href="javascript:void(0)" onclick="tableStructure.addIndex('unique')" class="icon button">
-					<com:Icon name="key_unique" size="16" text="database.uniqueKey" />
+					<?php echo Html::icon('key_unique', 16, false, 'database.uniqueKey'); ?>
 					<span><?php echo Yii::t('core', 'uniqueKey'); ?></span>
 				</a>
 				<a href="javascript:void(0)" onclick="tableStructure.addIndex('fulltext')" class="icon button">
-					<com:Icon name="key_fulltext" size="16" text="database.fulltextIndex" />
+					<?php echo Html::icon('key_fulltext', 16, false, 'database.fulltextIndex'); ?>
 					<span><?php echo Yii::t('core', 'fulltextIndex'); ?></span>
 				</a>
 			<?php } else { ?>
 				<span class="icon button">
-					<com:Icon name="delete" size="16" disabled="true" />
+					<?php echo Html::icon('delete', 16, true); ?>
 					<span><?php echo Yii::t('core', 'drop'); ?></span>
 				</span>
 				<?php if(!$table->getHasPrimaryKey()) { ?>
 					<span class="icon button">
-						<com:Icon name="key_primary" size="16" text="database.primaryKey" disabled="true" />
+						<?php echo Html::icon('key_primary', 16, true); ?>
 						<span><?php echo Yii::t('core', 'primaryKey'); ?></span>
 					</span>
 				<?php } ?>
 				<span class="icon button">
-					<com:Icon name="key_index" size="16" text="database.index" disabled="true" />
+					<?php echo Html::icon('key_index', 16, true); ?>
 					<span><?php echo Yii::t('core', 'index'); ?></span>
 				</span>
 				<span class="icon button">
-					<com:Icon name="key_unique" size="16" text="database.uniqueKey" disabled="true" />
+					<?php echo Html::icon('key_unique', 16, true); ?>
 					<span><?php echo Yii::t('core', 'uniqueKey'); ?></span>
 				</span>
 				<span class="icon button">
-					<com:Icon name="key_fulltext" size="16" text="database.fulltextIndex" disabled="true" />
+					<?php echo Html::icon('key_fulltext', 16, true); ?>
 					<span><?php echo Yii::t('core', 'fulltextIndex'); ?></span>
 				</span>
 			<?php } ?>
@@ -240,12 +240,12 @@
 		<div class="right">
 			<?php if($canAlter) { ?>
 				<a href="javascript:void(0)" onclick="tableStructure.addColumn()" class="icon button">
-					<com:Icon name="add" size="16" />
+					<?php echo Html::icon('add'); ?>
 					<span><?php echo Yii::t('core', 'addColumn'); ?></span>
 				</a>
 			<?php } else { ?>
 				<span class="icon button">
-					<com:Icon name="add" size="16" disabled="true" />
+					<?php echo Html::icon('add', 16, true); ?>
 					<span><?php echo Yii::t('core', 'addColumn'); ?></span>
 				</span>
 			<?php } ?>
@@ -310,22 +310,22 @@
 								<td>
 									<?php if($canAlter) { ?>
 										<a href="javascript:void(0)" onclick="tableStructure.editIndex('<?php echo $index->INDEX_NAME; ?>')" class="icon">
-											<com:Icon name="edit" size="16" text="core.edit" />
+											<?php echo Html::icon('edit', 16, false, 'core.edit'); ?>
 										</a>
 									<?php } else { ?>
 										<span class="icon">
-											<com:Icon name="edit" size="16" text="core.edit" disabled="true" />
+											<?php echo Html::icon('edit', 16, true, 'core.edit'); ?>
 										</span>
 									<?php } ?>
 								</td>
 								<td>
 									<?php if($canAlter) { ?>
 										<a href="javascript:void(0)" onclick="tableStructure.dropIndex('<?php echo $index->INDEX_NAME; ?>')" class="icon">
-											<com:Icon name="delete" size="16" text="database.drop" />
+											<?php echo Html::icon('delete', 16, false, 'core.drop'); ?>
 										</a>
 									<?php } else { ?>
 										<span class="icon">
-											<com:Icon name="delete" size="16" text="database.drop" disabled="true" />
+											<?php echo Html::icon('delete', 16, true, 'core.drop'); ?>
 										</span>
 									<?php } ?>
 								</td>
@@ -338,12 +338,12 @@
 					<div class="right">
 						<?php if($canAlter) { ?>
 							<a href="javascript:void(0)" onclick="tableStructure.addIndexForm()" class="icon button">
-								<com:Icon name="add" size="16" />
+								<?php echo Html::icon('add'); ?>
 								<span><?php echo Yii::t('core', 'addIndex'); ?></span>
 							</a>
 						<?php } else { ?>
 							<span class="icon button">
-								<com:Icon name="add" size="16" disabled="disabled" />
+								<?php echo Html::icon('add', 16, true); ?>
 								<span><?php echo Yii::t('core', 'addIndex'); ?></span>
 							</span>
 						<?php } ?>
@@ -383,12 +383,12 @@
 								</td>
 								<td>
 									<a href="javascript:void(0)" onclick="tableStructure.editTrigger('<?php echo $trigger->TRIGGER_NAME; ?>')" class="icon">
-										<com:Icon name="edit" size="16" text="core.edit" />
+										<?php echo Html::icon('edit', 16, false, 'core.edit'); ?>
 									</a>
 								</td>
 								<td>
 									<a href="javascript:void(0)" onclick="tableStructure.dropTrigger('<?php echo $trigger->TRIGGER_NAME; ?>')" class="icon">
-										<com:Icon name="delete" size="16" text="database.drop" />
+										<?php echo Html::icon('delete', 16, false, 'database.drop'); ?>
 									</a>
 								</td>
 							</tr>
@@ -399,7 +399,7 @@
 				<div class="buttonContainer">
 					<div class="right">
 						<a href="javascript:void(0)" onclick="tableStructure.addTrigger()" class="icon button">
-							<com:Icon name="add" size="16" />
+							<?php echo Html::icon('add'); ?>
 							<span><?php echo Yii::t('core', 'addTrigger'); ?></span>
 						</a>
 					</div>

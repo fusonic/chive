@@ -11,7 +11,7 @@
 		</div>
 		<div class="right">
 			<a href="javascript:void(0)" onclick="privilegesUsers.addUser()" class="icon button">
-				<com:Icon name="add" size="16" />
+				<?php echo Html::icon('add'); ?>
 				<span><?php echo Yii::t('core', 'addUser'); ?></span>
 			</a>
 		</div>
@@ -58,18 +58,18 @@
 						<?php echo implode(', ', $user->getGlobalPrivileges()); ?>
 					</td>
 					<td>
-						<a href="javascript:chive.goto('privileges/users/<?php echo urlencode($user->User ? $user->User : '%'); ?>/<?php echo urlencode($user->Host ? $user->Host : ' '); ?>/schemata')" class="icon">
-							<com:Icon name="database" size="16" text="database.schemaSpecificPrivileges" />
+						<?php echo Html::ajaxLink('privileges/users/' . urlencode($user->User ? $user->User : '%') . '/' . urlencode($user->Host ? $user->Host : ' ') . '/schemata', array('class' => 'icon')); ?>
+							<?php echo Html::icon('database', 16, false, 'database.schemaSpecificPrivileges'); ?>
 						</a>
 					</td>
 					<td>
 						<a href="javascript:void(0)" onclick="privilegesUsers.editUser('<?php echo $user->getDomId(); ?>', '<?php echo $user->User; ?>', '<?php echo $user->Host; ?>')" class="icon">
-							<com:Icon name="edit" size="16" text="core.edit" />
+							<?php echo Html::icon('edit', 16, false, 'core.edit'); ?>
 						</a>
 					</td>
 					<td>
 						<a href="javascript:void(0)" onclick="privilegesUsers.dropUser('<?php echo $user->User; ?>', '<?php echo $user->Host; ?>')" class="icon">
-							<com:Icon name="delete" size="16" text="database.drop" />
+							<?php echo Html::icon('delete', 16, false, 'database.drop'); ?>
 						</a>
 					</td>
 				</tr>
@@ -83,13 +83,13 @@
 				<img height="16" width="16" alt="unknown" src="/dublin/trunk/images/icons/fugue/16/arrow_turn_090.png" title="unknown" class="icon icon16 icon_arrow_turn_090"/>				<span>With selected: </span>
 			</span>
 			<a class="icon button" href="javascript:void(0)" onclick="privilegesUsers.dropUsers()">
-				<com:Icon name="delete" size="16" />
+				<?php echo Html::icon('delete'); ?>
 				<span><?php echo Yii::t('core', 'drop'); ?></span>
 			</a>
 		</div>
 		<div class="right">
 			<a href="javascript:void(0)" onclick="privilegesUsers.addUser()" class="icon button">
-				<com:Icon name="add" size="16" />
+				<?php echo Html::icon('add'); ?>
 				<span><?php echo Yii::t('core', 'addUser'); ?></span>
 			</a>
 		</div>

@@ -10,7 +10,7 @@
 		</div>
 		<div class="right">
 			<a href="javascript:void(0)" class="icon button" onclick="schemaViews.addView()">
-				<com:Icon name="add" size="16" />
+				<?php echo Html::icon('add'); ?>
 				<span><?php echo Yii::t('core', 'addView'); ?></span>
 			</a>
 		</div>
@@ -48,42 +48,42 @@
 						<input type="checkbox" name="views[]" value="<?php echo $view->TABLE_NAME; ?>" />
 					</td>
 					<td>
-						<a href="javascript:chive.goto('views/<?php echo $view->TABLE_NAME; ?>/structure')">
+						<?php echo Html::ajaxLink('views/' . $view->TABLE_NAME . '/structure'); ?>
 							<?php echo $view->TABLE_NAME; ?>
 						</a>
 					</td>
 					<td>
-						<a href="javascript:chive.goto('views/<?php echo $view->TABLE_NAME; ?>/browse')" class="icon">
-							<com:Icon name="browse" size="16" text="database.browse" />
+						<?php echo Html::ajaxLink('views/' . $view->TABLE_NAME . '/browse', array('class' => 'icon')); ?>
+							<?php echo Html::icon('browse', 16, false, 'database.browse'); ?>
 						</a>
 					</td>
 					<td>
-						<a href="javascript:chive.goto('views/<?php echo $view->TABLE_NAME; ?>/structure')" class="icon">
-							<com:Icon name="structure" size="16" text="database.structure" />
+						<?php echo Html::ajaxLink('views/' . $view->TABLE_NAME . '/structure', array('class' => 'icon')); ?>
+							<?php echo Html::icon('structure', 16, false, 'database.structure'); ?>
 						</a>
 					</td>
 					<td>
-						<a href="javascript:chive.goto('views/<?php echo $table->TABLE_NAME; ?>/search')" class="icon">
-							<com:Icon name="search" size="16" text="core.search" />
+						<?php echo Html::ajaxLink('views/' . $view->TABLE_NAME . '/search', array('class' => 'icon')); ?>
+							<?php echo Html::icon('search', 16, false, 'core.search'); ?>
 						</a>
 					</td>
 					<td>
 						<?php if(Yii::app()->user->privileges->checkTable($view->TABLE_SCHEMA, $view->TABLE_NAME, 'ALTER')) { ?>
 							<a href="javascript:void(0);" onclick="schemaViews.editView($(this).closest('tr').attr('id').substr(6))" class="icon">
-								<com:Icon name="edit" size="16" text="core.edit" />
+								<?php echo Html::icon('edit', 16, false, 'core.edit'); ?>
 							</a>
 						<?php } else { ?>
-							<com:Icon name="edit" size="16" text="core.edit" disabled="true" />
+							<?php echo Html::icon('edit', 16, true, 'core.edit'); ?>
 						<?php } ?>
 					</td>
 					<td>
 						<?php if(Yii::app()->user->privileges->checkTable($view->TABLE_SCHEMA, $view->TABLE_NAME, 'DROP')) { ?>
 							<a href="javascript:void(0);" onclick="schemaViews.dropView($(this).closest('tr').attr('id').substr(6))" class="icon">
-								<com:Icon name="delete" size="16" text="database.drop" />
+								<?php echo Html::icon('delete', 16, false, 'core.drop'); ?>
 							</a>
 							<?php $canDrop = true; ?>
 						<?php } else { ?>
-							<com:Icon name="delete" size="16" text="database.drop" disabled="true" />
+							<?php echo Html::icon('delete', 16, true, 'core.drop'); ?>
 						<?php } ?>
 					</td>
 					<td>
@@ -103,24 +103,24 @@
 	<div class="buttonContainer">
 		<div class="left withSelected">
 			<span class="icon">
-				<com:Icon name="arrow_turn_090" size="16" />
+				<?php echo Html::icon('arrow_turn_090'); ?>
 				<span><?php echo Yii::t('core', 'withSelected'); ?></span>
 			</span>
 			<?php if($canDrop) { ?>
 				<a href="javascript:void(0)" onclick="schemaViews.dropViews()" class="icon button">
-					<com:Icon name="delete" size="16" />
+					<?php echo Html::icon('delete'); ?>
 					<span><?php echo Yii::t('core', 'drop'); ?></span>
 				</a>
 			<?php } else { ?>
 				<span class="icon button">
-					<com:Icon name="delete" size="16" disabled="true" />
+					<?php echo Html::icon('delete', 16, true); ?>
 					<span><?php echo Yii::t('core', 'drop'); ?></span>
 				</span>
 			<?php } ?>
 		</div>
 		<div class="right">
 			<a href="javascript:void(0)" class="icon button" onclick="schemaViews.addView()">
-				<com:Icon name="add" size="16" />
+				<?php echo Html::icon('add'); ?>
 				<span><?php echo Yii::t('core', 'addView'); ?></span>
 			</a>
 		</div>

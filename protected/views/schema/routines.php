@@ -10,11 +10,11 @@
 		</div>
 		<div class="right">
 			<a href="javascript:void(0)" class="icon button" onclick="schemaRoutines.addProcedure()">
-				<com:Icon name="add" size="16" />
+				<?php echo Html::icon('add'); ?>
 				<span><?php echo Yii::t('core', 'addProcedure'); ?></span>
 			</a>
 			<a href="javascript:void(0)" class="icon button" onclick="schemaRoutines.addFunction()">
-				<com:Icon name="add" size="16" />
+				<?php echo Html::icon('add'); ?>
 				<span><?php echo Yii::t('core', 'addFunction'); ?></span>
 			</a>
 		</div>
@@ -49,21 +49,21 @@
 					<td>
 						<span class="icon">
 							<?php if($routine->ROUTINE_TYPE == 'PROCEDURE') { ?>
-								<com:Icon name="procedure" size="16" text="database.procedure" />
+								<?php echo Html::icon('procedure', 16, false, 'database.procedure'); ?>
 							<?php } else { ?>
-								<com:Icon name="function" size="16" text="database.function" />
+								<?php echo Html::icon('function', 16, false, 'database.function'); ?>
 							<?php } ?>
 							<?php echo $routine->ROUTINE_NAME; ?>
 						</span>
 					</td>
 					<td>
 						<a href="javascript:void(0);" onclick="schemaRoutines.editRoutine($(this).closest('tr').attr('id').substr(9))" class="icon">
-							<com:Icon name="edit" size="16" text="core.edit" />
+							<?php echo Html::icon('edit', 16, false, 'core.edit'); ?>
 						</a>
 					</td>
 					<td>
 						<a href="javascript:void(0);" onclick="schemaRoutines.dropRoutine($(this).closest('tr').attr('id').substr(9))" class="icon">
-							<com:Icon name="delete" size="16" text="database.drop" />
+							<?php echo Html::icon('delete', 16, false, 'database.drop'); ?>
 						</a>
 					</td>
 				</tr>
@@ -80,21 +80,21 @@
 	<div class="buttonContainer">
 		<div class="left withSelected">
 			<span class="icon">
-				<com:Icon name="arrow_turn_090" size="16" />
+				<?php echo Html::icon('arrow_turn_090'); ?>
 				<span><?php echo Yii::t('core', 'withSelected'); ?></span>
 			</span>
 			<a href="javascript:void(0)" onclick="schemaRoutines.dropRoutines()" class="icon button">
-				<com:Icon name="delete" size="16" />
+				<?php echo Html::icon('delete'); ?>
 				<span><?php echo Yii::t('core', 'drop'); ?></span>
 			</a>
 		</div>
 		<div class="right">
 			<a href="javascript:void(0)" class="icon button" onclick="schemaRoutines.addProcedure()">
-				<com:Icon name="add" size="16" />
+				<?php echo Html::icon('add'); ?>
 				<span><?php echo Yii::t('core', 'addProcedure'); ?></span>
 			</a>
 			<a href="javascript:void(0)" class="icon button" onclick="schemaRoutines.addFunction()">
-				<com:Icon name="add" size="16" />
+				<?php echo Html::icon('add'); ?>
 				<span><?php echo Yii::t('core', 'addFunction'); ?></span>
 			</a>
 		</div>

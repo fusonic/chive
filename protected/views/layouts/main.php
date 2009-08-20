@@ -87,12 +87,12 @@ $(document).ready(function() {
 	</li>
 </ul>
 </div>
-<div id="headerRight"><?php $this->widget('application.components.MainMenu',array(
-				'items'=>array(
-array('label'=>'Home', 'icon'=>'home', 'url'=>array('/site/index')),
-array('label'=>'Refresh','icon'=>'refresh', 'url'=>'javascript:chive.refresh()'),
-array('label'=>'Logout', 'icon'=>'logout', 'url'=>array('/site/logout'))
-),
+<div id="headerRight"><?php $this->widget('application.components.MainMenu', array(
+	'items' => array(
+		array('label' => 'Home', 'icon' => 'home', 'url' => array('/site/index')),
+		array('label' => 'Refresh','icon' => 'refresh', 'url' => 'javascript:chive.refresh()'),
+		array('label' => 'Logout', 'icon' => 'logout', 'url' => array('/site/logout'))
+	),
 )); ?></div>
 </div>
 </div>
@@ -101,7 +101,7 @@ array('label'=>'Logout', 'icon'=>'logout', 'url'=>array('/site/logout'))
 <div id="sideBar">
 <div class="sidebarHeader schemaList">
 	<a class="icon" href="javascript:void(0)">
-		<com:Icon name="database" size="24" text="database.schemata" />
+		<?php echo Html::icon('database', 24); ?>
 		<span><?php echo Yii::t('core','schemata'); ?></span>
 	</a>
 	<img class="loading" src="images/loading.gif" alt="<?php echo Yii::t('core', 'loading'); ?>..." />
@@ -110,19 +110,9 @@ array('label'=>'Logout', 'icon'=>'logout', 'url'=>array('/site/logout'))
 	<input type="text" id="schemaSearch" class="search text" />
 
 	<ul id="schemaList" class="list icon">
-		<!---
-		<?php foreach(Schema::model()->findAll(array('order' => 'SCHEMA_NAME ASC')) AS $schema) { ?>
-			<li class="nowrap">
-				<a href="<?php echo Yii::app()->baseUrl; ?>/schema/<?php echo $schema->SCHEMA_NAME; ?>" class="icon">
-					<com:Icon name="database" size="16" />
-					<span><?php echo $schema->SCHEMA_NAME; ?></span>
-				</a>
-			</li>
-		<?php } ?>
-		--->
 		<li class="nowrap template">
 			<a href="<?php echo Yii::app()->baseUrl; ?>/schema/#schemaName#" class="icon">
-				<com:Icon name="database" size="16" />
+				<?php echo Html::icon('database'); ?>
 				<span>#schemaName#</span>
 			</a>
 		</li>
@@ -131,45 +121,45 @@ array('label'=>'Logout', 'icon'=>'logout', 'url'=>array('/site/logout'))
 </div>
 <div class="sidebarHeader">
 	<a class="icon">
-		<com:Icon name="info" size="24" />
+		<?php echo Html::icon('info', 24); ?>
 		<span><?php echo Yii::t('core', 'information'); ?></span>
 	</a>
 </div>
 <div class="sidebarContent">
 	<ul id="statusList" class="list icon">
 		<li class="nowrap">
-			<a class="icon" href="#privileges/users">
-				<com:Icon name="privileges" size="16" />
+			<?php echo Html::ajaxLink('privileges/users', array('class' => 'icon')); ?>
+				<?php echo Html::icon('privileges'); ?>
 				<span><?php echo Yii::t('core', 'privileges'); ?></span>
 			</a>
 		</li>
 		<li class="nowrap">
-			<a class="icon" href="javascript:chive.goto('information/status')">
-				<com:Icon name="chart" size="16" />
+			<?php echo Html::ajaxLink('information/status', array('class' => 'icon')); ?>
+				<?php echo Html::icon('chart'); ?>
 				<span><?php echo Yii::t('core', 'status'); ?></span>
 			</a>
 		</li>
 		<li class="nowrap">
-			<a class="icon" href="javascript:chive.goto('information/variables')">
-				<com:Icon name="variable" size="16" />
+			<?php echo Html::ajaxLink('information/variables', array('class' => 'icon')); ?>
+				<?php echo Html::icon('variable'); ?>
 				<span><?php echo Yii::t('core', 'variables'); ?></span>
 			</a>
 		</li>
 		<li class="nowrap">
-			<a class="icon" href="javascript:chive.goto('information/characterSets')">
-				<com:Icon name="charset" size="16" />
+			<?php echo Html::ajaxLink('information/characterSets', array('class' => 'icon')); ?>
+				<?php echo Html::icon('charset'); ?>
 				<span><?php echo Yii::t('core', 'characterSets'); ?></span>
 			</a>
 		</li>
 		<li class="nowrap">
-			<a class="icon" href="javascript:chive.goto('information/storageEngines')">
-				<com:Icon name="engine" size="16" />
+			<?php echo Html::ajaxLink('information/storageEngines', array('class' => 'icon')); ?>
+				<?php echo Html::icon('engine'); ?>
 				<span><?php echo Yii::t('core', 'storageEngines'); ?></span>
 			</a>
 		</li>
 		<li class="nowrap">
-			<a class="icon" href="javascript:chive.goto('information/processes')">
-				<com:Icon name="process" size="16" />
+			<?php echo Html::ajaxLink('information/processes', array('class' => 'icon')); ?>
+				<?php echo Html::icon('process'); ?>
 				<span><?php echo Yii::t('core', 'processes'); ?></span>
 			</a>
 		</li>

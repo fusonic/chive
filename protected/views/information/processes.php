@@ -39,7 +39,7 @@
 					</td>
 					<td>
 						<a href="javascript:void(0);" onclick="tableProcesses.killProcess('<?php echo $process['Id']; ?>');">
-							<com:Icon name="delete" size="16" text="core.kill" />
+							<?php echo Html::icon('delete', 16, false, 'core.kill'); ?>
 						</a>
 					</td>
 					<td><?php echo $process['Id']; ?></td>
@@ -59,11 +59,11 @@
 		<div class="left">
 			<div class="withSelected">
 				<span class="icon">
-					<com:Icon name="arrow_turn_090" size="16" />
+					<?php echo Html::icon('arrow_turn_090'); ?>
 					<span><?php echo Yii::t('core', 'withSelected'); ?></span>
 				</span>
 				<a class="icon button" href="javascript:void(0);" onclick="tableProcesses.killProcesses();">
-					<com:Icon name="delete" size="16" />
+					<?php echo Html::icon('delete'); ?>
 					<span><?php echo Yii::t('core', 'kill'); ?></span>
 				</a>
 			</div>

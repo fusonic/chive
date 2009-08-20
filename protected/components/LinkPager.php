@@ -3,7 +3,7 @@
 /*
  * Chive - web based MySQL database management
  * Copyright (C) 2009 Fusonic GmbH
- * 
+ *
  * This file is part of Chive.
  *
  * Chive is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@ class LinkPager extends CLinkPager
 
 	public static $generateJsPage = true;
 	public static $generateJsPageSize = true;
-	
+
 	/**
 	 * Executes the widget.
 	 * This overrides the parent implementation by displaying the generated page buttons.
@@ -161,40 +161,36 @@ class LinkPager extends CLinkPager
 				if(self::$generateJsPageSize)
 				{
 					$data = json_encode($this->getPages()->postVars);
-					
+
 					$script = '
 						function setPageSize(_pageSize) {
-						
+
 							var data = ' . $data . ';
-							data.pageSize = _pageSize; 
-						
+							data.pageSize = _pageSize;
+
 							$.post("'.BASEURL . '/' . $this->getPages()->route.'", data, function(responseText) {
 								$("div.ui-layout-center").html(responseText);
 								init();
 							});
-						
+
 						}
 					';
-					
+
 					Yii::app()->getClientScript()->registerScript('LinkPager_pageSize', $script);
-					
+
 					self::$generateJsPageSize = false;
 				}
-				
+
 				$content .= '&nbsp;' . CHtml::link($size, 'javascript:void(0)', array(
 					'onclick' => 'setPageSize(' . $size . ');',
 				));
-				
+
 			}
 			else
 			{
 				$content .= '&nbsp;<a href="' . $this->createPageUrl($this->getCurrentPage(), $size) . '">' . $size . '</a>&nbsp;';
 			}
 		}
-		$icon = new Icon();
-		$icon->text = 'core.settings';
-		$icon->name = 'operation';
-		$icon->size = 12;
 		$buttons[] =
 			'<li class="' . self::CSS_SETTINGS . ' ' . self::CSS_LAST_ELEMENT . '">'
 				. '<a href="javascript:void(0)" '
@@ -229,46 +225,46 @@ class LinkPager extends CLinkPager
 	{
 		if($hidden || $selected)
 			$class.=' '.($hidden ? self::CSS_HIDDEN_PAGE : self::CSS_SELECTED_PAGE);
-			
-		$postVars = $this->getPages()->postVars;	
-			
+
+		$postVars = $this->getPages()->postVars;
+
 		if($postVars === null)
 		{
 			return '<li class="'.$class.'">'.CHtml::link($label,$this->createPageUrl($page)).'</li>';
 		}
 		else
 		{
-			
+
 			if(self::$generateJsPage)
 			{
-				
+
 				$data = json_encode($postVars);
-				
+
 				$script = '
 					function navigateToPage(_page) {
-					
+
 						var data = ' . $data . ';
-						data.page = _page; 
-					
+						data.page = _page;
+
 						$.post("'.BASEURL . '/' . $this->getPages()->route.'", data, function(responseText) {
 							$("div.ui-layout-center").html(responseText);
 							init();
 						});
-					
+
 					}
 				';
-				
-				
+
+
 				Yii::app()->getClientScript()->registerScript('LinkPager_page', $script);
-				
+
 				self::$generateJsPage = false;
 			}
-			
+
 			return '<li class="'.$class.'">'.CHtml::link($label,'javascript:void(0);', array(
 				'onclick'=>'navigateToPage(' . ($page + 1) . ');'
 			)).'</li>';
 		}
-			
+
 	}
-	
+
 }

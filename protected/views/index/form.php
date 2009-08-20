@@ -65,12 +65,12 @@
 									</td>
 									<td>
 										<a href="javascript:void(0)" class="icon">
-											<com:Icon name="arrow_move" size="16" text="core.move" />
+											<?php echo Html::icon('arrow_move', 16, false, 'core.move'); ?>
 										</a>
 									</td>
 									<td>
 										<a href="javascript:void(0)" onclick="indexForm.removeColumn('<?php echo CHtml::$idPrefix; ?>', this)" class="icon">
-											<com:Icon name="delete" size="16" text="core.remove" />
+											<?php echo Html::icon('delete', 16, false, 'core.remove'); ?>
 										</a>
 									</td>
 								</tr>
@@ -88,16 +88,7 @@
 			</tr>
 		</tbody>
 	</table>
-	<div class="buttonContainer">
-		<a href="javascript:void(0)" onclick="$('#<?php echo CHtml::$idPrefix; ?>').submit()" class="icon button">
-			<com:Icon name="save" size="16" />
-			<span><?php echo Yii::t('core', 'save'); ?></span>
-		</a>
-		<a href="javascript:void(0)" onclick="$('#<?php echo CHtml::$idPrefix; ?>').slideUp(500, function() { $(this).parents('tr').remove(); })" class="icon button">
-			<com:Icon name="delete" size="16" />
-			<span><?php echo Yii::t('core', 'cancel'); ?></span>
-		</a>
-	</div>
+	<?php echo Html::submitFormArea(); ?>
 </form>
 
 <script type="text/javascript">

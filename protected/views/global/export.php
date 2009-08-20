@@ -25,22 +25,22 @@
 			</div>
 			<div>
 				<a href="javascript:void(0)" onclick="globalExport.view()" class="icon button">
-					<com:Icon size="16" name="search" text="export.show" />
+					<?php echo Html::icon('search', 16, false, 'export.show'); ?>
 					<span><?php echo Yii::t('core', 'show'); ?></span>
 				</a>
 				<a href="javascript:void(0)" onclick="globalExport.save()" class="icon button">
-					<com:Icon size="16" name="save" text="export.download" />
+					<?php echo Html::icon('save', 16, false, 'export.download'); ?>
 					<span><?php echo Yii::t('core', 'download'); ?></span>
 				</a>
 				<?php if(function_exists('gzencode')) { ?>
 					<a href="javascript:void(0)" onclick="globalExport.save('gzip')" class="icon button">
-						<com:Icon size="16" name="save" text="export.download" />
+						<?php echo Html::icon('save', 16, false, 'export.download'); ?>
 						<span>Gzip</span>
 					</a>
 				<?php } ?>
 				<?php if(function_exists('bzcompress')) { ?>
 					<a href="javascript:void(0)" onclick="globalExport.save('bzip2')" class="icon button">
-						<com:Icon size="16" name="save" text="export.download" />
+						<?php echo Html::icon('save', 16, false, 'export.download'); ?>
 						<span>Bzip2</span>
 					</a>
 				<?php } ?>

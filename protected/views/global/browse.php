@@ -17,22 +17,22 @@
 				<?php /*<textarea name="query" style="width: 99%; height: 90px;" id="query"><?php echo $model->getOriginalQueries(); ?></textarea> */ ?>
 				<div class="buttons">
 					<a href="javascript:void(0);" onclick="$('#queryForm').submit();" class="icon button">
-						<com:Icon size="16" name="execute" text="core.execute" />
+						<?php echo Html::icon('execute', 16, false, 'core.execute'); ?>
 						<span><?php echo Yii::t('core', 'execute'); ?></span>
 					</a>
 				</div>
 			</td>
 			<td style="vertical-align: top; padding: 2px 5px;">
 				<a class="icon button" href="javascript:void(0);" onclick="Bookmark.add('<?php echo $model->schema; ?>', (editAreaLoader ? editAreaLoader.getValue('query') : $('#query').val()));">
-					<com:Icon size="16" name="bookmark_add" />
+					<?php echo Html::icon('bookmark_add'); ?>
 					<span><?php echo Yii::t('core', 'bookmark'); ?></span>
 				</a>
 				<br/><br/>
 				<a class="icon button" href="javascript:void(0);" onclick="Profiling.toggle();">
 					<?php if( Yii::app()->user->settings->get('profiling')) {?>
-						<com:Icon size="16" name="square_green" text="core.on" htmlOptions={array('id'=>'profiling_indicator')} />
+						<?php echo Html::icon('square_green', 16, false, null, array('id' => 'profiling_indicator')); ?>
 					<?php } else { ?>
-						<com:Icon size="16" name="square_red" text="core.off" htmlOptions={array('id'=>'profiling_indicator')} />
+						<?php echo Html::icon('square_red', 16, false, null, array('id' => 'profiling_indicator')); ?>
 					<?php } ?>
 					<span><?php echo Yii::t('core', 'profiling'); ?></span>
 				</a>
@@ -45,18 +45,18 @@
 						refresh();
 					});">
 					<?php if( Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $model->schema . '.' .  $model->table)) {?>
-						<com:Icon size="16" name="square_green" />
+						<?php echo Html::icon('square_green'); ?>
 					<?php } else { ?>
-						<com:Icon size="16" name="square_red" />
+						<?php echo Html::icon('square_red'); ?>
 					<?php } ?>
 					<span><?php echo Yii::t('core', 'showFullColumnContent'); ?></span>
 				</a>
 				<br/><br/>
 				<a id="aToggleEditor" class="icon button" href="javascript:void(0);" onclick="toggleEditor('query','aToggleEditor');">
 					<?php if( Yii::app()->user->settings->get('sqlEditorOn') == '1') {?>
-						<com:Icon size="16" name="square_green" />
+						<?php echo Html::icon('square_green'); ?>
 					<?php } else { ?>
-						<com:Icon size="16" name="square_red" />
+						<?php echo Html::icon('square_red'); ?>
 					<?php } ?>
 					<span><?php echo Yii::t('core', 'toggleEditor'); ?></span>
 				</a>
@@ -121,17 +121,17 @@
 							</td>
 							<td class="action">
 								<a href="javascript:void(0);" class="icon" onclick="globalBrowse.deleteRow(<?php echo $i; ?>);">
-									<com:Icon name="delete" size="16" text="core.delete" />
+									<?php echo Html::icon('delete', 16, false, 'core.delete'); ?>
 								</a>
 							</td>
 							<td class="action">
 								<a href="javascript:void(0);" class="icon" onclick="globalBrowse.editRow(<?php echo $i; ?>);">
-									<com:Icon name="edit" size="16" text="core.edit" />
+									<?php echo Html::icon('edit', 16, false, 'core.edit'); ?>
 								</a>
 							</td>
 							<td class="action">
 								<a href="javascript:void(0);" class="icon" onclick="globalBrowse.insertAsNewRow(<?php echo $i; ?>);">
-									<com:Icon name="insert" size="16" text="core.insert" />
+									<?php echo Html::icon('insert', 16, false, 'core.insert'); ?>
 								</a>
 							</td>
 						<?php } ?>
@@ -139,7 +139,7 @@
 							<td class="<?php echo $key; ?>">
 								<?php if(DataType::getInputType($model->getTable()->columns[$key]->dbType) == "file" && $value) { ?>
 									<a href="javascript:void(0);" class="icon" onclick="download('<?php echo BASEURL; ?>/row/download', {key: JSON.stringify(keyData[<?php echo $i; ?>]), column: '<?php echo $column; ?>', table: '<?php echo $model->table; ?>', schema: '<?php echo $model->schema; ?>'})">
-										<com:Icon name="save" text="core.download" size="16" />
+										<?php echo Html::icon('save'); ?>
 										<?php echo Yii::t('core', 'download'); ?>
 									</a>
 								<?php } elseif($model->table !== null) { ?>
@@ -169,15 +169,15 @@
 		<?php if ($model->getQueryType() == 'select') { ?>
 			<div class="withSelected left">
 				<span class="icon">
-					<com:Icon name="arrow_turn_090" size="16" />
+					<?php echo Html::icon('arrow_turn_090'); ?>
 					<span><?php echo Yii::t('core', 'withSelected'); ?></span>
 				</span>
 				<a class="icon button" href="javascript:void(0)" onclick="globalBrowse.deleteRows()">
-					<com:Icon name="delete" size="16" text="core.delete" />
+					<?php echo Html::icon('delete', 16, false, 'core.delete'); ?>
 					<span><?php echo Yii::t('core', 'delete'); ?></span>
 				</a>
 				<a class="icon button" href="javascript:void(0)" onclick="globalBrowse.exportRows()">
-					<com:Icon name="save" size="16" text="core.export" />
+					<?php echo Html::icon('save', 16, false, 'core.export'); ?>
 					<span><?php echo Yii::t('core', 'export'); ?></span>
 				</a>
 			</div>

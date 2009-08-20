@@ -37,7 +37,7 @@ var breadCrumb = {
 		
 		// Create new breadCrumbs
 		for(var i = 0; i < data.length; i++)
-		{
+		{			
 			var html = '<a href="' + data[i].href + '"' + (data[i].icon ? ' class="icon"' : '') + '>';
 			
 			// Add icon

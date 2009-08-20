@@ -13,12 +13,12 @@
 		</td>
 		<td style="vertical-align: top; padding: 10px;">
 			<a class="icon" href="javascript:void(0);" onclick="Bookmark.add('<?php echo $this->schema; ?>', query.getCode());">
-				<com:Icon size="16" name="bookmark_add" />
+				<?php echo Html::icon('bookmark_add'); ?>
 				<span><?php echo Yii::t('core', 'bookmark'); ?></span>
 			</a>
 			<br/><br/>
 			<a class="icon" href="javascript:void(0);" onclick="">
-				<com:Icon size="16" name="chart" />
+				<?php echo Html::icon('chart'); ?>
 				<span><?php echo Yii::t('core', 'profiling'); ?></span>
 			</a>
 		</td>
@@ -62,12 +62,12 @@
 				<tr>
 					<td>
 						<a href="" class="icon">
-							<com:Icon name="edit" size="16" text="core.edit" />
+							<?php echo Html::icon('edit', 16, false, 'core.edit'); ?>
 						</a>
 					</td>
 					<td>
 						<a href="" class="icon">
-							<com:Icon name="delete" size="16" text="core.edit" />
+							<?php echo Html::icon('delete', 16, false, 'core.edit'); ?>
 						</a>
 					</td>
 					<?php foreach($row AS $key=>$value) { ?>

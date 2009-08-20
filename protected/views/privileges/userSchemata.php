@@ -11,7 +11,7 @@
 		</div>
 		<div class="right">
 			<a href="javascript:void(0)" onclick="privilegesUserSchemata.addSchemaPrivilege()" class="icon button">
-				<com:Icon name="add" size="16" />
+				<?php echo Html::icon('add'); ?>
 				<span><?php echo Yii::t('core', 'addSchemaSpecificPrivileges'); ?></span>
 			</a>
 		</div>
@@ -56,17 +56,17 @@
 					</td>
 					<td>
 						<a href="#privileges/users/<?php echo urlencode($schema->User ? $schema->User : '%'); ?>/<?php echo urlencode($schema->Host); ?>/schemata/<?php echo urlencode($schema->Db); ?>/tables" class="icon">
-							<com:Icon name="table" size="16" text="database.tableSpecificPrivileges" />
+							<?php echo Html::icon('table', 16, false, 'database.tableSpecificPrivileges'); ?>
 						</a>
 					</td>
 					<td>
 						<a href="javascript:void(0)" onclick="privilegesUserSchemata.editSchemaPrivilege('<?php echo $schema->Db; ?>')" class="icon">
-							<com:Icon name="edit" size="16" text="core.edit" />
+							<?php echo Html::icon('edit', 16, false, 'core.edit'); ?>
 						</a>
 					</td>
 					<td>
 						<a href="javascript:void(0)" onclick="privilegesUserSchemata.dropSchemaPrivilege('<?php echo $schema->Db; ?>')" class="icon">
-							<com:Icon name="delete" size="16" text="database.drop" />
+							<?php echo Html::icon('delete', 16, false, 'database.drop'); ?>
 						</a>
 					</td>
 				</tr>
@@ -80,13 +80,13 @@
 				<img height="16" width="16" alt="unknown" src="/dublin/trunk/images/icons/fugue/16/arrow_turn_090.png" title="unknown" class="icon icon16 icon_arrow_turn_090"/>				<span>With selected: </span>
 			</span>
 			<a class="icon button" href="javascript:void(0)" onclick="privilegesUserSchemata.dropSchemaPrivileges()">
-				<com:Icon name="delete" size="16" />
+				<?php echo Html::icon('delete'); ?>
 				<span><?php echo Yii::t('core', 'drop'); ?></span>
 			</a>
 		</div>
 		<div class="right">
 			<a href="javascript:void(0)" onclick="privilegesUserSchemata.addSchemaPrivilege()" class="icon button">
-				<com:Icon name="add" size="16" />
+				<?php echo Html::icon('add'); ?>
 				<span><?php echo Yii::t('core', 'addSchemaSpecificPrivileges'); ?></span>
 			</a>
 		</div>

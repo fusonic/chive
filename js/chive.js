@@ -69,7 +69,7 @@ var chive = {
 	 */
 	goto: function(location)
 	{
-		window.location.hash = encodeURI(location);
+		window.location.hash = location;
 		chive.currentLocation = window.location.href;
 		chive.refresh();
 	},

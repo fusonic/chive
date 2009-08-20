@@ -14,7 +14,7 @@
 		</div>
 		<div class="right">
 			<a href="javascript:void(0)" class="icon button" onclick="schemaTables.addTable()">
-				<com:Icon name="add" size="16" />
+				<?php echo Html::icon('add'); ?>
 				<span><?php echo Yii::t('core', 'addTable'); ?></span>
 			</a>
 		</div>
@@ -64,57 +64,57 @@
 						<input type="checkbox" name="tables[]" value="<?php echo $table->TABLE_NAME; ?>" />
 					</td>
 					<td>
-						<a href="javascript:chive.goto('tables/<?php echo $table->TABLE_NAME; ?>/structure')">
+						<?php echo Html::ajaxLink('tables/' . $table->TABLE_NAME . '/structure'); ?>
 							<?php echo $table->TABLE_NAME; ?>
 						</a>
 					</td>
 					<td>
-						<a href="javascript:chive.goto('tables/<?php echo $table->TABLE_NAME; ?>/browse')" class="icon">
-							<com:Icon name="browse" size="16" text="database.browse" />
+						<?php echo Html::ajaxLink('tables/' . $table->TABLE_NAME . '/browse', array('class' => 'icon')); ?>
+							<?php echo Html::icon('browse', 16, false, 'database.browse'); ?>
 						</a>
 					</td>
 					<td>
-						<a href="javascript:chive.goto('tables/<?php echo $table->TABLE_NAME; ?>/structure')" class="icon">
-							<com:Icon name="structure" size="16" text="database.structure" />
+						<?php echo Html::ajaxLink('tables/' . $table->TABLE_NAME . '/structure', array('class' => 'icon')); ?>
+							<?php echo Html::icon('structure', 16, false, 'database.structure'); ?>
 						</a>
 					</td>
 					<td>
-						<a href="javascript:chive.goto('tables/<?php echo $table->TABLE_NAME; ?>/search')" class="icon">
-							<com:Icon name="search" size="16" text="core.search" />
+						<?php echo Html::ajaxLink('tables/' . $table->TABLE_NAME . '/search', array('class' => 'icon')); ?>
+							<?php echo Html::icon('search', 16, false, 'core.search'); ?>
 						</a>
 					</td>
 					<td>
-						<a href="javascript:chive.goto('tables/<?php echo $table->TABLE_NAME; ?>/insert')" class="icon">
-							<com:Icon name="insert" size="16" text="database.insert" />
+						<?php echo Html::ajaxLink('tables/' . $table->TABLE_NAME . '/insert', array('class' => 'icon')); ?>
+							<?php echo Html::icon('insert', 16, false, 'database.insert'); ?>
 						</a>
 					</td>
 					<td>
 						<?php if(Yii::app()->user->privileges->checkTable($table->TABLE_SCHEMA, $table->TABLE_NAME, 'ALTER')) { ?>
 							<a href="javascript:void(0);" onclick="schemaTables.editTable($(this).closest('tr').attr('id').substr(7))" class="icon">
-								<com:Icon name="edit" size="16" text="core.edit" />
+								<?php echo Html::icon('edit', 16, false, 'core.edit'); ?>
 							</a>
 						<?php } else { ?>
-							<com:Icon name="edit" size="16" text="core.edit" disabled="true" />
+							<?php echo Html::icon('edit', 16, true, 'core.edit'); ?>
 						<?php } ?>
 					</td>
 					<td>
 						<?php if(Yii::app()->user->privileges->checkTable($table->TABLE_SCHEMA, $table->TABLE_NAME, 'DELETE')) { ?>
 							<a href="javascript:void(0);" onclick="schemaTables.truncateTable($(this).closest('tr').attr('id').substr(7))" class="icon">
-								<com:Icon name="truncate" size="16" text="database.truncate" />
+								<?php echo Html::icon('truncate', 16, false, 'core.truncate'); ?>
 							</a>
 							<?php $canTruncate = true; ?>
 						<?php } else { ?>
-							<com:Icon name="truncate" size="16" text="database.truncate" disabled="true" />
+							<?php echo Html::icon('truncate', 16, true, 'core.truncate'); ?>
 						<?php } ?>
 					</td>
 					<td>
 						<?php if(Yii::app()->user->privileges->checkTable($table->TABLE_SCHEMA, $table->TABLE_NAME, 'DROP')) { ?>
 							<a href="javascript:void(0);" onclick="schemaTables.dropTable($(this).closest('tr').attr('id').substr(7))" class="icon">
-								<com:Icon name="delete" size="16" text="database.drop" />
+								<?php echo Html::icon('delete', 16, false, 'core.drop'); ?>
 							</a>
 							<?php $canDrop = true; ?>
 						<?php } else { ?>
-							<com:Icon name="delete" size="16" text="database.drop" disabled="true" />
+							<?php echo Html::icon('delete', 16, true, 'core.drop'); ?>
 						<?php } ?>
 					</td>
 					<td>
@@ -154,35 +154,35 @@
 	<div class="buttonContainer">
 		<div class="left withSelected">
 			<span class="icon">
-				<com:Icon name="arrow_turn_090" size="16" />
+				<?php echo Html::icon('arrow_turn_090'); ?>
 				<span><?php echo Yii::t('core', 'withSelected'); ?></span>
 			</span>
 			<?php if($canDrop) { ?>
 				<a href="javascript:void(0)" onclick="schemaTables.dropTables()" class="icon button">
-					<com:Icon name="delete" size="16" />
+					<?php echo Html::icon('delete'); ?>
 					<span><?php echo Yii::t('core', 'drop'); ?></span>
 				</a>
 			<?php } else { ?>
 				<span class="icon button">
-					<com:Icon name="delete" size="16" disabled="true" />
+					<?php echo Html::icon('delete', 16, true); ?>
 					<span><?php echo Yii::t('core', 'drop'); ?></span>
 				</span>
 			<?php } ?>
 			<?php if($canTruncate) { ?>
 				<a href="javascript:void(0)" onclick="schemaTables.truncateTables()" class="icon button">
-					<com:Icon name="truncate" size="16" />
+					<?php echo Html::icon('truncate'); ?>
 					<span><?php echo Yii::t('core', 'truncate'); ?></span>
 				</a>
 			<?php } else { ?>
 				<span class="icon button">
-					<com:Icon name="truncate" size="16" disabled="true" />
+					<?php echo Html::icon('truncate', 16, true); ?>
 					<span><?php echo Yii::t('core', 'truncate'); ?></span>
 				</span>
 			<?php } ?>
 		</div>
 		<div class="right">
 			<a href="javascript:void(0)" class="icon button" onclick="schemaTables.addTable()">
-				<com:Icon name="add" size="16" />
+				<?php echo Html::icon('add'); ?>
 				<span><?php echo Yii::t('core', 'addTable'); ?></span>
 			</a>
 		</div>

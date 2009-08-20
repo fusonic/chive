@@ -91,7 +91,7 @@
 
 		<div class="buttons">
 			<a class="icon button" href="javascript:void(0);" onclick="$('form').submit()">
-				<com:Icon size="16" name="login" text="core.login" />
+				<?php echo Html::icon('login', 16, false, 'core.login'); ?>
 				<span><?php echo Yii::t('core', 'login'); ?></span>
 			</a>
 			<input type="submit" value="<?php echo Yii::t('core', 'login'); ?>" style="display: none" />

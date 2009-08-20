@@ -37,7 +37,7 @@
 
 <div class="buttons">
 	<a href="javascript:void(0);" onclick="$('form').submit();" class="icon button">
-		<com:Icon name="search" size="16" text="core.insert" />
+		<?php echo Html::icon('search', 16, false, 'core.insert'); ?>
 		<span><?php echo Yii::t('core', 'search'); ?></span>
 	</a>
 </div>

@@ -11,7 +11,7 @@
 					<td><?php echo $engine['Engine']; ?></td>
 					<td><?php echo $engine['Comment']; ?></td>
 					<td>
-						<com:Icon name="search" text="core.showDetails" title="core.showDetails" />
+						<?php echo Html::icon('search', 16, false, 'core.showDetails'); ?>
 					</td>
 				</tr>
 				<tr id="<?php echo $engine['Engine']; ?>Infos" class="noSwitch info" style="display: none">

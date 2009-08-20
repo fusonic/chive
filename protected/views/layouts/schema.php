@@ -133,7 +133,7 @@ $(document).ready(function() {
   	<div id="sideBar">
   		<div class="sidebarHeader tableList">
 			<a class="icon">
-				<com:Icon name="table" size="24" text="database.tables" />
+				<?php echo Html::icon('table', 24, false, 'core.tables'); ?>
 				<span><?php echo Yii::t('core', 'tables'); ?></span>
 			</a>
 			<img class="loading" src="images/loading.gif" alt="<?php echo Yii::t('core', 'loading'); ?>..." />
@@ -143,33 +143,16 @@ $(document).ready(function() {
 			<input type="text" id="tableSearch" class="search text" />
 
 			<ul class="list icon nowrap" id="tableList">
-				<!---
-				<?php foreach($this->_schema->tables AS $table) { ?>
-					<li>
-						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/browse" class="icon">
-							<?php $this->widget('Icon', array('name'=>'browse', 'size'=>16, 'disabled'=>!$table->getRowCount(), 'title'=>Yii::t('core', 'Xrows', array('{amount}'=>$table->getRowCount() ? $table->getRowCount() : 0)))); ?>
-						</a>
-						<a href="#tables/<?php echo $table->TABLE_NAME; ?>/structure" class="icon">
-							<span><?php echo $table->TABLE_NAME; ?></span>
-						</a>
-						<div class="listIconContainer">
-							<a href="#tables/<?php echo $table->TABLE_NAME; ?>/insert">
-								<com:Icon name="add" size="16" text="core.insertNewRow" />
-							</a>
-						</div>
-					</li>
-				<?php } ?>
-				--->
 				<li class="nowrap template">
-					<a href="javascript:chive.goto('tables/#tableName#/browse')" class="icon">
-						<com:Icon name="browse" size="16" text="plain:#rowCountText#" />
+					<?php echo Html::ajaxLink('tables/#tableName#/browse', array('class' => 'icon')); ?>
+						<?php echo Html::icon('browse', 16, false, 'plain:#rowCountText#'); ?>
 					</a>
-					<a href="javascript:chive.goto('tables/#tableName#/structure')" class="icon">
+					<?php echo Html::ajaxLink('tables/#tableName#/structure', array('class' => 'icon')); ?>
 						<span>#tableName#</span>
 					</a>
 					<div class="listIconContainer">
 						<a href="javascript:chive.goto('tables/#tableName#/insert')">
-							<com:Icon name="add" size="16" text="core.insertNewRow" />
+							<?php echo Html::icon('add', 16, false, 'core.insertNewRow'); ?>
 						</a>
 					</div>
 				</li>
@@ -178,7 +161,7 @@ $(document).ready(function() {
 		</div>
   		<div class="sidebarHeader">
 			<a class="icon" href="#views">
-				<com:Icon name="view" size="24" text="database.views" />
+				<?php echo Html::icon('view', 24, false, 'core.views'); ?>
 				<span><?php echo Yii::t('core', 'views'); ?></span>
 			</a>
 		</div>
@@ -189,10 +172,10 @@ $(document).ready(function() {
 			<ul class="list icon nowrap" id="viewList">
 				<?php foreach($this->_schema->views AS $view) { ?>
 					<li>
-						<a href="javascript:chive.goto('views/<?php echo $view->TABLE_NAME; ?>/browse')" class="icon">
-							<com:Icon name="view" size="16" text="database.browse" />
+						<?php echo Html::ajaxLink('views/' . $view->TABLE_NAME . '/browse', array('class' => 'icon')); ?>
+							<?php echo Html::icon('view', 16, false, 'core.browse'); ?>
 						</a>
-						<a href="javascript:chive.goto('views/<?php echo $view->TABLE_NAME; ?>/structure')" class="icon">
+						<?php echo Html::ajaxLink('views/' . $view->TABLE_NAME . '/structure', array('class' => 'icon')); ?>
 							<span><?php echo $view->TABLE_NAME; ?></span>
 						</a>
 					</li>
@@ -201,7 +184,7 @@ $(document).ready(function() {
 		</div>
   		<div class="sidebarHeader">
 			<a class="icon">
-				<com:Icon name="bookmark" size="24" text="core.bookmarks" />
+				<?php echo Html::icon('bookmark', 24, false, 'core.bookmarks'); ?>
 				<span><?php echo Yii::t('core', 'bookmarks') ?></span>
 			</a>
 		</div>
@@ -213,16 +196,16 @@ $(document).ready(function() {
 				<?php if($bookmarks = Yii::app()->user->settings->get('bookmarks', 'database', $this->schema)) { ?>
 					<?php foreach($bookmarks AS $key => $bookmark) { ?>
 						<li id="bookmark_<?php echo $bookmark['id']; ?>">
-							<a href="javascript:chive.goto('bookmark/show/<?php echo $bookmark['id']; ?>')" class="icon" title="<?php echo $bookmark['query']; ?>">
-								<com:Icon size="16" name="bookmark" />
+							<?php echo Html::ajaxLink('bookmark/show/' . $bookmark['id'], array('class' => 'icon', 'title' => $bookmark['query'])); ?>
+								<?php echo Html::icon('bookmark'); ?>
 								<span><?php echo $bookmark['name']; ?></span>
 							</a>
 							<div class="listIconContainer">
 								<a href="javascript:void(0);" onclick="Bookmark.remove('<?php echo $this->schema; ?>', '<?php echo $bookmark['id']; ?>');">
-									<com:Icon name="delete" size="16" title="core.delete" disabled={true} />
+									<?php echo Html::icon('delete', 16, false, 'core.delete'); ?>
 								</a>
 								<a href="javascript:void(0);" onclick="Bookmark.execute('<?php echo $this->schema; ?>', '<?php echo $bookmark['id']; ?>');">
-									<com:Icon name="execute" size="16" title="action.execute" />
+									<?php echo Html::icon('execute', 16, false, 'core.execute'); ?>
 								</a>
 							</div>
 						</li>
