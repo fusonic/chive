@@ -79,5 +79,8 @@ if($request->isAjaxRequest)
 // Publis messages for javascript usage
 Yii::app()->getComponent('messages')->publishJavaScriptMessages();
 
+#$splitter = new SqlSplitter(file_get_contents('/var/www/dublin/trunk/dump.sql'));
+#predie($splitter->getQueries());
+
 // Run application
 $app->run();

@@ -132,8 +132,6 @@ class BrowsePage extends CModel
 					$this->table = $sqlQuery->getTable();
 				}
 				
-				
-
 				// SELECT
 				if($type == "select")
 				{
@@ -151,13 +149,14 @@ class BrowsePage extends CModel
 					$sqlQuery->applyCalculateFoundRows();
 					
 					$limit = $sqlQuery->getLimit();
-					
+					$order = $sqlQuery->getOrder();
+
 					if(isset($_REQUEST['page']))
 					{
 						$offset = $_REQUEST['page'] * $pageSize - $pageSize;
 						$sqlQuery->applyLimit($pageSize, $offset, true);
 					}
-					
+
 					// Set pagesize from query limit
 					if($limit && !isset($_REQUEST[$pages->pageSizeVar]))
 					{
@@ -182,7 +181,10 @@ class BrowsePage extends CModel
 					$this->start = $offset;
 					
 					// Apply sort
-					$sqlQuery->applySort($sort->getOrder(), true);
+					if($sort->getOrder())
+					{
+						$sqlQuery->applySort($sort->getOrder(), true);
+					}
 					
 				}
 				

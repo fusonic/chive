@@ -485,29 +485,18 @@ class SchemaController extends Controller
 	public function actionImport()
 	{
 
-		// This is no ajax - request, so unset layout
-		$this->layout = false;
+		
+		$importPage = new ImportPage();
+		$importPage->db = $this->db;
+		$importPage->schema = $this->schema;
+		$importPage->formTarget = BASEURL . '/schema/' . $this->schema . '/import';
+		
+		$importPage->run();
 
-		$file = null;
-
-		// Upload file
-		if(isset($_FILES['file']))
-		{
-
-			$file = CUploadedFile::getInstanceByName('file');
-
-			#$splitter = new SqlSplitter()
-
-			#$queries = SqlSplitter::
-
-			predie($file);
-
-
-		}
-		$this->render('import', array(
-			'file' => $file,
+		$this->render('../global/import', array(
+			'model' => $importPage,
 		));
-
+		
 	}
 
 }

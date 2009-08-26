@@ -163,5 +163,14 @@ class InformationController extends Controller
 			'status' => $status,
 		));
 	}
+	
+	/**
+	 * Shows the about page
+	 */
+	public function actionAbout()
+	{
+		$this->render('about', array(
+		));
+	}
 
 }

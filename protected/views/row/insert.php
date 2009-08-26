@@ -24,6 +24,6 @@
 	});
 </script>
 
-<input type="submit" name="submit" style="display: none;" />
+<input type="submit" name="submitButton" style="display: none;" />
 
 <?php echo CHtml::endForm(); ?>

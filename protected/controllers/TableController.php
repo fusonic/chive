@@ -416,9 +416,9 @@ class TableController extends Controller
 		if($count > 0)
 		{
 			$response->addNotification('success',
-			Yii::t('core', 'successDropTable', array($count, '{table}' => $droppedTables[0], '{tableCount}' => $count)),
-			($count > 1 ? implode(', ', $droppedTables) : null),
-			implode("\n", $droppedSqls));
+				Yii::t('core', 'successDropTable', array($count, '{table}' => $droppedTables[0], '{tableCount}' => $count)),
+				($count > 1 ? implode(', ', $droppedTables) : null),
+				implode("\n", $droppedSqls));
 		}
 
 		$response->send();
@@ -455,11 +455,11 @@ class TableController extends Controller
 
 			CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3);
 			$this->render('form', array(
-			'table' => $table,
-			'collations' => $collations,
-			'storageEngines' => StorageEngine::getSupportedEngines(),
-			'isSubmitted' => $isSubmitted,
-			'sql' => $sql,
+				'table' => $table,
+				'collations' => $collations,
+				'storageEngines' => StorageEngine::getSupportedEngines(),
+				'isSubmitted' => $isSubmitted,
+				'sql' => $sql,
 			));
 	}
 
@@ -474,6 +474,24 @@ class TableController extends Controller
 
 		$this->render('../global/export', array(
 			'model' => $exportPage,
+		));
+	}
+	
+	/**
+	 * Shows the import page for this table.
+	 */
+	public function actionImport()
+	{
+		$importPage = new ImportPage();
+		$importPage->db = $this->db;
+		$importPage->table = $this->table;
+		$importPage->schema = $this->schema;
+		$importPage->formTarget = BASEURL . '/schema/' . $this->schema . '/tables/' . $this->table . '/import';
+		
+		$importPage->run();
+
+		$this->render('../global/import', array(
+			'model' => $importPage,
 		));
 	}
 

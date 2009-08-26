@@ -34,9 +34,11 @@ $scriptFiles = array(
 	'js/jquery/jquery.purr.js',
 	'js/jquery/jquery.selectboxes.js',
 	'js/jquery/jquery.hotkey.js',
+	'js/jquery/jquery.progressbar.js',
 	'js/jquery/jquery.tableForm.js',
 	'js/lib/json.js',
 	'js/main.js',
+	'js/ajaxResponse.js',
 	'js/chive.js',
 	'js/breadCrumb.js',
 	'js/sideBar.js',
@@ -58,12 +60,14 @@ $scriptFiles = array(
 	'js/views/table/form.js',
 	'js/views/global/browse.js',
 	'js/views/global/export.js',
+	'js/views/global/import.js',
 	'js/views/table/structure.js',
 	'js/views/view/general.js',
 	'js/components/EditArea/edit_area_full.js',
     'js/components/EditArea/fusonic_extensions/editarea.js',
 	'assets/lang_js/' . Yii::app()->getLanguage() . '.js',
 );
+
 foreach($scriptFiles AS $file)
 {
 	echo '<script type="text/javascript" src="' . BASEURL . '/' . $file . '"></script>' . "\n";
@@ -118,7 +122,7 @@ $(document).ready(function() {
 		<div id="headerLogo">
 		</div>
 		<div id="headerRight">
-			<?php $this->widget('application.components.MainMenu',array(
+			<?php $this->widget('MainMenu',array(
 				'items'=>array(
 					array('label'=>'Home', 'icon'=>'home', 'url'=>array('/site/index')),
 					array('label'=>'Refresh','icon'=>'refresh', 'url'=>'javascript:chive.refresh()'),

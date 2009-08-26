@@ -2,6 +2,7 @@
 <category id="core">
 	<entry id="XColumns">{count} Columns</entry>
 	<entry id="Xrows">{amount}  rows</entry>
+	<entry id="about">About</entry>
 	<entry id="action">Action</entry>
 	<entry id="actions">Actions</entry>
 	<entry id="addBookmark">Add bookmark</entry>
@@ -35,7 +36,7 @@
 	<entry id="browseDistinctValues">Show distinct values</entry>
 	<entry id="cancel">Cancel</entry>
 	<entry id="cardinality">Cardinality</entry>
-	<entry id="characterSets">Character sets</entry>
+	<entry id="characterSet">1#Character set|n&gt;1#Character sets</entry>
 	<entry id="checksum">Checksum</entry>
 	<entry id="chooseLanguage">Choose language</entry>
 	<entry id="chooseTheme">Choose theme</entry>
@@ -43,6 +44,7 @@
 	<entry id="columns">Columns</entry>
 	<entry id="command">Command</entry>
 	<entry id="comment">Comment</entry>
+	<entry id="compressionWillBeAutomaticallyDetected">Imported file compression will be automatically detected from: &lt;code class="literal"&gt;[NONE|GZIP|BZIP2]&lt;/code&gt;</entry>
 	<entry id="confirm">Confirm</entry>
 	<entry id="create">Create</entry>
 	<entry id="createIndex">Create index</entry>
@@ -128,6 +130,7 @@
 	<entry id="errorUpdateRow">Updating row failed</entry>
 	<entry id="event">Event</entry>
 	<entry id="execute">Execute</entry>
+	<entry id="executedQueries">Executed queries</entry>
 	<entry id="export">Export</entry>
 	<entry id="exportData">Export data</entry>
 	<entry id="exportStructure">Export structure</entry>
@@ -141,6 +144,7 @@
 	<entry id="host">Host</entry>
 	<entry id="id">ID</entry>
 	<entry id="import">Import</entry>
+	<entry id="importFile">Datei importieren</entry>
 	<entry id="index">Index</entry>
 	<entry id="indices">Indices</entry>
 	<entry id="information">Information</entry>
@@ -156,6 +160,7 @@
 	<entry id="leaveEmptyForNull">Leave empty to use &lt;span class="null"&gt;NULL&lt;/&gt;.</entry>
 	<entry id="loading">Loading</entry>
 	<entry id="login">Login</entry>
+	<entry id="maximum">Maximum</entry>
 	<entry id="move">Move</entry>
 	<entry id="name">Name</entry>
 	<entry id="nextAutoincrementValue">Next autoincrement value</entry>
@@ -168,6 +173,7 @@
 	<entry id="noRoutines">No visible routines in this schema.</entry>
 	<entry id="noSchemaSpecificPrivileges">No schema-specific privileges for this user.</entry>
 	<entry id="noTables">No visible tables in this schema.</entry>
+	<entry id="notice">Notice</entry>
 	<entry id="noTriggers">No visible triggers in this table.</entry>
 	<entry id="noViews">No visible views in this schema.</entry>
 	<entry id="null">Null</entry>
@@ -180,6 +186,7 @@
 	<entry id="options">Options</entry>
 	<entry id="overhead">Overhead</entry>
 	<entry id="packKeys">Pack keys</entry>
+	<entry id="partialImportDescription">Allow interrupt of import in case script detects it is close to time limit.</entry>
 	<entry id="password">Password</entry>
 	<entry id="primaryKey">Primary key</entry>
 	<entry id="privileges">Privileges</entry>
@@ -199,6 +206,7 @@
 	<entry id="search">Search</entry>
 	<entry id="selectColumnToAdd">Select a column to add</entry>
 	<entry id="setNull">Set NULL</entry>
+	<entry id="settings">Settings</entry>
 	<entry id="show">Display dump</entry>
 	<entry id="showDetails">Show details</entry>
 	<entry id="showFullColumnContent">Show full column content</entry>
@@ -245,6 +253,7 @@
 	<entry id="successEditTable">Saved table &#xBB;{table}&#xAB;</entry>
 	<entry id="successExecuteBookmark">Executed bookmark &#xBB;{name}&#xAB;</entry>
 	<entry id="successExecuteQuery">Executed query</entry>
+	<entry id="successImportFile">Imported file</entry>
 	<entry id="successInsertRow">Inserted row</entry>
 	<entry id="successKillProcess">Killed process #{id}</entry>
 	<entry id="successMoveColumn">Moved column &#xBB;{col}&#xAB;</entry>
@@ -272,6 +281,7 @@
 	<entry id="usage">Usage</entry>
 	<entry id="useCompleteInserts">Complete inserts</entry>
 	<entry id="useDelayedInserts">Use &lt;code class="literal"&gt;[INSERT|REPLACE] DELAYED&lt;/code&gt;</entry>
+	<entry id="usedLibraries">Used libraries</entry>
 	<entry id="useHexForBlob">Use hexadecimal for &lt;code class="literal"&gt;BLOB&lt;/code&gt;</entry>
 	<entry id="useInsertIgnore">Use &lt;code class="literal"&gt;[INSERT|REPLACE] IGNORE&lt;/code&gt;</entry>
 	<entry id="user">User</entry>

@@ -28,15 +28,26 @@ class SqlSplitter
 
 	private $string;
 	private $queries = array();
-
-	public function __construct($_string)
+	
+	private $position = 0;
+	
+	public $ignoreLastQuery = false;
+	
+	public function __construct($_string = false)
 	{
-		$this->string = $_string;
+		if($_string)
+		{
+			$this->string = $_string;
+		}
+	}
+	
+	public function getPosition()
+	{
+		return $this->position;
 	}
 
-	private function split()
+	public function split()
 	{
-
 		$state = 0;
 		$delimiter = $this->delimiter;
 		$delimiterLength = strlen($delimiter);
@@ -136,18 +147,22 @@ class SqlSplitter
 					($char == $delimiter{0} &&
 						(strlen($delimiter) == 1 ||
 						$nextChar == $delimiter{1}))
-					|| $i == $chars
+					|| ($i == $chars && $this->ignoreLastQuery == false && count($this->queries) == 0)
 				)
 			)
 			{
 				$query = trim(substr($this->string, $start, $i-$start));
 
-				if($query)
+				if($query) 
+				{
 					$this->queries[] = $query;
+					$this->position = $i;
+					
+				}
 
 				$start = $i+1;
 
-				if($delimiterLength && $nextChar == $delimiter{1})
+				if($delimiterLength == 2 && $nextChar == $delimiter{1})
 					$start++;
 
 			}
@@ -159,9 +174,16 @@ class SqlSplitter
 		}
 
 	}
-
-	public function getQueries()
+	
+	public function getQueries($_string = false)
 	{
+		if($_string)
+		{
+			$this->string = $_string;
+			$this->position = 0;
+			$this->queries = array();
+		}
+		
 		if(!$this->queries)
 			$this->split();
 

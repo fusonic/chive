@@ -82,6 +82,7 @@ var Notification = {
 			clearInterval($(this).data('interval'));
 			$(this).removeClass('not-sticky');
 		});
+		
 	}
 	
 };

@@ -116,6 +116,15 @@ var globalBrowse = {
 			}		
 		});
 		
+		$('#queryForm').ajaxForm({
+			success: 	function(responseText)
+			{
+				AjaxResponse.handle(responseText);
+				$('div.ui-layout-center').html(responseText);
+				init();
+			}
+		});
+		
 	}
 	
 };

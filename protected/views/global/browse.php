@@ -66,17 +66,6 @@
 
 	<?php echo CHtml::endForm(); ?>
 
-	<script type="text/javascript">
-		$('#queryForm').ajaxForm({
-			success: 	function(responseText)
-			{
-				AjaxResponse.handle(responseText);
-				$('div.ui-layout-center').html(responseText);
-				init();
-			}
-		});
-	</script>
-
 <?php } ?>
 
 <?php if($model->hasResultSet() && $model->getData()) { ?>

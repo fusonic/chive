@@ -54,14 +54,17 @@ var chive = {
 		});
 	
 		// Send keep-alive to server every 5 minutes
-		setInterval(function() {
-			$.post(baseUrl + '/site/keepAlive', function(response) {
-				if(response != 'OK') 
-				{
-					reload();
-				}
-			});
-		}, 300000);
+		if(!location.href.indexOf('login'))
+		{
+			setInterval(function() {
+				$.post(baseUrl + '/site/keepAlive', function(response) {
+					if(response != 'OK') 
+					{
+						reload();
+					}
+				});
+			}, 300000);
+		}
 	},
 	
 	/*

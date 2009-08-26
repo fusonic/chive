@@ -64,11 +64,6 @@ return array(
 					'levels' => 'error, warning, info, trace',
 					'showInFireBug'=>false,
 				),
-				array(
-					'class'=>'CWebLogRoute',
-					'levels'=>'error, warning', //, warning, info, trace',
-					'showInFireBug'=>true,
-				),
 			),
 		),
 
@@ -156,6 +151,7 @@ return array(
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/insert'=>'row/insert',
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/update'=>'table/update',
 					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/export'=>'table/export',
+					'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/import'=>'table/import',
 
 						// ColumnActions
 						'schema/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columnAction/create'=>'column/create',

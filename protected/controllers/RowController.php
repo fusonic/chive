@@ -372,9 +372,24 @@ class RowController extends Controller
 
 		$key = json_decode(Yii::app()->getRequest()->getParam('key'), true);
 		$column = Yii::app()->getRequest()->getParam('column');
-		
+
 		header('Content-Disposition: attachment; filename="'.$column.'"');
-		echo  Row::model()->findByAttributes($key)->getAttribute($column);
+		$content = Row::model()->findByAttributes($key)->getAttribute($column);
+		
+		// Try finding out mime type of string (fileinfo extensions is installed
+		if(class_exists("finfo"))
+		{
+			$fileInfo = new finfo(FILEINFO_MIME);
+			$mimeType = $fileInfo->buffer($content);
+			
+			if($mimeType) 
+			{
+				header("Content-Type: " . $mimeType);
+			}			
+		}
+		
+		echo $content;
+		
 	}
 	
 	/**

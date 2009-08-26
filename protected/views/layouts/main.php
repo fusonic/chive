@@ -36,8 +36,10 @@ $scriptFiles = array(
 	'js/jquery/jquery.selectboxes.js',
 	'js/jquery/jquery.hotkey.js',
 	'js/jquery/jquery.tableForm.js',
+	'js/jquery/jquery.progressbar.js',
 	'js/lib/json.js',
 	'js/main.js',
+	'js/ajaxResponse.js',
 	'js/chive.js',
 	'js/breadCrumb.js',
 	'js/sideBar.js',
@@ -148,7 +150,7 @@ $(document).ready(function() {
 		<li class="nowrap">
 			<?php echo Html::ajaxLink('information/characterSets', array('class' => 'icon')); ?>
 				<?php echo Html::icon('charset'); ?>
-				<span><?php echo Yii::t('core', 'characterSets'); ?></span>
+				<span><?php echo Yii::t('core', 'characterSet', array(2)); ?></span>
 			</a>
 		</li>
 		<li class="nowrap">
@@ -157,10 +159,16 @@ $(document).ready(function() {
 				<span><?php echo Yii::t('core', 'storageEngines'); ?></span>
 			</a>
 		</li>
-		<li class="nowrap">
+		<li class="nowrap" style="margin-bottom: 10px">
 			<?php echo Html::ajaxLink('information/processes', array('class' => 'icon')); ?>
 				<?php echo Html::icon('process'); ?>
 				<span><?php echo Yii::t('core', 'processes'); ?></span>
+			</a>
+		</li>
+		<li class="nowrap">
+			<a class="icon" href="javascript:chive.goto('information/about')">
+				<com:Icon name="info" size="16" />
+				<span><?php echo Yii::t('core', 'about'); ?></span>
 			</a>
 		</li>
 	</ul>
