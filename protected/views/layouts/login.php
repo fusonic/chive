@@ -28,7 +28,7 @@
 			</a>
 			<a class="icon button" href="javascript:void(0);" style="margin-right: 9px;" onclick="$('#languageDialog').dialog('open');">
 				<img src="<?php echo BASEURL; ?>/images/country/<?php echo substr(Yii::app()->getLanguage(),0,2); ?>.png" />
-				<span><?php echo Yii::t('core', Yii::app()->getLanguage()); ?></span>
+				<span><?php echo Yii::t('language', Yii::app()->getLanguage()); ?></span>
 			</a>
 		</div>
 	</div>

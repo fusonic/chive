@@ -29,16 +29,6 @@
 class UserIdentity extends CUserIdentity
 {
 	/**
-	 * Authenticates a user.
-	 * The example implementation makes sure if the username and password
-	 * are both 'demo'.
-	 * In practical applications, this should be changed to authenticate
-	 * against some persistent user identity storage (e.g. database).
-	 * @return boolean whether authentication succeeds.
-	 */
-	const ERROR_AUTHENTICATION_FAILED = 3;
-
-	/**
 	 * @var string host
 	 */
 	public $host;
@@ -55,6 +45,10 @@ class UserIdentity extends CUserIdentity
 		$this->host=$host;
 	}
 
+	/*
+	 * Authenticates the user against database
+	 * @return bool
+	 */
 	public function authenticate()
 	{
 
@@ -71,8 +65,6 @@ class UserIdentity extends CUserIdentity
 
 			Yii::app()->setComponent('db', $db);
 
-			$this->errorCode = self::ERROR_NONE;
-
 			// Store password in UserIdentity
 			$this->setState('password', $this->password);
 
@@ -82,13 +74,13 @@ class UserIdentity extends CUserIdentity
 			$this->setState("host", $this->host);
 
 		}
-		catch (Exception $ex)
+		catch (CDbException $ex)
 		{
-			$this->errorCode = self::ERROR_AUTHENTICATION_FAILED;
 			$this->errorMessage = $ex->getMessage();
+			return false;
 		}
 
-		return !$this->errorCode;
+		return true;
 
 	}
 

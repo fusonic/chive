@@ -166,7 +166,6 @@
   
   input.text, input.password {
   	width: 98%;
-	height: 18px;
 	padding: 2px;
   }
   
@@ -259,7 +258,6 @@
   }
   
   #loginform {
-  	width: 300px; 
 	padding: 10px;
   }
   
@@ -392,7 +390,24 @@
 	padding: 3px 5px;
 	height: 24px;
 	line-height: 20px;
+	-moz-border-radius: 4px;
   }
+  
+  ul.breadCrumb li a img 
+  {
+  	top: 4px !important;
+  }
+  
+  ul.breadCrum li img 
+  {
+  	cursor: pointer;
+  }
+  
+  ul.breadCrumb li span 
+  {
+  	top: -2px !important;
+  }
+  
   
   /*
    * Purr (notifications)

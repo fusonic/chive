@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <category id="core">
-	
 	<entry id="en_us">English (US)</entry>
 	<entry id="en_gb">English (GB)</entry>
 	<entry id="de_de">Deutsch (DE)</entry>
@@ -9,5 +8,4 @@
 	
 	<entry id="english">English</entry>
 	<entry id="german">German</entry>
-	
 </category>

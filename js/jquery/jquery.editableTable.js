@@ -37,6 +37,11 @@
 			
 			tbodyObj.dblclick(function(e) {
 				
+				if(e.target.tagName == 'INPUT' || e.target.tagName == 'TEXTAREA')
+				{
+					return tableObj;
+				}
+				
 				if(editing) {
 					reset();
 					//$('#form_' + editing).submit();

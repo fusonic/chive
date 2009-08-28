@@ -1,26 +1,60 @@
-Fusonic GmbH<br/>
-Vorarlberger Wirtschaftspark 2<br/>
-office@fusonic.net<br/>
-http://www.fusonic.net<br/>
-<br/><br/>
-
-<table class="list" style="width: 45%; float: left;">
+<table class="list" style="width: 50%; float: left;">
+	<colgroup>
+		<col style="width: 300px;"></col>
+		<col></col>
+	</colgroup>
 	<thead>
 		<tr>
-			<th>Maintainer</th>
+			<th colspan="2">Software information</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td>Fusonic GmbH</td>
-		</tr>
-		<tr>
-			<td>Vorarlberger Wirtschaftspark 2</td>
+			<td style="padding-left: 15px;">
+				<a href="http://www.chive-project.com">
+					<img src="images/logo-big.png" alt="Chive Logo" title="Chive - Web based MySQL database management" />
+				</a>
+			</td>
+			<td>
+				<b>Chive 0.1.0</b><br/>
+				<i>Web based MySQL database management</i><br/><br/><br/>
+				Released under the <a href="http://www.gnu.org/copyleft/gpl.html">GPL License</a><br/>
+				<a href="http://www.chive-project.com">http://www.chive-project.com</a><br/>
+			</td>
 		</tr>
 	</tbody>
 </table>
+<table class="list" style="width: 49%; float: right;">
+	<colgroup>
+		<col style="width: 300px;"></col>
+		<col></col>
+	</colgroup>
+	<thead>
+		<tr>
+			<th colspan="2">Maintainer</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td style="padding-left: 15px;">
+				<a href="http://www.fusonic.net">
+					<img src="images/fusonic.png" alt="Fusonic GmbH" title="Fusonic Gmbh" />
+				</a>
+			</td>
+			<td>
+				<b>Fusonic GmbH</b><br/>
+				Vorarlberger Wirtschaftspark 2<br/>
+				A-6840 Götzis<br/><br/>
+				office@fusonic.net<br/>
+				<a href="http://www.fusonic.net">http://www.fusonic.net</a><br/>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
 <div class="clear"></div>
 <br/>
+
 <table class="list">
 	<colgroup>
 		<col style="width: 200px;"></col>
@@ -36,7 +70,7 @@ http://www.fusonic.net<br/>
 		<tr>
 			<td>
 				<a href="http://www.yiiframework.com" class="icon">
-					<com:Icon name="globe" />
+					<?php echo Html::icon('globe'); ?>
 					<span>Yii 1.0.8</span>
 				</a>
 			</td>
@@ -46,7 +80,7 @@ http://www.fusonic.net<br/>
 		<tr>
 			<td>
 				<a href="http://www.cdolivet.com/index.php?page=editArea" class="icon">
-					<com:Icon name="globe" />
+					<?php echo Html::icon('globe'); ?>
 					<span>EditArea 0.8.1.1</span>
 				</a>
 			</td>
@@ -56,7 +90,7 @@ http://www.fusonic.net<br/>
 		<tr>
 			<td>
 				<a href="http://jquery.com" class="icon">
-					<com:Icon name="globe" />
+					<?php echo Html::icon('globe'); ?>
 					<span>jQuery 1.3.2</span>
 				</a>
 			</td>
@@ -66,7 +100,7 @@ http://www.fusonic.net<br/>
 		<tr>
 			<td>
 				<a href="http://jqueryui.com" class="icon">
-					<com:Icon name="globe" />
+					<?php echo Html::icon('globe'); ?>
 					<span>jQuery 1.7.2</span>
 				</a>
 			</td>
@@ -76,7 +110,7 @@ http://www.fusonic.net<br/>
 		<tr>
 			<td>
 				<a href="http://layout.jquery-dev.net/" class="icon">
-					<com:Icon name="globe" />
+					<?php echo Html::icon('globe'); ?>
 					<span>jQuery UI.Layout 1.2.0</span>
 				</a>
 			</td>
@@ -86,7 +120,7 @@ http://www.fusonic.net<br/>
 		<tr>
 			<td>
 				<a href="http://malsup.com/jquery/form/" class="icon">
-					<com:Icon name="globe" />
+					<?php echo Html::icon('globe'); ?>
 					<span>jQuery Form 2.28</span>
 				</a>
 			</td>
@@ -96,7 +130,7 @@ http://www.fusonic.net<br/>
 		<tr>
 			<td>
 				<a href="http://malsup.com/jquery/block/" class="icon">
-					<com:Icon name="globe" />
+					<?php echo Html::icon('globe'); ?>
 					<span>jQuery BlockUI 2.18</span>
 				</a>
 			</td>
@@ -106,7 +140,7 @@ http://www.fusonic.net<br/>
 		<tr>
 			<td>
 				<a href="http://code.google.com/p/js-hotkeys/" class="icon">
-					<com:Icon name="globe" />
+					<?php echo Html::icon('globe'); ?>
 					<span>jQuery Hotkeys 0.7.8</span>
 				</a>
 			</td>
@@ -116,11 +150,11 @@ http://www.fusonic.net<br/>
 		<tr>
 			<td>
 				<a href="http://code.google.com/p/js-hotkeys/" class="icon">
-					<com:Icon name="globe" />
+					<?php echo Html::icon('globe'); ?>
 					<span>jQuery Purr 0.1.0</span>
 				</a>
 			</td>
-			<td>Purr is a jQuery plugin for dynamically displaying unobtrusive messages in the browser. It isdesigned to behave much as the Mac OS X program "Growl".</td>
+			<td>Purr is a jQuery plugin for dynamically displaying unobtrusive messages in the browser. It is designed to behave much as the Mac OS X program "Growl".</td>
 			<td>MIT</td>
 		</tr>
 	</tbody>

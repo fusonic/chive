@@ -33,7 +33,7 @@ var login = {
 			modal: true,
 			resizable: false,
 			autoOpen: false,
-			width: 400
+			minWidth: 400
 		});
 		
 		/*
@@ -43,7 +43,7 @@ var login = {
 			modal: true,
 			resizable: false,
 			autoOpen: false,
-			width: 400
+			minWidth: 400
 		});		
 		
 	}

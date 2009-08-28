@@ -160,6 +160,7 @@
 	<entry id="leaveEmptyForNull">Leave empty to use &lt;span class="null"&gt;NULL&lt;/&gt;.</entry>
 	<entry id="loading">Loading</entry>
 	<entry id="login">Login</entry>
+	<entry id="logout">Logout</entry>
 	<entry id="maximum">Maximum</entry>
 	<entry id="move">Move</entry>
 	<entry id="name">Name</entry>
@@ -170,6 +171,8 @@
 	<entry id="noColumnsAddedYet">No columns added yet.</entry>
 	<entry id="noIndices">No indices in this table.</entry>
 	<entry id="noIndicesAvailable">No indices available</entry>
+	<entry id="noOtherLanguagesAvailable">There are no other languages available.</entry>
+	<entry id="noOtherThemesAvailable">There are no other themes available.</entry>
 	<entry id="noRoutines">No visible routines in this schema.</entry>
 	<entry id="noSchemaSpecificPrivileges">No schema-specific privileges for this user.</entry>
 	<entry id="noTables">No visible tables in this schema.</entry>
@@ -194,6 +197,7 @@
 	<entry id="profiling">Profiling</entry>
 	<entry id="profilingResultsSortedByExecutionTime">Profiling results sorted by execution time</entry>
 	<entry id="query">Query</entry>
+	<entry id="refresh">Refresh</entry>
 	<entry id="relation">Relation</entry>
 	<entry id="routine">Routine</entry>
 	<entry id="routines">Routines</entry>

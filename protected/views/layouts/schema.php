@@ -34,7 +34,6 @@ $scriptFiles = array(
 	'js/jquery/jquery.purr.js',
 	'js/jquery/jquery.selectboxes.js',
 	'js/jquery/jquery.hotkey.js',
-	'js/jquery/jquery.progressbar.js',
 	'js/jquery/jquery.tableForm.js',
 	'js/lib/json.js',
 	'js/main.js',
@@ -113,22 +112,29 @@ $(document).ready(function() {
 		<div id="headerLeft">
 			<ul class="breadCrumb">
 				<li>
-					<a href="<?php echo Yii::app()->baseUrl . '/#schemata'; ?>">
-						<img src="<?php echo Yii::app()->baseUrl . "/images/logo.png"; ?>" alt="logo" />
+					<a href="<?php echo BASEURL; ?>">
+						<img src="<?php echo BASEURL; ?>/images/logo.png" alt="Chive" />
+					</a>
+				</li>
+				<li>
+					<a href="<?php echo BASEURL; ?>/#schemata" class="icon">
+						<?php echo Html::icon('server', 24); ?>
+						<span><?php echo Yii::app()->user->host; ?></span>
 					</a>
 				</li>
 			</ul>
 		</div>
-		<div id="headerLogo">
-		</div>
-		<div id="headerRight">
-			<?php $this->widget('MainMenu',array(
-				'items'=>array(
-					array('label'=>'Home', 'icon'=>'home', 'url'=>array('/site/index')),
-					array('label'=>'Refresh','icon'=>'refresh', 'url'=>'javascript:chive.refresh()'),
-					array('label'=>'Logout', 'icon'=>'logout', 'url'=>array('/site/logout'))
-				),
-			)); ?>
+		<div id="header-inner">
+			<div id="headerRight">
+				<a class="icon button" href="javascript:chive.refresh();" style="margin-right: 9px;">
+					<?php echo Html::icon('refresh'); ?>
+					<span><?php echo Yii::t('core', 'refresh'); ?></span>
+				</a>
+				<a class="icon button" href="<?php echo BASEURL; ?>/site/logout" style="margin-right: 9px;">
+					<?php echo Html::icon('logout'); ?>
+					<span><?php echo Yii::t('core', 'logout'); ?></span>
+				</a>
+			</div>
 		</div>
 	</div>
   </div>

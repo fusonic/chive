@@ -107,9 +107,10 @@ var table = '<?php echo $this->table; ?>';
 tableGeneral.setupDialogs();
 breadCrumb.set([
 	{
-		icon: 'database',
-		href: baseUrl + '/schema/' + schema,
-		text: schema
+		icon: 	'database',
+		href: 	baseUrl + '/schema/' + schema,
+		text: 	schema
+		//,dialog:	'truncateTableDialog'
 	},
 	{
 		icon: 'table',

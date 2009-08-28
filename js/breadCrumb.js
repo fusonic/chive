@@ -51,6 +51,11 @@ var breadCrumb = {
 			
 			html += '</a>';
 			
+			if(data[i].dialog)
+			{
+				html += '<img src="'+ iconPath + '/16/arrow_next.png" onclick="$(\'#' + data[i].dialog + '\').dialog(\'open\');" class="breadcrumbDropdown" />';
+			}
+			
 			ul.append('<li class="dynamicCrumb">' + html + '</li>');
 			
 			windowTitle.push(data[i].text);

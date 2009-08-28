@@ -172,9 +172,9 @@
   #loginform {
   	padding: 10px;
   	background: #FFF;
-	border: 1px solid #E5E5E5;
-	-moz-border-radius: 11px;
-	-webkit-border-radius: 11px;
+	border: 1px solid #CCC;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
   }
   
   select {
@@ -183,8 +183,14 @@
   }
   
   #login div.formItems.non-floated div.left {
-  	font-weight: bold;
-	color: #CCC;
+	color: #777;
+	font-size: 1.2em;
+  }
+  
+  #login input 
+  {
+  	font-size: 18px;
+  	padding: 3px;
   }
   
 

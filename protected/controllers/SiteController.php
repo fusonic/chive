@@ -67,19 +67,6 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
-/*
-		$export = new SqlExporter('objects');
-		$export->setItems(array('t:Abteilung', 'r:name_of_function', 'r:name_of_procedure', 'v:name_of_view'), 'Firma');
-		$export->calculateStepCount();
-		echo $export->getStepCount();
-
-		$export->runStep(0);
-		echo "<pre>";
-		echo $export->getResult();
-
-		die();
-*/
-
 		$this->render('index');
 	}
 
