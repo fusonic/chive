@@ -21,7 +21,7 @@
 </head>
 <body>
 	<div id="header">
-		<div id="header-inner">
+		<div id="headerRight">
 			<a class="icon button" href="javascript:void(0);" style="margin-right: 9px;" onclick="$('#themeDialog').dialog('open');">
 				<img src="<?php echo BASEURL; ?>/themes/<?php  echo Yii::app()->getTheme()->name; ?>/images/icon.png" />
 				<span><?php echo ucfirst(Yii::app()->getTheme()->name); ?></span>

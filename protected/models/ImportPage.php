@@ -51,7 +51,7 @@ class ImportPage extends CModel
 	public $db;
 	public $formTarget;
 	
-	public $partialImport = true;
+	public $partialImport = false;
 	public $fromCharacterSet = 'utf-8';
 	
 	private $characterSets;
@@ -65,6 +65,8 @@ class ImportPage extends CModel
 	 */
 	public function __construct()
 	{
+		$this->partialImport = isset($_POST['ImportPage']['partialImport']) && $_POST['ImportPage']['partialImport'];
+		
 		$characterSets = CharacterSet::model()->findAll();
 		foreach($characterSets AS $characterSet)
 		{
@@ -117,9 +119,14 @@ class ImportPage extends CModel
 			$this->mimeType = $_FILES['type'];
 			
 			move_uploaded_file($_FILES['file']['tmp_name'], $this->file);
+			
+			if(!$this->partialImport) 
+			{
+				$this->runImport();
+			}
 
 		}
-		elseif(isset($_GET['position']))
+		elseif($this->partialImport || isset($_GET['position']))
 		{
 			$this->view = 'postprocessing';
 			$this->file = $_GET['file'];
@@ -226,16 +233,9 @@ class ImportPage extends CModel
 				
 		}
 		
-		mysql_connect("localhost", "root", "");
-		mysql_select_db("testing_ox");
-		
 		// No more queries could be found 
 		if($queryCount > 0)
 		{
-			$names = $this->db->createCommand('SET NAMES utf8');
-			$names->prepare();
-			$names->execute();
-			
 			$newPosition = $this->position + $sqlSplitter->getPosition();
 			
 			// Calculate end time
@@ -246,16 +246,15 @@ class ImportPage extends CModel
 			{
 				try 
 				{
-					#mysql_query($queries[$executedQueries]);
-					
 					$cmd = $this->db->createCommand($queries[$executedQueries]);
-					$cmd->prepare(); 
 					$cmd->execute();
 				}
 				catch(CDbException $ex)
 				{
 					
-					if(!in_array($dbException->getNumber(), $this->ignoreErrorNumbers))
+					$dbException = new DbException($cmd);
+					
+					if(!in_array(@$dbException->getNumber(), $this->ignoreErrorNumbers))
 					{
 						$dbException = new DbException($cmd);
 						$response->addNotification('error', Yii::t('core', 'errorExecuteQuery'), $dbException->getText() . '  ' . $dbException->getNumber(), $dbException->getSql());
@@ -270,7 +269,7 @@ class ImportPage extends CModel
 				$this->totalExecutedQueries++;
 				
 				// If partial import is activated, break current transaction
-				if($this->partialImport && microtime(true) > $end )
+				if(microtime(true) > $end )
 				{
 					break;
 				}
@@ -314,6 +313,79 @@ class ImportPage extends CModel
 		);
 		
 		$response->addData(null,$data);
+		$response->send();
+		
+	}
+	
+	public function runImport()
+	{
+		
+		$response = new AjaxResponse();
+		$response->refresh = true;
+		$response->executeJavaScript('sideBar.loadTables("' . $this->schema . '")');
+		
+		
+		$this->mimeType = CFileHelper::getMimeType($this->file);
+		$filesize = filesize($this->file);
+
+		// Open file and set position to last position
+		switch($this->mimeType)
+		{
+			// GZip - Files
+			case 'application/x-gzip':
+				$handle = gzopen($this->file, 'r');
+				$content = gzread($handle, $filesize);
+				gzclose($handle);
+				break;
+				
+			// BZip - Files	
+			case 'application/x-bzip2':
+				$handle = bzopen($this->file, 'r');
+				$content = bzread($handle, $filesize);
+				bzclose($handle);
+				break;
+			
+			// All other files (plain text)	
+			default:
+				$content = file_get_contents($this->file);
+				break;
+				
+		}
+		
+		$sqlSplitter = new SqlSplitter($content);
+		$queries = $sqlSplitter->getQueries();
+		
+		foreach($queries AS $query)
+		{
+			try 
+			{
+				$cmd = $this->db->createCommand($query);
+				# Do NOT prepare the statement, because of double quoting
+				$cmd->execute();
+				
+			}
+			catch(CDbException $ex)
+			{
+				
+				predie($query);
+				
+				$dbException = new DbException($cmd);
+				
+				if(!in_array(@$dbException->getNumber(), $this->ignoreErrorNumbers))
+				{
+					$dbException = new DbException($cmd);
+					$response->addNotification('error', Yii::t('core', 'errorExecuteQuery'), $dbException->getText() . '  ' . $dbException->getNumber(), StringUtil::cutText($dbException->getSql(), 100));
+					$response->addData('error', true);
+					$response->refresh = true;
+					@unlink($this->file);
+					$response->send();
+				}
+				
+			}
+			
+		}
+		
+		$response->addNotification('success', Yii::t('core','successImportFile'), Yii::t('core', 'executedQueries') . ":" . count($queries));
 		$response->send();
 		
 	}

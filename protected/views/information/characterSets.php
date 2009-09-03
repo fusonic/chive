@@ -30,4 +30,6 @@ breadCrumb.set([
 		text: '<?php echo Yii::t('core', 'characterSets'); ?>'
 	}
 ]);
+
+informationGeneral.setup();
 </script>

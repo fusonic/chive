@@ -67,7 +67,18 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$this->render('index');
+		$entries = array();
+		
+		if(ConfigUtil::getUrlFopen())
+		{
+			$xml = @simplexml_load_file('http://feeds.launchpad.net/chive/announcements.atom');
+			$entries = $xml->entry;
+		}
+		
+		$this->render('index', array(
+			'entries' => $entries,
+			'formatter' => Yii::app()->getDateFormatter()
+		));
 	}
 
 	/**
@@ -178,4 +189,45 @@ class SiteController extends Controller
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
+	
+	public function actionSearch()
+	{
+		
+		$cmdBuilder = new CDbCommandBuilder(Yii::app()->db->getSchema());
+
+		$criteria = new CDbCriteria;
+		$criteria->condition = "TABLE_NAME LIKE :table OR TABLE_SCHEMA LIKE :schema";
+		$criteria->params = array(
+			":table"=>"%" . Yii::app()->getRequest()->getParam('q') . "%",
+			":schema"=>"%" . Yii::app()->getRequest()->getParam('q') . "%"
+		);
+		$criteria->order = 'TABLE_SCHEMA, TABLE_NAME';
+	
+		$items = array();
+
+		$lastSchemaName = '';
+		foreach(Table::model()->findAll($criteria) AS $table)
+		{
+			if($table->TABLE_SCHEMA != $lastSchemaName)
+			{
+				$items[] = json_encode(array(
+					'text' => '<span class="icon schema">' . Html::icon('database') . '<span>' . StringUtil::cutText($table->TABLE_SCHEMA, 30) . '</span></span>',
+					'target' => BASEURL . '/schema/' . $table->TABLE_SCHEMA,
+					'plain' => $table->TABLE_SCHEMA,
+				));
+			}
+			
+			$lastSchemaName = $table->TABLE_SCHEMA;
+			
+			$items[] = json_encode(array(
+				'text' => '<span class="icon table">' . Html::icon('table') . '<span>' . StringUtil::cutText($table->TABLE_NAME, 30) . '</span></span>',
+				'target' => BASEURL . '/schema/' . $table->TABLE_SCHEMA . '#tables/' . $table->TABLE_NAME . '/browse',
+				'plain' => $table->TABLE_NAME
+			));
+		}
+		
+		Yii::app()->end(implode("\n", $items));
+		
+	}
+	
 }

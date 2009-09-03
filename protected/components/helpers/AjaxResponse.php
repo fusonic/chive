@@ -117,8 +117,9 @@ class AjaxResponse
 			'data' => $this->data,
 			'js' => $this->jsCode,
 		);
+		
+		return CJSON::encode($data);
 
-		return json_encode($data);
 	}
 
 }

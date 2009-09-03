@@ -50,6 +50,11 @@ return array(
 		'request' => array(
 			'enableCookieValidation' => true,
 		),
+		
+		'locale' => array(
+			'dateFormat' => 'middle',
+			'dateTimeFormat' => 'middle'
+		),
 
 		// Log database
 		'log' => array(
@@ -94,7 +99,7 @@ return array(
             'rules' => array(
 				// Login
                 'login' => 'site/login',
-
+		
 				// Site
                 'site/changeLanguage/<id:(.*)>' => 'site/changeLanguage',
                 'site/changeTheme/<id:(.*)>' => 'site/changeTheme',
@@ -223,6 +228,10 @@ return array(
         ),
 
 	),
+	
+	// GZIP - encoding
+	//'onBeginRequest'=> create_function('$event', 'return ob_start("ob_gzhandler");'),
+	//'onEndRequest'=> create_function('$event', 'return ob_end_flush();'),
 
 	// application-level parameters
 	'params' => array(

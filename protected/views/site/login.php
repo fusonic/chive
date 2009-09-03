@@ -61,9 +61,9 @@
 </div>
 
 <div id="login">
-
-	<div style="background: url('../images/logo-big.png') no-repeat 25px 8px #FFF; padding-bottom: 35px; height: 60px; border: 1px solid #CCC; -moz-border-radius: 10px; margin-bottom: 10px;" title="Web based MySQL database management"></div>
-
+	<div style="border: 1px solid #CCC; -moz-border-radius: 10px; padding: 10px; background: white; margin-bottom: 10px;">
+		<img src="../images/logo-big.png"  />
+	</div>
 	<?php echo CHtml::errorSummary($form, '', ''); ?>
 
 	<div id="loginform">
@@ -72,7 +72,7 @@
 			<div class="item row1">
 				<div class="left">
 					<span class="icon">
-						<?php echo Html::icon('server'); ?>
+						<?php #echo Html::icon('server'); ?>
 						<?php echo CHtml::activeLabel($form,'host'); ?>
 					</span>
 				</div>
@@ -83,7 +83,7 @@
 			<div class="item row2">
 				<div class="left" style="float: none;">
 					<span class="icon">	
-						<?php echo Html::icon('user'); ?>
+						<?php #echo Html::icon('user'); ?>
 						<?php echo CHtml::activeLabel($form,'username'); ?>
 					</span>
 				</div>
@@ -94,7 +94,7 @@
 			<div class="item row1">
 				<div class="left">
 					<span class="icon">
-						<?php echo Html::icon('key_primary'); ?>
+						<?php #echo Html::icon('key_primary'); ?>
 						<?php echo CHtml::activeLabel($form,'password'); ?>
 					</span>
 				</div>

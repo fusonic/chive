@@ -345,10 +345,6 @@
   	display: inline;
   }
 
-  #headerLeft {
-  	font-size: 140%;
-  }
-
   /*
    * Tab menu
    */
@@ -507,6 +503,30 @@
    */
   select {
   	min-width: 120px;
+  }
+  
+  /*
+   * Global search (autosuggest)
+   */
+  div.ac_results {
+  	z-index: 99999999;
+  	background: #EFEFEF;
+  	border: 1px solid #777;
+  }
+  
+  li.ac_over
+  {
+  	background: #CCC;
+  }
+  
+  div.ac_results ul li 
+  {
+  	padding: 2px;
+  }
+  
+  div.ac_results ul span.table 
+  {
+  	padding-left: 15px;
   }
   
   

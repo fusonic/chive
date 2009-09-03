@@ -29,7 +29,7 @@ function init()
 		var currentClass = 'odd';
 		for(var i = 0; i < rowCount; i++)
 		{
-			if(!tBody.rows[i].className.match('noSwitch'))
+			if(!tBody.rows[i].className.match('noSwitch') || i == 0)
 			{
 				if(currentClass == 'even')
 				{

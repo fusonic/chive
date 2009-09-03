@@ -22,10 +22,10 @@ var breadCrumb = {
 	
 	set: function(data)
 	{
-		var ul = $('ul.breadCrumb');
+		var ul = $('#headerLeft');
 		
 		// Unset current breadcrumb
-		ul.children('li.dynamicCrumb').remove();
+		ul.children('a.dynamicCrumb').remove();
 		
 		// Check if data is array
 		if(!$.isArray(data))
@@ -38,25 +38,26 @@ var breadCrumb = {
 		// Create new breadCrumbs
 		for(var i = 0; i < data.length; i++)
 		{			
-			var html = '<a href="' + data[i].href + '"' + (data[i].icon ? ' class="icon"' : '') + '>';
+			var html = '<a href="' + data[i].href + '"' + (data[i].icon ? ' class="icon button dynamicCrumb"' : '') + '>';
 			
 			// Add icon
 			if(data[i].icon)
 			{
-				html += '<img src="' + iconPath + '/24/' + data[i].icon + '.png" class="icon icon24 icon_' + data[i].icon + '" width="24" height="24" />';
+				html += '<img src="' + iconPath + '/16/' + data[i].icon + '.png" class="icon icon16 icon_' + data[i].icon + '" width="16" height="16" />';
 			}
 			
 			// Text
 			html += '<span>' + data[i].text + '</span>';
 			
 			html += '</a>';
-			
+			/*
 			if(data[i].dialog)
 			{
 				html += '<img src="'+ iconPath + '/16/arrow_next.png" onclick="$(\'#' + data[i].dialog + '\').dialog(\'open\');" class="breadcrumbDropdown" />';
 			}
+			*/
 			
-			ul.append('<li class="dynamicCrumb">' + html + '</li>');
+			ul.append(html);
 			
 			windowTitle.push(data[i].text);
 		}

@@ -65,6 +65,25 @@ var chive = {
 				});
 			}, 300000);
 		}
+		
+		if($('#globalSearch').length)
+		{
+			$('#globalSearch').autocomplete(baseUrl + '/site/search', {
+				width:		400,
+				formatItem: function(item, position, total, item2) {
+					item = JSON.parse(item2);
+					return item.text;
+				},
+				formatResult: function(item, position, total) {
+					item = JSON.parse(item.pop());
+					return item.plain;
+				}
+				}).result(function(event, position, item) {
+					item = JSON.parse(item);
+					window.location = item.target;
+				});
+		}
+
 	},
 	
 	/*

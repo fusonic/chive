@@ -50,7 +50,7 @@
 	table.list>tbody>tr>td, 
 	table.list>thead>tr>th, 
 	table.list>tfoot>tr>th {
-		padding: 8px 5px;
+		padding: 7px 5px;
 	}
 	
 	table.list>tbody>tr>td.nodecoration, 

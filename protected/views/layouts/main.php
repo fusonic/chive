@@ -26,6 +26,7 @@ var iconPath = '<?php echo Yii::app()->baseUrl . '/images/icons/fugue'; ?>';
 $scriptFiles = array(
 	'js/jquery/jquery.js',
 	'js/jquery/jquery-ui-1.7.1.custom.min.js',
+	'js/jquery/jquery.autocomplete.js',
 	'js/jquery/jquery.blockUI.js',
 	'js/jquery/jquery.checkboxTable.js',
 	'js/jquery/jquery.form.js',
@@ -50,6 +51,7 @@ $scriptFiles = array(
 	'js/storageEngine.js',
 	'js/views/schema/general.js',
 	'js/views/schema/list.js',
+	'js/views/information/general.js',
 	'js/views/information/processes.js',
 	'js/views/information/storageEngines.js',
 	'js/views/privileges/users.js',
@@ -80,33 +82,28 @@ $(document).ready(function() {
 
 <div class="ui-layout-north">
 	<div id="header">
+		  <div class="ui-layout-north">
+	<div id="header">
 		<div id="headerLeft">
-			<ul class="breadCrumb">
-				<li>
-					<a href="<?php echo BASEURL; ?>">
-						<img src="<?php echo BASEURL; ?>/images/logo.png" alt="Chive" />
-					</a>
-				</li>
-				<li>
-					<a href="<?php echo Yii::app()->baseUrl . '/#schemata'; ?>" class="icon">
-						<?php echo Html::icon('server', 24); ?>
-						<span><?php echo Yii::app()->user->host; ?></span>
-					</a>
-				</li>
-			</ul>
+			<a class="icon button" href="<?php echo BASEURL; ?>">
+				<img src="<?php echo BASEURL; ?>/images/logo.png" alt="Chive" height="22" style="position: relative; top: 6px;" />
+			</a>
+			<a href="<?php echo BASEURL; ?>/#schemata" class="icon button">
+				<?php echo Html::icon('server'); ?>
+				<span><?php echo Yii::app()->user->host; ?></span>
+			</a>
 		</div>
-		<div id="header-inner">
-			<div id="headerRight">
-				<a class="icon button" href="javascript:chive.refresh();" style="margin-right: 9px;">
-					<?php echo Html::icon('refresh'); ?>
-					<span><?php echo Yii::t('core', 'refresh'); ?></span>
-				</a>
-				<a class="icon button" href="<?php echo BASEURL; ?>/site/logout" style="margin-right: 9px;">
-					<?php echo Html::icon('logout'); ?>
-					<span><?php echo Yii::t('core', 'logout'); ?></span>
-				</a>
-			</div>
+		<div id="headerRight">
+			<input type="text" id="globalSearch" value="Enter schema or table..." style="color: #AAA; float: left; margin-right: 5px;" onclick="this.value = '';" />
+			<a class="icon button" href="javascript:chive.refresh();">
+				<?php echo Html::icon('refresh', 16, false, 'core.refresh'); ?>
+			</a>
+			<a class="icon button" href="<?php echo BASEURL; ?>/site/logout">
+				<?php echo Html::icon('logout', 16, false, 'core.logout'); ?>
+			</a>
 		</div>
+	</div>
+  </div>
 	</div>
 </div>
 <div class="ui-layout-west">

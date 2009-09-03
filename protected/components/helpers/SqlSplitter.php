@@ -81,25 +81,32 @@ class SqlSplitter
 			/*
 			 * Comments
 			 */
-			if($this->string{$i-2} . $this->string{$i-1} . $char == '-- ')
-				$state = 200;
-
-			if($prevChar . $char == '/*')
-				$state = 210;
-
-			if($state == 210 && $prevChar . $char == '*/')
+			
+			// Only look for comments when not in a string
+			if($state != 100)
 			{
-				$state = 0;
-				#$start = $i;
+				if($this->string{$i-2} . $this->string{$i-1} . $char == '-- ')
+					$state = 200;
+	
+				if($prevChar . $char == '/*')
+					$state = 210;
+	
+				if($state == 210 && $prevChar . $char == '*/')
+				{
+					$state = 0;
+					#$start = $i;
+				}
+	
+				if($state == 200 && $char == "\n")
+				{
+					$state = 0;
+					#$start = $i;
+				}
+				
 			}
-
-			if($state == 200 && $char == "\n")
-			{
-				$state = 0;
-				#$start = $i;
-			}
-
-			if($char == '\'' && $state < 210)
+			
+			// Only look for strings when not in a comment
+			if($char == '\'' && $state < 200)
 			{
 				#var_dump($state);
 
@@ -151,7 +158,9 @@ class SqlSplitter
 				)
 			)
 			{
+				
 				$query = trim(substr($this->string, $start, $i-$start));
+				#echo "found query: " . $query . "<br/>";
 
 				if($query) 
 				{

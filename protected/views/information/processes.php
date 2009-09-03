@@ -75,6 +75,7 @@
 <?php // @todo (rponudic) check if this still works with 100s of processes? isn't this too slow? '?>
 //setTimeout('reload()', 5000);
 setTimeout(function() {
+	informationGeneral.setup();
 	informationProcesses.setup();
 }, 500);
 breadCrumb.set([

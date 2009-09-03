@@ -13,7 +13,6 @@ var AjaxResponse = {
 		}
 		catch(err) {}
 		
-		
 		if(data.redirectUrl) 
 		{
 			window.location.href = data.redirectUrl;

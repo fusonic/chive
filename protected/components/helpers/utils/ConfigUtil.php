@@ -28,6 +28,20 @@
 class ConfigUtil {
 	
 	/**
+	 * Checks if allow_url_fopen is on or off
+	 *
+	 * @return bool
+	 */
+	public static function getUrlFopen() {
+		
+		if(ini_get("allow_url_fopen"))
+			return true;
+		else
+			return false;
+		
+	}
+	
+	/**
 	 * Returns the maximum filesize to upload
 	 *
 	 * @param	bool		return as formatted string

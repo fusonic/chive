@@ -51,29 +51,17 @@
 	width: 100%;
   }
   
-  #header-inner {
-  	position: relative;
-  	top: 9px;
-  	float: right;
-  }
-  
   #headerLeft {
-  	float: left;
-  }
-  
-  #headerLeft a {
-  	position: relative;
-  	top: -4px;
-  }
-  
-  #headerLeft, #headerLeft a span {
-  	color: #3B5998;
-	text-decoration: none !important;
+   	float: left;
+	position: relative;
+	top: 2px;
+	padding-left: 5px;
   }
   
   #headerRight {
   	float: right;
-	margin-right: 1px;
+	position: relative;
+	top: 7px;
   }
 
   #headerRight ul, #headerRight ul li {
@@ -166,7 +154,7 @@
   }
 
   div.sidebarHeader {
-	font-size: 140%;
+	font-size: 130%;
   }
   
   #loginform {

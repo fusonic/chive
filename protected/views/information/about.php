@@ -159,3 +159,7 @@
 		</tr>
 	</tbody>
 </table>
+
+<script type="text/javascript">
+	informationGeneral.setup();
+</script>
