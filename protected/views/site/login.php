@@ -61,58 +61,66 @@
 </div>
 
 <div id="login">
-	<div style="border: 1px solid #CCC; -moz-border-radius: 10px; padding: 10px; background: white; margin-bottom: 10px;">
+	<div id="login-logo">
 		<img src="../images/logo-big.png"  />
 	</div>
-	<?php echo CHtml::errorSummary($form, '', ''); ?>
-
-	<div id="loginform">
-		<?php echo CHtml::form(); ?>
-		<div class="formItems non-floated" style="text-align: left;">
-			<div class="item row1">
-				<div class="left">
-					<span class="icon">
-						<?php #echo Html::icon('server'); ?>
-						<?php echo CHtml::activeLabel($form,'host'); ?>
-					</span>
+	
+	<?php if($validBrowser) { ?>
+	
+		<?php echo CHtml::errorSummary($form, '', ''); ?>
+	
+		<div id="login-form">
+			<?php echo CHtml::form(); ?>
+			<div class="formItems non-floated" style="text-align: left;">
+				<div class="item row1">
+					<div class="left">
+						<span class="icon">
+							<?php #echo Html::icon('server'); ?>
+							<?php echo CHtml::activeLabel($form,'host'); ?>
+						</span>
+					</div>
+					<div class="right">
+						<?php echo CHtml::activeTextField($form, 'host', array('value'=>'localhost', 'class'=>'text')); ?>
+					</div>
 				</div>
-				<div class="right">
-					<?php echo CHtml::activeTextField($form, 'host', array('value'=>'localhost', 'class'=>'text')); ?>
+				<div class="item row2">
+					<div class="left" style="float: none;">
+						<span class="icon">	
+							<?php #echo Html::icon('user'); ?>
+							<?php echo CHtml::activeLabel($form,'username'); ?>
+						</span>
+					</div>
+					<div class="right">
+						<?php echo CHtml::activeTextField($form,'username', array('class'=>'text')) ?>
+					</div>
+				</div>
+				<div class="item row1">
+					<div class="left">
+						<span class="icon">
+							<?php #echo Html::icon('key_primary'); ?>
+							<?php echo CHtml::activeLabel($form,'password'); ?>
+						</span>
+					</div>
+					<div class="right">
+						<?php echo CHtml::activePasswordField($form,'password', array('class'=>'text')); ?>
+					</div>
 				</div>
 			</div>
-			<div class="item row2">
-				<div class="left" style="float: none;">
-					<span class="icon">	
-						<?php #echo Html::icon('user'); ?>
-						<?php echo CHtml::activeLabel($form,'username'); ?>
-					</span>
-				</div>
-				<div class="right">
-					<?php echo CHtml::activeTextField($form,'username', array('class'=>'text')) ?>
-				</div>
+	
+			<div class="buttons">
+				<a class="icon button primary" href="javascript:void(0);" onclick="$('form').submit()">
+					<?php echo Html::icon('login', 16, false, 'core.login'); ?>
+					<span><?php echo Yii::t('core', 'login'); ?></span>
+				</a>
+				<input type="submit" value="<?php echo Yii::t('core', 'login'); ?>" style="display: none" />
 			</div>
-			<div class="item row1">
-				<div class="left">
-					<span class="icon">
-						<?php #echo Html::icon('key_primary'); ?>
-						<?php echo CHtml::activeLabel($form,'password'); ?>
-					</span>
-				</div>
-				<div class="right">
-					<?php echo CHtml::activePasswordField($form,'password', array('class'=>'text')); ?>
-				</div>
-			</div>
+	
+			<?php echo CHtml::closeTag('form'); ?>
 		</div>
-
-		<div class="buttons">
-			<a class="icon button primary" href="javascript:void(0);" onclick="$('form').submit()">
-				<?php echo Html::icon('login', 16, false, 'core.login'); ?>
-				<span><?php echo Yii::t('core', 'login'); ?></span>
-			</a>
-			<input type="submit" value="<?php echo Yii::t('core', 'login'); ?>" style="display: none" />
+	<?php } else { ?>
+		<div id="loginform">
+			<?php echo Yii::t('core', 'incompatibleBrowserWarning'); ?>
 		</div>
-
-		<?php echo CHtml::closeTag('form'); ?>
-	</div>
+	<?php } ?>
 
 </div>

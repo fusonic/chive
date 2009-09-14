@@ -58,7 +58,7 @@
 					<?php } else { ?>
 						<?php echo Html::icon('square_red'); ?>
 					<?php } ?>
-					<span><?php echo Yii::t('core', 'toggleEditor'); ?></span>
+					<span><?php echo Yii::t('core', 'editor'); ?></span>
 				</a>
 			</td>
 		</tr>
@@ -148,7 +148,7 @@
 			<tfoot>
 				<tr>
 					<th colspan="<?php echo 4 + count($row); ?>">
-						<?php echo Yii::t('core', 'showingRowsOfRows', array('{start}' => $model->getStart(), '{end}' => $model->getStart() + $model->getPagination()->getPagesize(), '{total}' => $model->getTotal())); ?>
+						<?php echo Yii::t('core', 'showingRowsOfRows', array('{start}' => $model->getStart(), '{end}' => min($model->getStart() + $model->getPagination()->getPagesize(), $model->getTotal()), '{total}' => $model->getTotal())); ?>
 					</th>
 				</tr>
 			</tfoot>

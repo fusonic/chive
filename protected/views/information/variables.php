@@ -7,7 +7,7 @@
 			</colgroup>
 			<thead>
 				<tr>
-					<th colspan="2"><?php echo $name; ?></th>
+					<th colspan="2"><?php echo ucfirst($name); ?></th>
 				</tr>
 			</thead>
 			<tbody>

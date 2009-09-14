@@ -94,6 +94,7 @@
 	<entry id="editColumn">Edit column</entry>
 	<entry id="editFunction">Edit function</entry>
 	<entry id="editIndex">Edit index</entry>
+	<entry id="editor">Editor</entry>
 	<entry id="editProcedure">Edit procedure</entry>
 	<entry id="editRelation">Edit relation</entry>
 	<entry id="editRow">Edit row</entry>
@@ -145,6 +146,7 @@
 	<entry id="id">ID</entry>
 	<entry id="import">Import</entry>
 	<entry id="importFile">Datei importieren</entry>
+	<entry id="incompatibleBrowserWarning">You are using an old (not supported) browser. Please update to a newer one.</entry>
 	<entry id="index">Index</entry>
 	<entry id="indices">Indices</entry>
 	<entry id="information">Information</entry>
@@ -270,7 +272,6 @@
 	<entry id="tableSpecificPrivileges">Table-specific privileges</entry>
 	<entry id="tables">Tables</entry>
 	<entry id="time">Time</entry>
-	<entry id="toggleEditor">Toggle editor</entry>
 	<entry id="total">Total</entry>
 	<entry id="trigger">Trigger</entry>
 	<entry id="triggers">Triggers</entry>

@@ -53,21 +53,24 @@
 			</tr>
 		</thead>
 		<tbody>
+			<?php $i = 1; ?>
 			<?php foreach($entries AS $entry) { // Limit entries ?>
-			<tr class="noSwitch">
-				<td><?php echo (string)$formatter->formatDateTime(strtotime($entry->published)); ?></td>
-				<td><?php echo (string)$entry->title; ?></td>
-				<td>
-					<a href="javascript:void(0);" onclick="$(this).parent().parent().next().toggle();">
-						<?php echo Html::icon('accordion', 16, false, 'core.unfold'); ?>
-					</a>
-				</td>
-			</tr>
-			<tr style="display: none;">
-				<td colspan="3">
-					<?php echo $entry->content; ?>
-				</td>
-			</tr>
+				<?php if ($i > 5) break;?>
+				<tr class="noSwitch">
+					<td><?php echo (string)$formatter->formatDateTime(strtotime($entry->published)); ?></td>
+					<td><?php echo (string)$entry->title; ?></td>
+					<td>
+						<a href="javascript:void(0);" onclick="$(this).parent().parent().next().toggle();">
+							<?php echo Html::icon('search', 16, false, 'core.showDetails'); ?>
+						</a>
+					</td>
+				</tr>
+				<tr style="display: none;">
+					<td colspan="3">
+						<?php echo $entry->content; ?>
+					</td>
+				</tr>
+				<?php $i++; ?>
 			<?php } ?>
 		</tbody>
 	</table>

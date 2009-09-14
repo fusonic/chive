@@ -110,24 +110,32 @@ class ImportPage extends CModel
 		
 		$response = array();
 		
+		// Form got submitted
 		if(isset($_POST['Import']))
 		{
-			$this->view = 'submit';
-			
+				
 			$this->file = 'protected/runtime/' . $_FILES['file']['name'] . "_" . time();
 			$this->fileSize = $_FILES['file']['size'];
 			$this->mimeType = $_FILES['type'];
 			
 			move_uploaded_file($_FILES['file']['tmp_name'], $this->file);
-			
-			if(!$this->partialImport) 
+
+			if($this->partialImport)
+			{
+				$this->view = 'submit';
+			}
+			else
 			{
 				$this->runImport();
 			}
-
+			
+			
 		}
+		
+		// Import file via postprocessing
 		elseif($this->partialImport || isset($_GET['position']))
 		{
+			
 			$this->view = 'postprocessing';
 			$this->file = $_GET['file'];
 			$this->fileSize = $_GET['fileSize'];
@@ -136,12 +144,16 @@ class ImportPage extends CModel
 			$this->totalExecutedQueries = $_GET['totalExecutedQueries'];
 
 			$this->runPostProcessing();
+			
 		}
+		
+		// Display default form
 		else
 		{
 			$this->view = 'form';
 			$this->runForm();
 		}
+		
 	}
 	
 	/**
@@ -251,17 +263,21 @@ class ImportPage extends CModel
 				}
 				catch(CDbException $ex)
 				{
-					
+					/*
 					$dbException = new DbException($cmd);
 					
 					if(!in_array(@$dbException->getNumber(), $this->ignoreErrorNumbers))
 					{
 						$dbException = new DbException($cmd);
-						$response->addNotification('error', Yii::t('core', 'errorExecuteQuery'), $dbException->getText() . '  ' . $dbException->getNumber(), $dbException->getSql());
+						*/
+						$response->addNotification('error', Yii::t('core', 'errorExecuteQuery'), $ex->getMessage() . '  ', $ex->getMessage());
 						$response->addData('error', true);
 						$response->refresh = true;
 						$response->executeJavaScript('sideBar.loadTables("' . $this->schema . '")');
+						$response->send();
+						/*
 					}
+					*/
 					
 				}
 				
@@ -292,7 +308,7 @@ class ImportPage extends CModel
 		{
 			$response->refresh = true;
 			$this->finished = true;	
-			$response->addNotification('success', Yii::t('core','successImportFile'), Yii::t('core', 'executedQueries') . ":" . $this->totalExecutedQueries);
+			$response->addNotification('success', Yii::t('core','successImportFile'), Yii::t('core', 'executedQueries') . ": " . $this->totalExecutedQueries);
 			$response->executeJavaScript('sideBar.loadTables("' . $this->schema . '")');
 			@unlink($this->file);
 		}
@@ -308,11 +324,10 @@ class ImportPage extends CModel
 			'filesize' => $this->fileSize,
 			'mimetype' => $this->mimeType,
 			'finished' => $this->finished,
-			'totalExecutedQueries' => $this->totalExecutedQueries,
-			'queries' => $queries,
+			'totalExecutedQueries' => $this->totalExecutedQueries
 		);
 		
-		$response->addData(null,$data);
+		$response->addData(null, $data);
 		$response->send();
 		
 	}

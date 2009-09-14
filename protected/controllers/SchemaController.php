@@ -484,7 +484,6 @@ class SchemaController extends Controller
 	 */
 	public function actionImport()
 	{
-
 		
 		$importPage = new ImportPage();
 		$importPage->db = $this->db;
@@ -493,6 +492,12 @@ class SchemaController extends Controller
 		
 		$importPage->run();
 
+		// Disable layout for postprocessing
+		if($importPage->partialImport || isset($_GET['position']))
+		{
+			$this->layout = false;
+		}
+		
 		$this->render('../global/import', array(
 			'model' => $importPage,
 		));

@@ -178,7 +178,7 @@ class BrowsePage extends CModel
 						$sqlQuery->applyLimit($pageSize, $offset, true);
 					}
 					
-					$this->start = $offset;
+					$this->start = $offset ? $offset : 0;
 					
 					// Apply sort
 					if($sort->getOrder())

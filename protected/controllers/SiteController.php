@@ -26,11 +26,13 @@ class SiteController extends Controller
 
 	public function __construct($id, $module=null) {
 
-		if(Yii::app()->request->isAjaxRequest)
+		$request = Yii::app()->getRequest();
+		
+		if($request->isAjaxRequest)
 		{
 			$this->layout = false;
 		}
-
+		
 		parent::__construct($id, $module);
 
 	}
@@ -151,11 +153,24 @@ class SiteController extends Controller
 				$this->redirect(Yii::app()->user->returnUrl);
 		}
 
+		$validBrowser = true;
+		if($_SERVER['HTTP_USER_AGENT'])
+		{
+			
+			preg_match('/MSIE (\d+)\.\d+/i', $_SERVER['HTTP_USER_AGENT'], $res);
+			if(count($res) == 2 && $res[1] <= 6)
+			{
+				$validBrowser = false;
+			}
+			
+		}
+		
 		$this->render('login',array(
 			'form'=>$form,
 			'languages'=>$languages,
 			'hosts'=>$hosts,
 			'themes'=>$themes,
+			'validBrowser' => $validBrowser,
 		));
 	}
 

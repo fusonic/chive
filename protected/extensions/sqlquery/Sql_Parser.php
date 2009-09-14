@@ -469,7 +469,7 @@ class Sql_Parser {
 					} else {
 						Sql_Object::lexer()->pushBack();
 						// parse the set
-						$result = $this->getParams($clause['Right']['Value'], $clause['Right']['Type']);
+						$result = self::getParams($clause['Right']['Value'], $clause['Right']['Type']);
 						if (Sql_Parser::isError($result)) {
 							return $result;
 						}
