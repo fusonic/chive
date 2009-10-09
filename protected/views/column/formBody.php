@@ -101,28 +101,46 @@
 		<tr>
 			<td>
 				<?php echo Yii::t('core', 'attribute'); ?>
+				<?php $radio_options = explode('|', CHtml::activeRadioButtonList($column, 'attribute', array(
+					'' => Yii::t('core', 'noAttribute'),
+					'unsigned' => Yii::t('core', 'unsigned'),
+					'unsigned zerofill' => Yii::t('core', 'unsignedZerofill'),
+					'on update current timestamp' => Yii::t('core', 'onUpdateCurrentTimestamp'),
+				), array('template' => '{input} {label}', 'separator' => '|'))); ?>
 			</td>
 			<td colspan="2">
+				<?php echo $radio_options[0]; ?>
+				<!---
 				<?php echo CHtml::activeRadioButton($column, 'attribute', array('value' => '', 'id' => CHtml::$idPrefix . 'Column_attribute_')); ?>
 				<?php echo CHtml::label(Yii::t('core', 'noAttribute'), 'Column_attribute_', array('style' => 'font-style: italic')); ?>
+				--->
 			</td>
 		</tr>
 		<tr>
 			<td />
 			<td>
+				<?php echo $radio_options[1]; ?>
+				<!---
 				<?php echo CHtml::activeRadioButton($column, 'attribute', array('value' => 'unsigned', 'id' => CHtml::$idPrefix . 'Column_attribute_unsigned')); ?>
 				<?php echo CHtml::label(Yii::t('core', 'unsigned'), 'Column_attribute_unsigned'); ?>
+				--->
 			</td>
 			<td>
+				<?php echo $radio_options[2]; ?>
+				<!---
 				<?php echo CHtml::activeRadioButton($column, 'attribute', array('value' => 'unsigned zerofill', 'id' => CHtml::$idPrefix . 'Column_attribute_unsignedzerofill')); ?>
 				<?php echo CHtml::label(Yii::t('core', 'unsignedZerofill'), 'Column_attribute_unsignedzerofill'); ?>
+				--->
 			</td>
 		</tr>
 		<tr>
 			<td />
 			<td colspan="2">
+				<?php echo $radio_options[3]; ?>
+				<!---
 				<?php echo CHtml::activeRadioButton($column, 'attribute', array('value' => 'on update current_timestamp', 'id' => CHtml::$idPrefix . 'Column_attribute_on_update_current_timestamp')); ?>
 				<?php echo CHtml::label(Yii::t('core', 'onUpdateCurrentTimestamp'), 'Column_attribute_on_update_current_timestamp'); ?>
+				--->
 			</td>
 		</tr>
 		<?php if($column->isNewRecord) { ?>

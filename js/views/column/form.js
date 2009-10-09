@@ -31,9 +31,9 @@ var columnForm = {
 		$('#' + idPrefix + 'settingCollation')[dataType.check(type, dataType.SUPPORTS_COLLATION) ? "show" : "hide" ]();
 		
 		// Attributes
-		$('#' + idPrefix + 'Column_attribute_unsigned').attr('disabled', !dataType.check(type, dataType.SUPPORTS_UNSIGNED));
-		$('#' + idPrefix + 'Column_attribute_unsignedzerofill').attr('disabled', !dataType.check(type, dataType.SUPPORTS_UNSIGNED_ZEROFILL));
-		$('#' + idPrefix + 'Column_attribute_on_update_current_timestamp').attr('disabled', !dataType.check(type, dataType.SUPPORTS_ON_UPDATE_CURRENT_TIMESTAMP));
+		$('#' + idPrefix + 'Column_attribute_1').attr('disabled', !dataType.check(type, dataType.SUPPORTS_UNSIGNED));
+		$('#' + idPrefix + 'Column_attribute_2').attr('disabled', !dataType.check(type, dataType.SUPPORTS_UNSIGNED_ZEROFILL));
+		$('#' + idPrefix + 'Column_attribute_3').attr('disabled', !dataType.check(type, dataType.SUPPORTS_ON_UPDATE_CURRENT_TIMESTAMP));
 		
 		// Indices
 		$('#' + idPrefix + 'createIndex').attr('disabled', !dataType.check(type, dataType.SUPPORTS_INDEX));

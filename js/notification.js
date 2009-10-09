@@ -42,7 +42,7 @@ var Notification = {
 			'</div>' +
 		'</div>' +
 		'<div class="notification-bottom"></div>' +
-		'<a class="code" href="#code" onclick="$(this).parent().find(\'textarea\').toggle(1000); return false;" />' +
+		'<a class="code" href="#code" onclick="$(this).parent().find(\'textarea\').toggle(500); return false;" />' +
 		'</div>')
 		.mouseover(function() {
 			clearTimeout($(this).data('timeout'));
