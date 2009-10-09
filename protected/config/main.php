@@ -3,7 +3,7 @@
 /*
  * Chive - web based MySQL database management
  * Copyright (C) 2009 Fusonic GmbH
- * 
+ *
  * This file is part of Chive.
  *
  * Chive is free software; you can redistribute it and/or
@@ -50,7 +50,7 @@ return array(
 		'request' => array(
 			'enableCookieValidation' => true,
 		),
-		
+
 		'locale' => array(
 			'dateFormat' => 'middle',
 			'dateTimeFormat' => 'middle'
@@ -99,7 +99,7 @@ return array(
             'rules' => array(
 				// Login
                 'login' => 'site/login',
-		
+
 				// Site
                 'site/changeLanguage/<id:(.*)>' => 'site/changeLanguage',
                 'site/changeTheme/<id:(.*)>' => 'site/changeTheme',
@@ -208,30 +208,12 @@ return array(
             ),
         ),
 
-        /*
-        // Cache
-        'cache' => array(
-        	'class' => 'system.caching.CMemCache',
-        	'servers'=>array(
-                array(
-                    'host'=>'127.0.0.1',
-                    'port'=>11211,
-                    'weight'=>100,
-                ),
-            ),
-        ),
-        */
-
         // View Renderer (template engine)
         'viewRenderer' => array(
             'class' => 'CPradoViewRenderer',
         ),
 
 	),
-	
-	// GZIP - encoding
-	//'onBeginRequest'=> create_function('$event', 'return ob_start("ob_gzhandler");'),
-	//'onEndRequest'=> create_function('$event', 'return ob_end_flush();'),
 
 	// application-level parameters
 	'params' => array(

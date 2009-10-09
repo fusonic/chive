@@ -62,8 +62,18 @@ elseif(!preg_match('/^(' . implode('|', $validPaths) . ')/i', $request->getPathI
 }
 
 // Language
-$language = $session->itemAt('language') ? $session->itemAt('language') : $request->getPreferredLanguage();
-$app->setLanguage($language);
+if($session->itemAt('language'))
+{
+	$app->setLanguage($language);
+}
+elseif($request->getPreferredLanguage() && is_dir('protected/messages/' . substr($request->getPreferredLanguage(), 0, 2)))
+{
+	$app->setLanguage($request->getPreferredLanguage());
+}
+else
+{
+	$app->setLanguage('en_us');
+}
 
 // Theme
 $theme = $session->itemAt('theme') ? $session->itemAt('theme') : 'standard';
@@ -78,26 +88,6 @@ if($request->isAjaxRequest)
 
 // Publis messages for javascript usage
 Yii::app()->getComponent('messages')->publishJavaScriptMessages();
-
-/*
-$db = new CDbConnection('mysql:host=' . 'localhost' . ';dbname=rowtest; charset=utf8',
-			utf8_decode('root'),
-			utf8_decode(''));
-
-$db->active = true;
-$cmd = $db->createCommand(file_get_contents('dump.sql'));
-try 
-{
-$cmd->execute();	
-}
-catch(Exception $ex)
-{
-	predie($ex);
-}
-			
-#$splitter = new SqlSplitter(file_get_contents('/var/www/dublin/trunk/dump.sql'));
-#predie($splitter->getQueries());
-*/
 
 // Run application
 $app->run();

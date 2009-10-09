@@ -27,7 +27,7 @@ var Notification = {
 	// Add column
 	add: function(type, header, message, code, options)
 	{
-		$('<div class="notification" style="display: none;">' + 
+		$('<div class="notification" style="display: none">' + 
 			'<div class="notification-body">' +
 				'<div class="notification-header">' +
 					'<span class="icon">' +
@@ -38,11 +38,11 @@ var Notification = {
 			'<div>' +
 				(message ? message : '') + 
 				(code ? 
-				'<a href="javascript:void(0);" style="display: block;" onclick="$(this).next().toggle(1000);" alt="show code">Show code</a>' +
-				'<pre style="display: none;">' + code + '</pre>' : '') +
+				'<textarea style="display: none" onfocus="this.select()">' + code + '</textarea>' : '') +
 			'</div>' +
 		'</div>' +
 		'<div class="notification-bottom"></div>' +
+		'<a class="code" href="#code" onclick="$(this).parent().find(\'textarea\').toggle(1000); return false;" />' +
 		'</div>')
 		.mouseover(function() {
 			clearTimeout($(this).data('timeout'));

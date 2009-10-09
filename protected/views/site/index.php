@@ -46,7 +46,7 @@
 			<tr>
 				<th colspan="3">
 					<span class="icon">
-						<?php echo Html::icon('rss'); ?>
+						<?php echo CHtml::link(Html::icon('rss'), 'http://feeds.launchpad.net/chive/announcements.atom'); ?>
 						<span>Project news</span>
 					</span>
 				</th>

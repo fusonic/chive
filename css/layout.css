@@ -428,6 +428,14 @@
 	color: #F9F9F9;
   }
   
+  .notification-body textarea {
+  	background-color: transparent;
+	color: #f9f9f9;
+	height: 150px;
+	font-size: 0.8em;
+	margin-top: 5px;
+  }
+  
   .notification-header {
   	font-weight: bold;
 	margin-bottom: 5px;
@@ -450,10 +458,19 @@
   .notification .sticky {
     position: absolute;
     top: 18px; 
-    right: 36px; 
+    right: 38px; 
     width: 16px; 
     height: 16px; 
     background: url(../images/icons/fugue/16/pin_up.png) no-repeat 0 0px;
+  }
+  
+  .notification .code {
+    position: absolute;
+    top: 18px; 
+    right: 58px; 
+    width: 16px; 
+    height: 16px; 
+    background: url(../images/icons/fugue/16/sql.png) no-repeat 0 0px;
   }
   
   .notification.not-sticky .sticky

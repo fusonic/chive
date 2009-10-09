@@ -3,7 +3,7 @@
 /*
  * Chive - web based MySQL database management
  * Copyright (C) 2009 Fusonic GmbH
- * 
+ *
  * This file is part of Chive.
  *
  * Chive is free software; you can redistribute it and/or
@@ -258,7 +258,7 @@ class TableController extends Controller
 	}
 
 	public function actionSearch() {
-	
+
 		$operatorConfig = array(				// needs value
 			'LIKE'				=> 		array( 'needsValue' => true ),
 			'NOT LIKE'			=> 		array( 'needsValue' => true ),
@@ -477,7 +477,7 @@ class TableController extends Controller
 			'model' => $exportPage,
 		));
 	}
-	
+
 	/**
 	 * Shows the import page for this table.
 	 */
@@ -488,7 +488,7 @@ class TableController extends Controller
 		$importPage->table = $this->table;
 		$importPage->schema = $this->schema;
 		$importPage->formTarget = BASEURL . '/schema/' . $this->schema . '/tables/' . $this->table . '/import';
-		
+
 		$importPage->run();
 
 		$this->render('../global/import', array(
