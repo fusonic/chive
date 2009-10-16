@@ -3,7 +3,7 @@
 /*
  * Chive - web based MySQL database management
  * Copyright (C) 2009 Fusonic GmbH
- * 
+ *
  * This file is part of Chive.
  *
  * Chive is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@ class LoginForm extends CFormModel
 	public $username;
 	public $password;
 	public $rememberMe;
-	public $host;
+	public $host = 'localhost';
 
 	/**
 	 * Declares the validation rules.
@@ -69,16 +69,16 @@ class LoginForm extends CFormModel
 		if(!$this->hasErrors())  // we only want to authenticate when no input errors
 		{
 			$identity = new UserIdentity($this->username,$this->password, $this->host);
-			
+
 			if($identity->authenticate())
 			{
-				Yii::app()->user->login($identity);	
+				Yii::app()->user->login($identity);
 			}
 			else
 			{
 				$this->addError(null, $identity->errorMessage);
 			}
-			
+
 		}
 	}
 }

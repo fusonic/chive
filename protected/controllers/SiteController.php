@@ -27,12 +27,12 @@ class SiteController extends Controller
 	public function __construct($id, $module=null) {
 
 		$request = Yii::app()->getRequest();
-		
+
 		if($request->isAjaxRequest)
 		{
 			$this->layout = false;
 		}
-		
+
 		parent::__construct($id, $module);
 
 	}
@@ -70,13 +70,13 @@ class SiteController extends Controller
 	public function actionIndex()
 	{
 		$entries = array();
-		
+
 		if(ConfigUtil::getUrlFopen())
 		{
 			$xml = @simplexml_load_file('http://feeds.launchpad.net/chive/announcements.atom');
 			$entries = $xml->entry;
 		}
-		
+
 		$this->render('index', array(
 			'entries' => $entries,
 			'formatter' => Yii::app()->getDateFormatter()
@@ -143,28 +143,30 @@ class SiteController extends Controller
 			'127.0.0.1'=>'127.0.0.1',
 		);
 
-		$form=new LoginForm;
+		$form = new LoginForm();
 		// collect user input data
 		if(isset($_POST['LoginForm']))
 		{
-			$form->attributes=$_POST['LoginForm'];
+			$form->attributes = $_POST['LoginForm'];
 			// validate user input and redirect to previous page if valid
 			if($form->validate())
+			{
 				$this->redirect(Yii::app()->user->returnUrl);
+			}
 		}
 
 		$validBrowser = true;
 		if($_SERVER['HTTP_USER_AGENT'])
 		{
-			
+
 			preg_match('/MSIE (\d+)\.\d+/i', $_SERVER['HTTP_USER_AGENT'], $res);
 			if(count($res) == 2 && $res[1] <= 6)
 			{
 				$validBrowser = false;
 			}
-			
+
 		}
-		
+
 		$this->render('login',array(
 			'form'=>$form,
 			'languages'=>$languages,
@@ -204,10 +206,10 @@ class SiteController extends Controller
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
-	
+
 	public function actionSearch()
 	{
-		
+
 		$cmdBuilder = new CDbCommandBuilder(Yii::app()->db->getSchema());
 
 		$criteria = new CDbCriteria;
@@ -217,7 +219,7 @@ class SiteController extends Controller
 			":schema"=>"%" . Yii::app()->getRequest()->getParam('q') . "%"
 		);
 		$criteria->order = 'TABLE_SCHEMA, TABLE_NAME';
-	
+
 		$items = array();
 
 		$lastSchemaName = '';
@@ -231,18 +233,18 @@ class SiteController extends Controller
 					'plain' => $table->TABLE_SCHEMA,
 				));
 			}
-			
+
 			$lastSchemaName = $table->TABLE_SCHEMA;
-			
+
 			$items[] = json_encode(array(
 				'text' => '<span class="icon table">' . Html::icon('table') . '<span>' . StringUtil::cutText($table->TABLE_NAME, 30) . '</span></span>',
 				'target' => BASEURL . '/schema/' . $table->TABLE_SCHEMA . '#tables/' . $table->TABLE_NAME . '/browse',
 				'plain' => $table->TABLE_NAME
 			));
 		}
-		
+
 		Yii::app()->end(implode("\n", $items));
-		
+
 	}
-	
+
 }

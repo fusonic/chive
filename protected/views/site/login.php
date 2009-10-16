@@ -62,31 +62,29 @@
 
 <div id="login">
 	<div id="login-logo">
-		<img src="../images/logo-big.png"  />
+		<img src="../images/logo-big.png" alt="chive" title="" />
 	</div>
-	
+
 	<?php if($validBrowser) { ?>
-	
+
 		<?php echo CHtml::errorSummary($form, '', ''); ?>
-	
+
 		<div id="login-form">
 			<?php echo CHtml::form(); ?>
 			<div class="formItems non-floated" style="text-align: left;">
 				<div class="item row1">
 					<div class="left">
 						<span class="icon">
-							<?php #echo Html::icon('server'); ?>
 							<?php echo CHtml::activeLabel($form,'host'); ?>
 						</span>
 					</div>
 					<div class="right">
-						<?php echo CHtml::activeTextField($form, 'host', array('value'=>'localhost', 'class'=>'text')); ?>
+						<?php echo CHtml::activeTextField($form, 'host', array('class'=>'text')); ?>
 					</div>
 				</div>
 				<div class="item row2">
 					<div class="left" style="float: none;">
-						<span class="icon">	
-							<?php #echo Html::icon('user'); ?>
+						<span class="icon">
 							<?php echo CHtml::activeLabel($form,'username'); ?>
 						</span>
 					</div>
@@ -97,16 +95,15 @@
 				<div class="item row1">
 					<div class="left">
 						<span class="icon">
-							<?php #echo Html::icon('key_primary'); ?>
-							<?php echo CHtml::activeLabel($form,'password'); ?>
+							<?php echo CHtml::activeLabel($form, 'password'); ?>
 						</span>
 					</div>
 					<div class="right">
-						<?php echo CHtml::activePasswordField($form,'password', array('class'=>'text')); ?>
+						<?php echo CHtml::activePasswordField($form, 'password', array('class' => 'text', 'value' => '')); ?>
 					</div>
 				</div>
 			</div>
-	
+
 			<div class="buttons">
 				<a class="icon button primary" href="javascript:void(0);" onclick="$('form').submit()">
 					<?php echo Html::icon('login', 16, false, 'core.login'); ?>
@@ -114,7 +111,7 @@
 				</a>
 				<input type="submit" value="<?php echo Yii::t('core', 'login'); ?>" style="display: none" />
 			</div>
-	
+
 			<?php echo CHtml::closeTag('form'); ?>
 		</div>
 	<?php } else { ?>
@@ -124,3 +121,9 @@
 	<?php } ?>
 
 </div>
+
+<script type="text/javascript">
+$(function() {
+	$('#LoginForm_username').focus();
+});
+</script>
