@@ -82,6 +82,110 @@ class StorageEngine extends SqlModel
 		return self::check($this->Engine, self::SUPPORTS_PACK_KEYS);
 	}
 
+	/**
+	 * Returns all variable keys for this storage engine.
+	 *
+	 * @return	array				List of variable keys
+	 */
+	public function getVariables()
+	{
+		switch(strtolower($this->Engine))
+		{
+			case 'myisam':
+				return array(
+					'myisam_data_pointer_size',
+					'myisam_recover_options',
+					'myisam_max_sort_file_size',
+					'myisam_max_extra_sort_file_size',
+					'myisam_repair_threads',
+					'myisam_sort_buffer_size',
+					'myisam_stats_method',
+					'delay_key_write',
+					'bulk_insert_buffer_size',
+					'skip_external_locking',
+				);
+			case 'innodb':
+				return array(
+					'innodb_data_home_dir',
+					'innodb_data_file_path',
+					'innodb_autoextend_increment',
+					'innodb_buffer_pool_size',
+					'innodb_additional_mem_pool_size',
+					'innodb_buffer_pool_awe_mem_mb',
+					'innodb_checksums',
+					'innodb_commit_concurrency',
+					'innodb_concurrency_tickets',
+					'innodb_doublewrite',
+					'innodb_fast_shutdown',
+					'innodb_file_io_threads',
+					'innodb_file_per_table',
+					'innodb_flush_log_at_trx_commit',
+					'innodb_flush_method',
+					'innodb_force_recovery',
+					'innodb_lock_wait_timeout',
+					'innodb_locks_unsafe_for_binlog',
+					'innodb_log_arch_dir',
+					'innodb_log_archive',
+					'innodb_log_buffer_size',
+					'innodb_log_file_size',
+					'innodb_log_files_in_group',
+					'innodb_log_group_home_dir',
+					'innodb_max_dirty_pages_pct',
+					'innodb_max_purge_lag',
+					'innodb_mirrored_log_groups',
+					'innodb_open_files',
+					'innodb_support_xa',
+					'innodb_sync_spin_loops',
+					'innodb_table_locks',
+					'innodb_thread_concurrency',
+					'innodb_thread_sleep_delay',
+				);
+			case 'memory':
+				return array(
+					'max_heap_table_size',
+				);
+			case 'ndbcluster':
+				return array(
+					'ndb_connectstring',
+				);
+			default:
+				return array();
+		}
+	}
+
+	/**
+	 * Returns all variables for this storage engine with values.
+	 *
+	 * @return	array				List of variables with values
+	 */
+	public function getVariablesWithValues()
+	{
+		$keys = $this->getVariables();
+		$values = array();
+
+		foreach($keys AS $key)
+		{
+			$values[$key] = '-';
+		}
+
+		if(count($keys) > 0)
+		{
+			$cmd = Yii::app()->getDb()->createCommand('SHOW GLOBAL VARIABLES');
+			$data = $cmd->queryAll();
+
+			$variables = array();
+			foreach($data AS $entry)
+			{
+				if(in_array($entry['Variable_name'], $keys))
+				{
+					$values[$entry['Variable_name']] = $entry['Value'];
+				}
+			}
+		}
+
+		return $values;
+	}
+
 
 
 

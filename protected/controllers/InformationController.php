@@ -88,8 +88,7 @@ class InformationController extends Controller
 	 */
 	public function actionStorageEngines()
 	{
-		$cmd = Yii::app()->getDb()->createCommand('SHOW STORAGE ENGINES');
-		$engines = $cmd->queryAll();
+		$engines = StorageEngine::model()->findAll();
 
 		$this->render('storageEngines', array(
 			'engines' => $engines,
@@ -163,7 +162,7 @@ class InformationController extends Controller
 			'status' => $status,
 		));
 	}
-	
+
 	/**
 	 * Shows the about page
 	 */
