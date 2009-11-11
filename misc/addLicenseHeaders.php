@@ -1,4 +1,5 @@
-<?php 
+#!/usr/bin/php5
+<?php
 
 function rglob($pattern='*', $flags = 0, $path='')
 {
@@ -8,96 +9,53 @@ function rglob($pattern='*', $flags = 0, $path='')
     return $files;
 }
 
-/* example usage: */
-chdir('../');
-
-$dirs = array(
-	"js",
-	"misc",
-	"protected",
-	"tests",
-	"themes",
-);
-
-$fileTypes = array(
-	"css",
-	"js",
-	"php",
-);
-
-$exclude = array(
-	"EditArea",
-	"CodePress",
-	"/sqlquery/",
-	"runtime",
-	"ajaxfileupload",
-	"hotkey",
-	"jquery.js",
-	"json.js",
-	"protected/views",
-	"components/views",
-);
-
-$files = array();
-
-
-foreach($dirs AS $dir)
-{
-	foreach($fileTypes AS $fileType)
-	{
-		$files = array_merge($files, rglob("*." . $fileType, 0, $dir));
-	}
-	
-}
-
-
-foreach($files AS $key=>$file)
-{
-	
-	foreach($exclude AS $excl)
-	{
-		
-		if(strpos($file, $excl) > -1)
-		{
-			unset($files[$key]);
-		}
-		
-	}
-	
-	
-}
-
-$license = "/*
+/*
  * Chive - web based MySQL database management
  * Copyright (C) 2009 Fusonic GmbH
- * 
+ *
  * This file is part of Chive.
  *
  * Chive is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
+ * modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  *
  * Chive is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
+ * General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
+ * You should have received a copy of the GNU General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
- */
-";
+ */";
 
+echo "<pre>";
 
 foreach($files AS $key=>$file)
 {
-	$content = str_replace(array("<?php"), array(""), file_get_contents($file));
+
+	$content = file_get_contents($file);
+
+	preg_match("/\/\*(.*)Chive(.*)\n\40\*\//is", $content, $res);
+
+	if(isset($res[0]) && $res[0])
+	{
+		$content = str_replace($res[0], $license, $content);
+		file_put_contents($file, $content);
+
+		echo $file . "<br/>";
+
+	}
+
+	continue;
 
 	if(strpos($content, "MIT") || strpos($content, "GPL"))
 		continue;
-	
+
 	echo $file . "<br/>";
-	
+
+	continue;
+
 	if(substr($file, -3) == "php")
 	{
 		file_put_contents($file, "<?php\n\n" . $license . $content);
@@ -106,7 +64,7 @@ foreach($files AS $key=>$file)
 	{
 		file_put_contents($file, $license . "\n" . $content);
 	}
-	
+
 }
 
 
