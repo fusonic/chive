@@ -43,7 +43,7 @@
 			<?php foreach($users as $user) { ?>
 				<tr id="users_<?php echo $user->getDomId(); ?>">
 					<td>
-						<input type="checkbox" name="users[]" value="<?php echo '\'' . $user->User . '\'@\'' . $user->Host . '\''; ?>" />
+						<input type="checkbox" name="users[]" value="<?php echo $user->getId(); ?>" />
 					</td>
 					<td>
 						<?php echo ($user->User ? $user->User : '%'); ?>
@@ -58,18 +58,18 @@
 						<?php echo implode(', ', $user->getGlobalPrivileges()); ?>
 					</td>
 					<td>
-						<?php echo Html::ajaxLink('privileges/users/' . urlencode($user->User ? $user->User : '%') . '/' . urlencode($user->Host ? $user->Host : ' ') . '/schemata', array('class' => 'icon')); ?>
-							<?php echo Html::icon('database', 16, false, 'database.schemaSpecificPrivileges'); ?>
+						<?php echo Html::ajaxLink('privileges/users/' . $user->getId() . '/schemata', array('class' => 'icon')); ?>
+							<?php echo Html::icon('database', 16, false, 'core.schemaSpecificPrivileges'); ?>
 						</a>
 					</td>
 					<td>
-						<a href="javascript:void(0)" onclick="privilegesUsers.editUser('<?php echo $user->getDomId(); ?>', '<?php echo $user->User; ?>', '<?php echo $user->Host; ?>')" class="icon">
+						<a href="javascript:void(0)" onclick="privilegesUsers.editUser('<?php echo $user->getId(); ?>', '<?php echo $user->getDomId(); ?>')" class="icon">
 							<?php echo Html::icon('edit', 16, false, 'core.edit'); ?>
 						</a>
 					</td>
 					<td>
-						<a href="javascript:void(0)" onclick="privilegesUsers.dropUser('<?php echo $user->User; ?>', '<?php echo $user->Host; ?>')" class="icon">
-							<?php echo Html::icon('delete', 16, false, 'database.drop'); ?>
+						<a href="javascript:void(0)" onclick="privilegesUsers.dropUser('<?php echo $user->getId(); ?>')" class="icon">
+							<?php echo Html::icon('delete', 16, false, 'core.drop'); ?>
 						</a>
 					</td>
 				</tr>
@@ -80,7 +80,8 @@
 	<div class="buttonContainer">
 		<div class="left withSelected">
 			<span class="icon">
-				<img height="16" width="16" alt="unknown" src="/dublin/trunk/images/icons/fugue/16/arrow_turn_090.png" title="unknown" class="icon icon16 icon_arrow_turn_090"/>				<span>With selected: </span>
+				<?php echo Html::icon('arrow_turn_090'); ?>
+				<span><?php echo Yii::t('core', 'withSelected'); ?></span>
 			</span>
 			<a class="icon button" href="javascript:void(0)" onclick="privilegesUsers.dropUsers()">
 				<?php echo Html::icon('delete'); ?>

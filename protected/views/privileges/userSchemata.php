@@ -55,9 +55,9 @@
 						<?php echo implode(', ', $schema->getPrivileges()); ?>
 					</td>
 					<td>
-						<a href="#privileges/users/<?php echo urlencode($schema->User ? $schema->User : '%'); ?>/<?php echo urlencode($schema->Host); ?>/schemata/<?php echo urlencode($schema->Db); ?>/tables" class="icon">
-							<?php echo Html::icon('table', 16, false, 'database.tableSpecificPrivileges'); ?>
-						</a>
+						<span class="icon">
+							<?php echo Html::icon('table', 16, true, 'core.tableSpecificPrivileges'); ?>
+						</span>
 					</td>
 					<td>
 						<a href="javascript:void(0)" onclick="privilegesUserSchemata.editSchemaPrivilege('<?php echo $schema->Db; ?>')" class="icon">
@@ -66,7 +66,7 @@
 					</td>
 					<td>
 						<a href="javascript:void(0)" onclick="privilegesUserSchemata.dropSchemaPrivilege('<?php echo $schema->Db; ?>')" class="icon">
-							<?php echo Html::icon('delete', 16, false, 'database.drop'); ?>
+							<?php echo Html::icon('delete', 16, false, 'core.drop'); ?>
 						</a>
 					</td>
 				</tr>
@@ -77,7 +77,8 @@
 	<div class="buttonContainer">
 		<div class="left withSelected">
 			<span class="icon">
-				<img height="16" width="16" alt="unknown" src="/dublin/trunk/images/icons/fugue/16/arrow_turn_090.png" title="unknown" class="icon icon16 icon_arrow_turn_090"/>				<span>With selected: </span>
+				<?php echo Html::icon('arrow_turn_090'); ?>
+				<span><?php echo Yii::t('core', 'withSelected'); ?></span>
 			</span>
 			<a class="icon button" href="javascript:void(0)" onclick="privilegesUserSchemata.dropSchemaPrivileges()">
 				<?php echo Html::icon('delete'); ?>
@@ -95,6 +96,7 @@
 
 <script type="text/javascript">
 setTimeout(function() {
+	privilegesUserSchemata.id = '<?php echo base64_encode($user . '@' . $host); ?>';
 	privilegesUserSchemata.user = '<?php echo $user; ?>';
 	privilegesUserSchemata.host = '<?php echo $host; ?>';
 	privilegesUserSchemata.setup();
@@ -107,7 +109,7 @@ breadCrumb.set([
 	},
 	{
 		icon: 'user',
-		href: 'javascript:chive.goto(\'privileges/users/<?php echo urlencode($user ? $user : '%'); ?>/<?php echo urlencode($host ? $host : ' '); ?>/schemata\')',
+		href: 'javascript:chive.goto(\'privileges/users/<?php echo base64_encode($user . '@' . $host); ?>/schemata\')',
 		text: '<?php echo ($user ? $user : '%'); ?>@<?php echo ($host ? $host : ' '); ?>'
 	}
 ]);

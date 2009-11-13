@@ -42,8 +42,13 @@ class PrivilegesController extends Controller
 
 		// Get parameters from request
 		$request = Yii::app()->getRequest();
-		$this->user = trim($request->getParam('user'));
-		$this->host = trim($request->getParam('host'));
+		$user = $request->getParam('user');
+		if($user)
+		{
+			$data = User::splitId($user);
+			$this->user = $data['User'];
+			$this->host = $data['Host'];
+		}
 		$this->schema = trim($request->getParam('schema'));
 
 		parent::__construct($id, $module);
@@ -161,13 +166,13 @@ class PrivilegesController extends Controller
 			try
 			{
 				$sql = $userObj->delete();
-				$droppedUsers[] = $user;
+				$droppedUsers[] = '\'' . $userObj->User . '\'@\'' . $userObj->Host . '\'';
 				$droppedSqls[] = $sql;
 			}
 			catch(DbException $ex)
 			{
 				$response->addNotification('error',
-					Yii::t('core', 'errorDropUser', array('{user}' => $user)),
+					Yii::t('core', 'errorDropUser', array('{user}' => '\'' . $userObj->User . '\'@\'' . $userObj->Host . '\'')),
 					$ex->getText(),
 					$ex->getSql());
 			}

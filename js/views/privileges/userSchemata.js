@@ -20,6 +20,7 @@
 
 var privilegesUserSchemata = {
 	
+	id: null,
 	user: null,
 	host: null,
 	
@@ -27,16 +28,14 @@ var privilegesUserSchemata = {
 	addSchemaPrivilege: function()
 	{
 		$('#schemata').appendForm(baseUrl + '/privileges/users/'
-			+ encodeURIComponent(privilegesUserSchemata.user) + '/'
-			+ encodeURIComponent(privilegesUserSchemata.host) + '/schemaActions/create');
+			+ encodeURIComponent(privilegesUserSchemata.id) + '/schemaActions/create');
 	},
 	
 	// Edit schema specific privilege
 	editSchemaPrivilege: function(schema)
 	{
 		$('#schemata_' + schema).appendForm(baseUrl + '/privileges/users/'
-			+ encodeURIComponent(privilegesUserSchemata.user) + '/'
-			+ encodeURIComponent(privilegesUserSchemata.host) + '/schemata/'
+			+ encodeURIComponent(privilegesUserSchemata.id) + '/schemata/'
 			+ encodeURIComponent(schema) + '/update');
 	},
 	
@@ -76,8 +75,7 @@ var privilegesUserSchemata = {
 
 			// Do drop request
 			$.post(baseUrl + '/privileges/users/'
-				+ encodeURIComponent(privilegesUserSchemata.user) + '/'
-				+ encodeURIComponent(privilegesUserSchemata.host) + '/schemaActions/drop', {
+				+ encodeURIComponent(privilegesUserSchemata.id) + '/schemaActions/drop', {
 				'schemata[]': ids
 			}, AjaxResponse.handle);
 			$(this).dialog('close');

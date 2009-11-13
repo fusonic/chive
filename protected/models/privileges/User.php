@@ -27,7 +27,7 @@ class User extends ActiveRecord
 
 	public static function splitId($id)
 	{
-		if(preg_match('/\'(.*)\'@\'(.*)\'$/', $id, $res))
+		if(preg_match('/(.*)@(.*)$/', base64_decode($id), $res))
 		{
 			return array(
 				'User' => $res[1],
@@ -112,7 +112,7 @@ class User extends ActiveRecord
 
 	public function getId()
 	{
-		return '\'' . $this->User . '\'@\'' . $this->Host . '\'';
+		return base64_encode($this->User . '@' . $this->Host);
 	}
 
 	public function getDomId()

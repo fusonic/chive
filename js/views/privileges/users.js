@@ -27,11 +27,10 @@ var privilegesUsers = {
 	},
 	
 	// Edit user
-	editUser: function(id, user, host)
+	editUser: function(id, domId)
 	{
-		$('#users_' + id).appendForm(baseUrl + '/privileges/users/'
-			+ encodeURIComponent(user) + '/'
-			+ encodeURIComponent(host) + '/update');
+		$('#users_' + domId).appendForm(baseUrl + '/privileges/users/'
+			+ encodeURIComponent(id) + '/update');
 	},
 	
 	// Drop user
@@ -42,10 +41,10 @@ var privilegesUsers = {
 			$('#dropUsersDialog').dialog("open");
 		}
 	},
-	dropUser: function(user, host)
+	dropUser: function(id)
 	{
 		$('#users input[type="checkbox"]').attr('checked', false).change();
-		$('#users input[type="checkbox"][value="\'' + user + '\'@\'' + host + '\'"]').attr('checked', true).change();
+		$('#users input[type="checkbox"][value="' + id + '"]').attr('checked', true).change();
 		privilegesUsers.dropUsers();
 	},
 	
