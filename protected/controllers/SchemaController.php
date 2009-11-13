@@ -272,6 +272,7 @@ class SchemaController extends Controller
 					null,
 					$sql);
 				$response->refresh = true;
+				$response->executeJavaScript('sideBar.loadSchemata()');
 				$response->send();
 			}
 		}
@@ -326,6 +327,7 @@ class SchemaController extends Controller
 	{
 		$response = new AjaxResponse();
 		$response->refresh = true;
+		$response->executeJavaScript('sideBar.loadSchemata()');
 		$schemata = (array)$_POST['schemata'];
 		$droppedSchemata = $droppedSqls = array();
 
@@ -484,12 +486,12 @@ class SchemaController extends Controller
 	 */
 	public function actionImport()
 	{
-		
+
 		$importPage = new ImportPage();
 		$importPage->db = $this->db;
 		$importPage->schema = $this->schema;
 		$importPage->formTarget = BASEURL . '/schema/' . $this->schema . '/import';
-		
+
 		$importPage->run();
 
 		// Disable layout for postprocessing
@@ -497,11 +499,11 @@ class SchemaController extends Controller
 		{
 			$this->layout = false;
 		}
-		
+
 		$this->render('../global/import', array(
 			'model' => $importPage,
 		));
-		
+
 	}
 
 }
