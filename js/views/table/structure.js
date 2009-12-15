@@ -85,16 +85,16 @@ var tableStructure = {
 					tableStructure.addIndexFinish();
 					return;
 				case 'fulltext':
-					var dialogTitle = lang.get('database', 'addFulltextIndex');
-					$('#addIndexDialog div').html(lang.get('database', 'enterNameForNewFulltextIndex'));
+					var dialogTitle = lang.get('core', 'addFulltextIndex');
+					$('#addIndexDialog div').html(lang.get('core', 'enterNameForNewFulltextIndex'));
 					break;
 				case 'unique':
-					var dialogTitle = lang.get('database', 'addUniqueKey');
-					$('#addIndexDialog div').html(lang.get('database', 'enterNameForNewUniqueKey'));
+					var dialogTitle = lang.get('core', 'addUniqueKey');
+					$('#addIndexDialog div').html(lang.get('core', 'enterNameForNewUniqueKey'));
 					break;
 				default:
-					var dialogTitle = lang.get('database', 'addIndex');
-					$('#addIndexDialog div').html(lang.get('database', 'enterNameForNewIndex'));
+					var dialogTitle = lang.get('core', 'addIndex');
+					$('#addIndexDialog div').html(lang.get('core', 'enterNameForNewIndex'));
 					break;
 			}
 			
@@ -140,20 +140,20 @@ var tableStructure = {
 		switch(tableStructure.dropIndexType.toLowerCase())
 		{
 			case 'fulltext':
-				var dialogTitle = lang.get('database', 'dropFulltextIndex');
-				$('#dropIndexDialog').html(lang.get('database', 'doYouReallyWantToDropFulltextIndex') + '<ul></ul>');
+				var dialogTitle = lang.get('core', 'dropFulltextIndex');
+				$('#dropIndexDialog').html(lang.get('core', 'doYouReallyWantToDropFulltextIndex') + '<ul></ul>');
 				var ulObj = $('#dropIndexDialog ul');
 				ulObj.append('<li>'+name+'</li>');
 				break;
 			case 'unique':
-				var dialogTitle = lang.get('database', 'dropUniqueKey');
-				$('#dropIndexDialog').html(lang.get('database', 'doYouReallyWantToDropUniqueKey') + '<ul></ul>');
+				var dialogTitle = lang.get('core', 'dropUniqueKey');
+				$('#dropIndexDialog').html(lang.get('core', 'doYouReallyWantToDropUniqueKey') + '<ul></ul>');
 				ulObj = $('#dropIndexDialog ul');
 				ulObj.append('<li>'+name+'</li>');
 				break;
 			default:
-				var dialogTitle = lang.get('database', 'dropIndex');
-				$('#dropIndexDialog').html(lang.get('database', 'doYouReallyWantToDropIndex') + '<ul></ul>');
+				var dialogTitle = lang.get('core', 'dropIndex');
+				$('#dropIndexDialog').html(lang.get('core', 'doYouReallyWantToDropIndex') + '<ul></ul>');
 				ulObj = $('#dropIndexDialog ul');
 				ulObj.append('<li>'+name+'</li>');
 				break;

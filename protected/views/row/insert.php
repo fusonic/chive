@@ -10,7 +10,7 @@
 		<span><?php echo Yii::t('core', 'insert'); ?></span>
 	</a>
 	<a href="javascript:void(0);" onclick="$('#insertAndReturn').attr('value', 1); $('form').submit();" class="icon button">
-		<?php echo Html::icon('arrow_return', 16, false, 'core.insertAndReturnToThisPage'); ?>
+		<?php echo Html::icon('add_return', 16, false, 'core.insertAndReturnToThisPage'); ?>
 		<span><?php echo Yii::t('core', 'insertAndReturnToThisPage'); ?></span>
 	</a>
 </div>

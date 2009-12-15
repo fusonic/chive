@@ -44,8 +44,9 @@
 			<td>
 				<b>Fusonic GmbH</b><br/>
 				Vorarlberger Wirtschaftspark 2<br/>
-				A-6840 Götzis<br/><br/>
-				office@fusonic.net<br/>
+				6840 Götzis<br/>
+				Austria<br/>
+				<br/>
 				<a href="http://www.fusonic.net">http://www.fusonic.net</a><br/>
 			</td>
 		</tr>
@@ -59,7 +60,7 @@
 	<colgroup>
 		<col style="width: 200px;"></col>
 		<col></col>
-		<col style="width: 80px;"></col>
+		<col style="width: 150px;"></col>
 	</colgroup>
 	<thead>
 		<tr>
