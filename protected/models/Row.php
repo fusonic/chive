@@ -215,7 +215,7 @@ class Row extends CActiveRecord
 				$sql .= ', ';
 		}
 
-		$sql .= "\n" . ') VALUES (';
+		$sql .= "\n" . ') VALUES (' . "\n\t";
 
 		$i = 0;
 		foreach($table->columns AS $column)
@@ -225,20 +225,20 @@ class Row extends CActiveRecord
 			
 			if($function !== null)
 			{
-				$sql .= "\n\t" . self::$functions[$function] . '(' . ($value === null ? 'NULL' : self::$db->quoteValue($value))  . ')';
+				$sql .= self::$functions[$function] . '(' . ($value === null ? 'NULL' : self::$db->quoteValue($value))  . ')';
 			}
 			elseif($value === null)
 			{
-				$sql .= "\n\t" . 'NULL';
+				$sql .= 'NULL';
 			}
 			elseif($this->isHex($attribute)){
-				$sql .= "\n\t" . $value;
+				$sql .= $value;
 			}
 
 			// DEFAULT
 			else
 			{
-				$sql .= "\n\t" . self::$db->quoteValue($value);
+				$sql .= self::$db->quoteValue($value);
 			}
 			
 			$i++;
@@ -248,7 +248,7 @@ class Row extends CActiveRecord
 
 		}
 
-		$sql .= "\n" . ')';
+		$sql .= "\n" . ');';
 		
 		$cmd = new CDbCommand(self::$db, $sql);
 		
@@ -324,7 +324,7 @@ class Row extends CActiveRecord
 
 			}
 				
-			$sql .= "\n" . ' WHERE ' . "\n";
+			$sql .= "\n" . 'WHERE ' . "\n";
 				
 			$identifier = $this->getOriginalIdentifier();
 				
@@ -349,7 +349,7 @@ class Row extends CActiveRecord
 				}
 			}
 				
-			$sql .= "\n" . 'LIMIT 1';
+			$sql .= "\n" . 'LIMIT 1;';
 				
 		}
 
@@ -399,7 +399,7 @@ class Row extends CActiveRecord
 
 		}
 
-		$sql .= "\n" . 'LIMIT 1';
+		$sql .= "\n" . 'LIMIT 1;';
 
 		$cmd = self::$db->createCommand($sql);
 

@@ -34,7 +34,7 @@ var Notification = {
 			'<div>' +
 				(message ? message : '') + 
 				(code ? 
-				'<textarea style="display: none" onfocus="this.select()">' + code + '</textarea>' : '') +
+				'<textarea style="display: none" onfocus="this.select()" wrap="off">' + code + '</textarea>' : '') +
 			'</div>' +
 		'</div>' +
 		'<div class="notification-bottom"></div>' +
