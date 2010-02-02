@@ -143,17 +143,17 @@ $(document).ready(function() {
 
 			<ul class="list icon nowrap" id="tableList">
 				<li class="nowrap template">
+					<div class="listIconContainer">
+						<a href="javascript:chive.goto('tables/#tableName#/insert')">
+							<?php echo Html::icon('add', 16, false, 'core.insertNewRow'); ?>
+						</a>
+					</div>
 					<?php echo Html::ajaxLink('tables/#tableName#/browse', array('class' => 'icon')); ?>
 						<?php echo Html::icon('browse', 16, false, 'plain:#rowCountText#'); ?>
 					</a>
 					<?php echo Html::ajaxLink('tables/#tableName#/structure', array('class' => 'icon')); ?>
 						<span>#tableName#</span>
 					</a>
-					<div class="listIconContainer">
-						<a href="javascript:chive.goto('tables/#tableName#/insert')">
-							<?php echo Html::icon('add', 16, false, 'core.insertNewRow'); ?>
-						</a>
-					</div>
 				</li>
 			</ul>
 
@@ -194,10 +194,6 @@ $(document).ready(function() {
 				<?php if($bookmarks = Yii::app()->user->settings->get('bookmarks', 'database', $this->schema)) { ?>
 					<?php foreach($bookmarks AS $key => $bookmark) { ?>
 						<li id="bookmark_<?php echo $bookmark['id']; ?>">
-							<?php echo Html::ajaxLink('bookmark/show/' . $bookmark['id'], array('class' => 'icon', 'title' => $bookmark['query'])); ?>
-								<?php echo Html::icon('bookmark'); ?>
-								<span><?php echo $bookmark['name']; ?></span>
-							</a>
 							<div class="listIconContainer">
 								<a href="javascript:void(0);" onclick="Bookmark.remove('<?php echo $this->schema; ?>', '<?php echo $bookmark['id']; ?>');">
 									<?php echo Html::icon('delete', 16, false, 'core.delete'); ?>
@@ -206,6 +202,10 @@ $(document).ready(function() {
 									<?php echo Html::icon('execute', 16, false, 'core.execute'); ?>
 								</a>
 							</div>
+							<?php echo Html::ajaxLink('bookmark/show/' . $bookmark['id'], array('class' => 'icon', 'title' => $bookmark['query'])); ?>
+								<?php echo Html::icon('bookmark'); ?>
+								<span><?php echo $bookmark['name']; ?></span>
+							</a>
 						</li>
 					<?php } ?>
 				<?php } ?>

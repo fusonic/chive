@@ -326,6 +326,7 @@
   	list-style-type: none;
   	height: 20px;
   	padding: 2px 0px;
+  	position: relative;
   }
   
   ul.list li a img {
@@ -335,14 +336,13 @@
   
   div.listIconContainer {
   	float: right;
-	position: relative;
-	top: -20px;
-	display: none;
-	padding-right: 3px;
+  	position: relative;
+  	z-index: 10;
+  	display: none;
   }
   
   ul.list li:hover div.listIconContainer {
-  	display: inline;
+  	display: block;
   }
 
   /*
