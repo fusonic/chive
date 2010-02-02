@@ -436,6 +436,11 @@
 	margin-top: 5px;
   }
   
+  .notification-body a {
+  	color: #f9f9f9;
+  	text-decoration: underline;
+  }
+  
   .notification-header {
   	font-weight: bold;
 	margin-bottom: 5px;

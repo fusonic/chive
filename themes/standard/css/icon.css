@@ -28,6 +28,7 @@
   a.icon {
   	text-decoration: none !important;
 	white-space: nowrap;
+	overflow: hidden;
   }
   
   a.icon span {
