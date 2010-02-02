@@ -179,9 +179,9 @@ class TableController extends Controller
 			{
 				$response = new AjaxResponse();
 				$response->addNotification('success',
-				Yii::t('core', 'successAddTable', array('{table}' => $table->TABLE_NAME)),
-				null,
-				$sql);
+					Yii::t('core', 'successAddTable', array('{table}' => $table->TABLE_NAME)),
+					null,
+					$sql);
 				$response->redirectUrl = '#tables/' . $table->TABLE_NAME . '/structure';
 				$response->executeJavaScript('sideBar.loadTables(schema);');
 
@@ -361,9 +361,9 @@ class TableController extends Controller
 			catch(DbException $ex)
 			{
 				$response->addNotification('error',
-				Yii::t('core', 'errorTruncateTable', array('{table}' => $this->table)),
-				$ex->getText(),
-				$ex->getSql());
+					Yii::t('core', 'errorTruncateTable', array('{table}' => $this->table)),
+					$ex->getText(),
+					$ex->getSql());
 			}
 		}
 

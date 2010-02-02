@@ -114,6 +114,53 @@ var sideBar = {
 			// Hide loading icon
 			loadingIcon.hide();
 		});
+	},
+	
+	loadViews: function(schema, callback)
+	{
+		var loadingIcon = $('div.sidebarHeader.viewList img.loading');
+		var contentUl = $('#sideBar #viewList');
+		
+		// Setup loading icon
+		loadingIcon.attr('src', baseUrl + '/images/loading.gif');
+		loadingIcon.show();
+		
+		// Do AJAX request
+		$.post(baseUrl + '/schema/' + schema + '/views', {
+			sideBar: true
+		}, function(data) {
+			
+			var data = JSON.parse(data);
+			var template = contentUl.children('li.template');
+			var templateHtml = template.html();
+			var html = '';
+			
+			// Remove all existing nodes
+			contentUl.empty().append(template);
+			
+			// Append all nodes
+			for(var i = 0; i < data.length; i++)
+			{
+				var newHtml = '<li class="nowrap">' + templateHtml
+					.replace(/#viewName#/g, data[i].viewName) + '</li>';
+				if(data[i].rowCount == 0)
+				{
+					newHtml = newHtml.replace('icon icon16', 'icon icon16 disabled');
+				}
+				html += newHtml;
+			}
+			
+			contentUl.append(html);
+			
+			// Callback
+			if($.isFunction(callback))
+			{
+				callback();
+			}
+			
+			// Hide loading icon
+			loadingIcon.hide();
+		});
 	}
 	
 };

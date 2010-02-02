@@ -97,6 +97,7 @@ class ViewController extends TableController
 					null,
 					$query);
 				$response->refresh = true;
+				$response->executeJavaScript('sideBar.loadViews(schema);');
 				$response->send();
 			}
 			catch(CDbException $ex)
@@ -126,6 +127,7 @@ class ViewController extends TableController
 	{
 		$response = new AjaxResponse();
 		$response->refresh = true;
+		$response->executeJavaScript('sideBar.loadViews(schema);');
 		$views = (array)$_POST['views'];
 		$droppedViews = $droppedSqls = array();
 

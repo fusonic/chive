@@ -163,32 +163,48 @@ class SchemaController extends Controller
 		$criteria->params = array(
 			':schema' => $this->schema,
 		);
+		
+		if($this->request->getParam('sideBar'))
+		{
+			$views = array();
 
-		// Pagination
-		$pages = new Pagination(View::model()->count($criteria));
-		$pages->setupPageSize('pageSize', 'schema.views');
-		$pages->applyLimit($criteria);
-		$pages->route = '#views';
+			foreach(View::model()->findAll($criteria) AS $view)
+			{
+				$views[] = array(
+					'viewName' => $view->TABLE_NAME,
+				);
+			}
 
-		// Sort
-		$sort = new CSort('View');
-		$sort->attributes = array(
-			'TABLE_NAME' => 'name',
-			'IS_UPDATABLE' => 'updatable',
-		);
-		$sort->route = '#views';
-		$sort->applyOrder($criteria);
-
-		// Load data
-		$schema->views = View::model()->findAll($criteria);
-
-		// Render
-		$this->render('views', array(
-			'schema' => $schema,
-			'viewCount' => count($schema->views),
-			'pages' => $pages,
-			'sort' => $sort,
-		));
+			Yii::app()->end(json_encode($views));
+		}
+		else
+		{
+			// Pagination
+			$pages = new Pagination(View::model()->count($criteria));
+			$pages->setupPageSize('pageSize', 'schema.views');
+			$pages->applyLimit($criteria);
+			$pages->route = '#views';
+	
+			// Sort
+			$sort = new CSort('View');
+			$sort->attributes = array(
+				'TABLE_NAME' => 'name',
+				'IS_UPDATABLE' => 'updatable',
+			);
+			$sort->route = '#views';
+			$sort->applyOrder($criteria);
+	
+			// Load data
+			$schema->views = View::model()->findAll($criteria);
+	
+			// Render
+			$this->render('views', array(
+				'schema' => $schema,
+				'viewCount' => count($schema->views),
+				'pages' => $pages,
+				'sort' => $sort,
+			));
+		}
 	}
 
 	/**

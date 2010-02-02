@@ -82,6 +82,9 @@ $(document).ready(function() {
 		$('#tableList').setupListFilter($('#tableSearch'));
 		$('#bookmarkList').setupListFilter($('#bookmarkSearch'));
 	});
+	sideBar.loadViews(<?php echo json_encode($this->_schema->SCHEMA_NAME); ?>, function() {
+		$('#viewList').setupListFilter($('#viewSearch'));
+	});
 });
 </script>
 
@@ -160,24 +163,21 @@ $(document).ready(function() {
 				<?php echo Html::icon('view', 24, false, 'core.views'); ?>
 				<span><?php echo Yii::t('core', 'views'); ?></span>
 			</a>
+			<img class="loading" src="images/loading.gif" alt="<?php echo Yii::t('core', 'loading'); ?>..." />
 		</div>
 		<div class="sidebarContent">
 
 			<input type="text" id="viewSearch" class="search text" />
 
 			<ul class="list icon nowrap" id="viewList">
-				<?php if(count($this->_schema->views) > 0) {?>
-					<?php foreach($this->_schema->views AS $view) { ?>
-						<li>
-							<?php echo Html::ajaxLink('views/' . $view->TABLE_NAME . '/browse', array('class' => 'icon')); ?>
-								<?php echo Html::icon('view', 16, false, 'core.browse'); ?>
-							</a>
-							<?php echo Html::ajaxLink('views/' . $view->TABLE_NAME . '/structure', array('class' => 'icon')); ?>
-								<span><?php echo $view->TABLE_NAME; ?></span>
-							</a>
-						</li>
-					<?php } ?>
-				<?php } ?>
+				<li class="nowrap template">
+					<?php echo Html::ajaxLink('views/#viewName#/browse', array('class' => 'icon')); ?>
+						<?php echo Html::icon('browse', 16, false); ?>
+					</a>
+					<?php echo Html::ajaxLink('views/#viewName#/structure', array('class' => 'icon')); ?>
+						<span>#viewName#</span>
+					</a>
+				</li>
 			</ul>
 		</div>
   		<div class="sidebarHeader">
