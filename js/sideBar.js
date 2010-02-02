@@ -98,7 +98,7 @@ var sideBar = {
 					.replace(/#rowCountText#/g, data[i].rowCountText) + '</li>';
 				if(data[i].rowCount == 0)
 				{
-					newHtml = newHtml.replace('icon icon16', 'icon icon16 disabled');
+					newHtml = newHtml.replace('icon icon16 icon_browse', 'icon icon16 icon_browse disabled');
 				}
 				html += newHtml;
 			}
@@ -143,10 +143,6 @@ var sideBar = {
 			{
 				var newHtml = '<li class="nowrap">' + templateHtml
 					.replace(/#viewName#/g, data[i].viewName) + '</li>';
-				if(data[i].rowCount == 0)
-				{
-					newHtml = newHtml.replace('icon icon16', 'icon icon16 disabled');
-				}
 				html += newHtml;
 			}
 			
