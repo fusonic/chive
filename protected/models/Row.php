@@ -196,14 +196,18 @@ class Row extends CActiveRecord
 	}
 
 	public function insert() 
-	{
+	{	
+		$table = Table::model()->with("columns")->findByPk(array(
+			'TABLE_NAME' => self::$table,
+			'TABLE_SCHEMA' => self::$schema,
+		));	
 		$attributesCount = count($this->getAttributes());
 		$sql = 'INSERT INTO ' . self::$db->quoteTableName(self::$table) . ' (';
 
 		$i = 0;
-		foreach($this->getAttributes() AS $attribute=>$value)
+		foreach($table->columns AS $column)
 		{
-			$sql .= "\n\t" . self::$db->quoteColumnName($attribute);
+			$sql .= "\n\t" . self::$db->quoteColumnName($column->COLUMN_NAME);
 
 			$i++;
 
@@ -214,9 +218,10 @@ class Row extends CActiveRecord
 		$sql .= "\n" . ') VALUES (';
 
 		$i = 0;
-		foreach($this->getAttributes() AS $attribute=>$value)
+		foreach($table->columns AS $column)
 		{
-			$function = $this->getFunction($attribute);
+			$function = $this->getFunction($column->COLUMN_NAME);
+			$value = $this->getAttribute($column->COLUMN_NAME);
 			
 			if($function !== null)
 			{
