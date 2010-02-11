@@ -105,8 +105,8 @@ function setoverflow(_id){
  * @param iconId id of the icon that should be changed
  * @return void
  */
-function toggleEditor(id,iconId){
-
+function toggleEditor(id, iconId)
+{
 	var frame = document.getElementById('frame_' + id);
 	
 	if(frame)
@@ -134,7 +134,7 @@ function toggleEditor(id,iconId){
         name: 'sqlEditorOn',
         value: value
     }, function(){
-		$('#'+iconId+'>img').attr('src',baseUrl+'/images/icons/fugue/16/'+img).attr('class',classname);;
-	        eAL.toggle(id);
+		$('#'+iconId+'>img').attr('src',baseUrl+'/images/icons/fugue/16/'+img).attr('class',classname);
+		eAL.toggle(id);
     });
 }

@@ -141,12 +141,7 @@
   }
   
   #login-logo {
-	 border: 1px solid #CCC; 
-	 -moz-border-radius: 10px;
-	 -webkit-border-radius: 10px; 
 	 padding: 10px; 
-	 background: #FFF; 
-	 margin-bottom: 10px;
   	text-align: center;
   }
   
@@ -261,6 +256,21 @@
 	#sideBar ul>li.template
 	{
 		display: none;
+	}
+	
+	div.tabMenu
+	{
+		position: fixed; 
+		top: 42px; 
+		z-index: 1000; 
+		height: 50px; 
+		padding-right: 100px; 
+		background: transparent url('../../../images/tabs-bg.png') top right no-repeat
+	}
+	
+	#content-inner
+	{
+		padding-top: 30px;
 	}
   
 }

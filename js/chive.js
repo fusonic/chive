@@ -110,6 +110,7 @@ var chive = {
 		// Load page into content area
 		$.post(url, globalPost, function(response) {
 			var content = document.getElementById('content');
+			response = '<div style="display: none">Thank\'s to InternetExplorer 8 which requires this dirty hack ...</div>' + response;
 			content.innerHTML = response;
 			var scripts = content.getElementsByTagName('script');
 			for(var i = 0; i < scripts.length; i++)

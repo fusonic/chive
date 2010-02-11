@@ -6,7 +6,7 @@ class EditArea extends CInputWidget
 	private $_editAreaPath;
 	public $id;
 	public $syntax = "sql";  // language that should be highlighted
-	public $width = "100%";    //width of the editor
+	public $width = "";    //width of the editor
 	public $height = "200px";   // height of the editor
 	public $autogrow = false;    // allow autogrow
 	public $toolbar = " undo, redo";  //comma seperated string for the config of the toolbar
@@ -20,37 +20,18 @@ class EditArea extends CInputWidget
 	{
 		list($name, $this->id) = $this->resolveNameID();
 
-		//$this->id .= StringUtil::getRandom(5);
-
-
 		$autogrow = ($this->autogrow  ? 'setupEditAreaAutoGrow' : 'setoverflow');
 
-
 		$display = (Yii::app()->user->settings->get('sqlEditorOn') == '1' ? 'onload' :'later');
-
-
-
-		// Publish CodePress
-		/*
-		if($autogrow == true)
-		{
-		$cs->registerScriptFile($this->_editAreaPath . DIRECTORY_SEPARATOR . "fusonic_extensions/editarea_autogrow.js");
-		}
-
-
-		*/
 
 		$cs = Yii::app()->getClientScript();
 
 		$jsInit = '$("#' . $this->id . '").closest("form").submit(function() {
 				var content = editAreaLoader.getValue("'.$this->id.'");
 				$("#' . $this->id . '").val(content);
-			});
-
-			';
+			});';
 
 		$jsInit2 = '
-	
 	     editAreaLoader.init({
 			 id : "'.$this->id.'"		// textarea id
 			,syntax: "'.$this->syntax.'"			// syntax to be uses for highlighting
@@ -64,11 +45,9 @@ class EditArea extends CInputWidget
 			,allow_resize: "'.$this->allowResize.'"
 		
 			,display: "'.$display.'"
-				});
-			';
+				});';
 
 		$cs->registerScript('Yii.EditArea.' . $this->id, $jsInit, CClientScript::POS_BEGIN);
-
 		$cs->registerScript('Yii.EditArea.' . $this->id.'_2', $jsInit2, CClientScript::POS_END);
 
 		parent::init();
@@ -88,7 +67,7 @@ class EditArea extends CInputWidget
 
 		list($name, $asdf) = $this->resolveNameID();
 		$this->htmlOptions['id'] = $this->id;
-		$this->htmlOptions['style'] = "width: " . $this->width . "; min-width:" . $this->minWidth . "; height: " . $this->height . "; min-height:". $this->minHeight."; max-height:".$this->maxHeight.";";
+		$this->htmlOptions['style'] = ($this->width ? "width: " . $this->width . ";" : "") . "min-width:" . $this->minWidth . "; height: " . $this->height . "; min-height:". $this->minHeight."; max-height:".$this->maxHeight.";";
 
 		echo CHtml::textArea($name, $this->value, $this->htmlOptions);
 

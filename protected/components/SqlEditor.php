@@ -22,7 +22,7 @@
 class SqlEditor extends EditArea
 {
 
-	public $width = "100%";
+	public $width = "";
 	public $height = "100px";
 	public $autogrow = false;
 
@@ -38,7 +38,7 @@ class SqlEditor extends EditArea
 		{
 			list($name, $id) = $this->resolveNameID();
 			$this->htmlOptions['id'] = $id;
-			$this->htmlOptions['style'] = "width: " . $this->width . "; height: " . $this->height;
+			$this->htmlOptions['style'] = ($this->width ? "width: " . $this->width . ";" : "") . "height: " . $this->height;
 	
 			echo CHtml::textArea($name, $this->value, $this->htmlOptions);
 			

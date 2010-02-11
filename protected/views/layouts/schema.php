@@ -5,7 +5,7 @@
 <title>Chive</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo BASEURL; ?>/css/main.css" />
 <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->getBaseUrl(); ?>/css/style.css" />
 <!--[if lte IE 7]>
 <link rel="stylesheet" type="text/css" href="<?php echo BASEURL; ?>/css/patch/ie7.css"/>
@@ -74,6 +74,7 @@ foreach($scriptFiles AS $file)
 }
 ?>
 
+<?php Yii::app()->clientScript->registerScript('userSettings', Yii::app()->user->settings->getJsObject(), CClientScript::POS_HEAD); ?>
 <script type="text/javascript">
 $.ui.dialog.defaults.width = 400;
 
@@ -87,9 +88,6 @@ $(document).ready(function() {
 	});
 });
 </script>
-
-<?php Yii::app()->clientScript->registerScript('userSettings', Yii::app()->user->settings->getJsObject(), CClientScript::POS_HEAD); ?>
-
 </head>
 <body>
 
@@ -117,7 +115,7 @@ $(document).ready(function() {
 			</a>
 		</div>
 		<div id="headerRight">
-			<input type="text" id="globalSearch" value="Enter schema or table..." style="color: #AAA; float: left; margin-right: 5px;" onclick="this.value = '';" />
+			<input type="text" id="globalSearch" value="Enter schema or table..." style="color: #AAA; margin-right: 5px;" onclick="this.value = '';" />
 			<a class="icon button" href="javascript:chive.refresh();">
 				<?php echo Html::icon('refresh', 16, false, 'core.refresh'); ?>
 			</a>

@@ -351,7 +351,7 @@
 
   ul.tabMenu {
 	position: relative;
-	top: -10px;  }
+  }
   
   ul.tabMenu li {
   	list-style-type: none;
@@ -549,6 +549,12 @@
   div.ac_results ul span.table 
   {
   	padding-left: 15px;
+  }
+  
+  #headerRight
+  {
+  	width: 320px;
+  	text-align: right;
   }
   
   

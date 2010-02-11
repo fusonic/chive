@@ -6,10 +6,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <!-- (en) Add your meta data here -->
 <!-- (de) Fuegen Sie hier ihre Meta-Daten ein -->
-<link rel="stylesheet" type="text/css"
-	href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" />
-<link rel="stylesheet" type="text/css"
-	href="<?php echo Yii::app()->theme->getBaseUrl(); ?>/css/style.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo BASEURL; ?>/css/main.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->getBaseUrl(); ?>/css/style.css" />
 <!--[if lte IE 7]>
 <link rel="stylesheet" type="text/css" href="<?php echo BASEURL; ?>/css/patch/ie7.css"/>
 <![endif]-->
@@ -82,8 +80,6 @@ $(document).ready(function() {
 
 <div class="ui-layout-north">
 	<div id="header">
-		  <div class="ui-layout-north">
-	<div id="header">
 		<div id="headerLeft">
 			<a class="icon button" href="<?php echo BASEURL; ?>">
 				<img src="<?php echo BASEURL; ?>/images/logo.png" alt="Chive" height="22" style="position: relative; top: 6px;" />
@@ -94,7 +90,7 @@ $(document).ready(function() {
 			</a>
 		</div>
 		<div id="headerRight">
-			<input type="text" id="globalSearch" value="Enter schema or table..." style="color: #AAA; float: left; margin-right: 5px;" onclick="this.value = '';" />
+			<input type="text" id="globalSearch" value="Enter schema or table..." style="color: #AAA; margin-right: 5px;" onclick="this.value = '';" />
 			<a class="icon button" href="javascript:chive.refresh();">
 				<?php echo Html::icon('refresh', 16, false, 'core.refresh'); ?>
 			</a>
@@ -102,8 +98,6 @@ $(document).ready(function() {
 				<?php echo Html::icon('logout', 16, false, 'core.logout'); ?>
 			</a>
 		</div>
-	</div>
-  </div>
 	</div>
 </div>
 <div class="ui-layout-west">
