@@ -30,7 +30,7 @@
 		background-color: #F7F7F7;
 		border: solid 1px #CCC;
 		color: #333;
-		padding: 4px;
+		padding: 4px 0px 4px 4px;
 	}
 	
 	input[disabled],
@@ -79,7 +79,7 @@
 	 */	
 	input.search {
 		background: url(../../../images/icons/fugue/16/search.png) 2px 3px no-repeat !important;
-		padding-left: 22px !important;
+		text-indent: 22px;
 	}
 	
 	/*

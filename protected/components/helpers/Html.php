@@ -83,10 +83,11 @@ class Html
 	{
 		if($submit)
 		{
-			$submitButton = '<a href="javascript:void(0)" onclick="$(\'#' . CHtml::$idPrefix . '\').submit()" class="icon button">'
+			$submitButton = '<a href="javascript:void(0)" onclick="$(\'#' . CHtml::$idPrefix . '\').submit()" class="icon button primary">'
 					. Html::icon('save')
 					. '<span>' . Yii::t('core', 'save') . '</span>'
-				. '</a>';
+				. '</a>'
+				. CHtml::submitButton(Yii::t('core', 'save'), array('style' => 'display: none'));
 		}
 		else
 		{

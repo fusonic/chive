@@ -373,7 +373,7 @@ class Column extends ActiveRecord
 		$types = array();
 
 		// Numeric
-		$types[Yii::t('core', 'numeric')] =  array(
+		$types[Yii::t('dataTypes', 'numeric')] =  array(
 			'bit' => 'bit',
 			'tinyint' => 'tinyint',
 			'bool' => 'bool',
@@ -387,7 +387,7 @@ class Column extends ActiveRecord
 		);
 
 		// Strings
-		$types[Yii::t('core', 'strings')] = array(
+		$types[Yii::t('dataTypes', 'strings')] = array(
 			'char' => 'char',
 			'varchar' => 'varchar',
 			'tinytext' => 'tinytext',
@@ -405,7 +405,7 @@ class Column extends ActiveRecord
 		);
 
 		// Date and time
-		$types[Yii::t('core', 'dateAndTime')] = array(
+		$types[Yii::t('dataTypes', 'dateAndTime')] = array(
 			'date' => 'date',
 			'datetime' => 'datetime',
 			'timestamp' => 'timestamp',

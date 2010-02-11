@@ -62,6 +62,9 @@ var sideBar = {
 				callback();
 			}
 			
+			// Reload list filter
+			contentUl.reloadListFilter();
+			
 			// Hide loading icon
 			loadingIcon.hide();
 		});
@@ -111,6 +114,9 @@ var sideBar = {
 				callback();
 			}
 			
+			// Reload list filter
+			contentUl.reloadListFilter();
+			
 			// Hide loading icon
 			loadingIcon.hide();
 		});
@@ -153,6 +159,9 @@ var sideBar = {
 			{
 				callback();
 			}
+			
+			// Reload list filter
+			contentUl.reloadListFilter();
 			
 			// Hide loading icon
 			loadingIcon.hide();
