@@ -1,0 +1,7 @@
+protected/runtime/sessions/*
+protected/runtime/*
+assets/*
+.buildpath
+.project
+.settings
+protected/runtime/user-config/*
