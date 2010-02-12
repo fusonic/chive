@@ -25,6 +25,8 @@ class RowController extends Controller
 {
 	public $schema;
 	public $table;
+	public $view;
+	public $_table;
 
 	/**
 	 * @var Default layout for this controller
@@ -40,6 +42,16 @@ class RowController extends Controller
 		
 		$this->schema =	$request->getParam('schema');
 		$this->table = $request->getParam('table');
+		
+		$this->_table = Table::model()->findByPk(array(
+			'TABLE_SCHEMA' => $this->schema,
+			'TABLE_NAME' => $this->table,
+		));
+		
+		if($this->_table->TABLE_TYPE == 'VIEW')
+		{
+			$this->view = $this->table;
+		}
 		
 		parent::__construct($id, $module);
 		$this->connectDb($this->schema);
@@ -59,7 +71,14 @@ class RowController extends Controller
 	{
 		$response = new AjaxResponse();
 		
-		$this->layout = '_table';
+		if($this->view)
+		{
+			$this->layout = '_view';
+		}
+		else
+		{
+			$this->layout = '_table';
+		}
 
 		$row = new Row();
 		
@@ -408,6 +427,16 @@ class RowController extends Controller
 		$this->render('../global/export', array(
 			'model' => $exportPage,
 		));
+	}
+	
+	/**
+	 * Dirty hack to make view tab navigation work ...
+	 * 
+	 * @return	Table
+	 */
+	public function loadView()
+	{
+		return $this->_table;
 	}
 
 }
