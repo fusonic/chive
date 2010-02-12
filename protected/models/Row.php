@@ -197,15 +197,14 @@ class Row extends CActiveRecord
 		$i = 0;
 		foreach($table->columns AS $column)
 		{
-			$sql .= "\n\t" . self::$db->quoteColumnName($column->COLUMN_NAME);
-
+			$sql .= self::$db->quoteColumnName($attribute);
 			$i++;
 
 			if($i < $attributesCount)
 				$sql .= ', ';
 		}
 
-		$sql .= "\n" . ') VALUES (' . "\n\t";
+		$sql .= ') VALUES ' . "\n\t" . '(';
 
 		$i = 0;
 		foreach($table->columns AS $column)
@@ -236,9 +235,10 @@ class Row extends CActiveRecord
 			if($i < $attributesCount)
 				$sql .= ', ';
 
+			
 		}
-
-		$sql .= "\n" . ');';
+		
+		$sql .= ');';
 		
 		$cmd = new CDbCommand(self::$db, $sql);
 		
