@@ -21,7 +21,7 @@
  */
 
 
-class UserSettingsManagerTest extends TestCase
+class UserSettingsManagerTest extends CTestCase
 {
 
 	protected static $host = '__testcase';
@@ -164,5 +164,3 @@ class UserSettingsManagerTest extends TestCase
 	}
 
 }
-
-?>

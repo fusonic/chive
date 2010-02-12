@@ -20,10 +20,9 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-class RowTest extends TestCase
-{
 
-	//public static $enabled = false;
+class RowTest extends ChiveTestCase
+{
 
 	/**
 	 * Setup test databases.
@@ -31,14 +30,10 @@ class RowTest extends TestCase
 	protected function setUp()
 	{
 
-		$this->executeSqlFile('models/Row.sql');
-		$db = new CDbConnection('mysql:host='.DB_HOST.';dbname=rowtest', DB_USER, DB_PASSWORD);
-		$db->charset='utf8';
-		$db->active = true;
-		Row::$db = $db;
+		$this->executeSqlFile('models/RowTest.sql');
+		
+		Row::$db = $this->createDbConnection('rowtest');
 		Row::$schema = "rowtest";
-
-
 	}
 
 	/**
@@ -50,7 +45,6 @@ class RowTest extends TestCase
 
 		$this->assertType('array', Row::model()->attributeLabels());
 		$this->assertType('array', Row::model()->attributeNames());
-		$this->assertType('array', Row::model()->safeAttributes());
 		$this->assertType('object', Row::model()->getDbConnection());
 		$this->assertType('string', Row::model()->tableName());
 		$this->assertType('array', Row::model()->relations());
@@ -289,5 +283,3 @@ class RowTest extends TestCase
 
 
 }
-
-?>

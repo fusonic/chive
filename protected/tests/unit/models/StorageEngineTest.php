@@ -21,15 +21,8 @@
  */
 
 
-class StorageEngineTest extends TestCase
+class StorageEngineTest extends CTestCase
 {
-
-	public function setup()
-	{
-		$db = new CDbConnection('mysql:host='.DB_HOST.';dbname=information_schema', DB_USER, DB_PASSWORD);
-		$db->charset='utf8';
-		$db->active = true;
-	}
 
 	/**
 	 * test whether getSupportedEngines returns an array
@@ -118,20 +111,20 @@ class StorageEngineTest extends TestCase
 			'FEDERATED',
 			'MRG_MYISAM',
 			'ISAM'
-			);
+		);
 
-			foreach($engines as $engine)
-			{
-				$se = StorageEngine::model()->findAllByAttributes(array(
-					'Engine' => $engine	
-				));
+		foreach($engines as $engine)
+		{
+			$se = StorageEngine::model()->findAllByAttributes(array(
+				'Engine' => $engine	
+			));
 
-				$se = $se[0];
+			$se = $se[0];
 
-				$this->assertType('StorageEngine', $se);
-				$this->assertType('string', $se->Comment);
-				$this->assertType('string', $se->Support);
-			}
+			$this->assertType('StorageEngine', $se);
+			$this->assertType('string', $se->Comment);
+			$this->assertType('string', $se->Support);
+		}
 	}
 
 	/**
@@ -166,18 +159,19 @@ class StorageEngineTest extends TestCase
 
 		$se = StorageEngine::model()->findAllByAttributes(array(
 			'Engine' => 'MyISAM'	
-			));
+		));
 
-			$this->assertTrue($se[0]->getSupportsChecksum());
-			$this->assertTrue($se[0]->getSupportsPackKeys());
-			$this->assertTrue($se[0]->getSupportsDelayKeyWrite());
+		$this->assertTrue($se[0]->getSupportsChecksum());
+		$this->assertTrue($se[0]->getSupportsPackKeys());
+		$this->assertTrue($se[0]->getSupportsDelayKeyWrite());
 
-			$se = StorageEngine::model()->findAllByAttributes(array(
+		$se = StorageEngine::model()->findAllByAttributes(array(
 			'Engine' => 'InnoDB'	
-			));
+		));
 
-			$this->assertFalse($se[0]->getSupportsChecksum());
-			$this->assertFalse($se[0]->getSupportsPackKeys());
-			$this->assertFalse($se[0]->getSupportsDelayKeyWrite());
+		$this->assertFalse($se[0]->getSupportsChecksum());
+		$this->assertFalse($se[0]->getSupportsPackKeys());
+		$this->assertFalse($se[0]->getSupportsDelayKeyWrite());
 	}
+	
 }

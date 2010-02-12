@@ -21,7 +21,7 @@
  */
 
 
-class IndexColumnTest extends TestCase
+class IndexColumnTest extends CTestCase
 {
 
 	/**
@@ -33,7 +33,6 @@ class IndexColumnTest extends TestCase
 		$index = new IndexColumn();
 
 		// Check return types
-		$this->assertTrue(is_array($index->safeAttributes()));
 		$this->assertTrue(is_array($index->attributeLabels()));
 		$this->assertTrue(is_array($index->rules()));
 		$this->assertTrue(is_array($index->relations()));
@@ -41,5 +40,3 @@ class IndexColumnTest extends TestCase
 	}
 
 }
-
-?>

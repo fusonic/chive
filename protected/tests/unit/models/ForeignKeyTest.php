@@ -20,17 +20,15 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-class ForeignKeyTest extends TestCase
+
+class ForeignKeyTest extends ChiveTestCase
 {
 	/**
 	 * Setup test databases.
 	 */
 	protected function setUp()
 	{
-		$this->executeSqlFile('models/ForeignKey.sql');
-		$db = new CDbConnection('mysql:host='.DB_HOST.';dbname=tabletest', DB_USER, DB_PASSWORD);
-		$db->charset='utf8';
-		$db->active = true;
+		$this->executeSqlFile('models/ForeignKeyTest.sql');
 
 		Column::$db =
 		ForeignKey::$db =
@@ -40,8 +38,7 @@ class ForeignKeyTest extends TestCase
 		Schema::$db =
 		Table::$db =
 		Trigger::$db =
-		View::$db = $db;
-
+		View::$db = $this->createDbConnection('tabletest');
 	}
 
 	/**
@@ -53,7 +50,6 @@ class ForeignKeyTest extends TestCase
 
 		$this->assertType('string',$fk->tableName());
 		$this->assertType('array',$fk->primaryKey());
-		$this->assertType('array',$fk->safeAttributes());
 	}
 
 	/**

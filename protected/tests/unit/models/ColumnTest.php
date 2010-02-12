@@ -21,19 +21,17 @@
  */
 
 
-
-class ColumnTest extends TestCase
+class ColumnTest extends ChiveTestCase
 {
 	/**
 	 * Setup test databases.
 	 */
 	protected function setUp()
 	{
-		$this->executeSqlFile('models/Column.sql');
-		ActiveRecord::$db = new CDbConnection('mysql:host='.DB_HOST.';dbname=columntest', DB_USER, DB_PASSWORD);
-		ActiveRecord::$db->charset='utf8';
-		ActiveRecord::$db->active = true;
-		Table::$db = ActiveRecord::$db;
+		$this->executeSqlFile('models/ColumnTest.sql');
+		
+		Table::$db = 
+		ActiveRecord::$db = $this->createDbConnection('columntest');
 	}
 
 	/**
@@ -844,7 +842,6 @@ class ColumnTest extends TestCase
 		$column = new column();
 
 		// Check return types
-		$this->assertTrue(is_array($column->safeAttributes()));
 		$this->assertTrue(is_array($column->attributeLabels()));
 		$this->assertTrue(is_array($column->rules()));
 		$this->assertTrue(is_array($column->relations()));

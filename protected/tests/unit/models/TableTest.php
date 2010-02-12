@@ -21,7 +21,7 @@
  */
 
 
-class TableTest extends TestCase
+class TableTest extends ChiveTestCase
 {
 
 	/**
@@ -29,10 +29,9 @@ class TableTest extends TestCase
 	 */
 	protected function setUp()
 	{
-		$this->executeSqlFile('models/Table.sql');
-		Table::$db = new CDbConnection('mysql:host='.DB_HOST.';dbname=tabletest', DB_USER, DB_PASSWORD);
-		Table::$db->charset='utf8';
-		Table::$db->active = true;
+		$this->executeSqlFile('models/TableTest.sql');
+		
+		Table::$db = $this->createDbConnection('tabletest');
 	}
 
 	/**
@@ -230,7 +229,6 @@ class TableTest extends TestCase
 		$table = new Table();
 
 		// Check return types
-		$this->assertTrue(is_array($table->safeAttributes()));
 		$this->assertTrue(is_array($table->attributeLabels()));
 		$this->assertTrue(is_array($table->rules()));
 		$this->assertTrue(is_array($table->relations()));

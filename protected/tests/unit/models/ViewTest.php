@@ -21,17 +21,16 @@
  */
 
 
-class ViewTest extends TestCase
+class ViewTest extends ChiveTestCase
 {
 	/**
 	 * Setup test databases.
 	 */
 	protected function setUp()
 	{
-		$this->executeSqlFile('models/View.sql');
-		$db = new CDbConnection('mysql:host='.DB_HOST.';dbname=viewtest', DB_USER, DB_PASSWORD);
-		$db->active = true;
-		View::$db = $db;
+		$this->executeSqlFile('models/ViewTest.sql');
+		
+		View::$db = $this->createDbConnection('viewtest');
 	}
 
 

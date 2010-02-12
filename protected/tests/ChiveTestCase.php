@@ -21,40 +21,25 @@
  */
 
 
-Yii::import('system.web.CApplication');
-
-class TestApplication extends CApplication
+class ChiveTestCase extends CTestCase
 {
-	public function processRequest()
+	
+	const DB_HOST = '192.168.10.171';
+	const DB_USER = 'root';
+	const DB_PASSWORD = '';
+	const DB_NAME = 'chive_fixed';
+
+	protected function executeSqlFile($file)
 	{
+		echo exec('mysql -h' . ChiveTestCase::DB_HOST . ' -u' . ChiveTestCase::DB_USER . (ChiveTestCase::DB_PASSWORD ? ' -p' . ChiveTestCase::DB_PASSWORD : '') . ' --default-character-set=utf8 <"sql/' . $file . '"');
+	}
+	
+	protected function createDbConnection($dbName)
+	{
+		$db = new CDbConnection('mysql:host=' . ChiveTestCase::DB_HOST . ';dbname=' . $dbName, ChiveTestCase::DB_USER, ChiveTestCase::DB_PASSWORD);
+		$db->charset = 'utf8';
+		$db->active = true;
+		return $db;
 	}
 
-	/**
-	 * Removes all runtime files.
-	 */
-	public function reset()
-	{
-		$runtimePath=$this->getRuntimePath();
-		if(is_dir($runtimePath) && ($folder=@opendir($runtimePath))!==false)
-		{
-			while($entry=@readdir($folder))
-			{
-				if($entry==='.' || $entry==='..')
-					continue;
-				$path=$runtimePath.DIRECTORY_SEPARATOR.$entry;
-				@unlink($path);
-			}
-			@closedir($folder);
-		}
-	}
-
-	public function loadGlobalState()
-	{
-		parent::loadGlobalState();
-	}
-
-	public function saveGlobalState()
-	{
-		parent::saveGlobalState();
-	}
 }

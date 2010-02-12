@@ -21,15 +21,14 @@
  */
 
 
-class SchemaTest extends TestCase
+class SchemaTest extends ChiveTestCase
 {
 
 	protected function setUp()
 	{
-		$this->executeSqlFile('models/Schema.sql');
-		Schema::$db = new CDbConnection('mysql:host='.DB_HOST.';dbname=information_schema', DB_USER, DB_PASSWORD);
-		Schema::$db->charset='utf8';
-		Schema::$db->active = true;
+		$this->executeSqlFile('models/SchemaTest.sql');
+		
+		Schema::$db = $this->createDbConnection('information_schema');
 	}
 
 	/*
@@ -160,7 +159,6 @@ class SchemaTest extends TestCase
 		$schema = new Schema();
 
 		// Check return types
-		$this->assertEquals(true, is_array($schema->safeAttributes()));
 		$this->assertEquals(true, is_array($schema->attributeLabels()));
 		$this->assertEquals(true, is_array($schema->rules()));
 		$this->assertEquals(true, is_array($schema->relations()));
@@ -205,5 +203,3 @@ class SchemaTest extends TestCase
 	}
 
 }
-
-?>

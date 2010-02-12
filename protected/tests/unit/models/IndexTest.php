@@ -21,7 +21,7 @@
  */
 
 
-class IndexTest extends TestCase
+class IndexTest extends ChiveTestCase
 {
 
 	/**
@@ -29,12 +29,10 @@ class IndexTest extends TestCase
 	 */
 	protected function setUp()
 	{
-		$this->executeSqlFile('models/Index.sql');
-		$db = new CDbConnection('mysql:host='.DB_HOST.';dbname=indextest', DB_USER, DB_PASSWORD);
-		$db->charset='utf8';
-		$db->active = true;
-		Table::$db = $db;
-		Index::$db = $db;
+		$this->executeSqlFile('models/IndexTest.sql');
+
+		Table::$db =
+		Index::$db = $this->createDbConnection('indextest');
 	}
 
 	/**
@@ -261,7 +259,6 @@ class IndexTest extends TestCase
 		$index = new Index();
 
 		// Check return types
-		$this->assertTrue(is_array($index->safeAttributes()));
 		$this->assertTrue(is_array($index->attributeLabels()));
 		$this->assertTrue(is_array($index->rules()));
 		$this->assertTrue(is_array($index->relations()));

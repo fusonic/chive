@@ -21,16 +21,17 @@
  */
 
 
-class RoutineTest extends TestCase
+class RoutineTest extends ChiveTestCase
 {
+	
 	/**
 	 * set up the database with function and procedure
 	 */
 	protected function setUp()
 	{
-		$this->executeSqlFile('models/Routine.sql');
-		Routine::$db = new CDbConnection('mysql:host='.DB_HOST.';dbname=routinetest', DB_USER, DB_PASSWORD);
-		Routine::$db->active = true;
+		$this->executeSqlFile('models/RoutineTest.sql');
+		
+		Routine::$db = $this->createDbConnection('routinetest');
 	}
 	
 	/**

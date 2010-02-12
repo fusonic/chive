@@ -21,7 +21,7 @@
  */
 
 
-class CollationTest extends TestCase
+class CollationTest extends CTestCase
 {
 
 	/**
@@ -89,7 +89,3 @@ class CollationTest extends TestCase
 		$this->assertEquals('utf8', Collation::getCharacterSet('utf8_unicode_ci'));
 	}
 }
-
-
-
-?>

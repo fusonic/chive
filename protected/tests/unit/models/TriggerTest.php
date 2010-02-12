@@ -20,17 +20,17 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-class TriggerTest extends TestCase
+
+class TriggerTest extends ChiveTestCase
 {
 	/**
 	 * Setup test databases.
 	 */
 	protected function setUp()
 	{
-		$this->executeSqlFile('models/Trigger.sql');
-		$db = new CDbConnection('mysql:host='.DB_HOST.';dbname=triggertest', DB_USER, DB_PASSWORD);
-		$db->active = true;
-		Trigger::$db = $db;
+		$this->executeSqlFile('models/TriggerTest.sql');
+		
+		Trigger::$db = $this->createDbConnection('triggertest');
 	}
 
 
@@ -93,6 +93,5 @@ class TriggerTest extends TestCase
 
 		$this->assertType('Trigger', $triggerObj);
 	}
-
 
 }

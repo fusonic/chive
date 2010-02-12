@@ -21,36 +21,30 @@
  */
 
 
-define('YII_ENABLE_AUTOLOAD',false);
-define('YII_ENABLE_EXCEPTION_HANDLER',false);
-define('YII_ENABLE_ERROR_HANDLER',false);
-
-require_once('global.php');
-require_once('YiiBase.php');
-
-class Yii extends YiiBase
+class CharacterSetTest extends CTestCase
 {
-	private static $_testApp;
-
-	public static function app()
+	
+	public function testLoad()
 	{
-		return self::$_testApp;
+		// Load character set
+		$cs = CharacterSet::model()->findByPk('big5');
+		
+		// Assert properties
+		$this->assertEquals('big5', $cs->CHARACTER_SET_NAME);
+		$this->assertEquals('big5_chinese_ci', $cs->DEFAULT_COLLATE_NAME);
+		$this->assertEquals('Big5 Traditional Chinese', $cs->DESCRIPTION);
+		$this->assertEquals(2, $cs->MAXLEN);
 	}
 
-	public static function setApplication($app)
+	/**
+	 * tests some Conifg
+	 */
+	public function testConfig()
 	{
-		self::$_testApp=$app;
-		parent::setApplication($app);
+		$char = CharacterSet::model();
+		$this->assertType('string', $char->tableName());
+		$this->assertType('string', $char->primaryKey());
+		$this->assertType('array', $char->relations());
 	}
 
-	/*public static function setPathOfAlias($alias,$path)
-	{
-		if(empty($path))
-			unset(self::$_aliases[$alias]);
-		else
-			self::$_aliases[$alias]=rtrim($path,'\\/');
-	}*/
 }
-
-require_once(dirname(__FILE__).'/TestWebApplication.php');
-require_once(dirname(__FILE__).'/TestApplication.php');

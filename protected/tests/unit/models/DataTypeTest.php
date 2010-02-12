@@ -21,57 +21,58 @@
  */
 
 
-class DataTypeTest extends TestCase
+class DataTypeTest extends CTestCase
 {
+	
 	/**
 	 * test if the check method returns the correct values
 	 */
 	public function testCheck()
 	{
 		$types = array(
-		'bit',
-		'tinyint',
-		'bool',
-		'smallint',
-		'mediumint',
-		'int',
-		'bigint',
-		'float',
-		'double',
-		'decimal',
-		'char',
-		'varchar',
-		'tinytext',
-		'text',
-		'mediumtext',
-		'longtext',
-		'tinyblob',
-		'blob',
-		'mediumblob',
-		'longblob',
-		'binary',
-		'varbinary',
-	    'enum',
-		'set',
-		'date',
-		'datetime',
-		'timestamp',
-		'time',
-		'year'
+			'bit',
+			'tinyint',
+			'bool',
+			'smallint',
+			'mediumint',
+			'int',
+			'bigint',
+			'float',
+			'double',
+			'decimal',
+			'char',
+			'varchar',
+			'tinytext',
+			'text',
+			'mediumtext',
+			'longtext',
+			'tinyblob',
+			'blob',
+			'mediumblob',
+			'longblob',
+			'binary',
+			'varbinary',
+		    'enum',
+			'set',
+			'date',
+			'datetime',
+			'timestamp',
+			'time',
+			'year'
 		);
 
 		$options_bool = array(
-		DataType::SUPPORTS_COLLATION,
-		DataType::SUPPORTS_INDEX,
-		DataType::SUPPORTS_UNIQUE,
-		DataType::SUPPORTS_FULLTEXT,
-		DataType::SUPPORTS_SIZE,
-		DataType::SUPPORTS_SCALE,
-		DataType::SUPPORTS_VALUES,
-		DataType::SUPPORTS_UNSIGNED,
-		DataType::SUPPORTS_UNSIGNED_ZEROFILL,
-		DataType::SUPPORTS_ON_UPDATE_CURRENT_TIMESTAMP,
-		DataType::SUPPORTS_AUTO_INCREMENT
+			DataType::SUPPORTS_COLLATION,
+			DataType::SUPPORTS_INDEX,
+			DataType::SUPPORTS_UNIQUE,
+			DataType::SUPPORTS_FULLTEXT,
+			DataType::SUPPORTS_SIZE,
+			DataType::SUPPORTS_SCALE,
+			DataType::SUPPORTS_VALUES,
+			DataType::SUPPORTS_UNSIGNED,
+			DataType::SUPPORTS_UNSIGNED_ZEROFILL,
+			DataType::SUPPORTS_ON_UPDATE_CURRENT_TIMESTAMP,
+			DataType::SUPPORTS_AUTO_INCREMENT
 		);
 
 		$options_string = array(DataType::GROUP,DataType::INPUT_TYPE);
@@ -131,12 +132,12 @@ class DataTypeTest extends TestCase
 			'time(HH:MM:SS)' => 'time',
 		    'time' => 'time',
 			'year' => 'year'
-			);
+		);
 
-			foreach($types as $type => $expected)
-			{
-				$this->assertEquals($expected, DataType::getBaseType($type));
-			}
+		foreach($types as $type => $expected)
+		{
+			$this->assertEquals($expected, DataType::getBaseType($type));
+		}
 	}
 
 	/** 
@@ -155,6 +156,5 @@ class DataTypeTest extends TestCase
 		$this->assertEquals('datetime',$DataType->getInputType('datetime'));
 		$this->assertEquals('number',$DataType->getInputType('year'));
 	}
-
 
 }
