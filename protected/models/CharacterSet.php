@@ -19,6 +19,8 @@
  * You should have received a copy of the GNU General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
+
+
 class CharacterSet extends CActiveRecord
 {
 	/**
@@ -53,6 +55,6 @@ class CharacterSet extends CActiveRecord
 		return array(
 			'collations' => array(self::HAS_MANY, 'Collation', 'CHARACTER_SET_NAME'),
 		);
-
 	}
+	
 }

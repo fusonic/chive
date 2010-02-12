@@ -23,6 +23,7 @@
 
 class Table extends ActiveRecord
 {
+	
 	public $optionChecksum = '0', $originalOptionChecksum = '0';
 	public $optionDelayKeyWrite = '0', $originalOptionDelayKeyWrite = '0';
 	public $optionPackKeys = 'DEFAULT', $originalOptionPackKeys = 'DEFAULT';
@@ -32,15 +33,15 @@ class Table extends ActiveRecord
 	private $showCreateTable;
 
 	/**
-	 * @see		CActiveRecord::model()
+	 * @see		ActiveRecord::model()
 	 */
-	public static function model($className=__CLASS__)
+	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
 	}
 
 	/**
-	 * @see		CActiveRecord::instantiate()
+	 * @see		ActiveRecord::instantiate()
 	 */
 	public function instantiate($attributes)
 	{
@@ -92,7 +93,7 @@ class Table extends ActiveRecord
 	}
 
 	/**
-	 * @see		CActiveRecord::tableName()
+	 * @see		ActiveRecord::tableName()
 	 */
 	public function tableName()
 	{
@@ -100,7 +101,7 @@ class Table extends ActiveRecord
 	}
 
 	/**
-	 * @see		CActiveRecord::primaryKey()
+	 * @see		ActiveRecord::primaryKey()
 	 */
 	public function primaryKey()
 	{
@@ -111,23 +112,23 @@ class Table extends ActiveRecord
 	}
 
 	/**
-	 * @see		CActiveRecord:.safeAttributes()
+	 * @see		ActiveRecord::rules()
 	 */
-	public function safeAttributes()
+	public function rules()
 	{
 		return array(
-			'TABLE_NAME',
-			'TABLE_COLLATION',
-			'ENGINE',
-			'comment',
-			'optionPackKeys',
-			'optionDelayKeyWrite',
-			'optionChecksum',
+			array('TABLE_NAME', 'type', 'type' => 'string'),
+			array('TABLE_COLLATION', 'type', 'type' => 'string'),
+			array('ENGINE', 'type', 'type' => 'string'),
+			array('comment', 'type', 'type' => 'string'),
+			array('optionPackKeys', 'type', 'type' => 'string'),
+			array('optionDelayKeyWrite', 'type', 'type' => 'string'),
+			array('optionChecksum', 'type', 'type' => 'string'),
 		);
 	}
 
 	/**
-	 * @see		CActiveRecord::relations()
+	 * @see		ActiveRecord::relations()
 	 */
 	public function relations()
 	{
@@ -141,7 +142,7 @@ class Table extends ActiveRecord
 	}
 
 	/**
-	 * @see		CModel::attributeLabels()
+	 * @see		ActiveRecord::attributeLabels()
 	 */
 	public function attributeLabels()
 	{
@@ -339,10 +340,12 @@ class Table extends ActiveRecord
 	
 	/**
 	 * Returns true, because all tables are updatable.
-	 * @return bool
+	 * 
+	 * @return	bool
 	 */
 	public function getIsUpdatable()
 	{
 		return true;
 	}
+	
 }

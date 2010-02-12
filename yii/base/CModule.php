@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -14,7 +14,7 @@
  * CModule mainly manages application components and sub-modules.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CModule.php 1091 2009-06-05 00:39:02Z qiang.xue $
+ * @version $Id: CModule.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.base
  * @since 1.0.4
  */
@@ -158,7 +158,11 @@ abstract class CModule extends CComponent
 		if($this->_params!==null)
 			return $this->_params;
 		else
-			return $this->_params=new CAttributeCollection;
+		{
+			$this->_params=new CAttributeCollection;
+			$this->_params->caseSensitive=true;
+			return $this->_params;
+		}
 	}
 
 	/**
@@ -245,7 +249,7 @@ abstract class CModule extends CComponent
 	 */
 	public function getModule($id)
 	{
-		if(array_key_exists($id,$this->_modules))
+		if(isset($this->_modules[$id]) || array_key_exists($id,$this->_modules))
 			return $this->_modules[$id];
 		else if(isset($this->_moduleConfig[$id]))
 		{

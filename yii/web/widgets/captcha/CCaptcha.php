@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -28,7 +28,7 @@
  * a verification code matching the code displayed in the CAPTCHA image.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCaptcha.php 1285 2009-08-01 01:57:50Z qiang.xue $
+ * @version $Id: CCaptcha.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.web.widgets.captcha
  * @since 1.0
  */
@@ -95,7 +95,7 @@ class CCaptcha extends CWidget
 		else
 			$id=$this->imageOptions['id']=$this->getId();
 		$url=$this->getController()->createUrl($this->captchaAction);
-		$alt=isset($imageOptions['alt'])?$imageOptions['alt']:'';
+		$alt=isset($this->imageOptions['alt'])?$this->imageOptions['alt']:'';
 		echo CHtml::image($url,$alt,$this->imageOptions);
 	}
 

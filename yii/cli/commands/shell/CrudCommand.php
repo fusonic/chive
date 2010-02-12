@@ -4,16 +4,16 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: CrudCommand.php 1266 2009-07-21 20:59:34Z qiang.xue $
+ * @version $Id: CrudCommand.php 1678 2010-01-07 21:02:00Z qiang.xue $
  */
 
 /**
  * CrudCommand generates code implementing CRUD operations.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CrudCommand.php 1266 2009-07-21 20:59:34Z qiang.xue $
+ * @version $Id: CrudCommand.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.cli.commands.shell
  * @since 1.0
  */
@@ -27,9 +27,15 @@ class CrudCommand extends CConsoleCommand
 	 */
 	public $templatePath;
 	/**
+	 * @var string the directory that contains functional test classes.
+	 * Defaults to null, meaning using 'protected/tests/functional'.
+	 * If this is false, it means functional test file should NOT be generated.
+	 */
+	public $functionalTestPath;
+	/**
 	 * @var array list of actions to be created. Each action must be associated with a template file with the same name.
 	 */
-	public $actions=array('create','update','list','show','admin','_form');
+	public $actions=array('create','update','index','view','admin','_form','_view');
 
 	public function getHelp()
 	{
@@ -139,7 +145,11 @@ EOD;
 		}
 
 		$templatePath=$this->templatePath===null?YII_PATH.'/cli/views/shell/crud':$this->templatePath;
+		$functionalTestPath=$this->functionalTestPath===null?Yii::getPathOfAlias('application.tests.functional'):$this->functionalTestPath;
+
 		$viewPath=$module->viewPath.DIRECTORY_SEPARATOR.str_replace('.',DIRECTORY_SEPARATOR,$controllerID);
+		$fixtureName=$this->pluralize($modelClass);
+		$fixtureName[0]=strtolower($fixtureName);
 		$list=array(
 			basename($controllerFile)=>array(
 				'source'=>$templatePath.'/controller.php',
@@ -148,6 +158,16 @@ EOD;
 				'params'=>array($controllerClass,$modelClass),
 			),
 		);
+
+		if($functionalTestPath!==false)
+		{
+			$list[$modelClass.'Test.php']=array(
+				'source'=>$templatePath.'/test.php',
+				'target'=>$functionalTestPath.DIRECTORY_SEPARATOR.$modelClass.'Test.php',
+				'callback'=>array($this,'generateTest'),
+				'params'=>array($controllerID,$fixtureName,$modelClass),
+			);
+		}
 
 		foreach($this->actions as $action)
 		{
@@ -195,19 +215,24 @@ EOD;
 		$model=CActiveRecord::model($modelClass);
 		$table=$model->getTableSchema();
 		$columns=$table->columns;
-		unset($columns[$table->primaryKey]);
-		if(basename($source)==='admin.php')
-		{
-			foreach($columns as $name=>$column)
-				if(stripos($column->dbType,'text')!==false)
-					unset($columns[$name]);
-		}
 		if(!is_file($source))  // fall back to default ones
 			$source=YII_PATH.'/cli/views/shell/crud/'.basename($source);
 		return $this->renderFile($source,array(
 			'ID'=>$table->primaryKey,
 			'modelClass'=>$modelClass,
 			'columns'=>$columns),true);
+	}
+
+	public function generateTest($source,$params)
+	{
+		list($controllerID,$fixtureName,$modelClass)=$params;
+		if(!is_file($source))  // fall back to default ones
+			$source=YII_PATH.'/cli/views/shell/crud/'.basename($source);
+		return $this->renderFile($source, array(
+			'controllerID'=>$controllerID,
+			'fixtureName'=>$fixtureName,
+			'modelClass'=>$modelClass,
+		),true);
 	}
 
 	public function generateInputLabel($modelClass,$column)
@@ -237,5 +262,32 @@ EOD;
 				return "CHtml::{$inputField}(\$model,'{$column->name}',array('size'=>$size,'maxlength'=>$maxLength))";
 			}
 		}
+	}
+
+	public function guessNameColumn($columns)
+	{
+		foreach($columns as $column)
+		{
+			if(!strcasecmp($column->name,'name'))
+				return $column->name;
+		}
+		foreach($columns as $column)
+		{
+			if(!strcasecmp($column->name,'title'))
+				return $column->name;
+		}
+		foreach($columns as $column)
+		{
+			if($column->isPrimaryKey)
+				return $column->name;
+		}
+		return 'id';
+	}
+
+	public function class2name($className,$pluralize=false)
+	{
+		if($pluralize)
+			$className=$this->pluralize($className);
+		return ucwords(trim(strtolower(str_replace(array('-','_'),' ',preg_replace('/(?<![A-Z])[A-Z]/', ' \0', $className)))));
 	}
 }

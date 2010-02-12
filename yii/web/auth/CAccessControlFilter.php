@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -42,7 +42,7 @@
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CAccessControlFilter.php 1280 2009-07-25 11:16:36Z qiang.xue $
+ * @version $Id: CAccessControlFilter.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.web.auth
  * @since 1.0
  */
@@ -129,7 +129,7 @@ class CAccessControlFilter extends CFilter
  * CAccessRule represents an access rule that is managed by {@link CAccessControlFilter}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CAccessControlFilter.php 1280 2009-07-25 11:16:36Z qiang.xue $
+ * @version $Id: CAccessControlFilter.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.web.auth
  * @since 1.0
  */
@@ -172,6 +172,13 @@ class CAccessRule extends CComponent
 	/**
 	 * @var string a PHP expression whose value indicates whether this rule should be applied.
 	 * In this expression, you can use <code>$user</code> which refers to <code>Yii::app()->user</code>.
+	 * Starting from version 1.0.11, the expression can also be a valid PHP callback,
+	 * including class method name (array(ClassName/Object, MethodName)),
+	 * or anonymous function (PHP 5.3.0+). The function/method signature should be as follows:
+	 * <pre>
+	 * function foo($user, $rule) { ... }
+	 * </pre>
+	 * where $user is the current application user object and $rule is this access rule.
 	 * @since 1.0.3
 	 */
 	public $expression;
@@ -290,6 +297,7 @@ class CAccessRule extends CComponent
 	{
 		if($this->expression===null)
 			return true;
-		return @eval('return '.$this->expression.';');
+		else
+			return $this->evaluateExpression($this->expression, array('user'=>$user));
 	}
 }

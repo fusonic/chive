@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -41,7 +41,7 @@
  * CCache also implements ArrayAccess so that it can be used like an array.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCache.php 1290 2009-08-06 16:13:11Z qiang.xue $
+ * @version $Id: CCache.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.caching
  * @since 1.0
  */
@@ -106,19 +106,26 @@ abstract class CCache extends CApplicationComponent implements ICache, ArrayAcce
 	 */
 	public function mget($ids)
 	{
-		$values=$this->getValues($ids);
+		$uniqueIDs=array();
 		$results=array();
-		foreach($values as $id=>$value)
+		foreach($ids as $id)
 		{
-			$data=unserialize($value);
+			$uniqueIDs[$id]=$this->generateUniqueKey($id);
+			$results[$id]=false;
+		}
+		$values=$this->getValues($uniqueIDs);
+		foreach($uniqueIDs as $id=>$uniqueID)
+		{
+			if(!isset($values[$uniqueID]))
+				continue;
+			$data=unserialize($values[$uniqueID]);
 			if(is_array($data) && (!($data[1] instanceof ICacheDependency) || !$data[1]->getHasChanged()))
 			{
 				Yii::trace('Serving "'.$id.'" from cache','system.caching.'.get_class($this));
 				$results[$id]=$data[0];
 			}
-			else
-				$results[$id]=false;
 		}
+		return $results;
 	}
 
 	/**

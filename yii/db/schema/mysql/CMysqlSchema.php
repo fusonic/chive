@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -12,7 +12,7 @@
  * CMysqlSchema is the class for retrieving metadata information from a MySQL database (version 4.1.x and 5.x).
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMysqlSchema.php 631 2009-02-06 12:22:04Z qiang.xue $
+ * @version $Id: CMysqlSchema.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.db.schema.mysql
  * @since 1.0
  */
@@ -52,6 +52,38 @@ class CMysqlSchema extends CDbSchema
 	public function compareTableNames($name1,$name2)
 	{
 		return parent::compareTableNames(strtolower($name1),strtolower($name2));
+	}
+
+	/**
+	 * Resets the sequence value of a table's primary key.
+	 * The sequence will be reset such that the primary key of the next new row inserted
+	 * will have the specified value or 1.
+	 * @param CDbTableSchema the table schema whose primary key sequence will be reset
+	 * @param mixed the value for the primary key of the next new row inserted. If this is not set,
+	 * the next new row's primary key will have a value 1.
+	 * @since 1.1
+	 */
+	public function resetSequence($table,$value=null)
+	{
+		if($table->sequenceName!==null)
+		{
+			if($value===null)
+				$value=$this->getDbConnection()->createCommand("SELECT MAX(`{$table->primaryKey}`) FROM {$table->rawName}")->queryScalar()+1;
+			else
+				$value=(int)$value;
+			$this->getDbConnection()->createCommand("ALTER TABLE {$table->rawName} AUTO_INCREMENT=$value")->execute();
+		}
+	}
+
+	/**
+	 * Enables or disables integrity check.
+	 * @param boolean whether to turn on or off the integrity check.
+	 * @param string the schema of the tables. Defaults to empty string, meaning the current or default schema.
+	 * @since 1.1
+	 */
+	public function checkIntegrity($check=true,$schema='')
+	{
+		$this->getDbConnection()->createCommand('SET FOREIGN_KEY_CHECKS='.($check?1:0))->execute();
 	}
 
 	/**

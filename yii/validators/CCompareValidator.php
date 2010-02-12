@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -24,7 +24,7 @@
  * Previously, it only compares to see if two values are equal or not.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCompareValidator.php 1307 2009-08-07 17:50:52Z qiang.xue $
+ * @version $Id: CCompareValidator.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -44,10 +44,10 @@ class CCompareValidator extends CValidator
 	 */
 	public $strict=false;
 	/**
-	 * @var boolean whether the attribute value can be null or empty. Defaults to true,
-	 * meaning that if the attribute is empty, it is considered valid.
+	 * @var boolean whether the attribute value can be null or empty. Defaults to false.
+	 * If this is true, it means the attribute is considered valid when it is empty.
 	 */
-	public $allowEmpty=true;
+	public $allowEmpty=false;
 	/**
 	 * @var string the operator for comparison. Defaults to '='.
 	 * The followings are valid operators:
@@ -74,7 +74,7 @@ class CCompareValidator extends CValidator
 	protected function validateAttribute($object,$attribute)
 	{
 		$value=$object->$attribute;
-		if($this->allowEmpty && ($value===null || $value===''))
+		if($this->allowEmpty && $this->isEmpty($value))
 			return;
 		if($this->compareValue!==null)
 			$compareTo=$compareValue=$this->compareValue;
@@ -132,20 +132,6 @@ class CCompareValidator extends CValidator
 				break;
 			default:
 				throw new CException(Yii::t('yii','Invalid operator "{operator}".',array('{operator}'=>$this->operator)));
-		}
-	}
-
-	protected function compareValues($value,$value2)
-	{
-		switch($this->operator)
-		{
-			case '=':
-			case '==':
-				return ($this->strict && $value===$compareValue) || (!$this->strict && $value==$compareValue);
-			case '!=':
-				return ($this->strict && $value!==$compareValue) || (!$this->strict && $value!=$compareValue);
-			case '>':
-				return $value>$compareValue;
 		}
 	}
 }

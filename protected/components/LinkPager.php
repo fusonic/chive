@@ -27,13 +27,14 @@ class LinkPager extends CLinkPager
 
 	public static $generateJsPage = true;
 	public static $generateJsPageSize = true;
-
+	
 	/**
-	 * Executes the widget.
-	 * This overrides the parent implementation by displaying the generated page buttons.
+	 * @see 	CLinkPager::init()
 	 */
-	public function run()
+	public function init()
 	{
+		$this->header = '';
+		
 		if($this->nextPageLabel === null)
 		{
 			$this->nextPageLabel = '&raquo;';
@@ -51,7 +52,15 @@ class LinkPager extends CLinkPager
 			$this->lastPageLabel = Yii::t('core', 'last');
 		}
 		$this->maxButtonCount = 5;
+		
+		parent::init();
+	}
 
+	/**
+	 * @see		CLinkPager::run()
+	 */
+	public function run()
+	{
 		$buttons = $this->createPageButtons();
 
 		if(empty($buttons))
@@ -74,8 +83,7 @@ class LinkPager extends CLinkPager
 	}
 
 	/**
-	 * Creates the page buttons.
-	 * @return array a list of page buttons (in HTML code).
+	 * |see		CLinkPager::createPageButtons()
 	 */
 	protected function createPageButtons()
 	{
@@ -199,7 +207,7 @@ class LinkPager extends CLinkPager
 	}
 
 	/**
-	 * @see CBasePager::createPageUrl()
+	 * @see 	CLinkPager::createPageUrl()
 	 */
 	protected function createPageUrl($page, $pageSize = null)
 	{
@@ -207,14 +215,7 @@ class LinkPager extends CLinkPager
 	}
 
 	/**
-	 * Creates a page button.
-	 * You may override this method to customize the page buttons.
-	 * @param string the text label for the button
-	 * @param integer the page number
-	 * @param string the CSS class for the page button. This could be 'page', 'first', 'last', 'next' or 'previous'.
-	 * @param boolean whether this page button is visible
-	 * @param boolean whether this page button is selected
-	 * @return string the generated button
+	 * @see		CLinkPager::createPageButton()
 	 */
 	protected function createPageButton($label,$page,$class,$hidden,$selected)
 	{

@@ -1,0 +1,4 @@
+web/helpers/CHtml.php
+---------------------
+* Added static property $idPrefix for inline forms
+* Added support for $idPrefix to methods label() and getIdByName()

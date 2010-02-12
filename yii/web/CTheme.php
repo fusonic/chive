@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -12,7 +12,7 @@
  * CTheme represents an application theme.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CTheme.php 837 2009-03-14 11:51:40Z qiang.xue $
+ * @version $Id: CTheme.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.web
  * @since 1.0
  */
@@ -73,6 +73,15 @@ class CTheme extends CComponent
 	public function getSystemViewPath()
 	{
 		return $this->getViewPath().DIRECTORY_SEPARATOR.'system';
+	}
+
+	/**
+	 * @return string the path for widget skins. Defaults to 'ThemeRoot/views/skins'.
+	 * @since 1.1
+	 */
+	public function getSkinPath()
+	{
+		return $this->getViewPath().DIRECTORY_SEPARATOR.'skins';
 	}
 
 	/**

@@ -4,15 +4,15 @@
  *
  * @author Ricardo Grana <rickgrana@yahoo.com.br>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
 /**
- * COciSchema is the class for retrieving metadata information from a PostgreSQL database.
+ * COciSchema is the class for retrieving metadata information from an Oracle database.
  *
- * @author Ricardo Grana <qiang.xue@gmail.com>
- * @version $Id: COciSchema.php 1108 2009-06-09 01:48:40Z qiang.xue $
+ * @author Ricardo Grana <rickgrana@yahoo.com.br>
+ * @version $Id: COciSchema.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.db.schema.oci
  * @since 1.0.5
  */
@@ -159,7 +159,7 @@ FROM ALL_TAB_COLUMNS A
 inner join ALL_OBJECTS B ON b.owner = a.owner and ltrim(B.OBJECT_NAME) = ltrim(A.TABLE_NAME)
 WHERE
     a.owner = '{$schemaName}'
-	and b.object_type = 'TABLE'
+	and (b.object_type = 'TABLE' or b.object_type = 'VIEW')
 	and b.object_name = '{$tableName}'
 ORDER by a.column_id
 EOD;
@@ -183,6 +183,7 @@ EOD;
 					$table->primaryKey=array($table->primaryKey,$c->name);
 				else
 					$table->primaryKey[]=$c->name;
+				$table->sequenceName='';
 			}
 		}
 		return true;
@@ -230,7 +231,7 @@ EOD;
 			if($row['CONSTRAINT_TYPE']==='R')   // foreign key
 			{
 				$name = $row["COLUMN_NAME"];
-				$table->foreignKeys[$name]=array($row["TABLE_REF"], array($row["COLUMN_REF"]));
+				$table->foreignKeys[$name]=array($row["TABLE_REF"], $row["COLUMN_REF"]);
 				if(isset($table->columns[$name]))
 					$table->columns[$name]->isForeignKey=true;
 			}

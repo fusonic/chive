@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -17,12 +17,14 @@
  * {@link tempName}, {@link type}, {@link size} and {@link error}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CUploadedFile.php 1191 2009-06-29 18:10:06Z qiang.xue $
+ * @version $Id: CUploadedFile.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.web
  * @since 1.0
  */
 class CUploadedFile extends CComponent
 {
+	static private $_files;
+
 	private $_name;
 	private $_tempName;
 	private $_type;
@@ -33,18 +35,26 @@ class CUploadedFile extends CComponent
 	 * Returns an instance of the specified uploaded file.
 	 * The file should be uploaded using {@link CHtml::activeFileField}.
 	 * @param CModel the model instance
-	 * @param string the attribute name. For tabular file uploading, this can be in the format of "attributeName[$i]", where $i stands for an integer index.
+	 * @param string the attribute name. For tabular file uploading, this can be in the format of "[$i]attributeName", where $i stands for an integer index.
 	 * @return CUploadedFile the instance of the uploaded file.
 	 * Null is returned if no file is uploaded for the specified model attribute.
 	 * @see getInstanceByName
 	 */
-	public static function getInstance($model,$attribute)
+	public static function getInstance($model, $attribute)
 	{
-		if(($pos=strpos($attribute,'['))!==false)
-			$name=get_class($model).substr($attribute,$pos).'['.substr($attribute,0,$pos).']';
-		else
-			$name=get_class($model).'['.$attribute.']';
-		return self::getInstanceByName($name);
+		return self::getInstanceByName(CHtml::resolveName($model, $attribute));
+	}
+
+	/**
+	 * Returns all uploaded files for the given model attribute.
+	 * @param CModel the model instance
+	 * @param string the attribute name. For tabular file uploading, this can be in the format of "[$i]attributeName", where $i stands for an integer index.
+	 * @return array array of CUploadedFile objects.
+	 * Empty array is returned if no available file was found for the given attribute.
+	 */
+	public static function getInstances($model, $attribute)
+	{
+		return self::getInstancesByName(CHtml::resolveName($model, $attribute));
 	}
 
 	/**
@@ -56,36 +66,66 @@ class CUploadedFile extends CComponent
 	 */
 	public static function getInstanceByName($name)
 	{
-		static $files;
-		if($files===null)
-		{
-			$files=array();
-			if(isset($_FILES) && is_array($_FILES))
-			{
-				foreach($_FILES as $class=>$info)
-				{
-					if(is_array($info['name']))
-					{
-						$keys=array_keys($info['name']);
-						foreach($keys as $key)
-						{
-							if(is_array($info['name'][$key]))
-							{
-								$subKeys=array_keys($info['name'][$key]);
-								foreach($subKeys as $subKey)
-									$files["{$class}[{$key}][{$subKey}]"]=new CUploadedFile($info['name'][$key][$subKey],$info['tmp_name'][$key][$subKey],$info['type'][$key][$subKey],$info['size'][$key][$subKey],$info['error'][$key][$subKey]);
-							}
-							else
-								$files["{$class}[{$key}]"]=new CUploadedFile($info['name'][$key],$info['tmp_name'][$key],$info['type'][$key],$info['size'][$key],$info['error'][$key]);
-						}
-					}
-					else
-						$files[$class]=new CUploadedFile($info['name'],$info['tmp_name'],$info['type'],$info['size'],$info['error']);
-				}
-			}
-		}
+		if(null===self::$_files)
+			self::prefetchFiles();
 
-		return isset($files[$name]) && $files[$name]->getError()!=UPLOAD_ERR_NO_FILE ? $files[$name] : null;
+		return isset(self::$_files[$name]) && self::$_files[$name]->getError()!=UPLOAD_ERR_NO_FILE ? self::$_files[$name] : null;
+	}
+
+	/**
+	 * Returns an array of instances for the specified array name.
+	 *
+	 * If multiple files were uploaded and saved as 'Files[0]', 'Files[1]',
+	 * 'Files[n]'..., you can have them all by passing 'Files' as array name.
+	 * @param string the name of the array of files
+	 * @return array the array of CUploadedFile objects. Empty array is returned
+	 * if no adequate upload was found. Please note that this array will contain
+	 * all files from all subarrays regardless how deeply nested they are.
+	 */
+	public static function getInstancesByName($name)
+	{
+		if(null===self::$_files)
+			self::prefetchFiles();
+
+		$len=strlen($name);
+		$results=array();
+		foreach(array_keys(self::$_files) as $key)
+			if(0===strncmp($key, $name, $len) && self::$_files[$key]->getError()!=UPLOAD_ERR_NO_FILE)
+				$results[] = self::$_files[$key];
+		return $results;
+	}
+
+	/**
+	 * Initially processes $_FILES superglobal for easier use.
+	 * Only for internal usage.
+	 */
+	protected static function prefetchFiles()
+	{
+		self::$_files = array();
+		if(!isset($_FILES) || !is_array($_FILES))
+			return;
+
+		foreach($_FILES as $class=>$info)
+			self::collectFilesRecursive($class, $info['name'], $info['tmp_name'], $info['type'], $info['size'], $info['error']);
+	}
+	/**
+	 * Processes incoming files for {@link getInstanceByName}.
+	 * @param string key for identifiing uploaded file: class name and subarray indexes
+	 * @param mixed file names provided by PHP
+	 * @param mixed temporary file names provided by PHP
+	 * @param mixed filetypes provided by PHP
+	 * @param mixed file sizes provided by PHP
+	 * @param mixed uploading issues provided by PHP
+	 */
+	protected static function collectFilesRecursive($key, $names, $tmp_names, $types, $sizes, $errors)
+	{
+		if(is_array($names))
+		{
+			foreach($names as $item=>$name)
+				self::collectFilesRecursive($key.'['.$item.']', $names[$item], $tmp_names[$item], $types[$item], $sizes[$item], $errors[$item]);
+		}
+		else
+			self::$_files[$key] = new CUploadedFile($names, $tmp_names, $types, $sizes, $errors);
 	}
 
 	/**
@@ -127,7 +167,7 @@ class CUploadedFile extends CComponent
 	 */
 	public function saveAs($file,$deleteTempFile=true)
 	{
-		if($this->_error===UPLOAD_ERR_OK)
+		if($this->_error==UPLOAD_ERR_OK)
 		{
 			if($deleteTempFile)
 				return move_uploaded_file($this->_tempName,$file);

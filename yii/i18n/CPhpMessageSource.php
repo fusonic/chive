@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -29,8 +29,15 @@
  * </ul>
  * When {@link cachingDuration} is set as a positive number, message translations will be cached.
  *
+ * Starting from version 1.0.10, messages for an extension class (e.g. a widget, a module) can be specially managed and used.
+ * In particular, if a message belongs to an extension whose class name is Xyz, then the message category
+ * can be specified in the format of 'Xyz.categoryName'. And the corresponding message file
+ * is assumed to be 'BasePath/messages/LanguageID/categoryName.php', where 'BasePath' refers to
+ * the directory that contains the extension class file. When using Yii::t() to translate an extension message,
+ * we should use: Yii::t('Xyz.categoryName', 'message to be translated').
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CPhpMessageSource.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: CPhpMessageSource.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.i18n
  * @since 1.0
  */
@@ -44,10 +51,19 @@ class CPhpMessageSource extends CMessageSource
 	 */
 	public $cachingDuration=0;
 	/**
+	 * @var string the ID of the cache application component that is used to cache the messages.
+	 * Defaults to 'cache' which refers to the primary cache application component.
+	 * Set this property to false if you want to disable caching the messages.
+	 * @since 1.0.10
+	 */
+	public $cacheID='cache';
+	/**
 	 * @var string the base path for all translated messages. Defaults to null, meaning
 	 * the "messages" subdirectory of the application directory (e.g. "protected/messages").
 	 */
 	public $basePath;
+
+	private $_files=array();
 
 	/**
 	 * Initializes the application component.
@@ -62,6 +78,34 @@ class CPhpMessageSource extends CMessageSource
 	}
 
 	/**
+	 * Determines the message file name based on the given category and language.
+	 * If the category name contains a dot, it will be split into the module class name and the category name.
+	 * In this case, the message file will be assumed to be located within the 'messages' subdirectory of
+	 * the directory containing the module class file.
+	 * Otherwise, the message file is assumed to be under the {@link basePath}.
+	 * @param string category name
+	 * @param string language ID
+	 * @return string the message file path
+	 * @since 1.0.10
+	 */
+	protected function getMessageFile($category,$language)
+	{
+		if(!isset($this->_files[$category][$language]))
+		{
+			if(($pos=strpos($category,'.'))!==false)
+			{
+				$moduleClass=substr($category,0,$pos);
+				$moduleCategory=substr($category,$pos+1);
+				$class=new ReflectionClass($moduleClass);
+				$this->_files[$category][$language]=dirname($class->getFileName()).DIRECTORY_SEPARATOR.'messages'.DIRECTORY_SEPARATOR.$language.DIRECTORY_SEPARATOR.$moduleCategory.'.php';
+			}
+			else
+				$this->_files[$category][$language]=$this->basePath.DIRECTORY_SEPARATOR.$language.DIRECTORY_SEPARATOR.$category.'.php';
+		}
+		return $this->_files[$category][$language];
+	}
+
+	/**
 	 * Loads the message translation for the specified language and category.
 	 * @param string the message category
 	 * @param string the target language
@@ -69,9 +113,9 @@ class CPhpMessageSource extends CMessageSource
 	 */
 	protected function loadMessages($category,$language)
 	{
-		$messageFile=$this->basePath.DIRECTORY_SEPARATOR.$language.DIRECTORY_SEPARATOR.$category.'.php';
+		$messageFile=$this->getMessageFile($category,$language);
 
-		if($this->cachingDuration>0 && ($cache=Yii::app()->getCache())!==null)
+		if($this->cachingDuration>0 && $this->cacheID!==false && ($cache=Yii::app()->getComponent($this->cacheID))!==null)
 		{
 			$key=self::CACHE_KEY_PREFIX . $messageFile;
 			if(($data=$cache->get($key))!==false)

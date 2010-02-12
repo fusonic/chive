@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -21,7 +21,7 @@
  * requests, call {@link run}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CWebService.php 1066 2009-05-26 15:23:48Z qiang.xue $
+ * @version $Id: CWebService.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.web.services
  * @since 1.0
  */
@@ -45,6 +45,13 @@ class CWebService extends CComponent
 	 * @var integer number of seconds that the generated WSDL can remain valid in cache. Defaults to 0, meaning no caching.
 	 */
 	public $wsdlCacheDuration=0;
+	/**
+	 * @var string the ID of the cache application component that is used to cache the generated WSDL.
+	 * Defaults to 'cache' which refers to the primary cache application component.
+	 * Set this property to false if you want to disable caching WSDL.
+	 * @since 1.0.10
+	 */
+	public $cacheID='cache';
 	/**
 	 * @var string encoding of the Web service. Defaults to 'UTF-8'.
 	 */
@@ -111,6 +118,7 @@ class CWebService extends CComponent
 	{
 		$wsdl=$this->generateWsdl();
 		header('Content-Type: text/xml;charset='.$this->encoding);
+		header('Content-Length: '.strlen($wsdl));
 		echo $wsdl;
 	}
 
@@ -123,7 +131,7 @@ class CWebService extends CComponent
 	public function generateWsdl()
 	{
 		$providerClass=is_object($this->provider) ? get_class($this->provider) : Yii::import($this->provider,true);
-		if($this->wsdlCacheDuration>0 && ($cache=Yii::app()->getCache())!==null)
+		if($this->wsdlCacheDuration>0 && $this->cacheID!==false && ($cache=Yii::app()->getComponent($this->cacheID))!==null)
 		{
 			$key='Yii.CWebService.'.$providerClass.$this->serviceUrl.$this->encoding;
 			if(($wsdl=$cache->get($key))!==false)
@@ -179,7 +187,8 @@ class CWebService extends CComponent
 			{
 				$message=$e->getMessage().' ('.$e->getFile().':'.$e->getLine().')';
 				// only log for non-PHP-error case because application's error handler already logs it
-				Yii::log((string)$e,CLogger::LEVEL_ERROR,'application');
+				// php <5.2 doesn't support string conversion auto-magically
+				Yii::log($e->__toString(),CLogger::LEVEL_ERROR,'application');
 			}
 			if(YII_DEBUG)
 				$message.="\n".$e->getTraceAsString();
@@ -236,7 +245,7 @@ class CWebService extends CComponent
  * CSoapObjectWrapper is a wrapper class internally used when SoapServer::setObject() is not defined.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CWebService.php 1066 2009-05-26 15:23:48Z qiang.xue $
+ * @version $Id: CWebService.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.web.services
  * @since 1.0.5
  */

@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -12,18 +12,27 @@
  * CDbCriteria represents a query criteria, such as conditions, ordering by, limit/offset.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCriteria.php 1041 2009-05-21 18:01:31Z qiang.xue $
+ * @version $Id: CDbCriteria.php 1697 2010-01-10 16:18:28Z qiang.xue $
  * @package system.db.schema
  * @since 1.0
  */
 class CDbCriteria
 {
+	const PARAM_PREFIX=':ycp';
+	private $_paramCount=0;
+
 	/**
 	 * @var mixed the columns being selected. This refers to the SELECT clause in an SQL
 	 * statement. The property can be either a string (column names separated by commas)
 	 * or an array of column names. Defaults to '*', meaning all columns.
 	 */
 	public $select='*';
+	/**
+	 * @var boolean whether to select distinct rows of data only. If this is set true,
+	 * the SELECT clause would be changed to SELECT DISTINCT.
+	 * @since 1.0.9
+	 */
+	public $distinct=false;
 	/**
 	 * @var string query condition. This refers to the WHERE clause in an SQL statement.
 	 * For example, <code>age>31 AND team=1</code>.
@@ -62,6 +71,27 @@ class CDbCriteria
 	 * @since 1.0.1
 	 */
 	public $having='';
+	/**
+	 * @var array the relational query criteria. This is used for fetching related objects in eager loading fashion.
+	 * This property is effective only when the criteria is passed as a parameter to the following methods of CActiveRecord:
+	 * <ul>
+	 * <li>{@link CActiveRecord::find()}</li>
+	 * <li>{@link CActiveRecord::findAll()}</li>
+	 * <li>{@link CActiveRecord::findByPk()}</li>
+	 * <li>{@link CActiveRecord::findAllByPk()}</li>
+	 * <li>{@link CActiveRecord::findByAttributes()}</li>
+	 * <li>{@link CActiveRecord::findAllByAttributes()}</li>
+	 * <li>{@link CActiveRecord::count()}</li>
+	 * </ul>
+	 * The property value will be used as the parameter to the {@link CActiveRecord::with()} method
+	 * to perform the eager loading. Please refer to {@link CActiveRecord::with()} on how to specify this parameter.
+	 * @since 1.1.0
+	 */
+	public $with;
+	/**
+	 * @var string the alias name of the table. If not set, it means the alias is 't'.
+	 */
+	public $alias;
 
 	/**
 	 * Constructor.
@@ -71,6 +101,126 @@ class CDbCriteria
 	{
 		foreach($data as $name=>$value)
 			$this->$name=$value;
+	}
+
+	/**
+	 * Appends a condition to the existing {@link condition}.
+	 * The new condition and the existing condition will be concatenated via the specified operator
+	 * which defaults to 'AND'.
+	 * The new condition can also be an array. In this case, all elements in the array
+	 * will be concatenated together via the operator.
+	 * This method handles the case when the existing condition is empty.
+	 * After calling this method, the {@link condition} property will be modified.
+	 * @param mixed the new condition. It can be either a string or an array of strings.
+	 * @param string the operator to join different conditions. Defaults to 'AND'.
+	 * @return CDbCriteria the criteria object itself
+	 * @since 1.0.9
+	 */
+	public function addCondition($condition,$operator='AND')
+	{
+		if(is_array($condition))
+		{
+			if($condition===array())
+				return $this;
+			$condition='('.implode(') '.$operator.' (',$condition).')';
+		}
+		if($this->condition==='')
+			$this->condition=$condition;
+		else
+			$this->condition='('.$this->condition.') '.$operator.' ('.$condition.')';
+		return $this;
+	}
+
+	/**
+	 * Appends a search condition to the existing {@link condition}.
+	 * The search condition and the existing condition will be concatenated via the specified operator
+	 * which defaults to 'AND'.
+	 * The search condition is generated using the SQL LIKE operator with the given column name and
+	 * search keyword.
+	 * @param string the column name (or a valid SQL expression)
+	 * @param string the search keyword. This interpretation of the keyword is affected by the next parameter.
+	 * @param boolean whether the keyword should be escaped if it contains characters % or _.
+	 * When this parameter is true (default), the special characters % (matches 0 or more characters)
+	 * and _ (matches a single character) will be escaped, and the keyword will be surrounded with a %
+	 * character on both ends. When this parameter is false, the keyword will be directly used for
+	 * matching without any change.
+	 * @param string the operator used to concatenate the new condition with the existing one.
+	 * Defaults to 'AND'.
+	 * @return CDbCriteria the criteria object itself
+	 * @since 1.0.10
+	 */
+	public function addSearchCondition($column,$keyword,$escape=true,$operator='AND')
+	{
+		if($escape)
+			$keyword='%'.strtr($keyword,array('%'=>'\%', '_'=>'\_')).'%';
+		$condition=$column.' LIKE '.self::PARAM_PREFIX.$this->_paramCount;
+		$this->params[self::PARAM_PREFIX.$this->_paramCount++]=$keyword;
+		return $this->addCondition($condition, $operator);
+	}
+
+	/**
+	 * Appends an IN condition to the existing {@link condition}.
+	 * The IN condition and the existing condition will be concatenated via the specified operator
+	 * which defaults to 'AND'.
+	 * The IN condition is generated by using the SQL IN operator which requires the specified
+	 * column value to be among the given list of values.
+	 * @param string the column name (or a valid SQL expression)
+	 * @param array list of values that the column value should be in
+	 * @param string the operator used to concatenate the new condition with the existing one.
+	 * Defaults to 'AND'.
+	 * @return CDbCriteria the criteria object itself
+	 * @since 1.0.10
+	 */
+	public function addInCondition($column,$values,$operator='AND')
+	{
+		if(($n=count($values))<1)
+			return $this->addCondition('0=1',$operator);
+		if($n===1)
+		{
+			if($values[0]===null)
+				return $this->addCondition($column.' IS NULL');
+			$condition=$column.'='.self::PARAM_PREFIX.$this->_paramCount;
+			$this->params[self::PARAM_PREFIX.$this->_paramCount++]=$values[0];
+		}
+		else
+		{
+			$params=array();
+			foreach($values as $value)
+			{
+				$params[]=self::PARAM_PREFIX.$this->_paramCount;
+				$this->params[self::PARAM_PREFIX.$this->_paramCount++]=$value;
+			}
+			$condition=$column.' IN ('.implode(', ',$params).')';
+		}
+		return $this->addCondition($condition,$operator);
+	}
+
+	/**
+	 * Appends a condition for matching the given list of column values.
+	 * The generated condition will be concatenated to the existing {@link condition}
+	 * via the specified operator which defaults to 'AND'.
+	 * The condition is generated by matching each column and the corresponding value.
+	 * @param array list of column names and values to be matched (name=>value)
+	 * @param string the operator to concatenate multiple column matching condition. Defaults to 'AND'.
+	 * @param string the operator used to concatenate the new condition with the existing one.
+	 * Defaults to 'AND'.
+	 * @return CDbCriteria the criteria object itself
+	 * @since 1.0.10
+	 */
+	public function addColumnCondition($columns,$columnOperator='AND',$operator='AND')
+	{
+		$params=array();
+		foreach($columns as $name=>$value)
+		{
+			if($value===null)
+				$params[]=$name.' IS NULL';
+			else
+			{
+				$params[]=$name.'='.self::PARAM_PREFIX.$this->_paramCount;
+				$this->params[self::PARAM_PREFIX.$this->_paramCount++]=$value;
+			}
+		}
+		return $this->addCondition(implode(" $columnOperator ",$params), $operator);
 	}
 
 	/**
@@ -119,12 +269,15 @@ class CDbCriteria
 		if($criteria->offset>=0)
 			$this->offset=$criteria->offset;
 
+		if($criteria->alias!==null)
+			$this->alias=$criteria->alias;
+
 		if($this->order!==$criteria->order)
 		{
 			if($this->order==='')
 				$this->order=$criteria->order;
 			else if($criteria->order!=='')
-				$this->order.=', '.$criteria->order;
+				$this->order=$criteria->order.', '.$this->order;
 		}
 
 		if($this->group!==$criteria->group)
@@ -150,6 +303,9 @@ class CDbCriteria
 			else if($criteria->having!=='')
 				$this->having="({$this->having}) $and ({$criteria->having})";
 		}
+
+		if($criteria->distinct>0)
+			$this->distinct=$criteria->distinct;
 	}
 
 	/**
@@ -159,7 +315,7 @@ class CDbCriteria
 	public function toArray()
 	{
 		$result=array();
-		foreach(array('select', 'condition', 'params', 'limit', 'offset', 'order', 'group', 'join', 'having') as $name)
+		foreach(array('select', 'condition', 'params', 'limit', 'offset', 'order', 'group', 'join', 'having', 'distinct', 'with', 'alias') as $name)
 			$result[$name]=$this->$name;
 		return $result;
 	}

@@ -19,9 +19,10 @@
  * You should have received a copy of the GNU General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
+
+
 class BrowsePage extends CModel
 {
-
 
 	/*
 	 * Private properties
@@ -72,11 +73,6 @@ class BrowsePage extends CModel
 	}
 
 	public function attributeNames()
-	{
-		return array();
-	}
-
-	public function safeAttributes()
 	{
 		return array();
 	}

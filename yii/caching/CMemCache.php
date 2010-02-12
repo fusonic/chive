@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -52,7 +52,7 @@
  * To do so, set {@link useMemcached} to be true.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMemCache.php 1290 2009-08-06 16:13:11Z qiang.xue $
+ * @version $Id: CMemCache.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.caching
  * @since 1.0
  */
@@ -148,7 +148,7 @@ class CMemCache extends CCache
 	 */
 	protected function getValues($keys)
 	{
-		return array_combine($keys,$this->_cache->get($keys));
+		return $this->useMemcached ? $this->_cache->getMulti($keys) : $this->_cache->get($keys);
 	}
 
 	/**
@@ -167,7 +167,7 @@ class CMemCache extends CCache
 		else
 			$expire=0;
 
-		return $this->_cache->set($key,$value,0,$expire);
+		return $this->useMemcached ? $this->_cache->set($key,$value,$expire) : $this->_cache->set($key,$value,0,$expire);
 	}
 
 	/**
@@ -186,7 +186,7 @@ class CMemCache extends CCache
 		else
 			$expire=0;
 
-		return $this->_cache->add($key,$value,0,$expire);
+		return $this->useMemcached ? $this->_cache->add($key,$value,$expire) : $this->_cache->add($key,$value,0,$expire);
 	}
 
 	/**
@@ -217,7 +217,7 @@ class CMemCache extends CCache
  * for detailed explanation of each configuration property.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMemCache.php 1290 2009-08-06 16:13:11Z qiang.xue $
+ * @version $Id: CMemCache.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.caching
  * @since 1.0
  */

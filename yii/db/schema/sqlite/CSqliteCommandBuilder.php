@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -12,7 +12,7 @@
  * CSqliteCommandBuilder provides basic methods to create query commands for SQLite tables.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CSqliteCommandBuilder.php 840 2009-03-15 22:36:06Z qiang.xue $
+ * @version $Id: CSqliteCommandBuilder.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.db.schema.sqlite
  * @since 1.0
  */

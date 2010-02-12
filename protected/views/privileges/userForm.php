@@ -43,12 +43,11 @@ var idPrefix = '<?php echo CHtml::$idPrefix; ?>';
 					<?php echo CHtml::activeLabel($user, 'plainPassword'); ?>
 				</td>
 				<td colspan="2">
-					<?php if($user->isNewRecord) { ?>
-						<?php echo CHtml::activeTextField($user, 'plainPassword'); ?>
-					<?php } else { ?>
-						<?php echo CHtml::activeTextField($user, 'plainPassword'); ?>
+					<?php echo CHtml::activeTextField($user, 'plainPassword'); ?>
+					<?php if(!$user->isNewRecord) { ?>
+						<br />
 						<?php echo CHtml::checkBox('User[keepPw]', !isset($_POST['User']['plainPassword'])); ?>
-						<?php echo CHtml::label(Yii::t('core', 'keep'), 'User_plainPassword'); ?>
+						<?php echo CHtml::label(Yii::t('core', 'keepPassword'), 'User_keepPw'); ?>
 					<?php } ?>
 				</td>
 			</tr>

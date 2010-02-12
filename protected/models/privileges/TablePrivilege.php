@@ -63,30 +63,21 @@ class TablePrivilege extends CActiveRecord
 	}
 
 	/**
-	 * @see		CActiveRecord::safeAttributes()
+	 * @see		CActiveRecord::rules()
 	 */
-	public function safeAttributes()
+	public function rules()
 	{
 		return array(
-			'Host',
-			'User',
-			'Db',
-			'Table_name',
-			'Privileges',
+			array('Host', 'type', 'type' => 'string'),
+			array('User', 'type', 'type' => 'string'),
+			array('Db', 'type', 'type' => 'string'),
+			array('Table_name', 'type', 'type' => 'string'),
+			array('Privileges', 'type', 'type' => 'string'),
 		);
 	}
 
 	/**
-	 * @see		CActiveRecord::relations()
-	 */
-	public function relations()
-	{
-		return array(
-		);
-    }
-
-	/**
-	 * @return array customized attribute labels (name=>label)
+	 * @see		CActiveRecord::attributeLabels()
 	 */
 	public function attributeLabels()
 	{

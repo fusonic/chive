@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -14,7 +14,7 @@
  * CAutoComplete is based on the {@link http://plugins.jquery.com/project/autocompletex jQuery Autocomplete}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CAutoComplete.php 913 2009-04-04 02:01:48Z qiang.xue $
+ * @version $Id: CAutoComplete.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.web.widgets
  * @since 1.0
  */
@@ -179,6 +179,9 @@ class CAutoComplete extends CInputWidget
 	/**
 	 * @var array additional options that can be passed to the constructor of the autocomplete js object.
 	 * This allows you to override existing functions of the autocomplete js class (e.g. the parse() function)
+	 *
+	 * If you want to provide JavaScript native code, you have to prefix the string with js: otherwise it will
+	 * be enclosed by quotes.
 	 */
 	public $options=array();
 	/**
@@ -196,11 +199,16 @@ class CAutoComplete extends CInputWidget
 	public function init()
 	{
 		list($name,$id)=$this->resolveNameID();
-		$this->htmlOptions['id']=$id;
-		$this->htmlOptions['name']=$name;
+		if(isset($this->htmlOptions['id']))
+			$id=$this->htmlOptions['id'];
+		else
+			$this->htmlOptions['id']=$id;
+		if(isset($this->htmlOptions['name']))
+			$name=$this->htmlOptions['name'];
+		else
+			$this->htmlOptions['name']=$name;
 
 		$this->registerClientScript();
-
 
 		if($this->hasModel())
 		{

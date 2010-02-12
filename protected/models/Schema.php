@@ -29,7 +29,7 @@ class Schema extends ActiveRecord
 	public $DEFAULT_COLLATION_NAME = Collation::DEFAULT_COLLATION;
 
 	/**
-	 * @see		CActiveRecord::model()
+	 * @see		ActiveRecord::model()
 	 */
 	public static function model($className = __CLASS__)
 	{
@@ -37,7 +37,7 @@ class Schema extends ActiveRecord
 	}
 
 	/**
-	 * @see		CActiveRecord::tableName()
+	 * @see		ActiveRecord::tableName()
 	 */
 	public function tableName()
 	{
@@ -45,7 +45,7 @@ class Schema extends ActiveRecord
 	}
 
 	/**
-	 * @see		CActiveRecord::primaryKey()
+	 * @see		ActiveRecord::primaryKey()
 	 */
 	public function primaryKey()
 	{
@@ -53,23 +53,23 @@ class Schema extends ActiveRecord
 	}
 
 	/**
-	 * @see		CActiveRecord::safeAttributes()
+	 * @see		ActiveRecord::rules()
 	 */
-	public function safeAttributes()
+	public function rules()
 	{
 		return array(
-			'SCHEMA_NAME',
-			'DEFAULT_COLLATION_NAME',
+			array('SCHEMA_NAME', 'type', 'type' => 'string'),
+			array('DEFAULT_COLLATION_NAME', 'type', 'type' => 'string'),
 		);
 	}
 
 	/**
-	 * @see		CActiveRecord::relations()
+	 * @see		ActiveRecord::relations()
 	 */
 	public function relations()
 	{
 		return array(
-			'tables' => array(self::HAS_MANY, 'Table', 'TABLE_SCHEMA', 'condition' => '??.TABLE_TYPE IS NULL OR ??.TABLE_TYPE NOT IN (\'VIEW\')'),
+			'tables' => array(self::HAS_MANY, 'Table', 'TABLE_SCHEMA', 'condition' => 'tables.TABLE_TYPE IS NULL OR tables.TABLE_TYPE NOT IN (\'VIEW\')'),
 			'views' => array(self::HAS_MANY, 'View', 'TABLE_SCHEMA'),
 			'collation' => array(self::BELONGS_TO, 'Collation', 'DEFAULT_COLLATION_NAME'),
 			'routines' => array(self::HAS_MANY, 'Routine', 'ROUTINE_SCHEMA'),
@@ -77,7 +77,7 @@ class Schema extends ActiveRecord
 	}
 
 	/**
-	 * @see		CActiveRecord::attributeLabels()
+	 * @see		ActiveRecord::attributeLabels()
 	 */
 	public function attributeLabels()
 	{

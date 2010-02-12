@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -15,7 +15,7 @@
  * in the controller, where the name 'XYZ' can be retrieved from the {@link name} property.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CInlineFilter.php 511 2009-01-12 15:16:40Z qiang.xue $
+ * @version $Id: CInlineFilter.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.web.filters
  * @since 1.0
  */

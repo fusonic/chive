@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -14,7 +14,7 @@
  * under the specified directory.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: MessageCommand.php 933 2009-04-14 01:39:17Z qiang.xue@gmail.com $
+ * @version $Id: MessageCommand.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.cli.commands
  * @since 1.0
  */

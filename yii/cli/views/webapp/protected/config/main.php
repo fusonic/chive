@@ -20,6 +20,27 @@ return array(
 
 	// application components
 	'components'=>array(
+		'user'=>array(
+			// enable cookie-based authentication
+			'allowAutoLogin'=>true,
+		),
+		'db'=>array(
+			'connectionString' => 'sqlite:protected/data/testdrive.db',
+		),
+		// uncomment the following to use a MySQL database
+		/*
+		'db'=>array(
+			'connectionString' => 'mysql:host=localhost;dbname=testdrive',
+			'emulatePrepare' => true,
+			'username' => 'root',
+			'password' => '',
+			'charset' => 'utf8',
+		),
+		*/
+		'errorHandler'=>array(
+			// use 'site/error' action to display errors
+            'errorAction'=>'site/error',
+        ),
 		'log'=>array(
 			'class'=>'CLogRouter',
 			'routes'=>array(
@@ -27,18 +48,14 @@ return array(
 					'class'=>'CFileLogRoute',
 					'levels'=>'error, warning',
 				),
+				// uncomment the following to show log messages on web pages
+				/*
+				array(
+					'class'=>'CWebLogRoute',
+				),
+				*/
 			),
 		),
-		'user'=>array(
-			// enable cookie-based authentication
-			'allowAutoLogin'=>true,
-		),
-		// uncomment the following to set up database
-		/*
-		'db'=>array(
-			'connectionString'=>'Your DSN',
-		),
-		*/
 	),
 
 	// application-level parameters that can be accessed

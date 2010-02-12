@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -21,7 +21,7 @@
  * You can also specify {@link connectionID} so that it makes use of a DB application component to access database.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbHttpSession.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: CDbHttpSession.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.web
  * @since 1.0
  */
@@ -140,12 +140,11 @@ CREATE TABLE $tableName
 	public function readSession($id)
 	{
 		$now=time();
-		$id=md5($id);
 		$sql="
 SELECT data FROM {$this->sessionTableName}
-WHERE expire>$now AND id='$id'
+WHERE expire>$now AND id=:id
 ";
-		$data=$this->getDbConnection()->createCommand($sql)->queryScalar();
+		$data=$this->getDbConnection()->createCommand($sql)->bindValue(':id',$id)->queryScalar();
 		return $data===false?'':$data;
 	}
 
@@ -159,16 +158,13 @@ WHERE expire>$now AND id='$id'
 	public function writeSession($id,$data)
 	{
 		$expire=time()+$this->getTimeout();
-		$id=md5($id);
 		$db=$this->getDbConnection();
-		$sql="SELECT id FROM {$this->sessionTableName} WHERE id='$id'";
-		if($db->createCommand($sql)->queryScalar()===false)
-			$sql="INSERT INTO {$this->sessionTableName} (id, data, expire) VALUES ('$id', :data, $expire)";
+		$sql="SELECT id FROM {$this->sessionTableName} WHERE id=:id";
+		if($db->createCommand($sql)->bindValue(':id',$id)->queryScalar()===false)
+			$sql="INSERT INTO {$this->sessionTableName} (id, data, expire) VALUES (:id, :data, $expire)";
 		else
-			$sql="UPDATE {$this->sessionTableName} SET expire=$expire, data=:data WHERE id='$id'";
-		$command=$db->createCommand($sql);
-		$command->bindParam(':data',$data);
-		$command->execute();
+			$sql="UPDATE {$this->sessionTableName} SET expire=$expire, data=:data WHERE id=:id";
+		$db->createCommand($sql)->bindValue(':id',$id)->bindValue(':data',$data)->execute();
 		return true;
 	}
 
@@ -180,9 +176,8 @@ WHERE expire>$now AND id='$id'
 	 */
 	public function destroySession($id)
 	{
-		$id=md5($id);
-		$sql="DELETE FROM {$this->sessionTableName} WHERE id='$id'";
-		$this->getDbConnection()->createCommand($sql)->execute();
+		$sql="DELETE FROM {$this->sessionTableName} WHERE id=:id";
+		$this->getDbConnection()->createCommand($sql)->bindValue(':id',$id)->execute();
 		return true;
 	}
 

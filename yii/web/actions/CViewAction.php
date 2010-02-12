@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -23,7 +23,7 @@
  * the first letter must be a word letter.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CViewAction.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: CViewAction.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.web.actions
  * @since 1.0
  */
@@ -79,7 +79,7 @@ class CViewAction extends CAction
 	{
 		if($this->_viewPath===null)
 		{
-			if(isset($_GET[$this->viewParam]) && !empty($_GET[$this->viewParam]))
+			if(!empty($_GET[$this->viewParam]))
 				$this->_viewPath=$_GET[$this->viewParam];
 			else
 				$this->_viewPath=$this->defaultView;

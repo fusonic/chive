@@ -19,20 +19,26 @@
  * You should have received a copy of the GNU General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
-class ConfigUtil {
+
+
+class ConfigUtil 
+{
 	
 	/**
 	 * Checks if allow_url_fopen is on or off
 	 *
-	 * @return bool
+	 * @return	bool
 	 */
-	public static function getUrlFopen() {
-		
+	public static function getUrlFopen() 
+	{
 		if(ini_get("allow_url_fopen"))
+		{
 			return true;
+		}
 		else
+		{
 			return false;
-		
+		}
 	}
 	
 	/**
@@ -41,48 +47,54 @@ class ConfigUtil {
 	 * @param	bool		return as formatted string
 	 * @return	mixed
 	 */
-	public static function getMaxUploadSize($_asString = false, $_value = null) {
-		
+	public static function getMaxUploadSize($_asString = false, $_value = null) 
+	{
 		$maxUpload = ConfigUtil::ini2bytes(ini_get("upload_max_filesize"));
 		$maxPost = ConfigUtil::ini2bytes(ini_get("post_max_size"));
 		
-		if($_value != null) {
+		if($_value != null) 
+		{
 			if($_value < $maxUpload)
+			{
 				$maxUpload = $_value;
+			}
 			if($_value < $maxPost)
+			{
 				$maxPost = $_value;
+			}
 		}
 		
 		if($maxPost < $maxUpload)
+		{
 			$maxUpload = $maxPost;
+		}
 			
 		if($_asString)
+		{
 			return Formatter::fileSize($maxUpload);
+		}
 		else
+		{
 			return $maxUpload;
-		
+		}
 	}
 	
-	public static function ini2bytes($_value) {
-
+	public static function ini2bytes($_value) 
+	{
 	   $_value = trim($_value);
 	   $last = strtolower(substr($_value, strlen($_value) - 1));
 
-	   switch($last) {
-
+	   switch($last) 
+	   {
 	       case 'g':
 	           $_value *= 1024;
-
 	       case 'm':
 	           $_value *= 1024;
-
 	       case 'k':
 	           $_value *= 1024;
-
 	   }
 
 	   return (int)$_value;
-
 	}
 	
 }

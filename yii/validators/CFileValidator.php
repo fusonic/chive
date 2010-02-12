@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -15,20 +15,31 @@
  * about the uploaded file. It then checks if a file is uploaded successfully,
  * if the file size is within the limit and if the file type is allowed.
  *
+ * This validator will attempt to fetch uploaded data if attribute is not
+ * previously set. Please note that this cannot be done if input is tabular:
+ * <pre>
+ *  foreach($models as $i=>$model)
+ *     $model->attribute = CUploadedFile::getInstance($model, "[$i]attribute");
+ * </pre>
+ * Please note that you must use {link CUploadedFile::getInstances} for multiple
+ * file uploads.
+ *
  * When using CFileValidator with an active record, the following code is often used:
  * <pre>
- *  // assuming the upload file field is generated using
- *  // CHtml::activeFileField($model,'file');
- *  $model->file=CUploadedFile::getInstance($model,'file');
- *  $model->fileSize=$file->size;
  *  if($model->save())
- *      $model->file->saveAs($path); // save the uploaded file
+ *  {
+ *     // single upload
+ *     $model->attribute->saveAs($path);
+ *     // multiple upload
+ *     foreach($model->attribute as $file)
+ *        $file->saveAs($path);
+ *  }
  * </pre>
  *
  * You can use {@link CFileValidator} to validate the file attribute.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFileValidator.php 1271 2009-07-22 20:25:46Z qiang.xue $
+ * @version $Id: CFileValidator.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -76,31 +87,66 @@ class CFileValidator extends CValidator
 	 * that is not listed among {@link extensions}.
 	 */
 	public $wrongType;
+	/**
+	 * @var integer the maximum file count the given attribute can hold.
+	 * It defaults to 1, meaning single file upload. By defining a higher number,
+	 * multiple uploads become possible.
+	 */
+	public $maxFiles=1;
+	/**
+	 * @var string the error message used if the count of multiple uploads exceeds
+	 * limit.
+	 */
+	public $tooMany;
 
 	/**
-	 * Validates the attribute of the object.
+	 * Set the attribute and then validates using {@link validateFile}.
 	 * If there is any error, the error message is added to the object.
 	 * @param CModel the object being validated
 	 * @param string the attribute being validated
 	 */
-	protected function validateAttribute($object,$attribute)
+	protected function validateAttribute($object, $attribute)
 	{
-		$file=$object->$attribute;
-		if(!($file instanceof CUploadedFile))
-			$file=CUploadedFile::getInstance($object,$attribute);
-
-		if($this->allowEmpty && ($file===null || $file->getError()==UPLOAD_ERR_NO_FILE))
-			return;
-
-		if($file===null || $file->getError()==UPLOAD_ERR_NO_FILE)
+		if($this->maxFiles > 1)
 		{
-			$message=$this->message!==null?$this->message : Yii::t('yii','{attribute} cannot be blank.');
-			$this->addError($object,$attribute,$message);
-			return;
+			$files=$object->$attribute;
+			if(!is_array($files))
+				$files = CUploadedFile::getInstances($object, $attribute);
+			if(array()===$files)
+				return $this->emptyAttribute($object, $attribute);
+			if(count($files) > $this->maxFiles)
+			{
+				$message=$this->tooMany!==null?$this->tooMany : Yii::t('yii', '{attribute} cannot accept more than {limit} files.');
+				$this->addError($object, $attribute, $message, array('{attribute}'=>$attribute, '{limit}'=>$this->maxFiles));
+			}
+			else
+				foreach($files as $file)
+					$this->validateFile($object, $attribute, $file);
 		}
+		else
+		{
+			$file = $object->$attribute;
+			if(!$file instanceof CUploadedFile)
+			{
+				$file = CUploadedFile::getInstance($object, $attribute);
+				if(null===$file)
+					return $this->emptyAttribute($object, $attribute);
+			}
+			$this->validateFile($object, $attribute, $file);
+		}
+	}
 
-		$error=$file->getError();
-		if($error==UPLOAD_ERR_INI_SIZE || $error==UPLOAD_ERR_FORM_SIZE || $this->maxSize!==null && $file->getSize()>$this->maxSize)
+	/**
+	 * Internally validates a file object.
+	 * @param CModel the object being validated
+	 * @param string the attribute being validated
+	 * @param CUploadedFile uploaded file passed to check against a set of rules
+	 */
+	protected function validateFile($object, $attribute, $file)
+	{
+		if(null===$file || ($error=$file->getError())==UPLOAD_ERR_NO_FILE)
+			return $this->emptyAttribute($object, $attribute);
+		else if($error==UPLOAD_ERR_INI_SIZE || $error==UPLOAD_ERR_FORM_SIZE || $this->maxSize!==null && $file->getSize()>$this->maxSize)
 		{
 			$message=$this->tooLarge!==null?$this->tooLarge : Yii::t('yii','The file "{file}" is too large. Its size cannot exceed {limit} bytes.');
 			$this->addError($object,$attribute,$message,array('{file}'=>$file->getName(), '{limit}'=>$this->getSizeLimit()));
@@ -131,6 +177,20 @@ class CFileValidator extends CValidator
 				$message=$this->wrongType!==null?$this->wrongType : Yii::t('yii','The file "{file}" cannot be uploaded. Only files with these extensions are allowed: {extensions}.');
 				$this->addError($object,$attribute,$message,array('{file}'=>$file->getName(), '{extensions}'=>implode(', ',$types)));
 			}
+		}
+	}
+
+	/**
+	 * Raises an error to inform end user about blank attribute.
+	 * @param CModel the object being validated
+	 * @param string the attribute being validated
+	 */
+	protected function emptyAttribute($object, $attribute)
+	{
+		if(!$this->allowEmpty)
+		{
+			$message=$this->message!==null?$this->message : Yii::t('yii','{attribute} cannot be blank.');
+			$this->addError($object,$attribute,$message);
 		}
 	}
 

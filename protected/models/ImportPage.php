@@ -89,14 +89,6 @@ class ImportPage extends CModel
 	}
 
 	/**
-	 * @see		CModel::safeAttributes()
-	 */
-	public function safeAttributes()
-	{
-		return array();
-	}
-
-	/**
 	 * Runs the ExportPage decides wether to show form or do export.
 	 */
 	public function run()

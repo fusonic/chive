@@ -19,8 +19,11 @@
  * You should have received a copy of the GNU General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
+
+
 class Collation extends CActiveRecord
 {
+	
 	const DEFAULT_CHARACTER_SET = 'utf8';
 	const DEFAULT_COLLATION = 'utf8_general_ci';
 

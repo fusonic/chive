@@ -4,16 +4,16 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: ModelCommand.php 1266 2009-07-21 20:59:34Z qiang.xue $
+ * @version $Id: ModelCommand.php 1678 2010-01-07 21:02:00Z qiang.xue $
  */
 
 /**
  * ModelCommand generates a model class.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: ModelCommand.php 1266 2009-07-21 20:59:34Z qiang.xue $
+ * @version $Id: ModelCommand.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.cli.commands.shell
  * @since 1.0
  */
@@ -26,6 +26,18 @@ class ModelCommand extends CConsoleCommand
 	 * the default views will be used.
 	 */
 	public $templatePath;
+	/**
+	 * @var string the directory that contains test fixtures.
+	 * Defaults to null, meaning using 'protected/tests/fixtures'.
+	 * If this is false, it means fixture file should NOT be generated.
+	 */
+	public $fixturePath;
+	/**
+	 * @var string the directory that contains unit test classes.
+	 * Defaults to null, meaning using 'protected/tests/unit'.
+	 * If this is false, it means unit test file should NOT be generated.
+	 */
+	public $unitTestPath;
 
 	private $_schema;
 	private $_relations; // where we keep table relations
@@ -132,11 +144,13 @@ EOD;
 				$className0=$this->getClassName($table0);
 				$className1=$this->getClassName($table1);
 
+				$unprefixedTableName=$this->removePrefix($tableName,true);
+
 				$relationName=$this->generateRelationName($table0, $table1, true);
-				$this->_relations[$className0][$relationName]="array(self::MANY_MANY, '$className1', '$tableName($pks[0], $pks[1])')";
+				$this->_relations[$className0][$relationName]="array(self::MANY_MANY, '$className1', '$unprefixedTableName($pks[0], $pks[1])')";
 
 				$relationName=$this->generateRelationName($table1, $table0, true);
-				$this->_relations[$className1][$relationName]="array(self::MANY_MANY, '$className0', '$tableName($pks[0], $pks[1])')";
+				$this->_relations[$className1][$relationName]="array(self::MANY_MANY, '$className0', '$unprefixedTableName($pks[0], $pks[1])')";
 			}
 			else
 			{
@@ -154,7 +168,7 @@ EOD;
 
 					// Add relation for the referenced table
 					$relationType=$table->primaryKey === $fkName ? 'HAS_ONE' : 'HAS_MANY';
-					$relationName=$this->generateRelationName($refTable, $tableName, $relationType==='HAS_MANY');
+					$relationName=$this->generateRelationName($refTable, $this->removePrefix($tableName), $relationType==='HAS_MANY');
 					$this->_relations[$refClassName][$relationName]="array(self::$relationType, '$className', '$fkName')";
 				}
 			}
@@ -192,7 +206,7 @@ EOD;
 		foreach($schema->getTableNames() as $name)
 		{
 			if($pattern===null)
-				$this->_tables[$name]=$this->generateClassName($name);
+				$this->_tables[$name]=$this->generateClassName($this->removePrefix($name));
 			else if(preg_match($pattern,$name,$matches))
 			{
 				if(count($matches)>1 && !empty($matches[1]))
@@ -275,6 +289,7 @@ EOD;
 			else
 			{
 				$tableName=isset($args[1])?$args[1]:$className;
+				$tableName=$this->addPrefix($tableName);
 				$this->_tables[$tableName]=$className;
 				$this->generateRelations();
 				$this->_classes=array($tableName=>$className);
@@ -308,17 +323,39 @@ EOD;
 		}
 
 		$templatePath=$this->templatePath===null?YII_PATH.'/cli/views/shell/model':$this->templatePath;
+		$fixturePath=$this->fixturePath===null?Yii::getPathOfAlias('application.tests.fixtures'):$this->fixturePath;
+		$unitTestPath=$this->unitTestPath===null?Yii::getPathOfAlias('application.tests.unit'):$this->unitTestPath;
 
 		$list=array();
 		foreach ($this->_classes as $tableName=>$className)
 		{
 			$files[$className]=$classFile=$basePath.DIRECTORY_SEPARATOR.$className.'.php';
-			$list[$className.'.php']=array(
+			$list['models/'.$className.'.php']=array(
 				'source'=>$templatePath.DIRECTORY_SEPARATOR.'model.php',
 				'target'=>$classFile,
 				'callback'=>array($this,'generateModel'),
 				'params'=>array($className,$tableName),
 			);
+			if($fixturePath!==false)
+			{
+				$list['fixtures/'.$tableName.'.php']=array(
+					'source'=>$templatePath.DIRECTORY_SEPARATOR.'fixture.php',
+					'target'=>$fixturePath.DIRECTORY_SEPARATOR.$tableName.'.php',
+					'callback'=>array($this,'generateFixture'),
+					'params'=>$this->_schema->getTable($tableName),
+				);
+			}
+			if($unitTestPath!==false)
+			{
+				$fixtureName=$this->pluralize($className);
+				$fixtureName[0]=strtolower($fixtureName);
+				$list['unit/'.$className.'Test.php']=array(
+					'source'=>$templatePath.DIRECTORY_SEPARATOR.'test.php',
+					'target'=>$unitTestPath.DIRECTORY_SEPARATOR.$className.'Test.php',
+					'callback'=>array($this,'generateTest'),
+					'params'=>array($className,$fixtureName),
+				);
+			}
 		}
 
 		$this->copyFiles($list);
@@ -355,6 +392,8 @@ EOD;
 			$required=array();
 			$integers=array();
 			$numerical=array();
+			$length=array();
+			$safe=array();
 			foreach($table->columns as $column)
 			{
 				$label=ucwords(trim(strtolower(str_replace(array('-','_'),' ',preg_replace('/(?<![A-Z])[A-Z]/', ' \0', $column->name)))));
@@ -362,16 +401,19 @@ EOD;
 				if(strcasecmp(substr($label,-3),' id')===0)
 					$label=substr($label,0,-3);
 				$labels[$column->name]=$label;
-				if($column->isPrimaryKey && $table->sequenceName!==null || $column->isForeignKey)
+				if($column->isPrimaryKey && $table->sequenceName!==null)
 					continue;
-				if(!$column->allowNull && $column->defaultValue===null)
+				$r=!$column->allowNull && $column->defaultValue===null;
+				if($r)
 					$required[]=$column->name;
 				if($column->type==='integer')
 					$integers[]=$column->name;
 				else if($column->type==='double')
 					$numerical[]=$column->name;
 				else if($column->type==='string' && $column->size>0)
-					$rules[]="array('{$column->name}','length','max'=>{$column->size})";
+					$length[$column->size][]=$column->name;
+				else if(!$column->isPrimaryKey && !$r)
+					$safe[]=$column->name;
 			}
 			if($required!==array())
 				$rules[]="array('".implode(', ',$required)."', 'required')";
@@ -379,6 +421,13 @@ EOD;
 				$rules[]="array('".implode(', ',$integers)."', 'numerical', 'integerOnly'=>true)";
 			if($numerical!==array())
 				$rules[]="array('".implode(', ',$numerical)."', 'numerical')";
+			if($length!==array())
+			{
+				foreach($length as $len=>$cols)
+					$rules[]="array('".implode(', ',$cols)."', 'length', 'max'=>$len)";
+			}
+			if($safe!==array())
+				$rules[]="array('".implode(', ',$safe)."', 'safe')";
 
 			if(isset($this->_relations[$className]) && is_array($this->_relations[$className]))
 				$relations=$this->_relations[$className];
@@ -388,14 +437,53 @@ EOD;
 
 		if(!is_file($source))  // fall back to default ones
 			$source=YII_PATH.'/cli/views/shell/model/'.basename($source);
-
 		return $this->renderFile($source,array(
 			'className'=>$className,
-			'tableName'=>$tableName,
+			'tableName'=>$this->removePrefix($tableName,true),
 			'columns'=>isset($table) ? $table->columns : array(),
 			'rules'=>$rules,
 			'labels'=>$labels,
 			'relations'=>$relations,
 		),true);
+	}
+
+	public function generateFixture($source,$table)
+	{
+		if(!is_file($source))  // fall back to default ones
+			$source=YII_PATH.'/cli/views/shell/model/'.basename($source);
+		return $this->renderFile($source, array(
+			'table'=>$table,
+		),true);
+	}
+
+	public function generateTest($source,$params)
+	{
+		list($className,$fixtureName)=$params;
+		if(!is_file($source))  // fall back to default ones
+			$source=YII_PATH.'/cli/views/shell/model/'.basename($source);
+		return $this->renderFile($source, array(
+			'className'=>$className,
+			'fixtureName'=>$fixtureName,
+		),true);
+	}
+
+	protected function removePrefix($tableName,$addBrackets=false)
+	{
+		$tablePrefix=Yii::app()->getDb()->tablePrefix;
+		if($tablePrefix!='' && !strncmp($tableName,$tablePrefix,strlen($tablePrefix)))
+		{
+			$tableName=substr($tableName,strlen($tablePrefix));
+			if($addBrackets)
+				$tableName='{{'.$tableName.'}}';
+		}
+		return $tableName;
+	}
+
+	protected function addPrefix($tableName)
+	{
+		$tablePrefix=Yii::app()->getDb()->tablePrefix;
+		if($tablePrefix!='' && strncmp($tableName,$tablePrefix,strlen($tablePrefix)))
+			$tableName=$tablePrefix.$tableName;
+		return $tableName;
 	}
 }

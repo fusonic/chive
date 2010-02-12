@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -43,10 +43,13 @@
  * <li>file: {@link CFileValidator}</li>
  * <li>default: {@link CDefaultValueValidator}</li>
  * <li>exist: {@link CExistValidator}</li>
+ * <li>boolean: {@link CBooleanValidator}</li>
+ * <li>safe: {@link CSafeValidator}</li>
+ * <li>unsafe: {@link CUnsafeValidator}</li>
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CValidator.php 911 2009-04-03 16:05:18Z qiang.xue $
+ * @version $Id: CValidator.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -71,6 +74,9 @@ abstract class CValidator extends CComponent
 		'file'=>'CFileValidator',
 		'default'=>'CDefaultValueValidator',
 		'exist'=>'CExistValidator',
+		'boolean'=>'CBooleanValidator',
+		'safe'=>'CSafeValidator',
+		'unsafe'=>'CUnsafeValidator',
 	);
 
 	/**
@@ -105,6 +111,7 @@ abstract class CValidator extends CComponent
 	 * @param mixed list of attributes to be validated. This can be either an array of
 	 * the attribute names or a string of comma-separated attribute names.
 	 * @param array initial values to be applied to the validator properties
+	 * @return CValidator the validator
 	 */
 	public static function createValidator($name,$object,$attributes,$params)
 	{
@@ -189,6 +196,20 @@ abstract class CValidator extends CComponent
 	{
 		$params['{attribute}']=$object->getAttributeLabel($attribute);
 		$object->addError($attribute,strtr($message,$params));
+	}
+
+	/**
+	 * Checks if the given value is empty.
+	 * A value is considered empty if it is null, an empty array, or the trimmed result is an empty string.
+	 * Note that this method is different from PHP empty(). It will return false when the value is 0.
+	 * @param mixed the value to be checked
+	 * @param boolean whether to perform trimming before checking if the string is empty. Defaults to false.
+	 * @return boolean whether the value is empty
+	 * @since 1.0.9
+	 */
+	protected function isEmpty($value,$trim=false)
+	{
+		return $value===null || $value===array() || $value==='' || $trim && is_scalar($value) && trim($value)==='';
 	}
 }
 

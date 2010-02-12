@@ -1,6 +1,6 @@
 <?php
 
-class SiteController extends CController
+class SiteController extends Controller
 {
 	/**
 	 * Declares class-based actions.
@@ -8,11 +8,15 @@ class SiteController extends CController
 	public function actions()
 	{
 		return array(
-			// captcha action renders the CAPTCHA image
-			// this is used by the contact page
+			// captcha action renders the CAPTCHA image displayed on the contact page
 			'captcha'=>array(
 				'class'=>'CCaptchaAction',
-				'backColor'=>0xEBF4FB,
+				'backColor'=>0xFFFFFF,
+			),
+			// page action renders "static" pages stored under 'protected/views/site/pages'
+			// They can be accessed via: index.php?r=site/page&view=FileName
+			'page'=>array(
+				'class'=>'CViewAction',
 			),
 		);
 	}
@@ -29,23 +33,37 @@ class SiteController extends CController
 	}
 
 	/**
+	 * This is the action to handle external exceptions.
+	 */
+	public function actionError()
+	{
+	    if($error=Yii::app()->errorHandler->error)
+	    {
+	    	if(Yii::app()->request->isAjaxRequest)
+	    		echo $error['message'];
+	    	else
+	        	$this->render('error', $error);
+	    }
+	}
+
+	/**
 	 * Displays the contact page
 	 */
 	public function actionContact()
 	{
-		$contact=new ContactForm;
+		$model=new ContactForm;
 		if(isset($_POST['ContactForm']))
 		{
-			$contact->attributes=$_POST['ContactForm'];
-			if($contact->validate())
+			$model->attributes=$_POST['ContactForm'];
+			if($model->validate())
 			{
-				$headers="From: {$contact->email}\r\nReply-To: {$contact->email}";
-				mail(Yii::app()->params['adminEmail'],$contact->subject,$contact->body,$headers);
+				$headers="From: {$model->email}\r\nReply-To: {$model->email}";
+				mail(Yii::app()->params['adminEmail'],$model->subject,$model->body,$headers);
 				Yii::app()->user->setFlash('contact','Thank you for contacting us. We will respond to you as soon as possible.');
 				$this->refresh();
 			}
 		}
-		$this->render('contact',array('contact'=>$contact));
+		$this->render('contact',array('model'=>$model));
 	}
 
 	/**
@@ -53,21 +71,21 @@ class SiteController extends CController
 	 */
 	public function actionLogin()
 	{
-		$form=new LoginForm;
+		$model=new LoginForm;
 		// collect user input data
 		if(isset($_POST['LoginForm']))
 		{
-			$form->attributes=$_POST['LoginForm'];
-			// validate user input and redirect to previous page if valid
-			if($form->validate())
+			$model->attributes=$_POST['LoginForm'];
+			// validate user input and redirect to the previous page if valid
+			if($model->validate())
 				$this->redirect(Yii::app()->user->returnUrl);
 		}
 		// display the login form
-		$this->render('login',array('form'=>$form));
+		$this->render('login',array('model'=>$model));
 	}
 
 	/**
-	 * Logout the current user and redirect to homepage.
+	 * Logs out the current user and redirect to homepage.
 	 */
 	public function actionLogout()
 	{

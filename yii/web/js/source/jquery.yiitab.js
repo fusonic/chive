@@ -5,7 +5,7 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: jquery.yiitab.js 220 2008-11-15 21:46:57Z qiang.xue $
+ * @version $Id: jquery.yiitab.js 1474 2009-10-18 21:13:52Z qiang.xue $
  */
 
 ;(function($) {
@@ -14,6 +14,10 @@
 		yiitab: function() {
 
 			function activate(id) {
+				var pos = id.indexOf("#");
+				if (pos>=0) {
+					id = id.substring(pos);
+				}
 				var $tab=$(id);
 				var $container=$tab.parent();
 				$container.find('>ul a').removeClass('active');
@@ -23,8 +27,10 @@
 			}
 
 			this.find('>ul a').click(function(event) {
-				activate($(event.target).attr('href'));
-				if($(this).attr('href')[0]=='#')
+				var href=$(event.target).attr('href');
+				var pos=href.indexOf('#');
+				activate(href);
+				if(pos==0 || (pos>0 && (window.location.pathname=='' || window.location.pathname==href.substring(0,pos))))
 					return false;
 			});
 

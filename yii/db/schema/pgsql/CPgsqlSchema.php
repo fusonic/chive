@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -12,7 +12,7 @@
  * CPgsqlSchema is the class for retrieving metadata information from a PostgreSQL database.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CPgsqlSchema.php 1111 2009-06-10 19:53:42Z qiang.xue $
+ * @version $Id: CPgsqlSchema.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.db.schema.pgsql
  * @since 1.0
  */
@@ -32,6 +32,50 @@ class CPgsqlSchema extends CDbSchema
 	}
 
 	/**
+	 * Resets the sequence value of a table's primary key.
+	 * The sequence will be reset such that the primary key of the next new row inserted
+	 * will have the specified value or 1.
+	 * @param CDbTableSchema the table schema whose primary key sequence will be reset
+	 * @param mixed the value for the primary key of the next new row inserted. If this is not set,
+	 * the next new row's primary key will have a value 1.
+	 * @since 1.1
+	 */
+	public function resetSequence($table,$value=null)
+	{
+		if($table->sequenceName!==null)
+		{
+			$seq='"'.$table->sequenceName.'"';
+			if(strpos($seq,'.')!==false)
+				$seq=str_replace('.','"."',$seq);
+			if($value===null)
+				$value="(SELECT COALESCE(MAX(\"{$table->primaryKey}\"),0) FROM {$table->rawName}) + 1";
+			else
+				$value=(int)$value;
+			$this->getDbConnection()->createCommand("SELECT SETVAL('$seq', $value, false)")->execute();
+		}
+	}
+
+	/**
+	 * Enables or disables integrity check.
+	 * @param boolean whether to turn on or off the integrity check.
+	 * @param string the schema of the tables. Defaults to empty string, meaning the current or default schema.
+	 * @since 1.1
+	 */
+	public function checkIntegrity($check=true,$schema='')
+	{
+		$enable=$check ? 'ENABLE' : 'DISABLE';
+		$tableNames=$this->getTableNames($schema);
+		$db=$this->getDbConnection();
+		foreach($tableNames as $tableName)
+		{
+			$tableName='"'.$tableName.'"';
+			if(strpos($tableName,'.')!==false)
+				$tableName=str_replace('.','"."',$tableName);
+			$db->createCommand("ALTER TABLE $tableName $enable TRIGGER ALL")->execute();
+		}
+	}
+
+	/**
 	 * Creates a table instance representing the metadata for the named table.
 	 * @return CDbTableSchema driver dependent table metadata.
 	 */
@@ -45,6 +89,17 @@ class CPgsqlSchema extends CDbSchema
 
 		if(is_string($table->primaryKey) && isset($this->_sequences[$table->primaryKey]))
 			$table->sequenceName=$this->_sequences[$table->primaryKey];
+		else if(is_array($table->primaryKey))
+		{
+			foreach($table->primaryKey as $pk)
+			{
+				if(isset($this->_sequences[$pk]))
+				{
+					$table->sequenceName=$this->_sequences[$pk];
+					break;
+				}
+			}
+		}
 
 		return $table;
 	}
@@ -264,7 +319,7 @@ EOD;
 			$schema=self::DEFAULT_SCHEMA;
 		$sql=<<<EOD
 SELECT table_name, table_schema FROM information_schema.tables
-WHERE table_schema=:schema
+WHERE table_schema=:schema AND table_type='BASE TABLE'
 EOD;
 		$command=$this->getDbConnection()->createCommand($sql);
 		$command->bindParam(':schema',$schema);

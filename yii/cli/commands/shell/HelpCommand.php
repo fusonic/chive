@@ -4,16 +4,16 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: HelpCommand.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: HelpCommand.php 1678 2010-01-07 21:02:00Z qiang.xue $
  */
 
 /**
  * HelpCommand displays help information for commands under yiic shell.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: HelpCommand.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: HelpCommand.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.cli.commands.shell
  * @since 1.0
  */
@@ -35,8 +35,20 @@ class HelpCommand extends CConsoleCommand
 At the prompt, you may enter a PHP statement or one of the following commands:
 
 EOD;
-			echo ' - '.implode("\n - ",array_keys($commands));
-			echo "\nType 'help <command-name>' for details about a command.\n";
+			$commandNames=array_keys($commands);
+			sort($commandNames);
+			echo ' - '.implode("\n - ",$commandNames);
+			echo <<<EOD
+
+
+Type 'help <command-name>' for details about a command.
+
+To expand the above command list, place your command class files
+under 'protected/commands/shell', or a directory specified
+by the 'YIIC_SHELL_COMMAND_PATH' environment variable. The command class
+must extend from CConsoleCommand.
+
+EOD;
 		}
 		else
 			echo $runner->createCommand($name)->getHelp();

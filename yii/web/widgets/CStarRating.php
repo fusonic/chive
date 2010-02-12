@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -24,7 +24,7 @@
  * CStarRating allows customization of its appearance. It also supports empty rating as well as read-only rating.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CStarRating.php 913 2009-04-04 02:01:48Z qiang.xue $
+ * @version $Id: CStarRating.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.web.widgets
  * @since 1.0
  */
@@ -102,8 +102,14 @@ class CStarRating extends CInputWidget
 	public function run()
 	{
 		list($name,$id)=$this->resolveNameID();
-		$this->htmlOptions['id']=$id;
-		$this->htmlOptions['name']=$name;
+		if(isset($this->htmlOptions['id']))
+			$id=$this->htmlOptions['id'];
+		else
+			$this->htmlOptions['id']=$id;
+		if(isset($this->htmlOptions['name']))
+			$name=$this->htmlOptions['name'];
+		else
+			$this->htmlOptions['name']=$name;
 
 		$this->registerClientScript($id);
 
@@ -151,7 +157,9 @@ class CStarRating extends CInputWidget
 	{
 		$inputCount=(int)(($this->maxRating-$this->minRating)/$this->ratingStepSize+1);
 		$starSplit=(int)($inputCount/$this->starCount);
-		$selection=$this->hasModel() ? $this->model->{$this->attribute} : $this->value;
+		$attr=$this->attribute;
+		CHtml::resolveName($this->model,$attr);
+		$selection=$this->hasModel() ? $this->model->$attr : $this->value;
 		$options=$starSplit>1 ? array('class'=>"{split:{$starSplit}}") : array();
 		for($value=$this->minRating, $i=0;$i<$inputCount; ++$i, $value+=$this->ratingStepSize)
 		{

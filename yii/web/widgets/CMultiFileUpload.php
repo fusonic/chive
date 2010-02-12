@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -16,7 +16,7 @@
  * files. Note, you have to set the enclosing form's 'enctype' attribute to be 'multipart/form-data'.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMultiFileUpload.php 970 2009-04-30 02:59:02Z qiang.xue $
+ * @version $Id: CMultiFileUpload.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.web.widgets
  * @since 1.0
  */

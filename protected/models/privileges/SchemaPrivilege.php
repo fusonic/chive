@@ -60,31 +60,22 @@ class SchemaPrivilege extends CActiveRecord
 			'User',
 		);
 	}
-
+	
 	/**
-	 * @see		CActiveRecord::safeAttributes()
+	 * @see		CActiveRecord::rules()
 	 */
-	public function safeAttributes()
+	public function rules()
 	{
 		return array(
-			'Host',
-			'User',
-			'Db',
-			'Privileges',
+			array('Host', 'type', 'type' => 'string'),
+			array('User', 'type', 'type' => 'string'),
+			array('Db', 'type', 'type' => 'string'),
+			array('Privileges', 'type', 'type' => 'string'),
 		);
 	}
 
 	/**
-	 * @see		CActiveRecord::relations()
-	 */
-	public function relations()
-	{
-		return array(
-		);
-    }
-
-	/**
-	 * @return array customized attribute labels (name=>label)
+	 * @see		CActiveRecord::attributeLabels()
 	 */
 	public function attributeLabels()
 	{

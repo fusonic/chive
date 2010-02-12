@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -58,7 +58,7 @@
  * For more advanced variation, override {@link getBaseCacheKey()} method.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: COutputCache.php 1087 2009-06-03 17:56:23Z qiang.xue $
+ * @version $Id: COutputCache.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.web.widgets
  * @since 1.0
  */
@@ -95,6 +95,13 @@ class COutputCache extends CFilterWidget
 	 * @var string a PHP expression whose result is used in the cache key calculation.
 	 * By setting this property, the output cache will use different cached data
 	 * for each different expression result.
+	 * Starting from version 1.0.11, the expression can also be a valid PHP callback,
+	 * including class method name (array(ClassName/Object, MethodName)),
+	 * or anonymous function (PHP 5.3.0+). The function/method signature should be as follows:
+	 * <pre>
+	 * function foo($cache) { ... }
+	 * </pre>
+	 * where $cache refers to the output cache component.
 	 * @since 1.0.4
 	 */
 	public $varyByExpression;
@@ -285,11 +292,6 @@ class COutputCache extends CFilterWidget
 
 			return $this->_key=$key;
 		}
-	}
-
-	private function evaluateExpression($expression)
-	{
-		return @eval('return '.$expression.';');
 	}
 
 	/**

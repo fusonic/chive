@@ -6,7 +6,7 @@
  * - $tableName: the table name
  * - $columns: a list of table column schema objects
  * - $rules: a list of validation rules (string)
- * - $labels: a list of labels (string)
+ * - $labels: a list of labels (column name => label)
  * - $relations: a  list of relations (string)
  */
 ?>
@@ -43,6 +43,8 @@ class <?php echo $className; ?> extends CActiveRecord
 	 */
 	public function rules()
 	{
+		// NOTE: you should only define rules for those attributes that
+		// will receive user inputs.
 		return array(
 <?php foreach($rules as $rule): ?>
 			<?php echo $rule.",\n"; ?>

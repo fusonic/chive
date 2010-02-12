@@ -4,7 +4,7 @@
  *
  * @author Christophe Boulain <Christophe.Boulain@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -12,7 +12,7 @@
  * This is an extension of default PDO class for mssql driver only
  * It provides some missing functionalities of pdo driver
  * @author Christophe Boulain <Christophe.Boulain@gmail.com>
- * @version $Id: CMssqlPdoAdapter.php 823 2009-03-12 14:07:43Z qiang.xue $
+ * @version $Id: CMssqlPdoAdapter.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.db.schema.mssql
  * @since 1.0.4
  */

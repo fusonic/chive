@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -15,7 +15,7 @@
  * various filter conditions, including log levels and log categories.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLogger.php 1042 2009-05-21 19:53:47Z qiang.xue $
+ * @version $Id: CLogger.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.logging
  * @since 1.0
  */
@@ -28,9 +28,20 @@ class CLogger extends CComponent
 	const LEVEL_PROFILE='profile';
 
 	/**
+	 * @var integer how many messages should be logged before they are flushed to destinations.
+	 * Defaults to 10,000, meaning for every 10,000 messages, the {@link flush} method will be
+	 * automatically invoked once. If this is 0, it means messages will never be flushed automatically.
+	 * @since 1.1.0
+	 */
+	public $autoFlush=10000;
+	/**
 	 * @var array log messages
 	 */
 	private $_logs=array();
+	/**
+	 * @var integer number of log messages
+	 */
+	private $_logCount=0;
 	/**
 	 * @var array log levels for filtering (used when filtering)
 	 */
@@ -56,6 +67,9 @@ class CLogger extends CComponent
 	public function log($message,$level='info',$category='application')
 	{
 		$this->_logs[]=array($message,$level,$category,microtime(true));
+		$this->_logCount++;
+		if($this->autoFlush>0 && $this->_logCount>=$this->autoFlush)
+			$this->flush();
 	}
 
 	/**
@@ -233,5 +247,28 @@ class CLogger extends CComponent
 			$delta=$now-$last[3];
 			$this->_timings[]=array($last[0],$last[2],$delta);
 		}
+	}
+
+	/**
+	 * Removes all recorded messages from the memory.
+	 * This method will raise an {@link onFlush} event.
+	 * The attached event handlers can process the log messages before they are removed.
+	 * @since 1.1.0
+	 */
+	public function flush()
+	{
+		$this->onFlush(new CEvent($this));
+		$this->_logs=array();
+		$this->_logCount=0;
+	}
+
+	/**
+	 * Raises an <code>onFlush</code> event.
+	 * @param CEvent the event parameter
+	 * @since 1.1.0
+	 */
+	public function onFlush($event)
+	{
+		$this->raiseEvent('onFlush', $event);
 	}
 }

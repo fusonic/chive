@@ -1,31 +1,37 @@
 <?php if($model->view == 'form') { ?>
 
 <?php echo CHtml::form($model->formTarget, 'post', array('id' => 'Import')); ?>
-<fieldset><legend><?php echo Yii::t('core', 'importFile'); ?></legend> <?php echo CHtml::fileField('file', '', array()); ?>&nbsp;
-(<?php echo Yii::t('core', 'maximum'); ?>: <?php echo ConfigUtil::getMaxUploadSize(true); ?>)
-<br />
-<br />
-<?php echo Yii::t('core', 'characterSet', array(1)); ?><br />
-<?php echo CHtml::activeDropDownList($model, 'fromCharacterSet', CHtml::listData($model->characterSets, 'name', 'name')); ?>
-
-<br />
-<br />
-<b><?php echo Yii::t('core', 'notice'); ?></b><br />
-<?php echo Yii::t('core', 'compressionWillBeAutomaticallyDetected'); ?>
-</fieldset>
-<fieldset><legend><?php echo Yii::t('core', 'settings'); ?></legend> <?php echo CHtml::activeCheckBox($model, 'partialImport'); ?>
-<?php echo CHtml::activeLabel($model, 'partialImport');?></fieldset>
-<div class="buttons"><a href="javascript:void(0);"
-	onclick="$('#Import').submit();" class="icon button"> <?php echo Html::icon('import'); ?>
-<span><?php echo Yii::t('core', 'import'); ?></span> </a> <input
-	type="hidden" name="Import" value="true" /></div>
+	<fieldset>
+		<legend><?php echo Yii::t('core', 'importFile'); ?></legend>
+		<?php echo CHtml::fileField('file', '', array()); ?>&nbsp;
+		(<?php echo Yii::t('core', 'maximum'); ?>: <?php echo ConfigUtil::getMaxUploadSize(true); ?>)
+		<br />
+		<br />
+		<?php echo Yii::t('core', 'characterSet', array(1)); ?><br />
+		<?php echo CHtml::activeDropDownList($model, 'fromCharacterSet', CHtml::listData($model->characterSets, 'name', 'name')); ?>
+		<br />
+		<br />
+		<b><?php echo Yii::t('core', 'notice'); ?></b><br />
+		<?php echo Yii::t('core', 'compressionWillBeAutomaticallyDetected'); ?>
+	</fieldset>
+	<fieldset>
+		<legend><?php echo Yii::t('core', 'settings'); ?></legend>
+		<?php echo CHtml::activeCheckBox($model, 'partialImport'); ?>
+		<?php echo CHtml::activeLabel($model, 'partialImport');?>
+	</fieldset>
+	<div class="buttons">
+		<a href="javascript:void(0);" onclick="$('#Import').submit();" class="icon button"> <?php echo Html::icon('import'); ?>
+			<span><?php echo Yii::t('core', 'import'); ?></span> 
+		</a> 
+		<input type="hidden" name="Import" value="true" />
+	</div>
 <?php echo CHtml::endForm(); ?>
 
 <script type="text/javascript">
 	setTimeout(function() {
 		globalImport.setup();
 	}, 500);
-	</script>
+</script>
 
 <?php } elseif($model->view == 'submit') { ?>
 

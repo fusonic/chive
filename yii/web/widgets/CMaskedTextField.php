@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -17,7 +17,7 @@
  * (see {@link http://digitalbush.com/projects/masked-input-plugin}).
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMaskedTextField.php 949 2009-04-19 03:39:06Z qiang.xue@gmail.com $
+ * @version $Id: CMaskedTextField.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.web.widgets
  * @since 1.0
  */
@@ -56,8 +56,14 @@ class CMaskedTextField extends CInputWidget
 	public function run()
 	{
 		list($name,$id)=$this->resolveNameID();
-		$this->htmlOptions['id']=$id;
-		$this->htmlOptions['name']=$name;
+		if(isset($this->htmlOptions['id']))
+			$id=$this->htmlOptions['id'];
+		else
+			$this->htmlOptions['id']=$id;
+		if(isset($this->htmlOptions['name']))
+			$name=$this->htmlOptions['name'];
+		else
+			$this->htmlOptions['name']=$name;
 
 		$this->registerClientScript();
 

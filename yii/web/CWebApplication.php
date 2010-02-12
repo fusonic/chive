@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -36,7 +36,7 @@
  * which is in the file 'protected/controller/article.php'.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CWebApplication.php 1053 2009-05-23 02:34:03Z qiang.xue $
+ * @version $Id: CWebApplication.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.web
  * @since 1.0
  */
@@ -130,12 +130,6 @@ class CWebApplication extends CApplication
 		parent::registerCoreComponents();
 
 		$components=array(
-			'urlManager'=>array(
-				'class'=>'CUrlManager',
-			),
-			'request'=>array(
-				'class'=>'CHttpRequest',
-			),
 			'session'=>array(
 				'class'=>'CHttpSession',
 			),
@@ -157,22 +151,6 @@ class CWebApplication extends CApplication
 		);
 
 		$this->setComponents($components);
-	}
-
-	/**
-	 * @return CHttpRequest the request component
-	 */
-	public function getRequest()
-	{
-		return $this->getComponent('request');
-	}
-
-	/**
-	 * @return CUrlManager the URL manager component
-	 */
-	public function getUrlManager()
-	{
-		return $this->getComponent('urlManager');
 	}
 
 	/**
@@ -226,6 +204,16 @@ class CWebApplication extends CApplication
 	public function getClientScript()
 	{
 		return $this->getComponent('clientScript');
+	}
+
+	/**
+	 * Returns the widget factory.
+	 * @return IWidgetFactory the widget factory
+	 * @since 1.1
+	 */
+	public function getWidgetFactory()
+	{
+		return $this->getComponent('widgetFactory');
 	}
 
 	/**

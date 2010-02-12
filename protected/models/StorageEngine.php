@@ -25,7 +25,7 @@ class StorageEngine extends SqlModel
 {
 
 	/**
-	 * @see		CActiveRecord::model()
+	 * @see		SqlModel::model()
 	 */
 	public static function model($class = __CLASS__)
 	{
@@ -278,4 +278,5 @@ class StorageEngine extends SqlModel
 			'0' => Yii::t('core', 'no'),
 		);
 	}
+	
 }

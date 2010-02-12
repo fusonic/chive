@@ -27,7 +27,7 @@ class ForeignKey extends ActiveRecord
 	public $onDelete, $onUpdate, $table;
 
 	/**
-	 * @see		CActiveRecord::model()
+	 * @see		ActiveRecord::model()
 	 */
 	public static function model($className = __CLASS__)
 	{
@@ -35,7 +35,7 @@ class ForeignKey extends ActiveRecord
 	}
 
 	/**
-	 * @see		CActiveRecord::instantiate()
+	 * @see		ActiveRecord::instantiate()
 	 */
 	public function instantiate($attributes)
 	{
@@ -64,7 +64,7 @@ class ForeignKey extends ActiveRecord
 	}
 
 	/**
-	 * @see		CActiveRecord::tableName()
+	 * @see		ActiveRecord::tableName()
 	 */
 	public function tableName()
 	{
@@ -72,7 +72,7 @@ class ForeignKey extends ActiveRecord
 	}
 
 	/**
-	 * @see		CActiveRecord::primaryKey()
+	 * @see		ActiveRecord::primaryKey()
 	 */
 	public function primaryKey()
 	{
@@ -84,17 +84,17 @@ class ForeignKey extends ActiveRecord
 	}
 
 	/**
-	 * @see		CActiveRecord::safeAttributes()
+	 * @see		ActiveRecord::rules()
 	 */
-	public function safeAttributes()
+	public function rules()
 	{
 		return array(
-			'references',
-			'onUpdate',
-			'onDelete',
-			'TABLE_SCHEMA',
-			'TABLE_NAME',
-			'COLUMN_NAME',
+			array('references', 'type', 'type' => 'string'),
+			array('onUpdate', 'type', 'type' => 'string'),
+			array('onDelete', 'type', 'type' => 'string'),
+			array('TABLE_SCHEMA', 'type', 'type' => 'string'),
+			array('TABLE_NAME', 'type', 'type' => 'string'),
+			array('COLUMN_NAME', 'type', 'type' => 'string'),
 		);
 	}
 

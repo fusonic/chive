@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -13,7 +13,7 @@
  * CHtml is a static class that provides a collection of helper methods for creating HTML views.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CHtml.php 1306 2009-08-07 17:24:31Z qiang.xue $
+ * @version $Id: CHtml.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.web.helpers
  * @since 1.0
  */
@@ -49,17 +49,12 @@ class CHtml
 	 */
 	public static $afterRequiredLabel=' <span class="required">*</span>';
 	/**
-	 * @var string the scenario used to determine whether a model attribute is required.
-	 * @see activeLabelEx
-	 */
-	public static $scenario='';
-	/**
 	 * @var integer the counter for generating automatic input field names.
 	 * @since 1.0.4
 	 */
 	public static $count=0;
-
-	public static $idPrefix='';
+	
+	public static $idPrefix = '';
 
 	/**
 	 * Encodes special characters into HTML entities.
@@ -274,7 +269,7 @@ class CHtml
 		if($request->enableCsrfValidation)
 		{
 			$token=self::hiddenField($request->csrfTokenName,$request->getCsrfToken(),array('id'=>false));
-			$form.="\n".$token;
+			$form.="\n".self::tag('div',array('style'=>'display:none'),$token);
 		}
 		return $form;
 	}
@@ -303,7 +298,7 @@ class CHtml
 	public static function statefulForm($action='',$method='post',$htmlOptions=array())
 	{
 		return self::form($action,$method,$htmlOptions)."\n".
-			self::tag('div',array('style'=>'visibility:hidden'),self::pageStateField(''));
+			self::tag('div',array('style'=>'display:none'),self::pageStateField(''));
 	}
 
 	/**
@@ -391,7 +386,8 @@ class CHtml
 	 * Generates a button using HTML button tag.
 	 * This method is similar to {@link button} except that it generates a 'button'
 	 * tag instead of 'input' tag.
-	 * @param string the button label
+	 * @param string the button label. Note that this value will be directly inserted in the button element
+	 * without being HTML-encoded.
 	 * @param array additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated button tag
@@ -404,10 +400,8 @@ class CHtml
 			$htmlOptions['name']=self::ID_PREFIX.self::$count++;
 		if(!isset($htmlOptions['type']))
 			$htmlOptions['type']='button';
-		if(!isset($htmlOptions['value']))
-			$htmlOptions['value']=$label;
 		self::clientChange('click',$htmlOptions);
-		return self::tag('button',$htmlOptions);
+		return self::tag('button',$htmlOptions,$label);
 	}
 
 	/**
@@ -471,15 +465,16 @@ class CHtml
 	/**
 	 * Generates a label tag.
 	 * @param string label text. Note, you should HTML-encode the text if needed.
-	 * @param string the ID of the HTML element that this label is associated with
+	 * @param string the ID of the HTML element that this label is associated with.
+	 * If this is false, the 'for' attribute for the label tag will not be rendered (since version 1.0.11).
 	 * @param array additional HTML attributes.
 	 * Starting from version 1.0.2, the following HTML option is recognized:
-	 * <pre>
+	 * <ul>
 	 * <li>required: if this is set and is true, the label will be styled
 	 * with CSS class 'required' (customizable with CHtml::$requiredCss),
 	 * and be decorated with {@link CHtml::beforeRequiredLabel} and
 	 * {@link CHtml::afterRequiredLabel}.</li>
-	 * </pre>
+	 * </ul>
 	 * @return string the generated label tag
 	 */
 	public static function label($label,$for,$htmlOptions=array())
@@ -488,7 +483,10 @@ class CHtml
 		{
 			$for = self::$idPrefix . $for;
 		}
-		$htmlOptions['for']=$for;
+		if($for===false)
+			unset($htmlOptions['for']);
+		else
+			$htmlOptions['for']=$for;
 		if(isset($htmlOptions['required']))
 		{
 			if($htmlOptions['required'])
@@ -581,7 +579,7 @@ class CHtml
 		if(!isset($htmlOptions['id']))
 			$htmlOptions['id']=self::getIdByName($name);
 		self::clientChange('change',$htmlOptions);
-		return self::tag('textarea',$htmlOptions,self::encode($value));
+		return self::tag('textarea',$htmlOptions,isset($htmlOptions['encode']) && !$htmlOptions['encode'] ? $value : self::encode($value));
 	}
 
 	/**
@@ -639,7 +637,9 @@ class CHtml
 	 * In addition, the following options are also supported specifically for dropdown list:
 	 * <ul>
 	 * <li>prompt: string, specifies the prompt text shown as the first list option. Its value is empty.</li>
-	 * <li>empty: string, specifies the text corresponding to empty selection. Its value is empty.</li>
+	 * <li>empty: string, specifies the text corresponding to empty selection. Its value is empty.
+	 * Starting from version 1.0.10, the 'empty' option can also be an array of value-label pairs.
+	 * Each pair will be used to render a list option at the beginning.</li>
 	 * <li>options: array, specifies additional attributes for each OPTION tag.
 	 *     The array keys must be the option values, and the array values are the extra
 	 *     OPTION tag attributes in the name-value pairs. For example,
@@ -680,7 +680,9 @@ class CHtml
 	 * In addition, the following options are also supported specifically for list box:
 	 * <ul>
 	 * <li>prompt: string, specifies the prompt text shown as the first list option. Its value is empty.</li>
-	 * <li>empty: string, specifies the text corresponding to empty selection. Its value is empty.</li>
+	 * <li>empty: string, specifies the text corresponding to empty selection. Its value is empty.
+	 * Starting from version 1.0.10, the 'empty' option can also be an array of value-label pairs.
+	 * Each pair will be used to render a list option at the beginning.</li>
 	 * <li>options: array, specifies additional attributes for each OPTION tag.
 	 *     The array keys must be the option values, and the array values are the extra
 	 *     OPTION tag attributes in the name-value pairs. For example,
@@ -735,6 +737,8 @@ class CHtml
 	 * displayed at the end of the checkbox list. If this option is not set (default)
 	 * or is false, the 'check all' checkbox will be displayed at the beginning of
 	 * the checkbox list. This option has been available since version 1.0.4.</li>
+	 * <li>labelOptions: array, specifies the additional HTML attributes to be rendered
+	 * for every label tag in the list. This option has been available since version 1.0.10.</li>
 	 * </ul>
 	 * @return string the generated check box list
 	 */
@@ -754,10 +758,14 @@ class CHtml
 		}
 		unset($htmlOptions['checkAll'],$htmlOptions['checkAllLast']);
 
+		$labelOptions=isset($htmlOptions['labelOptions'])?$htmlOptions['labelOptions']:array();
+		unset($htmlOptions['labelOptions']);
+
 		$items=array();
 		$baseID=self::getIdByName($name);
 		$id=0;
 		$checkAll=true;
+
 		foreach($data as $value=>$label)
 		{
 			$checked=!is_array($select) && !strcmp($value,$select) || is_array($select) && in_array($value,$select);
@@ -765,7 +773,7 @@ class CHtml
 			$htmlOptions['value']=$value;
 			$htmlOptions['id']=$baseID.'_'.$id++;
 			$option=self::checkBox($name,$checked,$htmlOptions);
-			$label=self::label($label,$htmlOptions['id']);
+			$label=self::label($label,$htmlOptions['id'],$labelOptions);
 			$items[]=strtr($template,array('{input}'=>$option,'{label}'=>$label));
 		}
 
@@ -774,7 +782,7 @@ class CHtml
 			$htmlOptions['value']=1;
 			$htmlOptions['id']=$id=$baseID.'_all';
 			$option=self::checkBox($id,$checkAll,$htmlOptions);
-			$label=self::label($checkAllLabel,$id);
+			$label=self::label($checkAllLabel,$id,$labelOptions);
 			$item=strtr($template,array('{input}'=>$option,'{label}'=>$label));
 			if($checkAllLast)
 				$items[]=$item;
@@ -818,6 +826,8 @@ EOD;
 	 * to "{input} {label}", where "{input}" will be replaced by the generated
 	 * radio button input tag while "{label}" be replaced by the corresponding radio button label.</li>
 	 * <li>separator: string, specifies the string that separates the generated radio buttons.</li>
+	 * <li>labelOptions: array, specifies the additional HTML attributes to be rendered
+	 * for every label tag in the list. This option has been available since version 1.0.10.</li>
 	 * </ul>
 	 * @return string the generated radio button list
 	 */
@@ -826,6 +836,9 @@ EOD;
 		$template=isset($htmlOptions['template'])?$htmlOptions['template']:'{input} {label}';
 		$separator=isset($htmlOptions['separator'])?$htmlOptions['separator']:"<br/>\n";
 		unset($htmlOptions['template'],$htmlOptions['separator']);
+
+		$labelOptions=isset($htmlOptions['labelOptions'])?$htmlOptions['labelOptions']:array();
+		unset($htmlOptions['labelOptions']);
 
 		$items=array();
 		$baseID=self::getIdByName($name);
@@ -836,7 +849,7 @@ EOD;
 			$htmlOptions['value']=$value;
 			$htmlOptions['id']=$baseID.'_'.$id++;
 			$option=self::radioButton($name,$checked,$htmlOptions);
-			$label=self::label($label,$htmlOptions['id']);
+			$label=self::label($label,$htmlOptions['id'],$labelOptions);
 			$items[]=strtr($template,array('{input}'=>$option,'{label}'=>$label));
 		}
 		return implode($separator,$items);
@@ -954,12 +967,22 @@ EOD;
 	}
 
 	/**
-	 * Generates a URL if the input specifies the route to a controller action.
-	 * @param mixed the URL to be normalized. If a string, the URL is returned back;
-	 * if an array, it is considered as a route to a controller action and will
-	 * be used to generate a URL using {@link CController::createUrl}; if the URL is empty,
-	 * the currently requested URL is returned.
-	 * @param string the URL
+	 * Normalizes the input parameter to be a valid URL.
+	 *
+	 * If the input parameter is an empty string, the currently requested URL will be returned.
+	 *
+	 * If the input parameter is a non-empty string, it is treated as a valid URL and will
+	 * be returned without any change.
+	 *
+	 * If the input parameter is an array, it is treated as a controller route and a list of
+	 * GET parameters, and the {@link CController::createUrl} method will be invoked to
+	 * create a URL. In this case, the first array element refers to the controller route,
+	 * and the rest key-value pairs refer to the additional GET parameters for the URL.
+	 * For example, <code>array('post/list', 'page'=>3)</code> may be used to generate the URL
+	 * <code>/index.php?r=post/list&page=3</code>.
+	 *
+	 * @param mixed the parameter to be used to generate a valid URL
+	 * @param string the normalized URL
 	 */
 	public static function normalizeUrl($url)
 	{
@@ -1006,10 +1029,17 @@ EOD;
 	 * If the attribute has input error, the label's CSS class will be appended with {@link errorCss}.
 	 * @param CModel the data model
 	 * @param string the attribute
-	 * @param array additional HTML attributes. A special option named
-	 * 'label' is recognized since version 1.0.4. If this option is specified, it will be used
-	 * as the label. Otherwise, the label will be determined
-	 * by calling {@link CModel::getAttributeLabel}.
+	 * @param array additional HTML attributes. The following special options are recognized:
+	 * <ul>
+	 * <li>required: if this is set and is true, the label will be styled
+	 * with CSS class 'required' (customizable with CHtml::$requiredCss),
+	 * and be decorated with {@link CHtml::beforeRequiredLabel} and
+	 * {@link CHtml::afterRequiredLabel}. This option has been available since version 1.0.2.</li>
+	 * <li>label: this specifies the label to be displayed. If this is not set,
+	 * {@link CModel::getAttributeLabel} will be called to get the label for display.
+	 * If the label is specified as false, no label will be rendered.
+	 * This option has been available since version 1.0.4.</li>
+	 * </ul>
 	 * @return string the generated label tag
 	 */
 	public static function activeLabel($model,$attribute,$htmlOptions=array())
@@ -1023,7 +1053,8 @@ EOD;
 			$for=self::getIdByName(self::resolveName($model,$attribute));
 		if(isset($htmlOptions['label']))
 		{
-			$label=$htmlOptions['label'];
+			if(($label=$htmlOptions['label'])===false)
+				return '';
 			unset($htmlOptions['label']);
 		}
 		else
@@ -1038,7 +1069,7 @@ EOD;
 	 * This is an enhanced version of {@link activeLabel}. It will render additional
 	 * CSS class and mark when the attribute is required.
 	 * In particular, it calls {@link CModel::isAttributeRequired} to determine
-	 * if the attribute is required under the scenario {@link CHtml::scenario}.
+	 * if the attribute is required.
 	 * If so, it will add a CSS class {@link CHtml::requiredCss} to the label,
 	 * and decorate the label with {@link CHtml::beforeRequiredLabel} and
 	 * {@link CHtml::afterRequiredLabel}.
@@ -1052,7 +1083,7 @@ EOD;
 	{
 		$realAttribute=$attribute;
 		self::resolveName($model,$attribute); // strip off square brackets if any
-		$htmlOptions['required']=$model->isAttributeRequired($attribute,self::$scenario);
+		$htmlOptions['required']=$model->isAttributeRequired($attribute);
 		return self::activeLabel($model,$realAttribute,$htmlOptions);
 	}
 
@@ -1125,7 +1156,7 @@ EOD;
 		self::clientChange('change',$htmlOptions);
 		if($model->hasErrors($attribute))
 			self::addErrorCss($htmlOptions);
-		return self::tag('textarea',$htmlOptions,self::encode($model->$attribute));
+		return self::tag('textarea',$htmlOptions,isset($htmlOptions['encode']) && !$htmlOptions['encode'] ? $model->$attribute : self::encode($model->$attribute));
 	}
 
 	/**
@@ -1156,6 +1187,11 @@ EOD;
 	 * @param string the attribute
 	 * @param array additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
+	 * Since version 1.0.9, a special option named 'uncheckValue' is available that can be used to specify
+	 * the value returned when the radiobutton is not checked. By default, this value is '0'.
+	 * Internally, a hidden field is rendered so that when the radiobutton is not checked,
+	 * we can still obtain the posted uncheck value.
+	 * If 'uncheckValue' is set as NULL, the hidden field will not be rendered.
 	 * @return string the generated radio button
 	 * @see clientChange
 	 * @see activeInputField
@@ -1165,12 +1201,22 @@ EOD;
 		self::resolveNameID($model,$attribute,$htmlOptions);
 		if(!isset($htmlOptions['value']))
 			$htmlOptions['value']=1;
-		if($model->$attribute)
+		if(!isset($htmlOptions['checked']) && $model->$attribute==$htmlOptions['value'])
 			$htmlOptions['checked']='checked';
 		self::clientChange('click',$htmlOptions);
+
+		if(array_key_exists('uncheckValue',$htmlOptions))
+		{
+			$uncheck=$htmlOptions['uncheckValue'];
+			unset($htmlOptions['uncheckValue']);
+		}
+		else
+			$uncheck='0';
+
+		$hidden=$uncheck!==null ? self::hiddenField($htmlOptions['name'],$uncheck,array('id'=>self::ID_PREFIX.$htmlOptions['id'])) : '';
+
 		// add a hidden field so that if the radio button is not selected, it still submits a value
-		return self::hiddenField($htmlOptions['name'],$htmlOptions['value']?0:-1,array('id'=>self::ID_PREFIX.$htmlOptions['id']))
-			. self::activeInputField('radio',$model,$attribute,$htmlOptions);
+		return $hidden . self::activeInputField('radio',$model,$attribute,$htmlOptions);
 	}
 
 	/**
@@ -1184,6 +1230,9 @@ EOD;
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * Since version 1.0.2, a special option named 'uncheckValue' is available that can be used to specify
 	 * the value returned when the checkbox is not checked. By default, this value is '0'.
+	 * Internally, a hidden field is rendered so that when the checkbox is not checked,
+	 * we can still obtain the posted uncheck value.
+	 * If 'uncheckValue' is set as NULL, the hidden field will not be rendered.
 	 * @return string the generated check box
 	 * @see clientChange
 	 * @see activeInputField
@@ -1193,11 +1242,11 @@ EOD;
 		self::resolveNameID($model,$attribute,$htmlOptions);
 		if(!isset($htmlOptions['value']))
 			$htmlOptions['value']=1;
-		if($model->$attribute)
+		if(!isset($htmlOptions['checked']) && $model->$attribute==$htmlOptions['value'])
 			$htmlOptions['checked']='checked';
 		self::clientChange('click',$htmlOptions);
 
-		if(isset($htmlOptions['uncheckValue']))
+		if(array_key_exists('uncheckValue',$htmlOptions))
 		{
 			$uncheck=$htmlOptions['uncheckValue'];
 			unset($htmlOptions['uncheckValue']);
@@ -1205,8 +1254,9 @@ EOD;
 		else
 			$uncheck='0';
 
-		return self::hiddenField($htmlOptions['name'],$uncheck,array('id'=>self::ID_PREFIX.$htmlOptions['id']))
-			. self::activeInputField('checkbox',$model,$attribute,$htmlOptions);
+		$hidden=$uncheck!==null ? self::hiddenField($htmlOptions['name'],$uncheck,array('id'=>self::ID_PREFIX.$htmlOptions['id'])) : '';
+
+		return $hidden . self::activeInputField('checkbox',$model,$attribute,$htmlOptions);
 	}
 
 	/**
@@ -1224,7 +1274,9 @@ EOD;
 	 * In addition, the following options are also supported:
 	 * <ul>
 	 * <li>prompt: string, specifies the prompt text shown as the first list option. Its value is empty.</li>
-	 * <li>empty: string, specifies the text corresponding to empty selection. Its value is empty.</li>
+	 * <li>empty: string, specifies the text corresponding to empty selection. Its value is empty.
+	 * Starting from version 1.0.10, the 'empty' option can also be an array of value-label pairs.
+	 * Each pair will be used to render a list option at the beginning.</li>
 	 * <li>options: array, specifies additional attributes for each OPTION tag.
 	 *     The array keys must be the option values, and the array values are the extra
 	 *     OPTION tag attributes in the name-value pairs. For example,
@@ -1273,7 +1325,9 @@ EOD;
 	 * In addition, the following options are also supported:
 	 * <ul>
 	 * <li>prompt: string, specifies the prompt text shown as the first list option. Its value is empty.</li>
-	 * <li>empty: string, specifies the text corresponding to empty selection. Its value is empty.</li>
+	 * <li>empty: string, specifies the text corresponding to empty selection. Its value is empty.
+	 * Starting from version 1.0.10, the 'empty' option can also be an array of value-label pairs.
+	 * Each pair will be used to render a list option at the beginning.</li>
 	 * <li>options: array, specifies additional attributes for each OPTION tag.
 	 *     The array keys must be the option values, and the array values are the extra
 	 *     OPTION tag attributes in the name-value pairs. For example,
@@ -1543,6 +1597,7 @@ EOD;
 
 	/**
 	 * Generates input field name for a model attribute.
+	 * Unlike {@link resolveName}, this method does NOT modify the attribute name.
 	 * @param CModel the data model
 	 * @param string the attribute
 	 * @return string the generated input field name
@@ -1586,7 +1641,9 @@ EOD;
 	 * <ul>
 	 * <li>encode: boolean, specifies whether to encode the values. Defaults to true. This option has been available since version 1.0.5.</li>
 	 * <li>prompt: string, specifies the prompt text shown as the first list option. Its value is empty.</li>
-	 * <li>empty: string, specifies the text corresponding to empty selection. Its value is empty.</li>
+	 * <li>empty: string, specifies the text corresponding to empty selection. Its value is empty.
+	 * Starting from version 1.0.10, the 'empty' option can also be an array of value-label pairs.
+	 * Each pair will be used to render a list option at the beginning.</li>
 	 * <li>options: array, specifies additional attributes for each OPTION tag.
 	 *     The array keys must be the option values, and the array values are the extra
 	 *     OPTION tag attributes in the name-value pairs. For example,
@@ -1612,7 +1669,15 @@ EOD;
 		}
 		if(isset($htmlOptions['empty']))
 		{
-			$content.='<option value="">'.($raw?$htmlOptions['empty'] : self::encode($htmlOptions['empty']))."</option>\n";
+			if(!is_array($htmlOptions['empty']))
+				$htmlOptions['empty']=array(''=>$htmlOptions['empty']);
+			foreach($htmlOptions['empty'] as $value=>$label)
+			{
+				if($raw)
+					$content.='<option value="'.$value.'">'.$label."</option>\n";
+				else
+					$content.='<option value="'.self::encode($value).'">'.self::encode($label)."</option>\n";
+			}
 			unset($htmlOptions['empty']);
 		}
 
@@ -1629,7 +1694,9 @@ EOD;
 			if(is_array($value))
 			{
 				$content.='<optgroup label="'.($raw?$key : self::encode($key))."\">\n";
-				$dummy=array();
+				$dummy=array('options'=>$options);
+				if(isset($htmlOptions['encode']))
+					$dummy['encode']=$htmlOptions['encode'];
 				$content.=self::listOptions($selection,$value,$dummy);
 				$content.='</optgroup>'."\n";
 			}
@@ -1725,35 +1792,37 @@ EOD;
 	/**
 	 * Generates input name and ID for a model attribute.
 	 * This method will update the HTML options by setting appropriate 'name' and 'id' attributes.
+	 * This method may also modify the attribute name if the name
+	 * contains square brackets (mainly used in tabular input).
 	 * @param CModel the data model
 	 * @param string the attribute
 	 * @param array the HTML options
 	 */
-	protected static function resolveNameID($model,&$attribute,&$htmlOptions)
+	public static function resolveNameID($model,&$attribute,&$htmlOptions)
 	{
+		$name=self::resolveName($model,$attribute);
 		if(!isset($htmlOptions['name']))
-			$htmlOptions['name']=self::resolveName($model,$attribute);
+			$htmlOptions['name']=$name;
 		if(!isset($htmlOptions['id']))
 			$htmlOptions['id']=self::getIdByName($htmlOptions['name']);
 	}
 
 	/**
 	 * Generates input name for a model attribute.
+	 * Note, the attribute name may be modified after calling this method if the name
+	 * contains square brackets (mainly used in tabular input).
 	 * @param CModel the data model
 	 * @param string the attribute
 	 * @return string the input name
 	 * @since 1.0.2
 	 */
-	protected static function resolveName($model,&$attribute)
+	public static function resolveName($model,&$attribute)
 	{
-		if(($pos=strpos($attribute,'['))!==false)
-		{
-			$sub=substr($attribute,$pos);
-			$attribute=substr($attribute,0,$pos);
-			return get_class($model).$sub.'['.$attribute.']';
-		}
+		if('['===$attribute[0])
+			list($i, $attribute, $index)=array(strtok($attribute, '[]'), strtok('['), strtok(']'));
 		else
-			return get_class($model).'['.$attribute.']';
+			list($attribute, $index)=array(strtok($attribute, '['), strtok(']'));
+		return get_class($model).(isset($i) ? '['.$i.']' : '').'['.$attribute.']'.(false!==$index ? '['.$index.']' : '');
 	}
 
 	/**

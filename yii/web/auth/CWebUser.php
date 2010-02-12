@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -44,7 +44,7 @@
  * you should store them directly in session on the server side if needed.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CWebUser.php 1193 2009-06-29 19:04:30Z qiang.xue $
+ * @version $Id: CWebUser.php 1696 2010-01-10 13:16:22Z qiang.xue $
  * @package system.web.auth
  * @since 1.0
  */
@@ -66,11 +66,11 @@ class CWebUser extends CApplicationComponent implements IWebUser
 	/**
 	 * @var string|array the URL for login. If using array, the first element should be
 	 * the route to the login action, and the rest name-value pairs are GET parameters
-	 * to construct the login URL (e.g. array('site/login')). If this property is null,
+	 * to construct the login URL (e.g. array('/site/login')). If this property is null,
 	 * a 403 HTTP exception will be raised instead.
 	 * @see CController::createUrl
 	 */
-	public $loginUrl=array('site/login');
+	public $loginUrl=array('/site/login');
 	/**
 	 * @var array the property values (in name-value pairs) used to initialize the identity cookie.
 	 * Any property of {@link CHttpCookie} may be initialized.
@@ -78,6 +78,16 @@ class CWebUser extends CApplicationComponent implements IWebUser
 	 * @since 1.0.5
 	 */
 	public $identityCookie;
+	/**
+	 * @var boolean whether to automatically renew the identity cookie each time a page is requested.
+	 * Defaults to false. This property is effective only when {@link allowAutoLogin} is true.
+	 * When this is false, the identity cookie will expire after the specified duration since the user
+	 * is initially logged in. When this is true, the identity cookie will expire after the specified duration
+	 * since the user visits the site the last time.
+	 * @see allowAutoLogin
+	 * @since 1.1.0
+	 */
+	public $autoRenewCookie=false;
 
 	private $_keyPrefix;
 	private $_access=array();
@@ -311,10 +321,15 @@ class CWebUser extends CApplicationComponent implements IWebUser
 		if($cookie && !empty($cookie->value) && ($data=$app->getSecurityManager()->validateData($cookie->value))!==false)
 		{
 			$data=unserialize($data);
-			if(isset($data[0],$data[1],$data[2]))
+			if(isset($data[0],$data[1],$data[2],$data[3]))
 			{
-				list($id,$name,$states)=$data;
+				list($id,$name,$duration,$states)=$data;
 				$this->changeIdentity($id,$name,$states);
+				if($this->autoRenewCookie)
+				{
+					$cookie->expire=time()+$duration;
+					$app->getRequest()->getCookies()->add($cookie->name,$cookie);
+				}
 			}
 		}
 	}
@@ -335,6 +350,7 @@ class CWebUser extends CApplicationComponent implements IWebUser
 		$data=array(
 			$this->getId(),
 			$this->getName(),
+			$duration,
 			$this->saveIdentityStates(),
 		);
 		$cookie->value=$app->getSecurityManager()->hashData(serialize($data));
@@ -361,12 +377,21 @@ class CWebUser extends CApplicationComponent implements IWebUser
 	/**
 	 * @return string a prefix for the name of the session variables storing user session data.
 	 */
-	protected function getStateKeyPrefix()
+	public function getStateKeyPrefix()
 	{
 		if($this->_keyPrefix!==null)
 			return $this->_keyPrefix;
 		else
 			return $this->_keyPrefix=md5('Yii.'.get_class($this).'.'.Yii::app()->getId());
+	}
+
+	/**
+	 * @param string a prefix for the name of the session variables storing user session data.
+	 * @since 1.0.9
+	 */
+	public function setStateKeyPrefix($value)
+	{
+		$this->_keyPrefix=$value;
 	}
 
 	/**

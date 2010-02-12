@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -12,7 +12,7 @@
  * CRangeValidator validates that the attribute value is among the list (specified via {@link range}).
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CRangeValidator.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: CRangeValidator.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -41,7 +41,7 @@ class CRangeValidator extends CValidator
 	protected function validateAttribute($object,$attribute)
 	{
 		$value=$object->$attribute;
-		if($this->allowEmpty && ($value===null || $value===''))
+		if($this->allowEmpty && $this->isEmpty($value))
 			return;
 		if(is_array($this->range) && !in_array($value,$this->range,$this->strict))
 		{

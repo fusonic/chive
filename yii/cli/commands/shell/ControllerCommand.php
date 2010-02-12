@@ -4,16 +4,16 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: ControllerCommand.php 1266 2009-07-21 20:59:34Z qiang.xue $
+ * @version $Id: ControllerCommand.php 1678 2010-01-07 21:02:00Z qiang.xue $
  */
 
 /**
  * ControllerCommand generates a controller class.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: ControllerCommand.php 1266 2009-07-21 20:59:34Z qiang.xue $
+ * @version $Id: ControllerCommand.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.cli.commands.shell
  * @since 1.0
  */
@@ -138,7 +138,7 @@ EOD;
 				'source'=>$templatePath.DIRECTORY_SEPARATOR.'view.php',
 				'target'=>$viewPath.DIRECTORY_SEPARATOR.$name.'.php',
 				'callback'=>array($this,'generateAction'),
-				'params'=>array(),
+				'params'=>array('controller'=>$controllerClass, 'action'=>$name),
 			);
 		}
 
@@ -171,6 +171,6 @@ EOD;
 	{
 		if(!is_file($source))  // fall back to default ones
 			$source=YII_PATH.'/cli/views/shell/controller/'.basename($source);
-		return $this->renderFile($source,array(),true);
+		return $this->renderFile($source,$params,true);
 	}
 }

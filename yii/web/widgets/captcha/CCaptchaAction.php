@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -28,7 +28,7 @@
  * </ol>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCaptchaAction.php 1066 2009-05-26 15:23:48Z qiang.xue $
+ * @version $Id: CCaptchaAction.php 1696 2010-01-10 13:16:22Z qiang.xue $
  * @package system.web.widgets.captcha
  * @since 1.0
  */
@@ -68,6 +68,11 @@ class CCaptchaAction extends CAction
 	 */
 	public $foreColor=0x2040A0;
 	/**
+	 * @var boolean whether to use transparent background. Defaults to false.
+	 * @since 1.0.10
+	 */
+	public $transparent=false;
+	/**
 	 * @var integer the minimum length for randomly generated word. Defaults to 6.
 	 */
 	public $minLength=6;
@@ -97,18 +102,7 @@ class CCaptchaAction extends CAction
 		}
 		else
 		{
-			$session=Yii::app()->session;
-			$session->open();
-			$name=$this->getSessionKey().'count';
-			if($session[$name]===null || $session[$name]>=$this->testLimit)
-				$regenerate=true;
-			else
-			{
-				$session[$name]=$session[$name]+1;
-				$regenerate=false;
-			}
-
-			$this->renderImage($this->getVerifyCode($regenerate));
+			$this->renderImage($this->getVerifyCode());
 			Yii::app()->end();
 		}
 	}
@@ -140,7 +134,14 @@ class CCaptchaAction extends CAction
 	public function validate($input,$caseSensitive)
 	{
 		$code=$this->getVerifyCode();
-		return $caseSensitive?($input===$code):!strcasecmp($input,$code);
+		$valid=$caseSensitive?($input===$code):!strcasecmp($input,$code);
+		$session=Yii::app()->session;
+		$session->open();
+		$name=$this->getSessionKey().'count';
+		$session[$name]=$session[$name]+1;
+		if($session[$name]>$this->testLimit)
+			$this->getVerifyCode(true);
+		return $valid;
 	}
 
 	/**
@@ -188,12 +189,16 @@ class CCaptchaAction extends CAction
 	protected function renderImage($code)
 	{
 		$image=imagecreatetruecolor($this->width,$this->height);
+
 		$backColor=imagecolorallocate($image,
 			(int)($this->backColor%0x1000000/0x10000),
 			(int)($this->backColor%0x10000/0x100),
 			$this->backColor%0x100);
         imagefilledrectangle($image,0,0,$this->width,$this->height,$backColor);
         imagecolordeallocate($image,$backColor);
+
+        if($this->transparent)
+			imagecolortransparent($image,$backColor);
 
 		$foreColor=imagecolorallocate($image,
 			(int)($this->foreColor%0x1000000/0x10000),

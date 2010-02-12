@@ -5,7 +5,7 @@
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -30,7 +30,7 @@
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDateFormatter.php 926 2009-04-06 18:12:09Z qiang.xue $
+ * @version $Id: CDateFormatter.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.i18n
  * @since 1.0
  */
@@ -43,6 +43,7 @@ class CDateFormatter extends CComponent
 		'G'=>'formatEra',
 		'y'=>'formatYear',
 		'M'=>'formatMonth',
+		'L'=>'formatMonth',
 		'd'=>'formatDay',
 		'h'=>'formatHour12',
 		'H'=>'formatHour24',
@@ -57,6 +58,7 @@ class CDateFormatter extends CComponent
 		'k'=>'formatHourInDay',
 		'K'=>'formatHourInPeriod',
 		'z'=>'formatTimeZone',
+		'Z'=>'formatTimeZone',
 		'v'=>'formatTimeZone',
 	);
 
@@ -230,8 +232,18 @@ class CDateFormatter extends CComponent
 				return $this->_locale->getMonthName($month,'wide');
 			case 'MMMMM':
 				return $this->_locale->getMonthName($month,'narrow');
+			case 'L':
+				return $month;
+			case 'LL':
+				return str_pad($month,2,'0',STR_PAD_LEFT);
+			case 'LLL':
+				return $this->_locale->getMonthName($month,'abbreviated', true);
+			case 'LLLL':
+				return $this->_locale->getMonthName($month,'wide', true);
+			case 'LLLLL':
+				return $this->_locale->getMonthName($month,'narrow', true);
 			default:
-				throw new CException(Yii::t('yii','The pattern for month must be "M", "MM", "MMM", or "MMMM".'));
+				throw new CException(Yii::t('yii','The pattern for month must be "M", "MM", "MMM", "MMMM", "L", "LL", "LLL" or "LLLL".'));
 		}
 	}
 
@@ -476,6 +488,8 @@ class CDateFormatter extends CComponent
 	{
 		if($pattern==='z' | $pattern==='v')
 			return @date('T', @mktime($date['hours'], $date['minutes'], $date['seconds'], $date['mon'], $date['mday'], $date['year']));
+		elseif($pattern==='Z')
+			return @date('O', @mktime($date['hours'], $date['minutes'], $date['seconds'], $date['mon'], $date['mday'], $date['year']));
 		else
 			throw new CException(Yii::t('yii','The pattern for time zone must be "z" or "v".'));
 	}

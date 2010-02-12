@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -20,7 +20,7 @@
  * interface.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CBaseUserIdentity.php 1286 2009-08-06 03:32:04Z qiang.xue $
+ * @version $Id: CBaseUserIdentity.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.web.auth
  * @since 1.0
  */

@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -14,12 +14,19 @@
  * The data includes the number formatting information and date formatting information.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLocale.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: CLocale.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.i18n
  * @since 1.0
  */
 class CLocale extends CComponent
 {
+	/**
+	 * @var string the directory that contains the locale data. If this property is not set,
+	 * the locale data will be loaded from 'framework/i18n/data'.
+	 * @since 1.1.0
+	 */
+	public static $dataPath;
+
 	private $_id;
 	private $_data;
 	private $_dateFormatter;
@@ -50,7 +57,7 @@ class CLocale extends CComponent
 		if($locales===null)
 		{
 			$locales=array();
-			$dataPath=dirname(__FILE__).DIRECTORY_SEPARATOR.'data';
+			$dataPath=self::$dataPath===null ? dirname(__FILE__).DIRECTORY_SEPARATOR.'data' : self::$dataPath;
 			$folder=@opendir($dataPath);
 			while($file=@readdir($folder))
 			{
@@ -73,7 +80,8 @@ class CLocale extends CComponent
 	protected function __construct($id)
 	{
 		$this->_id=self::getCanonicalID($id);
-		$dataFile=dirname(__FILE__).DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.$this->_id.'.php';
+		$dataPath=self::$dataPath===null ? dirname(__FILE__).DIRECTORY_SEPARATOR.'data' : self::$dataPath;
+		$dataFile=$dataPath.DIRECTORY_SEPARATOR.$this->_id.'.php';
 		if(is_file($dataFile))
 			$this->_data=require($dataFile);
 		else
@@ -172,21 +180,51 @@ class CLocale extends CComponent
 	/**
 	 * @param integer month (1-12)
 	 * @param string month name width. It can be 'wide', 'abbreviated' or 'narrow'.
+	 * @param boolean whether the month name should be returned in stand-alone format
 	 * @return string the month name
 	 */
-	public function getMonthName($month,$width='wide')
+	public function getMonthName($month,$width='wide',$standAlone=false)
 	{
-		return $this->_data['monthNames'][$width][$month];
+		if($standAlone)
+			return isset($this->_data['monthNamesSA'][$width][$month]) ? $this->_data['monthNamesSA'][$width][$month] : $this->_data['monthNames'][$width][$month];
+		else
+			return isset($this->_data['monthNames'][$width][$month]) ? $this->_data['monthNames'][$width][$month] : $this->_data['monthNamesSA'][$width][$month];
 	}
 
 	/**
-	 * @param integer weekday (0-6)
+	 * Returns the month names in the specified width.
+	 * @param string month name width. It can be 'wide', 'abbreviated' or 'narrow'.
+	 * @param boolean whether the month names should be returned in stand-alone format
+	 * @return array month names indexed by month values (1-12)
+	 * @since 1.0.9
+	 */
+	public function getMonthNames($width='wide',$standAlone=false)
+	{
+		if($standAlone)
+			return isset($this->_data['monthNamesSA'][$width]) ? $this->_data['monthNamesSA'][$width] : $this->_data['monthNames'][$width];
+		else
+			return isset($this->_data['monthNames'][$width]) ? $this->_data['monthNames'][$width] : $this->_data['monthNamesSA'][$width];
+	}
+
+	/**
+	 * @param integer weekday (0-6, 0 means Sunday)
 	 * @param string weekday name width.  It can be 'wide', 'abbreviated' or 'narrow'.
 	 * @return string the weekday name
 	 */
 	public function getWeekDayName($day,$width='wide')
 	{
 		return $this->_data['weekDayNames'][$width][$day];
+	}
+
+	/**
+	 * Returns the week day names in the specified width.
+	 * @param string weekday name width.  It can be 'wide', 'abbreviated' or 'narrow'.
+	 * @return array the weekday names indexed by weekday values (0-6, 0 means Sunday, 1 Monday, etc.)
+	 * @since 1.0.9
+	 */
+	public function getWeekDayNames($width='wide')
+	{
+		return $this->_data['weekDayNames'][$width];
 	}
 
 	/**

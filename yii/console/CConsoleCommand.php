@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -15,7 +15,7 @@
  * You may override {@link getHelp} to provide more detailed description of the command.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CConsoleCommand.php 1266 2009-07-21 20:59:34Z qiang.xue $
+ * @version $Id: CConsoleCommand.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.console
  * @since 1.0
  */
@@ -156,29 +156,6 @@ abstract class CConsoleCommand extends CComponent
 	}
 
 	/**
-	 * Converts a word to its plural form.
-	 * @param string the word to be pluralized
-	 * @return string the pluralized word
-	 */
-	public function pluralize($name)
-	{
-		$rules=array(
-			'/(x|ch|ss|sh|us|as|is|os)$/i' => '\1es',
-			'/(?:([^f])fe|([lr])f)$/i' => '\1\2ves',
-			'/(m)an$/i' => '\1en',
-			'/(child)$/i' => '\1ren',
-			'/(r|t|b|d)y$/i' => '\1ies',
-			'/s$/' => 's',
-		);
-		foreach($rules as $rule=>$replacement)
-		{
-			if(preg_match($rule,$name))
-				return preg_replace($rule,$replacement,$name);
-		}
-		return $name.'s';
-	}
-
-	/**
 	 * Builds the file list of a directory.
 	 * This method traverses through the specified directory and builds
 	 * a list of files and subdirectories that the directory contains.
@@ -194,7 +171,7 @@ abstract class CConsoleCommand extends CComponent
 		$handle=opendir($sourceDir);
 		while($file=readdir($handle))
 		{
-			if($file==='.' || $file==='..' || $file==='.svn')
+			if($file==='.' || $file==='..' || $file==='.svn' ||$file==='.yii')
 				continue;
 			$sourcePath=$sourceDir.DIRECTORY_SEPARATOR.$file;
 			$targetPath=$targetDir.DIRECTORY_SEPARATOR.$file;
@@ -243,5 +220,28 @@ abstract class CConsoleCommand extends CComponent
 		}
 		else
 			require($_viewFile_);
+	}
+
+	/**
+	 * Converts a word to its plural form.
+	 * @param string the word to be pluralized
+	 * @return string the pluralized word
+	 */
+	public function pluralize($name)
+	{
+		$rules=array(
+			'/(x|ch|ss|sh|us|as|is|os)$/i' => '\1es',
+			'/(?:([^f])fe|([lr])f)$/i' => '\1\2ves',
+			'/(m)an$/i' => '\1en',
+			'/(child)$/i' => '\1ren',
+			'/(r)y$/i' => '\1ies',
+			'/s$/' => 's',
+		);
+		foreach($rules as $rule=>$replacement)
+		{
+			if(preg_match($rule,$name))
+				return preg_replace($rule,$replacement,$name);
+		}
+		return $name.'s';
 	}
 }

@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -19,7 +19,7 @@
  * (see {@link CList} for more details}).
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CChainedCacheDependency.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: CChainedCacheDependency.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.caching.dependencies
  * @since 1.0
  */
@@ -35,6 +35,17 @@ class CChainedCacheDependency extends CComponent implements ICacheDependency
 		if($this->_dependencies===null)
 			$this->_dependencies=new CTypedList('ICacheDependency');
 		return $this->_dependencies;
+	}
+
+	/**
+	 * @param array list of dependency objects to be added to this chain.
+	 * @since 1.0.10
+	 */
+	public function setDependencies($values)
+	{
+		$dependencies=$this->getDependencies();
+		foreach($values as $value)
+			$dependencies->add($value);
 	}
 
 	/**

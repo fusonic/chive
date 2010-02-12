@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -18,7 +18,7 @@
  * with the current DB server timestamp.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbExpression.php 544 2009-01-18 13:27:31Z qiang.xue $
+ * @version $Id: CDbExpression.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.db.schema
  * @since 1.0.2
  */

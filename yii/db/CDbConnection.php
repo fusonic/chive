@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -79,7 +79,7 @@
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbConnection.php 1218 2009-07-07 17:30:18Z qiang.xue $
+ * @version $Id: CDbConnection.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.db
  * @since 1.0
  */
@@ -110,6 +110,13 @@ class CDbConnection extends CApplicationComponent
 	 * @see schemaCachingDuration
 	 */
 	public $schemaCachingExclude=array();
+	/**
+	 * @var string the ID of the cache application component that is used to cache the table metadata.
+	 * Defaults to 'cache' which refers to the primary cache application component.
+	 * Set this property to false if you want to disable caching table metadata.
+	 * @since 1.0.10
+	 */
+	public $schemaCacheID='cache';
 	/**
 	 * @var boolean whether the database connection should be automatically established
 	 * the component is being initialized. Defaults to true. Note, this property is only
@@ -145,6 +152,13 @@ class CDbConnection extends CApplicationComponent
 	 * @since 1.0.6
 	 */
 	public $enableProfiling=false;
+	/**
+	 * @var string the default prefix for table names. Defaults to null, meaning no table prefix.
+	 * By setting this property, any token like '{{tableName}}' in {@link CDbCommand::text} will
+	 * be replaced by 'prefixTableName', where 'prefix' refers to this property value.
+	 * @since 1.1.0
+	 */
+	public $tablePrefix;
 
 	private $_attributes=array();
 	private $_active=false;

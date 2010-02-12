@@ -24,7 +24,7 @@
 				<?php } ?>
 			</div>
 			<div>
-				<a href="javascript:void(0)" onclick="globalExport.view()" class="icon button">
+				<a href="javascript:void(0)" onclick="globalExport.view()" class="icon button primary">
 					<?php echo Html::icon('search', 16, false, 'export.show'); ?>
 					<span><?php echo Yii::t('core', 'show'); ?></span>
 				</a>
@@ -56,7 +56,7 @@
 	setTimeout(function() {
 		globalExport.setup();
 		<?php if(@ini_get('xdebug.profiler_enable')) { ?>
-			Notification.add('warning', lang.get('core', 'warning'), lang.get('message', 'xDebugExportWarning'));
+			Notification.add('warning', lang.get('core', 'warning'), lang.get('core', 'xDebugExportWarning'));
 		<?php } ?>
 	}, 500);
 	</script>

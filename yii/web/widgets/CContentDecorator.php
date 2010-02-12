@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -25,7 +25,7 @@
  * accessed with variable <code>$content</code>.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CContentDecorator.php 864 2009-03-21 17:23:33Z qiang.xue $
+ * @version $Id: CContentDecorator.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.web.widgets
  * @since 1.0
  */

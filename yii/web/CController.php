@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -58,7 +58,7 @@
  * For object-based filters, the '+' and '-' operators are following the class name.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CController.php 1158 2009-06-22 16:51:20Z qiang.xue $
+ * @version $Id: CController.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.web
  * @since 1.0
  */
@@ -474,6 +474,15 @@ class CController extends CBaseController
 	}
 
 	/**
+	 * @return string the route (module ID, controller ID and action ID) of the current request.
+	 * @since 1.1.0
+	 */
+	public function getRoute()
+	{
+		return $this->getUniqueId().'/'.$this->getAction()->getId();
+	}
+
+	/**
 	 * @return CWebModule the module that this controller belongs to. It returns null
 	 * if the controller does not belong to any module
 	 * @since 1.0.3
@@ -591,12 +600,17 @@ class CController extends CBaseController
 	{
 		if(empty($viewName))
 			return false;
-		if($viewName[0]==='/')
-			$viewFile=$basePath.$viewName.'.php';
-		else if(strpos($viewName,'.'))
-			$viewFile=Yii::getPathOfAlias($viewName).'.php';
+
+		if(($renderer=Yii::app()->getViewRenderer())!==null)
+			$extension=$renderer->fileExtension;
 		else
-			$viewFile=$viewPath.DIRECTORY_SEPARATOR.$viewName.'.php';
+			$extension='.php';
+		if($viewName[0]==='/')
+			$viewFile=$basePath.$viewName.$extension;
+		else if(strpos($viewName,'.'))
+			$viewFile=Yii::getPathOfAlias($viewName).$extension;
+		else
+			$viewFile=$viewPath.DIRECTORY_SEPARATOR.$viewName.$extension;
 		return is_file($viewFile) ? Yii::app()->findLocalizedFile($viewFile) : false;
 	}
 
@@ -613,6 +627,23 @@ class CController extends CBaseController
 			return $this->_clips;
 		else
 			return $this->_clips=new CMap;
+	}
+
+	/**
+	 * Processes the request using another controller action.
+	 * This is like {@link redirect}, but the user browser's URL remains unchanged.
+	 * In most cases, you should call {@link redirect} instead of this method.
+	 * @param string the route of the new controller action. This can be an action ID, or a complete route
+	 * with module ID, controller ID and action ID. If the former, the action is assumed
+	 * to be located within the current controller.
+	 * @since 1.1.0
+	 */
+	public function forward($route)
+	{
+		if(strpos($route,'/')===false) // an action of the current controller
+			$this->run($route);
+		else
+			Yii::app()->runController($route);
 	}
 
 	/**
@@ -1033,7 +1064,7 @@ class CController extends CBaseController
 	 */
 	protected function loadPageStates()
 	{
-		if(isset($_POST[self::STATE_INPUT_NAME]) && !empty($_POST[self::STATE_INPUT_NAME]))
+		if(!empty($_POST[self::STATE_INPUT_NAME]))
 		{
 			if(($data=base64_decode($_POST[self::STATE_INPUT_NAME]))!==false)
 			{

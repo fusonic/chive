@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -46,7 +46,7 @@
  * {@link CApplication::getErrorHandler()}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CErrorHandler.php 1053 2009-05-23 02:34:03Z qiang.xue $
+ * @version $Id: CErrorHandler.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.base
  * @since 1.0
  */

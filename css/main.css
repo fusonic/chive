@@ -1,5 +1,2 @@
-/* reset CSS | CSS zurücksetzen */
-@import url(reset.css);
-
-/* import core styles | Basis-Stylesheets einbinden */
-@import url(layout.css);
+@IMPORT url('reset.css');
+@IMPORT url('layout.css');

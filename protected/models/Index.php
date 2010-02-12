@@ -27,15 +27,15 @@ class Index extends ActiveRecord
 	public $NON_UNIQUE = 1;
 
 	/**
-	 * @see		CActiveRecord::model()
+	 * @see		ActiveRecord::model()
 	 */
-	public static function model($className=__CLASS__)
+	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
 	}
 
 	/**
-	 * @see		CActiveRecord::tableName()
+	 * @see		ActiveRecord::tableName()
 	 */
 	public function tableName()
 	{
@@ -43,7 +43,7 @@ class Index extends ActiveRecord
 	}
 
 	/**
-	 * @see		CActiveRecord::primaryKey()
+	 * @see		ActiveRecord::primaryKey()
 	 */
 	public function primaryKey()
 	{
@@ -56,7 +56,7 @@ class Index extends ActiveRecord
 	}
 
 	/**
-	 * @see		CActiveRecord::relations()
+	 * @see		ActiveRecord::relations()
 	 */
 	public function relations()
 	{
@@ -67,13 +67,13 @@ class Index extends ActiveRecord
 	}
 
 	/**
-	 * @see		CActiveRecord::safeAttributes()
+	 * @see		ActiveRecord::rules()
 	 */
-	public function safeAttributes()
+	public function rules()
 	{
 		return array(
-			'INDEX_NAME',
-			'type',
+			array('INDEX_NAME', 'type', 'type' => 'string'),
+			array('type', 'type', 'type' => 'string'),
 		);
 	}
 

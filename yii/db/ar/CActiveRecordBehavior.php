@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -14,7 +14,7 @@
  * that are only defined by {@link CActiveRecord}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecordBehavior.php 1185 2009-06-28 13:06:00Z qiang.xue $
+ * @version $Id: CActiveRecordBehavior.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.db.ar
  * @since 1.0.2
  */
@@ -34,6 +34,7 @@ class CActiveRecordBehavior extends CModelBehavior
 			'onBeforeDelete'=>'beforeDelete',
 			'onAfterDelete'=>'afterDelete',
 			'onAfterConstruct'=>'afterConstruct',
+			'onBeforeFind'=>'beforeFind',
 			'onAfterFind'=>'afterFind',
 		));
 	}
@@ -82,6 +83,16 @@ class CActiveRecordBehavior extends CModelBehavior
 	 * @param CEvent event parameter
 	 */
 	public function afterConstruct($event)
+	{
+	}
+
+	/**
+	 * Responds to {@link CActiveRecord::onBeforeFind} event.
+	 * Overrides this method if you want to handle the corresponding event of the {@link CBehavior::owner owner}.
+	 * @param CEvent event parameter
+	 * @since 1.0.9
+	 */
+	public function beforeFind($event)
 	{
 	}
 

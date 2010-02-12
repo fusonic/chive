@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -16,7 +16,7 @@
  * A property is defined by a getter method, and/or a setter method.
  * Properties can be accessed in the way like accessing normal object members.
  * Reading or writing a property will cause the invocation of the corresponding
- * getter or setter method, e.g.,
+ * getter or setter method, e.g
  * <pre>
  * $a=$component->text;     // equivalent to $a=$component->getText();
  * $component->text='abc';  // equivalent to $component->setText('abc');
@@ -78,8 +78,12 @@
  * or {@link disableBehavior}, respectively. When disabled, the behavior methods cannot
  * be invoked via the component.
  *
+ * Starting from version 1.1.0, a behavior's properties (either its public member variables or
+ * its properties defined via getters and/or setters) can be accessed through the component it
+ * is attached to.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CComponent.php 963 2009-04-28 12:47:01Z qiang.xue $
+ * @version $Id: CComponent.php 1693 2010-01-09 15:04:56Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -116,9 +120,16 @@ class CComponent
 		}
 		else if(isset($this->_m[$name]))
 			return $this->_m[$name];
-		else
-			throw new CException(Yii::t('yii','Property "{class}.{property}" is not defined.',
-				array('{class}'=>get_class($this), '{property}'=>$name)));
+		else if(is_array($this->_m))
+		{
+			foreach($this->_m as $object)
+			{
+				if($object->getEnabled() && (property_exists($object,$name) || $object->canGetProperty($name)))
+					return $object->$name;
+			}
+		}
+		throw new CException(Yii::t('yii','Property "{class}.{property}" is not defined.',
+			array('{class}'=>get_class($this), '{property}'=>$name)));
 	}
 
 	/**
@@ -138,16 +149,24 @@ class CComponent
 	{
 		$setter='set'.$name;
 		if(method_exists($this,$setter))
-			$this->$setter($value);
+			return $this->$setter($value);
 		else if(strncasecmp($name,'on',2)===0 && method_exists($this,$name))
 		{
 			// duplicating getEventHandlers() here for performance
 			$name=strtolower($name);
 			if(!isset($this->_e[$name]))
 				$this->_e[$name]=new CList;
-			$this->_e[$name]->add($value);
+			return $this->_e[$name]->add($value);
 		}
-		else if(method_exists($this,'get'.$name))
+		else if(is_array($this->_m))
+		{
+			foreach($this->_m as $object)
+			{
+				if($object->getEnabled() && (property_exists($object,$name) || $object->canSetProperty($name)))
+					return $object->$name=$value;
+			}
+		}
+		if(method_exists($this,'get'.$name))
 			throw new CException(Yii::t('yii','Property "{class}.{property}" is read only.',
 				array('{class}'=>get_class($this), '{property}'=>$name)));
 		else
@@ -211,7 +230,7 @@ class CComponent
 		{
 			foreach($this->_m as $object)
 			{
-				if($object->enabled && method_exists($object,$name))
+				if($object->getEnabled() && method_exists($object,$name))
 					return call_user_func_array(array($object,$name),$parameters);
 			}
 		}
@@ -510,15 +529,20 @@ class CComponent
 					call_user_func($handler,$event);
 				else if(is_callable($handler,true))
 				{
-					// an array: 0 - object, 1 - method name
-					list($object,$method)=$handler;
-					if(is_string($object))	// static method call
+					if(is_array($handler))
+					{
+						// an array: 0 - object, 1 - method name
+						list($object,$method)=$handler;
+						if(is_string($object))	// static method call
+							call_user_func($handler,$event);
+						else if(method_exists($object,$method))
+							$object->$method($event);
+						else
+							throw new CException(Yii::t('yii','Event "{class}.{event}" is attached with an invalid handler "{handler}".',
+								array('{class}'=>get_class($this), '{event}'=>$name, '{handler}'=>$handler[1])));
+					}
+					else // PHP 5.3: anonymous function
 						call_user_func($handler,$event);
-					else if(method_exists($object,$method))
-						$object->$method($event);
-					else
-						throw new CException(Yii::t('yii','Event "{class}.{event}" is attached with an invalid handler "{handler}".',
-							array('{class}'=>get_class($this), '{event}'=>$name, '{handler}'=>$handler[1])));
 				}
 				else
 					throw new CException(Yii::t('yii','Event "{class}.{event}" is attached with an invalid handler "{handler}".',
@@ -531,6 +555,42 @@ class CComponent
 		else if(YII_DEBUG && !$this->hasEvent($name))
 			throw new CException(Yii::t('yii','Event "{class}.{event}" is not defined.',
 				array('{class}'=>get_class($this), '{event}'=>$name)));
+	}
+
+	/**
+	 * Evaluates a PHP expression or callback under the context of this component.
+	 *
+	 * Valid PHP callback can be class method name in the form of
+	 * array(ClassName/Object, MethodName), or anonymous function (only available in PHP 5.3.0 or above).
+	 *
+	 * If a PHP callback is used, the corresponding function/method signature should be
+	 * <pre>
+	 * function foo($param1, $param2, ..., $component) { ... }
+	 * </pre>
+	 * where the array elements in the second parameter to this method will be passed
+	 * to the callback as $param1, $param2, ...; and the last parameter will be the component itself.
+	 *
+	 * If a PHP expression is used, the second parameter will be "extracted" into PHP variables
+	 * that can be directly accessed in the expression. See {@link http://us.php.net/manual/en/function.extract.php PHP extract}
+	 * for more details. In the expression, the component object can be accessed using $this.
+	 *
+	 * @var mixed a PHP expression or PHP callback to be evaluated.
+	 * @param array additional parameters to be passed to the above expression/callback.
+	 * @return mixed the expression result
+	 * @since 1.1.0
+	 */
+	public function evaluateExpression($_expression_,$_data_=array())
+	{
+		if(is_string($_expression_))
+		{
+			extract($_data_);
+			return @eval('return '.$_expression_.';');
+		}
+		else
+		{
+			$_data_[]=$this;
+			return call_user_func_array($_expression_, $_data_);
+		}
 	}
 }
 
@@ -545,7 +605,7 @@ class CComponent
  * that are not invoked yet will not be invoked anymore.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CComponent.php 963 2009-04-28 12:47:01Z qiang.xue $
+ * @version $Id: CComponent.php 1693 2010-01-09 15:04:56Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -590,7 +650,7 @@ class CEvent extends CComponent
  * TextAlign::Right.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CComponent.php 963 2009-04-28 12:47:01Z qiang.xue $
+ * @version $Id: CComponent.php 1693 2010-01-09 15:04:56Z qiang.xue $
  * @package system.base
  * @since 1.0
  */

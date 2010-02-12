@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -37,14 +37,14 @@
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CConsoleApplication.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: CConsoleApplication.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.console
  * @since 1.0
  */
 class CConsoleApplication extends CApplication
 {
 	/**
-	 * @var array mapping from controller ID to controller configurations.
+	 * @var array mapping from command name to command configurations.
 	 * Each command configuration can be either a string or an array.
 	 * If the former, the string should be the file path of the command class.
 	 * If the latter, the array must contain a 'class' element which specifies

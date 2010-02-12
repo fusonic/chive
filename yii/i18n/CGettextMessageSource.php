@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -22,7 +22,7 @@
  * {@link catalog} property, which defaults to 'messages'.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CGettextMessageSource.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: CGettextMessageSource.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.i18n
  * @since 1.0
  */
@@ -37,6 +37,13 @@ class CGettextMessageSource extends CMessageSource
 	 * Defaults to 0, meaning the caching is disabled.
 	 */
 	public $cachingDuration=0;
+	/**
+	 * @var string the ID of the cache application component that is used to cache the messages.
+	 * Defaults to 'cache' which refers to the primary cache application component.
+	 * Set this property to false if you want to disable caching the messages.
+	 * @since 1.0.10
+	 */
+	public $cacheID='cache';
 	/**
 	 * @var string the base path for all translated messages. Defaults to null, meaning
 	 * the "messages" subdirectory of the application directory (e.g. "protected/messages").
@@ -84,7 +91,7 @@ class CGettextMessageSource extends CMessageSource
         else
         	$messageFile.=self::PO_FILE_EXT;
 
-		if ($this->cachingDuration > 0 && ($cache=Yii::app()->getCache()) !== null)
+		if ($this->cachingDuration > 0 && $this->cacheID!==false && ($cache=Yii::app()->getComponent($this->cacheID))!==null)
 		{
 			$key = self::CACHE_KEY_PREFIX . $messageFile;
 			if (($data=$cache->get($key)) !== false)

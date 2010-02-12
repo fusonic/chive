@@ -145,7 +145,7 @@
 	<entry id="host">Host</entry>
 	<entry id="id">ID</entry>
 	<entry id="import">Import</entry>
-	<entry id="importFile">Datei importieren</entry>
+	<entry id="importFile">Import file</entry>
 	<entry id="incompatibleBrowserWarning">You are using an old (not supported) browser. Please update to a newer one.</entry>
 	<entry id="index">Index</entry>
 	<entry id="indices">Indices</entry>
@@ -153,6 +153,7 @@
 	<entry id="insert">Insert</entry>
 	<entry id="insertAndReturnToThisPage">Insert and return to this page</entry>
 	<entry id="insertNewRow">Insert new row</entry>
+	<entry id="keepPassword">Keep password</entry>
 	<entry id="key">Key</entry>
 	<entry id="kill">Kill</entry>
 	<entry id="killProcess">Kill process</entry>
@@ -272,6 +273,7 @@
 	<entry id="tableSpecificPrivileges">Table-specific privileges</entry>
 	<entry id="tables">Tables</entry>
 	<entry id="time">Time</entry>
+	<entry id="toggleEditor">Toggle editor</entry>
 	<entry id="total">Total</entry>
 	<entry id="trigger">Trigger</entry>
 	<entry id="triggers">Triggers</entry>

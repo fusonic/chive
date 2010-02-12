@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -19,7 +19,7 @@
  * issues encountered.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLogFilter.php 1094 2009-06-05 14:55:14Z qiang.xue $
+ * @version $Id: CLogFilter.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.logging
  * @since 1.0.6
  */
@@ -94,7 +94,7 @@ class CLogFilter extends CComponent
 
 		foreach($this->logVars as $name)
 		{
-			if(isset($GLOBALS[$name]) && !empty($GLOBALS[$name]))
+			if(!empty($GLOBALS[$name]))
 				$context[]="\${$name}=".var_export($GLOBALS[$name],true);
 		}
 

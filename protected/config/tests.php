@@ -20,19 +20,12 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-// uncomment the following to define a path alias
-// Yii::setPathOfAlias('local','path/to/local-folder');
-
-// This is the main Web application configuration. Any writable
-// CWebApplication properties can be configured here.
-
 define('URL_MATCH', '([^\/]*)');
 
 return array(
-	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'Dublin - database management',
-	'theme'=>'standard',
+	'basePath' => dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
+	'name' => 'Chive',
+	'theme' => 'standard',
 
 	// preloading 'log' component
 	'preload'=>array('log'),
@@ -127,20 +120,6 @@ return array(
 					'database/<schema:'.URL_MATCH.'>/tables/<table:'.URL_MATCH.'>/columns/move'=>'column/move',
             ),
         ),
-
-        /*
-        // Cache
-        'cache' => array(
-        	'class' => 'system.caching.CMemCache',
-        	'servers'=>array(
-                array(
-                    'host'=>'127.0.0.1',
-                    'port'=>11211,
-                    'weight'=>100,
-                ),
-            ),
-        ),
-        */
 
         // View Renderer (template engine)
         'viewRenderer'=>array(

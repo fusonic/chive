@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -12,7 +12,7 @@
  * CUniqueValidator validates that the attribute value is unique in the corresponding database table.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CUniqueValidator.php 1298 2009-08-07 00:01:24Z qiang.xue $
+ * @version $Id: CUniqueValidator.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -52,6 +52,11 @@ class CUniqueValidator extends CValidator
 	 * @since 1.0.8
 	 */
 	public $criteria=array();
+	/**
+	 * @var string the user-defined error message. The placeholders "{attribute}" and "{value}"
+	 * are recognized, which will be replaced with the actual attribute name and value, respectively.
+	 */
+	public $message;
 
 
 	/**
@@ -63,7 +68,7 @@ class CUniqueValidator extends CValidator
 	protected function validateAttribute($object,$attribute)
 	{
 		$value=$object->$attribute;
-		if($this->allowEmpty && ($value===null || $value===''))
+		if($this->allowEmpty && $this->isEmpty($value))
 			return;
 
 		$className=$this->className===null?get_class($object):Yii::import($this->className);
@@ -82,16 +87,20 @@ class CUniqueValidator extends CValidator
 		if($this->criteria!==array())
 			$criteria->mergeWith($this->criteria);
 
-		if($column->isPrimaryKey || $this->className!==null)
+		if($object->isNewRecord || $object->tableName()!==$finder->tableName())
 			$exists=$finder->exists($criteria);
 		else
 		{
-			// need to exclude the current record based on PK
 			$criteria->limit=2;
 			$objects=$finder->findAll($criteria);
 			$n=count($objects);
 			if($n===1)
-				$exists=$objects[0]->getPrimaryKey()!=$object->getPrimaryKey();
+			{
+				if($column->isPrimaryKey)  // primary key is modified and not unique
+					$exists=$object->getOldPrimaryKey()!=$object->getPrimaryKey();
+				else // non-primary key, need to exclude the current record based on PK
+					$exists=$objects[0]->getPrimaryKey()!=$object->getPrimaryKey();
+			}
 			else
 				$exists=$n>1;
 		}

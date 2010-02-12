@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -12,7 +12,7 @@
  * CDbCommandBuilder provides basic methods to create query commands for tables.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCommandBuilder.php 1302 2009-08-07 13:43:18Z qiang.xue $
+ * @version $Id: CDbCommandBuilder.php 1697 2010-01-10 16:18:28Z qiang.xue $
  * @package system.db.schema
  * @since 1.0
  */
@@ -66,13 +66,17 @@ class CDbCommandBuilder extends CComponent
 	 * Creates a SELECT command for a single table.
 	 * @param mixed the table schema ({@link CDbTableSchema}) or the table name (string).
 	 * @param CDbCriteria the query criteria
+	 * @param string the alias name of the primary table. Defaults to 't'.
 	 * @return CDbCommand query command.
 	 */
-	public function createFindCommand($table,$criteria)
+	public function createFindCommand($table,$criteria,$alias='t')
 	{
 		$this->ensureTable($table);
 		$select=is_array($criteria->select) ? implode(', ',$criteria->select) : $criteria->select;
-		$sql="SELECT {$select} FROM {$table->rawName}";
+		if($criteria->alias!==null)
+			$alias=$criteria->alias;
+		$alias=$this->_schema->quoteTableName($alias);
+		$sql=($criteria->distinct ? 'SELECT DISTINCT':'SELECT')." {$select} FROM {$table->rawName} $alias";
 		$sql=$this->applyJoin($sql,$criteria->join);
 		$sql=$this->applyCondition($sql,$criteria->condition);
 		$sql=$this->applyGroup($sql,$criteria->group);
@@ -88,13 +92,21 @@ class CDbCommandBuilder extends CComponent
 	 * Creates a COUNT(*) command for a single table.
 	 * @param mixed the table schema ({@link CDbTableSchema}) or the table name (string).
 	 * @param CDbCriteria the query criteria
+	 * @param string the alias name of the primary table. Defaults to 't'.
 	 * @return CDbCommand query command.
 	 */
-	public function createCountCommand($table,$criteria)
+	public function createCountCommand($table,$criteria,$alias='t')
 	{
 		$this->ensureTable($table);
-		$criteria->select='COUNT(*)';
-		return $this->createFindCommand($table,$criteria);
+		if($criteria->alias!==null)
+			$alias=$criteria->alias;
+		$alias=$this->_schema->quoteTableName($alias);
+		$sql=($criteria->distinct ? 'SELECT DISTINCT':'SELECT')." COUNT(*) FROM {$table->rawName} $alias";
+		$sql=$this->applyJoin($sql,$criteria->join);
+		$sql=$this->applyCondition($sql,$criteria->condition);
+		$command=$this->_connection->createCommand($sql);
+		$this->bindValues($command,$criteria->params);
+		return $command;
 	}
 
 	/**
@@ -416,17 +428,20 @@ class CDbCommandBuilder extends CComponent
 	 * @param array parameters to be bound to an SQL statement.
 	 * This is only used when the second parameter is a string (query condition).
 	 * In other cases, please use {@link CDbCriteria::params} to set parameters.
+	 * @param string column prefix (ended with dot). If null, it will be the table name
 	 * @return CDbCriteria the created query criteria
 	 */
-	public function createPkCriteria($table,$pk,$condition='',$params=array())
+	public function createPkCriteria($table,$pk,$condition='',$params=array(),$prefix=null)
 	{
 		$this->ensureTable($table);
 		$criteria=$this->createCriteria($condition,$params);
+		if($criteria->alias!==null)
+			$prefix=$this->_schema->quoteTableName($criteria->alias).'.';
 		if(!is_array($pk)) // single key
 			$pk=array($pk);
 		if(is_array($table->primaryKey) && !isset($pk[0]) && $pk!==array()) // single composite key
 			$pk=array($pk);
-		$condition=$this->createInCondition($table,$table->primaryKey,$pk);
+		$condition=$this->createInCondition($table,$table->primaryKey,$pk,$prefix);
 		if($criteria->condition!=='')
 			$criteria->condition=$condition.' AND ('.$criteria->condition.')';
 		else
@@ -459,38 +474,43 @@ class CDbCommandBuilder extends CComponent
 	 * @param array parameters to be bound to an SQL statement.
 	 * This is only used when the second parameter is a string (query condition).
 	 * In other cases, please use {@link CDbCriteria::params} to set parameters.
+	 * @param string column prefix (ended with dot). If null, it will be the table name
 	 * @return CDbCriteria the created query criteria
 	 */
-	public function createColumnCriteria($table,$columns,$condition='',$params=array())
+	public function createColumnCriteria($table,$columns,$condition='',$params=array(),$prefix=null)
 	{
 		$this->ensureTable($table);
 		$criteria=$this->createCriteria($condition,$params);
+		if($criteria->alias!==null)
+			$prefix=$this->_schema->quoteTableName($criteria->alias).'.';
 		$bindByPosition=isset($criteria->params[0]);
 		$conditions=array();
 		$values=array();
 		$i=0;
+		if($prefix===null)
+			$prefix=$table->rawName.'.';
 		foreach($columns as $name=>$value)
 		{
 			if(($column=$table->getColumn($name))!==null)
 			{
 				if(is_array($value))
-					$conditions[]=$this->createInCondition($table,$name,$value);
+					$conditions[]=$this->createInCondition($table,$name,$value,$prefix);
 				else if($value!==null)
 				{
 					if($bindByPosition)
 					{
-						$conditions[]=$table->rawName.'.'.$column->rawName.'=?';
+						$conditions[]=$prefix.$column->rawName.'=?';
 						$values[]=$value;
 					}
 					else
 					{
-						$conditions[]=$table->rawName.'.'.$column->rawName.'='.self::PARAM_PREFIX.$i;
+						$conditions[]=$prefix.$column->rawName.'='.self::PARAM_PREFIX.$i;
 						$values[self::PARAM_PREFIX.$i]=$value;
 						$i++;
 					}
 				}
 				else
-					$conditions[]=$table->rawName.'.'.$column->rawName.' IS NULL';
+					$conditions[]=$prefix.$column->rawName.' IS NULL';
 			}
 			else
 				throw new CDbException(Yii::t('yii','Table "{table}" does not have a column named "{column}".',

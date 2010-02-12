@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -24,7 +24,7 @@
  *
  * @author Steve Heyns http://customgothic.com/
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CViewRenderer.php 929 2009-04-11 02:00:47Z qiang.xue@gmail.com $
+ * @version $Id: CViewRenderer.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.web.renderers
  * @since 1.0
  */
@@ -42,6 +42,11 @@ abstract class CViewRenderer extends CApplicationComponent implements IViewRende
 	 * generated during parsing. Defaults to 0755 (owner rwx, group rx and others rx).
 	 */
 	public $filePermission=0755;
+	/**
+	 * @var string the extension name of the view file. Defaults to '.php'.
+	 * @since 1.0.9
+	 */
+	public $fileExtension='.php';
 
 	/**
 	 * Parses the source view file and saves the results as another file.

@@ -55,7 +55,7 @@
  * @author	 Michal Migurski <mike-json@teczno.com>
  * @author	 Matt Knapp <mdknapp[at]gmail[dot]com>
  * @author	 Brett Stimmerman <brettstimmerman[at]gmail[dot]com>
- * @version $Id: CJSON.php 569 2009-01-24 01:34:35Z qiang.xue $
+ * @version $Id: CJSON.php 1483 2009-10-27 15:57:33Z qiang.xue $
  * @package	system.web.helpers
  * @since 1.0
  */
@@ -500,7 +500,7 @@ class CJSON
 
 							if (reset($stk) == self::JSON_IN_ARR) {
 								// we are in an array, so just push an element onto the stack
-								array_push($arr, self::decode($slice));
+								array_push($arr, self::decode($slice,$useArray));
 
 							} elseif (reset($stk) == self::JSON_IN_OBJ) {
 								// we are in an object, so figure
@@ -509,8 +509,8 @@ class CJSON
 								// for now
 								if (preg_match('/^\s*(["\'].*[^\\\]["\'])\s*:\s*(\S.*),?$/Uis', $slice, $parts)) {
 									// "name":value pair
-									$key = self::decode($parts[1]);
-									$val = self::decode($parts[2]);
+									$key = self::decode($parts[1],$useArray);
+									$val = self::decode($parts[2],$useArray);
 
 									if ($useArray) {
 										$obj[$key] = $val;
@@ -520,7 +520,7 @@ class CJSON
 								} elseif (preg_match('/^\s*(\w+)\s*:\s*(\S.*),?$/Uis', $slice, $parts)) {
 									// name:value pair, where name is unquoted
 									$key = $parts[1];
-									$val = self::decode($parts[2]);
+									$val = self::decode($parts[2],$useArray);
 
 									if ($useArray) {
 										$obj[$key] = $val;

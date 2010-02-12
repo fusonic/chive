@@ -20,8 +20,10 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 class CsvExporter implements IExporter
 {
+	
 	private $items = array();
 	private $mode;
 	private $schema;
@@ -37,13 +39,16 @@ class CsvExporter implements IExporter
 
 	private $result;
 
+	/**
+	 * @see		IExporter::__construct()
+	 */
 	public function __construct($mode)
 	{
 		$this->mode = $mode;
 	}
 
 	/**
-	 * @see		IExport::getSettingsView()
+	 * @see		IExporter::getSettingsView()
 	 */
 	public function getSettingsView()
 	{
@@ -51,7 +56,7 @@ class CsvExporter implements IExporter
 	}
 
 	/**
-	 * @see		IExport::calculateStepCount()
+	 * @see		IExporter::calculateStepCount()
 	 */
 	public function calculateStepCount()
 	{
@@ -61,7 +66,7 @@ class CsvExporter implements IExporter
 	}
 
 	/**
-	 * @see		IExport::getStepCount()
+	 * @see		IExporter::getStepCount()
 	 */
 	public function getStepCount()
 	{
@@ -69,7 +74,7 @@ class CsvExporter implements IExporter
 	}
 
 	/**
-	 * @see		IExport::setItems()
+	 * @see		IExporter::setItems()
 	 */
 	public function setItems(array $items, $schema = null)
 	{
@@ -78,7 +83,7 @@ class CsvExporter implements IExporter
 	}
 
 	/**
-	 * @see		IExport::runStep()
+	 * @see		IExporter::runStep()
 	 */
 	public function runStep($i, $collect = false)
 	{
@@ -92,7 +97,7 @@ class CsvExporter implements IExporter
 	}
 
 	/**
-	 * @see		IExport::getResult()
+	 * @see		IExporter::getResult()
 	 */
 	public function getResult()
 	{
@@ -100,7 +105,7 @@ class CsvExporter implements IExporter
 	}
 
 	/**
-	 * @see		IExport::getSupportedModes()
+	 * @see		IExporter::getSupportedModes()
 	 */
 	public static function getSupportedModes()
 	{
@@ -108,7 +113,7 @@ class CsvExporter implements IExporter
 	}
 
 	/**
-	 * @see		IExport::getTitle()
+	 * @see		IExporter::getTitle()
 	 */
 	public static function getTitle()
 	{

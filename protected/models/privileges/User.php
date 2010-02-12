@@ -41,7 +41,7 @@ class User extends ActiveRecord
 	}
 
 	/**
-	 * @see		CActiveRecord::model()
+	 * @see		ActiveRecord::model()
 	 */
 	public static function model($className = __CLASS__)
 	{
@@ -49,7 +49,7 @@ class User extends ActiveRecord
 	}
 
 	/**
-	 * @see		CActiveRecord::tableName()
+	 * @see		ActiveRecord::tableName()
 	 */
 	public function tableName()
 	{
@@ -57,7 +57,7 @@ class User extends ActiveRecord
 	}
 
 	/**
-	 * @see		CActiveRecord::primaryKey()
+	 * @see		ActiveRecord::primaryKey()
 	 */
 	public function primaryKey() {
 		return array(
@@ -66,18 +66,21 @@ class User extends ActiveRecord
 		);
 	}
 
-	public function safeAttributes()
+	/**
+	 * @see		ActiveRecord::rules()
+	 */
+	public function rules()
 	{
 		return array(
-			'User',
-			'Host',
-			'plainPassword',
-			'GlobalPrivileges',
+			array('User', 'type', 'type' => 'string'),
+			array('Host', 'type', 'type' => 'string'),
+			array('plainPassword', 'type', 'type' => 'string'),
+			array('GlobalPrivileges', 'type', 'type' => 'string'),
 		);
 	}
 
 	/**
-	 * @return array customized attribute labels (name=>label)
+	 * @see		ActiveRecord::attributeLabels()
 	 */
 	public function attributeLabels()
 	{

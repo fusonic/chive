@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -23,7 +23,7 @@
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CQueue.php 568 2009-01-23 22:50:14Z qiang.xue $
+ * @version $Id: CQueue.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.collections
  * @since 1.0
  */
@@ -109,7 +109,7 @@ class CQueue extends CComponent implements IteratorAggregate,Countable
 		if($this->_c===0)
 			throw new CException(Yii::t('yii','The queue is empty.'));
 		else
-			return $this->_d[$this->_c-1];
+			return $this->_d[0];
 	}
 
 	/**

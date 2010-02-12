@@ -34,7 +34,6 @@ class ArrayUtil
 			
 			foreach($_array AS $key => $value) 
 			{
-				
 				if(is_null($value)) 
 				{
 					$return .= $key . ': null';
@@ -47,17 +46,21 @@ class ArrayUtil
 				$count--; 			
 				
 				if($count > 0)
+				{
 					$return .= ',';
-				
+				}
 			}
-			
 		}
 		else
 		{
 			if(is_numeric($_array))
+			{
 				$return .= $_array;
+			}
 			else
+			{
 				$return .= "'" . $_array . "'";
+			}
 		}
 		
 		$return .= '}';
@@ -66,5 +69,3 @@ class ArrayUtil
 	}
 	
 }
-
-?>

@@ -21,7 +21,8 @@
  */
 
 
-class CXmlMessageSource extends CMessageSource {
+class CXmlMessageSource extends CMessageSource 
+{
 
 	const CACHE_KEY_PREFIX='Yii.CXmlMessageSource.';
 
@@ -29,7 +30,8 @@ class CXmlMessageSource extends CMessageSource {
 	 * @var integer the time in seconds that the messages can remain valid in cache.
 	 * Defaults to 0, meaning the caching is disabled.
 	 */
-	public $cachingDuration=0;
+	public $cachingDuration = 0;
+	
 	/**
 	 * @var string the base path for all translated messages. Defaults to null, meaning
 	 * the "messages" subdirectory of the application directory (e.g. "protected/messages").
@@ -37,21 +39,22 @@ class CXmlMessageSource extends CMessageSource {
 	public $basePath;
 
 	/**
-	 * Initializes the application component.
-	 * This method overrides the parent implementation by preprocessing
-	 * the user request data.
+	 * @see		CMessageSource::init()
 	 */
 	public function init()
 	{
 		parent::init();
-		if($this->basePath===null)
-			$this->basePath=Yii::getPathOfAlias('application.messages');
-
+		if($this->basePath === null)
+		{
+			$this->basePath = Yii::getPathOfAlias('application.messages');
+		}
 	}
 
+	/**
+	 * Publishes all messages to JavaScript files to use on client side.
+	 */
 	public function publishJavaScriptMessages()
 	{
-
 		$language = Yii::app()->getLanguage();
 
 		// Load date of last change
@@ -103,26 +106,30 @@ class CXmlMessageSource extends CMessageSource {
 			}
 			file_put_contents($assetPath . DIRECTORY_SEPARATOR . $language . '.js', $code);
 		}
-
 	}
 
+	/**
+	 * @see		CMessageSource::loadMessages()
+	 */
 	public function loadMessages($category, $language)
 	{
-
 		$parentMessages = array();
 
-		if(strlen($language) == 5) {
+		if(strlen($language) == 5) 
+		{
 			$parentMessages = self::loadMessages($category, substr($language,0,2));
 		}
 
-		$messageFile=$this->basePath.DIRECTORY_SEPARATOR.$language.DIRECTORY_SEPARATOR.$category.'.xml';
-		$key=self::CACHE_KEY_PREFIX . $messageFile;
+		$messageFile = $this->basePath . DIRECTORY_SEPARATOR . $language . DIRECTORY_SEPARATOR . $category . '.xml';
+		$key = self::CACHE_KEY_PREFIX . $messageFile;
 
-		if($this->cachingDuration>0 && ($cache=Yii::app()->getCache())!==null)
+		if($this->cachingDuration > 0 && ($cache = Yii::app()->getCache()) !== null)
 		{
-			$key=self::CACHE_KEY_PREFIX . $messageFile;
-			if(($data=$cache->get($key))!==false)
+			$key = self::CACHE_KEY_PREFIX . $messageFile;
+			if(($data = $cache->get($key)) !== false)
+			{
 				return unserialize($data);
+			}
 		}
 
 		if(is_file($messageFile))
@@ -130,7 +137,8 @@ class CXmlMessageSource extends CMessageSource {
 			$xml = simplexml_load_file($messageFile);
 
 			$messages = array();
-			foreach($xml AS $entry) {
+			foreach($xml AS $entry) 
+			{
 				$messages[(string)$entry->attributes()->id] = (string)$entry;
 			}
 
@@ -152,9 +160,6 @@ class CXmlMessageSource extends CMessageSource {
 		{
 			return array();
 		}
-
 	}
 
 }
-
-?>

@@ -19,6 +19,8 @@
  * You should have received a copy of the GNU General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
+
+
 class StringUtil
 {
 
@@ -30,32 +32,40 @@ class StringUtil
 	 * @param bool $_isFoldable 		(for unfolding / folding longer texts)
 	 * @return string
 	 */
-	public static function cutText($_text, $_length, $_isFoldable = false) {
-
+	public static function cutText($_text, $_length, $_isFoldable = false) 
+	{
 		$_text = strip_tags($_text);
 
 		if(function_exists("mb_strlen"))
+		{
 			$length = mb_strlen($_text, "utf-8");
+		}
 		else
+		{
 			$length = strlen($_text);
+		}
 
-		if($length > $_length) {
-
+		if($length > $_length) 
+		{
 			$cutLength = max(1, $_length - 3);
 
-			if(function_exists("mb_substr")) {
+			if(function_exists("mb_substr")) 
+			{
 				$text = mb_substr($_text, 0, $cutLength, "utf-8");
 				$textRest = mb_substr($_text, $cutLength, mb_strlen($_text, "utf-8"), "utf-8");
 			}
-			else {
+			else 
+			{
 				$text = substr($_text, 0, $cutLength);
 				$textRest = substr($_text, $cutLength);
 			}
 
-			if(!$_isFoldable) {
+			if(!$_isFoldable) 
+			{
 				$text .= "...";
 			}
-			else {
+			else 
+			{
 				$id = "more_" . StringUtil::getRandom(5);
 				$text .= " "
 					. "<a style=\"text-decoration: none; font-size: 0.8em;\" id=\"show_" . $id . "\" href=" . CURRENT_PAGE_QS . "/# onclick=\"getById('" . $id . "').style.display = 'inline'; showHide('show_" . $id . "'); showHide('hide_" . $id . "'); return false;\">(" . Lang::get("global.w.more") . ")</a>"
@@ -64,11 +74,11 @@ class StringUtil
 			}
 
 			return $text;
-
 		}
 		else
+		{
 			return $_text;
-
+		}
 	}
 
 	/**
@@ -78,23 +88,24 @@ class StringUtil
 	 * @param bool $_removeConfusable (removes o,i,l ....)
 	 * @return string
 	 */
-	public static function getRandom($_length, $_specialChars = false, $_removeConfusable = false) {
+	public static function getRandom($_length, $_specialChars = false, $_removeConfusable = false) 
+	{
 		$confusable = "IOlo0i";
 		$chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz123456789" . ($_removeConfusable ? "" : $confusable);
 		if($_specialChars)
+		{
 			$chars .= "!\"§$%&/()=?*+#'-_,;.:<>";
+		}
 
 		$return = "";
 
-		for($i = 0; $i < $_length; $i++) {
+		for($i = 0; $i < $_length; $i++) 
+		{
 			$char = mt_rand(0, strlen($chars) - 1);
 			$return .= substr($chars, $char, 1);
 		}
 
 		return $return;
-
 	}
 
 }
-
-?>

@@ -13,7 +13,7 @@
 					<?php } else { ?>
 						<?php echo Html::icon('square_red'); ?>
 					<?php } ?>
-					<span><?php echo Yii::t('core', 'editor'); ?></span>
+					<span><?php echo Yii::t('core', 'toggleEditor'); ?></span>
 				</a>
 	</div>
 </form>

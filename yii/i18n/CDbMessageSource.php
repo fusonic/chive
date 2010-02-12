@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -36,7 +36,7 @@
  * When {@link cachingDuration} is set as a positive number, message translations will be cached.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbMessageSource.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: CDbMessageSource.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.i18n
  * @since 1.0
  */
@@ -60,6 +60,13 @@ class CDbMessageSource extends CMessageSource
 	 * Defaults to 0, meaning the caching is disabled.
 	 */
 	public $cachingDuration=0;
+	/**
+	 * @var string the ID of the cache application component that is used to cache the messages.
+	 * Defaults to 'cache' which refers to the primary cache application component.
+	 * Set this property to false if you want to disable caching the messages.
+	 * @since 1.0.10
+	 */
+	public $cacheID='cache';
 
 	private $_db;
 
@@ -86,9 +93,9 @@ class CDbMessageSource extends CMessageSource
 	 */
 	protected function loadMessages($category,$language)
 	{
-		if($this->cachingDuration>0 && ($cache=Yii::app()->getCache())!==null)
+		if($this->cachingDuration>0 && $this->cacheID!==false && ($cache=Yii::app()->getComponent($this->cacheID))!==null)
 		{
-			$key=self::CACHE_KEY_PREFIX.'.messages';
+			$key=self::CACHE_KEY_PREFIX.'.messages.'.$category.'.'.$language;
 			if(($data=$cache->get($key))!==false)
 				return unserialize($data);
 		}

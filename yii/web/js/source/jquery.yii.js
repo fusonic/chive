@@ -5,7 +5,7 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: jquery.yii.js 1289 2009-08-06 15:33:57Z qiang.xue $
+ * @version $Id: jquery.yii.js 1458 2009-10-16 15:03:59Z qiang.xue $
  */
 
 ;(function($) {
@@ -36,9 +36,9 @@ $.yii = {
 
 		jQuery(f).trigger('submit');
 
-		for (input in inputs) {
-			f.removeChild(inputs[input]);
-		}
+		jQuery.each(inputs, function() {
+			f.removeChild(this);
+		});
 	}
 };
 

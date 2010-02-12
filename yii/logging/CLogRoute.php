@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -25,7 +25,7 @@
  * satisfying both filter conditions will they be returned.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLogRoute.php 1165 2009-06-22 21:23:30Z qiang.xue $
+ * @version $Id: CLogRoute.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.logging
  * @since 1.0
  */
@@ -54,6 +54,11 @@ abstract class CLogRoute extends CComponent
 	 * @since 1.0.6
 	 */
 	public $filter;
+	/**
+	 * @var array the logs that are collected so far by this log route.
+	 * @since 1.1.0
+	 */
+	public $logs;
 
 
 	/**
@@ -80,15 +85,17 @@ abstract class CLogRoute extends CComponent
 	/**
 	 * Retrieves filtered log messages from logger for further processing.
 	 * @param CLogger logger instance
+	 * @param boolean whether to process the logs after they are collected from the logger
 	 */
-	public function collectLogs($logger)
+	public function collectLogs($logger, $processLogs=false)
 	{
 		$logs=$logger->getLogs($this->levels,$this->categories);
-		if(!empty($logs))
+		$this->logs=empty($this->logs) ? $logs : array_merge($this->logs,$logs);
+		if($processLogs && !empty($this->logs))
 		{
 			if($this->filter!==null)
-				Yii::createComponent($this->filter)->filter($logs);
-			$this->processLogs($logs);
+				Yii::createComponent($this->filter)->filter($this->logs);
+			$this->processLogs($this->logs);
 		}
 	}
 

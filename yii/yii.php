@@ -4,9 +4,9 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: yii.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: yii.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system
  * @since 1.0
  */
@@ -20,7 +20,7 @@ require(dirname(__FILE__).'/YiiBase.php');
  * By writing your own Yii class, you can customize some functionalities of YiiBase.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: yii.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: yii.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system
  * @since 1.0
  */

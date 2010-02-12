@@ -3,7 +3,6 @@
 class Row extends CActiveRecord
 {
 
-
 	private $originalAttributes;
 	
 	private $_functions;
@@ -80,24 +79,6 @@ class Row extends CActiveRecord
 	public function tableName()
 	{
 		return self::$table;
-	}
-
-	/**
-	 * @return array validation rules for model attributes.
-	 */
-	public function rules()
-	{
-		return array(
-		);
-	}
-
-	/**
-	 * @return array relational rules.
-	 */
-	public function relations()
-	{
-		return array(
-		);
 	}
 
 	/*
@@ -187,8 +168,17 @@ class Row extends CActiveRecord
 		return self::$db->getSchema()->getTable(self::$table)->getColumnNames();
 	}
 
-	public function safeAttributes() {
-		return self::$db->getSchema()->getTable(self::$table)->getColumnNames();
+	/**
+	 * @see		ActiveRecord::rules()
+	 */
+	public function rules()
+	{
+		$return = array();
+		foreach(self::$db->getSchema()->getTable(self::$table)->getColumnNames() as $column)
+		{
+			$return[] = array($column, 'type', 'type' => 'string');
+		}
+		return $return;
 	}
 
 	public function getDbConnection() {

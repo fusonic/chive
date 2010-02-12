@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -46,7 +46,7 @@
  * the application will switch to its error handling logic and jump to step 6 afterwards.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CApplication.php 1301 2009-08-07 13:19:55Z qiang.xue $
+ * @version $Id: CApplication.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -130,9 +130,11 @@ abstract class CApplication extends CModule
 	 */
 	public function run()
 	{
-		$this->onBeginRequest(new CEvent($this));
+		if($this->hasEventHandler('onBeginRequest'))
+			$this->onBeginRequest(new CEvent($this));
 		$this->processRequest();
-		$this->onEndRequest(new CEvent($this));
+		if($this->hasEventHandler('onEndRequest'))
+			$this->onEndRequest(new CEvent($this));
 	}
 
 	/**
@@ -143,7 +145,8 @@ abstract class CApplication extends CModule
 	 */
 	public function end($status=0)
 	{
-		$this->onEndRequest(new CEvent($this));
+		if($this->hasEventHandler('onEndRequest'))
+			$this->onEndRequest(new CEvent($this));
 		exit($status);
 	}
 
@@ -281,6 +284,30 @@ abstract class CApplication extends CModule
 	}
 
 	/**
+	 * Returns the time zone used by this application.
+	 * This is a simple wrapper of PHP function date_default_timezone_get().
+	 * @return string the time zone used by this application.
+	 * @see http://php.net/manual/en/function.date-default-timezone-get.php
+	 * @since 1.0.9
+	 */
+	public function getTimeZone()
+	{
+		return date_default_timezone_get();
+	}
+
+	/**
+	 * Sets the time zone used by this application.
+	 * This is a simple wrapper of PHP function date_default_timezone_set().
+	 * @param string the time zone used by this application.
+	 * @see http://php.net/manual/en/function.date-default-timezone-set.php
+	 * @since 1.0.9
+	 */
+	public function setTimeZone($value)
+	{
+		date_default_timezone_set($value);
+	}
+
+	/**
 	 * Returns the localized version of a specified file.
 	 *
 	 * The searching is based on the specified language code. In particular,
@@ -318,6 +345,24 @@ abstract class CApplication extends CModule
 	public function getLocale($localeID=null)
 	{
 		return CLocale::getInstance($localeID===null?$this->getLanguage():$localeID);
+	}
+
+	/**
+	 * @return string the directory that contains the locale data. It defaults to 'framework/i18n/data'.
+	 * @since 1.1.0
+	 */
+	public function getLocaleDataPath()
+	{
+		return CLocale::$dataPath===null ? Yii::getPathOfAlias('system.i18n.data') : CLocale::$dataPath;
+	}
+
+	/**
+	 * @param string the directory that contains the locale data.
+	 * @since 1.1.0
+	 */
+	public function setLocaleDataPath($value)
+	{
+		CLocale::$dataPath=$value;
 	}
 
 	/**
@@ -392,6 +437,22 @@ abstract class CApplication extends CModule
 	public function getMessages()
 	{
 		return $this->getComponent('messages');
+	}
+
+	/**
+	 * @return CHttpRequest the request component
+	 */
+	public function getRequest()
+	{
+		return $this->getComponent('request');
+	}
+
+	/**
+	 * @return CUrlManager the URL manager component
+	 */
+	public function getUrlManager()
+	{
+		return $this->getComponent('urlManager');
 	}
 
 	/**
@@ -503,7 +564,8 @@ abstract class CApplication extends CModule
 		$category='exception.'.get_class($exception);
 		if($exception instanceof CHttpException)
 			$category.='.'.$exception->statusCode;
-		$message=(string)$exception;
+		// php <5.2 doesn't support string conversion auto-magically
+		$message=$exception->__toString();
 		if(isset($_SERVER['REQUEST_URI']))
 			$message.=' REQUEST_URI='.$_SERVER['REQUEST_URI'];
 		Yii::log($message,CLogger::LEVEL_ERROR,$category);
@@ -710,6 +772,15 @@ abstract class CApplication extends CModule
 			),
 			'statePersister'=>array(
 				'class'=>'CStatePersister',
+			),
+			'urlManager'=>array(
+				'class'=>'CUrlManager',
+			),
+			'request'=>array(
+				'class'=>'CHttpRequest',
+			),
+			'format'=>array(
+				'class'=>'CFormatter',
 			),
 		);
 

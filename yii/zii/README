@@ -1,0 +1,8 @@
+Zii Extension Library for Yii
+=============================
+
+Zii is the official extension library for Yii.
+
+Zii extensions are not auto contained in the PHP include path by default, so 
+you must call or import them using their full path if you wish to use them.
+

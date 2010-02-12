@@ -423,7 +423,7 @@ class SchemaController extends Controller
 			$criteria->select = 'SCHEMA_NAME, DEFAULT_COLLATION_NAME, COUNT(*) AS tableCount';
 
 			$schemaList = Schema::model()->with(array(
-				'tables' => array('select' => 'COUNT(??.TABLE_NAME) AS tableCount'),
+				'tables' => array('select' => 'COUNT(tables.TABLE_NAME) AS tableCount'),
 			))->together()->findAll($criteria);
 
 			$this->render('list',array(

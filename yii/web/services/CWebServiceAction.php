@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -24,7 +24,7 @@
  * Note, PHP SOAP extension is required for this action.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CWebServiceAction.php 1066 2009-05-26 15:23:48Z qiang.xue $
+ * @version $Id: CWebServiceAction.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.web.services
  * @since 1.0
  */

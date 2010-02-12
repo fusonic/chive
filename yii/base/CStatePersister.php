@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -36,7 +36,7 @@
  * page state persistent method based on cache.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CStatePersister.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: CStatePersister.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -48,6 +48,13 @@ class CStatePersister extends CApplicationComponent implements IStatePersister
 	 * make sure the path is correct.
 	 */
 	public $stateFile;
+	/**
+	 * @var string the ID of the cache application component that is used to cache the state values.
+	 * Defaults to 'cache' which refers to the primary cache application component.
+	 * Set this property to false if you want to disable caching state values.
+	 * @since 1.0.10
+	 */
+	public $cacheID='cache';
 
 	/**
 	 * Initializes the component.
@@ -72,7 +79,7 @@ class CStatePersister extends CApplicationComponent implements IStatePersister
 	public function load()
 	{
 		$stateFile=$this->stateFile;
-		if(($cache=Yii::app()->getCache())!==null)
+		if($this->cacheID!==false && ($cache=Yii::app()->getComponent($this->cacheID))!==null)
 		{
 			$cacheKey='Yii.CStatePersister.'.$stateFile;
 			if(($value=$cache->get($cacheKey))!==false)

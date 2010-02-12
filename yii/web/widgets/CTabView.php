@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -49,7 +49,7 @@
  * when the page is initially loaded, set {@link activeTab} to be the ID of the desired tab.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CTabView.php 1066 2009-05-26 15:23:48Z qiang.xue $
+ * @version $Id: CTabView.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.web.widgets
  * @since 1.0
  */
@@ -119,11 +119,8 @@ class CTabView extends CWidget
 
 		if($this->activeTab===null || !isset($this->tabs[$this->activeTab]))
 		{
-			foreach($this->tabs as $id=>$tab)
-			{
-				$this->activeTab=$id;
-				break;
-			}
+			reset($this->tabs);
+			list($this->activeTab, )=each($this->tabs);
 		}
 
 		$htmlOptions=$this->htmlOptions;

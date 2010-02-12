@@ -25,7 +25,7 @@ define('URL_MATCH', '([^\/]*)');
 
 return array(
 	'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
-	'name' => 'Dublin - database management',
+	'name' => 'Chive',
 	'theme' => 'standard',
 
 	// preloading 'log' component
@@ -67,7 +67,7 @@ return array(
 				array(
 					'class' => 'CProfileLogRoute',
 					'levels' => 'error, warning, info, trace',
-					'showInFireBug'=>false,
+					'showInFireBug' => false,
 				),
 			),
 		),
@@ -75,7 +75,7 @@ return array(
 		// User settings
 		'user' => array(
 			// enable cookie-based authentication
-			'allowAutoLogin'=>true,
+			'allowAutoLogin' => true,
 		),
 
 		// Database settings

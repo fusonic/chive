@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -23,7 +23,7 @@
  * To specify the filter method, set {@link filter} property to be the function name.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFilterValidator.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: CFilterValidator.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -44,6 +44,6 @@ class CFilterValidator extends CValidator
 	{
 		if($this->filter===null || !is_callable($this->filter))
 			throw new CException(Yii::t('yii','The "filter" property must be specified with a valid callback.'));
-		$object->$attribute=call_user_func_array($this->filter,$object->$attribute);
+		$object->$attribute=call_user_func_array($this->filter,array($object->$attribute));
 	}
 }

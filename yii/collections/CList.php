@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -28,7 +28,7 @@
  * operation (e.g. performing type check), override {@link insertAt()}, and {@link removeAt()}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CList.php 568 2009-01-23 22:50:14Z qiang.xue $
+ * @version $Id: CList.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.collections
  * @since 1.0
  */

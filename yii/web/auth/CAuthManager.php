@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -31,7 +31,7 @@
  * has the needed permission for an operation.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CAuthManager.php 741 2009-02-24 19:36:22Z qiang.xue $
+ * @version $Id: CAuthManager.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.web.auth
  * @since 1.0
  */

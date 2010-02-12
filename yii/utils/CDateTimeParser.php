@@ -6,7 +6,7 @@
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @author Tomasz Suchanek <tomasz[dot]suchanek[at]gmail[dot]com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -18,13 +18,15 @@
  * Pattern |      Description
  * ----------------------------------------------------
  * d       | Day of month 1 to 31, no padding
- * dd      | Day of monath 01 to 31, zero leading
+ * dd      | Day of month 01 to 31, zero leading
  * M       | Month digit 1 to 12, no padding
  * MM      | Month digit 01 to 12, zero leading
  * yy      | 2 year digit, e.g., 96, 05
  * yyyy    | 4 year digit, e.g., 2005
  * h       | Hour in 0 to 23, no padding (since version 1.0.5)
  * hh      | Hour in 00 to 23, zero leading (since version 1.0.5)
+ * H       | Hour in 0 to 23, no padding (since version 1.0.9)
+ * HH      | Hour in 00 to 23, zero leading (since version 1.0.9)
  * m       | Minutes in 0 to 59, no padding (since version 1.0.5)
  * mm      | Minutes in 00 to 59, zero leading (since version 1.0.5)
  * s	   | Seconds in 0 to 59, no padding (since version 1.0.5)
@@ -42,7 +44,7 @@
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDateTimeParser.php 1199 2009-07-04 13:48:08Z qiang.xue $
+ * @version $Id: CDateTimeParser.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.utils
  * @since 1.0
  */
@@ -106,6 +108,7 @@ class CDateTimeParser
 					break;
 				}
 				case 'h':
+				case 'H':
 				{
 					if(($hour=self::parseInteger($value,$i,1,2))===false)
 						return false;
@@ -113,6 +116,7 @@ class CDateTimeParser
 					break;
 				}
 				case 'hh':
+				case 'HH':
 				{
 					if(($hour=self::parseInteger($value,$i,2,2))===false)
 						return false;

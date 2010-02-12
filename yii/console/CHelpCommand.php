@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -22,7 +22,7 @@
  * available commands.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CHelpCommand.php 809 2009-03-09 21:33:38Z qiang.xue $
+ * @version $Id: CHelpCommand.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.console
  * @since 1.0
  */
@@ -45,7 +45,9 @@ class CHelpCommand extends CConsoleCommand
 				echo "Yii command runner (based on Yii v".Yii::getVersion().")\n";
 				echo "Usage: ".$runner->getScriptName()." <command-name> [parameters...]\n";
 				echo "\nThe following commands are available:\n";
-				echo ' - '.implode("\n - ",array_keys($commands));
+				$commandNames=array_keys($commands);
+				sort($commandNames);
+				echo ' - '.implode("\n - ",$commandNames);
 				echo "\n\nTo see individual command help, use the following:\n";
 				echo "   ".$runner->getScriptName()." help <command-name>\n";
 			}

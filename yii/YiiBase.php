@@ -4,9 +4,9 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: YiiBase.php 1316 2009-08-09 04:11:25Z qiang.xue $
+ * @version $Id: YiiBase.php 1699 2010-01-10 16:32:09Z qiang.xue $
  * @package system
  * @since 1.0
  */
@@ -37,6 +37,10 @@ defined('YII_ENABLE_ERROR_HANDLER') or define('YII_ENABLE_ERROR_HANDLER',true);
  * Defines the Yii framework installation path.
  */
 defined('YII_PATH') or define('YII_PATH',dirname(__FILE__));
+/**
+ * Defines the Zii library installation path.
+ */
+defined('YII_ZII_PATH') or define('YII_ZII_PATH',YII_PATH.DIRECTORY_SEPARATOR.'zii');
 
 /**
  * YiiBase is a helper class serving common framework functionalities.
@@ -45,13 +49,13 @@ defined('YII_PATH') or define('YII_PATH',dirname(__FILE__));
  * you can customize methods of YiiBase.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: YiiBase.php 1316 2009-08-09 04:11:25Z qiang.xue $
+ * @version $Id: YiiBase.php 1699 2010-01-10 16:32:09Z qiang.xue $
  * @package system
  * @since 1.0
  */
 class YiiBase
 {
-	private static $_aliases=array('system'=>YII_PATH); // alias => path
+	private static $_aliases=array('system'=>YII_PATH,'zii'=>YII_ZII_PATH); // alias => path
 	private static $_imports=array();					// alias => class name or directory
 	private static $_classes=array();
 	private static $_includePaths;						// list of include paths
@@ -64,7 +68,7 @@ class YiiBase
 	 */
 	public static function getVersion()
 	{
-		return '1.0.8';
+		return '1.1.0';
 	}
 
 	/**
@@ -78,7 +82,7 @@ class YiiBase
 	 */
 	public static function createWebApplication($config=null)
 	{
-		return new CWebApplication($config);
+		return self::createApplication('CWebApplication',$config);
 	}
 
 	/**
@@ -92,7 +96,20 @@ class YiiBase
 	 */
 	public static function createConsoleApplication($config=null)
 	{
-		return new CConsoleApplication($config);
+		return self::createApplication('CConsoleApplication',$config);
+	}
+
+	/**
+	 * Creates an application of the specified class.
+	 * @param string the application class name
+	 * @param mixed application configuration. This parameter will be passed as the parameter
+	 * to the constructor of the application class.
+	 * @return mixed the application instance
+	 * @since 1.0.10
+	 */
+	public static function createApplication($class,$config=null)
+	{
+		return new $class($config);
 	}
 
 	/**
@@ -221,16 +238,10 @@ class YiiBase
 		if(class_exists($alias,false) || interface_exists($alias,false))
 			return self::$_imports[$alias]=$alias;
 
-		if(isset(self::$_coreClasses[$alias]) || ($pos=strrpos($alias,'.'))===false)  // a simple class name
+		if(($pos=strrpos($alias,'.'))===false)  // a simple class name
 		{
-			self::$_imports[$alias]=$alias;
-			if($forceInclude)
-			{
-				if(isset(self::$_coreClasses[$alias])) // a core class
-					require(YII_PATH.self::$_coreClasses[$alias]);
-				else
-					require($alias.'.php');
-			}
+			if($forceInclude && self::autoload($alias))
+				self::$_imports[$alias]=$alias;
 			return $alias;
 		}
 
@@ -241,9 +252,11 @@ class YiiBase
 		{
 			if($className!=='*')
 			{
-				self::$_imports[$alias]=$className;
 				if($forceInclude)
+				{
 					require($path.'.php');
+					self::$_imports[$alias]=$className;
+				}
 				else
 					self::$_classes[$className]=$path.'.php';
 				return $className;
@@ -257,7 +270,8 @@ class YiiBase
 						unset(self::$_includePaths[$pos]);
 				}
 				array_unshift(self::$_includePaths,$path);
-				set_include_path('.'.PATH_SEPARATOR.implode(PATH_SEPARATOR,self::$_includePaths));
+				if(set_include_path('.'.PATH_SEPARATOR.implode(PATH_SEPARATOR,self::$_includePaths))===false)
+					throw new CException(Yii::t('yii','Unable to import "{alias}". Please check your server configuration to make sure you are allowed to change PHP include_path.',array('{alias}'=>$alias)));
 				return self::$_imports[$alias]=$path;
 			}
 		}
@@ -475,6 +489,20 @@ class YiiBase
 	}
 
 	/**
+	 * Registers a new class autoloader.
+	 * The new autoloader will be placed before {@link autoload} and after
+	 * any other existing autoloaders.
+	 * @param callback a valid PHP callback (function name or array($className,$methodName)).
+	 * @since 1.0.10
+	 */
+	public static function registerAutoloader($callback)
+	{
+		spl_autoload_unregister(array('YiiBase','autoload'));
+		spl_autoload_register($callback);
+		spl_autoload_register(array('YiiBase','autoload'));
+	}
+
+	/**
 	 * @var array class map for core Yii classes.
 	 * NOTE, DO NOT MODIFY THIS ARRAY MANUALLY. IF YOU CHANGE OR ADD SOME CORE CLASSES,
 	 * PLEASE RUN 'build autoload' COMMAND TO UPDATE THIS ARRAY.
@@ -580,10 +608,12 @@ class YiiBase
 		'CWebLogRoute' => '/logging/CWebLogRoute.php',
 		'CDateTimeParser' => '/utils/CDateTimeParser.php',
 		'CFileHelper' => '/utils/CFileHelper.php',
+		'CFormatter' => '/utils/CFormatter.php',
 		'CMarkdownParser' => '/utils/CMarkdownParser.php',
 		'CPropertyValue' => '/utils/CPropertyValue.php',
 		'CTimestamp' => '/utils/CTimestamp.php',
 		'CVarDumper' => '/utils/CVarDumper.php',
+		'CBooleanValidator' => '/validators/CBooleanValidator.php',
 		'CCaptchaValidator' => '/validators/CCaptchaValidator.php',
 		'CCompareValidator' => '/validators/CCompareValidator.php',
 		'CDefaultValueValidator' => '/validators/CDefaultValueValidator.php',
@@ -596,16 +626,20 @@ class YiiBase
 		'CRangeValidator' => '/validators/CRangeValidator.php',
 		'CRegularExpressionValidator' => '/validators/CRegularExpressionValidator.php',
 		'CRequiredValidator' => '/validators/CRequiredValidator.php',
+		'CSafeValidator' => '/validators/CSafeValidator.php',
 		'CStringValidator' => '/validators/CStringValidator.php',
 		'CTypeValidator' => '/validators/CTypeValidator.php',
 		'CUniqueValidator' => '/validators/CUniqueValidator.php',
+		'CUnsafeValidator' => '/validators/CUnsafeValidator.php',
 		'CUrlValidator' => '/validators/CUrlValidator.php',
 		'CValidator' => '/validators/CValidator.php',
+		'CActiveDataProvider' => '/web/CActiveDataProvider.php',
 		'CAssetManager' => '/web/CAssetManager.php',
 		'CBaseController' => '/web/CBaseController.php',
 		'CCacheHttpSession' => '/web/CCacheHttpSession.php',
 		'CClientScript' => '/web/CClientScript.php',
 		'CController' => '/web/CController.php',
+		'CDataProvider' => '/web/CDataProvider.php',
 		'CDbHttpSession' => '/web/CDbHttpSession.php',
 		'CExtController' => '/web/CExtController.php',
 		'CFormModel' => '/web/CFormModel.php',
@@ -622,6 +656,7 @@ class YiiBase
 		'CUrlManager' => '/web/CUrlManager.php',
 		'CWebApplication' => '/web/CWebApplication.php',
 		'CWebModule' => '/web/CWebModule.php',
+		'CWidgetFactory' => '/web/CWidgetFactory.php',
 		'CAction' => '/web/actions/CAction.php',
 		'CInlineAction' => '/web/actions/CInlineAction.php',
 		'CViewAction' => '/web/actions/CViewAction.php',
@@ -637,6 +672,12 @@ class YiiBase
 		'CFilter' => '/web/filters/CFilter.php',
 		'CFilterChain' => '/web/filters/CFilterChain.php',
 		'CInlineFilter' => '/web/filters/CInlineFilter.php',
+		'CForm' => '/web/form/CForm.php',
+		'CFormButtonElement' => '/web/form/CFormButtonElement.php',
+		'CFormElement' => '/web/form/CFormElement.php',
+		'CFormElementCollection' => '/web/form/CFormElementCollection.php',
+		'CFormInputElement' => '/web/form/CFormInputElement.php',
+		'CFormStringElement' => '/web/form/CFormStringElement.php',
 		'CGoogleApi' => '/web/helpers/CGoogleApi.php',
 		'CHtml' => '/web/helpers/CHtml.php',
 		'CJSON' => '/web/helpers/CJSON.php',

@@ -32,7 +32,7 @@ class Column extends ActiveRecord
 	public $DATA_TYPE = 'varchar';
 
 	/**
-	 * @see		CActiveRecord::model()
+	 * @see		ActiveRecord::model()
 	 */
 	public static function model($className = __CLASS__)
 	{
@@ -40,7 +40,7 @@ class Column extends ActiveRecord
 	}
 
 	/**
-	 * @see		CActiveRecord::instantiate()
+	 * @see		ActiveRecord::instantiate()
 	 */
 	public function instantiate($attributes)
 	{
@@ -104,33 +104,36 @@ class Column extends ActiveRecord
 	}
 
 	/**
-	 * @see		CActiveRecord::tableName()
+	 * @see		ActiveRecord::tableName()
 	 */
 	public function tableName()
 	{
 		return 'COLUMNS';
 	}
 
-	public function safeAttributes()
+	/**
+	 * @see		ActiveRecord::rules()
+	 */
+	public function rules()
 	{
 		return array(
-			'COLUMN_NAME',
-			'COLUMN_DEFAULT',
-			'isNullable',
-			'dataType',
-			'size',
-			'scale',
-			'values',
-			'collation',
-			'autoIncrement',
-			'attribute',
-			'COLUMN_COMMENT',
-			'COLLATION_NAME',
+			array('COLUMN_NAME', 'type', 'type' => 'string'),
+			array('COLUMN_DEFAULT', 'type', 'type' => 'string'),
+			array('isNullable', 'type', 'type' => 'string'),
+			array('dataType', 'type', 'type' => 'string'),
+			array('size', 'type', 'type' => 'string'),
+			array('scale', 'type', 'type' => 'string'),
+			array('values', 'type', 'type' => 'string'),
+			array('collation', 'type', 'type' => 'string'),
+			array('autoIncrement', 'type', 'type' => 'string'),
+			array('attribute', 'type', 'type' => 'string'),
+			array('COLUMN_COMMENT', 'type', 'type' => 'string'),
+			array('COLLATION_NAME', 'type', 'type' => 'string'),
 		);
 	}
 
 	/**
-	 * @return array relational rules.
+	 * @see ActiveRecord::relations()
 	 */
 	public function relations()
 	{
@@ -138,12 +141,11 @@ class Column extends ActiveRecord
 			'table' => array(self::BELONGS_TO, 'Table', 'TABLE_SCHEMA, TABLE_NAME'),
 			'indices' => array(self::HAS_MANY, 'Index', 'TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME'),
 			'collation' => array(self::BELONGS_TO, 'Collation', 'COLLATION_NAME'),
-			#'constraint' => array(self::MANY_MANY, 'Constraint', 'COLUMN_NAME'),
 		);
     }
 
 	/**
-	 * @return array customized attribute labels (name=>label)
+	 * @see ActiveRecord::attributeLabels()
 	 */
 	public function attributeLabels()
 	{
@@ -155,6 +157,9 @@ class Column extends ActiveRecord
 		);
 	}
 
+	/**
+	 * @see ActiveRecord::primaryKey()
+	 */
 	public function primaryKey() {
 		return array(
 			'TABLE_SCHEMA',
@@ -369,7 +374,6 @@ class Column extends ActiveRecord
 
 	public static function getDataTypes()
 	{
-
 		$types = array();
 
 		// Numeric
@@ -414,7 +418,6 @@ class Column extends ActiveRecord
 		);
 
 		return $types;
-
 	}
 
 }

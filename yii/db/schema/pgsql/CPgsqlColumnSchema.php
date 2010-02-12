@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -12,7 +12,7 @@
  * CPgsqlColumnSchema class describes the column meta data of a PostgreSQL table.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CPgsqlColumnSchema.php 433 2008-12-30 22:59:17Z qiang.xue $
+ * @version $Id: CPgsqlColumnSchema.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.db.schema.pgsql
  * @since 1.0
  */
@@ -24,12 +24,14 @@ class CPgsqlColumnSchema extends CDbColumnSchema
 	 */
 	protected function extractType($dbType)
 	{
-		if(strpos($dbType,'integer')!==false || strpos($dbType,'oid')===0)
-			$this->type='integer';
+		if(strpos($dbType,'char')!==false || strpos($dbType,'text')!==false)
+			$this->type='string';
 		else if(strpos($dbType,'bool')!==false)
 			$this->type='boolean';
 		else if(preg_match('/(real|float|double)/',$dbType))
 			$this->type='double';
+		else if(preg_match('/(integer|oid|serial|bigint|smallint)/',$dbType))
+			$this->type='integer';
 		else
 			$this->type='string';
 	}

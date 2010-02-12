@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -53,7 +53,7 @@
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CBaseController.php 904 2009-03-31 11:51:18Z qiang.xue $
+ * @version $Id: CBaseController.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.web
  * @since 1.0
  */
@@ -128,16 +128,23 @@ abstract class CBaseController extends CComponent
 	 * This method first creates the specified widget instance.
 	 * It then configures the widget's properties with the given initial values.
 	 * At the end it calls {@link CWidget::init} to initialize the widget.
+	 * Starting from version 1.1, if a {@link CWidgetFactory widget factory} is enabled,
+	 * this method will use the factory to create the widget, instead.
 	 * @param string class name (can be in path alias format)
 	 * @param array initial property values
 	 * @return CWidget the fully initialized widget instance.
 	 */
 	public function createWidget($className,$properties=array())
 	{
-		$className=Yii::import($className,true);
-		$widget=new $className($this);
-		foreach($properties as $name=>$value)
-			$widget->$name=$value;
+		if(($factory=Yii::app()->getWidgetFactory())!==null)
+			$widget=$factory->createWidget($this,$className,$properties);
+		else
+		{
+			$className=Yii::import($className,true);
+			$widget=new $className($this);
+			foreach($properties as $name=>$value)
+				$widget->$name=$value;
+		}
 		$widget->init();
 		return $widget;
 	}

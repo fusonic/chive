@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -18,7 +18,7 @@
  * Compared with {@link CController controller}, a widget has neither actions nor filters.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CWidget.php 916 2009-04-04 21:54:27Z qiang.xue $
+ * @version $Id: CWidget.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.web.widgets
  * @since 1.0
  */
@@ -33,6 +33,13 @@ class CWidget extends CBaseController
 	 * @since 1.0.1
 	 */
 	public $actionPrefix;
+	/**
+	 * @var mixed the name of the skin to be used by this widget. Defaults to 'default'.
+	 * If this is set as false, no skin will be applied to this widget.
+	 * @see CWidgetFactory
+	 * @since 1.1
+	 */
+	public $skin='default';
 
 	/**
 	 * @var array view paths for different types of widgets
@@ -169,10 +176,14 @@ class CWidget extends CBaseController
 	 */
 	public function getViewFile($viewName)
 	{
-		if(strpos($viewName,'.')) // a path alias
-			$viewFile=Yii::getPathOfAlias($viewName).'.php';
+		if(($renderer=Yii::app()->getViewRenderer())!==null)
+			$extension=$renderer->fileExtension;
 		else
-			$viewFile=$this->getViewPath().DIRECTORY_SEPARATOR.$viewName.'.php';
+			$extension='.php';
+		if(strpos($viewName,'.')) // a path alias
+			$viewFile=Yii::getPathOfAlias($viewName).$extension;
+		else
+			$viewFile=$this->getViewPath().DIRECTORY_SEPARATOR.$viewName.$extension;
 		return is_file($viewFile) ? Yii::app()->findLocalizedFile($viewFile) : false;
 	}
 

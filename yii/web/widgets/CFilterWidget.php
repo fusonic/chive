@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -21,7 +21,7 @@
  * CFilterWidget provides all properties and methods of {@link CWidget} and {@link CFilter}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFilterWidget.php 916 2009-04-04 21:54:27Z qiang.xue $
+ * @version $Id: CFilterWidget.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.web.widgets
  * @since 1.0
  */

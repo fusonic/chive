@@ -23,6 +23,7 @@
 
 class View extends CActiveRecord
 {
+	
 	public static $db;
 
 	/**
@@ -126,4 +127,5 @@ class View extends CActiveRecord
 			return false;
 		}
 	}
+	
 }

@@ -19,17 +19,18 @@
  * You should have received a copy of the GNU General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
+
+
 class LoginForm extends CFormModel
 {
+	
 	public $username;
 	public $password;
 	public $rememberMe;
 	public $host = 'localhost';
 
 	/**
-	 * Declares the validation rules.
-	 * The rules state that username and password are required,
-	 * and password needs to be authenticated.
+	 * @see		CFormModel::rules();
 	 */
 	public function rules()
 	{
@@ -42,7 +43,7 @@ class LoginForm extends CFormModel
 	}
 
 	/**
-	 * Declares attribute labels.
+	 * @see		CFormModel::attributeLabels()
 	 */
 	public function attributeLabels()
 	{
@@ -59,7 +60,7 @@ class LoginForm extends CFormModel
 	 */
 	public function authenticate($attribute,$params)
 	{
-		if(!$this->hasErrors())  // we only want to authenticate when no input errors
+		if(!$this->hasErrors())
 		{
 			$identity = new UserIdentity($this->username,$this->password, $this->host);
 
@@ -71,7 +72,7 @@ class LoginForm extends CFormModel
 			{
 				$this->addError(null, $identity->errorMessage);
 			}
-
 		}
 	}
+	
 }

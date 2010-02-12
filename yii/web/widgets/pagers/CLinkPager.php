@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -12,7 +12,7 @@
  * CLinkPager displays a list of hyperlinks that lead to different pages of target.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLinkPager.php 1035 2009-05-20 13:11:46Z qiang.xue $
+ * @version $Id: CLinkPager.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.web.widgets.pagers
  * @since 1.0
  */
@@ -66,12 +66,10 @@ class CLinkPager extends CBasePager
 	 */
 	public $htmlOptions=array();
 
-
 	/**
-	 * Executes the widget.
-	 * This overrides the parent implementation by displaying the generated page buttons.
+	 * Initializes the pager by setting some default property values.
 	 */
-	public function run()
+	public function init()
 	{
 		if($this->nextPageLabel===null)
 			$this->nextPageLabel=Yii::t('yii','Next &gt;');
@@ -84,20 +82,24 @@ class CLinkPager extends CBasePager
 		if($this->header===null)
 			$this->header=Yii::t('yii','Go to page: ');
 
-		$buttons=$this->createPageButtons();
+		if(!isset($this->htmlOptions['id']))
+			$this->htmlOptions['id']=$this->getId();
+		if(!isset($this->htmlOptions['class']))
+			$this->htmlOptions['class']='yiiPager';
+	}
 
+	/**
+	 * Executes the widget.
+	 * This overrides the parent implementation by displaying the generated page buttons.
+	 */
+	public function run()
+	{
+		$buttons=$this->createPageButtons();
 		if(empty($buttons))
 			return;
-
 		$this->registerClientScript();
-
-		$htmlOptions=$this->htmlOptions;
-		if(!isset($htmlOptions['id']))
-			$htmlOptions['id']=$this->getId();
-		if(!isset($htmlOptions['class']))
-			$htmlOptions['class']='yiiPager';
 		echo $this->header;
-		echo CHtml::tag('ul',$htmlOptions,implode("\n",$buttons));
+		echo CHtml::tag('ul',$this->htmlOptions,implode("\n",$buttons));
 		echo $this->footer;
 	}
 

@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -17,7 +17,7 @@
  * the same as the one evaluated when storing the data to cache.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CExpressionDependency.php 883 2009-03-23 20:52:35Z qiang.xue $
+ * @version $Id: CExpressionDependency.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.caching.dependencies
  * @since 1.0
  */
@@ -25,6 +25,10 @@ class CExpressionDependency extends CCacheDependency
 {
 	/**
 	 * @var string the PHP expression whose result is used to determine the dependency.
+	 * Starting from version 1.0.11, the expression can also be a valid PHP callback,
+	 * including class method name (array(ClassName/Object, MethodName)),
+	 * or anonymous function (PHP 5.3.0+). The function/method will be passed with a
+	 * parameter which is the dependency object itself.
 	 */
 	public $expression;
 
@@ -44,6 +48,6 @@ class CExpressionDependency extends CCacheDependency
 	 */
 	protected function generateDependentData()
 	{
-		return @eval('return '.$this->expression.';');
+		return $this->evaluateExpression($this->expression);
 	}
 }

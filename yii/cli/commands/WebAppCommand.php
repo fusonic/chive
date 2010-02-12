@@ -4,16 +4,16 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: WebAppCommand.php 1121 2009-06-12 16:40:13Z qiang.xue $
+ * @version $Id: WebAppCommand.php 1678 2010-01-07 21:02:00Z qiang.xue $
  */
 
 /**
  * WebAppCommand creates an Yii Web application at the specified location.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: WebAppCommand.php 1121 2009-06-12 16:40:13Z qiang.xue $
+ * @version $Id: WebAppCommand.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.cli.commands
  * @since 1.0
  */
@@ -49,7 +49,7 @@ EOD;
 		$path=strtr($args[0],'/\\',DIRECTORY_SEPARATOR);
 		if(strpos($path,DIRECTORY_SEPARATOR)===false)
 			$path='.'.DIRECTORY_SEPARATOR.$path;
-		$dir=realpath(dirname($path));
+		$dir=rtrim(realpath(dirname($path)),'\\/');
 		if($dir===false || !is_dir($dir))
 			$this->usageError("The directory '$path' is not valid. Please make sure the parent directory exists.");
 		if(basename($path)==='.')
@@ -64,10 +64,14 @@ EOD;
 				die('Unable to locate the source directory.');
 			$list=$this->buildFileList($sourceDir,$path);
 			$list['index.php']['callback']=array($this,'generateIndex');
+			$list['index-test.php']['callback']=array($this,'generateIndex');
+			$list['protected/tests/bootstrap.php']['callback']=array($this,'generateTestBoostrap');
 			$list['protected/yiic.php']['callback']=array($this,'generateYiic');
 			$this->copyFiles($list);
 			@chmod($path.'/assets',0777);
 			@chmod($path.'/protected/runtime',0777);
+			@chmod($path.'/protected/data',0777);
+			@chmod($path.'/protected/data/testdrive.db',0777);
 			@chmod($path.'/protected/yiic',0755);
 			echo "\nYour application has been created successfully under {$path}.\n";
 		}
@@ -80,6 +84,15 @@ EOD;
 		$yii=$this->getRelativePath($yii,$this->_rootPath.DIRECTORY_SEPARATOR.'index.php');
 		$yii=str_replace('\\','\\\\',$yii);
 		return preg_replace('/\$yii\s*=(.*?);/',"\$yii=$yii;",$content);
+	}
+
+	public function generateTestBoostrap($source,$params)
+	{
+		$content=file_get_contents($source);
+		$yii=realpath(dirname(__FILE__).'/../../yiit.php');
+		$yii=$this->getRelativePath($yii,$this->_rootPath.DIRECTORY_SEPARATOR.'protected'.DIRECTORY_SEPARATOR.'tests'.DIRECTORY_SEPARATOR.'bootstrap.php');
+		$yii=str_replace('\\','\\\\',$yii);
+		return preg_replace('/\$yiit\s*=(.*?);/',"\$yiit=$yii;",$content);
 	}
 
 	public function generateYiic($source,$params)

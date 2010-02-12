@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -12,7 +12,7 @@
  * CDbSchema is the base class for retrieving metadata information.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbSchema.php 1304 2009-08-07 15:02:50Z qiang.xue $
+ * @version $Id: CDbSchema.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.db.schema
  * @since 1.0
  */
@@ -59,7 +59,7 @@ abstract class CDbSchema extends CComponent
 	{
 		if(isset($this->_tables[$name]))
 			return $this->_tables[$name];
-		else if(!isset($this->_cacheExclude[$name]) && ($duration=$this->_connection->schemaCachingDuration)>0 && ($cache=Yii::app()->getCache())!==null)
+		else if(!isset($this->_cacheExclude[$name]) && ($duration=$this->_connection->schemaCachingDuration)>0 && $this->_connection->schemaCacheID!==false && ($cache=Yii::app()->getComponent($this->_connection->schemaCacheID))!==null)
 		{
 			$key='yii:dbschema'.$this->_connection->connectionString.':'.$this->_connection->username.':'.$name;
 			if(($table=$cache->get($key))===false)
@@ -121,7 +121,7 @@ abstract class CDbSchema extends CComponent
 	 */
 	public function refresh()
 	{
-		if(($duration=$this->_connection->schemaCachingDuration)>0 && ($cache=Yii::app()->getCache())!==null)
+		if(($duration=$this->_connection->schemaCachingDuration)>0 && $this->_connection->schemaCacheID!==false && ($cache=Yii::app()->getComponent($this->_connection->schemaCacheID))!==null)
 		{
 			foreach(array_keys($this->_tables) as $name)
 			{
@@ -173,7 +173,39 @@ abstract class CDbSchema extends CComponent
 			$name1=substr($name1,$pos+1);
 		if(($pos=strrpos($name2,'.'))!==false)
 			$name2=substr($name2,$pos+1);
+		if($this->_connection->tablePrefix!==null)
+		{
+			if(strpos($name1,'{')!==false)
+				$name1=$this->_connection->tablePrefix.str_replace(array('{','}'),'',$name1);
+			if(strpos($name2,'{')!==false)
+				$name2=$this->_connection->tablePrefix.str_replace(array('{','}'),'',$name2);
+		}
 		return $name1===$name2;
+	}
+
+	/**
+	 * Resets the sequence value of a table's primary key.
+	 * The sequence will be reset such that the primary key of the next new row inserted
+	 * will have the specified value or 1.
+	 * @param CDbTableSchema the table schema whose primary key sequence will be reset
+	 * @param mixed the value for the primary key of the next new row inserted. If this is not set,
+	 * the next new row's primary key will have a value 1.
+	 * @since 1.1
+	 */
+	public function resetSequence($table,$value=null)
+	{
+		throw new CDbException(Yii::t('yii','Resetting PK sequence is not supported.'));
+	}
+
+	/**
+	 * Enables or disables integrity check.
+	 * @param boolean whether to turn on or off the integrity check.
+	 * @param string the schema of the tables. Defaults to empty string, meaning the current or default schema.
+	 * @since 1.1
+	 */
+	public function checkIntegrity($check=true,$schema='')
+	{
+		throw new CDbException(Yii::t('yii','Setting integrity check is not supported.'));
 	}
 
 	/**
