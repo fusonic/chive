@@ -115,8 +115,22 @@
 			<?php echo CHtml::closeTag('form'); ?>
 		</div>
 	<?php } else { ?>
-		<div id="loginform">
+		<div id="login-form">
 			<?php echo Yii::t('core', 'incompatibleBrowserWarning'); ?>
+			<div style="margin-top: 10px">
+				<a href="http://www.firefox.com">
+					<img src="<?php echo BASEURL; ?>/images/browsers/firefox.jpg" alt="Mozilla Firefox" title="Mozilla Firefox" />
+				</a>
+				<a href="http://www.google.com/chrome">
+					<img src="<?php echo BASEURL; ?>/images/browsers/chrome.jpg" alt="Google Chrome" title="Google Chrome" />
+				</a>
+				<a href="http://www.opera.com">
+					<img src="<?php echo BASEURL; ?>/images/browsers/opera.jpg" alt="Opera" title="Opera" />
+				</a>
+				<a href="http://www.microsoft.com/windows/Internet-explorer/default.aspx">
+					<img src="<?php echo BASEURL; ?>/images/browsers/internetexplorer.jpg" alt="Microsoft Internet Explorer" title="Microsoft Internet Explorer" />
+				</a>
+			</div>
 		</div>
 	<?php } ?>
 

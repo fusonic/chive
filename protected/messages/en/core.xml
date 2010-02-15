@@ -146,7 +146,7 @@
 	<entry id="id">ID</entry>
 	<entry id="import">Import</entry>
 	<entry id="importFile">Import file</entry>
-	<entry id="incompatibleBrowserWarning">You are using an old (not supported) browser. Please update to a newer one.</entry>
+	<entry id="incompatibleBrowserWarning">&lt;strong&gt;You are using an old version of Microsoft Internet Explorer which is not supported by Chive.&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;Please update to a newer version or choose an alternative browser:</entry>
 	<entry id="index">Index</entry>
 	<entry id="indices">Indices</entry>
 	<entry id="information">Information</entry>
