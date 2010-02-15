@@ -77,7 +77,7 @@ var schemaViews = {
             
             // Do drop request
             $.post(baseUrl + '/schema/' + schema + '/viewAction/drop', {
-                'views[]': ids
+                'views': ids
             }, AjaxResponse.handle);
             
             $(this).dialog('close');

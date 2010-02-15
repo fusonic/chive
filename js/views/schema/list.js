@@ -83,7 +83,7 @@ var schemaList = {
 			
 			// Do drop request
 			$.post(baseUrl + '/schemata/drop', {
-				'schemata[]': ids
+				'schemata': ids
 			}, AjaxResponse.handle);
 			
 			$(this).dialog('close');

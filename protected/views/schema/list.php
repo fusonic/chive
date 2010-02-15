@@ -80,10 +80,10 @@
 						<?php if(Yii::app()->user->privileges->checkSchema($model->SCHEMA_NAME, 'DROP')) { ?>
 							<?php $canDrop = true; ?>
 							<a href="javascript:void(0)" onclick="schemaList.dropSchema('<?php echo $model->SCHEMA_NAME; ?>')" class="icon">
-								<?php echo Html::icon('delete', 16, false, 'database.drop'); ?>
+								<?php echo Html::icon('delete', 16, false, 'core.drop'); ?>
 							</a>
 						<?php } else { ?>
-							<?php echo Html::icon('delete', 16, true, 'database.drop'); ?>
+							<?php echo Html::icon('delete', 16, true, 'core.drop'); ?>
 						<?php } ?>
 					</td>
 				</tr>

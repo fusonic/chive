@@ -23,7 +23,7 @@ var informationProcesses = {
 	{
 		$('#processes input[type="checkbox"]').attr('checked', false).change();
 		$('#processes input[type="checkbox"][value="' + id + '"]').attr('checked', true).change();
-		tableProcesses.killProcesses();
+		informationProcesses.killProcesses();
 	},
 	
 	killProcesses: function()
@@ -56,7 +56,7 @@ var informationProcesses = {
 					});
 					
 					// Do truncate request
-					$.post(baseUrl + '/schemata/processes/kill', {
+					$.post(baseUrl + '/information/processes/kill', {
 						ids	: 	JSON.stringify(ids)
 					}, AjaxResponse.handle);
 					

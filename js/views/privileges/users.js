@@ -69,7 +69,7 @@ var privilegesUsers = {
 			
 			// Do drop request
 			$.post(baseUrl + '/privileges/userActions/drop', {
-				'users[]': ids
+				'users': ids
 			}, AjaxResponse.handle);
 			
 			$(this).dialog('close');

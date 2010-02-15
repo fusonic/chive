@@ -38,7 +38,7 @@
 						<input type="checkbox" name="processes[]" value="<?php echo $process['Id']; ?>" />
 					</td>
 					<td>
-						<a href="javascript:void(0);" onclick="tableProcesses.killProcess('<?php echo $process['Id']; ?>');">
+						<a href="javascript:void(0);" onclick="informationProcesses.killProcess('<?php echo $process['Id']; ?>');">
 							<?php echo Html::icon('delete', 16, false, 'core.kill'); ?>
 						</a>
 					</td>
@@ -62,7 +62,7 @@
 					<?php echo Html::icon('arrow_turn_090'); ?>
 					<span><?php echo Yii::t('core', 'withSelected'); ?></span>
 				</span>
-				<a class="icon button" href="javascript:void(0);" onclick="tableProcesses.killProcesses();">
+				<a class="icon button" href="javascript:void(0);" onclick="informationProcesses.killProcesses();">
 					<?php echo Html::icon('delete'); ?>
 					<span><?php echo Yii::t('core', 'kill'); ?></span>
 				</a>

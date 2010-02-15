@@ -76,7 +76,7 @@ var privilegesUserSchemata = {
 			// Do drop request
 			$.post(baseUrl + '/privileges/users/'
 				+ encodeURIComponent(privilegesUserSchemata.id) + '/schemaActions/drop', {
-				'schemata[]': ids
+				'schemata': ids
 			}, AjaxResponse.handle);
 			$(this).dialog('close');
 		}; 

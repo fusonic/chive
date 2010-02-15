@@ -82,7 +82,7 @@ var schemaRoutines = {
             
             // Do drop request
             $.post(baseUrl + '/schema/' + schema + '/routineAction/drop', {
-                'routines[]': ids
+                'routines': ids
             }, AjaxResponse.handle);
             
             $(this).dialog('close');

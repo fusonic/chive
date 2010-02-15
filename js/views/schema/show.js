@@ -90,7 +90,7 @@ var schemaShow = {
 			
 			// Do drop request
 			$.post(baseUrl + '/schema/' + schema + '/tableAction/drop', {
-				'tables[]': ids
+				'tables': ids
 			}, AjaxResponse.handle);
 			
 			$(this).dialog('close');
@@ -115,7 +115,7 @@ var schemaShow = {
 			
 			// Do truncate request
 			$.post(baseUrl + '/schema/' + schema + '/tableAction/truncate', {
-				'tables[]': ids
+				'tables': ids
 			}, AjaxResponse.handle);
 			
 			$(this).dialog('close');
