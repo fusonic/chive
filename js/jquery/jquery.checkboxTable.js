@@ -43,7 +43,24 @@
 					{
 						if(e.target.tagName == 'INPUT')
 						{
+							var isChecked = e.target.checked;
+							if(switchChecked)
+							{
+								isChecked = !isChecked;
+							}
+							
 							var checkedBoxes = bodyBoxes.filter('input[checked]').length;
+							if(switchChecked)
+							{
+								if(isChecked)
+								{
+									checkedBoxes++;
+								}
+								else
+								{
+									checkedBoxes--;
+								}
+							}
 	
 							// Set head checkbox
 							headBoxes.each(function() {
@@ -51,7 +68,7 @@
 							}); 
 							
 							// Set row class
-							if(e.target.checked)
+							if(isChecked)
 							{
 								$(e.target).closest('tr').addClass("selected");
 							}
