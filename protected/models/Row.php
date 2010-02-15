@@ -197,7 +197,7 @@ class Row extends CActiveRecord
 		$i = 0;
 		foreach($table->columns AS $column)
 		{
-			$sql .= self::$db->quoteColumnName($attribute);
+			$sql .= self::$db->quoteColumnName($column->COLUMN_NAME);
 			$i++;
 
 			if($i < $attributesCount)

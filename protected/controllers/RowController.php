@@ -120,7 +120,7 @@ class RowController extends Controller
 			}
 			catch (DbException $ex) 
 			{
-				$response->refresh = true;
+				$response->refresh = false;
 				$response->addNotification('error', Yii::t('core', 'errorInsertRow'), $ex->getText(), $ex->getSql());
 			}
 			
