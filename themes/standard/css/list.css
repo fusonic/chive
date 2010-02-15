@@ -250,4 +250,10 @@
 		margin: 0px 5px;
 	}
 	
+	/* Fix required by Google Chrome. Chops off last button without this. */
+	div.list div.withSelected:after
+	{
+		content: url('../../../images/blank.gif');
+	}
+	
 }
