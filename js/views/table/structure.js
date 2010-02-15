@@ -111,7 +111,7 @@ var tableStructure = {
 		$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/indexAction/createSimple', {
 			index: $('#newIndexName').get(0).value,
 			type: tableStructure.newIndexType,
-			'columns[]': ids
+			'columns': ids
 		}, AjaxResponse.handle);	
 	},
 	addIndexForm: function()
@@ -252,7 +252,7 @@ var tableStructure = {
 			$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/columnAction/drop', {
 				'schema': schema,
 				'table': table,
-				'column[]': ids
+				'column': ids
 			}, function(responseText) {
 				AjaxResponse.handle(responseText);
 				for(var i = 0; i < ids.length; i++)
