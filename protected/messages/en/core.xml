@@ -164,6 +164,7 @@
 	<entry id="loading">Loading</entry>
 	<entry id="login">Login</entry>
 	<entry id="logout">Logout</entry>
+	<entry id="maintainer">Maintainer</entry>
 	<entry id="maximum">Maximum</entry>
 	<entry id="move">Move</entry>
 	<entry id="name">Name</entry>
@@ -221,6 +222,7 @@
 	<entry id="showingXSchemata">{count} Schemata</entry>
 	<entry id="size">Size</entry>
 	<entry id="spaceUsage">Space usage</entry>
+	<entry id="softwareInformation">Software information</entry>
 	<entry id="sql">SQL</entry>
 	<entry id="sqlErrorOccured">A SQL error occured ({errno}): &lt;span class="sql"&gt;{errmsg}&lt;/span&gt;</entry>
 	<entry id="status">Status</entry>

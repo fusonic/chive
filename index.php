@@ -28,7 +28,7 @@ $app = Yii::createWebApplication($config);
 
 // Define constants
 define('BASEURL', Yii::app()->baseUrl);
-define('ICONPATH', BASEURL . '/' . Yii::app()->params->iconpack);
+define('ICONPATH', BASEURL . '/images/icons/' . Yii::app()->params->iconPack);
 
 $session = Yii::app()->getSession();
 $request = Yii::app()->getRequest();

@@ -16,8 +16,8 @@
 
 <script type="text/javascript">
 // Set global javascript variables
-var baseUrl = '<?php echo Yii::app()->baseUrl; ?>';
-var iconPath = '<?php echo Yii::app()->baseUrl . '/images/icons/fugue'; ?>';
+var baseUrl = '<?php echo BASEURL; ?>';
+var iconPath = '<?php echo ICONPATH; ?>';
 var themeUrl = '<?php echo Yii::app()->theme->baseUrl; ?>';
 </script>
 
