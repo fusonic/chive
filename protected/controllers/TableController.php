@@ -139,7 +139,7 @@ class TableController extends Controller
 		}
 
 		$browsePage->run();
-
+		
 		$this->render('../global/browse', array(
 			'model' => $browsePage
 		));
@@ -232,7 +232,8 @@ class TableController extends Controller
 			));
 
 		CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3);
-			$data = array(
+		
+		$data = array(
 			'table' => $table,
 			'column' => $column,
 			'collations' => $collations,

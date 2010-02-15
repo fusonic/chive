@@ -72,5 +72,6 @@ class AjaxSettingsController extends Controller
 
 		Yii::app()->user->settings->set($name, !$oldValue, $scope, $object);
 		Yii::app()->user->settings->saveSettings();
+		
 	}
 }

@@ -94,8 +94,6 @@ class ImportPage extends CModel
 	public function run()
 	{
 		
-		$response = array();
-		
 		// Form got submitted
 		if(isset($_POST['Import']))
 		{
@@ -324,7 +322,6 @@ class ImportPage extends CModel
 		$response = new AjaxResponse();
 		$response->refresh = true;
 		$response->executeJavaScript('sideBar.loadTables("' . $this->schema . '")');
-		
 		
 		$this->mimeType = CFileHelper::getMimeType($this->file);
 		$filesize = filesize($this->file);

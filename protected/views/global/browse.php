@@ -41,7 +41,7 @@
 						scope: 'schema.table.browse',
 						object: '<?php echo $model->schema; ?>.<?php echo $model->table; ?>'
 					}, function() {
-						refresh();
+						chive.refresh();
 					});">
 					<?php if( Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $model->schema . '.' .  $model->table)) {?>
 						<?php echo Html::icon('square_green'); ?>

@@ -17,13 +17,13 @@
 				<span><?php echo Yii::t('core', 'toggleProfiling'); ?></span>
 			</a>
 			<br/><br/>
-			<a class="icon" href="javascript:void(0);" onclick="$.post(baseUrl + '/ajaxSettings/toggle', {
-				name: 'showFullColumnContent',
-				scope: 'schema.table.browse',
-				object: '<?php echo $this->schema; ?>.<?php echo $this->view; ?>'
-				}, function() {
+			<a class="icon" href="javascript:alert('OK'); javascript:void(0);" onclick="alert('OK'); $.post(baseUrl + '/ajaxSettings/toggle', {
+					name: 'showFullColumnContent',
+					scope: 'schema.table.browse',
+					object: '<?php echo $this->schema; ?>.<?php echo $this->view; ?>'
+				};, function() {
 					reload();
-				});;">
+				});">
 				<?php if( Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $this->schema . '.' .  $this->view)) {?>
 					<?php echo Html::icon('square_green'); ?>
 					<span><?php echo Yii::t('core', 'cutColumnContent'); ?></span>
@@ -83,7 +83,7 @@
 	</div>
 
 <?php }  elseif($this->isSent) { ?>
-	Es wurden keine Enträge gefunden!
+	<?php Yii::t('core', 'noEntriesFound'); ?>
 <?php } ?>
 
 <script type="text/javascript">
