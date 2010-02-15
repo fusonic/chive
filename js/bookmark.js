@@ -36,10 +36,6 @@ var Bookmark = {
 	{
 		sideBar.activate(2);
 		$('#bookmarkList').append('<li id="bookmark_' + _id + '">' +
-										'<a class="icon" href="#bookmark/show/' + _id + '" title="' + _query + '"> ' + 
-											'<img src="' + iconPath + '/16/bookmark.png" alt="bookmark" title="' + _query + '" class="icon icon16 icon_bookmark" />' +
-											'<span>' +_name + '</span>' +
-										'</a>' +
 										'<div class="listIconContainer">' +
 											'<a onclick="Bookmark.remove(\'' + _schema + '\', \'' + _id + '\');" href="javascript:void(0);">'+
 												'<img alt="' + lang.get('core', 'delete') + '" src="' + iconPath + '/16/delete.png" title="' + lang.get('core', 'delete') + '" class="icon icon16 icon_delete" class="disabled" />' +							
@@ -47,6 +43,11 @@ var Bookmark = {
 											'<a onclick="Bookmark.execute(\'' + _schema + '\', \'' + _id + '\');" href="javascript:void(0);">'+
 												'<img alt="' + lang.get('core', 'execute') + '" src="' + iconPath + '/16/execute.png" title="' + lang.get('core', 'execute') + '" class="icon icon16 icon_execute"/>' +							
 											'</a>' +
+										'</div>' +
+										'<a class="icon" href="#bookmark/show/' + _id + '" title="' + _query + '"> ' + 
+											'<img src="' + iconPath + '/16/bookmark.png" alt="bookmark" title="' + _query + '" class="icon icon16 icon_bookmark" /> ' +
+											'<span>' +_name + '</span>' +
+										'</a>' +
 									'</li>');
 									
 		$('#bookmark_' + _id).effect('highlight', {}, 2000);

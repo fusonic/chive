@@ -135,6 +135,15 @@ class IndexController extends Controller
 			'TABLE_NAME' => $this->table,
 			'INDEX_NAME' => $this->index,
 		));
+		
+		if($index == null)
+		{
+			$index = new Index();
+			$index->TABLE_SCHEMA = $this->schema;
+			$index->TABLE_NAME = $this->table;
+			$index->INDEX_NAME = $this->index;
+		}
+		
 		$table = Table::model()->findByPk(array(
 			'TABLE_SCHEMA' => $this->schema,
 			'TABLE_NAME' => $this->table,

@@ -144,16 +144,15 @@ class Index extends ActiveRecord
 	 */
 	protected function getUpdateSql()
 	{
-		return array(
-			$this->getDeleteSql(),
-			$this->getInsertSql(),
-		);
+		return 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
+			. $this->getDeleteSql(true) . ',' . "\n"
+			. $this->getInsertSql(true) . ';';
 	}
 
 	/**
 	 * @see		ActiveRecord::getInsertSql()
 	 */
-	protected function getInsertSql()
+	protected function getInsertSql($skipAlter = false)
 	{
 		// Prepare columns
 		$columns = array();
@@ -165,16 +164,26 @@ class Index extends ActiveRecord
 		$columns = implode(', ', $columns);
 
 		// Create command
-		$type = $this->getType();
-		if($type == 'PRIMARY')
+		if($skipAlter)
 		{
-			$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
-				. "\t" . 'ADD PRIMARY KEY (' . $columns . ');';
+			$sql = '';
 		}
 		else
 		{
-			$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
-				. "\t" . 'ADD ' . $type . ' ' . self::$db->quoteColumnName($this->INDEX_NAME) . ' (' . $columns . ');';
+			$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"; 
+		}
+		$type = $this->getType();
+		if($type == 'PRIMARY')
+		{
+			$sql .= "\t" . 'ADD PRIMARY KEY (' . $columns . ')';
+		}
+		else
+		{
+			$sql .= "\t" . 'ADD ' . $type . ' ' . self::$db->quoteColumnName($this->INDEX_NAME) . ' (' . $columns . ')';
+		}
+		if(!$skipAlter)
+		{
+			$sql .= ';';
 		}
 
 		return $sql;
@@ -183,10 +192,22 @@ class Index extends ActiveRecord
 	/**
 	 * @see		ActiveRecord::getDeleteSql()
 	 */
-	protected function getDeleteSql()
+	protected function getDeleteSql($skipAlter = false)
 	{
-		return 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
-			. "\t" . 'DROP INDEX ' . self::$db->quoteColumnName($this->originalAttributes['INDEX_NAME']) . ';';
+		if($skipAlter)
+		{
+			$sql = '';
+		}
+		else
+		{
+			$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n";
+		}
+		$sql .= "\t" . 'DROP INDEX ' . self::$db->quoteColumnName($this->originalAttributes['INDEX_NAME']);
+		if(!$skipAlter)
+		{
+			$sql .= ';';
+		}
+		return $sql;
 	}
 
 }
