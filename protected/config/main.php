@@ -34,6 +34,7 @@ return array(
 	// autoloading model and component classes
 	'import' => array(
 		'application.models.*',
+		'application.models.Index',
 		'application.models.privileges.*',
 		'application.components.*',
 		'application.components.helpers.*',
