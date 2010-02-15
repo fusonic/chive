@@ -1,25 +1,22 @@
 <?php
 
 // Import Sql Parser and Compiler
-Yii::import('application.extensions.sqlquery.*');
-Yii::import('application.extensions.sqlquery.Sql_Compiler.*');
-Yii::import('application.extensions.sqlquery.Sql_Dialect.*');
-Yii::import('application.extensions.sqlquery.Sql_Parser.*');
-Yii::import('application.extensions.sqlquery.Sql_Interface.*');
+#Yii::import('application.extensions.sqlquery.*');
+
+require_once('sqlquery/SqlParser.php');
 
 class SqlQuery {
 
-	private $query;
+	protected $query;
 
-	private $sqlParser;
-	private $parsedQuery;
-	private $parsedOriginalQuery;
+	protected $parsedQuery;
+	protected $parsedPMAQuery;
+	
+	protected $parsedOriginalQuery;
+	protected $parsedPMAOriginalQuery;
 
-	private $sqlCompiler;
-
-	public $comments;
-
-	public $originalQuery;
+	protected $comments;
+	protected $originalQuery;
 
 	private $resultSetTypes = array(
 		'select',
@@ -32,49 +29,14 @@ class SqlQuery {
 
 	public function __construct($_query) {
 
-		$this->query = $this->originalQuery = $_query;
-		//self::stripComments();
-
-		$this->sqlCompiler = new Sql_Compiler();
-
-		try
-		{
-			$this->sqlParser = new Sql_Parser($this->query);
-			$this->parsedQuery = $this->parsedOriginalQuery = $this->sqlParser->parse();
-			#pre($this->parsedQuery);
-
-		}
-		catch (Exception $ex)
-		{
-			// Query is no select / insert / update / delete statement - handle it anyway
-			// var_dump($ex);
-		}
-
-		self::analyze();
-
+		$this->setQuery($_query);
+		$this->setOriginalQuery($_query);
+		
 	}
 
 	/*
 	 * Static functions
 	 */
-
-	/*
-	 * Splits a query
-	 *
-	 * @param string $_query
-	 * @param string $_delimiter
-	 */
-	public static function split($_query, $_delimiter = ';')
-	{
-		#$query = self::stripComments($_query);
-
-		$queries = preg_split("/".$_delimiter."+(?=([^'|^\\\']*['|\\\'][^'|^\\\']*['|\\\'])*[^'|^\\\']*[^'|^\\\']$)/", $query);
-
-		// Remove delimiter at the last query
-		$queries[count($queries)-1] = preg_replace('/'.$_delimiter.'$/', '', $queries[count($queries)-1]);
-		return $queries;
-	}
-
 
 	/*
 	 * Strips all comments out
@@ -91,14 +53,8 @@ class SqlQuery {
 		preg_match_all('/\/\*(.+)\*\//is', $_query, $multi);
 		$comments = array_merge($comments, $multi[0]);
 
-		var_dump($comments);
-
 		// Strip them
 		return str_replace($comments, "\n", $_query);
-
-	}
-
-	public function analyze() {
 
 	}
 
@@ -108,78 +64,85 @@ class SqlQuery {
 
 	public function applyCalculateFoundRows() {
 
-		if($this->parsedQuery)
-		{
-			$this->parsedQuery['ColumnNames'][0] = 'SQL_CALC_FOUND_ROWS ' . $this->parsedQuery['ColumnNames'][0];
-		}
-		else
-		{
-			// @todo programming
-		}
-
-		/*
-		preg_match('/select\s+(.*)\s+from/i', $this->query, $select);
-
-		if(isset($select[1]))
-		{
-			$this->query = str_replace($select[1], 'SQL_CALC_FOUND_ROWS ' . $select[1], $this->query);
-		}
-		*/
-
+		$calculateFoundRows = 'SQL_CALC_FOUND_ROWS ';
+		
+		$newQuery = substr($this->query, 0, strlen("SELECT") + 1 + $this->parsedQuery['position_of_first_select']);
+		$newQuery .= $calculateFoundRows;
+		$newQuery .= substr($this->query, strlen("SELECT") + 1 + $this->parsedQuery['position_of_first_select']);
+		
+		$this->setQuery($newQuery);
 
 	}
 
 	public function applyLimit($length, $start=0, $_applyToOriginal = false) {
 
-		if($this->parsedQuery)
+		$newQuery = $this->parsedQuery['section_before_limit']
+						. ' LIMIT ' . $start . ', ' . $length . ' '
+						. $this->parsedQuery['section_after_limit'];
+						
+		$this->setQuery($newQuery);				
+
+		if($_applyToOriginal)
 		{
-			$this->parsedQuery['Limit'] = array(
-				'Start' => $start,
-				'Length' => $length,
-			);
-
-			if($_applyToOriginal)
-				$this->parsedOriginalQuery['Limit'] = $this->parsedQuery['Limit'];
-
-		}
-		else
-		{
-			
-
-			//throw new NotImplementedException();
+			$newOriginalQuery = $this->parsedOriginalQuery['section_before_limit']
+					. ' LIMIT ' . $start . ', ' . $length . ' '
+					. $this->parsedOriginalQuery['section_after_limit'];
+					
+			$this->setOriginalQuery($newOriginalQuery);
 		}
 
+	}
+	
+	private function setQuery($_query)
+	{
+		$this->query = $_query;
+		$this->parsedQuery = SqlParser::parse($_query);
+		$this->parsedPMAQuery = SqlParser::parsePMA($_query);
+	}
+	
+	private function setOriginalQuery($_query)
+	{
+		$this->originalQuery = $_query;
+		$this->parsedOriginalQuery = SqlParser::parse($_query);
+		$this->parsedPMAOriginalQuery = SqlParser::parsePMA($_query);
 	}
 
 	public function applySort($_sorting, $_applyToOriginal = false) {
 
-		if($this->parsedQuery)
+		$sorting = "";
+		$sortingCount = count($_sorting);
+		
+		foreach($_sorting AS $column => $direction)
 		{
-			$this->parsedQuery['SortOrder'] = $_sorting;
+			$sorting .= $column . ' ' . $direction;
 
-			
-			if($_applyToOriginal)
-			{
-				$this->parsedOriginalQuery['SortOrder'] = $_sorting;
-			}
+			if($sortingCount > 1)
+				$sorting .= ", ";		
 				
+			$sortingCount--;
 		}
-		else
-		{
-			//throw new NotImplementedException();
-		}
-		/*
 
-		$_sql = "\n\t" . trim($_sql);
-
-		preg_match('/\s+?limit\s+(\d+),?\s+?(\d+)?/ims', $this->query, $limit);
-		$this->query = str_replace($limit[0], $_sql . $limit[0], $this->query);
+		$query = SqlParser::parse($this->parsedQuery['unsorted_query']);
+		
+		$newQuery = $query['section_before_limit'] 
+						. 'ORDER BY ' . $sorting . ' '
+						. $query['limit_clause']
+						. $query['section_after_limit'];
+						
+		$this->setQuery($newQuery);				
 
 		if($_applyToOriginal)
-			$this->originalQuery = str_replace($limit[0], $_sql .  $limit[0], $this->originalQuery);
-
-		*/
-
+		{
+			$query = SqlParser::parse($this->parsedOriginalQuery['unsorted_query']);
+		
+			$newQuery = $query['section_before_limit']
+							. 'ORDER BY ' . $sorting . ' '
+							. $query['limit_clause']
+							. $query['section_after_limit'];
+							
+			$this->setOriginalQuery($newQuery);				
+		}
+		
 	}
 
 
@@ -210,90 +173,46 @@ class SqlQuery {
 	 */
 	public function getType()
 	{
-		if($this->parsedQuery)
-		{
-			return strtolower($this->parsedQuery['Command']);
-		}
-		else
-		{
-			preg_match('/^(\s*)(\w+)/', $this->query, $res);
-			return strtolower($res[2]);
-		}
+		return strtolower($this->parsedQuery['querytype']);
 	}
 
 	public function getLimit()
 	{
-
-		if($this->parsedQuery)
+		if($this->parsedQuery['limit_clause'])
 		{
-			return isset($this->parsedQuery['Limit']) ? $this->parsedQuery['Limit'] : false;
-		}
-		else
-		{
-			preg_match_all('/LIMIT (\d+)(, (\d+))?/im', $this->query, $res);
+			$limit = array();
 			
-			if(!count($res))
+			preg_match('/LIMIT (\d+)(,(\d+))?/im', $this->parsedQuery['limit_clause'], $res);
+			if(isset($res[3]))
 			{
-				return false;
+				$limit['start'] = $res[1];
+				$limit['length'] = $res[3]; 
 			}
 			else
 			{
-				$key = count($res[0])-1;
-				
-				$start = ($res[3][$key] ? $res[1][$key] : 0);
-				$length = ($res[3][$key] ? $res[3][$key] : $res[1][$key]);
-				
-				return array(
-					'Start' => $start,
-					'Length' => $length
-				);
-				
+				$limit['start'] = 0;
+				$limit['length'] = $res[1];
 			}
-			/*
-			var_dump($this->query);
-			$this->query = ' SELECT *, (SELECT * FROM test LIMIT 0, 20) FROM test LIMIT 0, 10';
-			preg_match('/SELECT(.*)FROM(.*)LIMIT (\d+)(,)? (\d+)?/i', $this->query, $res);
-			predie($res);
-			*/
-		}
-	}
-	
-	public function getOrder()
-	{
-
-		if($this->parsedQuery)
-		{
-			return isset($this->parsedQuery['SortOrder']) ? $this->parsedQuery['SortOrder'] : false;
+			
+			return $limit;
+			
 		}
 		else
 		{
 			return false;
-			/*
-			preg_match_all('/LIMIT (\d+)(, (\d+))?/im', $this->query, $res);
-			
-			if(!count($res))
-			{
-				return false;
-			}
-			else
-			{
-				$key = count($res[0])-1;
-				
-				$start = ($res[3][$key] ? $res[1][$key] : 0);
-				$length = ($res[3][$key] ? $res[3][$key] : $res[1][$key]);
-				
-				return array(
-					'Start' => $start,
-					'Length' => $length
-				);
-				
-			}
-			/*
-			var_dump($this->query);
-			$this->query = ' SELECT *, (SELECT * FROM test LIMIT 0, 20) FROM test LIMIT 0, 10';
-			preg_match('/SELECT(.*)FROM(.*)LIMIT (\d+)(,)? (\d+)?/i', $this->query, $res);
-			predie($res);
-			*/
+		}
+		
+	}
+	
+	public function getOrder()
+	{
+		if($this->parsedQuery['order_by_clause'])
+		{
+			return $this->parsedQuery['order_by_clause'];
+		}
+		else
+		{
+			return false;
 		}
 	}
 
@@ -302,50 +221,24 @@ class SqlQuery {
 		return in_array($this->getType(), $this->resultSetTypes);
 	}
 
+	public function isUpdatable()
+	{
+		return $this->returnsResultset() 
+			&& isset($this->parsedQuery['queryflags']['select_from'])
+			&& isset($this->parsedQuery['queryflags']['select_from']) == 1;	
+	}
+	
 	/*
 	 * Returns parsed query
 	 */
 	public function getQuery()
 	{
-
-		if($this->parsedQuery)
-		{
-			try
-			{
-				return $this->sqlCompiler->compile($this->parsedQuery);
-			}
-			catch(Exception $ex)
-			{
-				return $this->query;
-			}
-		}
-		else
-		{
-			self::stripEmptyLines($this->query);
-			return $this->query;
-		}
-
+		return $this->query;
 	}
 
 	public function getOriginalQuery()
 	{
-
-		if($this->parsedQuery)
-		{
-			try
-			{
-				return $this->sqlCompiler->compile($this->parsedOriginalQuery);
-			}
-			catch(Exception $ex)
-			{
-				return $this->originalQuery;
-			}
-		}
-		else
-		{
-			self::stripEmptyLines($this->originalQuery);
-			return $this->originalQuery;
-		}
+		return $this->originalQuery;
 	}
 
 

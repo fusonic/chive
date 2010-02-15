@@ -20,7 +20,6 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 class BrowsePage extends CModel
 {
 
@@ -77,12 +76,19 @@ class BrowsePage extends CModel
 		return array();
 	}
 
+	public function safeAttributes()
+	{
+		return array();
+	}
+
 	public function run()
 	{
 		$response = new AjaxResponse();
 		
 		$profiling = Yii::app()->user->settings->get('profiling');
 
+		$sqlQuery = new SqlQuery($this->query);
+		
 		if(!$this->query)
 		{
 			$this->query = $this->getDefaultQuery();
@@ -102,10 +108,14 @@ class BrowsePage extends CModel
 
 			$splitter = new SqlSplitter($this->query);
 			$queries = $splitter->getQueries();
+			
+			#$queries = $sqlQuery->getQueries();
+			
 		}
-
+		
 		if($this->execute)
 		{
+
 			$queryCount = count($queries);
 
 			$i = 1;
@@ -114,13 +124,14 @@ class BrowsePage extends CModel
 
 				$sqlQuery = new SqlQuery($query);
 				$type = $sqlQuery->getType();
-				
+
 				// Get table from query if table is not specified by URL
 				if(!$this->table)
 				{
 					$this->table = $sqlQuery->getTable();
 				}
 				
+
 				// SELECT
 				if($type == "select")
 				{
@@ -134,23 +145,30 @@ class BrowsePage extends CModel
 					$sort = new Sort($this->db);
 					$sort->multiSort = false;
 					$sort->route = $this->route;
-
+					
 					$sqlQuery->applyCalculateFoundRows();
 					
 					$limit = $sqlQuery->getLimit();
 					$order = $sqlQuery->getOrder();
-
+					
+					// Apply sort
+					if($sort->getOrder())
+					{
+						$sqlQuery->applySort($sort->getOrder(), true);
+					}
+					
 					if(isset($_REQUEST['page']))
 					{
 						$offset = $_REQUEST['page'] * $pageSize - $pageSize;
 						$sqlQuery->applyLimit($pageSize, $offset, true);
 					}
-
+					
 					// Set pagesize from query limit
 					if($limit && !isset($_REQUEST[$pages->pageSizeVar]))
 					{
-						$_REQUEST[$pages->pageSizeVar] = $limit['Length'];
+						$_REQUEST[$pages->pageSizeVar] = $limit['length'];
 						$pageSize = $pages->setupPageSize('pageSize', 'schema.table.browse');
+						$offset = $limit['start'];
 					}
 					// Apply standard limit
 					elseif(!$limit)
@@ -166,14 +184,8 @@ class BrowsePage extends CModel
 						$offset = 0;
 						$sqlQuery->applyLimit($pageSize, $offset, true);
 					}
-					
-					$this->start = $offset ? $offset : 0;
-					
-					// Apply sort
-					if($sort->getOrder())
-					{
-						$sqlQuery->applySort($sort->getOrder(), true);
-					}
+
+					$this->start = (int)$offset;
 					
 				}
 				
@@ -220,7 +232,7 @@ class BrowsePage extends CModel
 				$sort->postVars = array(
 					'query' => $sqlQuery->getOriginalQuery()
 				);
-				
+
 				// Prepare query for execution
 				$cmd = $this->db->createCommand($sqlQuery->getQuery());
 				$cmd->prepare();
@@ -395,29 +407,12 @@ class BrowsePage extends CModel
 			
 			if(in_array($this->schema, $this->nonEditableSchemas) || !$this->loadTable()->getIsUpdatable())
 			{
+				$this->isUpdatable = false;
 				return $this->isUpdatable;
 			}
-			
-			$parser = new Sql_Parser();
-			
-			try 
-			{
-				$query = $parser->parse($this->query);
-				
-				if($query['Command'] == "select" &&
-						count($query['TableNames']) == 1 &&
-						!$query['ColumnAliases'][0] &&
-						!$query['Joins'][0]
-					)
-				{
-					$this->isUpdatable = true;
-				}
-			}
-			catch (Exception $ex)
-			{
-				var_dump($ex);
-				$this->isUpdatable = false;
-			}
+
+			$query = new SqlQuery($this->lastResultSetQuery);
+			$this->isUpdatable = $query->isUpdatable();
 			
 		}
 		
