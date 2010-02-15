@@ -11,7 +11,7 @@ function rglob($pattern='*', $flags = 0, $path='')
 
 /*
  * Chive - web based MySQL database management
- * Copyright (C) 2009 Fusonic GmbH
+ * Copyright (C) 2010 Fusonic GmbH
  *
  * This file is part of Chive.
  *
