@@ -61,7 +61,7 @@
 						<input type="checkbox" name="columns[]" value="<?php echo $column->COLUMN_NAME; ?>" />
 					</td>
 					<td>
-						<?php if($column->getIsPartOfPrimaryKey($table->indices)): ?>
+						<?php if($column->getIsPartOfPrimaryKey($indicesRaw)): ?>
 							<span class="primaryKey"><?php echo $column->COLUMN_NAME; ?></span>
 						<?php else: ?>
 							<?php echo $column->COLUMN_NAME; ?>

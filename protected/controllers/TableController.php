@@ -98,6 +98,12 @@ class TableController extends Controller
 		{
 			$index->columns = IndexColumn::model()->findAllByAttributes(array('TABLE_SCHEMA' => $table->TABLE_SCHEMA, 'TABLE_NAME' => $table->TABLE_NAME, 'INDEX_NAME' => $index->INDEX_NAME));
 		}
+		
+		// Indices (seperate for each column)
+		$indicesRaw = Index::model()->findAllByAttributes(array(
+			'TABLE_SCHEMA' => $table->TABLE_SCHEMA,
+			'TABLE_NAME' => $table->TABLE_NAME,
+		));
 
 		// Triggers
 		$table->triggers = Trigger::model()->findAllByAttributes(array(
@@ -109,6 +115,7 @@ class TableController extends Controller
 			'table' => $table,
 			'canAlter' => Yii::app()->user->privileges->checkTable($table->TABLE_SCHEMA, $table->TABLE_NAME, 'ALTER'),
 			'foreignKeys' => $foreignKeys,
+			'indicesRaw' => $indicesRaw,
 		));
 	}
 
