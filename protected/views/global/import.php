@@ -1,5 +1,6 @@
 <?php if($model->view == 'form') { ?>
 
+
 <?php echo CHtml::form($model->formTarget, 'post', array('id' => 'Import')); ?>
 	<fieldset>
 		<legend><?php echo Yii::t('core', 'importFile'); ?></legend>
@@ -7,10 +8,8 @@
 		(<?php echo Yii::t('core', 'maximum'); ?>: <?php echo ConfigUtil::getMaxUploadSize(true); ?>)
 		<br />
 		<br />
-		<?php echo Yii::t('core', 'characterSet', array(1)); ?><br />
-		<?php echo CHtml::activeDropDownList($model, 'fromCharacterSet', CHtml::listData($model->characterSets, 'name', 'name')); ?>
-		<br />
-		<br />
+		<?php //echo Yii::t('core', 'characterSet', array(1)); ?><br />
+		<?php //echo CHtml::activeDropDownList($model, 'fromCharacterSet', CHtml::listData($model->characterSets, 'name', 'name')); ?>
 		<b><?php echo Yii::t('core', 'notice'); ?></b><br />
 		<?php echo Yii::t('core', 'compressionWillBeAutomaticallyDetected'); ?>
 	</fieldset>

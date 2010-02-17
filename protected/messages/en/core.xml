@@ -203,6 +203,7 @@
 	<entry id="query">Query</entry>
 	<entry id="refresh">Refresh</entry>
 	<entry id="relation">Relation</entry>
+	<entry id="reportABug">Report a bug</entry>
 	<entry id="routine">Routine</entry>
 	<entry id="routines">Routines</entry>
 	<entry id="rows">Rows</entry>

@@ -95,6 +95,9 @@ $(document).ready(function() {
 			<a class="icon button" href="javascript:chive.refresh();">
 				<?php echo Html::icon('refresh', 16, false, 'core.refresh'); ?>
 			</a>
+			<a class="icon button" href="https://bugs.launchpad.net/chive/+filebug">
+				<?php echo Html::icon('ticket', 16, false, 'core.reportABug'); ?>
+			</a>
 			<a class="icon button" href="<?php echo BASEURL; ?>/site/logout">
 				<?php echo Html::icon('logout', 16, false, 'core.logout'); ?>
 			</a>

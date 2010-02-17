@@ -97,7 +97,11 @@ class ImportPage extends CModel
 		// Form got submitted
 		if(isset($_POST['Import']))
 		{
-				
+
+			$this->addError('file', 'asdf');
+			$this->view = 'form';
+			return $this->runForm();
+			
 			$this->file = 'protected/runtime/' . $_FILES['file']['name'] . "_" . time();
 			$this->fileSize = $_FILES['file']['size'];
 			$this->mimeType = $_FILES['type'];
@@ -137,6 +141,14 @@ class ImportPage extends CModel
 			$this->view = 'form';
 			$this->runForm();
 		}
+		
+	}
+	
+	/**
+	 * Performs the form functionality
+	 */
+	private function runForm()
+	{
 		
 	}
 	
@@ -391,16 +403,6 @@ class ImportPage extends CModel
 	public function getPosition()
 	{
 		return $this->position;
-	}
-	
-
-	/**
-	 * Runs the form.
-	 */
-	private function runForm()
-	{
-
-
 	}
 	
 	public function getView()

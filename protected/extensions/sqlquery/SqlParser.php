@@ -16,7 +16,7 @@ class SqlParser
 {
 	public static function parsePMA($_sql)
 	{
-		return PMA_SQP_parse($_sql);
+		return self::trim(PMA_SQP_parse($_sql));
 	}
 	
 	public static function parse($_sql)
@@ -27,8 +27,18 @@ class SqlParser
 		}
 		
 		$analyzedSql = PMA_SQP_analyze($_sql);
-		return $analyzedSql[0];
+		return self::trim($analyzedSql[0]);
 			
+	}
+	
+	private static function trim($_array)
+	{
+		if(!is_array($_array))
+		{
+			return rtrim($_array);
+		}
+		
+   		return array_map(array("SqlParser", "trim"), $_array);
 	}
 	
 }

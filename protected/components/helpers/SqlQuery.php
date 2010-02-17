@@ -84,10 +84,11 @@ class SqlQuery {
 
 		if($_applyToOriginal)
 		{
+			
 			$newOriginalQuery = $this->parsedOriginalQuery['section_before_limit']
-					. ' LIMIT ' . $start . ', ' . $length . ' '
+					. "\n\t" . 'LIMIT ' . $start . ', ' . $length . ' '
 					. $this->parsedOriginalQuery['section_after_limit'];
-					
+			
 			$this->setOriginalQuery($newOriginalQuery);
 		}
 
@@ -124,8 +125,9 @@ class SqlQuery {
 
 		$query = SqlParser::parse($this->parsedQuery['unsorted_query']);
 		
+		
 		$newQuery = $query['section_before_limit'] 
-						. 'ORDER BY ' . $sorting . ' '
+						.  ' ORDER BY ' . $sorting . ' '
 						. $query['limit_clause']
 						. $query['section_after_limit'];
 						
@@ -136,8 +138,8 @@ class SqlQuery {
 			$query = SqlParser::parse($this->parsedOriginalQuery['unsorted_query']);
 		
 			$newQuery = $query['section_before_limit']
-							. 'ORDER BY ' . $sorting . ' '
-							. $query['limit_clause']
+							. "\n\t" . 'ORDER BY ' . $sorting . ' '
+							. "\n\t" . $query['limit_clause']
 							. $query['section_after_limit'];
 							
 			$this->setOriginalQuery($newQuery);				
