@@ -96,6 +96,7 @@ class RowController extends Controller
 				// @todo (rponudic) implement multiple sets
 				elseif('type' == 'multiple_set')
 				{
+					
 				}
 				
 				// FILE
@@ -179,14 +180,8 @@ class RowController extends Controller
 		$rows = Row::model()->findAllByAttributes($attributes);
 		$row = $rows[0];
 		
-		// SET datatype
-		if(is_array($newValue))
-		{
-			$newValue = implode(',', $newValue);
-		}
-		
 		// FILE (blob)
-		elseif(isset($_FILES['value']))
+		if(isset($_FILES['value']))
 		{
 			$row->setHex($column);
 			$newValue = '0x' . bin2hex(file_get_contents($_FILES['value']['tmp_name']));

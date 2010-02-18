@@ -220,8 +220,13 @@ class Row extends CActiveRecord
 			{
 				$sql .= 'NULL';
 			}
-			elseif($this->isHex($attribute)){
+			elseif($this->isHex($attribute))
+			{
 				$sql .= $value;
+			}
+			elseif(is_array($value))
+			{
+				$sql .= self::$db->quoteValue(implode(",", $value));
 			}
 
 			// DEFAULT
@@ -255,6 +260,18 @@ class Row extends CActiveRecord
 			throw new DbException($cmd);
 		}
 		
+	}
+	
+	public function getAttribute($name)
+	{
+		$value = parent::getAttribute($name);
+		
+		if(is_array($value))
+		{
+			$value = implode(",", $value);
+		}
+		
+		return $value;
 	}
 	
 	public function update()
@@ -301,6 +318,10 @@ class Row extends CActiveRecord
 				elseif($this->isHex($column))
 				{
 					$sql .= $value;
+				}
+				elseif(is_array($value))
+				{
+					$sql .= self::$db->quoteValue(implode(",", $value));
 				}
 				else
 				{

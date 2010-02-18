@@ -232,7 +232,7 @@ class BrowsePage extends CModel
 				$sort->postVars = array(
 					'query' => $sqlQuery->getOriginalQuery()
 				);
-
+				
 				// Prepare query for execution
 				$cmd = $this->db->createCommand($sqlQuery->getQuery());
 				$cmd->prepare();

@@ -206,6 +206,8 @@ $(document).ready(function() {
 							</a>
 						</li>
 					<?php } ?>
+				<?php } else { ?>
+					No bookmarks available
 				<?php } ?>
 			</ul>
 		</div>

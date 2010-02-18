@@ -280,7 +280,6 @@ class TableController extends Controller
 
 		$operators = array_keys($operatorConfig);
 		$config = array_values($operatorConfig);
-		
 
 		Row::$db = $this->db;
 		Row::$schema = $this->schema;
