@@ -78,7 +78,7 @@
 		<table class="list <?php if($model->getIsUpdatable()) { ?>addCheckboxes editable<?php } ?>" style="width: auto;" id="browse">
 			<colgroup>
 				<col class="checkbox" />
-				<?php if($type == 'select') { ?>
+				<?php if(isset($type) && $type == 'select') { ?>
 					<col class="action" />
 					<col class="action" />
 					<col class="action" />

@@ -26,7 +26,7 @@ class BookmarkController extends Controller
 
 	public $schema;
 
-	public function __construct()
+	public function __construct($id, $module = null)
 	{
 		$this->layout = false;
 

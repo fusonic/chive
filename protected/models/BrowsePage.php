@@ -108,14 +108,10 @@ class BrowsePage extends CModel
 
 			$splitter = new SqlSplitter($this->query);
 			$queries = $splitter->getQueries();
-			
-			#$queries = $sqlQuery->getQueries();
-			
 		}
 		
 		if($this->execute)
 		{
-
 			$queryCount = count($queries);
 
 			$i = 1;
@@ -339,13 +335,30 @@ class BrowsePage extends CModel
 		}
 		
 		// Assign local variables to class properties
-		$this->pagination = $pages;
-		$this->sort = $sort;
-		$this->queryType = $type;
-		$this->columns = $columns;
-		$this->data = $data;
-		$this->response = $response;
-		
+		if(isset($pages))
+		{
+			$this->pagination = $pages;
+		}
+		if(isset($sort))
+		{
+			$this->sort = $sort;
+		}
+		if(isset($type))
+		{
+			$this->queryType = $type;
+		}
+		if(isset($columns))
+		{
+			$this->columns = $columns;
+		}
+		if(isset($data))
+		{
+			$this->data = $data;
+		}
+		if(isset($response))
+		{
+			$this->response = $response;
+		}
 	}
 
 	public function hasResultSet()

@@ -42,6 +42,7 @@
 					</td>
 				</tr>
 			<?php } ?>
+			<?php $canDrop = false; ?>
 			<?php foreach($schema->views AS $view) { ?>
 				<tr id="views_<?php echo $view->TABLE_NAME; ?>">
 					<td>

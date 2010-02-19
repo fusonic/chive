@@ -25,7 +25,7 @@ var viewGeneral = {
 	{
 		var  ulObj =  $('#dropViewDialog ul');
 		
-		ulObj.append('<li>'+view+'</li>');
+		ulObj.append('<li>' + view + '</li>');
 		
 		$('#dropViewDialog').dialog('open');
 	},

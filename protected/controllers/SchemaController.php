@@ -80,10 +80,7 @@ class SchemaController extends Controller
 			'TABLE_SCHEMA' => $this->schema,
 		));
 
-		$this->render('index', array(
-			'bookmarks' => $bookmarks,
-		));
-
+		$this->render('index');
 	}
 
 	/**

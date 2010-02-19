@@ -133,11 +133,6 @@ class TableController extends Controller
 		$browsePage->route = 'schema/' . $this->schema . '/tables/' . $this->table . '/browse';
 		$browsePage->formTarget = 'schema/' . $this->schema . '/tables/' . $this->table . '/browse';
 
-		if($_query)
-		{
-			$browsePage->query = $_query;
-		}
-
 		$browsePage->run();
 		
 		$this->render('../global/browse', array(

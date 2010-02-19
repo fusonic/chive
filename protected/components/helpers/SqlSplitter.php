@@ -71,12 +71,26 @@ class SqlSplitter
 		$start = 0;
 		$length = 0;
 		$lastQuote = 0;
+		$prevChar = null;
 
 		for($i = 0; $i <= $chars; $i++)
 		{
-
-			$char = $this->string{$i};
-			$nextChar = $this->string{$i+1};
+			if($i < $chars)
+			{
+				$char = $this->string{$i};
+			}
+			else
+			{
+				$char = null;
+			}
+			if($i < $chars - 1)
+			{
+				$nextChar = $this->string{$i+1};
+			}
+			else
+			{
+				$nextChar = null;
+			}
 
 			/*
 			 * Comments
@@ -85,7 +99,7 @@ class SqlSplitter
 			// Only look for comments when not in a string
 			if($state != 100)
 			{
-				if($this->string{$i-2} . $this->string{$i-1} . $char == '-- ')
+				if($i > 1 && $this->string{$i-2} . $this->string{$i-1} . $char == '-- ')
 					$state = 200;
 	
 				if($prevChar . $char == '/*')

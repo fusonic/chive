@@ -2515,7 +2515,14 @@ function PMA_cacheGet($var, $server = 0)
 function PMA_cacheSet($var, $val = null, $server = 0)
 {
     if (true === $server) {
-        $server = $GLOBALS['server'];
+    	if(isset($GLOBALS['server']))
+    	{
+        	$server = $GLOBALS['server'];
+    	}
+    	else
+    	{
+    		$server = null;
+    	}
     }
     $_SESSION['cache']['server_' . $server][$var] = $val;
 }

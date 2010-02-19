@@ -226,7 +226,7 @@ class IndexController extends Controller
 		{
 			$col = new IndexColumn();
 			$col->COLUMN_NAME = $column;
-			if((int)$_POST['keyLengths'][$column] > 0)
+			if((int)@$_POST['keyLengths'][$column] > 0)
 			{
 				$col->SUB_PART = (int)$_POST['keyLengths'][$column];
 			}

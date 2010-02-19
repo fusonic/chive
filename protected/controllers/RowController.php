@@ -100,7 +100,7 @@ class RowController extends Controller
 				}
 				
 				// FILE
-				elseif(isset($_FILES['Row']['name'][$attribute]))
+				elseif(isset($_FILES['Row']['tmp_name'][$attribute]) && is_file($_FILES['Row']['tmp_name'][$attribute]))
 				{
 					
 					$file = '0x' . bin2hex(file_get_contents($_FILES['Row']['tmp_name'][$attribute]));
@@ -176,7 +176,6 @@ class RowController extends Controller
 		$isNull = Yii::app()->getRequest()->getParam('isNull');
 		$attributes = json_decode(Yii::app()->getRequest()->getParam('attributes'), true);
 		
-		$attributesCount = count($pk);
 		$rows = Row::model()->findAllByAttributes($attributes);
 		$row = $rows[0];
 		
