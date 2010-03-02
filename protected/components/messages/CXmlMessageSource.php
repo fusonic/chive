@@ -24,7 +24,7 @@
 class CXmlMessageSource extends CMessageSource 
 {
 
-	const CACHE_KEY_PREFIX='Yii.CXmlMessageSource.';
+	const CACHE_KEY_PREFIX = 'Yii.CXmlMessageSource.';
 
 	/**
 	 * @var integer the time in seconds that the messages can remain valid in cache.
@@ -92,7 +92,7 @@ class CXmlMessageSource extends CMessageSource
 		}
 
 		// Publish if needed
-		if($publish)
+		if($publish || YII_DEBUG)
 		{
 			$code = '';
 			foreach($packages AS $package)
@@ -101,7 +101,7 @@ class CXmlMessageSource extends CMessageSource
 				$data = $this->loadMessages($package, $language);
 				foreach($data AS $key => $value)
 				{
-					$code .= 'lang.' . $package . '["' . $key . '"] = "' . str_replace('"', '\"', $value) . '";' . "\n";
+					$code .= 'lang.' . $package . '["' . $key . '"] = ' . json_encode($value) . ';' . "\n";
 				}
 			}
 			file_put_contents($assetPath . DIRECTORY_SEPARATOR . $language . '.js', $code);
@@ -113,11 +113,13 @@ class CXmlMessageSource extends CMessageSource
 	 */
 	public function loadMessages($category, $language)
 	{
-		$parentMessages = array();
-
-		if(strlen($language) == 5) 
+		if($language != 'en')
 		{
-			$parentMessages = self::loadMessages($category, substr($language,0,2));
+			$parentMessages = self::loadMessages($category, 'en');
+		}
+		else
+		{
+			$parentMessages = array();
 		}
 
 		$messageFile = $this->basePath . DIRECTORY_SEPARATOR . $language . DIRECTORY_SEPARATOR . $category . '.xml';

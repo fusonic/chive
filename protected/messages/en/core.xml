@@ -110,6 +110,7 @@
 	<entry id="enterNameForNewIndex">Please enter a name for the new index:</entry>
 	<entry id="enterNameForNewUniqueKey">Please enter a name for the new unique key:</entry>
 	<entry id="enterOneValuePerLine">Enter one value per line.</entry>
+	<entry id="enterSchemaOrTable">Enter schema or table...</entry>
 	<entry id="entriesPerPage">Entries per page</entry>
 	<entry id="error">Error</entry>
 	<entry id="errorAlterIndex">Altering index &#xBB;{index}&#xAB; failed</entry>
@@ -171,6 +172,7 @@
 	<entry id="nextAutoincrementValue">Next autoincrement value</entry>
 	<entry id="no">No</entry>
 	<entry id="noAttribute">No attribute</entry>
+	<entry id="noBookmarksFound">No bookmarks found</entry>
 	<entry id="noColumns">No visible columns in this table.</entry>
 	<entry id="noColumnsAddedYet">No columns added yet.</entry>
 	<entry id="noIndices">No indices in this table.</entry>

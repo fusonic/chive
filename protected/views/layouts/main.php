@@ -89,7 +89,7 @@ $(document).ready(function() {
 			</a>
 		</div>
 		<div id="headerRight">
-			<input type="text" id="globalSearch" value="Enter schema or table..." style="color: #AAA; margin-right: 5px;" onclick="this.value = '';" />
+			<input type="text" id="globalSearch" value="<?php echo Yii::t('core', 'enterSchemaOrTable'); ?>" style="color: #AAA; margin-right: 5px;" onclick="this.value = '';" />
 			<a class="icon button" href="javascript:chive.refresh();">
 				<?php echo Html::icon('refresh', 16, false, 'core.refresh'); ?>
 			</a>

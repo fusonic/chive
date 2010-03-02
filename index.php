@@ -63,15 +63,15 @@ elseif(!preg_match('/^(' . implode('|', $validPaths) . ')/i', Yii::app()->urlMan
 // Language
 if($session->itemAt('language'))
 {
-	$app->setLanguage($language);
+	$app->setLanguage($session->itemAt('language'));
 }
 elseif($request->getPreferredLanguage() && is_dir('protected/messages/' . substr($request->getPreferredLanguage(), 0, 2)))
 {
-	$app->setLanguage($request->getPreferredLanguage());
+	$app->setLanguage(substr($request->getPreferredLanguage(), 0, 2));
 }
 else
 {
-	$app->setLanguage('en_us');
+	$app->setLanguage('en');
 }
 
 // Theme

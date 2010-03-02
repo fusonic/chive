@@ -110,13 +110,13 @@ $(document).ready(function() {
 			<a class="icon button" href="<?php echo BASEURL; ?>">
 				<img src="<?php echo BASEURL; ?>/images/logo.png" alt="Chive" height="22" style="position: relative; top: 6px;" />
 			</a>
-			<?php echo Html::ajaxLink('schemata', array('class' => 'icon button')); ?>
+			<a href="<?php echo Yii::app()->urlManager->baseUrl . '#schemata'; ?>" class="icon button">
 				<?php echo Html::icon('server'); ?>
 				<span><?php echo Yii::app()->user->host; ?></span>
 			</a>
 		</div>
 		<div id="headerRight">
-			<input type="text" id="globalSearch" value="Enter schema or table..." style="color: #AAA; margin-right: 5px;" onclick="this.value = '';" />
+			<input type="text" id="globalSearch" value="<?php echo Yii::t('core', 'enterSchemaOrTable'); ?>" style="color: #AAA; margin-right: 5px;" onclick="this.value = '';" />
 			<a class="icon button" href="javascript:chive.refresh();">
 				<?php echo Html::icon('refresh', 16, false, 'core.refresh'); ?>
 			</a>
@@ -211,7 +211,7 @@ $(document).ready(function() {
 						</li>
 					<?php } ?>
 				<?php } else { ?>
-					No bookmarks available
+					<?php echo Yii::t('core', 'noBookmarksFound'); ?>
 				<?php } ?>
 			</ul>
 		</div>
