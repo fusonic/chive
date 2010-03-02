@@ -1,0 +1,931 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: chive 0.2.0\n"
+"PO-Revision-Date:\n"
+"Last-Translator: Fusonic\n"
+"Language-Team: Fusonic\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "{count} Columns"
+msgstr ""
+
+msgid "{amount}  rows"
+msgstr ""
+
+msgid "About"
+msgstr ""
+
+msgid "Action"
+msgstr ""
+
+msgid "Actions"
+msgstr ""
+
+msgid "Add bookmark"
+msgstr ""
+
+msgid "Add column"
+msgstr ""
+
+msgid "Add <code class=\"literal\">DROP [TABLE|VIEW|PROCEDURE|FUNCTION]</code>"
+msgstr ""
+
+msgid "Add first column"
+msgstr ""
+
+msgid "Add fulltext index"
+msgstr ""
+
+msgid "Add function"
+msgstr ""
+
+msgid "Add <code class=\"literal\">IF NOT EXISTS</code>"
+msgstr ""
+
+msgid "Add index"
+msgstr ""
+
+msgid "Add primary key"
+msgstr ""
+
+msgid "Add procedure"
+msgstr ""
+
+msgid "Add schema"
+msgstr ""
+
+msgid "Add schema-specific privileges"
+msgstr ""
+
+msgid "Add table"
+msgstr ""
+
+msgid "Add trigger"
+msgstr ""
+
+msgid "Add unique key"
+msgstr ""
+
+msgid "Add user"
+msgstr ""
+
+msgid "Add view"
+msgstr ""
+
+msgid "0#No rows affected. Query took {time} seconds.|1#{rows} row affected. Query took {time} seconds.|n>1#{rows} rows affected. Query took {time} seconds."
+msgstr ""
+
+msgid "1#{amount}  Routine|n>1#{amount}  Routines"
+msgstr ""
+
+msgid "1#{amount}  Table|n>1#{amount}  Tables"
+msgstr ""
+
+msgid "1#{amount}  View|n>1#{amount}  Views"
+msgstr ""
+
+msgid "Attribute"
+msgstr ""
+
+msgid "Connection could not be established:<br/>{message}"
+msgstr ""
+
+msgid "Average row length"
+msgstr ""
+
+msgid "Average row size"
+msgstr ""
+
+msgid "Bookmark"
+msgstr ""
+
+msgid "Bookmarks"
+msgstr ""
+
+msgid "Browse"
+msgstr ""
+
+msgid "Show distinct values"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Cardinality"
+msgstr ""
+
+msgid "1#Character set|n>1#Character sets"
+msgstr ""
+
+msgid "Checksum"
+msgstr ""
+
+msgid "Choose language"
+msgstr ""
+
+msgid "Choose theme"
+msgstr ""
+
+msgid "Collation"
+msgstr ""
+
+msgid "Columns"
+msgstr ""
+
+msgid "Command"
+msgstr ""
+
+msgid "Comment"
+msgstr ""
+
+msgid "Imported file compression will be automatically detected from: <code class=\"literal\">[NONE|GZIP|BZIP2]</code>"
+msgstr ""
+
+msgid "Confirm"
+msgstr ""
+
+msgid "Create"
+msgstr ""
+
+msgid "Create index"
+msgstr ""
+
+msgid "Creation date"
+msgstr ""
+
+msgid "Data"
+msgstr ""
+
+msgid "Size (data)"
+msgstr ""
+
+msgid "Default"
+msgstr ""
+
+msgid "Delay key write"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Delete bookmark"
+msgstr ""
+
+msgid "Delete rows"
+msgstr ""
+
+msgid "Do you really want to delete the bookmark?"
+msgstr ""
+
+msgid "Do you really want to delete the selected row(s)?"
+msgstr ""
+
+msgid "Do you really want to drop the selected column(s)?"
+msgstr ""
+
+msgid "Do you really want to drop the fulltext index?"
+msgstr ""
+
+msgid "Do you really want to drop the index?"
+msgstr ""
+
+msgid "Do you really want to drop the selected routine(s)?"
+msgstr ""
+
+msgid "Do you really want to drop the schema?"
+msgstr ""
+
+msgid "Do you really want to drop privileges for the selected schemata?"
+msgstr ""
+
+msgid "Do you really want to drop the selected schemata?"
+msgstr ""
+
+msgid "Do you really want to drop the table?"
+msgstr ""
+
+msgid "Do you really want to drop the selected table(s)?"
+msgstr ""
+
+msgid "Do you really want to drop the trigger?"
+msgstr ""
+
+msgid "Do you really want to drop the unique key?"
+msgstr ""
+
+msgid "Do you really want to drop the selected user(s)?"
+msgstr ""
+
+msgid "Do you really want to drop the view?"
+msgstr ""
+
+msgid "Do you really want to drop the selected view(s)?"
+msgstr ""
+
+msgid "Do you really want to kill the selected process(es)?"
+msgstr ""
+
+msgid "Do you really want to truncate the table?"
+msgstr ""
+
+msgid "Do you really want to truncate the selected table(s)?"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "Drop"
+msgstr ""
+
+msgid "Drop columns"
+msgstr ""
+
+msgid "Drop fulltext index"
+msgstr ""
+
+msgid "Drop index"
+msgstr ""
+
+msgid "Drop routines"
+msgstr ""
+
+msgid "Drop schema-specific privileges"
+msgstr ""
+
+msgid "Drop schemata"
+msgstr ""
+
+msgid "Drop table"
+msgstr ""
+
+msgid "Drop tables"
+msgstr ""
+
+msgid "Drop trigger"
+msgstr ""
+
+msgid "Drop unique key"
+msgstr ""
+
+msgid "Drop users"
+msgstr ""
+
+msgid "Drop view"
+msgstr ""
+
+msgid "Drop views"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Edit column"
+msgstr ""
+
+msgid "Edit function"
+msgstr ""
+
+msgid "Edit index"
+msgstr ""
+
+msgid "Editor"
+msgstr ""
+
+msgid "Edit procedure"
+msgstr ""
+
+msgid "Edit relation"
+msgstr ""
+
+msgid "Edit row"
+msgstr ""
+
+msgid "Edit schema"
+msgstr ""
+
+msgid "Edit table"
+msgstr ""
+
+msgid "Edit trigger"
+msgstr ""
+
+msgid "Edit user"
+msgstr ""
+
+msgid "Edit view"
+msgstr ""
+
+msgid "An empty resultset has been returned."
+msgstr ""
+
+msgid "Engine"
+msgstr ""
+
+msgid "Enter a name"
+msgstr ""
+
+msgid "Please enter a name for the new fulltext index:"
+msgstr ""
+
+msgid "Please enter a name for the new index:"
+msgstr ""
+
+msgid "Please enter a name for the new unique key:"
+msgstr ""
+
+msgid "Enter one value per line."
+msgstr ""
+
+msgid "Entries per page"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+msgid "Altering index »{index}« failed"
+msgstr ""
+
+msgid "There is already a bookmark named »{name}«"
+msgstr ""
+
+msgid "Creating index »{index}« failed"
+msgstr ""
+
+msgid "Dropping column »{col}« failed"
+msgstr ""
+
+msgid "Dropping index »{index}« failed"
+msgstr ""
+
+msgid "Dropping routine »{routine}« failed"
+msgstr ""
+
+msgid "Dropping schema »{schema}« failed"
+msgstr ""
+
+msgid "Dropping table »{table}« failed"
+msgstr ""
+
+msgid "Dropping trigger »{trigger}« failed"
+msgstr ""
+
+msgid "Dropping view »{view}« failed"
+msgstr ""
+
+msgid "Executing query failed"
+msgstr ""
+
+msgid "Inserting row failed"
+msgstr ""
+
+msgid "Killing process #{id} failed"
+msgstr ""
+
+msgid "Moving column »{col}« failed"
+msgstr ""
+
+msgid "Renaming index »{index}« failed"
+msgstr ""
+
+msgid "Truncating table »{table}« failed"
+msgstr ""
+
+msgid "Updating row failed"
+msgstr ""
+
+msgid "Event"
+msgstr ""
+
+msgid "Execute"
+msgstr ""
+
+msgid "Executed queries"
+msgstr ""
+
+msgid "Export"
+msgstr ""
+
+msgid "Export data"
+msgstr ""
+
+msgid "Export structure"
+msgstr ""
+
+msgid "Extra"
+msgstr ""
+
+msgid "Field"
+msgstr ""
+
+msgid "First"
+msgstr ""
+
+msgid "Format"
+msgstr ""
+
+msgid "Free"
+msgstr ""
+
+msgid "Fulltext index"
+msgstr ""
+
+msgid "Function"
+msgstr ""
+
+msgid "Host"
+msgstr ""
+
+msgid "ID"
+msgstr ""
+
+msgid "Import"
+msgstr ""
+
+msgid "Import file"
+msgstr ""
+
+msgid "<strong>You are using an old version of Microsoft Internet Explorer which is not supported by Chive.</strong><br /><br />Please update to a newer version or choose an alternative browser:"
+msgstr ""
+
+msgid "Index"
+msgstr ""
+
+msgid "Indices"
+msgstr ""
+
+msgid "Information"
+msgstr ""
+
+msgid "Insert"
+msgstr ""
+
+msgid "Insert and return to this page"
+msgstr ""
+
+msgid "Insert new row"
+msgstr ""
+
+msgid "Keep password"
+msgstr ""
+
+msgid "Key"
+msgstr ""
+
+msgid "Kill"
+msgstr ""
+
+msgid "Kill process"
+msgstr ""
+
+msgid "Last"
+msgstr ""
+
+msgid "Last check date"
+msgstr ""
+
+msgid "Last update date"
+msgstr ""
+
+msgid "Leave empty to use <span class=\"null\">NULL</>."
+msgstr ""
+
+msgid "Loading"
+msgstr ""
+
+msgid "Login"
+msgstr ""
+
+msgid "Logout"
+msgstr ""
+
+msgid "Maintainer"
+msgstr ""
+
+msgid "Maximum"
+msgstr ""
+
+msgid "Move"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Next autoincrement value"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "No attribute"
+msgstr ""
+
+msgid "No visible columns in this table."
+msgstr ""
+
+msgid "No columns added yet."
+msgstr ""
+
+msgid "No indices in this table."
+msgstr ""
+
+msgid "No indices available"
+msgstr ""
+
+msgid "There are no other languages available."
+msgstr ""
+
+msgid "There are no other themes available."
+msgstr ""
+
+msgid "No visible routines in this schema."
+msgstr ""
+
+msgid "No schema-specific privileges for this user."
+msgstr ""
+
+msgid "No visible tables in this schema."
+msgstr ""
+
+msgid "Notice"
+msgstr ""
+
+msgid "No visible triggers in this table."
+msgstr ""
+
+msgid "No visible views in this schema."
+msgstr ""
+
+msgid "Null"
+msgstr ""
+
+msgid "Off"
+msgstr ""
+
+msgid "OK"
+msgstr ""
+
+msgid "On"
+msgstr ""
+
+msgid "On update current_timestamp"
+msgstr ""
+
+msgid "Operations"
+msgstr ""
+
+msgid "Operator"
+msgstr ""
+
+msgid "Options"
+msgstr ""
+
+msgid "Overhead"
+msgstr ""
+
+msgid "Pack keys"
+msgstr ""
+
+msgid "Allow interrupt of import in case script detects it is close to time limit."
+msgstr ""
+
+msgid "Password"
+msgstr ""
+
+msgid "Primary key"
+msgstr ""
+
+msgid "Privileges"
+msgstr ""
+
+msgid "Processes"
+msgstr ""
+
+msgid "Profiling"
+msgstr ""
+
+msgid "Profiling results sorted by execution time"
+msgstr ""
+
+msgid "Query"
+msgstr ""
+
+msgid "Refresh"
+msgstr ""
+
+msgid "Relation"
+msgstr ""
+
+msgid "Report a bug"
+msgstr ""
+
+msgid "Routine"
+msgstr ""
+
+msgid "Routines"
+msgstr ""
+
+msgid "Rows"
+msgstr ""
+
+msgid "Rows per <code class=\"literal\">[INSERT|REPLACE]</code>"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Schema"
+msgstr ""
+
+msgid "Schema-specific privileges"
+msgstr ""
+
+msgid "Schemata"
+msgstr ""
+
+msgid "Search"
+msgstr ""
+
+msgid "Select a column to add"
+msgstr ""
+
+msgid "Set NULL"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Display dump"
+msgstr ""
+
+msgid "Show details"
+msgstr ""
+
+msgid "Show full column content"
+msgstr ""
+
+msgid "Showing rows {start} - {end} ({total} total)"
+msgstr ""
+
+msgid "{count} Schemata"
+msgstr ""
+
+msgid "Size"
+msgstr ""
+
+msgid "Space usage"
+msgstr ""
+
+msgid "Software information"
+msgstr ""
+
+msgid "SQL"
+msgstr ""
+
+msgid "A SQL error occured ({errno}): <span class=\"sql\">{errmsg}</span>"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "Storage engine"
+msgstr ""
+
+msgid "Storage engines"
+msgstr ""
+
+msgid "Structure"
+msgstr ""
+
+msgid "Success"
+msgstr ""
+
+msgid "Saved bookmark »{name}«"
+msgstr ""
+
+msgid "Added column »{col}«"
+msgstr ""
+
+msgid "Added function"
+msgstr ""
+
+msgid "Added procedure"
+msgstr ""
+
+msgid "Added schema »{schema}«"
+msgstr ""
+
+msgid "Added privileges on schema »{schema}«"
+msgstr ""
+
+msgid "Added table »{table}«"
+msgstr ""
+
+msgid "Added trigger"
+msgstr ""
+
+msgid "Added user '{user}'@'{host}'"
+msgstr ""
+
+msgid "Added view"
+msgstr ""
+
+msgid "Altered index »{index}«"
+msgstr ""
+
+msgid "Saved routine"
+msgstr ""
+
+msgid "Altered trigger"
+msgstr ""
+
+msgid "Saved view »{view}«"
+msgstr ""
+
+msgid "Created index »{index}«"
+msgstr ""
+
+msgid "Deleted bookmark »{name}«"
+msgstr ""
+
+msgid "1#Deleted {rowCount} row|n>1#Deleted {rowCount} rows"
+msgstr ""
+
+msgid "1#Dropped column »{col}«|n>1#Dropped {colCount} columns"
+msgstr ""
+
+msgid "Dropped index »{index}«"
+msgstr ""
+
+msgid "1#Dropped routine »{routine}«|n>1#Dropped {routineCount} routines"
+msgstr ""
+
+msgid "1#Dropped schema »{schema}«|n>1#Dropped {schemaCount} schemata"
+msgstr ""
+
+msgid "1#Dropped privileges on schema »{schema}«|n>1#Dropped privileges on {schemaCount} schemata"
+msgstr ""
+
+msgid "1#Dropped table »{table}«|n>1#Dropped {tableCount} tables"
+msgstr ""
+
+msgid "Dropped trigger »{trigger}«"
+msgstr ""
+
+msgid "1#Dropped user {user}|n>1#Dropped {userCount} users"
+msgstr ""
+
+msgid "1#Dropped view »{view}«|n>1#Dropped {viewCount} views"
+msgstr ""
+
+msgid "Saved column »{col}«"
+msgstr ""
+
+msgid "Saved relation for column »{col}«"
+msgstr ""
+
+msgid "Saved schema »{schema}«"
+msgstr ""
+
+msgid "Saved table »{table}«"
+msgstr ""
+
+msgid "Executed bookmark »{name}«"
+msgstr ""
+
+msgid "Executed query"
+msgstr ""
+
+msgid "Imported file"
+msgstr ""
+
+msgid "Inserted row"
+msgstr ""
+
+msgid "Killed process #{id}"
+msgstr ""
+
+msgid "Moved column »{col}«"
+msgstr ""
+
+msgid "Renamed index to »{index}«"
+msgstr ""
+
+msgid "1#Truncated table »{table}«|n>1#Truncated {tableCount} tables"
+msgstr ""
+
+msgid "Updated row"
+msgstr ""
+
+msgid "Updated privileges on schema »{schema}«"
+msgstr ""
+
+msgid "Updated user '{user}'@'{host}'"
+msgstr ""
+
+msgid "Table"
+msgstr ""
+
+msgid "Table-specific privileges"
+msgstr ""
+
+msgid "Tables"
+msgstr ""
+
+msgid "Time"
+msgstr ""
+
+msgid "Toggle editor"
+msgstr ""
+
+msgid "Total"
+msgstr ""
+
+msgid "Trigger"
+msgstr ""
+
+msgid "Triggers"
+msgstr ""
+
+msgid "Truncate"
+msgstr ""
+
+msgid "Truncate table"
+msgstr ""
+
+msgid "Truncate tables"
+msgstr ""
+
+msgid "Type"
+msgstr ""
+
+msgid "Unique key"
+msgstr ""
+
+msgid "Unsigned"
+msgstr ""
+
+msgid "Unsigned Zerofill"
+msgstr ""
+
+msgid "Updatable"
+msgstr ""
+
+msgid "Usage"
+msgstr ""
+
+msgid "Complete inserts"
+msgstr ""
+
+msgid "Use <code class=\"literal\">[INSERT|REPLACE] DELAYED</code>"
+msgstr ""
+
+msgid "Used libraries"
+msgstr ""
+
+msgid "Use hexadecimal for <code class=\"literal\">BLOB</code>"
+msgstr ""
+
+msgid "Use <code class=\"literal\">[INSERT|REPLACE] IGNORE</code>"
+msgstr ""
+
+msgid "User"
+msgstr ""
+
+msgid "Username"
+msgstr ""
+
+msgid "Value"
+msgstr ""
+
+msgid "Variables"
+msgstr ""
+
+msgid "View"
+msgstr ""
+
+msgid "Views"
+msgstr ""
+
+msgid "Warning"
+msgstr ""
+
+msgid "With selected: "
+msgstr ""
+
+msgid "XDebug profiling is enabled on this server.<br />Exporting large databases may crash your system!"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "Numeric"
+msgstr ""
+
+msgid "Strings"
+msgstr ""
+
+msgid "Date and Time"
+msgstr ""
+
