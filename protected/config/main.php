@@ -93,13 +93,11 @@ return array(
 			'cachingDuration' => 0,
 		),
 
-		// URL - Manager (for SEO-friendly URLs)
+		// URL-Manager
 		'urlManager' => array(
             'urlFormat' => 'path',
-			'showScriptName' => false,
+			'showScriptName' => !isset($_GET['__chive_rewrite_on']),
             'rules' => array(
-				// Login
-                'login' => 'site/login',
 
 				// Site
                 'site/changeLanguage/<id:(.*)>' => 'site/changeLanguage',

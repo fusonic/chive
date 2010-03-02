@@ -46,19 +46,18 @@ if(!$app->user->isGuest)
     $app->db->autoConnect = true;
     $app->db->setActive(true);
 }
-elseif(!preg_match('/^(' . implode('|', $validPaths) . ')/i', $request->getPathInfo()))
+elseif(!preg_match('/^(' . implode('|', $validPaths) . ')/i', Yii::app()->urlManager->parseUrl($request)))
 {
 	if($request->isAjaxRequest)
 	{
 		$response = new AjaxResponse();
-		$response->redirectUrl = Yii::app()->baseUrl . '/site/login';
+		$response->redirectUrl = Yii::app()->createUrl('site/login');
 		$response->send();
 	}
 	else
 	{
-		$request->redirect(Yii::app()->baseUrl . '/site/login');
+		$request->redirect(Yii::app()->createUrl('site/login'));
 	}
-
 }
 
 // Language

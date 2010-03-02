@@ -125,7 +125,7 @@ class PrivilegesController extends Controller
 		$pages = new Pagination(User::model()->count($criteria));
 		$pages->setupPageSize('pageSize', 'privileges.userSchemata');
 		$pages->applyLimit($criteria);
-		$pages->route = '#privileges/users/' . urlencode($this->user) . '/' . urlencode($this->host) . '/schemata';
+		$pages->route = '#privileges/users/' . base64_encode($this->user . '@' . $this->host) . '/schemata';
 
 		// Sort
 		$sort = new CSort('User');
@@ -135,7 +135,7 @@ class PrivilegesController extends Controller
 			'Password = \'\'' => 'password',
 		);
 		$sort->defaultOrder = 'User ASC';
-		$sort->route = '#privileges/users/' . urlencode($this->user) . '/' . urlencode($this->host) . '/schemata';
+		$sort->route = '#privileges/users/' . base64_encode($this->user . '@' . $this->host) . '/schemata';
 		$sort->applyOrder($criteria);
 
 		// Fetch schemata

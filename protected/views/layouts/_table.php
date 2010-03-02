@@ -106,14 +106,13 @@ var table = '<?php echo $this->table; ?>';
 tableGeneral.setupDialogs();
 breadCrumb.set([
 	{
-		icon: 	'database',
-		href: 	baseUrl + '/schema/' + schema,
-		text: 	schema
-		//,dialog:	'truncateTableDialog'
+		icon: 'database',
+		href: 'javascript:chive.goto(\'tables\')',
+		text: schema
 	},
 	{
 		icon: 'table',
-		href: '#tables/' + table + '/structure',
+		href: 'javascript:chive.goto(\'tables/' + table + '/structure\')',
 		text: table
 	}
 ]);

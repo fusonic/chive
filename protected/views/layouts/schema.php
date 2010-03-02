@@ -15,7 +15,8 @@
 
 <script type="text/javascript">
 // Set global javascript variables
-var baseUrl = '<?php echo BASEURL; ?>';
+var basePath = '<?php echo BASEURL; ?>';
+var baseUrl = '<?php echo Yii::app()->urlManager->baseUrl; ?>';
 var iconPath = '<?php echo ICONPATH; ?>';
 var themeUrl = '<?php echo Yii::app()->theme->baseUrl; ?>';
 </script>
@@ -109,7 +110,7 @@ $(document).ready(function() {
 			<a class="icon button" href="<?php echo BASEURL; ?>">
 				<img src="<?php echo BASEURL; ?>/images/logo.png" alt="Chive" height="22" style="position: relative; top: 6px;" />
 			</a>
-			<a href="<?php echo BASEURL; ?>/#schemata" class="icon button">
+			<?php echo Html::ajaxLink('schemata', array('class' => 'icon button')); ?>
 				<?php echo Html::icon('server'); ?>
 				<span><?php echo Yii::app()->user->host; ?></span>
 			</a>
@@ -122,7 +123,7 @@ $(document).ready(function() {
 			<a class="icon button" href="https://bugs.launchpad.net/chive/+filebug" target="_blank">
 				<?php echo Html::icon('ticket', 16, false, 'core.reportABug'); ?>
 			</a>
-			<a class="icon button" href="<?php echo BASEURL; ?>/site/logout">
+			<a class="icon button" href="<?php echo Yii::app()->urlManager->baseUrl; ?>/site/logout">
 				<?php echo Html::icon('logout', 16, false, 'core.logout'); ?>
 			</a>
 		</div>
@@ -132,11 +133,11 @@ $(document).ready(function() {
 
   	<div id="sideBar">
   		<div class="sidebarHeader tableList">
-			<a class="icon">
+			<a class="icon" href="javascript:void(0)">
 				<?php echo Html::icon('table', 24, false, 'core.tables'); ?>
 				<span><?php echo Yii::t('core', 'tables'); ?></span>
 			</a>
-			<img class="loading" src="images/loading.gif" alt="<?php echo Yii::t('core', 'loading'); ?>..." />
+			<img class="loading" src="<?php echo BASEURL; ?>/images/loading.gif" alt="<?php echo Yii::t('core', 'loading'); ?>..." />
 		</div>
 		<div class="sidebarContent tableList">
 
@@ -145,7 +146,7 @@ $(document).ready(function() {
 			<ul class="list icon nowrap" id="tableList">
 				<li class="nowrap template">
 					<div class="listIconContainer">
-						<a href="javascript:chive.goto('tables/#tableName#/insert')">
+						<?php echo Html::ajaxLink('tables/#tableName#/insert', array('class' => 'icon')); ?>
 							<?php echo Html::icon('add', 16, false, 'core.insertNewRow'); ?>
 						</a>
 					</div>
@@ -160,11 +161,11 @@ $(document).ready(function() {
 
 		</div>
   		<div class="sidebarHeader">
-			<a class="icon" href="#views">
+			<a class="icon" href="javascript:void(0)">
 				<?php echo Html::icon('view', 24, false, 'core.views'); ?>
 				<span><?php echo Yii::t('core', 'views'); ?></span>
 			</a>
-			<img class="loading" src="images/loading.gif" alt="<?php echo Yii::t('core', 'loading'); ?>..." />
+			<img class="loading" src="<?php echo BASEURL; ?>/images/loading.gif" alt="<?php echo Yii::t('core', 'loading'); ?>..." />
 		</div>
 		<div class="sidebarContent">
 

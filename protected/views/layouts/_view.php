@@ -72,12 +72,12 @@ viewGeneral.setupDialogs();
 breadCrumb.set([
 	{
 		icon: 'database',
-		href: baseUrl + '/schema/' + schema,
+		href: 'javascript:chive.goto(\'tables\')',
 		text: schema
 	},
 	{
 		icon: 'view',
-		href: '#views/' + view + '/structure',
+		href: 'javascript:chive.goto(\'views/' + view + '/structure\')',
 		text: view
 	}
 ]);

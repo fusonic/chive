@@ -30,8 +30,8 @@
 		<thead>
 			<tr>
 				<th><input type="checkbox" /></th>
-				<th colspan="6"><?php echo $sort->link('TABLE_NAME', Yii::t('core', 'view')); ?></th>
-				<th><?php echo $sort->link('IS_UPDATABLE'); ?></th>
+				<th colspan="6"><?php echo $sort->link('name', Yii::t('core', 'view')); ?></th>
+				<th><?php echo $sort->link('updatable', Yii::t('core', 'updatable')); ?></th>
 			</tr>
 		</thead>
 		<tbody>

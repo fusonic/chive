@@ -4,7 +4,7 @@
 
 <?php if($model->showInput) { ?>
 
-	<?php echo CHtml::form(BASEURL . '/' . $model->formTarget, 'post', array('id' => 'queryForm')); ?>
+	<?php echo CHtml::form(Yii::app()->createUrl($model->formTarget), 'post', array('id' => 'queryForm')); ?>
 	<table style="width: 100%;">
 		<tr>
 			<td style="width: 80%;">

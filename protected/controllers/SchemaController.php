@@ -124,12 +124,12 @@ class SchemaController extends Controller
 			// Sort
 			$sort = new CSort('Table');
 			$sort->attributes = array(
-				'TABLE_NAME' => 'name',
-				'TABLE_ROWS' => 'rows',
-				'TABLE_COLLATION' => 'collation',
-				'ENGINE' => 'engine',
-				'DATA_LENGTH' => 'datalength',
-				'DATA_FREE' => 'datafree',
+				'name' => 'TABLE_NAME',
+				'rows' => 'TABLE_ROWS',
+				'collation' => 'TABLE_COLLATION',
+				'engine' => 'ENGINE',
+				'datalength' => 'DATA_LENGTH',
+				'datafree' => 'DATA_FREE',
 			);
 			$sort->route = '#tables';
 			$sort->applyOrder($criteria);
@@ -185,8 +185,8 @@ class SchemaController extends Controller
 			// Sort
 			$sort = new CSort('View');
 			$sort->attributes = array(
-				'TABLE_NAME' => 'name',
-				'IS_UPDATABLE' => 'updatable',
+				'name' => 'TABLE_NAME',
+				'updatable' => 'IS_UPDATABLE',
 			);
 			$sort->route = '#views';
 			$sort->applyOrder($criteria);
@@ -408,9 +408,9 @@ class SchemaController extends Controller
 			// Sort
 			$sort = new CSort('Schema');
 			$sort->attributes = array(
-				'SCHEMA_NAME' => 'name',
+				'name' => 'SCHEMA_NAME',
 				'tableCount' => 'tableCount',
-				'DEFAULT_COLLATION_NAME' => 'collation',
+				'collation' => 'DEFAULT_COLLATION_NAME',
 			);
 			$sort->defaultOrder = 'SCHEMA_NAME ASC';
 			$sort->route = '#schemata';
@@ -503,15 +503,15 @@ class SchemaController extends Controller
 		$importPage = new ImportPage();
 		$importPage->db = $this->db;
 		$importPage->schema = $this->schema;
-		$importPage->formTarget = BASEURL . '/schema/' . $this->schema . '/import';
+		$importPage->formTarget = Yii::app()->urlManager->baseUrl . '/schema/' . $this->schema . '/import';
 
 		$importPage->run();
 
 		// Disable layout for postprocessing
-		if($importPage->partialImport || isset($_GET['position']))
-		{
-			$this->layout = false;
-		}
+		#if($importPage->partialImport || isset($_GET['position']))
+		#{
+			$this->layout = '_schema';
+		#}
 
 		$this->render('../global/import', array(
 			'model' => $importPage,

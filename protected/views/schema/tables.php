@@ -40,12 +40,12 @@
 		<thead>
 			<tr>
 				<th><input type="checkbox" /></th>
-				<th colspan="8"><?php echo $sort->link('TABLE_NAME', Yii::t('core', 'table')); ?></th>
-				<th><?php echo $sort->link('TABLE_ROWS', Yii::t('core', 'rows')); ?></th>
-				<th><?php echo $sort->link('ENGINE', Yii::t('core', 'engine')); ?></th>
-				<th><?php echo $sort->link('TABLE_COLLATION', Yii::t('core', 'collation')); ?></th>
-				<th><?php echo $sort->link('DATA_LENGTH', Yii::t('core', 'size')); ?></th>
-				<th><?php echo $sort->link('DATA_FREE', Yii::t('core', 'overhead')); ?></th>
+				<th colspan="8"><?php echo $sort->link('name', Yii::t('core', 'table')); ?></th>
+				<th><?php echo $sort->link('rows', Yii::t('core', 'rows')); ?></th>
+				<th><?php echo $sort->link('engine', Yii::t('core', 'engine')); ?></th>
+				<th><?php echo $sort->link('collation', Yii::t('core', 'collation')); ?></th>
+				<th><?php echo $sort->link('datalength', Yii::t('core', 'size')); ?></th>
+				<th><?php echo $sort->link('datafree', Yii::t('core', 'overhead')); ?></th>
 			</tr>
 		</thead>
 		<tbody>

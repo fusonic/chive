@@ -31,7 +31,6 @@ var sideBar = {
 		var contentUl = $('#sideBar #schemaList');
 		
 		// Setup loading icon
-		loadingIcon.attr('src', baseUrl + '/images/loading.gif');
 		loadingIcon.show();
 		
 		// Do AJAX request
@@ -76,7 +75,6 @@ var sideBar = {
 		var contentUl = $('#sideBar #tableList');
 		
 		// Setup loading icon
-		loadingIcon.attr('src', baseUrl + '/images/loading.gif');
 		loadingIcon.show();
 		
 		// Do AJAX request
@@ -128,7 +126,6 @@ var sideBar = {
 		var contentUl = $('#sideBar #viewList');
 		
 		// Setup loading icon
-		loadingIcon.attr('src', baseUrl + '/images/loading.gif');
 		loadingIcon.show();
 		
 		// Do AJAX request
