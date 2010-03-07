@@ -113,7 +113,11 @@ class CXmlMessageSource extends CMessageSource
 	 */
 	public function loadMessages($category, $language)
 	{
-		if($language != 'en')
+		if(strlen($language) == 5)
+		{
+			$parentMessages = self::loadMessages($category, substr($language, 0, 2));
+		}
+		elseif($language != 'en')
 		{
 			$parentMessages = self::loadMessages($category, 'en');
 		}

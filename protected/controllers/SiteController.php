@@ -91,7 +91,7 @@ class SiteController extends Controller
 		$this->layout = "login";
 
 		// Languages
-		$availableLanguages = glob('protected/messages/??');
+		$availableLanguages = glob('protected/messages/??_??');
 		$currentLanguage = Yii::app()->getLanguage();
 
 		if(strlen($currentLanguage) == 2)
@@ -103,19 +103,13 @@ class SiteController extends Controller
 		foreach($availableLanguages AS $key => $language) 
 		{
 			$full = basename($language);
-			$short = substr($full, 0, 2);
-
-			// Don't display containers and active language
-			if($full == $currentLanguage)
-				continue;
 
 			$languages[] = array(
 				'label' => Yii::t('language', $full),
-				'icon' => 'images/country/' . $short . '.png',
+				'icon' => 'images/language/' . $full . '.png',
 				'url' => Yii::app()->request->baseUrl . '/site/changeLanguage/' . $full,
-				'htmlOptions'=>array('class'=>'icon'),
+				'htmlOptions' => array('class'=>'icon'),
 			);
-
 		}
 
 		$availableThemes = Yii::app()->getThemeManager()->getThemeNames();

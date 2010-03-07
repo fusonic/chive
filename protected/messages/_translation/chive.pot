@@ -338,6 +338,9 @@ msgstr ""
 msgid "Enter one value per line."
 msgstr ""
 
+msgid "Enter schema or table..."
+msgstr ""
+
 msgid "Entries per page"
 msgstr ""
 
@@ -519,6 +522,9 @@ msgid "No"
 msgstr ""
 
 msgid "No attribute"
+msgstr ""
+
+msgid "No bookmarks found"
 msgstr ""
 
 msgid "No visible columns in this table."

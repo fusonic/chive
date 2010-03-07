@@ -65,13 +65,13 @@ if($session->itemAt('language'))
 {
 	$app->setLanguage($session->itemAt('language'));
 }
-elseif($request->getPreferredLanguage() && is_dir('protected/messages/' . substr($request->getPreferredLanguage(), 0, 2)))
+elseif($request->getPreferredLanguage() && is_dir('protected/messages/' . $request->getPreferredLanguage()))
 {
-	$app->setLanguage(substr($request->getPreferredLanguage(), 0, 2));
+	$app->setLanguage($request->getPreferredLanguage());
 }
 else
 {
-	$app->setLanguage('en');
+	$app->setLanguage('en_us');
 }
 
 // Theme

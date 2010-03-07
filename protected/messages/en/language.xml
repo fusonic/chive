@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <category id="core">
-	<entry id="en">English</entry>
-	<entry id="de">Deutsch</entry>
-	<entry id="fr">Français</entry>
+	<entry id="en_us">English (US)</entry>
+	<entry id="de_de">Deutsch</entry>
+	<entry id="fr_fr">Français</entry>
 </category>

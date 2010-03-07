@@ -27,7 +27,7 @@
 				<span><?php echo ucfirst(Yii::app()->getTheme()->name); ?></span>
 			</a>
 			<a class="icon button" href="javascript:void(0);" style="margin-right: 9px;" onclick="$('#languageDialog').dialog('open');">
-				<img src="<?php echo BASEURL; ?>/images/country/<?php echo substr(Yii::app()->getLanguage(),0,2); ?>.png" />
+				<img src="<?php echo BASEURL; ?>/images/language/<?php echo Yii::app()->getLanguage(); ?>.png" />
 				<span><?php echo Yii::t('language', Yii::app()->getLanguage()); ?></span>
 			</a>
 		</div>

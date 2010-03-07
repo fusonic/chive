@@ -9,7 +9,10 @@ class I18NImportCommand extends CConsoleCommand
 	public function run($args)
 	{
 		// Get all languages
-		$languages = glob('messages/_translation/??.mo');
+		$languages = array_merge(
+			glob('../../translation/protected/messages/_translation/??.po'),
+			glob('../../translation/protected/messages/_translation/??_??.po')
+		);
 		
 		// Run for every language
 		foreach($languages as $lang)
@@ -45,8 +48,8 @@ class I18NImportCommand extends CConsoleCommand
 		}
 		
 		// Now try to load translations
-		require('PEAR/File_Gettext/Gettext/PO.php');
-		$test = new File_Gettext_PO('messages/_translation/' . $lang . '.po');
+		require_once('PEAR/File_Gettext/Gettext/PO.php');
+		$test = new File_Gettext_PO('../../translation/protected/messages/_translation/' . $lang . '.po');
 		$test->load();
 		$data = $test->toArray();
 		$strings = array();
@@ -64,13 +67,26 @@ class I18NImportCommand extends CConsoleCommand
 		if(count($stringKeys) > 0)
 		{
 			echo $lang . ' skipped, missing ' . count($stringKeys) . ' terms' . "\n";
+			foreach($stringKeys as $key)
+			{
+				echo "     " . $key . "\n";
+			}
 		}
 		else
 		{
 			echo $lang . ' imported' . "\n";
 		}
+			
+		if(strlen($lang) == 2)
+		{
+			$targetLang = $lang . '_' . $lang;
+		}
+		else
+		{
+			$targetLang = $lang;
+		}
 		
-		@mkdir('messages/' . $lang);
+		@mkdir('messages/' . $targetLang);
 		
 		// Translate
 		foreach($files as $file)
@@ -86,7 +102,8 @@ class I18NImportCommand extends CConsoleCommand
 			
 			$dom = dom_import_simplexml($xmlNew)->ownerDocument;
 			$dom->formatOutput = true;
-			file_put_contents('messages/' . $lang . '/' . $file . '.xml', $dom->saveXML());
+			
+			file_put_contents('messages/' . $targetLang . '/' . $file . '.xml', $dom->saveXML());
 		}
 	}
 	

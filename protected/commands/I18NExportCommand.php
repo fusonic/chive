@@ -3,22 +3,18 @@
 class I18NExportCommand extends CConsoleCommand
 {
 	
+	private $translateFiles = array('core', 'dataTypes');
+	
 	/**
 	 * @see		CConsoleCommand::run()
 	 */
 	public function run($args)
 	{
-		// Find all source files (english)
-		$files = array(
-			'core',
-			'dataTypes',
-		);
-		
 		// Create an empty array for all texts
 		$strings = array();
 		
 		// Go through all files
-		foreach($files as $file)
+		foreach($this->translateFiles as $file)
 		{
 			// Load XML
 			$xml = new SimpleXMLElement(file_get_contents('messages/en/' . $file . '.xml'));
