@@ -19,6 +19,8 @@
  * You should have received a copy of the GNU General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
+
+
 abstract class ActiveRecord extends CActiveRecord
 {
 
@@ -102,7 +104,7 @@ abstract class ActiveRecord extends CActiveRecord
 	/**
 	 * @see		CActiveRecord::update()
 	 */
-	public function update()
+	public function update($attributes = null)
 	{
 		if($this->getIsNewRecord())
 		{
@@ -119,7 +121,7 @@ abstract class ActiveRecord extends CActiveRecord
 	/**
 	 * @see		CActiveRecord::insert()
 	 */
-	public function insert()
+	public function insert($attributes = null)
 	{
 		if(!$this->getIsNewRecord())
 		{
