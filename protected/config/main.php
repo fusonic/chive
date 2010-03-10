@@ -47,6 +47,11 @@ return array(
 
 	// application components
 	'components' => array(
+	
+		'session' => array(
+			'sessionName' => 'chiveSession',
+			'savePath' => 'protected/runtime/sessions',
+		),
 
 		'request' => array(
 			'enableCookieValidation' => true,
@@ -75,7 +80,7 @@ return array(
 
 		// User settings
 		'user' => array(
-			// enable cookie-based authentication
+			// Enable cookie-based authentication
 			'allowAutoLogin' => true,
 		),
 
@@ -90,7 +95,11 @@ return array(
 
 		'messages' => array(
 		    'class' => 'application.components.messages.CXmlMessageSource',
-			'cachingDuration' => 0,
+			'cachingDuration' => 24 * 60 * 60, // 24h
+		),
+		
+		'cache' => array(
+			'class' => 'CFileCache',
 		),
 
 		// URL-Manager

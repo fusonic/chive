@@ -113,59 +113,48 @@ class CXmlMessageSource extends CMessageSource
 	 */
 	public function loadMessages($category, $language)
 	{
-		if(strlen($language) == 5)
+		// Caching things
+		$cache = Yii::app()->getCache();
+		$cacheKey = self::CACHE_KEY_PREFIX . $language . '.' . $category;
+
+		// Try to load messages from cache
+		if(!is_null($cache) && ($data = $cache->get($cacheKey)) !== false)
 		{
-			$parentMessages = self::loadMessages($category, substr($language, 0, 2));
+			return $data;
+		}
+		
+		// Load parent messages
+		if(strlen($language) > 2)
+		{
+			$messages = self::loadMessages($category, substr($language, 0, 2));
 		}
 		elseif($language != 'en')
 		{
-			$parentMessages = self::loadMessages($category, 'en');
+			$messages = self::loadMessages($category, 'en');
 		}
 		else
 		{
-			$parentMessages = array();
+			$messages = array();
 		}
 
+		// Try to load messages from file
 		$messageFile = $this->basePath . DIRECTORY_SEPARATOR . $language . DIRECTORY_SEPARATOR . $category . '.xml';
-		$key = self::CACHE_KEY_PREFIX . $messageFile;
-
-		if($this->cachingDuration > 0 && ($cache = Yii::app()->getCache()) !== null)
-		{
-			$key = self::CACHE_KEY_PREFIX . $messageFile;
-			if(($data = $cache->get($key)) !== false)
-			{
-				return unserialize($data);
-			}
-		}
-
 		if(is_file($messageFile))
 		{
 			$xml = simplexml_load_file($messageFile);
 
-			$messages = array();
 			foreach($xml AS $entry) 
 			{
 				$messages[(string)$entry->attributes()->id] = (string)$entry;
 			}
 
-			$messages = array_merge($parentMessages, $messages);
-
-			if(isset($cache))
+			if(!is_null($cache))
 			{
-				$dependency=new CFileCacheDependency($messageFile);
-				$cache->set($key,serialize($messages),$this->cachingDuration);
+				$cache->set($key, $messages, $this->cachingDuration);
 			}
-
-			return $messages;
 		}
-		elseif(count($parentMessages) > 0)
-		{
-			return $parentMessages;
-		}
-		else
-		{
-			return array();
-		}
+		
+		return $messages;
 	}
 
 }
