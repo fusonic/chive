@@ -56,8 +56,10 @@ class Row extends CActiveRecord
 	/**
 	 * @see CActiveRecord::instantiate()
 	 */
-	public function instantiate($attributes)
-	{
+	public function instantiate(&$attributes)
+	{	
+		SqlUtil::FixRow($attributes);
+		
 		$res = parent::instantiate($attributes);
 		$res->originalAttributes = $attributes;
 
@@ -228,13 +230,17 @@ class Row extends CActiveRecord
 			{
 				$sql .= self::$db->quoteValue(implode(",", $value));
 			}
+			elseif($column->DATA_TYPE == "bit")
+			{
+				$sql .= (int)$value;				
+			}
 
 			// DEFAULT
 			else
 			{
 				$sql .= self::$db->quoteValue($value);
 			}
-			
+
 			$i++;
 			
 			if($i < $attributesCount)
@@ -286,7 +292,7 @@ class Row extends CActiveRecord
 		}
 
 		$sql = '';
-
+		
 		// Check if there has been changed any attribute
 		$changedAttributes = array();
 		foreach($this->originalAttributes AS $column=>$value)
@@ -299,6 +305,7 @@ class Row extends CActiveRecord
 		}
 		
 		$changedAttributesCount = count($changedAttributes);
+		
 		
 		if($changedAttributesCount > 0)
 		{
@@ -323,6 +330,10 @@ class Row extends CActiveRecord
 				{
 					$sql .= self::$db->quoteValue(implode(",", $value));
 				}
+				elseif(StringUtil::isInt($value))
+				{
+					$sql .= (int)$value;				
+				}
 				else
 				{
 					$sql .= (is_null($value) ? 'NULL' : self::$db->quoteValue($value));
@@ -338,7 +349,7 @@ class Row extends CActiveRecord
 			$sql .= "\n" . 'WHERE ' . "\n";
 				
 			$identifier = $this->getOriginalIdentifier();
-				
+					
 			// Create find criteria
 			$count = count($identifier);
 			foreach($identifier AS $column=>$value) {
@@ -363,7 +374,7 @@ class Row extends CActiveRecord
 			$sql .= "\n" . 'LIMIT 1;';
 				
 		}
-
+		
 		$cmd = new CDbCommand(self::$db, $sql);
 		
 		try
@@ -456,6 +467,7 @@ class Row extends CActiveRecord
 	{
 		$this->_hexvalues[$_attribute] = true;
 	}
+	
 	
 	public function isHex($_attribute)
 	{
