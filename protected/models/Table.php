@@ -48,7 +48,14 @@ class Table extends ActiveRecord
 		$res = parent::instantiate($attributes);
 
 		// Check options
-		$options = strtolower($attributes['CREATE_OPTIONS']);
+		if(isset($attributes['CREATE_OPTIONS']))
+		{
+			$options = strtolower($attributes['CREATE_OPTIONS']);
+		}
+		else
+		{
+			$options = null;
+		}
 		if(strpos($options, 'checksum=1') !== false)
 		{
 			$res->optionChecksum = $res->originalOptionChecksum = '1';
@@ -67,25 +74,28 @@ class Table extends ActiveRecord
 		}
 
 		// Comment
-		if($attributes['ENGINE'] == 'InnoDB')
+		if(isset($attributes['TABLE_COMMENT']))
 		{
-			$search = 'InnoDB free: \d+ ..?$';
-			if(preg_match('/^' . $search . '/', $attributes['TABLE_COMMENT']))
+			if(isset($attributes['ENGINE']) && $attributes['ENGINE'] == 'InnoDB')
 			{
-				$res->comment = '';
-			}
-			elseif(preg_match('/; ' . $search . '/', $attributes['TABLE_COMMENT'], $result))
-			{
-				$res->comment = str_replace($result[0], '', $attributes['TABLE_COMMENT']);
+				$search = 'InnoDB free: \d+ ..?$';
+				if(preg_match('/^' . $search . '/', $attributes['TABLE_COMMENT']))
+				{
+					$res->comment = '';
+				}
+				elseif(preg_match('/; ' . $search . '/', $attributes['TABLE_COMMENT'], $result))
+				{
+					$res->comment = str_replace($result[0], '', $attributes['TABLE_COMMENT']);
+				}
+				else
+				{
+					$res->comment = $attributes['TABLE_COMMENT'];
+				}
 			}
 			else
 			{
 				$res->comment = $attributes['TABLE_COMMENT'];
 			}
-		}
-		else
-		{
-			$res->comment = $attributes['TABLE_COMMENT'];
 		}
 		$res->originalAttributes['comment'] = $res->comment;
 
@@ -248,23 +258,23 @@ class Table extends ActiveRecord
 	{
 		$sql = '';
 		$comma = '';
-		if($this->TABLE_NAME !== $this->originalAttributes['TABLE_NAME'] && !$this->getIsNewRecord())
+		if($this->TABLE_NAME !== @$this->originalAttributes['TABLE_NAME'] && !$this->getIsNewRecord())
 		{
 			//@todo(mburtscher): Privileges are not copied automatically!!!
 			$sql .= "\n\t" . 'RENAME ' . self::$db->quoteTableName($this->TABLE_NAME);
 			$comma = ',';
 		}
-		if($this->TABLE_COLLATION !== $this->originalAttributes['TABLE_COLLATION'])
+		if($this->TABLE_COLLATION !== @$this->originalAttributes['TABLE_COLLATION'])
 		{
 			$sql .= $comma . "\n\t" . 'CHARACTER SET ' . Collation::getCharacterSet($this->TABLE_COLLATION) . ' COLLATE ' . $this->TABLE_COLLATION;
 			$comma = ',';
 		}
-		if($this->comment !== $this->originalAttributes['comment'])
+		if($this->comment !== @$this->originalAttributes['comment'])
 		{
 			$sql .= $comma . "\n\t" . 'COMMENT ' . self::$db->quoteValue($this->comment);
 			$comma = ',';
 		}
-		if($this->ENGINE !== $this->originalAttributes['ENGINE'])
+		if($this->ENGINE !== @$this->originalAttributes['ENGINE'])
 		{
 			$sql .= $comma . "\n\t" . 'ENGINE ' . $this->ENGINE;
 			$comma = ',';

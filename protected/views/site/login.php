@@ -27,7 +27,7 @@
 		<?php } ?>
 		</tr>
 	</table>
-	<a href="http://www.chive-project.com" style="float:right; margin-top: 20px;">Help translating this project...</a>
+	<a href="https://translations.launchpad.net/chive" style="float:right; margin-top: 20px;">Help translating this project...</a>
 </div>
 
 <div id="themeDialog" title="<?php echo Yii::t('core', 'chooseTheme'); ?>">
@@ -62,7 +62,7 @@
 
 <div id="login">
 	<div id="login-logo">
-		<img src="../images/logo-big.png" alt="chive" title="" />
+		<img src="<?php echo BASEURL; ?>/images/logo-big.png" alt="chive" title="" />
 	</div>
 
 	<?php if($validBrowser) { ?>

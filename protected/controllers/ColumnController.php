@@ -163,7 +163,6 @@ class ColumnController extends Controller
 		CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3);
 		$data = array(
 			'column' => $column,
-			'table' => $table,
 			'collations' => $collations,
 			'isSubmitted' => $isSubmitted,
 			'sql' => $sql,

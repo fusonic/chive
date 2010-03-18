@@ -27,8 +27,7 @@ class SqlParser
 		}
 		
 		$analyzedSql = PMA_SQP_analyze($_sql);
-		return self::trim($analyzedSql[0]);
-			
+		return self::trim(@$analyzedSql[0]);
 	}
 	
 	private static function trim($_array)

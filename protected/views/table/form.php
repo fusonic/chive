@@ -1,4 +1,4 @@
-<?php if($isSubmitted && !$table->isNewRecord) { ?>
+<?php if(!$table->isNewRecord && $isSubmitted) { ?>
 	<script type="text/javascript">
 	var idPrefix = '<?php echo CHtml::$idPrefix; ?>';
 	var row = $('#' + idPrefix).parents("tr").prev();
@@ -110,7 +110,7 @@
 
 <script type="text/javascript">
 tableForm.create('<?php echo CHtml::$idPrefix; ?>');
-<?php if($columnForm) { ?>
+<?php if($table->isNewRecord) { ?>
 	columnForm.create('<?php echo CHtml::$idPrefix; ?>');
 <?php } ?>
 </script>

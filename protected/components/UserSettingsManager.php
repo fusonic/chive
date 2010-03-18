@@ -230,7 +230,14 @@ class UserSettingsManager
 		$return = explode('__', $id);
 		if(is_array($return))
 		{
-			$return[1] = str_replace("_", ".", $return[1]);
+			if(isset($return[1]))
+			{
+				$return[1] = str_replace("_", ".", $return[1]);
+			}
+			else
+			{
+				$return[1] = null;
+			}
 			return $return;
 		}
 		else

@@ -24,7 +24,7 @@
 class CXmlMessageSource extends CMessageSource 
 {
 
-	const CACHE_KEY_PREFIX='Yii.CXmlMessageSource.';
+	const CACHE_KEY_PREFIX = 'Yii.CXmlMessageSource.';
 
 	/**
 	 * @var integer the time in seconds that the messages can remain valid in cache.
@@ -92,7 +92,7 @@ class CXmlMessageSource extends CMessageSource
 		}
 
 		// Publish if needed
-		if($publish)
+		if($publish || YII_DEBUG)
 		{
 			$code = '';
 			foreach($packages AS $package)
@@ -101,7 +101,7 @@ class CXmlMessageSource extends CMessageSource
 				$data = $this->loadMessages($package, $language);
 				foreach($data AS $key => $value)
 				{
-					$code .= 'lang.' . $package . '["' . $key . '"] = "' . str_replace('"', '\"', $value) . '";' . "\n";
+					$code .= 'lang.' . $package . '["' . $key . '"] = ' . json_encode($value) . ';' . "\n";
 				}
 			}
 			file_put_contents($assetPath . DIRECTORY_SEPARATOR . $language . '.js', $code);
@@ -113,53 +113,48 @@ class CXmlMessageSource extends CMessageSource
 	 */
 	public function loadMessages($category, $language)
 	{
-		$parentMessages = array();
+		// Caching things
+		$cache = Yii::app()->getCache();
+		$cacheKey = self::CACHE_KEY_PREFIX . $language . '.' . $category;
 
-		if(strlen($language) == 5) 
+		// Try to load messages from cache
+		if(!is_null($cache) && ($data = $cache->get($cacheKey)) !== false)
 		{
-			$parentMessages = self::loadMessages($category, substr($language,0,2));
+			return $data;
+		}
+		
+		// Load parent messages
+		if(strlen($language) > 2)
+		{
+			$messages = self::loadMessages($category, substr($language, 0, 2));
+		}
+		elseif($language != 'en')
+		{
+			$messages = self::loadMessages($category, 'en');
+		}
+		else
+		{
+			$messages = array();
 		}
 
+		// Try to load messages from file
 		$messageFile = $this->basePath . DIRECTORY_SEPARATOR . $language . DIRECTORY_SEPARATOR . $category . '.xml';
-		$key = self::CACHE_KEY_PREFIX . $messageFile;
-
-		if($this->cachingDuration > 0 && ($cache = Yii::app()->getCache()) !== null)
-		{
-			$key = self::CACHE_KEY_PREFIX . $messageFile;
-			if(($data = $cache->get($key)) !== false)
-			{
-				return unserialize($data);
-			}
-		}
-
 		if(is_file($messageFile))
 		{
 			$xml = simplexml_load_file($messageFile);
 
-			$messages = array();
 			foreach($xml AS $entry) 
 			{
 				$messages[(string)$entry->attributes()->id] = (string)$entry;
 			}
 
-			$messages = array_merge($parentMessages, $messages);
-
-			if(isset($cache))
+			if(!is_null($cache))
 			{
-				$dependency=new CFileCacheDependency($messageFile);
-				$cache->set($key,serialize($messages),$this->cachingDuration);
+				$cache->set($key, $messages, $this->cachingDuration);
 			}
-
-			return $messages;
 		}
-		elseif(count($parentMessages) > 0)
-		{
-			return $parentMessages;
-		}
-		else
-		{
-			return array();
-		}
+		
+		return $messages;
 	}
 
 }

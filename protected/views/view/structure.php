@@ -1,8 +1,7 @@
 <div class="list">
 
-	<table id="columns" class="list addCheckboxes">
+	<table id="columns" class="list">
 		<colgroup>
-			<col class="checkbox" />
 			<col />
 			<col class="type" />
 			<col class="collation" />
@@ -12,7 +11,6 @@
 		</colgroup>
 		<thead>
 			<tr>
-				<th><input type="checkbox" /></th>
 				<th><?php echo Yii::t('core','field'); ?></th>
 				<th><?php echo Yii::t('core','type'); ?></th>
 				<th><?php echo Yii::t('core','collation'); ?></th>
@@ -24,7 +22,7 @@
 		<tbody>
 			<?php if(count($view->columns) < 1) { ?>
 				<tr>
-					<td class="noEntries" colspan="7">
+					<td class="noEntries" colspan="6">
 						<?php echo Yii::t('core', 'noColumns'); ?>
 					</td>
 				</tr>
@@ -32,14 +30,7 @@
 			<?php foreach($view->columns AS $column) { ?>
 				<tr id="columns_<?php echo $column->COLUMN_NAME; ?>">
 					<td>
-						<input type="checkbox" name="columns[]" value="<?php echo $column->COLUMN_NAME; ?>" />
-					</td>
-					<td>
-						<?php if($column->getIsPartOfPrimaryKey($table->indices)): ?>
-							<span class="primaryKey"><?php echo $column->COLUMN_NAME; ?></span>
-						<?php else: ?>
-							<?php echo $column->COLUMN_NAME; ?>
-						<?php endif; ?>
+						<?php echo $column->COLUMN_NAME; ?>
 					</td>
 					<td>
 						<?php echo $column->COLUMN_TYPE; ?>
@@ -67,7 +58,6 @@
 		</tbody>
 		<tfoot>
 			<tr>
-				<th><input type="checkbox" /></th>
 				<th colspan="6"><?php echo Yii::t('core', 'XColumns', array('{count}' => count($view->columns))); ?></th>
 			</tr>
 		</tfoot>

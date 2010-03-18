@@ -133,11 +133,6 @@ class TableController extends Controller
 		$browsePage->route = 'schema/' . $this->schema . '/tables/' . $this->table . '/browse';
 		$browsePage->formTarget = 'schema/' . $this->schema . '/tables/' . $this->table . '/browse';
 
-		if($_query)
-		{
-			$browsePage->query = $_query;
-		}
-
 		$browsePage->run();
 		
 		$this->render('../global/browse', array(
@@ -494,7 +489,7 @@ class TableController extends Controller
 		$importPage->db = $this->db;
 		$importPage->table = $this->table;
 		$importPage->schema = $this->schema;
-		$importPage->formTarget = BASEURL . '/schema/' . $this->schema . '/tables/' . $this->table . '/import';
+		$importPage->formTarget = Yii::app()->urlManager->baseUrl . '/schema/' . $this->schema . '/tables/' . $this->table . '/import';
 
 		$importPage->run();
 

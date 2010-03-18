@@ -2,7 +2,7 @@
 var isPrimary<?php echo CHtml::$idPrefix; ?> = <?php echo json_encode($column->getIsPartOfPrimaryKey()); ?>;
 </script>
 
-<?php if($isSubmitted && !$column->isNewRecord) { ?>
+<?php if(!$column->isNewRecord && $isSubmitted) { ?>
 	<script type="text/javascript">
 	var idPrefix = '<?php echo CHtml::$idPrefix; ?>';
 	var row = $('#' + idPrefix).closest("tr").prev();

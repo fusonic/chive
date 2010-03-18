@@ -4,15 +4,15 @@
 
 <?php if($model->showInput) { ?>
 
-	<?php echo CHtml::form(BASEURL . '/' . $model->formTarget, 'post', array('id' => 'queryForm')); ?>
+	<?php echo CHtml::form(Yii::app()->createUrl($model->formTarget), 'post', array('id' => 'queryForm')); ?>
 	<table style="width: 100%;">
 		<tr>
 			<td style="width: 80%;">
 				<?php $this->widget("SqlEditor", array(
-				    'id' => 'query',
-					'autogrow' => true,
-				   	'htmlOptions' => array('name' => 'query'),
-					'value' => $model->getOriginalQueries(),
+					    'id' => 'query',
+						'autogrow' => true,
+					   	'htmlOptions' => array('name' => 'query'),
+						'value' => $model->getOriginalQueries(),
 					)); ?>
 				<?php /*<textarea name="query" style="width: 99%; height: 90px;" id="query"><?php echo $model->getOriginalQueries(); ?></textarea> */ ?>
 				<div class="buttons">
@@ -78,7 +78,7 @@
 		<table class="list <?php if($model->getIsUpdatable()) { ?>addCheckboxes editable<?php } ?>" style="width: auto;" id="browse">
 			<colgroup>
 				<col class="checkbox" />
-				<?php if($type == 'select') { ?>
+				<?php if(isset($type) && $type == 'select') { ?>
 					<col class="action" />
 					<col class="action" />
 					<col class="action" />
@@ -126,9 +126,9 @@
 						<?php foreach($row AS $key=>$value) { ?>
 							<td class="<?php echo $key; ?>">
 								<?php if(DataType::getInputType($model->getTable()->columns[$key]->dbType) == "file" && $value) { ?>
-									<a href="javascript:void(0);" class="icon" onclick="download('<?php echo BASEURL; ?>/row/download', {key: JSON.stringify(keyData[<?php echo $i; ?>]), column: '<?php echo $column; ?>', table: '<?php echo $model->table; ?>', schema: '<?php echo $model->schema; ?>'})">
-										<?php echo Html::icon('save'); ?>
-										<?php echo Yii::t('core', 'download'); ?>
+									<a href="javascript:void(0);" class="icon" onclick="globalBrowse.download('<?php echo BASEURL; ?>/row/download', {key: JSON.stringify(keyData[<?php echo $i; ?>]), column: '<?php echo $column; ?>', table: '<?php echo $model->table; ?>', schema: '<?php echo $model->schema; ?>'})">
+										<?php echo Html::icon('save'); ?> 
+										<?php echo Formatter::fileSize(strlen($value)); ?>
 									</a>
 								<?php } elseif($model->table !== null) { ?>
 									<span><?php echo is_null($value) ? '<span class="null">NULL</span>' : (Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $model->schema . '.' .  $model->table) ? htmlspecialchars($value) : StringUtil::cutText(htmlspecialchars($value), 100)); ?></span>
@@ -183,6 +183,7 @@
 <?php } elseif($model->execute) { ?>
 	<?php echo Yii::t('core', 'emptyResultSet'); ?>
 <?php } ?>
+
 
 <script type="text/javascript">
 	globalBrowse.setup();

@@ -1,37 +1,21 @@
 <?php
 
-// Set session properties
-session_name('chiveSession');
-session_save_path('protected/runtime/sessions');
-
-// Paths
-$yii = 'yii/yii.php';
-$config = dirname(__FILE__) . '/protected/config/main.php';
-
-function pre($_value) {
-	echo "<pre>";
-	print_r($_value);
-	echo "</pre>";
-}
-
-function predie($_value) {
-	pre($_value);
-	Yii::app()->end();
-}
+// Some dirty debugging methods
+function pre($_value) { echo "<pre>"; print_r($_value); echo "</pre>"; }
+function predie($_value) { pre($_value); Yii::app()->end(); }
 
 // Yii debug mode
 defined('YII_DEBUG') or define('YII_DEBUG', true);
 
-// Create Yii application
-require_once($yii);
-$app = Yii::createWebApplication($config);
+// Load Yii
+require('yii/yii.php');
+
+// Create web application
+$app = Yii::createWebApplication('protected/config/main.php');
 
 // Define constants
 define('BASEURL', Yii::app()->baseUrl);
 define('ICONPATH', BASEURL . '/images/icons/' . Yii::app()->params->iconPack);
-
-$session = Yii::app()->getSession();
-$request = Yii::app()->getRequest();
 
 $validPaths = array(
 	'site',
@@ -46,29 +30,28 @@ if(!$app->user->isGuest)
     $app->db->autoConnect = true;
     $app->db->setActive(true);
 }
-elseif(!preg_match('/^(' . implode('|', $validPaths) . ')/i', $request->getPathInfo()))
+elseif(!preg_match('/^(' . implode('|', $validPaths) . ')/i', Yii::app()->urlManager->parseUrl($app->request)))
 {
-	if($request->isAjaxRequest)
+	if($app->request->isAjaxRequest)
 	{
 		$response = new AjaxResponse();
-		$response->redirectUrl = Yii::app()->baseUrl . '/site/login';
+		$response->redirectUrl = Yii::app()->createUrl('site/login');
 		$response->send();
 	}
 	else
 	{
-		$request->redirect(Yii::app()->baseUrl . '/site/login');
+		$app->request->redirect(Yii::app()->createUrl('site/login'));
 	}
-
 }
 
 // Language
-if($session->itemAt('language'))
+if($app->session->itemAt('language'))
 {
-	$app->setLanguage($language);
+	$app->setLanguage($app->session->itemAt('language'));
 }
-elseif($request->getPreferredLanguage() && is_dir('protected/messages/' . substr($request->getPreferredLanguage(), 0, 2)))
+elseif($app->request->getPreferredLanguage() && is_dir('protected/messages/' . $app->request->getPreferredLanguage()))
 {
-	$app->setLanguage($request->getPreferredLanguage());
+	$app->setLanguage($app->request->getPreferredLanguage());
 }
 else
 {
@@ -76,17 +59,17 @@ else
 }
 
 // Theme
-$theme = $session->itemAt('theme') ? $session->itemAt('theme') : 'standard';
+$theme = $app->session->itemAt('theme') ? $app->session->itemAt('theme') : 'standard';
 $app->setTheme($theme);
 
 // Unset jQuery in Ajax requests
-if($request->isAjaxRequest)
+if($app->request->isAjaxRequest)
 {
 	$app->clientScript->scriptMap['jquery.js'] = false;
 	$app->clientScript->scriptMap['jquery.min.js'] = false;
 }
 
-// Publis messages for javascript usage
+// Publish messages for javascript usage
 Yii::app()->getComponent('messages')->publishJavaScriptMessages();
 
 // Run application

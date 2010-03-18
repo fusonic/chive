@@ -91,8 +91,7 @@ class SiteController extends Controller
 		$this->layout = "login";
 
 		// Languages
-		$availableLanguages = FileHelper::readDirectory('protected/messages', false, 'dir');
-
+		$availableLanguages = glob('protected/messages/??_??');
 		$currentLanguage = Yii::app()->getLanguage();
 
 		if(strlen($currentLanguage) == 2)
@@ -101,22 +100,16 @@ class SiteController extends Controller
 		}
 
 		$languages = array();
-		foreach($availableLanguages AS $key=>$language) {
-
-			$full = substr($language, strrpos($language, '/')+1);
-			$short = substr($full, 0, 2);
-
-			// Don't display containers and active language
-			if($short == $full || $full == $currentLanguage)
-				continue;
+		foreach($availableLanguages AS $key => $language) 
+		{
+			$full = basename($language);
 
 			$languages[] = array(
-				'label'=>Yii::t('language', $full),
-				'icon'=>'images/country/' . $short . '.png',
-				'url'=>Yii::app()->request->baseUrl . '/site/changeLanguage/' . $full,
-				'htmlOptions'=>array('class'=>'icon'),
+				'label' => Yii::t('language', $full),
+				'icon' => 'images/language/' . $full . '.png',
+				'url' => Yii::app()->request->baseUrl . '/site/changeLanguage/' . $full,
+				'htmlOptions' => array('class'=>'icon'),
 			);
-
 		}
 
 		$availableThemes = Yii::app()->getThemeManager()->getThemeNames();
@@ -151,7 +144,7 @@ class SiteController extends Controller
 			// validate user input and redirect to previous page if valid
 			if($form->validate())
 			{
-				$this->redirect(Yii::app()->user->returnUrl);
+				$this->redirect(Yii::app()->homeUrl);
 			}
 		}
 
@@ -184,8 +177,8 @@ class SiteController extends Controller
 	 */
 	public function actionChangeLanguage()
 	{
-		Yii::app()->session->add('language', $_GET['id']);
-		$this->redirect(Yii::app()->homeUrl);
+		Yii::app()->session->add('language', Yii::app()->getRequest()->getParam('id'));
+		$this->redirect(Yii::app()->createUrl('site/login'));
 	}
 	/**
 	 * Change the theme

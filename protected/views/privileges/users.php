@@ -83,7 +83,7 @@
 				<?php echo Html::icon('arrow_turn_090'); ?>
 				<span><?php echo Yii::t('core', 'withSelected'); ?></span>
 			</span>
-			<a class="icon button" href="javascript:void(0)" onclick="privilegesUsers.dropUsers()">
+			<a href="javascript:void(0)" onclick="privilegesUsers.dropUsers()" class="icon button">
 				<?php echo Html::icon('delete'); ?>
 				<span><?php echo Yii::t('core', 'drop'); ?></span>
 			</a>

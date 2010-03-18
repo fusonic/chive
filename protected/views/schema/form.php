@@ -1,5 +1,5 @@
 <?php CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3); ?>
-<?php if($isSubmitted && !$schema->isNewRecord): ?>
+<?php if(!$schema->isNewRecord && $isSubmitted) { ?>
 	<script type="text/javascript">
 	var idPrefix = '<?php echo CHtml::$idPrefix; ?>';
 	var row = $('#' + idPrefix).closest("tr").prev();
@@ -9,7 +9,7 @@
 	});
 	Notification.add('success', '<?php echo Yii::t('core', 'successEditSchema', array('{schema}' => $schema->SCHEMA_NAME)); ?>', null, <?php echo json_encode($sql); ?>);
 	</script>
-<?php endif; ?>
+<?php } ?>
 
 <?php echo CHtml::form('', 'post', array('id' => CHtml::$idPrefix)); ?>
 	<h1>

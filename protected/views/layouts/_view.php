@@ -43,15 +43,6 @@
 				'visible' => $this->loadView()->getIsUpdatable(),
 			),
 			array(
-				'label' => Yii::t('core','truncate'),
-				'icon' => 'truncate',
-				'link' => array(
-					'url' => 'javascript:void(0)',
-					'htmlOptions' => array('class'=>'icon', 'onclick'=>'tableGeneral.truncate()'),
-				),
-				'visible' => Yii::app()->user->privileges->checkTable($this->schema, $this->view, 'DELETE'),
-			),
-			array(
 				'label' => Yii::t('core','drop'),
 				'icon' => 'delete',
 				'link' => array(
@@ -76,18 +67,18 @@
 
 <script type="text/javascript">
 var schema = '<?php echo $this->schema; ?>';
-var table = '<?php echo $this->view; ?>';
+var view = '<?php echo $this->view; ?>';
 viewGeneral.setupDialogs();
 breadCrumb.set([
 	{
 		icon: 'database',
-		href: baseUrl + '/schema/' + schema,
+		href: 'javascript:chive.goto(\'tables\')',
 		text: schema
 	},
 	{
 		icon: 'view',
-		href: '#views/' + table + '/structure',
-		text: table
+		href: 'javascript:chive.goto(\'views/' + view + '/structure\')',
+		text: view
 	}
 ]);
 sideBar.activate(1);

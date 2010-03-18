@@ -40,9 +40,9 @@
 		<thead>
 			<tr>
 				<th><input type="checkbox" /></th>
-				<th><?php echo $sort->link('SCHEMA_NAME'); ?></th>
+				<th><?php echo $sort->link('name'); ?></th>
 				<th><?php echo $sort->link('tableCount'); ?></th>
-				<th colspan="4"><?php echo $sort->link('DEFAULT_COLLATION_NAME'); ?></th>
+				<th colspan="4"><?php echo $sort->link('collation'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -54,7 +54,7 @@
 						<input type="checkbox" name="schemata[]" value="<?php echo $model->SCHEMA_NAME; ?>" />
 					</td>
 					<td>
-						<?php echo CHtml::link($model->SCHEMA_NAME, 'schema/' . $model->SCHEMA_NAME); ?>
+						<?php echo CHtml::link($model->SCHEMA_NAME, Yii::app()->createUrl('schema/' . $model->SCHEMA_NAME)); ?>
 					</td>
 					<td class="count">
 						<?php echo $model->tableCount; ?>

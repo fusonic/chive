@@ -80,7 +80,10 @@ class Collation extends CActiveRecord
 		{
 			$text .= Yii::t('collation', $data[0]) . ', ';
 		}
-		$text .= Yii::t('collation', $data[1]);
+		if(count($data) > 1)
+		{
+			$text .= Yii::t('collation', $data[1]);
+		}
 		if(count($data) == 3)
 		{
 			$text .= ' (' . Yii::t('collation', $data[2]) . ')';

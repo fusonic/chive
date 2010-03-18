@@ -4,19 +4,16 @@
 <head>
 <title><?php echo Yii::app()->name; ?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<!-- (en) Add your meta data here -->
-<!-- (de) Fuegen Sie hier ihre Meta-Daten ein -->
+
 <link rel="stylesheet" type="text/css" href="<?php echo BASEURL; ?>/css/main.css" />
 <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->getBaseUrl(); ?>/css/style.css" />
-<!--[if lte IE 7]>
-<link rel="stylesheet" type="text/css" href="<?php echo BASEURL; ?>/css/patch/ie7.css"/>
-<![endif]-->
 
 <link rel="shortcut icon" href="<?php echo BASEURL; ?>/images/favicon.ico" type="image/x-icon" />
 
 <script type="text/javascript">
 // Set global javascript variables
-var baseUrl = '<?php echo BASEURL; ?>';
+var basePath = '<?php echo BASEURL; ?>';
+var baseUrl = '<?php echo Yii::app()->urlManager->baseUrl; ?>';
 var iconPath = '<?php echo ICONPATH; ?>';
 var themeUrl = '<?php echo Yii::app()->theme->baseUrl; ?>';
 </script>
@@ -36,7 +33,6 @@ $scriptFiles = array(
 	'js/jquery/jquery.selectboxes.js',
 	'js/jquery/jquery.hotkey.js',
 	'js/jquery/jquery.tableForm.js',
-	'js/jquery/jquery.progressbar.js',
 	'js/lib/json.js',
 	'js/main.js',
 	'js/ajaxResponse.js',
@@ -56,8 +52,6 @@ $scriptFiles = array(
 	'js/views/privileges/users.js',
 	'js/views/privileges/userSchemata.js',
 	'js/views/privileges/userForm.js',
-	'js/components/EditArea/edit_area_full.js',
-	'js/components/EditArea/fusonic_extensions/editarea_autogrow.js',
    	'assets/lang_js/' . Yii::app()->getLanguage() . '.js',
 );
 foreach($scriptFiles AS $file)
@@ -85,20 +79,20 @@ $(document).ready(function() {
 			<a class="icon button" href="<?php echo BASEURL; ?>">
 				<img src="<?php echo BASEURL; ?>/images/logo.png" alt="Chive" height="22" style="position: relative; top: 6px;" />
 			</a>
-			<a href="<?php echo BASEURL; ?>/#schemata" class="icon button">
+			<a href="#schemata" class="icon button">
 				<?php echo Html::icon('server'); ?>
 				<span><?php echo Yii::app()->user->host; ?></span>
 			</a>
 		</div>
 		<div id="headerRight">
-			<input type="text" id="globalSearch" value="Enter schema or table..." style="color: #AAA; margin-right: 5px;" onclick="this.value = '';" />
+			<input type="text" id="globalSearch" value="<?php echo Yii::t('core', 'enterSchemaOrTable'); ?>" style="color: #AAA; margin-right: 5px;" onclick="this.value = '';" />
 			<a class="icon button" href="javascript:chive.refresh();">
 				<?php echo Html::icon('refresh', 16, false, 'core.refresh'); ?>
 			</a>
-			<a class="icon button" href="https://bugs.launchpad.net/chive/+filebug">
+			<a class="icon button" href="https://bugs.launchpad.net/chive/+filebug" target="_blank">
 				<?php echo Html::icon('ticket', 16, false, 'core.reportABug'); ?>
 			</a>
-			<a class="icon button" href="<?php echo BASEURL; ?>/site/logout">
+			<a class="icon button" href="<?php echo Yii::app()->urlManager->baseUrl; ?>/site/logout">
 				<?php echo Html::icon('logout', 16, false, 'core.logout'); ?>
 			</a>
 		</div>
@@ -112,14 +106,14 @@ $(document).ready(function() {
 		<?php echo Html::icon('database', 24); ?>
 		<span><?php echo Yii::t('core','schemata'); ?></span>
 	</a>
-	<img class="loading" src="images/loading.gif" alt="<?php echo Yii::t('core', 'loading'); ?>..." />
+	<img class="loading" src="<?php echo BASEURL; ?>/images/loading.gif" alt="<?php echo Yii::t('core', 'loading'); ?>..." />
 </div>
 <div class="sidebarContent schemaList">
 	<input type="text" id="schemaSearch" class="search text" />
 
 	<ul id="schemaList" class="list icon">
 		<li class="nowrap template">
-			<a href="<?php echo Yii::app()->baseUrl; ?>/schema/#schemaName#" class="icon">
+			<a href="<?php echo Yii::app()->createUrl('schema/#schemaName#'); ?>" class="icon">
 				<?php echo Html::icon('database'); ?>
 				<span>#schemaName#</span>
 			</a>
@@ -128,7 +122,7 @@ $(document).ready(function() {
 
 </div>
 <div class="sidebarHeader">
-	<a class="icon">
+	<a class="icon" href="javascript:void(0)">
 		<?php echo Html::icon('info', 24); ?>
 		<span><?php echo Yii::t('core', 'information'); ?></span>
 	</a>
@@ -172,7 +166,7 @@ $(document).ready(function() {
 			</a>
 		</li>
 		<li class="nowrap">
-			<a class="icon" href="javascript:chive.goto('information/about')">
+			<?php echo Html::ajaxLink('information/about', array('class' => 'icon')); ?>
 				<?php echo Html::icon('info'); ?>
 				<span><?php echo Yii::t('core', 'about'); ?></span>
 			</a>

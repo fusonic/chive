@@ -4,13 +4,9 @@
 <head>
 <title><?php echo Yii::app()->name; ?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<!-- (en) Add your meta data here -->
-<!-- (de) Fuegen Sie hier ihre Meta-Daten ein -->
+
 <link rel="stylesheet" type="text/css" href="<?php echo BASEURL; ?>/css/main.css" />
-<link rel="stylesheet" type="text/css" href="<% echo Yii::app()->theme->getBaseUrl(); %>/css/style.css" />
-<!--[if lte IE 7]>
-<link rel="stylesheet" type="text/css" href="<?php echo BASEURL; ?>/css/patch/ie7.css"/>
-<![endif]-->
+<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->getBaseUrl(); ?>/css/style.css" />
 
 <link rel="shortcut icon" href="<?php echo BASEURL; ?>/images/favicon.ico" type="image/x-icon" />
 
@@ -27,7 +23,7 @@
 				<span><?php echo ucfirst(Yii::app()->getTheme()->name); ?></span>
 			</a>
 			<a class="icon button" href="javascript:void(0);" style="margin-right: 9px;" onclick="$('#languageDialog').dialog('open');">
-				<img src="<?php echo BASEURL; ?>/images/country/<?php echo substr(Yii::app()->getLanguage(),0,2); ?>.png" />
+				<img src="<?php echo BASEURL; ?>/images/language/<?php echo Yii::app()->getLanguage(); ?>.png" />
 				<span><?php echo Yii::t('language', Yii::app()->getLanguage()); ?></span>
 			</a>
 		</div>

@@ -1,5 +1,5 @@
 <div class="form">
-<?php echo CHtml::form(BASEURL . '/schema/' . $this->schema . '/tables/' . $this->table . '/insert'); ?>
+<?php echo CHtml::form(Yii::app()->createUrl('schema/' . $this->schema . '/tables/' . $this->table . '/insert')); ?>
 
 <?php echo $formBody; ?>
 

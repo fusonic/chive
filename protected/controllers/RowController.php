@@ -100,7 +100,7 @@ class RowController extends Controller
 				}
 				
 				// FILE
-				elseif(isset($_FILES['Row']['name'][$attribute]))
+				elseif(isset($_FILES['Row']['tmp_name'][$attribute]) && is_file($_FILES['Row']['tmp_name'][$attribute]))
 				{
 					
 					$file = '0x' . bin2hex(file_get_contents($_FILES['Row']['tmp_name'][$attribute]));
@@ -176,7 +176,6 @@ class RowController extends Controller
 		$isNull = Yii::app()->getRequest()->getParam('isNull');
 		$attributes = json_decode(Yii::app()->getRequest()->getParam('attributes'), true);
 		
-		$attributesCount = count($pk);
 		$rows = Row::model()->findAllByAttributes($attributes);
 		$row = $rows[0];
 		
@@ -185,6 +184,12 @@ class RowController extends Controller
 		{
 			$row->setHex($column);
 			$newValue = '0x' . bin2hex(file_get_contents($_FILES['value']['tmp_name']));
+			// Refresh if type s file 
+			$response->refresh = true;
+		}
+		else
+		{
+			$visibleValue = ($isNull ? '<span class="null">NULL</span>' : htmlspecialchars($row->getAttribute($column)));
 		}
 
 		// NULL
@@ -193,16 +198,12 @@ class RowController extends Controller
 			$newValue = null;
 		}
 		
-		
-		
 		try {
 
 			$row->setAttribute($column, $newValue);
 			$sql = $row->save();
 			
 			$showFullColumnContent = Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $this->schema . '.' . $this->table);
-			
-			$visibleValue = ($isNull ? '<span class="null">NULL</span>' : htmlspecialchars($row->getAttribute($column)));
 			
 			if(!$showFullColumnContent && !$isNull)
 			{
@@ -315,7 +316,6 @@ class RowController extends Controller
 
 		if($newRow = Yii::app()->getRequest()->getParam('Row')) 
 		{
-
 			$response = new AjaxResponse();
 			
 			foreach($newRow AS $name=>$value)
@@ -383,25 +383,32 @@ class RowController extends Controller
 	
 	public function actionDownload()
 	{
-
 		$key = json_decode(Yii::app()->getRequest()->getParam('key'), true);
 		$column = Yii::app()->getRequest()->getParam('column');
 
-		header('Content-Disposition: attachment; filename="'.$column.'"');
 		$content = Row::model()->findByAttributes($key)->getAttribute($column);
 		
-		// Try finding out mime type of string (fileinfo extensions is installed
-		if(class_exists("finfo"))
+		$filename = $column;
+		
+		// Try finding out mime type of string (fileinfo extensions is installed)
+		if(class_exists('finfo', false))
 		{
-			$fileInfo = new finfo(FILEINFO_MIME);
-			$mimeType = $fileInfo->buffer($content);
+			$finfo = new finfo(FILEINFO_MIME);
+			$mimeType = $finfo->buffer($content);
 			
-			if($mimeType) 
+			#header('Content-Type: ' . $mimeType);
+			
+			// Try finding correct extension
+			preg_match('/\/(\w+)/i', $mimeType, $extension);
+			
+			if(isset($extension[1]))
 			{
-				header("Content-Type: " . $mimeType);
-			}			
+				$filename .= "." . $extension[1];
+			}
+			
 		}
 		
+		header('Content-Disposition: attachment; filename="'.$filename.'"');
 		echo $content;
 		
 	}

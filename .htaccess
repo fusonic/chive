@@ -1,11 +1,15 @@
 Options +FollowSymLinks
 IndexIgnore */*
-RewriteEngine on
+DirectoryIndex index.php
 
-# if a directory or a file exists, use it directly
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+<IfModule mod_rewrite.c>
+	RewriteEngine on
 
-# otherwise forward it to index.php
-RewriteRule . index.php
+	# if a directory or a file exists, use it directly
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
 
+	# otherwise forward it to index.php
+	RewriteRule . index.php?__chive_rewrite_on=1&%{QUERY_STRING}
+	RewriteRule ^$ index.php?__chive_rewrite_on=1&%{QUERY_STRING}
+</IfModule>

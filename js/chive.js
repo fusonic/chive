@@ -102,11 +102,12 @@ var chive = {
 	refresh: function()
 	{	
 		// Build url
+		
 		var url = chive.currentLocation
 			.replace(/\?(.+)#/, '')
 			.replace('#', '/')					// Replace # with /
 			.replace(/([^:])\/+/g, '$1/');		// Remove multiple slashes
-			
+
 		// Load page into content area
 		$.post(url, globalPost, function(response) {
 			var content = document.getElementById('content');

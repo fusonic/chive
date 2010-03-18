@@ -84,7 +84,13 @@ class TabMenu extends CWidget
 
 	protected function isActive($url,$action)
 	{
-		preg_match('/'.$action.'$/i', $url, $res);
-		return (bool)$res[0];
+		if(preg_match('/'.$action.'$/i', $url, $res))
+		{
+			return (bool)$res[0];
+		}
+		else
+		{
+			return false;
+		}
 	}
 }

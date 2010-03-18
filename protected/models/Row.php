@@ -220,7 +220,7 @@ class Row extends CActiveRecord
 			{
 				$sql .= 'NULL';
 			}
-			elseif($this->isHex($attribute))
+			elseif($this->isHex($column->COLUMN_NAME))
 			{
 				$sql .= $value;
 			}

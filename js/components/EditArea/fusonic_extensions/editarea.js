@@ -134,7 +134,7 @@ function toggleEditor(id, iconId)
         name: 'sqlEditorOn',
         value: value
     }, function(){
-		$('#'+iconId+'>img').attr('src',baseUrl+'/images/icons/fugue/16/'+img).attr('class',classname);
+		$('#' + iconId + '>img').attr('src', basePath + '/images/icons/fugue/16/' + img).attr('class', classname);
 		eAL.toggle(id);
     });
 }

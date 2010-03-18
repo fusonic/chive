@@ -85,15 +85,15 @@
     }
     unset($key, $value);
 
-    PMA_cacheSet('mysql_charsets', $GLOBALS['mysql_charsets'], true);
-    PMA_cacheSet('mysql_charsets_descriptions', $GLOBALS['mysql_charsets_descriptions'], true);
-    PMA_cacheSet('mysql_charsets_count', $GLOBALS['mysql_charsets_count'], true);
-    PMA_cacheSet('mysql_charsets_available', $GLOBALS['mysql_charsets_available'], true);
-    PMA_cacheSet('mysql_collations', $GLOBALS['mysql_collations'], true);
-    PMA_cacheSet('mysql_default_collations', $GLOBALS['mysql_default_collations'], true);
-    PMA_cacheSet('mysql_collations_flat', $GLOBALS['mysql_collations_flat'], true);
-    PMA_cacheSet('mysql_collations_count', $GLOBALS['mysql_collations_count'], true);
-    PMA_cacheSet('mysql_collations_available', $GLOBALS['mysql_collations_available'], true);
+    PMA_cacheSet('mysql_charsets', @$GLOBALS['mysql_charsets'], true);
+    PMA_cacheSet('mysql_charsets_descriptions', @$GLOBALS['mysql_charsets_descriptions'], true);
+    PMA_cacheSet('mysql_charsets_count', @$GLOBALS['mysql_charsets_count'], true);
+    PMA_cacheSet('mysql_charsets_available', @$GLOBALS['mysql_charsets_available'], true);
+    PMA_cacheSet('mysql_collations', @$GLOBALS['mysql_collations'], true);
+    PMA_cacheSet('mysql_default_collations', @$GLOBALS['mysql_default_collations'], true);
+    PMA_cacheSet('mysql_collations_flat', @$GLOBALS['mysql_collations_flat'], true);
+    PMA_cacheSet('mysql_collations_count', @$GLOBALS['mysql_collations_count'], true);
+    PMA_cacheSet('mysql_collations_available', @$GLOBALS['mysql_collations_available'], true);
 
 define('PMA_CSDROPDOWN_COLLATION', 0);
 define('PMA_CSDROPDOWN_CHARSET',   1);

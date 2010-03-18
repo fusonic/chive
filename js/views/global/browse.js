@@ -121,6 +121,20 @@ var globalBrowse = {
 			}
 		});
 		
+	},
+	
+	download: function(_url, _data) 
+	{
+		io = document.createElement('iframe');
+		io.src = _url + (_data ? '?' + $.param(_data) : '');
+		io.style.display = 'none';
+		io = $(io);
+		$('body').append(io);
+		
+		setTimeout(function() {
+			//io.remove();
+		}, 5000);
+		
 	}
 	
 };

@@ -25,7 +25,7 @@ var tableGeneral = {
 	{
 		var ulObj = $('#truncateTableDialog ul');
 		ulObj.html("");
-		ulObj.append('<li>'+table+'</li>')
+		ulObj.append('<li>' + table + '</li>')
 		$('#truncateTableDialog').dialog('open');
 	},
 	
@@ -34,7 +34,7 @@ var tableGeneral = {
 	{
 		var ulObj = $('#dropTableDialog ul');
 		ulObj.html("");
-		ulObj.append('<li>'+table+'</li>')
+		ulObj.append('<li>' + table + '</li>')
 		$('#dropTableDialog').dialog('open');
 	},
 	

@@ -29,7 +29,7 @@ var schemaList = {
 	// Edit schema
 	editSchema: function(db)
 	{
-		$('#schemata_' + db).appendForm('schemata/update?schema=' + db);
+		$('#schemata_' + db).appendForm(baseUrl + '/schemata/update?schema=' + db);
 	},
 
 	// Drop schema
