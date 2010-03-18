@@ -2,24 +2,21 @@
 	<table>
 		<tr>
 		<?php if (count($languages) > 0 ) {?>
-			<?php $i = 0; ?>
-			<?php $languageCount = count($languages); ?>
-			<?php foreach($languages AS $language) { ?>
-
-				<td style="width: 150px;">
-					<a href="<?php echo $language['url']; ?>" class="icon">
+			<td style="width: 50%">
+				<?php $i = 0; ?>
+				<?php $languageCount = count($languages); ?>
+				<?php foreach($languages as $language) { ?>
+					<a href="<?php echo $language['url']; ?>" class="icon" style="display: block; margin-bottom: 3px">
 						<img src="<?php echo BASEURL . '/' . $language['icon']; ?>" alt="test" />
 						<span><?php echo $language['label']; ?></span>
 					</a>
-				</td>
-
-				<?php $i++; ?>
-				<?php if ($i % 3 == 0 && $languageCount > $i) { ?>
-					</tr><tr>
+					<?php $i++; ?>
+					<?php if($i == floor($languageCount / 2)) { ?>
+						</td>
+						<td style="width: 50%">
+					<?php } ?>
 				<?php } ?>
-
-
-			<?php } ?>
+			</td>
 		<?php } else { ?>
 			<td>
 				<?php echo Yii::t('core', 'noOtherLanguagesAvailable'); ?>
