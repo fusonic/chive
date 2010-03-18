@@ -6,7 +6,7 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: YiiBase.php 1699 2010-01-10 16:32:09Z qiang.xue $
+ * @version $Id: YiiBase.php 1903 2010-03-14 04:27:02Z qiang.xue $
  * @package system
  * @since 1.0
  */
@@ -49,7 +49,7 @@ defined('YII_ZII_PATH') or define('YII_ZII_PATH',YII_PATH.DIRECTORY_SEPARATOR.'z
  * you can customize methods of YiiBase.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: YiiBase.php 1699 2010-01-10 16:32:09Z qiang.xue $
+ * @version $Id: YiiBase.php 1903 2010-03-14 04:27:02Z qiang.xue $
  * @package system
  * @since 1.0
  */
@@ -68,7 +68,7 @@ class YiiBase
 	 */
 	public static function getVersion()
 	{
-		return '1.1.0';
+		return '1.1.1';
 	}
 
 	/**
@@ -351,27 +351,7 @@ class YiiBase
 	public static function trace($msg,$category='application')
 	{
 		if(YII_DEBUG)
-		{
-			if(YII_TRACE_LEVEL>0)
-			{
-				$traces=debug_backtrace();
-				$count=0;
-				foreach($traces as $trace)
-				{
-					if(isset($trace['file'],$trace['line']))
-					{
-						$className=substr(basename($trace['file']),0,-4);
-						if(!isset(self::$_coreClasses[$className]) && $className!=='YiiBase')
-						{
-							$msg.="\nin ".$trace['file'].' ('.$trace['line'].')';
-							if(++$count>=YII_TRACE_LEVEL)
-								break;
-						}
-					}
-				}
-			}
 			self::log($msg,CLogger::LEVEL_TRACE,$category);
-		}
 	}
 
 	/**
@@ -387,6 +367,24 @@ class YiiBase
 	{
 		if(self::$_logger===null)
 			self::$_logger=new CLogger;
+		if(YII_DEBUG && YII_TRACE_LEVEL>0)
+		{
+			$traces=debug_backtrace();
+			$count=0;
+			foreach($traces as $trace)
+			{
+				if(isset($trace['file'],$trace['line']))
+				{
+					$className=substr(basename($trace['file']),0,-4);
+					if(!isset(self::$_coreClasses[$className]) && $className!=='YiiBase')
+					{
+						$msg.="\nin ".$trace['file'].' ('.$trace['line'].')';
+						if(++$count>=YII_TRACE_LEVEL)
+							break;
+					}
+				}
+			}
+		}
 		self::$_logger->log($msg,$level,$category);
 	}
 
@@ -444,7 +442,7 @@ class YiiBase
 	 */
 	public static function powered()
 	{
-		return 'Powered by <a href="http://www.yiiframework.com/" target="_blank">Yii Framework</a>.';
+		return 'Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a>.';
 	}
 
 	/**
@@ -687,6 +685,7 @@ class YiiBase
 		'CWebService' => '/web/services/CWebService.php',
 		'CWebServiceAction' => '/web/services/CWebServiceAction.php',
 		'CWsdlGenerator' => '/web/services/CWsdlGenerator.php',
+		'CActiveForm' => '/web/widgets/CActiveForm.php',
 		'CAutoComplete' => '/web/widgets/CAutoComplete.php',
 		'CClipWidget' => '/web/widgets/CClipWidget.php',
 		'CContentDecorator' => '/web/widgets/CContentDecorator.php',

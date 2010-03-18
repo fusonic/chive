@@ -29,6 +29,7 @@
  * When both 'content' and 'view' are specified, 'content' will take precedence.
  * </li>
  * <li>url: a URL that the user browser will be redirected to when clicking on this tab.</li>
+ * <li>data: array (name=>value), this will be passed to the view when 'view' is specified.</li>
  * </ul>
  *
  * For example, the {@link tabs} property can be configured as follows,
@@ -37,6 +38,7 @@
  *     'tab1'=>array(
  *           'title'=>'tab 1 title',
  *           'view'=>'view1',
+ *           'data'=>array('model'=>$model),
  *     ),
  *     'tab2'=>array(
  *           'title'=>'tab 2 title',
@@ -49,7 +51,7 @@
  * when the page is initially loaded, set {@link activeTab} to be the ID of the desired tab.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CTabView.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CTabView.php 1868 2010-03-09 21:34:27Z qiang.xue $
  * @package system.web.widgets
  * @since 1.0
  */
@@ -93,6 +95,8 @@ class CTabView extends CWidget
 	 * When both 'content' and 'view' are specified, 'content' will take precedence.
 	 * </li>
 	 * <li>url: a URL that the user browser will be redirected to when clicking on this tab.</li>
+	 * <li>data: array (name=>value), this will be passed to the view when 'view' is specified.
+	 * This option is available since version 1.1.1.</li>
 	 * </ul>
 	 * <pre>
 	 * array(
@@ -191,7 +195,18 @@ class CTabView extends CWidget
 			if(isset($tab['content']))
 				echo $tab['content'];
 			else if(isset($tab['view']))
-				$this->getController()->renderPartial($tab['view'],$this->viewData);
+			{
+				if(isset($tab['data']))
+				{
+					if(is_array($this->viewData))
+						$data=array_merge($this->viewData, $tab['data']);
+					else
+						$data=$tab['data'];
+				}
+				else
+					$data=$this->viewData;
+				$this->getController()->renderPartial($tab['view'], $data);
+			}
 			echo "</div><!-- {$id} -->\n";
 		}
 	}

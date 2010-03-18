@@ -12,7 +12,7 @@
  * CGettextPoFile represents a PO Gettext message file.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CGettextPoFile.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CGettextPoFile.php 1845 2010-02-27 01:11:45Z qiang.xue $
  * @package system.i18n.gettext
  * @since 1.0
  */
@@ -26,7 +26,7 @@ class CGettextPoFile extends CGettextFile
 	 */
 	public function load($file,$context)
 	{
-		$pattern='/msgctxt\s+"(.*?(?<!\\\\))"'
+		$pattern='/(msgctxt\s+"(.*?(?<!\\\\))")?'
 			. '\s+msgid\s+"(.*?(?<!\\\\))"'
 			. '\s+msgstr\s+"(.*?(?<!\\\\))"/';
 		$content=file_get_contents($file);
@@ -34,10 +34,10 @@ class CGettextPoFile extends CGettextFile
         $messages=array();
         for($i=0;$i<$n;++$i)
         {
-        	if($matches[1][$i]===$context)
+        	if($matches[2][$i]===$context)
         	{
-	        	$id=$this->decode($matches[2][$i]);
-	        	$message=$this->decode($matches[3][$i]);
+	        	$id=$this->decode($matches[3][$i]);
+	        	$message=$this->decode($matches[4][$i]);
 	        	$messages[$id]=$message;
 	        }
         }

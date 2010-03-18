@@ -15,13 +15,28 @@
  * can be changed by setting {@link sessionTableName}. If the table does not exist,
  * it will be automatically created if {@link autoCreateSessionTable} is set true.
  *
+ * The following is the table structure:
+ *
+ * <pre>
+ * CREATE TABLE YiiSession
+ * (
+ *     id CHAR(32) PRIMARY KEY,
+ *     expire INTEGER,
+ *     data TEXT
+ * )
+ * </pre>
+ *
  * CDbHttpSession relies on {@link http://www.php.net/manual/en/ref.pdo.php PDO} to access database.
  *
  * By default, it will use an SQLite3 database named 'session-YiiVersion.db' under the application runtime directory.
  * You can also specify {@link connectionID} so that it makes use of a DB application component to access database.
  *
+ * When using CDbHttpSession in a production server, we recommend you pre-create the session DB table
+ * and set {@link autoCreateSessionTable} to be false. This will greatly improve the performance.
+ * You may also create a DB index for the 'expire' column in the session table to further improve the performance.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbHttpSession.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CDbHttpSession.php 1781 2010-02-01 20:37:46Z qiang.xue $
  * @package system.web
  * @since 1.0
  */

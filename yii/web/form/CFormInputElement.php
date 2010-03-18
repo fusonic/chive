@@ -35,7 +35,7 @@
  * generating the input or initial values of the widget properties.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFormInputElement.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CFormInputElement.php 1896 2010-03-13 14:11:24Z qiang.xue $
  * @package system.web.form
  * @since 1.1
  */
@@ -77,6 +77,13 @@ class CFormInputElement extends CFormElement
 	 * Please see {@link CHtml::listData} for details of generating this property value.
 	 */
 	public $items=array();
+	/**
+	 * @var array the options used when rendering the error part. This property will be passed
+	 * to the {@link CActiveForm::error} method call.
+	 * @see CActiveForm::error
+	 * @since 1.1.1
+	 */
+	public $errorOptions=array();
 	/**
 	 * @var string the layout used to render label, input, hint and error. They correspond to the placeholders
 	 * "{label}", "{input}", "{hint}" and "{error}".
@@ -143,7 +150,7 @@ class CFormInputElement extends CFormElement
 			'{label}'=>$this->renderLabel(),
 			'{input}'=>$this->renderInput(),
 			'{hint}'=>$this->renderHint(),
-			'{error}'=>$this->getParent()->showErrorSummary ? '' : $this->renderError(),
+			'{error}'=>$this->renderError(),
 		);
 		return strtr($this->layout,$output);
 	}
@@ -155,9 +162,17 @@ class CFormInputElement extends CFormElement
 	 */
 	public function renderLabel()
 	{
-		return CHtml::activeLabel($this->getParent()->getModel(), $this->name, array(
+		$options = array(
 			'label'=>$this->getLabel(),
-			'required'=>$this->getRequired()));
+			'required'=>$this->getRequired()
+		);
+
+		if(!empty($this->attributes['id']))
+        {
+            $options['for'] = $this->attributes['id'];
+        }
+
+		return CHtml::activeLabel($this->getParent()->getModel(), $this->name, $options);
 	}
 
 	/**
@@ -193,7 +208,8 @@ class CFormInputElement extends CFormElement
 	 */
 	public function renderError()
 	{
-		return CHtml::error($this->getParent()->getModel(), $this->name);
+		$parent=$this->getParent();
+		return $parent->getActiveFormWidget()->error($parent->getModel(), $this->name, $this->errorOptions);
 	}
 
 	/**

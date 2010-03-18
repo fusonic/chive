@@ -36,7 +36,7 @@ Yii::import('zii.widgets.jui.CJuiWidget');
  * for possible options (name-value pairs).
  *
  * @author Sebastian Thierer <sebathi@gmail.com>
- * @version $Id: CJuiDroppable.php 99 2010-01-07 20:55:13Z qiang.xue $
+ * @version $Id: CJuiDroppable.php 127 2010-02-18 14:03:04Z sebathi $
  * @package zii.widgets.jui
  * @since 1.1
  */

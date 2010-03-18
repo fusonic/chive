@@ -14,7 +14,7 @@
  * CModule mainly manages application components and sub-modules.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CModule.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CModule.php 1815 2010-02-18 22:01:55Z qiang.xue $
  * @package system.base
  * @since 1.0.4
  */
@@ -61,11 +61,6 @@ abstract class CModule extends CComponent
 		{
 			$this->setBasePath($config['basePath']);
 			unset($config['basePath']);
-		}
-		else
-		{
-			$class=new ReflectionClass(get_class($this));
-			$this->setBasePath(dirname($class->getFileName()));
 		}
 		Yii::setPathOfAlias($id,$this->getBasePath());
 

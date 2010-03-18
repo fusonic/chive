@@ -12,7 +12,7 @@
  * CUniqueValidator validates that the attribute value is unique in the corresponding database table.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CUniqueValidator.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CUniqueValidator.php 1881 2010-03-10 22:17:34Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -57,6 +57,12 @@ class CUniqueValidator extends CValidator
 	 * are recognized, which will be replaced with the actual attribute name and value, respectively.
 	 */
 	public $message;
+	/**
+	 * @var boolean whether this validation rule should be skipped if when there is already a validation
+	 * error for the current attribute. Defaults to true.
+	 * @since 1.1.1
+	 */
+	public $skipOnError=true;
 
 
 	/**
@@ -76,7 +82,7 @@ class CUniqueValidator extends CValidator
 		$finder=CActiveRecord::model($className);
 		$table=$finder->getTableSchema();
 		if(($column=$table->getColumn($attributeName))===null)
-			throw new CException(Yii::t('yii','Column "{column} does not exist in table "{table}".',
+			throw new CException(Yii::t('yii','Column "{column}" does not exist in table "{table}".',
 				array('{column}'=>$attributeName,'{table}'=>$table->name)));
 
 		$columnName=$column->rawName;
@@ -87,7 +93,7 @@ class CUniqueValidator extends CValidator
 		if($this->criteria!==array())
 			$criteria->mergeWith($this->criteria);
 
-		if($object->isNewRecord || $object->tableName()!==$finder->tableName())
+		if(!$object instanceof CActiveRecord || $object->isNewRecord || $object->tableName()!==$finder->tableName())
 			$exists=$finder->exists($criteria);
 		else
 		{

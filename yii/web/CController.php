@@ -58,7 +58,7 @@
  * For object-based filters, the '+' and '-' operators are following the class name.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CController.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CController.php 1852 2010-03-02 20:38:47Z qiang.xue $
  * @package system.web
  * @since 1.0
  */
@@ -216,7 +216,7 @@ class CController extends CBaseController
 	 *
 	 * Note, the behavior classes must implement {@link IBehavior} or extend from
 	 * {@link CBehavior}. Behaviors declared in this method will be attached
-	 * to the model when it is instantiated.
+	 * to the controller when it is instantiated.
 	 *
 	 * For more details about behaviors, see {@link CComponent}.
 	 * @return array the behavior configurations (behavior name=>behavior configuration)
@@ -479,7 +479,10 @@ class CController extends CBaseController
 	 */
 	public function getRoute()
 	{
-		return $this->getUniqueId().'/'.$this->getAction()->getId();
+		if(($action=$this->getAction())!==null)
+			return $this->getUniqueId().'/'.$action->getId();
+		else
+			return $this->getUniqueId();
 	}
 
 	/**
@@ -634,16 +637,23 @@ class CController extends CBaseController
 	 * This is like {@link redirect}, but the user browser's URL remains unchanged.
 	 * In most cases, you should call {@link redirect} instead of this method.
 	 * @param string the route of the new controller action. This can be an action ID, or a complete route
-	 * with module ID, controller ID and action ID. If the former, the action is assumed
+	 * with module ID (optional in the current module), controller ID and action ID. If the former, the action is assumed
 	 * to be located within the current controller.
+	 * @param boolean whether to end the application after this call. Defaults to true.
 	 * @since 1.1.0
 	 */
-	public function forward($route)
+	public function forward($route,$exit=true)
 	{
-		if(strpos($route,'/')===false) // an action of the current controller
+		if(strpos($route,'/')===false)
 			$this->run($route);
 		else
+		{
+			if($route[0]!=='/' && ($module=$this->getModule())!==null)
+				$route=$module->getId().'/'.$route;
 			Yii::app()->runController($route);
+		}
+		if($exit)
+			Yii::app()->end();
 	}
 
 	/**

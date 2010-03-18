@@ -36,8 +36,11 @@ Yii::import('zii.widgets.jui.CJuiWidget');
  * the {@link http://jqueryui.com/demos/sortable/ JUI Sortable} documentation
  * for possible options (name-value pairs).
  *
+ * If you are using javascript code anywhere in the code, please add "js:" at the
+ * start of the js code definition and Yii will use this string as js code.
+ *
  * @author Sebastian Thierer <sebathi@gmail.com>
- * @version $Id: CJuiSortable.php 99 2010-01-07 20:55:13Z qiang.xue $
+ * @version $Id: CJuiSortable.php 143 2010-03-11 13:09:59Z qiang.xue $
  * @package zii.widgets.jui
  * @since 1.1
  */
@@ -67,6 +70,7 @@ class CJuiSortable extends CJuiWidget
 	{
 		$id=$this->getId();
 		$this->htmlOptions['id']=$id;
+
 		$options=empty($this->options) ? '' : CJavaScript::encode($this->options);
 		Yii::app()->getClientScript()->registerScript(__CLASS__.'#'.$id,"jQuery('#{$id}').sortable({$options});");
 

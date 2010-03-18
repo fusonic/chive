@@ -12,7 +12,7 @@
  * CDbColumnSchema class describes the column meta data of a database table.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbColumnSchema.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CDbColumnSchema.php 1830 2010-02-20 03:07:45Z qiang.xue $
  * @package system.db.schema
  * @since 1.0
  */
@@ -133,10 +133,10 @@ class CDbColumnSchema extends CComponent
 			return $this->type==='string' ? '' : null;
 		switch($this->type)
 		{
+			case 'string': return (string)$value;
 			case 'integer': return (integer)$value;
 			case 'boolean': return (boolean)$value;
-			case 'double': return (double)$value;
-			case 'string': return (string)$value;
+			case 'double':
 			default: return $value;
 		}
 	}

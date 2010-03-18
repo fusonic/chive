@@ -20,7 +20,7 @@
  * interface.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CBaseUserIdentity.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CBaseUserIdentity.php 1896 2010-03-13 14:11:24Z qiang.xue $
  * @package system.web.auth
  * @since 1.0
  */
@@ -71,6 +71,16 @@ abstract class CBaseUserIdentity extends CComponent implements IUserIdentity
 	public function getPersistentStates()
 	{
 		return $this->_state;
+	}
+
+	/**
+	 * Sets an array of presistent states.
+	 *
+	 * @param $states array the identity states that should be persisted.
+	 */
+	public function setPersistentStates($states)
+	{
+		$this->_state = $states;
 	}
 
 	/**

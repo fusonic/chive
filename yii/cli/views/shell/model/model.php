@@ -49,6 +49,9 @@ class <?php echo $className; ?> extends CActiveRecord
 <?php foreach($rules as $rule): ?>
 			<?php echo $rule.",\n"; ?>
 <?php endforeach; ?>
+			// The following rule is used by search().
+			// Please remove those attributes that should not be searched.
+			array('<?php echo implode(', ', array_keys($columns)); ?>', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -76,5 +79,34 @@ class <?php echo $className; ?> extends CActiveRecord
 			<?php echo "'$column' => '$label',\n"; ?>
 <?php endforeach; ?>
 		);
+	}
+
+	/**
+	 * Retrieves a list of models based on the current search/filter conditions.
+	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+	 */
+	public function search()
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+
+		$criteria=new CDbCriteria;
+
+<?php
+foreach($columns as $name=>$column)
+{
+	if($column->type==='string')
+	{
+		echo "\t\t\$criteria->compare('$name',\$this->$name,true);\n\n";
+	}
+	else
+	{
+		echo "\t\t\$criteria->compare('$name',\$this->$name);\n\n";
+	}
+}
+?>
+		return new CActiveDataProvider('<?php echo $className; ?>', array(
+			'criteria'=>$criteria,
+		));
 	}
 }

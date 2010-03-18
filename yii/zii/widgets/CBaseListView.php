@@ -14,7 +14,7 @@
  * CBaseListView implements the common features needed by a view wiget for rendering multiple models.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CBaseListView.php 99 2010-01-07 20:55:13Z qiang.xue $
+ * @version $Id: CBaseListView.php 118 2010-01-21 17:42:01Z qiang.xue $
  * @package zii.widgets
  * @since 1.1
  */
@@ -80,6 +80,12 @@ abstract class CBaseListView extends CWidget
 	 * @var string the CSS class name for the pager container. Defaults to 'pager'.
 	 */
 	public $pagerCssClass='pager';
+	/**
+	 * @var string the CSS class name that will be assigned to the widget container element
+	 * when the widget is updating its content via AJAX. Defaults to 'loading'.
+	 * @since 1.1.1
+	 */
+	public $loadingCssClass='loading';
 
 	/**
 	 * Initializes the view.
@@ -211,9 +217,6 @@ abstract class CBaseListView extends CWidget
 	 */
 	public function renderPager()
 	{
-		if($this->dataProvider->getItemCount()<=0 || !$this->enablePagination)
-			return;
-
 		$pager=array();
 		$class='CLinkPager';
 		if(is_string($this->pager))
@@ -224,9 +227,21 @@ abstract class CBaseListView extends CWidget
 			if(isset($pager['class']))
 			{
 				$class=$pager['class'];
-				unset($pager);
+				unset($pager['class']);
 			}
 		}
+
+		if($this->enablePagination && $class==='CLinkPager')
+		{
+			if(!isset($pager['cssFile']))
+				CLinkPager::registerCssFile();
+			else if($pager['cssFile']!==false)
+				CLinkPager::registerCssFile($pager['cssFile']);
+		}
+
+		if($this->dataProvider->getItemCount()<=0 || !$this->enablePagination)
+			return;
+
 		$pager['pages']=$this->dataProvider->getPagination();
 		echo '<div class="'.$this->pagerCssClass.'">';
 		$this->widget($class,$pager);

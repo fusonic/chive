@@ -11,7 +11,11 @@
 
 class <?php echo $controllerClass; ?> extends Controller
 {
-	const PAGE_SIZE=10;
+	/**
+	 * @var string the default layout for the views. Defaults to 'column2', meaning
+	 * using two-column layout. See 'protected/views/layouts/column2.php'.
+	 */
+	public $layout='column2';
 
 	/**
 	 * @var CActiveRecord the currently loaded data model instance.
@@ -71,6 +75,10 @@ class <?php echo $controllerClass; ?> extends Controller
 	public function actionCreate()
 	{
 		$model=new <?php echo $modelClass; ?>;
+
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+
 		if(isset($_POST['<?php echo $modelClass; ?>']))
 		{
 			$model->attributes=$_POST['<?php echo $modelClass; ?>'];
@@ -90,6 +98,10 @@ class <?php echo $controllerClass; ?> extends Controller
 	public function actionUpdate()
 	{
 		$model=$this->loadModel();
+
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+
 		if(isset($_POST['<?php echo $modelClass; ?>']))
 		{
 			$model->attributes=$_POST['<?php echo $modelClass; ?>'];
@@ -114,7 +126,7 @@ class <?php echo $controllerClass; ?> extends Controller
 			$this->loadModel()->delete();
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_POST['ajax']))
+			if(!isset($_GET['ajax']))
 				$this->redirect(array('index'));
 		}
 		else
@@ -126,12 +138,7 @@ class <?php echo $controllerClass; ?> extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('<?php echo $modelClass; ?>', array(
-			'pagination'=>array(
-				'pageSize'=>self::PAGE_SIZE,
-			),
-		));
-
+		$dataProvider=new CActiveDataProvider('<?php echo $modelClass; ?>');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -142,14 +149,12 @@ class <?php echo $controllerClass; ?> extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$dataProvider=new CActiveDataProvider('<?php echo $modelClass; ?>', array(
-			'pagination'=>array(
-				'pageSize'=>self::PAGE_SIZE,
-			),
-		));
+		$model=new <?php echo $modelClass; ?>('search');
+		if(isset($_GET['<?php echo $modelClass; ?>']))
+			$model->attributes=$_GET['<?php echo $modelClass; ?>'];
 
 		$this->render('admin',array(
-			'dataProvider'=>$dataProvider,
+			'model'=>$model,
 		));
 	}
 
@@ -167,5 +172,18 @@ class <?php echo $controllerClass; ?> extends Controller
 				throw new CHttpException(404,'The requested page does not exist.');
 		}
 		return $this->_model;
+	}
+
+	/**
+	 * Performs the AJAX validation.
+	 * @param CModel the model to be validated
+	 */
+	protected function performAjaxValidation($model)
+	{
+		if(isset($_POST['ajax']) && $_POST['ajax']==='<?php echo $this->class2id($modelClass); ?>-form')
+		{
+			echo CActiveForm::validate($model);
+			Yii::app()->end();
+		}
 	}
 }

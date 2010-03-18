@@ -12,7 +12,7 @@
  * CJavaScript is a helper class containing JavaScript-related handling functions.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CJavaScript.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CJavaScript.php 1832 2010-02-20 03:22:45Z qiang.xue $
  * @package system.web.helpers
  * @since 1.0
  */
@@ -29,9 +29,9 @@ class CJavaScript
 	public static function quote($js,$forUrl=false)
 	{
 		if($forUrl)
-			return strtr($js,array('%'=>'%25',"\t"=>'\t',"\n"=>'\n',"\r"=>'\r','"'=>'\"','\''=>'\\\'','\\'=>'\\\\'));
+			return strtr($js,array('%'=>'%25',"\t"=>'\t',"\n"=>'\n',"\r"=>'\r','"'=>'\"','\''=>'\\\'','\\'=>'\\\\','</'=>'<\/'));
 		else
-			return strtr($js,array("\t"=>'\t',"\n"=>'\n',"\r"=>'\r','"'=>'\"','\''=>'\\\'','\\'=>'\\\\'));
+			return strtr($js,array("\t"=>'\t',"\n"=>'\n',"\r"=>'\r','"'=>'\"','\''=>'\\\'','\\'=>'\\\\','</'=>'<\/'));
 	}
 
 	/**

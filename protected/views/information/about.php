@@ -72,7 +72,7 @@
 			<td>
 				<a href="http://www.yiiframework.com" class="icon">
 					<?php echo Html::icon('globe'); ?>
-					<span>Yii 1.1.0</span>
+					<span>Yii 1.1.1</span>
 				</a>
 			</td>
 			<td>Yii is a high-performance component-based PHP framework best for developing large-scale Web applications.</td>

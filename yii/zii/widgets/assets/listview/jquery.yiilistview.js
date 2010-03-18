@@ -5,7 +5,7 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: jquery.yiilistview.js 99 2010-01-07 20:55:13Z qiang.xue $
+ * @version $Id: jquery.yiilistview.js 144 2010-03-11 21:28:29Z qiang.xue $
  */
 
 ;(function($) {
@@ -17,13 +17,13 @@
 	 * - pagerClass: string, the CSS class for the pager container
 	 * - sorterClass: string, the CSS class for the sorter container
 	 * - updateSelector: string, the selector for choosing which elements can trigger ajax requests
-	 * - beforeUpdate: function, the function to be called before ajax request is sent
-	 * - afterUpdate: function, the function to be called after ajax response is received
+	 * - beforeAjaxUpdate: function, the function to be called before ajax request is sent
+	 * - afterAjaxUpdate: function, the function to be called after ajax response is received
 	 */
-	$.fn.yiiListView = function(settings) {
-		var settings = $.extend({}, $.fn.yiiListView.defaults, settings || {});
+	$.fn.yiiListView = function(options) {
 		return this.each(function(){
-			$this = $(this);
+			var settings = $.extend({}, $.fn.yiiListView.defaults, options || {});
+			var $this = $(this);
 			var id = $this.attr('id');
 			if(settings.updateSelector == undefined) {
 				settings.updateSelector = '#'+id+' .'+settings.pagerClass+' a, #'+id+' .'+settings.sorterClass+' a';
@@ -43,10 +43,11 @@
 		ajaxUpdate: [],
 		ajaxVar: 'ajax',
 		pagerClass: 'pager',
+		loadingClass: 'loading',
 		sorterClass: 'sorter'
 		// updateSelector: '#id .pager a, '#id .sort a',
-		// beforeUpdate: function(id) {},
-		// afterUpdate: function(id, data) {},
+		// beforeAjaxUpdate: function(id) {},
+		// afterAjaxUpdate: function(id, data) {},
 	};
 
 	$.fn.yiiListView.settings = {};
@@ -78,25 +79,32 @@
 	 */
 	$.fn.yiiListView.update = function(id, options) {
 		var settings = $.fn.yiiListView.settings[id];
-		var data = {};
-		data[settings.ajaxVar] = id;
+		$('#'+id).addClass(settings.loadingClass);
 		options = $.extend({
+			type: 'GET',
 			url: $.fn.yiiListView.getUrl(id),
-			data: data,
 			success: function(data,status) {
 				$.each(settings.ajaxUpdate, function() {
 					$('#'+this).html($(data).find('#'+this));
 				});
-				if(settings.afterUpdate != undefined)
-					settings.afterUpdate(id, data);
+				if(settings.afterAjaxUpdate != undefined)
+					settings.afterAjaxUpdate(id, data);
+				$('#'+id).removeClass(settings.loadingClass);
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				$('#'+id).removeClass(settings.loadingClass);
 				alert(XMLHttpRequest.responseText);
 			}
 		}, options || {});
 
-		if(settings.beforeUpdate != undefined)
-			settings.beforeUpdate(id);
+		if(options.data!=undefined && options.type=='GET') {
+			options.url = $.param.querystring(options.url, options.data);
+			options.data = {};
+		}
+		options.url = $.param.querystring(options.url, settings.ajaxVar+'='+id)
+
+		if(settings.beforeAjaxUpdate != undefined)
+			settings.beforeAjaxUpdate(id);
 		$.ajax(options);
 	};
 

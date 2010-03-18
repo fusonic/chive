@@ -44,7 +44,7 @@
  * you should store them directly in session on the server side if needed.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CWebUser.php 1696 2010-01-10 13:16:22Z qiang.xue $
+ * @version $Id: CWebUser.php 1832 2010-02-20 03:22:45Z qiang.xue $
  * @package system.web.auth
  * @since 1.0
  */
@@ -320,8 +320,8 @@ class CWebUser extends CApplicationComponent implements IWebUser
 		$cookie=$app->getRequest()->getCookies()->itemAt($this->getStateKeyPrefix());
 		if($cookie && !empty($cookie->value) && ($data=$app->getSecurityManager()->validateData($cookie->value))!==false)
 		{
-			$data=unserialize($data);
-			if(isset($data[0],$data[1],$data[2],$data[3]))
+			$data=@unserialize($data);
+			if(is_array($data) && isset($data[0],$data[1],$data[2],$data[3]))
 			{
 				list($id,$name,$duration,$states)=$data;
 				$this->changeIdentity($id,$name,$states);

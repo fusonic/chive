@@ -32,15 +32,13 @@ table.detail-view tr.odd
 
 table.detail-view tr.even
 {
-	background:#F8FBFC;
+	background:#F8F8F8;
 }
 
 table.detail-view tr.odd th
 {
-	background:#E1EBF0;
 }
 
 table.detail-view tr.even th
 {
-	background:#E5F1F4;
 }

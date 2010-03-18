@@ -2,6 +2,18 @@
                    Zii Extension Library for Yii Change Log
                    ========================================
 
+Version 1.1.1 March 14, 2010
+----------------------------
+- Bug: CGridView and CListView may not register the needed CSS file for the pager (Qiang)
+- Bug #18: Change the way CJuiDatePicker sets its language option (sebas)
+- Bug #14: Added documentation about the "js:" prefix in CJuiSortable (sebas)
+- Bug #27: Fixed the issue that when CSRF is turned on, delete button doesn't work for CGridView (Qiang)
+- Enh: Added CListView.loadingCssClass and CGridView.loadingCssClass (Qiang)
+- Enh: Added filtering support for CGridView (Qiang)
+- Enh: Added 'template' option to each attribute specification in CDetailView (Qiang)
+- Chg: CMenu will render the 'active' CSS class in the container tag of the link (Qiang)
+- Chg: Set the default theme for JQuery UI widgets to be 'base' (Qiang)
+- New: Upgraded JQuery UI to 1.8rc3 (Qiang)
 
 Version 1.1.0 January 10, 2010
 ------------------------------

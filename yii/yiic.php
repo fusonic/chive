@@ -9,14 +9,13 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: yiic.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: yiic.php 1870 2010-03-09 22:23:19Z qiang.xue $
  */
 
 // fix for fcgi
 defined('STDIN') or define('STDIN', fopen('php://stdin', 'r'));
 
 defined('YII_DEBUG') or define('YII_DEBUG',true);
-error_reporting(E_ALL ^ E_NOTICE);
 
 require_once(dirname(__FILE__).'/yii.php');
 
@@ -24,6 +23,9 @@ if(isset($config))
 {
 	$app=Yii::createConsoleApplication($config);
 	$app->commandRunner->addCommands(YII_PATH.'/cli/commands');
+	$env=@getenv('YII_CONSOLE_COMMANDS');
+	if(!empty($env))
+		$app->commandRunner->addCommands($env);
 }
 else
 	$app=Yii::createConsoleApplication(array('basePath'=>dirname(__FILE__).'/cli'));

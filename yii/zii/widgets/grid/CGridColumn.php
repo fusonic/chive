@@ -19,7 +19,7 @@
  * and {@link renderFooterCellContent} to customize how these cells are rendered.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CGridColumn.php 100 2010-01-09 19:35:37Z qiang.xue $
+ * @version $Id: CGridColumn.php 114 2010-01-20 02:24:05Z qiang.xue $
  * @package zii.widgets.grid
  * @since 1.1
  */
@@ -94,6 +94,17 @@ abstract class CGridColumn extends CComponent
 	}
 
 	/**
+	 * Renders the filter cell.
+	 * @since 1.1.1
+	 */
+	public function renderFilterCell()
+	{
+		echo "<td>";
+		$this->renderFilterCellContent();
+		echo "</td>";
+	}
+
+	/**
 	 * Renders the header cell.
 	 */
 	public function renderHeaderCell()
@@ -162,6 +173,17 @@ abstract class CGridColumn extends CComponent
 	 * @param mixed the data associated with the row
 	 */
 	protected function renderDataCellContent($row,$data)
+	{
+		echo '&nbsp;';
+	}
+
+	/**
+	 * Renders the filter cell content.
+	 * The default implementation simply renders a space.
+	 * This method may be overridden to customize the rendering of the filter cell (if any).
+	 * @since 1.1.1
+	 */
+	protected function renderFilterCellContent()
 	{
 		echo '&nbsp;';
 	}

@@ -15,7 +15,7 @@
  * You may override {@link getHelp} to provide more detailed description of the command.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CConsoleCommand.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CConsoleCommand.php 1832 2010-02-20 03:22:45Z qiang.xue $
  * @package system.console
  * @since 1.0
  */
@@ -169,7 +169,7 @@ abstract class CConsoleCommand extends CComponent
 	{
 		$list=array();
 		$handle=opendir($sourceDir);
-		while($file=readdir($handle))
+		while(($file=readdir($handle))!==false)
 		{
 			if($file==='.' || $file==='..' || $file==='.svn' ||$file==='.yii')
 				continue;

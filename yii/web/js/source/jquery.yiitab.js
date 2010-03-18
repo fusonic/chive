@@ -3,9 +3,9 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: jquery.yiitab.js 1474 2009-10-18 21:13:52Z qiang.xue $
+ * @version $Id: jquery.yiitab.js 1827 2010-02-20 00:43:32Z qiang.xue $
  */
 
 ;(function($) {
@@ -27,7 +27,7 @@
 			}
 
 			this.find('>ul a').click(function(event) {
-				var href=$(event.target).attr('href');
+				var href=$(this).attr('href');
 				var pos=href.indexOf('#');
 				activate(href);
 				if(pos==0 || (pos>0 && (window.location.pathname=='' || window.location.pathname==href.substring(0,pos))))

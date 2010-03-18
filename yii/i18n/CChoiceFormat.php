@@ -30,8 +30,8 @@
  * will be returned.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CChoiceFormat.php 1678 2010-01-07 21:02:00Z qiang.xue $
- * @package system.utils
+ * @version $Id: CChoiceFormat.php 1743 2010-01-22 18:53:15Z qiang.xue $
+ * @package system.i18n
  * @since 1.0.2
  */
 class CChoiceFormat

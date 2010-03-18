@@ -38,16 +38,27 @@
  *   // optional, a PHP expression whose value indicates whether this rule applies
  *   // This option is available since version 1.0.3.
  *   'expression'=>'!$user->isGuest && $user->level==2',
+ *   // optional, the customized error message to be displayed
+ *   // This option is available since version 1.1.1.
+ *   'message'=>'Access Denied.',
  * )
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CAccessControlFilter.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CAccessControlFilter.php 1782 2010-02-01 21:05:25Z qiang.xue $
  * @package system.web.auth
  * @since 1.0
  */
 class CAccessControlFilter extends CFilter
 {
+	/**
+	 * @var string the error message to be displayed when authorization fails.
+	 * This property can be overridden by individual access rule via {@link CAccessRule::message}.
+	 * If this property is not set, a default error message will be displayed.
+	 * @since 1.1.1
+	 */
+	public $message;
+
 	private $_rules=array();
 
 	/**
@@ -71,7 +82,7 @@ class CAccessControlFilter extends CFilter
 				$r->allow=$rule[0]==='allow';
 				foreach(array_slice($rule,1) as $name=>$value)
 				{
-					if($name==='expression' || $name==='roles')
+					if($name==='expression' || $name==='roles' || $name==='message')
 						$r->$name=$value;
 					else
 						$r->$name=array_map('strtolower',$value);
@@ -101,7 +112,7 @@ class CAccessControlFilter extends CFilter
 				break;
 			else if($allow<0) // denied
 			{
-				$this->accessDenied($user);
+				$this->accessDenied($user,$this->resolveErrorMessage($rule));
 				return false;
 			}
 		}
@@ -110,17 +121,36 @@ class CAccessControlFilter extends CFilter
 	}
 
 	/**
+	 * Resolves the error message to be displayed.
+	 * This method will check {@link message} and {@link CAccessRule::message} to see
+	 * what error message should be displayed.
+	 * @param CAccessRule the access rule
+	 * @return string the error message
+	 * @since 1.1.1
+	 */
+	protected function resolveErrorMessage($rule)
+	{
+		if($rule->message!==null)
+			return $rule->message;
+		else if($this->message!==null)
+			return $this->message;
+		else
+			return Yii::t('yii','You are not authorized to perform this action.');
+	}
+
+	/**
 	 * Denies the access of the user.
 	 * This method is invoked when access check fails.
 	 * @param IWebUser the current user
+	 * @param string the error message to be displayed
 	 * @since 1.0.5
 	 */
-	protected function accessDenied($user)
+	protected function accessDenied($user,$message)
 	{
 		if($user->getIsGuest())
 			$user->loginRequired();
 		else
-			throw new CHttpException(403,Yii::t('yii','You are not authorized to perform this action.'));
+			throw new CHttpException(403,$message);
 	}
 }
 
@@ -129,7 +159,7 @@ class CAccessControlFilter extends CFilter
  * CAccessRule represents an access rule that is managed by {@link CAccessControlFilter}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CAccessControlFilter.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CAccessControlFilter.php 1782 2010-02-01 21:05:25Z qiang.xue $
  * @package system.web.auth
  * @since 1.0
  */
@@ -182,6 +212,12 @@ class CAccessRule extends CComponent
 	 * @since 1.0.3
 	 */
 	public $expression;
+	/**
+	 * @var string the error message to be displayed when authorization is denied by this rule.
+	 * If not set, a default error message will be displayed.
+	 * @since 1.1.1
+	 */
+	public $message;
 
 
 	/**

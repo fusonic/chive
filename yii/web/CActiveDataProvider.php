@@ -23,7 +23,7 @@
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveDataProvider.php 1656 2010-01-03 14:20:04Z qiang.xue $
+ * @version $Id: CActiveDataProvider.php 1758 2010-01-28 02:19:39Z qiang.xue $
  * @package system.web
  * @since 1.1
  */
@@ -94,7 +94,7 @@ class CActiveDataProvider extends CDataProvider
 		$criteria=clone $this->getCriteria();
 		if(($pagination=$this->getPagination())!==false)
 		{
-			$pagination->setItemCount($this->getTotalItemCount(true));
+			$pagination->setItemCount($this->getTotalItemCount());
 			$pagination->applyLimit($criteria);
 		}
 		if(($sort=$this->getSort())!==false)

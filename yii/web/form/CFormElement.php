@@ -14,7 +14,7 @@
  * CFormElement implements the way to get and set arbitrary attributes.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFormElement.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CFormElement.php 1820 2010-02-19 03:03:01Z qiang.xue $
  * @package system.web.form
  * @since 1.1
  */

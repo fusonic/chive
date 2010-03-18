@@ -49,7 +49,7 @@
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CValidator.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CValidator.php 1838 2010-02-26 03:52:44Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -89,6 +89,12 @@ abstract class CValidator extends CComponent
 	 * recognize "{attribute}" placeholder, which will be replaced with the label of the attribute.
 	 */
 	public $message;
+	/**
+	 * @var boolean whether this validation rule should be skipped if when there is already a validation
+	 * error for the current attribute. Defaults to false.
+	 * @since 1.1.1
+	 */
+	public $skipOnError=false;
 	/**
 	 * @var array list of scenarios that the validator should be applied.
 	 * Each array value refers to a scenario name with the same name as its array key.
@@ -165,7 +171,10 @@ abstract class CValidator extends CComponent
 		else
 			$attributes=$this->attributes;
 		foreach($attributes as $attribute)
-			$this->validateAttribute($object,$attribute);
+		{
+			if(!$this->skipOnError || !$object->hasErrors($attribute))
+				$this->validateAttribute($object,$attribute);
+		}
 	}
 
 	/**

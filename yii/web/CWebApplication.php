@@ -36,7 +36,7 @@
  * which is in the file 'protected/controller/article.php'.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CWebApplication.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CWebApplication.php 1775 2010-02-01 20:02:44Z qiang.xue $
  * @package system.web
  * @since 1.0
  */
@@ -411,9 +411,10 @@ class CWebApplication extends CApplication
 	{
 		if(($pos=strpos($pathInfo,'/'))!==false)
 		{
-			CUrlManager::parsePathInfo((string)substr($pathInfo,$pos+1));
+			$manager=$this->getUrlManager();
+			$manager->parsePathInfo((string)substr($pathInfo,$pos+1));
 			$actionID=substr($pathInfo,0,$pos);
-			return $this->getUrlManager()->caseSensitive ? $actionID : strtolower($actionID);
+			return $manager->caseSensitive ? $actionID : strtolower($actionID);
 		}
 		else
 			return $pathInfo;

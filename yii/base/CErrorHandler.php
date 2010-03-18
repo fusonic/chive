@@ -8,6 +8,8 @@
  * @license http://www.yiiframework.com/license/
  */
 
+Yii::import('CHtml',true);
+
 /**
  * CErrorHandler handles uncaught PHP errors and exceptions.
  *
@@ -46,7 +48,7 @@
  * {@link CApplication::getErrorHandler()}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CErrorHandler.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CErrorHandler.php 1789 2010-02-02 18:38:56Z qiang.xue $
  * @package system.base
  * @since 1.0
  */

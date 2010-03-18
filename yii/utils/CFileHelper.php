@@ -12,7 +12,7 @@
  * CFileHelper provides a set of helper methods for common file system operations.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFileHelper.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CFileHelper.php 1832 2010-02-20 03:22:45Z qiang.xue $
  * @package system.utils
  * @since 1.0
  */
@@ -96,7 +96,7 @@ class CFileHelper
 		@mkdir($dst);
 		@chmod($dst,0777);
 		$folder=opendir($src);
-		while($file=readdir($folder))
+		while(($file=readdir($folder))!==false)
 		{
 			if($file==='.' || $file==='..')
 				continue;
@@ -133,7 +133,7 @@ class CFileHelper
 	{
 		$list=array();
 		$handle=opendir($dir);
-		while($file=readdir($handle))
+		while(($file=readdir($handle))!==false)
 		{
 			if($file==='.' || $file==='..')
 				continue;

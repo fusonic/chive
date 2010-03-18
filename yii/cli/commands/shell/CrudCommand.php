@@ -6,14 +6,14 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: CrudCommand.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CrudCommand.php 1865 2010-03-09 16:48:03Z qiang.xue $
  */
 
 /**
  * CrudCommand generates code implementing CRUD operations.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CrudCommand.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CrudCommand.php 1865 2010-03-09 16:48:03Z qiang.xue $
  * @package system.cli.commands.shell
  * @since 1.0
  */
@@ -35,7 +35,7 @@ class CrudCommand extends CConsoleCommand
 	/**
 	 * @var array list of actions to be created. Each action must be associated with a template file with the same name.
 	 */
-	public $actions=array('create','update','index','view','admin','_form','_view');
+	public $actions=array('create','update','index','view','admin','_form','_view','_search');
 
 	public function getHelp()
 	{
@@ -264,6 +264,35 @@ EOD;
 		}
 	}
 
+	public function generateActiveLabel($modelClass,$column)
+	{
+		return "\$form->labelEx(\$model,'{$column->name}')";
+	}
+
+	public function generateActiveField($modelClass,$column)
+	{
+		if($column->type==='boolean')
+			return "\$form->checkBox(\$model,'{$column->name}')";
+		else if(stripos($column->dbType,'text')!==false)
+			return "\$form->textArea(\$model,'{$column->name}',array('rows'=>6, 'cols'=>50))";
+		else
+		{
+			if(preg_match('/^(password|pass|passwd|passcode)$/i',$column->name))
+				$inputField='passwordField';
+			else
+				$inputField='textField';
+
+			if($column->type!=='string' || $column->size===null)
+				return "\$form->{$inputField}(\$model,'{$column->name}')";
+			else
+			{
+				if(($size=$maxLength=$column->size)>60)
+					$size=60;
+				return "\$form->{$inputField}(\$model,'{$column->name}',array('size'=>$size,'maxlength'=>$maxLength))";
+			}
+		}
+	}
+
 	public function guessNameColumn($columns)
 	{
 		foreach($columns as $column)
@@ -282,6 +311,11 @@ EOD;
 				return $column->name;
 		}
 		return 'id';
+	}
+
+	public function class2id($className)
+	{
+		return trim(strtolower(str_replace('_','-',preg_replace('/(?<![A-Z])[A-Z]/', '-\0', $className))),'-');
 	}
 
 	public function class2name($className,$pluralize=false)
