@@ -19,10 +19,11 @@ var themeUrl = '<?php echo Yii::app()->theme->baseUrl; ?>';
 </script>
 
 <?php
+Yii::app()->clientScript->registerCoreScript('jquery');
+
 $scriptFiles = array(
-	'js/jquery/jquery.js',
-	'js/jquery/jquery-ui-1.7.1.custom.min.js',
 	'js/jquery/jquery.autocomplete.js',
+	'js/jquery/jquery-ui-1.7.1.custom.min.js',
 	'js/jquery/jquery.blockUI.js',
 	'js/jquery/jquery.checkboxTable.js',
 	'js/jquery/jquery.editableTable.js',

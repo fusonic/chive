@@ -62,13 +62,6 @@ else
 $theme = $app->session->itemAt('theme') ? $app->session->itemAt('theme') : 'standard';
 $app->setTheme($theme);
 
-// Unset jQuery in Ajax requests
-if($app->request->isAjaxRequest)
-{
-	$app->clientScript->scriptMap['jquery.js'] = false;
-	$app->clientScript->scriptMap['jquery.min.js'] = false;
-}
-
 // Publish messages for javascript usage
 Yii::app()->getComponent('messages')->publishJavaScriptMessages();
 
