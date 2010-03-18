@@ -91,6 +91,7 @@ return array(
 			'charset' => 'utf8',
 			'autoConnect' => false,
 			'schemaCachingDuration' => 3600,
+			'emulatePrepare' => true,
 		),
 
 		'messages' => array(
