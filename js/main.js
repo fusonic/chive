@@ -168,7 +168,7 @@ $(document).ready(function()
 	
 	// ERROR
 	$(document).ajaxError(function() {
-		Notification.add('warning', 'Ajax request failed', 'Click <a href="javascript:void(0);" onclick="reload();">here</a> to reload site.', null);
+		Notification.add('warning', lang.get('core', 'ajaxRequestFailed'), lang.get('core', 'ajaxRequestFailedText'), null);
 		$('#loading').css({'background-image': 'url(' + baseUrl + '/images/loading5.gif)'}).fadeOut();
 	});
 
@@ -178,7 +178,6 @@ $(document).ready(function()
 	$.ui.dialog.defaults.autoOpen = false;
 	$.ui.dialog.defaults.modal = true;
 	$.ui.dialog.defaults.resizable = false;
-
 
 	/*
 	 * Misc

@@ -19,11 +19,11 @@ class SqlUtil
 		      {
 		      	if (preg_match('/^\d+\.\d+$/', $value)) 
 		        { 
-		        	$value = (string) float($value);
+		        	$value = (string)(float)$value;
 		        }
 		        elseif (strlen($value) == 1 && ($asciiValue = ord($value)) < 2) 
 		        {
-		       		$value = (int)(bool) $asciiValue;
+		       		$value = (int)(bool)$asciiValue;
 		        }
 		        else 
 		        {

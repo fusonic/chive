@@ -39,30 +39,31 @@ var informationProcesses = {
 		/*
 		 * Setup dialog
 		 */
+		var buttons = {};
+		buttons[lang.get('core', 'no')] = function() {
+			$(this).dialog('close');
+		};
+		buttons[lang.get('core', 'yes')] = function() {
+			
+			// Collect ids
+			var ids = [];
+			$('#processes input[name="processes[]"]:checked').each(function(i,o) {
+				ids.push($(this).val());
+			});
+			
+			// Do truncate request
+			$.post(baseUrl + '/information/processes/kill', {
+				ids	: 	JSON.stringify(ids)
+			}, AjaxResponse.handle);
+			
+			$(this).dialog('close');
+		};
+		
 		$('#killProcessDialog').dialog({
 			modal: true,
 			resizable: false,
 			autoOpen: false,
-			buttons: {
-				'No': function() {
-					$(this).dialog('close');
-				},
-				'Yes': function() {
-					
-					// Collect ids
-					var ids = [];
-					$('#processes input[name="processes[]"]:checked').each(function(i,o) {
-						ids.push($(this).val());
-					});
-					
-					// Do truncate request
-					$.post(baseUrl + '/information/processes/kill', {
-						ids	: 	JSON.stringify(ids)
-					}, AjaxResponse.handle);
-					
-					$(this).dialog('close');
-				}
-			}		
+			buttons: buttons	
 		});
 	}
 	

@@ -23,6 +23,8 @@
 	<entry id="addUser">Add user</entry>
 	<entry id="addView">Add view</entry>
 	<entry id="affectedRowsQueryTime">0#No rows affected. Query took {time} seconds.|1#{rows} row affected. Query took {time} seconds.|n&gt;1#{rows} rows affected. Query took {time} seconds.</entry>
+	<entry id="ajaxRequestFailed">Ajax request failed</entry>
+	<entry id="ajaxRequestFailedText">Click &lt;a href="javascript:void(0)" onclick="reload()"&gt;here&lt;/a&gt; to reload site.</entry>
 	<entry id="amountRoutines">1#{amount}  Routine|n&gt;1#{amount}  Routines</entry>
 	<entry id="amountTables">1#{amount}  Table|n&gt;1#{amount}  Tables</entry>
 	<entry id="amountViews">1#{amount}  View|n&gt;1#{amount}  Views</entry>
@@ -168,6 +170,8 @@
 	<entry id="maintainer">Maintainer</entry>
 	<entry id="maximum">Maximum</entry>
 	<entry id="move">Move</entry>
+	<entry id="mysqlServerVersion">MySQL Server Version</entry>
+	<entry id="mysqlClientVersion">MySQL Client Version</entry>
 	<entry id="name">Name</entry>
 	<entry id="nextAutoincrementValue">Next autoincrement value</entry>
 	<entry id="no">No</entry>
@@ -202,6 +206,7 @@
 	<entry id="processes">Processes</entry>
 	<entry id="profiling">Profiling</entry>
 	<entry id="profilingResultsSortedByExecutionTime">Profiling results sorted by execution time</entry>
+	<entry id="projectNews">Project News</entry>
 	<entry id="query">Query</entry>
 	<entry id="refresh">Refresh</entry>
 	<entry id="relation">Relation</entry>
@@ -216,6 +221,7 @@
 	<entry id="schemata">Schemata</entry>
 	<entry id="search">Search</entry>
 	<entry id="selectColumnToAdd">Select a column to add</entry>
+	<entry id="serverInformation">Server Information</entry>
 	<entry id="setNull">Set NULL</entry>
 	<entry id="settings">Settings</entry>
 	<entry id="show">Display dump</entry>
@@ -303,6 +309,7 @@
 	<entry id="view">View</entry>
 	<entry id="views">Views</entry>
 	<entry id="warning">Warning</entry>
+	<entry id="webserver">Webserver</entry>
 	<entry id="withSelected">With selected: </entry>
 	<entry id="xDebugExportWarning">XDebug profiling is enabled on this server.&lt;br /&gt;Exporting large databases may crash your system!</entry>
 	<entry id="yes">Yes</entry>
