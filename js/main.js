@@ -167,8 +167,8 @@ $(document).ready(function()
 	});
 	
 	// ERROR
-	$(document).ajaxError(function() {
-		Notification.add('warning', lang.get('core', 'ajaxRequestFailed'), lang.get('core', 'ajaxRequestFailedText'), null);
+	$(document).ajaxError(function(error, xhr) {
+		Notification.add('warning', lang.get('core', 'ajaxRequestFailed'), lang.get('core', 'ajaxRequestFailedText'), xhr.responseText);
 		$('#loading').css({'background-image': 'url(' + baseUrl + '/images/loading5.gif)'}).fadeOut();
 	});
 
