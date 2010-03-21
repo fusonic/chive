@@ -10,6 +10,6 @@ DirectoryIndex index.php
 	RewriteCond %{REQUEST_FILENAME} !-d
 
 	# otherwise forward it to index.php
-	RewriteRule . index.php?__chive_rewrite_on=1
-	RewriteRule ^$ index.php?__chive_rewrite_on=1
+	RewriteRule . index.php?__chive_rewrite_on=1&%{QUERY_STRING}
+	RewriteRule ^$ index.php?__chive_rewrite_on=1&%{QUERY_STRING}
 </IfModule>
