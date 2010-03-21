@@ -1,6 +1,6 @@
 <?php $id = StringUtil::getRandom(10); ?>
 
-<?php echo CHtml::form(BASEURL . '/row/update', 'POST', array('id' => 'form_' . $id)); ?>
+<?php echo CHtml::form(Yii::app()->createUrl('row/update'), 'POST', array('id' => 'form_' . $id)); ?>
 
 <div style="padding: 2px 10px;">
 
