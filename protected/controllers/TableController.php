@@ -387,7 +387,10 @@ class TableController extends Controller
 	public function actionDrop()
 	{
 		$response = new AjaxResponse();
-		$response->refresh = true;
+		if(!Yii::app()->getRequest()->getParam('redirectOnSuccess'))
+		{
+			$response->refresh = true;
+		}
 		$response->executeJavaScript('sideBar.loadTables(schema);');
 
 		$tables = (array)$_POST['tables'];
@@ -422,6 +425,11 @@ class TableController extends Controller
 				Yii::t('core', 'successDropTable', array($count, '{table}' => $droppedTables[0], '{tableCount}' => $count)),
 				($count > 1 ? implode(', ', $droppedTables) : null),
 				implode("\n", $droppedSqls));
+				
+			if(Yii::app()->getRequest()->getParam('redirectOnSuccess'))
+			{
+				$response->redirectUrl = '#tables';
+			}
 		}
 
 		$response->send();
