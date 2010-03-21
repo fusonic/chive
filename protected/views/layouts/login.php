@@ -18,11 +18,11 @@
 	<div id="header">
 		<div id="headerRight">
 			<a class="icon button" href="javascript:void(0);" style="margin-right: 9px;" onclick="$('#themeDialog').dialog('open');">
-				<img src="<?php echo BASEURL; ?>/themes/<?php  echo Yii::app()->getTheme()->name; ?>/images/icon.png" />
+				<img class="icon icon16" src="<?php echo BASEURL; ?>/themes/<?php  echo Yii::app()->getTheme()->name; ?>/images/icon.png" alt="<?php echo ucfirst(Yii::app()->getTheme()->name); ?>" />
 				<span><?php echo ucfirst(Yii::app()->getTheme()->name); ?></span>
 			</a>
 			<a class="icon button" href="javascript:void(0);" style="margin-right: 9px;" onclick="$('#languageDialog').dialog('open');">
-				<img src="<?php echo BASEURL; ?>/images/language/<?php echo Yii::app()->getLanguage(); ?>.png" />
+				<img class="icon icon16" src="<?php echo BASEURL; ?>/images/language/<?php echo Yii::app()->getLanguage(); ?>.png" alt="<?php echo Yii::t('language', Yii::app()->getLanguage()); ?>" />
 				<span><?php echo Yii::t('language', Yii::app()->getLanguage()); ?></span>
 			</a>
 		</div>

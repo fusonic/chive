@@ -1,5 +1,5 @@
 <div id="languageDialog" title="<?php echo Yii::t('core', 'chooseLanguage'); ?>">
-	<table>
+	<table style="width: 100%">
 		<tr>
 		<?php if (count($languages) > 0 ) {?>
 			<td style="width: 50%">
@@ -7,7 +7,7 @@
 				<?php $languageCount = count($languages); ?>
 				<?php foreach($languages as $language) { ?>
 					<a href="<?php echo $language['url']; ?>" class="icon" style="display: block; margin-bottom: 3px">
-						<img src="<?php echo BASEURL . '/' . $language['icon']; ?>" alt="test" />
+						<img class="icon icon16" src="<?php echo BASEURL . '/' . $language['icon']; ?>" alt="<?php echo $language['label']; ?>" />
 						<span><?php echo $language['label']; ?></span>
 					</a>
 					<?php $i++; ?>
@@ -28,7 +28,7 @@
 </div>
 
 <div id="themeDialog" title="<?php echo Yii::t('core', 'chooseTheme'); ?>">
-	<table>
+	<table style="width: 100%">
 		<tr>
 		<?php if (count($themes) > 0 ) {?>
 			<?php $i = 0; ?>
@@ -37,7 +37,7 @@
 
 				<td style="width: 150px;">
 					<a href="<?php echo $theme['url']; ?>" class="icon">
-						<img src="<?php echo BASEURL . '/' . $theme['icon']; ?>" alt="test" />
+						<img class="icon icon16" src="<?php echo BASEURL . '/' . $theme['icon']; ?>" alt="<?php echo $theme['label']; ?>" />
 						<span><?php echo $theme['label']; ?></span>
 					</a>
 				</td>
