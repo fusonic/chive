@@ -76,10 +76,10 @@ var tableGeneral = {
 			// Do drop request
 			$.post(baseUrl + '/schema/' + schema + '/tableAction/drop', {
 				tables: table,
-				schema: schema
+				schema: schema,
+				redirectOnSuccess: true
 			}, function(responseText) {
 				AjaxResponse.handle(responseText);
-				location.href = '#tables';
 			});
 			
 			$(this).dialog('close');

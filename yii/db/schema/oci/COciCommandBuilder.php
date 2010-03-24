@@ -12,7 +12,7 @@
  * COciCommandBuilder provides basic methods to create query commands for tables.
  *
  * @author Ricardo Grana <rickgrana@yahoo.com.br>
- * @version $Id: COciCommandBuilder.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: COciCommandBuilder.php 1867 2010-03-09 18:22:16Z qiang.xue $
  * @package system.db.schema.oci
  * @since 1.0.5
  */
@@ -106,7 +106,7 @@ EOD;
 
 		if(is_string($table->primaryKey))
 		{
-			$sql.=" RETURNING ".$table->primaryKey." INTO :RETURN_ID";
+			$sql.=' RETURNING "'.$table->primaryKey.'" INTO :RETURN_ID';
 			$command=$this->getDbConnection()->createCommand($sql);
 			$command->bindParam(':RETURN_ID', $this->returnID, PDO::PARAM_INT, 12);
 			$table->sequenceName='RETURN_ID';

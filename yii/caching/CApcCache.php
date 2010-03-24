@@ -17,7 +17,7 @@
  * See {@link CCache} manual for common cache operations that are supported by CApcCache.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CApcCache.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CApcCache.php 1832 2010-02-20 03:22:45Z qiang.xue $
  * @package system.caching
  * @since 1.0
  */
@@ -55,7 +55,7 @@ class CApcCache extends CCache
 	 */
 	protected function getValues($keys)
 	{
-		return array_combine($keys,apc_fetch($keys));
+		return apc_fetch($keys);
 	}
 
 	/**

@@ -17,8 +17,12 @@
  * expression so that saving the record would fill the corresponding column
  * with the current DB server timestamp.
  *
+ * Starting from version 1.1.1, one can also specify parameters to be bound
+ * for the expression. For example, if the expression is 'LOWER(:value)', then
+ * one can set {@link params} to be <code>array(':value'=>$value)</code>.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbExpression.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CDbExpression.php 1787 2010-02-01 23:02:40Z qiang.xue $
  * @package system.db.schema
  * @since 1.0.2
  */
@@ -28,14 +32,22 @@ class CDbExpression extends CComponent
 	 * @var string the DB expression
 	 */
 	public $expression;
+	/**
+	 * @var array list of parameters that should be bound for this expression.
+	 * The keys are placeholders appearing in {@link expression}, while the values
+	 * are the corresponding parameter values.
+	 * @since 1.1.1
+	 */
+	public $params=array();
 
 	/**
 	 * Constructor.
 	 * @param string the DB expression
 	 */
-	public function __construct($expression)
+	public function __construct($expression,$params=array())
 	{
 		$this->expression=$expression;
+		$this->params=$params;
 	}
 
 	/**

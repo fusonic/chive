@@ -420,6 +420,8 @@ class SqlExporter implements IExporter
 				echo "\n\n";
 				echo $insert;
 			}
+			
+			SqlUtil::FixRow($row);
 
 			// Escape all contents
 			foreach($row AS $key => $value)
@@ -594,26 +596,29 @@ class SqlExporter implements IExporter
 				echo "\n\n";
 				echo $insert;
 			}
+			
+			$attributes = $row->getAttributes();
+			SqlUtil::FixRow($attributes);
 
 			// Escape all contents
-			foreach($row->getAttributes() AS $key => $value)
+			foreach($attributes AS $key => $value)
 			{
 				if($value === null)
 				{
-					$row[$key] = 'NULL';
+					$attributes[$key] = 'NULL';
 				}
 				elseif($hexBlobs && in_array($key, $blobCols) && $value)
 				{
-					$row[$key] = '0x' . bin2hex($value);
+					$attributes[$key] = '0x' . bin2hex($value);
 				}
 				else
 				{
-					$row[$key] = $pdo->quote($value);
+					$attributes[$key] = $pdo->quote($value);
 				}
 			}
 
 			// Add this row
-			echo "\n  (", implode(', ', $row->getAttributes()), ')';
+			echo "\n  (", implode(', ', $attributes), ')';
 
 			if($i == $rowCount - 1)
 			{

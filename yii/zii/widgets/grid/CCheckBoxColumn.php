@@ -13,16 +13,16 @@ Yii::import('zii.widgets.grid.CGridColumn');
 /**
  * CCheckBoxColumn represents a grid view column of checkboxes.
  *
- * By default, the checkboxes rendered in data cells will have the key values associated with
- * the data models in the corresponding rows. One may change this by setting either {@link name}
- * {@link value}.
- *
  * CCheckBoxColumn supports single selection and multiple selection. The mode is determined according
  * to {@link CGridView::selectableRows}. When in multiple selection mode, the header cell will display
  * an additional checkbox, clicking on which will check or uncheck all of the checkboxes in the data cells.
  *
+ * By default, the checkboxes rendered in data cells will have the values that are the same as
+ * the key values of the data model. One may change this by setting either {@link name} or
+ * {@link value}.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCheckBoxColumn.php 99 2010-01-07 20:55:13Z qiang.xue $
+ * @version $Id: CCheckBoxColumn.php 144 2010-03-11 21:28:29Z qiang.xue $
  * @package zii.widgets.grid
  * @since 1.1
  */
@@ -70,13 +70,13 @@ class CCheckBoxColumn extends CGridColumn
 		else
 			$one='';
 		$js=<<<EOD
-jQuery('#{$this->id}_all').live('click',function(){
+jQuery('#{$this->id}_all').live('click',function() {
 	var checked=this.checked;
 	jQuery("input[name='$name']").each(function() {
 		this.checked=checked;
 	});
 });
-jQuery("input[name='$name']").click(function() {
+jQuery("input[name='$name']").live('click', function() {
 	jQuery('#{$this->id}_all').attr('checked', jQuery("input[name='$name']").length==jQuery("input[name='$name'][checked=true]").length);{$one}
 });
 EOD;

@@ -16,7 +16,7 @@
  * of the directory containing the SWF file of the Flex application.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFlexWidget.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CFlexWidget.php 1766 2010-02-01 00:27:29Z qiang.xue $
  * @package system.web.widgets
  * @since 1.0
  */
@@ -56,6 +56,11 @@ class CFlexWidget extends CWidget
 	 * @var string the access method of the script. Defaults to 'sameDomain'.
 	 */
 	public $allowScriptAccess='sameDomain';
+	/**
+	 * @var boolean whether to allow running the Flash in full screen mode. Defaults to false.
+	 * @since 1.1.1
+	 */
+	public $allowFullScreen=false;
 	/**
 	 * @var string the HTML content to be displayed if Flash player is not installed.
 	 */

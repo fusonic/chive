@@ -15,7 +15,7 @@
  * CModel defines the basic framework for data models that need to be validated.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CModel.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CModel.php 1859 2010-03-06 04:21:12Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -425,7 +425,23 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 		{
 			if(isset($attributes[$name]))
 				$this->$name=$value;
+			else
+				$this->onUnsafeAttribute($name,$value);
 		}
+	}
+
+	/**
+	 * This method is invoked when an unsafe attribute is being massively assigned.
+	 * The default implementation will log a warning message if YII_DEBUG is on.
+	 * It does nothing otherwise.
+	 * @param string the unsafe attribute name
+	 * @param mixed the attribute value
+	 * @since 1.1.1
+	 */
+	public function onUnsafeAttribute($name,$value)
+	{
+		if(YII_DEBUG)
+			Yii::log(Yii::t('yii','Failed to set unsafe attribute "{attribute}".',array('{attribute}'=>$name)),CLogger::LEVEL_WARNING);
 	}
 
 	/**

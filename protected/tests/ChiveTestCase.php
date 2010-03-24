@@ -37,6 +37,7 @@ class ChiveTestCase extends CTestCase
 	protected function createDbConnection($dbName)
 	{
 		$db = new CDbConnection('mysql:host=' . ChiveTestCase::DB_HOST . ';dbname=' . $dbName, ChiveTestCase::DB_USER, ChiveTestCase::DB_PASSWORD);
+		$db->emulatePrepare = true;
 		$db->charset = 'utf8';
 		$db->active = true;
 		return $db;

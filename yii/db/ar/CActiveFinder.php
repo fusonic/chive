@@ -15,7 +15,7 @@
  * {@link CActiveRecord}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveFinder.php 1683 2010-01-08 05:08:29Z qiang.xue $
+ * @version $Id: CActiveFinder.php 1869 2010-03-09 22:02:12Z qiang.xue $
  * @package system.db.ar
  * @since 1.0
  */
@@ -66,10 +66,22 @@ class CActiveFinder extends CComponent
 		return $this;
 	}
 
-	private function query($criteria,$all=false)
+	/**
+	 * Performs the relational query based on the given DB criteria.
+	 * Do not call this method. This method is used internally.
+	 * @param CDbCriteria the DB criteria
+	 * @param boolean whether to bring back all records
+	 * @return mixed the query result
+	 */
+	public function query($criteria,$all=false)
 	{
-		$this->_joinTree->beforeFind();
 		$this->_joinTree->model->applyScopes($criteria);
+		$this->_joinTree->beforeFind();
+
+		$alias=$criteria->alias===null ? 't' : $criteria->alias;
+		$this->_joinTree->tableAlias=$alias;
+		$this->_joinTree->rawTableAlias=$this->_builder->getSchema()->quoteTableName($alias);
+
 		$this->_joinTree->find($criteria);
 		$this->_joinTree->afterFind();
 
@@ -184,6 +196,11 @@ class CActiveFinder extends CComponent
 		Yii::trace(get_class($this->_joinTree->model).'.count() eagerly','system.db.ar.CActiveRecord');
 		$criteria=$this->_builder->createCriteria($condition,$params);
 		$this->_joinTree->model->applyScopes($criteria);
+
+		$alias=$criteria->alias===null ? 't' : $criteria->alias;
+		$this->_joinTree->tableAlias=$alias;
+		$this->_joinTree->rawTableAlias=$this->_builder->getSchema()->quoteTableName($alias);
+
 		return $this->_joinTree->count($criteria);
 	}
 
@@ -284,7 +301,7 @@ class CActiveFinder extends CComponent
  * CJoinElement represents a tree node in the join tree created by {@link CActiveFinder}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveFinder.php 1683 2010-01-08 05:08:29Z qiang.xue $
+ * @version $Id: CActiveFinder.php 1869 2010-03-09 22:02:12Z qiang.xue $
  * @package system.db.ar
  * @since 1.0
  */
@@ -501,6 +518,8 @@ class CJoinElement
 			$childCondition=array();
 			$count=0;
 			$params=array();
+
+			$fkDefined=true;
 			foreach($fks as $i=>$fk)
 			{
 				if(isset($joinTable->foreignKeys[$fk]))  // FK defined
@@ -515,10 +534,25 @@ class CJoinElement
 					else if(!isset($childCondition[$pk]) && $schema->compareTableNames($this->_table->rawName,$tableName))
 						$childCondition[$pk]=$this->getColumnPrefix().$schema->quoteColumnName($pk).'='.$joinAlias.'.'.$schema->quoteColumnName($fk);
 					else
-						throw new CDbException(Yii::t('yii','The relation "{relation}" in active record class "{class}" is specified with an invalid foreign key "{key}". The foreign key does not point to either joining table.',
-							array('{class}'=>get_class($parent->model), '{relation}'=>$this->relation->name, '{key}'=>$fk)));
+					{
+						$fkDefined=false;
+						break;
+					}
 				}
-				else // FK constraints not defined
+				else
+				{
+					$fkDefined=false;
+					break;
+				}
+			}
+
+			if(!$fkDefined)
+			{
+				$parentCondition=array();
+				$childCondition=array();
+				$count=0;
+				$params=array();
+				foreach($fks as $i=>$fk)
 				{
 					if($i<count($parent->_table->primaryKey))
 					{
@@ -535,6 +569,7 @@ class CJoinElement
 					}
 				}
 			}
+
 			if($parentCondition!==array() && $childCondition!==array())
 			{
 				$join='INNER JOIN '.$joinTable->rawName.' '.$joinAlias.' ON ';
@@ -822,6 +857,14 @@ class CJoinElement
 					$key=substr($name,$pos+1);
 				else
 					$key=$name;
+
+				if($key==='*')
+				{
+					foreach($this->_table->getColumnNames() as $name)
+						$columns[]=$prefix.$schema->quoteColumnName($name).' AS '.$schema->quoteColumnName($this->_columnAliases[$name]);
+					continue;
+				}
+
 				if(isset($this->_columnAliases[$key]))  // simple column names
 				{
 					$columns[]=$prefix.$schema->quoteColumnName($key).' AS '.$schema->quoteColumnName($this->_columnAliases[$key]);
@@ -988,6 +1031,8 @@ class CJoinElement
 		$joinAlias=$schema->quoteTableName($this->relation->name.'_'.$this->tableAlias);
 		$parentCondition=array();
 		$childCondition=array();
+
+		$fkDefined=true;
 		foreach($fks as $i=>$fk)
 		{
 			if(!isset($joinTable->columns[$fk]))
@@ -1002,10 +1047,23 @@ class CJoinElement
 				else if(!isset($childCondition[$pk]) && $schema->compareTableNames($this->_table->rawName,$tableName))
 					$childCondition[$pk]=$this->getColumnPrefix().$schema->quoteColumnName($pk).'='.$joinAlias.'.'.$schema->quoteColumnName($fk);
 				else
-					throw new CDbException(Yii::t('yii','The relation "{relation}" in active record class "{class}" is specified with an invalid foreign key "{key}". The foreign key does not point to either joining table.',
-						array('{class}'=>get_class($parent->model), '{relation}'=>$this->relation->name, '{key}'=>$fk)));
+				{
+					$fkDefined=false;
+					break;
+				}
 			}
-			else // FK constraints not defined
+			else
+			{
+				$fkDefined=false;
+				break;
+			}
+		}
+
+		if(!$fkDefined)
+		{
+			$parentCondition=array();
+			$childCondition=array();
+			foreach($fks as $i=>$fk)
 			{
 				if($i<count($parent->_table->primaryKey))
 				{
@@ -1020,6 +1078,7 @@ class CJoinElement
 				}
 			}
 		}
+
 		if($parentCondition!==array() && $childCondition!==array())
 		{
 			$join=$this->relation->joinType.' '.$joinTable->rawName.' '.$joinAlias;
@@ -1041,7 +1100,7 @@ class CJoinElement
  * CJoinQuery represents a JOIN SQL statement.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveFinder.php 1683 2010-01-08 05:08:29Z qiang.xue $
+ * @version $Id: CActiveFinder.php 1869 2010-03-09 22:02:12Z qiang.xue $
  * @package system.db.ar
  * @since 1.0
  */
@@ -1197,7 +1256,7 @@ class CJoinQuery
  * CStatElement represents STAT join element for {@link CActiveFinder}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveFinder.php 1683 2010-01-08 05:08:29Z qiang.xue $
+ * @version $Id: CActiveFinder.php 1869 2010-03-09 22:02:12Z qiang.xue $
  * @package system.db.ar
  * @since 1.0.4
  */
@@ -1362,6 +1421,8 @@ class CStatElement
 
 		$joinCondition=array();
 		$map=array();
+
+		$fkDefined=true;
 		foreach($fks as $i=>$fk)
 		{
 			if(!isset($joinTable->columns[$fk]))
@@ -1376,10 +1437,24 @@ class CStatElement
 				else if(!isset($map[$pk]) && $schema->compareTableNames($pkTable->rawName,$tableName))
 					$map[$pk]=$fk;
 				else
-					throw new CDbException(Yii::t('yii','The relation "{relation}" in active record class "{class}" is specified with an invalid foreign key "{key}". The foreign key does not point to either joining table.',
-						array('{class}'=>get_class($this->_parent->model), '{relation}'=>$relation->name, '{key}'=>$fk)));
+				{
+					$fkDefined=false;
+					break;
+				}
 			}
-			else // FK constraints not defined
+			else
+			{
+				$fkDefined=false;
+				break;
+			}
+		}
+
+		if(!$fkDefined)
+		{
+			die('????');
+			$joinCondition=array();
+			$map=array();
+			foreach($fks as $i=>$fk)
 			{
 				if($i<count($pkTable->primaryKey))
 				{

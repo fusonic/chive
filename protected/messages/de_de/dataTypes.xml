@@ -2,5 +2,5 @@
 <category id="dataTypes">
   <entry id="numeric">Numerisch</entry>
   <entry id="strings">Zeichenketten</entry>
-  <entry id="dateAndTime">Datum und Zeit</entry>
+  <entry id="dateAndTime">Datum und Uhrzeit</entry>
 </category>

@@ -20,7 +20,7 @@ Yii::import('zii.widgets.grid.CGridColumn');
  * and customize the display order of the buttons.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CButtonColumn.php 99 2010-01-07 20:55:13Z qiang.xue $
+ * @version $Id: CButtonColumn.php 142 2010-03-10 20:53:52Z qiang.xue $
  * @package zii.widgets.grid
  * @since 1.1
  */
@@ -121,12 +121,17 @@ class CButtonColumn extends CGridColumn
 	 * <pre>
 	 * 'buttonID' => array(
 	 *     'label'=>'...',     // text label of the button
-	 *     'url'=>'...',       // the PHP expression for generating the URL of the button
+	 *     'url'=>'...',       // a PHP expression for generating the URL of the button
 	 *     'imageUrl'=>'...',  // image URL of the button. If not set or false, a text link is used
 	 *     'options'=>array(...), // HTML options for the button tag
 	 *     'click'=>'...',     // a JS function to be invoked when the button is clicked
+	 *     'visible'=>'...',   // a PHP expression for determining whether the button is visible
 	 * )
 	 * </pre>
+	 * In the PHP expression for the 'url' option and/or 'visible' option, the variable <code>$row</code>
+	 * refers to the current row number (zero-based), and <code>$data</code> refers to the data model for
+	 * the row.
+	 *
 	 * Note that in order to display these additional buttons, the {@link template} property needs to
 	 * be configured so that the corresponding button IDs appear as tokens in the template.
 	 */
@@ -179,15 +184,16 @@ class CButtonColumn extends CGridColumn
 
 		foreach(array('view','update','delete') as $id)
 		{
-			if(!isset($this->buttons[$id]))
-			{
-				$this->buttons[$id]=array(
-					'label'=>$this->{$id.'ButtonLabel'},
-					'url'=>$this->{$id.'ButtonUrl'},
-					'imageUrl'=>$this->{$id.'ButtonImageUrl'},
-					'options'=>$this->{$id.'ButtonOptions'},
-				);
-			}
+			$button=array(
+				'label'=>$this->{$id.'ButtonLabel'},
+				'url'=>$this->{$id.'ButtonUrl'},
+				'imageUrl'=>$this->{$id.'ButtonImageUrl'},
+				'options'=>$this->{$id.'ButtonOptions'},
+			);
+			if(isset($this->buttons[$id]))
+				$this->buttons[$id]=array_merge($this->buttons[$id],$button);
+			else
+				$this->buttons[$id]=$button;
 		}
 
 		if(is_string($this->deleteConfirmation))
@@ -195,12 +201,21 @@ class CButtonColumn extends CGridColumn
 		else
 			$confirmation='';
 
+		if(Yii::app()->request->enableCsrfValidation)
+		{
+	        $csrfTokenName = Yii::app()->request->csrfTokenName;
+	        $csrfToken = Yii::app()->request->csrfToken;
+	        $csrf = "\n\t\tdata:{ '$csrfTokenName':'$csrfToken' },";
+		}
+		else
+			$csrf = '';
+
 		$this->buttons['delete']['click']=<<<EOD
 function() {
 	$confirmation
 	$.fn.yiiGridView.update('{$this->grid->id}', {
 		type:'POST',
-		url:$(this).attr('href'),
+		url:$(this).attr('href'),$csrf
 		success:function() {
 			$.fn.yiiGridView.update('{$this->grid->id}');
 		}
@@ -221,7 +236,7 @@ EOD;
 			if(isset($button['click']))
 			{
 				$function=CJavaScript::encode($button['click']);
-				$js[]="jQuery('a.{$button['options']['class']}').live('click',$function);";
+				$js[]="jQuery('#{$this->grid->id} a.{$button['options']['class']}').live('click',$function);";
 			}
 		}
 
@@ -259,6 +274,8 @@ EOD;
 	 */
 	protected function renderButton($id,$button,$row,$data)
 	{
+		if (isset($button['visible']) && !$this->evaluateExpression($button['visible'],array('row'=>$row,'data'=>$data)))
+  			return;
 		$label=isset($button['label']) ? $button['label'] : $id;
 		$url=isset($button['url']) ? $this->evaluateExpression($button['url'],array('data'=>$data,'row'=>$row)) : '#';
 		$options=isset($button['options']) ? $button['options'] : array();

@@ -6,7 +6,7 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: flexWidget.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: flexWidget.php 1766 2010-02-01 00:27:29Z qiang.xue $
  * @package system.web.widgets.views
  * @since 1.0
  */
@@ -41,6 +41,7 @@ if ( hasProductInstall && !hasRequestedVersion ) {
 		"bgcolor", "<?php echo $this->bgColor; ?>",
 		"name", "<?php echo $this->name; ?>",
 		"allowScriptAccess","<?php echo $this->allowScriptAccess ?>",
+		"allowFullScreen","<?php echo $this->allowFullScreen ?>",
 		"type", "application/x-shockwave-flash",
 		"pluginspage", "http://www.adobe.com/go/getflashplayer"
 	);
@@ -58,6 +59,7 @@ if ( hasProductInstall && !hasRequestedVersion ) {
 		"name", "<?php echo $this->name ?>",
 		"flashvars","<?php echo $this->flashVarsAsString; ?>",
 		"allowScriptAccess","<?php echo $this->allowScriptAccess ?>",
+		"allowFullScreen","<?php echo $this->allowFullScreen ?>",
 		"type", "application/x-shockwave-flash",
 		"pluginspage", "http://www.adobe.com/go/getflashplayer"
 	);
@@ -78,6 +80,7 @@ if ( hasProductInstall && !hasRequestedVersion ) {
 			<param name="bgcolor" value="<?php echo $this->bgColor ?>" />
 			<param name="flashVars" value="<?php echo $this->flashVarsAsString ?>" />
 			<param name="allowScriptAccess" value="<?php echo $this->allowScriptAccess ?>" />
+			<param name="allowFullScreen" value="<?php echo $this->allowFullScreen ?>" />
 			<embed src="<?php echo $this->baseUrl ?>/<?php echo $this->name ?>.swf"
 				quality="<?php echo $this->quality ?>"
 				bgcolor="<?php echo $this->bgColor ?>"
@@ -89,6 +92,7 @@ if ( hasProductInstall && !hasRequestedVersion ) {
 				loop="false"
 				quality="<?php echo $this->quality ?>"
 				allowScriptAccess="<?php echo $this->allowScriptAccess ?>"
+				allowFullScreen="<?php echo $this->allowFullScreen ?>"
 				type="application/x-shockwave-flash"
 				pluginspage="http://www.adobe.com/go/getflashplayer">
 			</embed>

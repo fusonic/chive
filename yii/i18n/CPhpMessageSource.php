@@ -34,10 +34,10 @@
  * can be specified in the format of 'Xyz.categoryName'. And the corresponding message file
  * is assumed to be 'BasePath/messages/LanguageID/categoryName.php', where 'BasePath' refers to
  * the directory that contains the extension class file. When using Yii::t() to translate an extension message,
- * we should use: Yii::t('Xyz.categoryName', 'message to be translated').
+ * the category name should be set as 'Xyz.categoryName'.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CPhpMessageSource.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CPhpMessageSource.php 1884 2010-03-11 14:58:33Z qiang.xue $
  * @package system.i18n
  * @since 1.0
  */

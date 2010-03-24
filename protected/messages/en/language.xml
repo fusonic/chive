@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <category id="core">
-	<entry id="en_us">English (US)</entry>
 	<entry id="de_de">Deutsch</entry>
+	<entry id="en_us">English (US)</entry>
+	<entry id="en_gb">English (GB)</entry>
+	<entry id="es_es">Español</entry>
 	<entry id="fr_fr">Français</entry>
+	<entry id="it_it">Italiano</entry>
+	<entry id="nl_nl">Nederlandse</entry>
+	<entry id="pl_pl">Polska</entry>
+	<entry id="pt_br">Português (Brasil)</entry>
+	<entry id="ru_ru">Русский</entry>
 </category>

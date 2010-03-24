@@ -1,3 +1,8 @@
+.list-view-loading
+{
+	background:url(loading.gif) no-repeat;
+}
+
 .list-view .summary
 {
 	margin: 0 0 5px 0;

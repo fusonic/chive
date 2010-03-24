@@ -9,8 +9,7 @@
 <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->getBaseUrl(); ?>/css/style.css" />
 
 <link rel="shortcut icon" href="<?php echo BASEURL; ?>/images/favicon.ico" type="image/x-icon" />
-
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery.js', CClientScript::POS_HEAD); ?>
+<?php Yii::app()->clientScript->registerCoreScript('jquery'); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery/jquery-ui-1.7.1.custom.min.js', CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/views/site/login.js', CClientScript::POS_HEAD); ?>
 
@@ -19,11 +18,11 @@
 	<div id="header">
 		<div id="headerRight">
 			<a class="icon button" href="javascript:void(0);" style="margin-right: 9px;" onclick="$('#themeDialog').dialog('open');">
-				<img src="<?php echo BASEURL; ?>/themes/<?php  echo Yii::app()->getTheme()->name; ?>/images/icon.png" />
+				<img class="icon icon16" src="<?php echo BASEURL; ?>/themes/<?php  echo Yii::app()->getTheme()->name; ?>/images/icon.png" alt="<?php echo ucfirst(Yii::app()->getTheme()->name); ?>" />
 				<span><?php echo ucfirst(Yii::app()->getTheme()->name); ?></span>
 			</a>
 			<a class="icon button" href="javascript:void(0);" style="margin-right: 9px;" onclick="$('#languageDialog').dialog('open');">
-				<img src="<?php echo BASEURL; ?>/images/language/<?php echo Yii::app()->getLanguage(); ?>.png" />
+				<img class="icon icon16" src="<?php echo BASEURL; ?>/images/language/<?php echo Yii::app()->getLanguage(); ?>.png" alt="<?php echo Yii::t('language', Yii::app()->getLanguage()); ?>" />
 				<span><?php echo Yii::t('language', Yii::app()->getLanguage()); ?></span>
 			</a>
 		</div>

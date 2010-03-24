@@ -37,7 +37,7 @@ Yii::import('zii.widgets.jui.CJuiWidget');
  * for possible options (name-value pairs).
  *
  * @author Sebastian Thierer <sebathi@gmail.com>
- * @version $Id: CJuiSelectable.php 99 2010-01-07 20:55:13Z qiang.xue $
+ * @version $Id: CJuiSelectable.php 143 2010-03-11 13:09:59Z qiang.xue $
  * @package zii.widgets.jui
  * @since 1.1
  */
@@ -67,6 +67,7 @@ class CJuiSelectable extends CJuiWidget
 	{
 		$id=$this->getId();
 		$this->htmlOptions['id']=$id;
+
 		$options=empty($this->options) ? '' : CJavaScript::encode($this->options);
 		Yii::app()->getClientScript()->registerScript(__CLASS__.'#'.$id,"jQuery('#{$id}').selectable({$options});");
 

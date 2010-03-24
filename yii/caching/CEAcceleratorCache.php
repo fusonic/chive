@@ -15,8 +15,11 @@
  *
  * See {@link CCache} manual for common cache operations that are supported by CEAccelerator.
  *
+ * Please note that as of v0.9.6, eAccelerator no longer supports data caching.
+ * This means if you still want to use this component, your eAccelerator should be of 0.9.5.x or lower version.
+ *
  * @author Steffen Dietz <steffo.dietz[at]googlemail[dot]com>
- * @version $Id: CEAcceleratorCache.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CEAcceleratorCache.php 1854 2010-03-03 13:10:50Z qiang.xue $
  * @package system.caching
  * @since 1.0.4
  */

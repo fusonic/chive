@@ -82,34 +82,34 @@ var globalBrowse = {
 		/*
 		 * Setup dialog
 		 */
+		var buttons = {};
+		buttons[lang.get('core', 'no')] = function() {
+			$(this).dialog('close');
+		};
+		buttons[lang.get('core', 'yes')] = function() {
+			// Collect ids
+			var data = [];
+			$('#browse input[name="browse[]"]').each(function(i,o) {
+				if($(this).attr('checked')) {
+					data.push(keyData[i]);
+				}
+			});
+			
+			// Do truncate request
+			$.post(baseUrl + '/row/delete', {
+				data	: 	JSON.stringify(data),
+				schema	: 	schema,
+				table	: 	table
+			}, AjaxResponse.handle);
+			
+			$(this).dialog('close');
+		};
+		
 		$('#deleteRowDialog').dialog({
 			modal: true,
 			resizable: false,
 			autoOpen: false,
-			buttons: {
-				'No': function() {
-					$(this).dialog('close');
-				},
-				'Yes': function() {
-					
-					// Collect ids
-					var data = [];
-					$('#browse input[name="browse[]"]').each(function(i,o) {
-						if($(this).attr('checked')) {
-							data.push(keyData[i]);
-						}
-					});
-					
-					// Do truncate request
-					$.post(baseUrl + '/row/delete', {
-						data	: 	JSON.stringify(data),
-						schema	: 	schema,
-						table	: 	table
-					}, AjaxResponse.handle);
-					
-					$(this).dialog('close');
-				}
-			}		
+			buttons: buttons	
 		});
 		
 		$('#queryForm').ajaxForm({

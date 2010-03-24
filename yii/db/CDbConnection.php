@@ -79,7 +79,7 @@
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbConnection.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CDbConnection.php 1848 2010-02-27 05:41:52Z qiang.xue $
  * @package system.db
  * @since 1.0
  */
@@ -159,6 +159,11 @@ class CDbConnection extends CApplicationComponent
 	 * @since 1.1.0
 	 */
 	public $tablePrefix;
+	/**
+	 * @var array list of SQL statements that should be executed right after the DB connection is established.
+	 * @since 1.1.1
+	 */
+	public $initSQLs;
 
 	private $_attributes=array();
 	private $_active=false;
@@ -312,6 +317,11 @@ class CDbConnection extends CApplicationComponent
 		{
 			if(strcasecmp($pdo->getAttribute(PDO::ATTR_DRIVER_NAME),'sqlite'))
 				$pdo->exec('SET NAMES '.$pdo->quote($this->charset));
+		}
+		if($this->initSQLs!==null)
+		{
+			foreach($this->initSQLs as $sql)
+				$pdo->exec($sql);
 		}
 	}
 

@@ -27,6 +27,11 @@ body
     padding: 20px;
 }
 
+#sidebar
+{
+	padding: 20px 20px 20px 0;
+}
+
 #footer
 {
 	padding: 10px;
@@ -68,52 +73,52 @@ body
 	padding:5px 8px;
 }
 
-#mainmenu ul li a:hover, #mainmenu ul li a.active
+#mainmenu ul li a:hover, #mainmenu ul li.active a
 {
 	color: #6399cd;
 	background-color:#EFF4FA;
 	text-decoration:none;
 }
 
-div.error, div.notice, .success
+div.flash-error, div.flash-notice, div.flash-success
 {
 	padding:.8em;
 	margin-bottom:1em;
 	border:2px solid #ddd;
 }
 
-div.error
+div.flash-error
 {
 	background:#FBE3E4;
 	color:#8a1f11;
 	border-color:#FBC2C4;
 }
 
-div.notice
+div.flash-notice
 {
 	background:#FFF6BF;
 	color:#514721;
 	border-color:#FFD324;
 }
 
-div.success
+div.flash-success
 {
 	background:#E6EFC2;
 	color:#264409;
 	border-color:#C6D880;
 }
 
-div.error a
+div.flash-error a
 {
 	color:#8a1f11;
 }
 
-div.notice a
+div.flash-notice a
 {
 	color:#514721;
 }
 
-div.success a
+div.flash-success a
 {
 	color:#264409;
 }
@@ -121,37 +126,6 @@ div.success a
 div.form .rememberMe label
 {
 	display: inline;
-}
-
-.actions
-{
-	margin: 0 0 10px 0;
-	padding: 0;
-}
-
-.actions li
-{
-	display: inline;
-	margin: 0;
-	padding: 0;
-}
-
-.actions li a
-{
-	padding: 5px;
-	margin: 0;
-	color: #298dcd;
-	text-decoration: none;
-	font-size: 0.8em;
-	font-weight: bold;
-	background: #DFF4FF;
-	border-left: 5px solid #589FC8;
-}
-
-.actions li a:hover, .actions li a.active
-{
-	background: #589FC8;
-	color: white;
 }
 
 div.view
@@ -170,4 +144,86 @@ div.breadcrumbs
 div.breadcrumbs span
 {
 	font-weight: bold;
+}
+
+div.search-form
+{
+	padding: 10px;
+	margin: 10px 0;
+	background: #eee;
+}
+
+.portlet
+{
+
+}
+
+.portlet-decoration
+{
+	padding: 3px 8px;
+	background: #B7D6E7;
+	border-left: 5px solid #6FACCF;
+}
+
+.portlet-title
+{
+	font-size: 12px;
+	font-weight: bold;
+	padding: 0;
+	margin: 0;
+	color: #298dcd;
+}
+
+.portlet-content
+{
+	font-size:0.9em;
+	margin: 0 0 15px 0;
+	padding: 5px 8px;
+	background:#EFFDFF;
+}
+
+.portlet-content ul
+{
+	list-style-image:none;
+	list-style-position:outside;
+	list-style-type:none;
+	margin: 0;
+	padding: 0;
+}
+
+.portlet-content li
+{
+	padding: 2px 0 4px 0px;
+}
+
+.operations
+{
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.operations li
+{
+	padding-bottom: 2px;
+}
+
+.operations li a
+{
+	font: bold 12px Arial;
+	color: #0066A4;
+	display: block;
+	padding: 2px 0 2px 8px;
+	line-height: 15px;
+	text-decoration: none;
+}
+
+.operations li a:visited
+{
+	color: #0066A4;
+}
+
+.operations li a:hover
+{
+	background: #80CFFF;
 }

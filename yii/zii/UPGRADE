@@ -1,5 +1,5 @@
 
-         Upgrading Instructions for Zii Extension Library for Yii v1.1.0
+         Upgrading Instructions for Zii Extension Library for Yii v1.1.1
          ===============================================================
 
 !!!IMPORTANT!!!
@@ -11,3 +11,7 @@ for both A and B.
 
 Upgrading from v1.1.0
 ---------------------
+
+- The default theme for JQuery UI widgets was changed from 'smoothness' to 'base'.
+If you are using 'smoothness', you will need to manually download this theme from
+jqueryui.com and configure the 'theme' property of the JQuery UI widgets accordingly.

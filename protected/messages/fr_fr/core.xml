@@ -23,6 +23,8 @@
   <entry id="addUser">Ajouter un utilisateur</entry>
   <entry id="addView">Ajouter une vue</entry>
   <entry id="affectedRowsQueryTime">0#Aucun enregistrement affect&#xE9;. La requ&#xEA;te a pris {time} secondes.|1#{rows} enregistrement affect&#xE9;. La requ&#xEA;te a pris {time} secondes.|n&gt;1#{rows} enregistrements affect&#xE9;s. La requ&#xEA;te a pris {time} secondes</entry>
+  <entry id="ajaxRequestFailed"/>
+  <entry id="ajaxRequestFailedText"/>
   <entry id="amountRoutines">1#{amount} Routine|n&gt;1#{amount} Routines</entry>
   <entry id="amountTables">1#{amount} Table|n&gt;1#{amount} Tables</entry>
   <entry id="amountViews">1#{amount} Vue|n&gt;1#{amount} Vues</entry>
@@ -168,6 +170,8 @@
   <entry id="maintainer">Mainteneur</entry>
   <entry id="maximum">Maximum</entry>
   <entry id="move">D&#xE9;placer</entry>
+  <entry id="mysqlServerVersion"/>
+  <entry id="mysqlClientVersion"/>
   <entry id="name">Nom</entry>
   <entry id="nextAutoincrementValue">Prochaine valeur d'auto-incr&#xE9;ment</entry>
   <entry id="no">Non</entry>
@@ -202,6 +206,7 @@
   <entry id="processes">Processus</entry>
   <entry id="profiling">Analyse</entry>
   <entry id="profilingResultsSortedByExecutionTime">Analyse des r&#xE9;sultats class&#xE9;s par dur&#xE9;e d'ex&#xE9;cution</entry>
+  <entry id="projectNews"/>
   <entry id="query">Requ&#xEA;te</entry>
   <entry id="refresh">Actualiser</entry>
   <entry id="relation">Relation</entry>
@@ -216,6 +221,7 @@
   <entry id="schemata">Sch&#xE9;mas</entry>
   <entry id="search">Rechercher</entry>
   <entry id="selectColumnToAdd">S&#xE9;lectionner une colonne &#xE0; ajouter</entry>
+  <entry id="serverInformation"/>
   <entry id="setNull">Mettre &#xE0; NULL</entry>
   <entry id="settings">Param&#xE8;tres</entry>
   <entry id="show">Afficher</entry>
@@ -303,6 +309,7 @@
   <entry id="view">Vue</entry>
   <entry id="views">Vues</entry>
   <entry id="warning">Avertissement</entry>
+  <entry id="webserver"/>
   <entry id="withSelected">Pour la s&#xE9;lection : </entry>
   <entry id="xDebugExportWarning">Le profilage XDebug est actif sur ce serveur.&lt;br /&gt;L'export de grosses bases de donn&#xE9;es peut rendre votre syst&#xE8;me instable.</entry>
   <entry id="yes">Oui</entry>

@@ -12,7 +12,7 @@
  * CClientScript manages JavaScript and CSS stylesheets for views.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CClientScript.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CClientScript.php 1863 2010-03-07 13:26:05Z qiang.xue $
  * @package system.web
  * @since 1.0
  */
@@ -451,11 +451,11 @@ class CClientScript extends CApplicationComponent
 	public function registerMetaTag($content,$name=null,$httpEquiv=null,$options=array())
 	{
 		$this->_hasScripts=true;
-		$options['content']=$content;
 		if($name!==null)
 			$options['name']=$name;
 		if($httpEquiv!==null)
 			$options['http-equiv']=$httpEquiv;
+		$options['content']=$content;
 		$this->_metas[serialize($options)]=$options;
 		$params=func_get_args();
 		$this->recordCachingAction('clientScript','registerMetaTag',$params);

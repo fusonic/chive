@@ -46,7 +46,7 @@
  * the application will switch to its error handling logic and jump to step 6 afterwards.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CApplication.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CApplication.php 1789 2010-02-02 18:38:56Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -639,6 +639,7 @@ abstract class CApplication extends CModule
 
 			try
 			{
+				Yii::import('CErrorEvent',true);
 				$event=new CErrorEvent($this,$code,$message,$file,$line);
 				$this->onError($event);
 				if(!$event->handled)

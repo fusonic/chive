@@ -80,7 +80,7 @@ class BrowsePage extends CModel
 	{
 		return array();
 	}
-
+	
 	public function run()
 	{
 		$response = new AjaxResponse();
@@ -88,7 +88,7 @@ class BrowsePage extends CModel
 		$profiling = Yii::app()->user->settings->get('profiling');
 
 		$sqlQuery = new SqlQuery($this->query);
-		
+			
 		if(!$this->query)
 		{
 			$this->query = $this->getDefaultQuery();
@@ -102,8 +102,9 @@ class BrowsePage extends CModel
 				$cmd->execute();
 
 				$cmd = $this->db->createCommand('SET PROFILING = 1');
-				$cmd->execute();
 				
+				$cmd->execute();
+						
 			}
 
 			$splitter = new SqlSplitter($this->query);
@@ -240,6 +241,7 @@ class BrowsePage extends CModel
 					{
 						// Fetch data
 						$data = $cmd->queryAll();
+						SqlUtil::FixTable($data);
 
 						if($type == 'select')
 						{
@@ -307,6 +309,7 @@ class BrowsePage extends CModel
 					ORDER by total desc');
 
 				$cmd->prepare();
+				
 				$profileData = $cmd->queryAll();
 				
 				

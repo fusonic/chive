@@ -72,7 +72,7 @@
  * normally without causing any error.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CWidgetFactory.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CWidgetFactory.php 1746 2010-01-25 12:00:35Z qiang.xue $
  * @package system.web
  * @since 1.1
  */
@@ -115,7 +115,7 @@ class CWidgetFactory extends CApplicationComponent implements IWidgetFactory
 	public function createWidget($owner,$className,$properties=array())
 	{
 		$className=Yii::import($className,true);
-		$widget=new $className($this);
+		$widget=new $className($owner);
 		if($this->widgets===null || in_array($className,$this->widgets))
 		{
 			$skinName=isset($properties['skin']) ? $properties['skin'] : 'default';

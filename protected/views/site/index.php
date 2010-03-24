@@ -8,28 +8,28 @@
 	</colgroup>
 	<thead>
 		<tr>
-			<th colspan="2">Server information</th>
+			<th colspan="2"><?php echo Yii::t('core', 'serverInformation'); ?></th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td>Host</td>
+			<td><?php echo Yii::t('core', 'host'); ?></td>
 			<td><?php echo Yii::app()->user->host; ?></td>
 		</tr>
 		<tr>
-			<td>MySQL server version</td>
+			<td><?php echo Yii::t('core', 'mysqlServerVersion'); ?></td>
 			<td><?php echo Yii::app()->db->getServerVersion(); ?></td>
 		</tr>
 		<tr>
-			<td>MySQL client version</td>
+			<td><?php echo Yii::t('core', 'mysqlClientVersion'); ?></td>
 			<td><?php echo Yii::app()->db->getClientVersion(); ?></td>
 		</tr>
 		<tr>
-			<td>User</td>
+			<td><?php echo Yii::t('core', 'user'); ?></td>
 			<td><?php echo Yii::app()->user->name; ?>@<?php echo Yii::app()->user->host; ?></td>
 		</tr>
 		<tr>
-			<td>Webserver</td>
+			<td><?php echo Yii::t('core', 'webserver'); ?></td>
 			<td><?php echo $_SERVER['SERVER_SOFTWARE']; ?></td>
 		</tr>
 	</tbody>
@@ -47,7 +47,7 @@
 				<th colspan="3">
 					<span class="icon">
 						<?php echo CHtml::link(Html::icon('rss'), 'http://feeds.launchpad.net/chive/announcements.atom'); ?>
-						<span>Project news</span>
+						<span><?php echo Yii::t('core', 'projectNews'); ?></span>
 					</span>
 				</th>
 			</tr>

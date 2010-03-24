@@ -77,6 +77,12 @@ msgstr ""
 msgid "0#No rows affected. Query took {time} seconds.|1#{rows} row affected. Query took {time} seconds.|n>1#{rows} rows affected. Query took {time} seconds."
 msgstr ""
 
+msgid "Ajax request failed"
+msgstr ""
+
+msgid "Click <a href=\"javascript:void(0)\" onclick=\"reload()\">here</a> to reload site."
+msgstr ""
+
 msgid "1#{amount}  Routine|n>1#{amount}  Routines"
 msgstr ""
 
@@ -512,6 +518,12 @@ msgstr ""
 msgid "Move"
 msgstr ""
 
+msgid "MySQL Server Version"
+msgstr ""
+
+msgid "MySQL Client Version"
+msgstr ""
+
 msgid "Name"
 msgstr ""
 
@@ -614,6 +626,9 @@ msgstr ""
 msgid "Profiling results sorted by execution time"
 msgstr ""
 
+msgid "Project News"
+msgstr ""
+
 msgid "Query"
 msgstr ""
 
@@ -654,6 +669,9 @@ msgid "Search"
 msgstr ""
 
 msgid "Select a column to add"
+msgstr ""
+
+msgid "Server Information"
 msgstr ""
 
 msgid "Set NULL"
@@ -915,6 +933,9 @@ msgid "Views"
 msgstr ""
 
 msgid "Warning"
+msgstr ""
+
+msgid "Webserver"
 msgstr ""
 
 msgid "With selected: "

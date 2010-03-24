@@ -37,7 +37,7 @@
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDetailView.php 99 2010-01-07 20:55:13Z qiang.xue $
+ * @version $Id: CDetailView.php 138 2010-03-07 13:23:21Z qiang.xue $
  * @package zii.widgets
  * @since 1.1
  */
@@ -79,6 +79,9 @@ class CDetailView extends CWidget
 	 * to the "type" option as described below.</li>
 	 * <li>type: the type of the attribute that determines how the attribute value would be formatted.
 	 * Please see above for possible values.
+	 * <li>template: the template used to render the attribute. If this is not specified, {@link itemTemplate}
+	 * will be used instead. For more details on how to set this option, please refer to {@link itemTemplate}.
+	 * This option is available since version 1.1.1.</li>
 	 * </ul>
 	 */
 	public $attributes;
@@ -126,7 +129,7 @@ class CDetailView extends CWidget
 	public function init()
 	{
 		if($this->data===null)
-			throw new CException(Yii::t('zii','Please specify the "model" property.'));
+			throw new CException(Yii::t('zii','Please specify the "data" property.'));
 		if($this->attributes===null)
 		{
 			if($this->data instanceof CModel)
@@ -179,8 +182,13 @@ class CDetailView extends CWidget
 
 			if(isset($attribute['label']))
 				$tr['{label}']=$attribute['label'];
-			else if(isset($attribute['name']) && $this->data instanceof CModel)
-				$tr['{label}']=$this->data->getAttributeLabel($attribute['name']);
+			else if(isset($attribute['name']))
+			{
+				if($this->data instanceof CModel)
+					$tr['{label}']=$this->data->getAttributeLabel($attribute['name']);
+				else
+					$tr['{label}']=$attribute['name'];
+			}
 
 			if(!isset($attribute['type']))
 				$attribute['type']='text';
@@ -193,7 +201,7 @@ class CDetailView extends CWidget
 
 			$tr['{value}']=$value===null ? $this->nullDisplay : $formatter->format($value,$attribute['type']);
 
-			echo strtr($this->itemTemplate,$tr);
+			echo strtr(isset($attribute['template']) ? $attribute['template'] : $this->itemTemplate,$tr);
 		}
 
 		echo CHtml::closeTag($this->tagName);

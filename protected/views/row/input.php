@@ -1,6 +1,6 @@
 <?php $id = StringUtil::getRandom(10); ?>
 
-<?php echo CHtml::form(BASEURL . '/row/update', 'POST', array('id' => 'form_' . $id)); ?>
+<?php echo CHtml::form(Yii::app()->createUrl('row/update'), 'POST', array('id' => 'form_' . $id)); ?>
 
 <div style="padding: 2px 10px;">
 
@@ -47,7 +47,7 @@
 
 	</script>
 
-	<div class="buttonContainer" style="width: 300px;">
+	<div class="buttonContainer" style="white-space: nowrap">
 		<a href="javascript:void(0);" onclick="$('#form_<?php echo $id; ?>').submit();" class="icon button primary">
 			<?php echo Html::icon('save', 16, false, 'core.save'); ?>
 			<span><?php echo Yii::t('core', 'save'); ?></span>

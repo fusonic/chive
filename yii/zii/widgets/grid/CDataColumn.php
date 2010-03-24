@@ -21,7 +21,7 @@ Yii::import('zii.widgets.grid.CGridColumn');
  * value will be used by {@link CSort} to render a clickable link in the header cell to trigger the sorting.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDataColumn.php 99 2010-01-07 20:55:13Z qiang.xue $
+ * @version $Id: CDataColumn.php 124 2010-02-04 02:44:56Z qiang.xue $
  * @package zii.widgets.grid
  * @since 1.1
  */
@@ -56,6 +56,16 @@ class CDataColumn extends CGridColumn
 	 * @see name
 	 */
 	public $sortable=true;
+	/**
+	 * @var mixed the HTML code representing a filter input (e.g. a text field, a dropdown list)
+	 * that is used for this data column. This property is effective only when
+	 * {@link CGridView::enableFiltering} is set true.
+	 * If this property is not set, a text field will be generated as the filter input;
+	 * If this property is an array, a dropdown list will be generated that uses this property value as
+	 * the list options.
+	 * @since 1.1.1
+	 */
+	public $filter;
 
 	/**
 	 * Initializes the column.
@@ -67,6 +77,28 @@ class CDataColumn extends CGridColumn
 			$this->sortable=false;
 		if($this->name===null && $this->value===null)
 			throw new CException(Yii::t('zii','Either "name" or "value" must be specified for CDataColumn.'));
+	}
+
+	/**
+	 * Renders the filter cell content.
+	 * This method will render the {@link filter} as is if it is a string.
+	 * If {@link filter} is an array, it is assumed to be a list of options, and a dropdown selector will be rendered.
+	 * Otherwise if {@link filter} is not false, a text field is rendered.
+	 * @since 1.1.1
+	 */
+	protected function renderFilterCellContent()
+	{
+		if($this->filter!==false && $this->grid->filter!==null && strpos($this->name,'.')===false)
+		{
+			if(is_array($this->filter))
+				echo CHtml::activeDropDownList($this->grid->filter, $this->name, $this->filter, array('id'=>false,'prompt'=>''));
+			else if($this->filter===null)
+				echo CHtml::activeTextField($this->grid->filter, $this->name, array('id'=>false));
+			else
+				echo $this->filter;
+		}
+		else
+			parent::renderFilterCellContent();
 	}
 
 	/**

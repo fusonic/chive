@@ -14,7 +14,7 @@
  * under the specified directory.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: MessageCommand.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: MessageCommand.php 1878 2010-03-10 21:19:30Z qiang.xue $
  * @package system.cli.commands
  * @since 1.0
  */
@@ -111,7 +111,10 @@ EOD;
 		$messages=array();
 		for($i=0;$i<$n;++$i)
 		{
-			$category=substr($matches[$i][1],1,-1);
+			if(($pos=strpos($matches[$i][1],'.'))!==false)
+				$category=substr($matches[$i][1],$pos+1,-1);
+			else
+				$category=substr($matches[$i][1],1,-1);
 			$message=$matches[$i][2];
 			$messages[$category][]=eval("return $message;");  // use eval to eliminate quote escape
 		}

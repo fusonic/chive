@@ -18,7 +18,7 @@ Yii::import('zii.widgets.grid.CGridColumn');
  * In addition, if {@link imageUrl} is set, an image link will be rendered.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLinkColumn.php 99 2010-01-07 20:55:13Z qiang.xue $
+ * @version $Id: CLinkColumn.php 107 2010-01-13 16:04:23Z qiang.xue $
  * @package zii.widgets.grid
  * @since 1.1
  */
@@ -87,7 +87,7 @@ class CLinkColumn extends CGridColumn
 			$label=$this->evaluateExpression($this->labelExpression,array('data'=>$data,'row'=>$row));
 		else
 			$label=$this->label;
-		$options=$this->htmlOptions;
+		$options=$this->linkHtmlOptions;
 		if(!isset($options['title']))
 			$options['title']=$label;
 		if(is_string($this->imageUrl))

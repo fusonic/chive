@@ -18,7 +18,7 @@
  * See {@link CCache} manual for common cache operations that are supported by CFileCache.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFileCache.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CFileCache.php 1832 2010-02-20 03:22:45Z qiang.xue $
  * @package system.caching
  * @since 1.0.6
  */
@@ -202,7 +202,7 @@ class CFileCache extends CCache
 			$path=$this->cachePath;
 		if(($handle=opendir($path))===false)
 			return;
-		while($file=readdir($handle))
+		while(($file=readdir($handle))!==false)
 		{
 			if($file[0]==='.')
 				continue;

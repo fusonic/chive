@@ -5,7 +5,7 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: jquery.yiigridview.js 99 2010-01-07 20:55:13Z qiang.xue $
+ * @version $Id: jquery.yiigridview.js 144 2010-03-11 21:28:29Z qiang.xue $
  */
 
 ;(function($) {
@@ -18,14 +18,14 @@
 	 * - tableClass: string, the CSS class for the table
 	 * - selectableRows: integer, the number of rows that can be selected
 	 * - updateSelector: string, the selector for choosing which elements can trigger ajax requests
-	 * - beforeUpdate: function, the function to be called before ajax request is sent
-	 * - afterUpdate: function, the function to be called after ajax response is received
+	 * - beforeAjaxUpdate: function, the function to be called before ajax request is sent
+	 * - afterAjaxUpdate: function, the function to be called after ajax response is received
 	 * - selectionChanged: function, the function to be called after the row selection is changed
 	 */
-	$.fn.yiiGridView = function(settings) {
-		var settings = $.extend({}, $.fn.yiiGridView.defaults, settings || {});
+	$.fn.yiiGridView = function(options) {
 		return this.each(function(){
-			$this = $(this);
+			var settings = $.extend({}, $.fn.yiiGridView.defaults, options || {});
+			var $this = $(this);
 			var id = $this.attr('id');
 			if(settings.updateSelector == undefined) {
 				settings.updateSelector = '#'+id+' .'+settings.pagerClass+' a, #'+id+' .'+settings.tableClass+' thead th a';
@@ -38,6 +38,12 @@
 					return false;
 				});
 			}
+
+			var inputSelector='#'+id+' .'+settings.filterClass+' input, '+'#'+id+' .'+settings.filterClass+' select';
+			$(inputSelector).live('change',function(){
+				var data = $.param($(inputSelector))+'&'+settings.ajaxVar+'='+id;
+				$.fn.yiiGridView.update(id, {data: data});
+			});
 
 			if(settings.selectableRows > 0) {
 				$('#'+id+' .'+settings.tableClass+' > tbody > tr').live('click',function(){
@@ -55,11 +61,13 @@
 		ajaxUpdate: [],
 		ajaxVar: 'ajax',
 		pagerClass: 'pager',
+		loadingClass: 'loading',
+		filterClass: 'filters',
 		tableClass: 'items',
 		selectableRows: 1
 		// updateSelector: '#id .pager a, '#id .grid thead th a',
-		// beforeUpdate: function(id) {},
-		// afterUpdate: function(id, data) {},
+		// beforeAjaxUpdate: function(id) {},
+		// afterAjaxUpdate: function(id, data) {},
 		// selectionChanged: function(id) {},
 	};
 
@@ -114,25 +122,31 @@
 	 */
 	$.fn.yiiGridView.update = function(id, options) {
 		var settings = $.fn.yiiGridView.settings[id];
-		var data = {};
-		data[settings.ajaxVar] = id;
+		$('#'+id).addClass(settings.loadingClass);
 		options = $.extend({
+			type: 'GET',
 			url: $.fn.yiiGridView.getUrl(id),
-			data: data,
 			success: function(data,status) {
 				$.each(settings.ajaxUpdate, function() {
 					$('#'+this).html($(data).find('#'+this));
 				});
-				if(settings.afterUpdate != undefined)
-					settings.afterUpdate(id, data);
+				if(settings.afterAjaxUpdate != undefined)
+					settings.afterAjaxUpdate(id, data);
+				$('#'+id).removeClass(settings.loadingClass);
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				$('#'+id).removeClass(settings.loadingClass);
 				alert(XMLHttpRequest.responseText);
 			}
 		}, options || {});
+		if(options.data!=undefined && options.type=='GET') {
+			options.url = $.param.querystring(options.url, options.data);
+			options.data = {};
+		}
+		options.url = $.param.querystring(options.url, settings.ajaxVar+'='+id)
 
-		if(settings.beforeUpdate != undefined)
-			settings.beforeUpdate(id);
+		if(settings.beforeAjaxUpdate != undefined)
+			settings.beforeAjaxUpdate(id);
 		$.ajax(options);
 	};
 

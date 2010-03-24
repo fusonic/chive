@@ -1,3 +1,8 @@
+.grid-view-loading
+{
+	background:url(loading.gif) no-repeat;
+}
+
 .grid-view table.items
 {
 	background: white;
@@ -16,7 +21,7 @@
 .grid-view table.items th
 {
 	color: white;
-	background: #6885A4;
+	background: url("bg.gif") repeat-x scroll left top white;
 	text-align: center;
 }
 
@@ -46,7 +51,7 @@
 
 .grid-view table.items tr.even
 {
-	background: #F8FBFC;
+	background: #F8F8F8;
 }
 
 .grid-view table.items tr.odd
@@ -100,4 +105,11 @@
 .grid-view .empty
 {
 	font-style: italic;
+}
+
+.grid-view .filters input,
+.grid-view .filters select
+{
+	width: 100%;
+	border: 1px solid #ccc;
 }

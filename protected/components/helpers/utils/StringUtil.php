@@ -23,6 +23,22 @@
 
 class StringUtil
 {
+	
+/**
+	 * Checks if a value is a valid integer
+	 * @param string	$_value
+	 * @return bool
+	 */
+	public static function isInt($_value) {
+
+		if($_value === false)
+			return false;
+
+		if((string)((int)$_value) == $_value)
+			return true;
+		else
+			return false;
+	}
 
 	/**
 	 * Cuts the given text to a specific lenght and adds ... at the and

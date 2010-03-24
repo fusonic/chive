@@ -40,7 +40,7 @@
  * Therefore, one may call <code>Yii::app()->format->boolean(1)</code>.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFormatter.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CFormatter.php 1716 2010-01-17 21:38:41Z qiang.xue $
  * @package system.utils
  * @since 1.1.0
  */
@@ -82,7 +82,7 @@ class CFormatter extends CApplicationComponent
 	 */
 	public function __call($name,$parameters)
 	{
-		if(method_exists('format'.$name))
+		if(method_exists($this,'format'.$name))
 			return call_user_func_array(array($this,'format'.$name),$parameters);
 		else
 			return parent::__call($name,$parameters);

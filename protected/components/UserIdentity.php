@@ -50,6 +50,7 @@ class UserIdentity extends CUserIdentity
 		// Set username and password
 		$db->username = $this->username;
 		$db->password = $this->password;
+		$db->emulatePrepare = true;
 		$db->connectionString = 'mysql:host=' . $this->host . ';dbname=information_schema';
 
 		try {

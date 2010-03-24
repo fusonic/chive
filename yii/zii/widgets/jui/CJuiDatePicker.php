@@ -36,7 +36,7 @@ Yii::import('zii.widgets.jui.CJuiInputWidget');
  * for possible options (name-value pairs).
  *
  * @author Sebastian Thierer <sebathi@gmail.com>
- * @version $Id: CJuiDatePicker.php 99 2010-01-07 20:55:13Z qiang.xue $
+ * @version $Id: CJuiDatePicker.php 135 2010-02-28 16:05:28Z sebathi $
  * @package zii.widgets.jui
  * @since 1.1
  */
@@ -52,6 +52,12 @@ class CJuiDatePicker extends CJuiInputWidget
 	 * @var string The i18n Jquery UI script file. It uses scriptUrl property as base url.
 	 */
 	public $i18nScriptFile = 'jquery-ui-i18n.js';
+
+	/**
+	 * @var array The default options called just one time per request. This options will alter every other CJuiDatePicker instance in the page.
+	 * It has to be set at the first call of CJuiDatePicker widget in the request.
+	 */
+	public $defaultOptions;
 
 	/**
 	 * Run this widget.
@@ -75,15 +81,19 @@ class CJuiDatePicker extends CJuiInputWidget
 		else
 			echo CHtml::textField($name,$this->value,$this->htmlOptions);
 
+
 		$options=CJavaScript::encode($this->options);
 
 		$js = "jQuery('#{$id}').datepicker($options);";
 
 		if (isset($this->language)){
 			$this->registerScriptFile($this->i18nScriptFile);
-			$js .= "\njQuery('#{$id}').datepicker('option', jQuery.datepicker.regional['{$this->language}']);";
+			$js = "jQuery('#{$id}').datepicker(jQuery.extend({showMonthAfterYear:false}, jQuery.datepicker.regional['{$this->language}'], {$options}));";
 		}
 
-		Yii::app()->getClientScript()->registerScript(__CLASS__.'#'.$id, $js);
+		$cs = Yii::app()->getClientScript();
+		$cs->registerScript(__CLASS__, 	$this->defaultOptions?'jQuery.datepicker.setDefaults('.CJavaScript::encode($this->defaultOptions).');':'');
+		$cs->registerScript(__CLASS__.'#'.$id, $js);
+		
 	}
 }

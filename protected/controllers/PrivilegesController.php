@@ -67,7 +67,8 @@ class PrivilegesController extends Controller
 			Yii::app()->user->name,
 			Yii::app()->user->password);
 
-		$this->db->charset='utf8';
+		$this->db->charset = 'utf8';
+		$this->db->emulatePrepare = true;
 		$this->db->active = true;
 
 		// Assign to all models which need it

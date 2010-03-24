@@ -14,7 +14,7 @@
  * The data includes the number formatting information and date formatting information.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLocale.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CLocale.php 1843 2010-02-26 15:10:50Z qiang.xue $
  * @package system.i18n
  * @since 1.0
  */
@@ -59,7 +59,7 @@ class CLocale extends CComponent
 			$locales=array();
 			$dataPath=self::$dataPath===null ? dirname(__FILE__).DIRECTORY_SEPARATOR.'data' : self::$dataPath;
 			$folder=@opendir($dataPath);
-			while($file=@readdir($folder))
+			while(($file=@readdir($folder))!==false)
 			{
 				$fullPath=$dataPath.DIRECTORY_SEPARATOR.$file;
 				if(substr($file,-4)==='.php' && is_file($fullPath))
@@ -209,22 +209,30 @@ class CLocale extends CComponent
 	/**
 	 * @param integer weekday (0-6, 0 means Sunday)
 	 * @param string weekday name width.  It can be 'wide', 'abbreviated' or 'narrow'.
+	 * @param boolean whether the week day name should be returned in stand-alone format
 	 * @return string the weekday name
 	 */
-	public function getWeekDayName($day,$width='wide')
+	public function getWeekDayName($day,$width='wide',$standAlone=false)
 	{
-		return $this->_data['weekDayNames'][$width][$day];
+		if($standAlone)
+			return isset($this->_data['weekDayNamesSA'][$width][$day]) ? $this->_data['weekDayNamesSA'][$width][$day] : $this->_data['weekDayNames'][$width][$day];
+		else
+			return isset($this->_data['weekDayNames'][$width][$day]) ? $this->_data['weekDayNames'][$width][$day] : $this->_data['weekDayNamesSA'][$width][$day];
 	}
 
 	/**
 	 * Returns the week day names in the specified width.
 	 * @param string weekday name width.  It can be 'wide', 'abbreviated' or 'narrow'.
+	 * @param boolean whether the week day name should be returned in stand-alone format
 	 * @return array the weekday names indexed by weekday values (0-6, 0 means Sunday, 1 Monday, etc.)
 	 * @since 1.0.9
 	 */
-	public function getWeekDayNames($width='wide')
+	public function getWeekDayNames($width='wide',$standAlone=false)
 	{
-		return $this->_data['weekDayNames'][$width];
+		if($standAlone)
+			return isset($this->_data['weekDayNamesSA'][$width]) ? $this->_data['weekDayNamesSA'][$width][$day] : $this->_data['weekDayNames'][$width];
+		else
+			return isset($this->_data['weekDayNames'][$width]) ? $this->_data['weekDayNames'][$width][$day] : $this->_data['weekDayNamesSA'][$width];
 	}
 
 	/**

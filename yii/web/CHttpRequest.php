@@ -22,7 +22,7 @@
  * accessed via {@link CWebApplication::getRequest()}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CHttpRequest.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CHttpRequest.php 1844 2010-02-26 23:13:40Z qiang.xue $
  * @package system.web
  * @since 1.0
  */
@@ -84,7 +84,7 @@ class CHttpRequest extends CApplicationComponent
 	protected function normalizeRequest()
 	{
 		// normalize request
-		if(get_magic_quotes_gpc())
+		if(function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc())
 		{
 			if(isset($_GET))
 				$_GET=$this->stripSlashes($_GET);
@@ -389,7 +389,7 @@ class CHttpRequest extends CApplicationComponent
 	 */
 	public function getIsPostRequest()
 	{
-		return !strcasecmp($_SERVER['REQUEST_METHOD'],'POST');
+		return isset($_SERVER['REQUEST_METHOD']) && !strcasecmp($_SERVER['REQUEST_METHOD'],'POST');
 	}
 
 	/**
@@ -397,7 +397,7 @@ class CHttpRequest extends CApplicationComponent
 	 */
 	public function getIsAjaxRequest()
 	{
-		return isset($_SERVER['HTTP_X_REQUESTED_WITH'])?$_SERVER['HTTP_X_REQUESTED_WITH']==='XMLHttpRequest' : false;
+		return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH']==='XMLHttpRequest';
 	}
 
 	/**
@@ -552,7 +552,8 @@ class CHttpRequest extends CApplicationComponent
 		header('Expires: 0');
 		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 		header("Content-type: $mimeType");
-		header('Content-Length: '.strlen($content));
+		if(ini_get("output_handler")=='')
+			header('Content-Length: '.strlen($content));
 		header("Content-Disposition: attachment; filename=\"$fileName\"");
 		header('Content-Transfer-Encoding: binary');
 		echo $content;
@@ -645,7 +646,7 @@ class CHttpRequest extends CApplicationComponent
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CHttpRequest.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CHttpRequest.php 1844 2010-02-26 23:13:40Z qiang.xue $
  * @package system.web
  * @since 1.0
  */

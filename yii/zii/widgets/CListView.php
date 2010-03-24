@@ -50,7 +50,7 @@ Yii::import('zii.widgets.CBaseListView');
  * By doing so, a list of hyperlinks that can sort the data will be displayed.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CListView.php 99 2010-01-07 20:55:13Z qiang.xue $
+ * @version $Id: CListView.php 123 2010-02-02 21:09:35Z qiang.xue $
  * @package zii.widgets
  * @since 1.1
  */
@@ -87,6 +87,12 @@ class CListView extends CBaseListView
 	 * summary text, the sort links, the data item list, and the pager.
 	 */
 	public $template="{summary}\n{sorter}\n{items}\n{pager}";
+	/**
+	 * @var string the CSS class name that will be assigned to the widget container element
+	 * when the widget is updating its content via AJAX. Defaults to 'list-view-loading'.
+	 * @since 1.1.1
+	 */
+	public $loadingCssClass='list-view-loading';
 	/**
 	 * @var string the CSS class name for the sorter container. Defaults to 'sorter'.
 	 */
@@ -173,6 +179,7 @@ class CListView extends CBaseListView
 			'ajaxUpdate'=>$ajaxUpdate,
 			'ajaxVar'=>$this->ajaxVar,
 			'pagerClass'=>$this->pagerCssClass,
+			'loadingClass'=>$this->loadingCssClass,
 			'sorterClass'=>$this->sorterCssClass,
 		);
 		if($this->beforeAjaxUpdate!==null)
@@ -183,6 +190,7 @@ class CListView extends CBaseListView
 		$options=CJavaScript::encode($options);
 		$cs=Yii::app()->getClientScript();
 		$cs->registerCoreScript('jquery');
+		$cs->registerCoreScript('bbq');
 		$cs->registerScriptFile($this->baseScriptUrl.'/jquery.yiilistview.js');
 		$cs->registerScript(__CLASS__.'#'.$id,"jQuery('#$id').yiiListView($options);");
 	}

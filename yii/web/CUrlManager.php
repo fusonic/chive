@@ -92,7 +92,7 @@
  * {@link CWebApplication::getUrlManager()}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CUrlManager.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CUrlManager.php 1854 2010-03-03 13:10:50Z qiang.xue $
  * @package system.web
  * @since 1.0
  */
@@ -320,7 +320,7 @@ class CUrlManager extends CApplicationComponent
 	 * @param string path info
 	 * @since 1.0.3
 	 */
-	public static function parsePathInfo($pathInfo)
+	public function parsePathInfo($pathInfo)
 	{
 		if($pathInfo==='')
 			return;
@@ -362,12 +362,12 @@ class CUrlManager extends CApplicationComponent
 		foreach($params as $k => $v)
 		{
 			if ($key!==null)
-				$k = $key.'['.urlencode($k).']';
+				$k = $key.'['.$k.']';
 
 			if (is_array($v))
 				$pairs[]=$this->createPathInfo($v,$equal,$ampersand, $k);
 			else
-				$pairs[]=$k.$equal.urlencode($v);
+				$pairs[]=urlencode($k).$equal.urlencode($v);
 		}
 		return implode($ampersand,$pairs);
 	}
@@ -406,6 +406,19 @@ class CUrlManager extends CApplicationComponent
 	}
 
 	/**
+	 * Sets the base URL of the application (the part after host name and before query string).
+	 * This method is provided in case the {@link baseUrl} cannot be determined automatically.
+	 * The ending slashes should be stripped off. And you are also responsible to remove the script name
+	 * if you set {@link showScriptName} to be false.
+	 * @param string the base URL of the application
+	 * @since 1.1.1
+	 */
+	public function setBaseUrl($value)
+	{
+		$this->_baseUrl=$value;
+	}
+
+	/**
 	 * @return string the URL format. Defaults to 'path'. Valid values include 'path' and 'get'.
 	 * Please refer to the guide for more details about the difference between these two formats.
 	 */
@@ -436,7 +449,7 @@ class CUrlManager extends CApplicationComponent
  * may have a set of named parameters.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CUrlManager.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CUrlManager.php 1854 2010-03-03 13:10:50Z qiang.xue $
  * @package system.web
  * @since 1.0
  */
@@ -683,7 +696,7 @@ class CUrlRule extends CComponent
 					$_REQUEST[$key]=$_GET[$key]=$value;
 			}
 			if($pathInfo!==$matches[0]) // there're additional GET params
-				CUrlManager::parsePathInfo(ltrim(substr($pathInfo,strlen($matches[0])),'/'));
+				$manager->parsePathInfo(ltrim(substr($pathInfo,strlen($matches[0])),'/'));
 			if($this->routePattern!==null)
 				return strtr($this->route,$tr);
 			else

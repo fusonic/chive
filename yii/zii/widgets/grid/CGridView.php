@@ -73,12 +73,16 @@ Yii::import('zii.widgets.grid.CCheckBoxColumn');
  * Please refer to {@link columns} for more details about how to configure this property.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CGridView.php 101 2010-01-09 19:37:44Z qiang.xue $
+ * @version $Id: CGridView.php 130 2010-02-26 14:19:53Z qiang.xue $
  * @package zii.widgets.grid
  * @since 1.1
  */
 class CGridView extends CBaseListView
 {
+	const FILTER_POS_HEADER='header';
+	const FILTER_POS_FOOTER='footer';
+	const FILTER_POS_BODY='body';
+
 	private $_formatter;
 	/**
 	 * @var array grid column configuration. Each array element represents the configuration
@@ -105,7 +109,8 @@ class CGridView extends CBaseListView
 	/**
 	 * @var string a PHP expression that is evaluated for every table body row and whose result
 	 * is used as the CSS class name for the row. In this expression, the variable <code>$row</code>
-	 * stands for the row number (zero-based) and <code>$this</code> the column object.
+	 * stands for the row number (zero-based), <code>$data</code> is the data model associated with
+	 * the row, and <code>$this</code> is the grid object.
 	 * @see rowCssClass
 	 */
 	public $rowCssClassExpression;
@@ -168,6 +173,43 @@ class CGridView extends CBaseListView
 	 * when rendering. Defaults to an HTML blank.
 	 */
 	public $nullDisplay='&nbsp;';
+	/**
+	 * @var string the CSS class name that will be assigned to the widget container element
+	 * when the widget is updating its content via AJAX. Defaults to 'grid-view-loading'.
+	 * @since 1.1.1
+	 */
+	public $loadingCssClass='grid-view-loading';
+	/**
+	 * @var string the CSS class name for the table row element containing all filter input fields. Defaults to 'filters'.
+	 * @see filter
+	 * @since 1.1.1
+	 */
+	public $filterCssClass='filters';
+	/**
+	 * @var string whether the filters should be displayed in the grid view. Valid values include:
+	 * <ul>
+	 *    <li>header: the filters will be displayed on top of each column's header cell.</li>
+	 *    <li>body: the filters will be displayed right below each column's header cell.</li>
+	 *    <li>footer: the filters will be displayed below each column's footer cell.</li>
+	 * </ul>
+	 * @see filter
+	 * @since 1.1.1
+	 */
+	public $filterPosition='body';
+	/**
+	 * @var CModel the model instance that keeps the user-entered filter data. When this property is set,
+	 * the grid view will enable column-based filtering. Each data column by default will display a text field
+	 * at the top that users can fill in to filter the data.
+	 * @since 1.1.1
+	 */
+	public $filter;
+	/**
+	 * @var boolean whether to hide the header cells of the grid. When this is true, header cells
+	 * will not be rendered, which means the grid cannot be sorted anymore since the sort links are located
+	 * in the header. Defaults to false.
+	 * @since 1.1.1
+	 */
+	public $hideHeader=false;
 
 	/**
 	 * Initializes the grid view.
@@ -258,6 +300,8 @@ class CGridView extends CBaseListView
 			'ajaxUpdate'=>$ajaxUpdate,
 			'ajaxVar'=>$this->ajaxVar,
 			'pagerClass'=>$this->pagerCssClass,
+			'loadingClass'=>$this->loadingCssClass,
+			'filterClass'=>$this->filterCssClass,
 			'tableClass'=>$this->itemsCssClass,
 			'selectableRows'=>$this->selectableRows,
 		);
@@ -271,6 +315,7 @@ class CGridView extends CBaseListView
 		$options=CJavaScript::encode($options);
 		$cs=Yii::app()->getClientScript();
 		$cs->registerCoreScript('jquery');
+		$cs->registerCoreScript('bbq');
 		$cs->registerScriptFile($this->baseScriptUrl.'/jquery.yiigridview.js');
 		$cs->registerScript(__CLASS__.'#'.$id,"jQuery('#$id').yiiGridView($options);");
 	}
@@ -297,10 +342,44 @@ class CGridView extends CBaseListView
 	 */
 	public function renderTableHeader()
 	{
-		echo "<thead>\n<tr>\n";
-		foreach($this->columns as $column)
-			$column->renderHeaderCell();
-		echo "</tr>\n</thead>\n";
+		if(!$this->hideHeader)
+		{
+			echo "<thead>\n";
+
+			if($this->filterPosition===self::FILTER_POS_HEADER)
+				$this->renderFilter();
+
+			echo "<tr>\n";
+			foreach($this->columns as $column)
+				$column->renderHeaderCell();
+			echo "</tr>\n";
+
+			if($this->filterPosition===self::FILTER_POS_BODY)
+				$this->renderFilter();
+
+			echo "</thead>\n";
+		}
+		else if($this->filter!==null && ($this->filterPosition===self::FILTER_POS_HEADER || $this->filterPosition===self::FILTER_POS_BODY))
+		{
+			echo "<thead>\n";
+			$this->renderFilter();
+			echo "</thead>\n";
+		}
+	}
+
+	/**
+	 * Renders the filter.
+	 * @since 1.1.1
+	 */
+	public function renderFilter()
+	{
+		if($this->filter!==null)
+		{
+			echo "<tr class=\"{$this->filterCssClass}\">\n";
+			foreach($this->columns as $column)
+				$column->renderFilterCell();
+			echo "</tr>\n";
+		}
 	}
 
 	/**
@@ -308,12 +387,21 @@ class CGridView extends CBaseListView
 	 */
 	public function renderTableFooter()
 	{
-		if($this->getHasFooter())
+		$hasFilter=$this->filter!==null && $this->filterPosition===self::FILTER_POS_FOOTER;
+		$hasFooter=$this->getHasFooter();
+		if($hasFilter || $hasFooter)
 		{
-			echo "<tfoot>\n<tr>\n";
-			foreach($this->columns as $column)
-				$column->renderFooterCell();
-			echo "</tr>\n</tfoot>\n";
+			echo "<tfoot>\n";
+			if($hasFooter)
+			{
+				echo "<tr>\n";
+				foreach($this->columns as $column)
+					$column->renderFooterCell();
+				echo "</tr>\n";
+			}
+			if($hasFilter)
+				$this->renderFilter();
+			echo "</tfoot>\n";
 		}
 	}
 
@@ -325,6 +413,7 @@ class CGridView extends CBaseListView
 		$data=$this->dataProvider->getData();
 		$n=count($data);
 		echo "<tbody>\n";
+
 		if($n>0)
 		{
 			for($row=0;$row<$n;++$row)
@@ -346,7 +435,10 @@ class CGridView extends CBaseListView
 	public function renderTableRow($row)
 	{
 		if($this->rowCssClassExpression!==null)
-			echo '<tr class="'.$this->evaluateExpression($this->rowCssClassExpression,array('row'=>$row)).'">';
+		{
+			$data=$this->dataProvider->data[$row];
+			echo '<tr class="'.$this->evaluateExpression($this->rowCssClassExpression,array('row'=>$row,'data'=>$data)).'">';
+		}
 		else if(is_array($this->rowCssClass) && ($n=count($this->rowCssClass))>0)
 			echo '<tr class="'.$this->rowCssClass[$row%$n].'">';
 		else

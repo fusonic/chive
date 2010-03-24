@@ -36,7 +36,7 @@ Yii::import('zii.widgets.jui.CJuiWidget');
  * for possible options (name-value pairs).
  *
  * @author Sebastian Thierer <sebathi@gmail.com>
- * @version $Id: CJuiProgressBar.php 99 2010-01-07 20:55:13Z qiang.xue $
+ * @version $Id: CJuiProgressBar.php 127 2010-02-18 14:03:04Z sebathi $
  * @package zii.widgets.jui
  * @since 1.1
  */
@@ -58,7 +58,7 @@ class CJuiProgressBar extends CJuiWidget
 	public function run()
 	{
 		$id=$this->getId();
-		$this->htmlOptions['id']=$id;
+		$this->htmlOptions['id']=$id;		
 
 		echo CHtml::openTag($this->tagName,$this->htmlOptions);
 		echo CHtml::closeTag($this->tagName);

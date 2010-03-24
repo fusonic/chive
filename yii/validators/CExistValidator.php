@@ -14,10 +14,8 @@
  * This validator is often used to verify that a foreign key contains a value
  * that can be found in the foreign table.
  *
- * CExistValidator can only be used for active record objects.
- *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CExistValidator.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CExistValidator.php 1881 2010-03-10 22:17:34Z qiang.xue $
  * @package system.validators
  * @since 1.0.4
  */
@@ -68,7 +66,7 @@ class CExistValidator extends CValidator
 		$finder=CActiveRecord::model($className);
 		$table=$finder->getTableSchema();
 		if(($column=$table->getColumn($attributeName))===null)
-			throw new CException(Yii::t('yii','Column "{column} does not exist in table "{table}".',
+			throw new CException(Yii::t('yii','Column "{column}" does not exist in table "{table}".',
 				array('{column}'=>$attributeName,'{table}'=>$table->name)));
 
 		$criteria=array('condition'=>$column->rawName.'=:vp','params'=>array(':vp'=>$value));

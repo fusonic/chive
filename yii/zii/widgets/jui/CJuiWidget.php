@@ -14,7 +14,7 @@
  *
  * @author Sebastian Thierer <sebathi@gmail.com>
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CJuiWidget.php 99 2010-01-07 20:55:13Z qiang.xue $
+ * @version $Id: CJuiWidget.php 150 2010-03-14 04:12:54Z qiang.xue $
  * @package zii.widgets.jui
  * @since 1.1
  */
@@ -39,10 +39,10 @@ abstract class CJuiWidget extends CWidget
 	 */
 	public $themeUrl;
 	/**
-	 * @var string the JUI theme name. Defaults to 'smoothness'. Make sure that under {@link themeUrl} there
+	 * @var string the JUI theme name. Defaults to 'base'. Make sure that under {@link themeUrl} there
 	 * is a directory whose name is the same as this property value (case-sensitive).
 	 */
-	public $theme='smoothness';
+	public $theme='base';
 	/**
 	 * @var mixed the main JUI JavaScript file. Defaults to 'jquery-ui.min.js'.
 	 * Note the file must exist under the URL specified by {@link scriptUrl}.

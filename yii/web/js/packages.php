@@ -10,6 +10,9 @@ $packages=array(
 	'yiitab'=>array(
 		'jquery.yiitab.js',
 	),
+	'yiiactiveform'=>array(
+		'jquery.yiiactiveform.js',
+	),
 	'bgiframe'=>array(
 		'jquery.bgiframe.js',
 	),
@@ -41,6 +44,9 @@ $packages=array(
 	'metadata'=>array(
 		'jquery.metadata.js',
 	),
+	'bbq'=>array(
+		'jquery.ba-bbq.js',
+	),
 );
 
 $dependencies=array(
@@ -48,6 +54,9 @@ $dependencies=array(
 		'jquery',
 	),
 	'yiitab'=>array(
+		'jquery',
+	),
+	'yiiactiveform'=>array(
 		'jquery',
 	),
 	'bgiframe'=>array(
@@ -82,6 +91,9 @@ $dependencies=array(
 		'jquery',
 		'dimensions',
 		'metadata',
+	),
+	'bbq'=>array(
+		'jquery',
 	),
 );
 

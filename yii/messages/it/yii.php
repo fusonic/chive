@@ -86,7 +86,7 @@ return array (
   'Event "{class}.{event}" is not defined.' => 'L\'evento "{class}"."{event}" non è definito.',
   'Failed to write the uploaded file "{file}" to disk.' => 'Fallimento nella scrittura su disco del file caricato "{file}".',
   'File upload was stopped by extension.' => 'Carimento del file "{file}" interrotto a causa dell\'estensione.',
-  'Filter "{filter}" is invalid. Controller "{class}" does have the filter method "filter{filter}".' => 'El filtro "{filter} non è velido. Il controller "{class}" non contiene il metodo di filter "filter{filter}".',
+  'Filter "{filter}" is invalid. Controller "{class}" does have the filter method "filter{filter}".' => 'Il filtro "{filter} non è valido. Il controller "{class}" non contiene il metodo di filter "filter{filter}".',
   'Get a new code' => 'Procurasi un codice nuovo',
   'Invalid MO file revision: {revision}.' => 'Revisione del file MO non valida: {revision}.',
   'Invalid MO file: {file} (magic: {magic}).' => 'File MO non valido: {file} (magic: {magic}).',

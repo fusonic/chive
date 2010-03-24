@@ -29,7 +29,7 @@
  * You may also call {@link prepare} to explicitly prepare an SQL statement.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCommand.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CDbCommand.php 1880 2010-03-10 21:48:45Z qiang.xue $
  * @package system.db
  * @since 1.0
  */
@@ -224,7 +224,7 @@ class CDbCommand extends CComponent
 			if($this->_connection->enableProfiling)
 				Yii::endProfile('system.db.CDbCommand.execute('.$this->getText().')','system.db.CDbCommand.execute');
 			Yii::log('Error in executing SQL: '.$this->getText().$par,CLogger::LEVEL_ERROR,'system.db.CDbCommand');
-			throw new CDbException(Yii::t('yii','CDbCommand failed to execute the SQL statement: {error}'.$this->text,
+			throw new CDbException(Yii::t('yii','CDbCommand failed to execute the SQL statement: {error}',
 				array('{error}'=>$e->getMessage())));
 		}
 	}

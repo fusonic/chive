@@ -13,7 +13,7 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  *
- * @version $Id: yii.php 1398 2009-09-06 01:15:01Z qiang.xue $
+ * @version $Id: yii.php 1901 2010-03-14 03:51:17Z qiang.xue $
 */
 return array (
   'Active record class "{class}" does not have a scope named "{scope}".' => 'La clase de registro activo "{class}" no tiene un ámbito llamado "{scope}".',

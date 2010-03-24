@@ -19,8 +19,8 @@ Yii::import('zii.widgets.jui.CJuiInputWidget');
  * To use this widget, you may insert the following code in a view:
  * <pre>
  * $this->widget('zii.widgets.jui.CJuiSliderInput', array(
+ *     'name'=>'rate',
  *     'value'=>37,
- *     'id'=>'porcentageComplete',
  *     // additional javascript options for the slider plugin
  *     'options'=>array(
  *         'min'=>10,
@@ -40,7 +40,7 @@ Yii::import('zii.widgets.jui.CJuiInputWidget');
  * for possible options (name-value pairs).
  *
  * @author Sebastian Thierer <sebathi@gmail.com>
- * @version $Id: CJuiSliderInput.php 99 2010-01-07 20:55:13Z qiang.xue $
+ * @version $Id: CJuiSliderInput.php 151 2010-03-14 04:19:10Z qiang.xue $
  * @package zii.widgets.jui
  * @since 1.1
  */
@@ -67,7 +67,6 @@ class CJuiSliderInput extends CJuiInputWidget
 	 */
 	public function run()
 	{
-
 		list($name,$id)=$this->resolveNameID();
 
 		if(isset($this->htmlOptions['id']))

@@ -13,7 +13,7 @@
  * CHtml is a static class that provides a collection of helper methods for creating HTML views.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CHtml.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CHtml.php 1863 2010-03-07 13:26:05Z qiang.xue $
  * @package system.web.helpers
  * @since 1.0
  */
@@ -158,11 +158,11 @@ class CHtml
 	 */
 	public static function metaTag($content,$name=null,$httpEquiv=null,$options=array())
 	{
-		$options['content']=$content;
 		if($name!==null)
 			$options['name']=$name;
 		if($httpEquiv!==null)
 			$options['http-equiv']=$httpEquiv;
+		$options['content']=$content;
 		return self::tag('meta',$options);
 	}
 
@@ -201,6 +201,23 @@ class CHtml
 		if($media!=='')
 			$media=' media="'.$media.'"';
 		return "<style type=\"text/css\"{$media}>\n/*<![CDATA[*/\n{$text}\n/*]]>*/\n</style>";
+	}
+
+	/**
+	 * Registers a 'refresh' meta tag.
+	 * This method can be invoked anywhere in a view. It will register a 'refresh'
+	 * meta tag with {@link CClientScript} so that the page can be refreshed in
+	 * the specified seconds.
+	 * @param integer the number of seconds to wait before refreshing the page
+	 * @param string the URL to which the page should be redirected to. If empty, it means the current page.
+	 * @since 1.1.1
+	 */
+	public static function refresh($seconds, $url='')
+	{
+		$content="$seconds";
+		if($url!=='')
+			$content.=';'.self::normalizeUrl($url);
+		Yii::app()->clientScript->registerMetaTag($content,null,'refresh');
 	}
 
 	/**
@@ -262,15 +279,23 @@ class CHtml
 	 */
 	public static function beginForm($action='',$method='post',$htmlOptions=array())
 	{
-		$htmlOptions['action']=self::normalizeUrl($action);
+		$htmlOptions['action']=$url=self::normalizeUrl($action);
 		$htmlOptions['method']=$method;
 		$form=self::tag('form',$htmlOptions,false,false);
+		$hiddens=array();
+		if(!strcasecmp($method,'get') && ($pos=strpos($url,'?'))!==false)
+		{
+			foreach(explode('&',substr($url,$pos+1)) as $pair)
+			{
+				if(($pos=strpos($pair,'='))!==false)
+					$hiddens[]=self::hiddenField(urldecode(substr($pair,0,$pos)),urldecode(substr($pair,$pos+1)),array('id'=>false));
+			}
+		}
 		$request=Yii::app()->request;
 		if($request->enableCsrfValidation)
-		{
-			$token=self::hiddenField($request->csrfTokenName,$request->getCsrfToken(),array('id'=>false));
-			$form.="\n".self::tag('div',array('style'=>'display:none'),$token);
-		}
+			$hiddens[]=self::hiddenField($request->csrfTokenName,$request->getCsrfToken(),array('id'=>false));
+		if($hiddens!==array())
+			$form.="\n".self::tag('div',array('style'=>'display:none'),implode("\n",$hiddens));
 		return $form;
 	}
 
@@ -578,6 +603,8 @@ class CHtml
 		$htmlOptions['name']=$name;
 		if(!isset($htmlOptions['id']))
 			$htmlOptions['id']=self::getIdByName($name);
+		else if($htmlOptions['id']===false)
+			unset($htmlOptions['id']);
 		self::clientChange('change',$htmlOptions);
 		return self::tag('textarea',$htmlOptions,isset($htmlOptions['encode']) && !$htmlOptions['encode'] ? $value : self::encode($value));
 	}
@@ -662,6 +689,8 @@ class CHtml
 		$htmlOptions['name']=$name;
 		if(!isset($htmlOptions['id']))
 			$htmlOptions['id']=self::getIdByName($name);
+		else if($htmlOptions['id']===false)
+			unset($htmlOptions['id']);
 		self::clientChange('change',$htmlOptions);
 		$options="\n".self::listOptions($select,$data,$htmlOptions);
 		return self::tag('select',$htmlOptions,$options);
@@ -1729,8 +1758,10 @@ EOD;
 	 * <li>confirm: string, specifies the message that should show in a pop-up confirmation dialog.</li>
 	 * <li>ajax: array, specifies the AJAX options (see {@link ajax}).</li>
 	 * </ul>
+	 * @param boolean whether the event should be "live" (a jquery event concept). Defaults to true.
+	 * This parameter has been available since version 1.1.1.
 	 */
-	protected static function clientChange($event,&$htmlOptions)
+	protected static function clientChange($event,&$htmlOptions,$live=true)
 	{
 		if(!isset($htmlOptions['submit']) && !isset($htmlOptions['confirm']) && !isset($htmlOptions['ajax']))
 			return;
@@ -1785,7 +1816,10 @@ EOD;
 				$handler="return $confirm;";
 		}
 
-		$cs->registerScript('Yii.CHtml.#'.$id,"jQuery('#$id').$event(function(){{$handler}});");
+		if($live)
+			$cs->registerScript('Yii.CHtml.#'.$id,"jQuery('#$id').live('$event',function(){{$handler}});");
+		else
+			$cs->registerScript('Yii.CHtml.#'.$id,"jQuery('#$id').$event(function(){{$handler}});");
 		unset($htmlOptions['params'],$htmlOptions['submit'],$htmlOptions['ajax'],$htmlOptions['confirm'],$htmlOptions['return'],$htmlOptions['csrf']);
 	}
 
@@ -1805,6 +1839,8 @@ EOD;
 			$htmlOptions['name']=$name;
 		if(!isset($htmlOptions['id']))
 			$htmlOptions['id']=self::getIdByName($htmlOptions['name']);
+		else if($htmlOptions['id']===false)
+			unset($htmlOptions['id']);
 	}
 
 	/**

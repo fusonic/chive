@@ -6,7 +6,7 @@
  * {@link fetchKeys} and {@link calculateTotalItemCount}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDataProvider.php 1537 2009-11-23 21:20:13Z qiang.xue $
+ * @version $Id: CDataProvider.php 1757 2010-01-28 01:12:13Z qiang.xue $
  * @package system.web
  * @since 1.1
  */
@@ -175,5 +175,16 @@ abstract class CDataProvider extends CComponent implements IDataProvider
 		if($this->_totalItemCount===null || $refresh)
 			$this->_totalItemCount=$this->calculateTotalItemCount();
 		return $this->_totalItemCount;
+	}
+
+	/**
+	 * Sets the total number of data items.
+	 * This method is provided in case when the total number cannot be determined by {@link calculateTotalItemCount}.
+	 * @param integer the total number of data items.
+	 * @since 1.1.1
+	 */
+	public function setTotalItemCount($value)
+	{
+		$this->_totalItemCount=$value;
 	}
 }

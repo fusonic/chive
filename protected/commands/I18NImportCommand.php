@@ -86,7 +86,7 @@ class I18NImportCommand extends CConsoleCommand
 			$targetLang = $lang;
 		}
 		
-		@mkdir('messages/' . $targetLang);
+		@mkdir('messages/' . strtolower($targetLang));
 		
 		// Translate
 		foreach($files as $file)
@@ -103,7 +103,7 @@ class I18NImportCommand extends CConsoleCommand
 			$dom = dom_import_simplexml($xmlNew)->ownerDocument;
 			$dom->formatOutput = true;
 			
-			file_put_contents('messages/' . $targetLang . '/' . $file . '.xml', $dom->saveXML());
+			file_put_contents('messages/' . strtolower($targetLang) . '/' . $file . '.xml', $dom->saveXML());
 		}
 	}
 	

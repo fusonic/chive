@@ -27,7 +27,7 @@
  * Web accessible, please make sure the view/layout files are protected from Web access.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CThemeManager.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CThemeManager.php 1832 2010-02-20 03:22:45Z qiang.xue $
  * @package system.web
  * @since 1.0
  */
@@ -75,7 +75,7 @@ class CThemeManager extends CApplicationComponent
 			$themes=array();
 			$basePath=$this->getBasePath();
 			$folder=@opendir($basePath);
-			while($file=@readdir($folder))
+			while(($file=@readdir($folder))!==false)
 			{
 				if($file!=='.' && $file!=='..' && $file!=='.svn' && is_dir($basePath.DIRECTORY_SEPARATOR.$file))
 					$themes[]=$file;

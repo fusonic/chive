@@ -23,7 +23,7 @@
  * the first letter must be a word letter.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CViewAction.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CViewAction.php 1828 2010-02-20 00:51:38Z qiang.xue $
  * @package system.web.actions
  * @since 1.0
  */
@@ -107,7 +107,7 @@ class CViewAction extends CAction
 				return;
 			}
 		}
-		throw new CHttpException(404,Yii::t('yii','The requested view "{name}" is not found.',
+		throw new CHttpException(404,Yii::t('yii','The requested view "{name}" was not found.',
 			array('{name}'=>$viewPath)));
 	}
 

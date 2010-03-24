@@ -12,7 +12,7 @@
  * CConsoleCommandRunner manages commands and executes the requested command.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CConsoleCommandRunner.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CConsoleCommandRunner.php 1832 2010-02-20 03:22:45Z qiang.xue $
  * @package system.console
  * @since 1.0
  */
@@ -80,7 +80,7 @@ class CConsoleCommandRunner extends CComponent
 		if(($dir=@opendir($path))===false)
 			return array();
 		$commands=array();
-		while($name=readdir($dir))
+		while(($name=readdir($dir))!==false)
 		{
 			$file=$path.DIRECTORY_SEPARATOR.$name;
 			if(!strcasecmp(substr($name,-11),'Command.php') && is_file($file))
