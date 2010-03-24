@@ -94,13 +94,13 @@ class ImportPage extends CModel
 	public function run()
 	{
 		
+		
 		// Form got submitted
 		if(isset($_POST['Import']))
 		{
 
 			$this->addError('file', 'asdf');
 			$this->view = 'form';
-			return $this->runForm();
 			
 			$this->file = 'protected/runtime/' . $_FILES['file']['name'] . "_" . time();
 			$this->fileSize = $_FILES['file']['size'];
@@ -361,7 +361,7 @@ class ImportPage extends CModel
 				break;
 				
 		}
-		
+
 		$sqlSplitter = new SqlSplitter($content);
 		$queries = $sqlSplitter->getQueries();
 		

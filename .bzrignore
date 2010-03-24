@@ -5,3 +5,4 @@ assets/*
 .project
 .settings
 protected/runtime/user-config/*
+protected/extensions/sqlquery_old
