@@ -23,8 +23,8 @@
   <entry id="addUser">Benutzer hinzuf&#xFC;gen</entry>
   <entry id="addView">Ansicht hinzuf&#xFC;gen</entry>
   <entry id="affectedRowsQueryTime">0#Keine Zeilen betroffen. Abfrage dauerte {time} Sekunden.|1#{rows} Zeile betroffen. Abfrage dauerte {time} Sekunden.|n&gt;1#{rows} Zeilen betroffen. Abfrage dauerte {time} Sekunden.</entry>
-  <entry id="ajaxRequestFailed"/>
-  <entry id="ajaxRequestFailedText"/>
+  <entry id="ajaxRequestFailed">AJAX Anfrage fehlgeschlagen</entry>
+  <entry id="ajaxRequestFailedText">Klicken Sie &lt;a href=\</entry>
   <entry id="amountRoutines">1#{amount} Routine|n&gt;1#{amount} Routinen</entry>
   <entry id="amountTables">1#{amount} Tabelle|n&gt;1#{amount} Tabellen</entry>
   <entry id="amountViews">1#{amount} Sicht|n&gt;1#{amount} Sichten</entry>
@@ -170,8 +170,8 @@
   <entry id="maintainer">Betreuer</entry>
   <entry id="maximum">Maximum</entry>
   <entry id="move">Verschieben</entry>
-  <entry id="mysqlServerVersion"/>
-  <entry id="mysqlClientVersion"/>
+  <entry id="mysqlServerVersion">MySQL Server Version</entry>
+  <entry id="mysqlClientVersion">MySQL Client Version</entry>
   <entry id="name">Name</entry>
   <entry id="nextAutoincrementValue">N&#xE4;chster AutoIncrement-Wert</entry>
   <entry id="no">Nein</entry>
@@ -206,7 +206,7 @@
   <entry id="processes">Prozesse</entry>
   <entry id="profiling">Profilerstellung</entry>
   <entry id="profilingResultsSortedByExecutionTime">Profilerstellungs-Resultate sortiert nach Ausf&#xFC;hrungszeit</entry>
-  <entry id="projectNews"/>
+  <entry id="projectNews">Projekt-Neuigkeiten</entry>
   <entry id="query">Abfrage</entry>
   <entry id="refresh">Aktualisieren</entry>
   <entry id="relation">Beziehung</entry>
@@ -221,7 +221,7 @@
   <entry id="schemata">Schemata</entry>
   <entry id="search">Suche</entry>
   <entry id="selectColumnToAdd">W&#xE4;hlen Sie eine Spalte zum Hinzuf&#xFC;gen aus</entry>
-  <entry id="serverInformation"/>
+  <entry id="serverInformation">Serverinformation</entry>
   <entry id="setNull">NULL setzen</entry>
   <entry id="settings">Einstellungen</entry>
   <entry id="show">Ausgabe anzeigen</entry>
@@ -309,7 +309,7 @@
   <entry id="view">Ansicht</entry>
   <entry id="views">Ansichten</entry>
   <entry id="warning">Warnung</entry>
-  <entry id="webserver"/>
+  <entry id="webserver">Webserver</entry>
   <entry id="withSelected">Selektierte: </entry>
   <entry id="xDebugExportWarning">XDebug Profiling ist auf diesem Server aktiviert.&lt;br /&gt;&#xD;
 Der Export gro&#xDF;er Datenbanken k&#xF6;nnte das System zum Absturz bringen!</entry>
