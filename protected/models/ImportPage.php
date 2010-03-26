@@ -29,7 +29,7 @@ class ImportPage extends CModel
 	private $mimeType;
 	
 	private $finished = false;
-	private $chunkSize = 301215;
+	private $chunkSize = 1048576;
 	
 	private $timeLimit = 5;
 	private $position = 0;
@@ -59,6 +59,8 @@ class ImportPage extends CModel
 	 */
 	public function __construct()
 	{
+		@set_time_limit(30);
+		
 		$this->partialImport = isset($_POST['ImportPage']['partialImport']) && $_POST['ImportPage']['partialImport'];
 		
 		$characterSets = CharacterSet::model()->findAll();
@@ -99,7 +101,6 @@ class ImportPage extends CModel
 		if(isset($_POST['Import']))
 		{
 
-			$this->addError('file', 'asdf');
 			$this->view = 'form';
 			
 			$this->file = 'protected/runtime/' . $_FILES['file']['name'] . "_" . time();
@@ -110,10 +111,12 @@ class ImportPage extends CModel
 
 			if($this->partialImport)
 			{
+				// Redirect to postprocessing
 				$this->view = 'submit';
 			}
 			else
 			{
+				// Run import in one step
 				$this->runImport();
 			}
 			
@@ -139,16 +142,7 @@ class ImportPage extends CModel
 		else
 		{
 			$this->view = 'form';
-			$this->runForm();
 		}
-		
-	}
-	
-	/**
-	 * Performs the form functionality
-	 */
-	private function runForm()
-	{
 		
 	}
 	
@@ -218,19 +212,22 @@ class ImportPage extends CModel
 				$handle = fopen($this->file, 'r');
 				fseek($handle, $this->position, SEEK_SET);
 				
+				$i = 0; 
 				while(!feof($handle))
 				{
-					$temp = fread($handle, $this->chunkSize);
+					$i++;
+					
+					$temp = fread($handle, $this->chunkSize * $i);
 					#$encoding = mb_detect_encoding($temp);
 					
 					$readingBuffer .= $temp;
-					
 					$queryCount = count($sqlSplitter->getQueries($readingBuffer));
 		
 					// Skip loop when a complete query was found
 					if($queryCount > 0) 
 					{
 						$queries = $sqlSplitter->getQueries();
+						$i = 0;
 						break;
 					}
 					
@@ -267,6 +264,8 @@ class ImportPage extends CModel
 						$dbException = new DbException($cmd);
 						*/
 						$response->addNotification('error', Yii::t('core', 'errorExecuteQuery'), $ex->getMessage() . '  ', $ex->getMessage());
+						#$response->addNotification('info', 'Executing failed', 'Now executed query ' . $executedQueries . ' of ' . $queryCount , $queries[$executedQueries]);
+						
 						$response->addData('error', true);
 						$response->refresh = true;
 						$response->executeJavaScript('sideBar.loadTables("' . $this->schema . '")');
@@ -287,6 +286,7 @@ class ImportPage extends CModel
 				}
 			}
 			
+			
 			// Not all queries could be executed, rewind to last executed query position 
 			if($queryCount > $executedQueries)
 			{
@@ -294,10 +294,34 @@ class ImportPage extends CModel
 				
 				for($i = $executedQueries; $i < $queryCount; $i++)
 				{
-					$notExecutedCharCount += strlen($queries[$i]);
+					$notExecutedCharCount += $sqlSplitter->getQueryLength($i+1) +1;
 				}
-	
+				
 				$newPosition -= $notExecutedCharCount;
+				/*
+				$newPos = $sqlSplitter->getStartPosition($executedQueries - 1);
+				
+				$response->addNotification("info", "Not all queries could be executed in given time span", "
+														\$newPosition: " . $newPosition . "<br/>
+														\$newPos: " . $newPos . "<br/>
+														\$notExecutedCharCount: " . $notExecutedCharCount . "<br/>
+														\$this->position: " . $this->position, $queries[$executedQueries]);
+				
+				*/
+				#$response->addNotification("info", "executed " . $executedQueries . " out of " . $queryCount, "", $queries[$executedQueries]);
+				
+				
+				/*
+				$handle = fopen($this->file, 'r');
+				fseek($handle, $newPosition+1, SEEK_SET);
+				$temp = fread($handle, 1024);
+				*/
+				#$response->addNotification("info", "reading 1024 from " . $newPosition, "", $temp);
+				
+				//$response->addNotification("info", "executed " . $executedQueries . " / " . $queryCount . ", skipped chars: " . $notExecutedCharCount, "", $temp);
+				//$response->addNotification("info", "first query not getting executed is:", "", $queries[$executedQueries]);
+				
+	
 			}
 		} 
 		else
@@ -309,7 +333,6 @@ class ImportPage extends CModel
 			@unlink($this->file);
 		}
 		
-
 		// Skip delimiter
 		$this->position = $newPosition+1;
 		
@@ -376,8 +399,6 @@ class ImportPage extends CModel
 			}
 			catch(CDbException $ex)
 			{
-				
-				predie($query);
 				
 				$dbException = new DbException($cmd);
 				

@@ -150,7 +150,7 @@ class CXmlMessageSource extends CMessageSource
 
 			if(!is_null($cache))
 			{
-				$cache->set($key, $messages, $this->cachingDuration);
+				$cache->set($cacheKey, $messages, $this->cachingDuration);
 			}
 		}
 		

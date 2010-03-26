@@ -154,23 +154,6 @@ $(document).ready(function()
 	 * Ajax functions
 	 */ 
 	
-	// START
-	$(document).ajaxStart(function() {
-		$('#loading').css({'background-image': 'url(' + baseUrl + '/images/loading4.gif)'}).fadeIn();
-		//$('#loading2').show();
-	});
-	
-	// STOP
-	$(document).ajaxStop(function() {
-		//$('#loading2').hide();
-		$('#loading').css({'background-image': 'url(' + baseUrl + '/images/loading5.gif)'}).fadeOut();
-	});
-	
-	// ERROR
-	$(document).ajaxError(function(error, xhr) {
-		Notification.add('warning', lang.get('core', 'ajaxRequestFailed'), lang.get('core', 'ajaxRequestFailedText'), xhr.responseText);
-		$('#loading').css({'background-image': 'url(' + baseUrl + '/images/loading5.gif)'}).fadeOut();
-	});
 
 	/*
 	 * Change jQuery UI dialog defaults

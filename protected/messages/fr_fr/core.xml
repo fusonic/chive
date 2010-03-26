@@ -23,8 +23,8 @@
   <entry id="addUser">Ajouter un utilisateur</entry>
   <entry id="addView">Ajouter une vue</entry>
   <entry id="affectedRowsQueryTime">0#Aucun enregistrement affect&#xE9;. La requ&#xEA;te a pris {time} secondes.|1#{rows} enregistrement affect&#xE9;. La requ&#xEA;te a pris {time} secondes.|n&gt;1#{rows} enregistrements affect&#xE9;s. La requ&#xEA;te a pris {time} secondes</entry>
-  <entry id="ajaxRequestFailed"/>
-  <entry id="ajaxRequestFailedText"/>
+  <entry id="ajaxRequestFailed">Requ&#xEA;te Ajax &#xE9;chou&#xE9;e</entry>
+  <entry id="ajaxRequestFailedText">Cliquez &lt;a href=\</entry>
   <entry id="amountRoutines">1#{amount} Routine|n&gt;1#{amount} Routines</entry>
   <entry id="amountTables">1#{amount} Table|n&gt;1#{amount} Tables</entry>
   <entry id="amountViews">1#{amount} Vue|n&gt;1#{amount} Vues</entry>
@@ -71,7 +71,7 @@
   <entry id="doYouReallyWantToDropTables">Etes-vous s&#xFB;r de supprimer la (les) table(s) s&#xE9;lectionn&#xE9;e(s) ?</entry>
   <entry id="doYouReallyWantToDropTrigger">Etes-vous s&#xFB;r de supprimer le d&#xE9;clencheur ?</entry>
   <entry id="doYouReallyWantToDropUniqueKey">Etes-vous s&#xFB;r de supprimer la cl&#xE9; primaire ?</entry>
-  <entry id="doYouReallyWantToDropUsers">Etes-vous s&#xFB;r de supprimer l'utilisateur s&#xE9;lectionn&#xE9; ?</entry>
+  <entry id="doYouReallyWantToDropUsers">Etes-vous s&#xFB;r de supprimer le(s) utilisateur(s) s&#xE9;lectionn&#xE9;(s) ?</entry>
   <entry id="doYouReallyWantToDropView">Etes-vous s&#xFB;r de supprimer la vue ?</entry>
   <entry id="doYouReallyWantToDropViews">Etes-vous s&#xFB;r de supprimer la (les) vue(s) s&#xE9;lectionn&#xE9;e(s) ?</entry>
   <entry id="doYouReallyWantToKillSelectedProcesses">Etes-vous s&#xFB;r de tuer le(s) processus s&#xE9;lectionn&#xE9;(s) ?</entry>
@@ -112,7 +112,7 @@
   <entry id="enterNameForNewIndex">Merci de sp&#xE9;cifier un nom pour le nouvel index:</entry>
   <entry id="enterNameForNewUniqueKey">Merci de sp&#xE9;cifier un nom pour la nouvelle cl&#xE9; unique:</entry>
   <entry id="enterOneValuePerLine">Entrez une valeur par ligne.</entry>
-  <entry id="enterSchemaOrTable"/>
+  <entry id="enterSchemaOrTable">Entrer le sch&#xE9;ma ou la table...</entry>
   <entry id="entriesPerPage">Lignes par page</entry>
   <entry id="error">Erreur</entry>
   <entry id="errorAlterIndex">Impossible de mettre &#xE0; jour l'index &#xBB;{index}&#xAB;</entry>
@@ -170,13 +170,13 @@
   <entry id="maintainer">Mainteneur</entry>
   <entry id="maximum">Maximum</entry>
   <entry id="move">D&#xE9;placer</entry>
-  <entry id="mysqlServerVersion"/>
-  <entry id="mysqlClientVersion"/>
+  <entry id="mysqlServerVersion">Version Serveur MySQL</entry>
+  <entry id="mysqlClientVersion">Version du Client MySQL</entry>
   <entry id="name">Nom</entry>
   <entry id="nextAutoincrementValue">Prochaine valeur d'auto-incr&#xE9;ment</entry>
   <entry id="no">Non</entry>
   <entry id="noAttribute">Aucun attribut</entry>
-  <entry id="noBookmarksFound"/>
+  <entry id="noBookmarksFound">Aucun signet trouv&#xE9;</entry>
   <entry id="noColumns">Aucune colonne pr&#xE9;sente dans cette table.</entry>
   <entry id="noColumnsAddedYet">Aucune colonne ajout&#xE9;e pour le moment.</entry>
   <entry id="noIndices">Aucun indice dans cette table.</entry>
@@ -206,7 +206,7 @@
   <entry id="processes">Processus</entry>
   <entry id="profiling">Analyse</entry>
   <entry id="profilingResultsSortedByExecutionTime">Analyse des r&#xE9;sultats class&#xE9;s par dur&#xE9;e d'ex&#xE9;cution</entry>
-  <entry id="projectNews"/>
+  <entry id="projectNews">Actualit&#xE9; du projet</entry>
   <entry id="query">Requ&#xEA;te</entry>
   <entry id="refresh">Actualiser</entry>
   <entry id="relation">Relation</entry>
@@ -221,7 +221,7 @@
   <entry id="schemata">Sch&#xE9;mas</entry>
   <entry id="search">Rechercher</entry>
   <entry id="selectColumnToAdd">S&#xE9;lectionner une colonne &#xE0; ajouter</entry>
-  <entry id="serverInformation"/>
+  <entry id="serverInformation">Informations sur le serveur</entry>
   <entry id="setNull">Mettre &#xE0; NULL</entry>
   <entry id="settings">Param&#xE8;tres</entry>
   <entry id="show">Afficher</entry>
@@ -309,7 +309,7 @@
   <entry id="view">Vue</entry>
   <entry id="views">Vues</entry>
   <entry id="warning">Avertissement</entry>
-  <entry id="webserver"/>
+  <entry id="webserver">Serveur web</entry>
   <entry id="withSelected">Pour la s&#xE9;lection : </entry>
   <entry id="xDebugExportWarning">Le profilage XDebug est actif sur ce serveur.&lt;br /&gt;L'export de grosses bases de donn&#xE9;es peut rendre votre syst&#xE8;me instable.</entry>
   <entry id="yes">Oui</entry>

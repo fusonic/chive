@@ -3,6 +3,7 @@
 		$('#attributes_<?php echo CHtml::$idPrefix; ?>').val('<?php echo json_encode($attributes); ?>');
 	});
 </script>
+
 <?php echo CHtml::form('', 'post', array('id' => CHtml::$idPrefix)); ?>
 	<input type="hidden" name="attributes" value="" id="attributes_<?php echo CHtml::$idPrefix; ?>" />
 	<input type="hidden" name="schema" value="<?php echo $this->schema; ?>" />

@@ -28,6 +28,7 @@ class SqlSplitter
 
 	private $string;
 	private $queries = array();
+	private $queryLength;
 	
 	private $position = 0;
 	
@@ -75,6 +76,7 @@ class SqlSplitter
 
 		for($i = 0; $i <= $chars; $i++)
 		{
+
 			if($i < $chars)
 			{
 				$char = $this->string{$i};
@@ -179,6 +181,8 @@ class SqlSplitter
 				if($query) 
 				{
 					$this->queries[] = $query;
+					$this->queryLength[] = $i - $start + strlen($delimiter);
+					
 					$this->position = $i;
 					
 				}
@@ -204,6 +208,7 @@ class SqlSplitter
 		{
 			$this->string = $_string;
 			$this->position = 0;
+			$this->startPositions = array();
 			$this->queries = array();
 		}
 		
@@ -213,6 +218,19 @@ class SqlSplitter
 		return $this->queries;
 	}
 
+	public function getQueryLength($_i)
+	{
+		if(isset($this->queryLength[$_i]))
+		{
+			return $this->queryLength[$_i];
+		}
+		else
+		{
+			return 0;
+		}
+			
+	}
+	
 }
 
 ?>

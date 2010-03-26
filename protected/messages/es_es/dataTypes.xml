@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<category id="dataTypes">
+  <entry id="numeric">Num&#xE9;rico</entry>
+  <entry id="strings">Cadenas</entry>
+  <entry id="dateAndTime">Fecha y hora</entry>
+</category>

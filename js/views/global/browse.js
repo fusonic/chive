@@ -132,7 +132,7 @@ var globalBrowse = {
 		$('body').append(io);
 		
 		setTimeout(function() {
-			//io.remove();
+			io.remove();
 		}, 5000);
 		
 	}

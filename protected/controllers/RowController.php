@@ -187,10 +187,6 @@ class RowController extends Controller
 			// Refresh if type s file 
 			$response->refresh = true;
 		}
-		else
-		{
-			$visibleValue = ($isNull ? '<span class="null">NULL</span>' : htmlspecialchars($row->getAttribute($column)));
-		}
 
 		// NULL
 		if($isNull)
@@ -205,11 +201,17 @@ class RowController extends Controller
 			
 			$showFullColumnContent = Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $this->schema . '.' . $this->table);
 			
-			if(!$showFullColumnContent && !$isNull)
+			$visibleValue = $row->getAttribute($column);
+			
+			if($isNull)
+			{
+				$visibleValue = '<span class="null">NULL</span>';
+			}
+			elseif(!$showFullColumnContent)
 			{
 				$visibleValue = StringUtil::cutText($visibleValue, 100);
 			}
-			
+
 			$response->addData(null, array(
 				'value' => ($isNull ? 'NULL' : $row->getAttribute($column)),
 				'column' => $column,

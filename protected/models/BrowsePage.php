@@ -118,7 +118,7 @@ class BrowsePage extends CModel
 			$i = 1;
 			foreach($queries AS $query)
 			{
-
+				
 				$sqlQuery = new SqlQuery($query);
 				$type = $sqlQuery->getType();
 

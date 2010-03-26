@@ -20,7 +20,11 @@
 
 var chive = {
 	
-	currentLocation: window.location.href,
+	currentLocation: 	window.location.href,
+	
+	// Turn loading indicator on by default
+	loadingIndicator: 	true,
+	
 	
 	/*
 	 * Initialize chive
@@ -83,6 +87,22 @@ var chive = {
 					window.location = item.target;
 				});
 		}
+		
+		// Initialize loading indicator
+		$(document)
+			.ajaxStart(function() {
+				if(this.loadingIndicator)
+				{
+					$('#loading').css({'background-image': 'url(' + baseUrl + '/images/loading4.gif)'}).fadeIn();
+				}
+			})
+			.ajaxStop(function() {
+				$('#loading').css({'background-image': 'url(' + baseUrl + '/images/loading5.gif)'}).fadeOut();
+			})
+			.ajaxError(function(error, xhr) {
+				Notification.add('warning', lang.get('core', 'ajaxRequestFailed'), lang.get('core', 'ajaxRequestFailedText'), xhr.responseText);
+				$('#loading').css({'background-image': 'url(' + baseUrl + '/images/loading5.gif)'}).fadeOut();
+			});
 
 	},
 	
