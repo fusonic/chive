@@ -156,6 +156,10 @@ $(document).ready(function() {
 					</a>
 				</li>
 			</ul>
+			
+			<div class="noEntries">
+				<?php echo Yii::t('core', 'noTables'); ?>
+			</div>
 
 		</div>
   		<div class="sidebarHeader">
@@ -179,6 +183,11 @@ $(document).ready(function() {
 					</a>
 				</li>
 			</ul>
+			
+			<div class="noEntries">
+				<?php echo Yii::t('core', 'noViews'); ?>
+			</div>
+			
 		</div>
   		<div class="sidebarHeader">
 			<a class="icon">
@@ -209,7 +218,9 @@ $(document).ready(function() {
 						</li>
 					<?php } ?>
 				<?php } else { ?>
-					<?php echo Yii::t('core', 'noBookmarksFound'); ?>
+					<div class="noEntries">
+						<?php echo Yii::t('core', 'noBookmarksFound'); ?>
+					</div>
 				<?php } ?>
 			</ul>
 		</div>

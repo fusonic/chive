@@ -272,5 +272,13 @@
 	{
 		padding-top: 30px;
 	}
+	
+	#sideBar div.noEntries
+	{
+		padding: 50px;
+		font-style: italic;
+		text-align: center;
+		color: #808080;
+	}
   
 }
