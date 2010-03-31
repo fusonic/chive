@@ -46,14 +46,22 @@ var sideBar = {
 			// Remove all existing nodes
 			contentUl.empty().append(template);
 			
-			// Append all nodes
-			for(var i = 0; i < data.length; i++)
+			if(data.length > 0)
 			{
-				html += '<li class="nowrap">' + templateHtml
-					.replace(/#schemaName#/g, data[i]) + '</li>';
+				// Append all nodes
+				for(var i = 0; i < data.length; i++)
+				{
+					html += '<li class="nowrap">' + templateHtml
+						.replace(/#schemaName#/g, data[i]) + '</li>';
+				}
+				
+				contentUl.append(html);
+				$('#sideBar #schemaList').parent().children('div.noEntries').hide();
 			}
-			
-			contentUl.append(html);
+			else
+			{
+				$('#sideBar #schemaList').parent().children('div.noEntries').show();
+			}
 			
 			// Callback
 			if($.isFunction(callback))
@@ -90,21 +98,29 @@ var sideBar = {
 			// Remove all existing nodes
 			contentUl.empty().append(template);
 			
-			// Append all nodes
-			for(var i = 0; i < data.length; i++)
+			if(data.length > 0)
 			{
-				var newHtml = '<li class="nowrap">' + templateHtml
-					.replace(/#tableName#/g, data[i].tableName)
-					.replace(/#rowCount#/g, data[i].rowCount)
-					.replace(/#rowCountText#/g, data[i].rowCountText) + '</li>';
-				if(data[i].rowCount == 0)
+				// Append all nodes
+				for(var i = 0; i < data.length; i++)
 				{
-					newHtml = newHtml.replace('icon icon16 icon_browse', 'icon icon16 icon_browse disabled');
+					var newHtml = '<li class="nowrap">' + templateHtml
+						.replace(/#tableName#/g, data[i].tableName)
+						.replace(/#rowCount#/g, data[i].rowCount)
+						.replace(/#rowCountText#/g, data[i].rowCountText) + '</li>';
+					if(data[i].rowCount == 0)
+					{
+						newHtml = newHtml.replace('icon icon16 icon_browse', 'icon icon16 icon_browse disabled');
+					}
+					html += newHtml;
 				}
-				html += newHtml;
+				
+				contentUl.append(html);
+				$('#sideBar #tableList').parent().children('div.noEntries').hide();
 			}
-			
-			contentUl.append(html);
+			else
+			{
+				$('#sideBar #tableList').parent().children('div.noEntries').show();
+			}
 			
 			// Callback
 			if($.isFunction(callback))
@@ -141,15 +157,23 @@ var sideBar = {
 			// Remove all existing nodes
 			contentUl.empty().append(template);
 			
-			// Append all nodes
-			for(var i = 0; i < data.length; i++)
+			if(data.length > 0)
 			{
-				var newHtml = '<li class="nowrap">' + templateHtml
-					.replace(/#viewName#/g, data[i].viewName) + '</li>';
-				html += newHtml;
+				// Append all nodes
+				for(var i = 0; i < data.length; i++)
+				{
+					var newHtml = '<li class="nowrap">' + templateHtml
+						.replace(/#viewName#/g, data[i].viewName) + '</li>';
+					html += newHtml;
+				}
+				
+				contentUl.append(html);
+				$('#sideBar #viewList').parent().children('div.noEntries').hide();
 			}
-			
-			contentUl.append(html);
+			else
+			{
+				$('#sideBar #viewList').parent().children('div.noEntries').show();
+			}
 			
 			// Callback
 			if($.isFunction(callback))

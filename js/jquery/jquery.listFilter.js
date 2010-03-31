@@ -42,6 +42,7 @@
 		return this.each(function() 
 		{
 			
+			var keyBindingDone = false;
 			var list = $(this);
 			var input = inputObj;
 			var inputElement = inputObj.get(0);
@@ -190,7 +191,7 @@
 				list.children("li").not(".template").each(function() {
 					var item = $(this);
 					items.push([
-						item.text().toLowerCase(),
+						item.text().trim().toLowerCase(),
 						item
 					]);
 				});
@@ -198,11 +199,16 @@
 				/*
 				 * Bind event handlers
 				 */
-				input.keyup(keyUp);
-				input.keydown(keyDown);
-				input.blur(function() {
-					selectResult(null); 
-				});
+				if(!keyBindingDone)
+				{
+					input.keyup(keyUp);
+					input.keydown(keyDown);
+					input.blur(function() {
+						selectResult(null); 
+					});
+					
+					keyBindingDone = true;
+				}
 				
 				if(input.val() != '')
 				{

@@ -31,7 +31,7 @@ class ImportPage extends CModel
 	private $finished = false;
 	private $chunkSize = 1048576;
 	
-	private $timeLimit = 5;
+	private $timeLimit = 30;
 	private $position = 0;
 	private $totalExecutedQueries = 0;
 	
@@ -59,7 +59,12 @@ class ImportPage extends CModel
 	 */
 	public function __construct()
 	{
-		@set_time_limit(30);
+		@set_time_limit(0);
+		
+		if($timeLimit = ini_get('max_execution_time'))
+		{
+			$this->timeLimit = (int)$timeLimit;	
+		}
 		
 		$this->partialImport = isset($_POST['ImportPage']['partialImport']) && $_POST['ImportPage']['partialImport'];
 		
@@ -161,6 +166,8 @@ class ImportPage extends CModel
 		$readingBuffer = '';
 		$queryCount = 0;
 		
+		$chunkSize = $this->chunkSize;
+		
 		// Open file and set position to last position
 		switch($this->mimeType)
 		{
@@ -171,8 +178,10 @@ class ImportPage extends CModel
 				
 				while(!gzeof($handle))
 				{
-					$readingBuffer .= gzread($handle, $this->chunkSize);
+					$readingBuffer .= gzread($handle, $chunkSize);
 					$queryCount = count($sqlSplitter->getQueries($readingBuffer));
+					
+					$chunkSize *= 2;
 					
 					if($queryCount > 0)
 					{
@@ -189,12 +198,18 @@ class ImportPage extends CModel
 				$handle = bzopen($this->file, 'r');
 				bzread($handle, $this->position);
 				do {
-					$temp = bzread($handle, $this->chunkSize);
+					
+					$temp = bzread($handle, $chunkSize);
 					
 					if($temp !== false)
+					{
 						$readingBuffer .= $temp;
+					}
+					
+					$chunkSize *= 2;
 						
 					$queryCount = count($sqlSplitter->getQueries($readingBuffer));
+					
 					if($queryCount > 0) 
 					{
 						$queries = $sqlSplitter->getQueries();
@@ -212,22 +227,21 @@ class ImportPage extends CModel
 				$handle = fopen($this->file, 'r');
 				fseek($handle, $this->position, SEEK_SET);
 				
-				$i = 0; 
 				while(!feof($handle))
 				{
-					$i++;
 					
-					$temp = fread($handle, $this->chunkSize * $i);
+					$temp = fread($handle, $chunkSize);
 					#$encoding = mb_detect_encoding($temp);
 					
 					$readingBuffer .= $temp;
 					$queryCount = count($sqlSplitter->getQueries($readingBuffer));
+					
+					$chunkSize *= 2;
 		
 					// Skip loop when a complete query was found
 					if($queryCount > 0) 
 					{
 						$queries = $sqlSplitter->getQueries();
-						$i = 0;
 						break;
 					}
 					
@@ -253,28 +267,29 @@ class ImportPage extends CModel
 				{
 					$cmd = $this->db->createCommand($queries[$executedQueries]);
 					$cmd->execute();
+					
+					if($executedQueries === 0)
+					{
+						$response->executeJavaScript('sideBar.loadTables("' . $this->schema . '")');
+					}
+					
 				}
 				catch(CDbException $ex)
 				{
-					/*
 					$dbException = new DbException($cmd);
-					
-					if(!in_array(@$dbException->getNumber(), $this->ignoreErrorNumbers))
-					{
-						$dbException = new DbException($cmd);
-						*/
-						$response->addNotification('error', Yii::t('core', 'errorExecuteQuery'), $ex->getMessage() . '  ', $ex->getMessage());
-						#$response->addNotification('info', 'Executing failed', 'Now executed query ' . $executedQueries . ' of ' . $queryCount , $queries[$executedQueries]);
-						
-						$response->addData('error', true);
-						$response->refresh = true;
-						$response->executeJavaScript('sideBar.loadTables("' . $this->schema . '")');
-						$response->send();
-						/*
-					}
-					*/
+
+					$response->addData('error', true);
+					$response->addNotification('error', $dbException->getText(), '',  $queries[$executedQueries]);
 					
 				}
+				
+				/*
+				if(YII_DEBUG)
+				{
+					$response->addData('error', true);
+					$response->addNotification('success', Yii::t('core', 'successExecuteQuery'), '', $queries[$executedQueries]);
+				}*/
+				
 				
 				$executedQueries++;
 				$this->totalExecutedQueries++;
@@ -294,33 +309,10 @@ class ImportPage extends CModel
 				
 				for($i = $executedQueries; $i < $queryCount; $i++)
 				{
-					$notExecutedCharCount += $sqlSplitter->getQueryLength($i+1) +1;
+					$notExecutedCharCount += $sqlSplitter->getQueryLength($i+1);
 				}
 				
 				$newPosition -= $notExecutedCharCount;
-				/*
-				$newPos = $sqlSplitter->getStartPosition($executedQueries - 1);
-				
-				$response->addNotification("info", "Not all queries could be executed in given time span", "
-														\$newPosition: " . $newPosition . "<br/>
-														\$newPos: " . $newPos . "<br/>
-														\$notExecutedCharCount: " . $notExecutedCharCount . "<br/>
-														\$this->position: " . $this->position, $queries[$executedQueries]);
-				
-				*/
-				#$response->addNotification("info", "executed " . $executedQueries . " out of " . $queryCount, "", $queries[$executedQueries]);
-				
-				
-				/*
-				$handle = fopen($this->file, 'r');
-				fseek($handle, $newPosition+1, SEEK_SET);
-				$temp = fread($handle, 1024);
-				*/
-				#$response->addNotification("info", "reading 1024 from " . $newPosition, "", $temp);
-				
-				//$response->addNotification("info", "executed " . $executedQueries . " / " . $queryCount . ", skipped chars: " . $notExecutedCharCount, "", $temp);
-				//$response->addNotification("info", "first query not getting executed is:", "", $queries[$executedQueries]);
-				
 	
 			}
 		} 
@@ -353,7 +345,6 @@ class ImportPage extends CModel
 	
 	public function runImport()
 	{
-		
 		$response = new AjaxResponse();
 		$response->refresh = true;
 		$response->executeJavaScript('sideBar.loadTables("' . $this->schema . '")');

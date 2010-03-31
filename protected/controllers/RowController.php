@@ -84,6 +84,7 @@ class RowController extends Controller
 		
 		if(isset($_POST['Row']))
 		{
+			
 			foreach($_POST['Row'] AS $attribute=>$value) 
 			{
 				// NULL value
@@ -130,11 +131,11 @@ class RowController extends Controller
 				
 				if($_POST['insertAndReturn'])
 				{
-					$response->refresh = true;		
+					$response->redirectUrl = '#tables/' . $this->table . '/browse';
 				}
 				else
 				{
-					$response->redirectUrl = '#tables/' . $this->table . '/browse';
+					$response->refresh = true;		
 				}
 				
 			}

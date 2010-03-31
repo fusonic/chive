@@ -162,6 +162,9 @@ class SqlQuery {
 			return $this->parsedQuery['table_ref'][0]['table_name'];
 		}
 		else
+		{
+			
+		}
 			return null;
 	}
 

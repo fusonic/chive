@@ -18,7 +18,8 @@
 			<?php echo CHtml::activeLabel($model, 'partialImport');?>
 		</fieldset>
 		<div class="buttons">
-			<a href="javascript:void(0);" onclick="$('#Import').submit();" class="icon button"> <?php echo Html::icon('import'); ?>
+			<a href="javascript:void(0);" onclick="$('#Import').submit();" class="icon button primary"> 
+				<?php echo Html::icon('import'); ?>
 				<span><?php echo Yii::t('core', 'import'); ?></span> 
 			</a> 
 			<input type="hidden" name="Import" value="true" />
@@ -33,21 +34,41 @@
 
 <?php } elseif($model->view == 'submit') { ?>
 
-	Data is now beeing imported ###################
-
 	<div id="progressbar" style="height: 20px;"></div><br/>
 	
-	<div id="errors">
+	<table class="list" id="messages" style="display: none;">
+		<colgroup>
+			<col style="width: 20px;">
+			<col>
+			<col style="width: 20px;">
+		</colgroup>
+		<thead>
+			<tr>
+				<th colspan="3"><?php echo Yii::t('core', 'information'); ?></th>
+			</tr>
+		</thead>
+		<tbody id="messagesContent">
+		</tbody>
+	</table>
+	
+	<br/>
+	
+	<div id="buttonContainer" class="buttons" style="display: none">
+		<a href="javascript:void(0);" onclick="AjaxResponse.handle(lastResponse);" class="icon button primary">
+			<?php echo Html::icon('success', 16, false, 'core.ok'); ?>
+			<span><?php echo Yii::t('core', 'ok'); ?></span>
+		</a>
 	</div>
 	
 	<script type="text/javascript">
 
+			var errorCount = 0;
+			var lastResponse = "";
+
 			$("#progressbar").progressbar({
-				value: 0
+				value: 1
 			});
 	
-			doRequest(0, 0);
-			
 			function doRequest(_position, _executedQueries)
 			{
 				$.getJSON("<?php echo $model->formTarget; ?>", {
@@ -58,23 +79,64 @@
 				},
 				function(response)
 				{
-					//AjaxResponse.handle(response);
-					
-					console.log(response);
 
-					
-	
-					if(response.data.finished  || response.data.error)
+					lastResponse = response;
+
+					if(response.data.error)
 					{
-						return;
-					}				
+						if(!errorCount)
+						{
+							$('#messages').show();
+						}
+						
+						$.each(response.notifications, function() {
 
+							html = '<tr class="' + (errorCount % 2 == 0 ? 'even' : 'odd') + '">' + 
+										'<td>' + 
+											'<span class="icon">' +
+												'<img class="icon" src="' + iconPath + '/16/' + this.type + '.png" />' +
+												
+											'</span>' + 
+										'</td>' + 
+										'<td>' + 
+											'<span>' + this.title + '</span>' + 
+										'</td>' +
+										'<td>' +
+											'<img class="icon" src="' + iconPath + '/16/accordion.png" style="cursor: pointer;" onclick="$(this).parent().parent().next().toggle();"/>' +
+										'</td>' +
+									'</tr>' +
+									'<tr style="display: none;"><td colspan="3"><pre class="sql">' + this.code  + '</pre></td></tr>';
+
+							$('#messagesContent').append(html);				
+							errorCount++;
+							
+						});
+						
+					}
+					else if(response.data.finished)
+					{
+						$('#progressbar').progressbar('value', 100);
+						chive.loadingIndicator = true;
+						
+						if(errorCount == 0)
+						{
+							AjaxResponse.handle(response);	
+						}
+						else
+						{
+							$('#buttonContainer').show();
+						}
+						
+						return false;
+					}
+	
 					doRequest(response.data.position, response.data.totalExecutedQueries);
-					$('#progressbar').progressbar('value', response.data.position / <?php echo $model->fileSize; ?> * 100); 
+					$('#progressbar').progressbar('value', response.data.position / <?php echo $model->fileSize; ?> * 100);
+					 
 				});
 			}
 
-			chive.loadingIndicator = true;
+			doRequest(0, 0);
 	
 	</script>
 

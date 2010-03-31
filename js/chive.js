@@ -142,6 +142,7 @@ var chive = {
 			var globalPost = {};
 			AjaxResponse.handle(response);
 		});
+		console.log("test");
 	},
 	
 	/*
