@@ -279,6 +279,7 @@ class BrowsePage extends CModel
 					{
 						// Measure time
 						$start = microtime(true);
+						
 						$result = $cmd->execute();
 						$time = round(microtime(true) - $start, 6);
 
@@ -416,7 +417,6 @@ class BrowsePage extends CModel
 	
 	public function getIsUpdatable()
 	{
-		
 		if($this->isUpdatable === null)
 		{
 			$this->isUpdatable = false;	
@@ -486,6 +486,7 @@ class BrowsePage extends CModel
 				throw new CHttpException(500, 'The requested table does not exist.');
 			}
 		}
+		
 		return $this->_table;
 	}
 

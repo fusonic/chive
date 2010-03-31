@@ -22,23 +22,22 @@
 class ImportPage extends CModel
 {
 
-	private $view = 'upload';
+	protected $view = 'upload';
 
-	private $file = '';
-	private $fileSize = 0;
-	private $mimeType;
+	protected $file = '';
+	protected $fileSize = 0;
+	protected $mimeType;
 	
-	private $finished = false;
-	private $chunkSize = 1048576;
+	protected $finished = false;
+	protected $chunkSize = 1048576;
 	
-	private $timeLimit = 30;
-	private $position = 0;
-	private $totalExecutedQueries = 0;
+	protected $timeLimit = 30;
+	protected $position = 0;
+	protected $totalExecutedQueries = 0;
 	
-	private $ignoreErrorNumbers = array(
+	protected $ignoreErrorNumbers = array(
 		1231,
 	);
-	
 
 	public $schema;
 	public $table;

@@ -157,15 +157,7 @@ class SqlQuery {
 	
 	public function getTable() 
 	{
-		if($this->parsedQuery && count($this->parsedQuery['table_ref']) == 1)
-		{
-			return $this->parsedQuery['table_ref'][0]['table_name'];
-		}
-		else
-		{
-			
-		}
-			return null;
+		return $this->parsedQuery['table_ref'][0]['table_name'];
 	}
 
 	private function stripEmptyLines(&$_string)
