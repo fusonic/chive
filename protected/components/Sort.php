@@ -19,6 +19,8 @@
  * You should have received a copy of the GNU General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
+
+
 class Sort extends CSort
 {
 
@@ -101,14 +103,15 @@ class Sort extends CSort
 			if(self::$generateJs)
 			{
 				$data = json_encode($this->postVars);
-				
 				$script = '
 					function setSort(_field, _direction) {
 					
 						var data = ' . $data . ';
 						data.'.$this->sortVar.' = _field + "." + _direction; 
+						' . (Yii::app()->getRequest()->getParam('page') ? 'data.page = ' . Yii::app()->getRequest()->getParam('page') : '') . '
+						' . (Yii::app()->getRequest()->getParam('pageSize') ? 'data.pageSize = ' . Yii::app()->getRequest()->getParam('pageSize') : '') . '
 					
-						$.post("'.BASEURL . '/' . $this->route .'", data, function(responseText) {
+						$.post("'. Yii::app()->createUrl($this->route) .'", data, function(responseText) {
 							$("div.ui-layout-center").html(responseText);
 							init();
 						});
@@ -132,8 +135,8 @@ class Sort extends CSort
 		}
 		
 
-	}
-
+	}	
+	
 	/**
 	 * Returns the currently requested sort information.
 	 * @return array sort directions indexed by attribute names.
@@ -180,28 +183,6 @@ class Sort extends CSort
 	}
 
 	/**
-	 * Creates a URL that can lead to generating sorted data.
-	 * @param CController the controller that will be used to create the URL.
-	 * @param array the sort directions indexed by attribute names.
-	 * The sort direction is true if the corresponding attribute should be
-	 * sorted in descending order.
-	 * @return string the URL for sorting
-	 */
-	public function createUrl($controller,$directions)
-	{
-		$sorts=array();
-		foreach($directions as $attribute=>$direction)
-		{
-			if(is_array($this->attributes) && isset($this->attributes[$attribute]))
-				$attribute=$this->attributes[$attribute];
-			$sorts[]= $attribute.$this->separators[1].$direction;
-		}
-		$params=$_REQUEST;
-		$params[$this->sortVar]=implode($this->separators[0],$sorts);
-		return $controller->createUrl($this->route,$params);
-	}
-
-	/**
 	 * Validates an attribute that is requested to be sorted.
 	 * The validation is based on {@link attributes} and {@link CActiveRecord::attributeNames}.
 	 * False will be returned if the attribute is not allowed to be sorted.
@@ -213,19 +194,5 @@ class Sort extends CSort
 	protected function validateAttribute($attribute)
 	{
 		return true;
-	}
-
-	/**
-	 * Creates a hyperlink based on the given label and URL.
-	 * You may override this method to customize the link generation.
-	 * @param string the name of the attribute that this link is for
-	 * @param string the label of the hyperlink
-	 * @param string the URL
-	 * @param array additional HTML options
-	 * @return string the generated hyperlink
-	 */
-	protected function createLink($attribute,$label,$url,$htmlOptions)
-	{
-		return CHtml::link($label,$url,$htmlOptions);
 	}
 }

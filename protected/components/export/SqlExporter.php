@@ -54,7 +54,7 @@ class SqlExporter implements IExporter
 		$this->mode = $mode;
 
 		// Reload settings from request
-		if($r = $_REQUEST['Export']['settings']['SqlExporter'])
+		if($r = @$_REQUEST['Export']['settings']['SqlExporter'])
 		{
 			foreach($this->settings AS $key => $value)
 			{

@@ -49,6 +49,8 @@ var Bookmark = {
 											'<span>' +_name + '</span>' +
 										'</a>' +
 									'</li>');
+		
+		$('#bookmarkList').parent().children('div.noEntries').hide();
 									
 		$('#bookmark_' + _id).effect('highlight', {}, 2000);
 		
@@ -70,6 +72,11 @@ var Bookmark = {
 	removeFromList: function(_id) 
 	{
 		$('#bookmarkList li[id="bookmark_' + _id + '"]').hide().remove();
+		
+		if($('#bookmarkList>li').length == 0)
+		{
+			$('#bookmarkList').parent().children('div.noEntries').show();
+		}
 	},
 	
 	execute: function(_schema, _id) 

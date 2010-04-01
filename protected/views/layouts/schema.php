@@ -217,12 +217,13 @@ $(document).ready(function() {
 							</a>
 						</li>
 					<?php } ?>
-				<?php } else { ?>
-					<div class="noEntries">
-						<?php echo Yii::t('core', 'noBookmarksFound'); ?>
-					</div>
 				<?php } ?>
 			</ul>
+			<?php if(!$bookmarks) { ?>
+				<div class="noEntries">
+					<?php echo Yii::t('core', 'noBookmarksFound'); ?>
+				</div>
+			<?php } ?>
 		</div>
 	</div>
   </div>

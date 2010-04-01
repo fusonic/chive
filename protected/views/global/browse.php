@@ -126,7 +126,7 @@
 						<?php foreach($row AS $key=>$value) { ?>
 							<td class="<?php echo $key; ?>">
 								<?php if(DataType::getInputType($model->getTable()->columns[$key]->dbType) == "file" && $value) { ?>
-									<a href="javascript:void(0);" class="icon" onclick="globalBrowse.download('<?php echo BASEURL; ?>/row/download', {key: JSON.stringify(keyData[<?php echo $i; ?>]), column: '<?php echo $column; ?>', table: '<?php echo $model->table; ?>', schema: '<?php echo $model->schema; ?>'})">
+									<a href="javascript:void(0);" class="icon" onclick="globalBrowse.download('<?php echo Yii::app()->createUrl('row/download'); ?>', {key: JSON.stringify(keyData[<?php echo $i; ?>]), column: '<?php echo $column; ?>', table: '<?php echo $model->table; ?>', schema: '<?php echo $model->schema; ?>'})">
 										<?php echo Html::icon('save'); ?> 
 										<?php echo Formatter::fileSize(strlen($value)); ?>
 									</a>
