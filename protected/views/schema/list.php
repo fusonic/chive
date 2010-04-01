@@ -134,11 +134,7 @@
 
 	<div class="clear"></div>
 
-	<!---
-	<div class="pager bottom">
-		<?php $this->widget('LinkPager',array('pages'=>$pages, 'cssFile'=>false, 'nextPageLabel'=>'&raquo;', 'prevPageLabel'=>'&laquo;')); ?>
-	</div>
-	 --->
+	<?php $this->widget('LinkPager', array('pages' => $pages, 'cssFile' => false, 'nextPageLabel' => '&raquo;', 'prevPageLabel' => '&laquo;')); ?>
 
 </div>
 

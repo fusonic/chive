@@ -55,12 +55,12 @@
 					</td>
 					<td>
 						<?php echo Html::ajaxLink('views/' . $view->TABLE_NAME . '/browse', array('class' => 'icon')); ?>
-							<?php echo Html::icon('browse', 16, false, 'database.browse'); ?>
+							<?php echo Html::icon('browse', 16, false, 'core.browse'); ?>
 						</a>
 					</td>
 					<td>
 						<?php echo Html::ajaxLink('views/' . $view->TABLE_NAME . '/structure', array('class' => 'icon')); ?>
-							<?php echo Html::icon('structure', 16, false, 'database.structure'); ?>
+							<?php echo Html::icon('structure', 16, false, 'core.structure'); ?>
 						</a>
 					</td>
 					<td>

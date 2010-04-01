@@ -49,9 +49,9 @@
 					<td>
 						<span class="icon">
 							<?php if($routine->ROUTINE_TYPE == 'PROCEDURE') { ?>
-								<?php echo Html::icon('procedure', 16, false, 'database.procedure'); ?>
+								<?php echo Html::icon('procedure', 16, false, 'core.procedure'); ?>
 							<?php } else { ?>
-								<?php echo Html::icon('function', 16, false, 'database.function'); ?>
+								<?php echo Html::icon('function', 16, false, 'core.function'); ?>
 							<?php } ?>
 							<?php echo $routine->ROUTINE_NAME; ?>
 						</span>
@@ -63,7 +63,7 @@
 					</td>
 					<td>
 						<a href="javascript:void(0);" onclick="schemaRoutines.dropRoutine($(this).closest('tr').attr('id').substr(9))" class="icon">
-							<?php echo Html::icon('delete', 16, false, 'database.drop'); ?>
+							<?php echo Html::icon('delete', 16, false, 'core.drop'); ?>
 						</a>
 					</td>
 				</tr>

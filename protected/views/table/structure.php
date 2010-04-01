@@ -195,20 +195,20 @@
 				</a>
 				<?php if(!$table->getHasPrimaryKey()) { ?>
 					<a href="javascript:void(0)" onclick="tableStructure.addIndex('primary')" class="icon button">
-						<?php echo Html::icon('key_primary', 16, false, 'database.primaryKey'); ?>
+						<?php echo Html::icon('key_primary', 16, false, 'core.primaryKey'); ?>
 						<span><?php echo Yii::t('core', 'primaryKey'); ?></span>
 					</a>
 				<?php } ?>
 				<a href="javascript:void(0)" onclick="tableStructure.addIndex('index')" class="icon button">
-					<?php echo Html::icon('key_index', 16, false, 'database.index'); ?>
+					<?php echo Html::icon('key_index', 16, false, 'core.index'); ?>
 					<span><?php echo Yii::t('core', 'index'); ?></span>
 				</a>
 				<a href="javascript:void(0)" onclick="tableStructure.addIndex('unique')" class="icon button">
-					<?php echo Html::icon('key_unique', 16, false, 'database.uniqueKey'); ?>
+					<?php echo Html::icon('key_unique', 16, false, 'core.uniqueKey'); ?>
 					<span><?php echo Yii::t('core', 'uniqueKey'); ?></span>
 				</a>
 				<a href="javascript:void(0)" onclick="tableStructure.addIndex('fulltext')" class="icon button">
-					<?php echo Html::icon('key_fulltext', 16, false, 'database.fulltextIndex'); ?>
+					<?php echo Html::icon('key_fulltext', 16, false, 'core.fulltextIndex'); ?>
 					<span><?php echo Yii::t('core', 'fulltextIndex'); ?></span>
 				</a>
 			<?php } else { ?>
@@ -388,7 +388,7 @@
 								</td>
 								<td>
 									<a href="javascript:void(0)" onclick="tableStructure.dropTrigger('<?php echo $trigger->TRIGGER_NAME; ?>')" class="icon">
-										<?php echo Html::icon('delete', 16, false, 'database.drop'); ?>
+										<?php echo Html::icon('delete', 16, false, 'core.drop'); ?>
 									</a>
 								</td>
 							</tr>
