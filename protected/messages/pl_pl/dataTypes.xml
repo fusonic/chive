@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<category id="dataTypes">
+  <entry id="numeric">Typy liczbowe</entry>
+  <entry id="strings">Typy znakowe</entry>
+  <entry id="dateAndTime">Data i czas</entry>
+</category>

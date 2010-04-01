@@ -2,7 +2,7 @@
 	<table style="width: 100%">
 		<tr>
 		<?php if (count($languages) > 0 ) {?>
-			<td style="width: 50%">
+			<td style="width: 50%; vertical-align: top">
 				<?php $i = 0; ?>
 				<?php $languageCount = count($languages); ?>
 				<?php foreach($languages as $language) { ?>
@@ -11,9 +11,9 @@
 						<span><?php echo $language['label']; ?></span>
 					</a>
 					<?php $i++; ?>
-					<?php if($i == floor($languageCount / 2)) { ?>
+					<?php if($i == ceil($languageCount / 2)) { ?>
 						</td>
-						<td style="width: 50%">
+						<td style="width: 50%; vertical-align: top">
 					<?php } ?>
 				<?php } ?>
 			</td>
@@ -35,7 +35,7 @@
 			<?php $themeCount = count($themes); ?>
 			<?php foreach($themes AS $theme) { ?>
 
-				<td style="width: 150px;">
+				<td style="width: 150px; vertical-align: top">
 					<a href="<?php echo $theme['url']; ?>" class="icon">
 						<img class="icon icon16" src="<?php echo BASEURL . '/' . $theme['icon']; ?>" alt="<?php echo $theme['label']; ?>" />
 						<span><?php echo $theme['label']; ?></span>

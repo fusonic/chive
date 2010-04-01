@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<category id="dataTypes">
+  <entry id="numeric">Numerico</entry>
+  <entry id="strings">Stringhe</entry>
+  <entry id="dateAndTime">Data e ora</entry>
+</category>
