@@ -100,7 +100,6 @@ class ImportPage extends CModel
 	public function run()
 	{
 		
-		
 		// Form got submitted
 		if(isset($_POST['Import']))
 		{
@@ -124,13 +123,11 @@ class ImportPage extends CModel
 				$this->runImport();
 			}
 			
-			
 		}
 		
 		// Import file via postprocessing
 		elseif($this->partialImport || isset($_GET['position']))
 		{
-			
 			$this->view = 'postprocessing';
 			$this->file = $_GET['file'];
 			$this->fileSize = $_GET['fileSize'];
@@ -158,7 +155,8 @@ class ImportPage extends CModel
 		$response = new AjaxResponse();
 		
 		$this->mimeType = CFileHelper::getMimeType($this->file);
-
+		$this->mimeType = substr($this->mimeType, 0, strpos($this->mimeType, ";"));
+		
 		$sqlSplitter = new SqlSplitter();
 		$sqlSplitter->ignoreLastQuery = true;
 		
@@ -166,6 +164,7 @@ class ImportPage extends CModel
 		$queryCount = 0;
 		
 		$chunkSize = $this->chunkSize;
+		
 		
 		// Open file and set position to last position
 		switch($this->mimeType)
