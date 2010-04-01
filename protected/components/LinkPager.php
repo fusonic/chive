@@ -19,6 +19,8 @@
  * You should have received a copy of the GNU General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
+
+
 class LinkPager extends CLinkPager
 {
 	const CSS_FIRST_ELEMENT = 'first-element';
@@ -170,8 +172,9 @@ class LinkPager extends CLinkPager
 
 							var data = ' . $data . ';
 							data.pageSize = _pageSize;
+							' . (Yii::app()->getRequest()->getParam('sort') ? 'data.sort = "' . Yii::app()->getRequest()->getParam('sort') . '"' : '') . '
 
-							$.post("'.BASEURL . '/' . $this->getPages()->route.'", data, function(responseText) {
+							$.post("'.Yii::app()->createUrl($this->getPages()->route).'", data, function(responseText) {
 								$("div.ui-layout-center").html(responseText);
 								init();
 							});
@@ -241,8 +244,10 @@ class LinkPager extends CLinkPager
 
 						var data = ' . $data . ';
 						data.page = _page;
+						' . (Yii::app()->getRequest()->getParam('pageSize') ? 'data.pageSize = ' . Yii::app()->getRequest()->getParam('pageSize') : '') . '
+						' . (Yii::app()->getRequest()->getParam('sort') ? 'data.sort = "' . Yii::app()->getRequest()->getParam('sort') . '"' : '') . '
 
-						$.post("'.BASEURL . '/' . $this->getPages()->route.'", data, function(responseText) {
+						$.post("'.Yii::app()->createUrl($this->getPages()->route).'", data, function(responseText) {
 							$("div.ui-layout-center").html(responseText);
 							init();
 						});
