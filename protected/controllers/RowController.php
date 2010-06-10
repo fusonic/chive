@@ -269,6 +269,8 @@ class RowController extends Controller
 
 		$data = json_decode($_POST['data'], true);
 		
+		$sql = "";
+		
 		try
 		{
 			foreach($data AS $attributes)
