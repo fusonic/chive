@@ -341,7 +341,7 @@ class SchemaController extends Controller
 		$response = new AjaxResponse();
 		$response->refresh = true;
 		$response->executeJavaScript('sideBar.loadSchemata()');
-		$schemata = (array)$_POST['schema'];
+		$schemata = (array)$_POST['schemata'];
 		$droppedSchemata = $droppedSqls = array();
 
 		Schema::$db = Yii::app()->getDb();
