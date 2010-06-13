@@ -74,7 +74,11 @@ class SiteController extends Controller
 		if(ConfigUtil::getUrlFopen())
 		{
 			$xml = @simplexml_load_file('http://feeds.launchpad.net/chive/announcements.atom');
-			$entries = $xml->entry;
+			
+			if($xml != null)
+			{
+				$entries = $xml->entry;
+			}
 		}
 
 		$this->render('index', array(
