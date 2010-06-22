@@ -344,8 +344,8 @@ class RowController extends Controller
 				{
 					$row->setFunction($name, $options['function']);
 				}
-				
-				if($options['null'])
+		
+				if(isset($options['null']))
 				{
 					$value = null;
 				}

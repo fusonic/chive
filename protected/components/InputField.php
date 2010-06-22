@@ -83,6 +83,7 @@ class InputField extends CWidget
 				break;	
 				
 			case 'date':
+				$this->SetDateTimeHtmlOptions($column);
 				echo CHtml::activeTextField($this->row, $column, $this->htmlOptions);
 				echo '<script type="text/javascript">
 						$(document).ready(function() {
@@ -92,6 +93,7 @@ class InputField extends CWidget
 				break;
 				
 			case 'datetime':
+				$this->SetDateTimeHtmlOptions($column);
 				echo CHtml::activeTextField($this->row, $column, $this->htmlOptions);
 				echo '<script type="text/javascript">
 						$(document).ready(function() {
@@ -106,6 +108,11 @@ class InputField extends CWidget
 				break;
 		}
 		
+	}
+	
+	private function SetDateTimeHtmlOptions($column)
+	{
+		$this->htmlOptions += array("id" => mt_rand(1000, 10000) . "_" . $column);
 	}
 
 	public function getEnumValues()
