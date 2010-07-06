@@ -1,5 +1,7 @@
 Options +FollowSymLinks
-IndexIgnore */*
+<IfModule mod_autoindex.c>
+	IndexIgnore */*
+</IfModule>
 DirectoryIndex index.php
 
 <IfModule mod_rewrite.c>
