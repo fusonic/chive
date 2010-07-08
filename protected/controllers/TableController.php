@@ -60,7 +60,17 @@ class TableController extends Controller
 	public function actionStructure()
 	{
 		$table = $this->loadTable();
-
+		
+		if(!($table instanceof Table))
+		{
+			$response = new AjaxResponse();
+			$response->addNotification("error", 
+				Yii::t("core", "tableLoadErrorTitle", array("{table}" => $this->table)),
+				Yii::t("core", "tableLoadErrorMessage", array("{table}" => $this->table))); 
+			$response->executeJavaScript("sideBar.loadTables(schema)");
+			$response->send();
+		}
+		
 		// Constraints
 		if(StorageEngine::check($table->ENGINE, StorageEngine::SUPPORTS_FOREIGN_KEYS))
 		{
@@ -124,7 +134,6 @@ class TableController extends Controller
 	 */
 	public function actionBrowse()
 	{
-
 		$browsePage = new BrowsePage();
 
 		$browsePage->schema = $this->schema;

@@ -13,6 +13,11 @@ var AjaxResponse = {
 		}
 		catch(err) {}
 		
+		if(!$.isPlainObject(data))
+		{
+			return false;
+		}
+		
 		if(data.redirectUrl) 
 		{
 			window.location.href = data.redirectUrl;
@@ -42,6 +47,8 @@ var AjaxResponse = {
 				eval(data.js[i]);
 			}
 		}
+		
+		return true;
 	}
 	
 };
