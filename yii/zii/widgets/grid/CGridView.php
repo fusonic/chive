@@ -73,7 +73,7 @@ Yii::import('zii.widgets.grid.CCheckBoxColumn');
  * Please refer to {@link columns} for more details about how to configure this property.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CGridView.php 130 2010-02-26 14:19:53Z qiang.xue $
+ * @version $Id: CGridView.php 190 2010-06-17 16:08:28Z qiang.xue $
  * @package zii.widgets.grid
  * @since 1.1
  */
@@ -240,8 +240,18 @@ class CGridView extends CBaseListView
 	 */
 	protected function initColumns()
 	{
-		if($this->columns===array() && $this->dataProvider instanceof CActiveDataProvider)
-			$this->columns=CActiveRecord::model($this->dataProvider->modelClass)->attributeNames();
+		if($this->columns===array())
+		{
+			if($this->dataProvider instanceof CActiveDataProvider)
+				$this->columns=$this->dataProvider->model->attributeNames();
+			else if($this->dataProvider instanceof IDataProvider)
+			{
+				// use the keys of the first row of data as the default columns
+				$data=$this->dataProvider->getData();
+				if(isset($data[0]) && is_array($data[0]))
+					$this->columns=array_keys($data[0]);
+			}
+		}
 		$id=$this->getId();
 		foreach($this->columns as $i=>$column)
 		{
@@ -293,7 +303,7 @@ class CGridView extends CBaseListView
 		$id=$this->getId();
 
 		if($this->ajaxUpdate===false)
-			$ajaxUpdate=array();
+			$ajaxUpdate=false;
 		else
 			$ajaxUpdate=array_unique(preg_split('/\s*,\s*/',$this->ajaxUpdate.','.$id,-1,PREG_SPLIT_NO_EMPTY));
 		$options=array(

@@ -12,7 +12,7 @@
  * CLinkPager displays a list of hyperlinks that lead to different pages of target.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLinkPager.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CLinkPager.php 2212 2010-06-17 20:57:41Z qiang.xue $
  * @package system.web.widgets.pagers
  * @since 1.0
  */
@@ -94,10 +94,10 @@ class CLinkPager extends CBasePager
 	 */
 	public function run()
 	{
+		$this->registerClientScript();
 		$buttons=$this->createPageButtons();
 		if(empty($buttons))
 			return;
-		$this->registerClientScript();
 		echo $this->header;
 		echo CHtml::tag('ul',$this->htmlOptions,implode("\n",$buttons));
 		echo $this->footer;
@@ -117,7 +117,7 @@ class CLinkPager extends CBasePager
 		$buttons=array();
 
 		// first page
-		$buttons[]=$this->createPageButton($this->firstPageLabel,0,self::CSS_FIRST_PAGE,$beginPage<=0,false);
+		$buttons[]=$this->createPageButton($this->firstPageLabel,0,self::CSS_FIRST_PAGE,$currentPage<=0,false);
 
 		// prev page
 		if(($page=$currentPage-1)<0)
@@ -134,7 +134,7 @@ class CLinkPager extends CBasePager
 		$buttons[]=$this->createPageButton($this->nextPageLabel,$page,self::CSS_NEXT_PAGE,$currentPage>=$pageCount-1,false);
 
 		// last page
-		$buttons[]=$this->createPageButton($this->lastPageLabel,$pageCount-1,self::CSS_LAST_PAGE,$endPage>=$pageCount-1,false);
+		$buttons[]=$this->createPageButton($this->lastPageLabel,$pageCount-1,self::CSS_LAST_PAGE,$currentPage>=$pageCount-1,false);
 
 		return $buttons;
 	}

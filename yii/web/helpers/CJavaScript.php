@@ -12,7 +12,7 @@
  * CJavaScript is a helper class containing JavaScript-related handling functions.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CJavaScript.php 1832 2010-02-20 03:22:45Z qiang.xue $
+ * @version $Id: CJavaScript.php 2050 2010-04-16 20:00:18Z alexander.makarow $
  * @package system.web.helpers
  * @since 1.0
  */
@@ -104,12 +104,7 @@ class CJavaScript
 	 */
 	public static function jsonEncode($data)
 	{
-		if(function_exists('json_encode'))
-			return json_encode($data);
-		else
-		{
-			return CJSON::encode($data);
-		}
+		return CJSON::encode($data);
 	}
 
 	/**
@@ -120,9 +115,6 @@ class CJavaScript
 	 */
 	public static function jsonDecode($data,$useArray=true)
 	{
-		if(function_exists('json_decode'))
-			return json_decode($data,$useArray);
-		else
-			return CJSON::decode($data,$useArray);
+		return CJSON::decode($data,$useArray);
 	}
 }

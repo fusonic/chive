@@ -44,7 +44,7 @@
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDateTimeParser.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CDateTimeParser.php 2184 2010-06-14 20:39:12Z qiang.xue $
  * @package system.utils
  * @since 1.0
  */
@@ -226,7 +226,7 @@ class CDateTimeParser
 		for($len=$maxLength;$len>=$minLength;--$len)
 		{
 			$v=substr($value,$offset,$len);
-			if(ctype_digit($v))
+			if(ctype_digit($v) && strlen($v)>=$minLength)
 				return $v;
 		}
 		return false;

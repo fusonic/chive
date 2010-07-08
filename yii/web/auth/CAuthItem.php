@@ -17,7 +17,7 @@
  * He can perform an operation only when it is among his assigned items.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CAuthItem.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CAuthItem.php 1933 2010-03-16 23:38:32Z alexander.makarow $
  * @package system.web.auth
  * @since 1.0
  */
@@ -194,7 +194,7 @@ class CAuthItem extends CComponent
 	 */
 	public function removeChild($name)
 	{
-		$this->_auth->removeItemChild($this->_name,$name);
+		return $this->_auth->removeItemChild($this->_name,$name);
 	}
 
 	/**

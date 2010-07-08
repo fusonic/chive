@@ -12,15 +12,18 @@
  * CDbCriteria represents a query criteria, such as conditions, ordering by, limit/offset.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCriteria.php 1896 2010-03-13 14:11:24Z qiang.xue $
+ * @version $Id: CDbCriteria.php 2222 2010-06-24 19:00:27Z qiang.xue $
  * @package system.db.schema
  * @since 1.0
  */
 class CDbCriteria
 {
 	const PARAM_PREFIX=':ycp';
-	private $_paramCount=0;
-
+	/**
+	 * @var integer the global counter for anonymous binding parameters.
+	 * This counter is used for generating the name for the anonymous parameters.
+	 */
+	public static $paramCount=0;
 	/**
 	 * @var mixed the columns being selected. This refers to the SELECT clause in an SQL
 	 * statement. The property can be either a string (column names separated by commas)
@@ -153,9 +156,9 @@ class CDbCriteria
 	public function addSearchCondition($column,$keyword,$escape=true,$operator='AND',$like='LIKE')
 	{
 		if($escape)
-			$keyword='%'.strtr($keyword,array('%'=>'\%', '_'=>'\_')).'%';
-		$condition=$column." $like ".self::PARAM_PREFIX.$this->_paramCount;
-		$this->params[self::PARAM_PREFIX.$this->_paramCount++]=$keyword;
+			$keyword='%'.strtr($keyword,array('%'=>'\%', '_'=>'\_', '\\'=>'\\\\')).'%';
+		$condition=$column." $like ".self::PARAM_PREFIX.self::$paramCount;
+		$this->params[self::PARAM_PREFIX.self::$paramCount++]=$keyword;
 		return $this->addCondition($condition, $operator);
 	}
 
@@ -181,16 +184,16 @@ class CDbCriteria
 			$value=reset($values);
 			if($value===null)
 				return $this->addCondition($column.' IS NULL');
-			$condition=$column.'='.self::PARAM_PREFIX.$this->_paramCount;
-			$this->params[self::PARAM_PREFIX.$this->_paramCount++]=$value;
+			$condition=$column.'='.self::PARAM_PREFIX.self::$paramCount;
+			$this->params[self::PARAM_PREFIX.self::$paramCount++]=$value;
 		}
 		else
 		{
 			$params=array();
 			foreach($values as $value)
 			{
-				$params[]=self::PARAM_PREFIX.$this->_paramCount;
-				$this->params[self::PARAM_PREFIX.$this->_paramCount++]=$value;
+				$params[]=self::PARAM_PREFIX.self::$paramCount;
+				$this->params[self::PARAM_PREFIX.self::$paramCount++]=$value;
 			}
 			$condition=$column.' IN ('.implode(', ',$params).')';
 		}
@@ -219,16 +222,16 @@ class CDbCriteria
 			$value=reset($values);
 			if($value===null)
 				return $this->addCondition($column.' IS NOT NULL');
-			$condition=$column.'!='.self::PARAM_PREFIX.$this->_paramCount;
-			$this->params[self::PARAM_PREFIX.$this->_paramCount++]=$value;
+			$condition=$column.'!='.self::PARAM_PREFIX.self::$paramCount;
+			$this->params[self::PARAM_PREFIX.self::$paramCount++]=$value;
 		}
 		else
 		{
 			$params=array();
 			foreach($values as $value)
 			{
-				$params[]=self::PARAM_PREFIX.$this->_paramCount;
-				$this->params[self::PARAM_PREFIX.$this->_paramCount++]=$value;
+				$params[]=self::PARAM_PREFIX.self::$paramCount;
+				$this->params[self::PARAM_PREFIX.self::$paramCount++]=$value;
 			}
 			$condition=$column.' NOT IN ('.implode(', ',$params).')';
 		}
@@ -256,8 +259,8 @@ class CDbCriteria
 				$params[]=$name.' IS NULL';
 			else
 			{
-				$params[]=$name.'='.self::PARAM_PREFIX.$this->_paramCount;
-				$this->params[self::PARAM_PREFIX.$this->_paramCount++]=$value;
+				$params[]=$name.'='.self::PARAM_PREFIX.self::$paramCount;
+				$this->params[self::PARAM_PREFIX.self::$paramCount++]=$value;
 			}
 		}
 		return $this->addCondition(implode(" $columnOperator ",$params), $operator);
@@ -309,6 +312,8 @@ class CDbCriteria
 				return $this;
 			return $this->addInCondition($column,$value,$operator);
 		}
+		else
+			$value="$value";
 
 		if(preg_match('/^\s*(<>|<=|>=|<|>|=)?\s*(.*?)\s*$/',$value,$matches))
 		{
@@ -331,9 +336,43 @@ class CDbCriteria
 		else if($op==='')
 			$op='=';
 
-		$this->addCondition("$column{$op}".self::PARAM_PREFIX.$this->_paramCount,$operator);
-		$this->params[self::PARAM_PREFIX.$this->_paramCount++]=$value;
+		$this->addCondition($column.$op.self::PARAM_PREFIX.self::$paramCount,$operator);
+		$this->params[self::PARAM_PREFIX.self::$paramCount++]=$value;
 
+		return $this;
+	}
+
+	/**
+	 * Adds a between condition to the {@link condition} property.
+	 *
+	 * The new between condition and the existing condition will be concatenated via
+	 * the specified operator which defaults to 'AND'.
+	 * If one or both values are empty then the condition is not added to the existing condition.
+	 * This method handles the case when the existing condition is empty.
+	 * After calling this method, the {@link condition} property will be modified.
+	 * @param string the name of the column to search between.
+	 * @param string the beginning value to start the between search.
+	 * @param string the ending value to end the between search.
+	 * @param string the operator used to concatenate the new condition with the existing one.
+	 * Defaults to 'AND'.
+	 * @return CDbCriteria the criteria object itself
+	 * @since 1.1.2
+	 */
+	public function addBetweenCondition($column,$valueStart,$valueEnd,$operator='AND')
+	{
+		if($valueStart==='' || $valueEnd==='')
+			return $this;
+
+		$paramStart=self::PARAM_PREFIX.self::$paramCount++;
+		$paramEnd=self::PARAM_PREFIX.self::$paramCount++;
+		$this->params[$paramStart]=$valueStart;
+		$this->params[$paramEnd]=$valueEnd;
+		$condition="$column BETWEEN $paramStart AND $paramEnd";
+
+		if($this->condition==='')
+			$this->condition=$condition;
+		else
+			$this->condition='('.$this->condition.') '.$operator.' ('.$condition.')';
 		return $this;
 	}
 

@@ -24,7 +24,7 @@
  * To protected data with HMAC, call {@link hashData()}; and to check if the data
  * is tampered, call {@link validateData()}, which will return the real data if
  * it is not tampered. The algorithm used to generated HMAC is specified by
- * {@link setValidation Validation}.
+ * {@link validation}.
  *
  * To encrypt and decrypt data, call {@link encrypt()} and {@link decrypt()}
  * respectively, which uses 3DES encryption algorithm.  Note, the PHP Mcrypt
@@ -34,7 +34,7 @@
  * {@link CApplication::getSecurityManager()}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CSecurityManager.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CSecurityManager.php 2168 2010-06-05 18:15:18Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -43,12 +43,32 @@ class CSecurityManager extends CApplicationComponent
 	const STATE_VALIDATION_KEY='Yii.CSecurityManager.validationkey';
 	const STATE_ENCRYPTION_KEY='Yii.CSecurityManager.encryptionkey';
 
+	/**
+	 * @var string the name of the hashing algorithm to be used by {@link computeHMAC}.
+	 * See {@link http://php.net/manual/en/function.hash-algos.php hash-algos} for the list of possible
+	 * hash algorithms. Note that if you are using PHP 5.1.1 or below, you can only use 'sha1' or 'md5'.
+	 *
+	 * Defaults to 'sha1', meaning using SHA1 hash algorithm.
+	 * @since 1.1.3
+	 */
+	public $hashAlgorithm='sha1';
+	/**
+	 * @var mixed the name of the crypt algorithm to be used by {@link encrypt} and {@link decrypt}.
+	 * This will be passed as the first parameter to {@link http://php.net/manual/en/function.mcrypt-module-open.php mcrypt_module_open}.
+	 *
+	 * This property can also be configured as an array. In this case, the array elements will be passed in order
+	 * as parameters to mcrypt_module_open. For example, <code>array('rijndael-256', '', 'ofb', '')</code>.
+	 *
+	 * Defaults to 'des', meaning using DES crypt algorithm.
+	 * @since 1.1.3
+	 */
+	public $cryptAlgorithm='des';
+
 	private $_validationKey;
 	private $_encryptionKey;
-	private $_validation='SHA1';
 
 	/**
-	 * @return string a randomly generated key
+	 * @return string a randomly generated private key
 	 */
 	protected function generateRandomKey()
 	{
@@ -124,67 +144,81 @@ class CSecurityManager extends CApplicationComponent
 	}
 
 	/**
-	 * @return string hashing algorithm used to generate HMAC. Defaults to 'SHA1'.
+	 * This method has been deprecated since version 1.1.3.
+	 * Please use {@link hashAlgorithm} instead.
 	 */
 	public function getValidation()
 	{
-		return $this->_validation;
+		return $this->hashAlgorithm;
 	}
 
 	/**
-	 * @param string hashing algorithm used to generate HMAC. It must be either 'MD5' or 'SHA1'.
+	 * This method has been deprecated since version 1.1.3.
+	 * Please use {@link hashAlgorithm} instead.
 	 */
 	public function setValidation($value)
 	{
-		if($value==='MD5' || $value==='SHA1')
-			$this->_validation=$value;
-		else
-			throw new CException(Yii::t('yii','CSecurityManager.validation must be either "MD5" or "SHA1".'));
+		$this->hashAlgorithm=$value;
 	}
 
 	/**
-	 * Encrypts data with {@link getEncryptionKey EncryptionKey}.
+	 * Encrypts data.
 	 * @param string data to be encrypted.
+	 * @param string the decryption key. This defaults to null, meaning using {@link getEncryptionKey EncryptionKey}.
 	 * @return string the encrypted data
 	 * @throws CException if PHP Mcrypt extension is not loaded
 	 */
-	public function encrypt($data)
+	public function encrypt($data,$key=null)
 	{
-		if(extension_loaded('mcrypt'))
-		{
-			$module=mcrypt_module_open(MCRYPT_3DES, '', MCRYPT_MODE_CBC, '');
-			$key=substr(md5($this->getEncryptionKey()),0,mcrypt_enc_get_key_size($module));
-			srand();
-			$iv=mcrypt_create_iv(mcrypt_enc_get_iv_size($module), MCRYPT_RAND);
-			mcrypt_generic_init($module,$key,$iv);
-			$encrypted=$iv.mcrypt_generic($module,$data);
-			mcrypt_generic_deinit($module);
-			mcrypt_module_close($module);
-			return $encrypted;
-		}
-		else
-			throw new CException(Yii::t('yii','CSecurityManager requires PHP mcrypt extension to be loaded in order to use data encryption feature.'));
+		$module=$this->openCryptModule();
+		$key=substr($key===null ? md5($this->getEncryptionKey()) : $key,0,mcrypt_enc_get_key_size($module));
+		srand();
+		$iv=mcrypt_create_iv(mcrypt_enc_get_iv_size($module), MCRYPT_RAND);
+		mcrypt_generic_init($module,$key,$iv);
+		$encrypted=$iv.mcrypt_generic($module,$data);
+		mcrypt_generic_deinit($module);
+		mcrypt_module_close($module);
+		return $encrypted;
 	}
 
 	/**
-	 * Decrypts data with {@link getEncryptionKey EncryptionKey}.
+	 * Decrypts data
 	 * @param string data to be decrypted.
+	 * @param string the decryption key. This defaults to null, meaning using {@link getEncryptionKey EncryptionKey}.
 	 * @return string the decrypted data
 	 * @throws CException if PHP Mcrypt extension is not loaded
 	 */
-	public function decrypt($data)
+	public function decrypt($data,$key=null)
+	{
+		$module=$this->openCryptModule();
+		$key=substr($key===null ? md5($this->getEncryptionKey()) : $key,0,mcrypt_enc_get_key_size($module));
+		$ivSize=mcrypt_enc_get_iv_size($module);
+		$iv=substr($data,0,$ivSize);
+		mcrypt_generic_init($module,$key,$iv);
+		$decrypted=mdecrypt_generic($module,substr($data,$ivSize));
+		mcrypt_generic_deinit($module);
+		mcrypt_module_close($module);
+		return rtrim($decrypted,"\0");
+	}
+
+	/**
+	 * Opens the mcrypt module with the configuration specified in {@link cryptAlgorithm}.
+	 * @return resource the mycrypt module handle.
+	 * @since 1.1.3
+	 */
+	protected function openCryptModule()
 	{
 		if(extension_loaded('mcrypt'))
 		{
-			$module=mcrypt_module_open(MCRYPT_3DES, '', MCRYPT_MODE_CBC, '');
-			$key=substr(md5($this->getEncryptionKey()),0,mcrypt_enc_get_key_size($module));
-			$ivSize=mcrypt_enc_get_iv_size($module);
-			$iv=substr($data,0,$ivSize);
-			mcrypt_generic_init($module,$key,$iv);
-			$decrypted=mdecrypt_generic($module,substr($data,$ivSize));
-			mcrypt_generic_deinit($module);
-			mcrypt_module_close($module);
-			return rtrim($decrypted,"\0");
+			if(is_array($this->cryptAlgorithm))
+				$module=call_user_func_array('mcrypt_module_open',$this->cryptAlgorithm);
+			else
+				$module=mcrypt_module_open($this->cryptAlgorithm, '', MCRYPT_MODE_CBC, '');
+
+			if($module===false)
+				throw new CException(Yii::t('yii','Failed to initialize the mcrypt module.'));
+
+			return $module;
 		}
 		else
 			throw new CException(Yii::t('yii','CSecurityManager requires PHP mcrypt extension to be loaded in order to use data encryption feature.'));
@@ -193,29 +227,30 @@ class CSecurityManager extends CApplicationComponent
 	/**
 	 * Prefixes data with an HMAC.
 	 * @param string data to be hashed.
+	 * @param string the private key to be used for generating HMAC. Defaults to null, meaning using {@link validationKey}.
 	 * @return string data prefixed with HMAC
 	 */
-	public function hashData($data)
+	public function hashData($data,$key=null)
 	{
-		$hmac=$this->computeHMAC($data);
-		return $hmac.$data;
+		return $this->computeHMAC($data,$key).$data;
 	}
 
 	/**
 	 * Validates if data is tampered.
 	 * @param string data to be validated. The data must be previously
 	 * generated using {@link hashData()}.
+	 * @param string the private key to be used for generating HMAC. Defaults to null, meaning using {@link validationKey}.
 	 * @return string the real data with HMAC stripped off. False if the data
 	 * is tampered.
 	 */
-	public function validateData($data)
+	public function validateData($data,$key=null)
 	{
-		$len=$this->_validation==='SHA1'?40:32;
+		$len=strlen($this->computeHMAC('test'));
 		if(strlen($data)>=$len)
 		{
 			$hmac=substr($data,0,$len);
 			$data2=substr($data,$len);
-			return $hmac===$this->computeHMAC($data2)?$data2:false;
+			return $hmac===$this->computeHMAC($data2,$key)?$data2:false;
 		}
 		else
 			return false;
@@ -224,11 +259,18 @@ class CSecurityManager extends CApplicationComponent
 	/**
 	 * Computes the HMAC for the data with {@link getValidationKey ValidationKey}.
 	 * @param string data to be generated HMAC
+	 * @param string the private key to be used for generating HMAC. Defaults to null, meaning using {@link validationKey}.
 	 * @return string the HMAC for the data
 	 */
-	protected function computeHMAC($data)
+	protected function computeHMAC($data,$key=null)
 	{
-		if($this->_validation==='SHA1')
+		if($key===null)
+			$key=$this->getValidationKey();
+
+		if(function_exists('hash_hmac'))
+			return hash_hmac($this->hashAlgorithm, $data, $key);
+
+		if(!strcasecmp($this->hashAlgorithm,'sha1'))
 		{
 			$pack='H40';
 			$func='sha1';
@@ -238,7 +280,6 @@ class CSecurityManager extends CApplicationComponent
 			$pack='H32';
 			$func='md5';
 		}
-		$key=$this->getValidationKey();
 		$key=str_pad($func($key), 64, chr(0));
 		return $func((str_repeat(chr(0x5C), 64) ^ substr($key, 0, 64)) . pack($pack, $func((str_repeat(chr(0x36), 64) ^ substr($key, 0, 64)) . $data)));
 	}

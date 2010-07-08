@@ -61,7 +61,7 @@
  * and {@link CFormButtonElement}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CForm.php 1850 2010-03-01 15:57:53Z qiang.xue $
+ * @version $Id: CForm.php 2127 2010-05-12 03:30:09Z qiang.xue $
  * @package system.web.form
  * @since 1.1
  */
@@ -135,7 +135,7 @@ class CForm extends CFormElement implements ArrayAccess
 	 */
 	public function __construct($config,$model=null,$parent=null)
 	{
-		$this->_model=$model;
+		$this->setModel($model);
 		if($parent===null)
 			$parent=Yii::app()->getController();
 		parent::__construct($config,$parent);
@@ -369,8 +369,6 @@ class CForm extends CFormElement implements ArrayAccess
 	/**
 	 * Renders the open tag of the form.
 	 * The default implementation will render the open form tag.
-	 * If {@link title} or {@link description} is specified, they will be rendered as well.
-	 * And if the associated model contains error, the error summary may also be displayed.
 	 * @return string the rendering result
 	 */
 	public function renderBegin()
@@ -389,8 +387,13 @@ class CForm extends CFormElement implements ArrayAccess
 				$class='CActiveForm';
 			$options['action']=$this->action;
 			$options['method']=$this->method;
-			foreach($this->attributes as $name=>$value)
-				$options[$name]=$value;
+			if(isset($options['htmlOptions']))
+			{
+				foreach($this->attributes as $name=>$value)
+					$options['htmlOptions'][$name]=$value;
+			}
+			else
+				$options['htmlOptions']=$this->attributes;
 			ob_start();
 			$this->_activeForm=$this->getOwner()->beginWidget($class, $options);
 			return ob_get_clean() . "<div style=\"visibility:hidden\">".CHtml::hiddenField($this->getUniqueID(),1)."</div>\n";
@@ -416,6 +419,8 @@ class CForm extends CFormElement implements ArrayAccess
 	/**
 	 * Renders the body content of this form.
 	 * This method mainly renders {@link elements} and {@link buttons}.
+	 * If {@link title} or {@link description} is specified, they will be rendered as well.
+	 * And if the associated model contains error, the error summary may also be displayed.
 	 * The form tag will not be rendered. Please call {@link renderBegin} and {@link renderEnd}
 	 * to render the open and close tags of the form.
 	 * You may override this method to customize the rendering of the form.

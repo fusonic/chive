@@ -28,7 +28,7 @@
  * </ol>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCaptchaAction.php 1696 2010-01-10 13:16:22Z qiang.xue $
+ * @version $Id: CCaptchaAction.php 2201 2010-06-16 19:11:00Z alexander.makarow $
  * @package system.web.widgets.captcha
  * @since 1.0
  */
@@ -44,6 +44,7 @@ class CCaptchaAction extends CAction
 	const SESSION_VAR_PREFIX='Yii.CCaptchaAction.';
 	/**
 	 * @var integer how many times should the same CAPTCHA be displayed. Defaults to 3.
+	 * A value less than or equal to 0 means the test is unlimited (available since version 1.1.2).
 	 */
 	public $testLimit=3;
 	/**
@@ -95,10 +96,10 @@ class CCaptchaAction extends CAction
 	{
 		if(isset($_GET[self::REFRESH_GET_VAR]))  // AJAX request for regenerating code
 		{
-			$code=$this->getVerifyCode(true);
+			$this->getVerifyCode(true);
 			// we add a random 'v' parameter so that FireFox can refresh the image
 			// when src attribute of image tag is changed
-			echo $this->getController()->createUrl($this->getId(),array('v'=>rand(0,10000)));
+			echo $this->getController()->createUrl($this->getId(),array('v'=>uniqid()));
 		}
 		else
 		{
@@ -139,7 +140,7 @@ class CCaptchaAction extends CAction
 		$session->open();
 		$name=$this->getSessionKey().'count';
 		$session[$name]=$session[$name]+1;
-		if($session[$name]>$this->testLimit)
+		if($session[$name]>$this->testLimit && $this->testLimit>0)
 			$this->getVerifyCode(true);
 		return $valid;
 	}

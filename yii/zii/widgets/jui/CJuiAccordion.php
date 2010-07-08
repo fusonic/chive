@@ -2,7 +2,7 @@
 /**
  * CJuiAccordion class file.
  *
- * @author Sebastian Thierer <sebas@artfos.com>
+ * @author Sebastian Thierer <sebathi@gmail.com>
  * @author Qiang XUe <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2010 Yii Software LLC
@@ -40,7 +40,7 @@ Yii::import('zii.widgets.jui.CJuiWidget');
  *
  * @author Sebastian Thierer <sebathi@gmail.com>
  * @author Qiang XUe <qiang.xue@gmail.com>
- * @version $Id: CJuiAccordion.php 127 2010-02-18 14:03:04Z sebathi $
+ * @version $Id: CJuiAccordion.php 158 2010-03-26 20:34:24Z sebathi $
  * @package zii.widgets.jui
  * @since 1.1
  */

@@ -15,7 +15,7 @@
  * that can be found in the foreign table.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CExistValidator.php 1881 2010-03-10 22:17:34Z qiang.xue $
+ * @version $Id: CExistValidator.php 2188 2010-06-15 17:20:35Z qiang.xue $
  * @package system.validators
  * @since 1.0.4
  */
@@ -66,7 +66,7 @@ class CExistValidator extends CValidator
 		$finder=CActiveRecord::model($className);
 		$table=$finder->getTableSchema();
 		if(($column=$table->getColumn($attributeName))===null)
-			throw new CException(Yii::t('yii','Column "{column}" does not exist in table "{table}".',
+			throw new CException(Yii::t('yii','Table "{table}" does not have a column named "{column}".',
 				array('{column}'=>$attributeName,'{table}'=>$table->name)));
 
 		$criteria=array('condition'=>$column->rawName.'=:vp','params'=>array(':vp'=>$value));

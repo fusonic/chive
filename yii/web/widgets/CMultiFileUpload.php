@@ -16,7 +16,7 @@
  * files. Note, you have to set the enclosing form's 'enctype' attribute to be 'multipart/form-data'.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMultiFileUpload.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CMultiFileUpload.php 2110 2010-05-07 20:53:08Z qiang.xue $
  * @package system.web.widgets
  * @since 1.0
  */
@@ -51,6 +51,11 @@ class CMultiFileUpload extends CWidget
 	 * @var string message that is displayed when a file appears twice.
 	 */
 	public $duplicate;
+	/**
+	 * @var string the message template for displaying the uploaded file name
+	 * @since 1.1.3
+	 */
+	public $file;
 	/**
 	 * @var array additional HTML attributes that will be rendered in the file upload tag.
 	 */
@@ -99,7 +104,7 @@ class CMultiFileUpload extends CWidget
 		if($this->max>0)
 			$mfOptions['max']=$this->max;
 		$messages=array();
-		foreach(array('remove','denied','selected','duplicate') as $messageName)
+		foreach(array('remove','denied','selected','duplicate','file') as $messageName)
 		{
 			if($this->$messageName!==null)
 				$messages[$messageName]=$this->$messageName;

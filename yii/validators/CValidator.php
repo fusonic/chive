@@ -49,7 +49,7 @@
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CValidator.php 1838 2010-02-26 03:52:44Z qiang.xue $
+ * @version $Id: CValidator.php 2126 2010-05-12 02:15:47Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -140,6 +140,8 @@ abstract class CValidator extends CComponent
 			$validator->attributes=$attributes;
 			$validator->method=$name;
 			$validator->params=$params;
+			if(isset($params['skipOnError']))
+				$validator->skipOnError=$params['skipOnError'];
 		}
 		else
 		{

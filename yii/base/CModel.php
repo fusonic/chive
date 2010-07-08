@@ -15,7 +15,7 @@
  * CModel defines the basic framework for data models that need to be validated.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CModel.php 1859 2010-03-06 04:21:12Z qiang.xue $
+ * @version $Id: CModel.php 2203 2010-06-16 20:50:57Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -161,6 +161,7 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	 * You may override this method to do preliminary checks before validation.
 	 * Make sure the parent implementation is invoked so that the event can be raised.
 	 * @return boolean whether validation should be executed. Defaults to true.
+	 * If false is returned, the validation will stop and the model is considered invalid.
 	 */
 	protected function beforeValidate()
 	{
@@ -201,6 +202,25 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	}
 
 	/**
+	 * Returns all the validators declared in the model.
+	 * This method differs from {@link getValidators} in that the latter
+	 * would only return the validators applicable to the current {@link scenario}.
+	 * Also, since this method return a {@link CList} object, you may
+	 * manipulate it by inserting or removing validators (useful in behaviors).
+	 * For example, <code>$model->validatorList->add($newValidator)</code>.
+	 * The change made to the {@link CList} object will persist and reflect
+	 * in the result of the next call of {@link getValidators}.
+	 * @return CList all the validators declared in the model.
+	 * @since 1.1.2
+	 */
+	public function getValidatorList()
+	{
+		if($this->_validators===null)
+			$this->_validators=$this->createValidators();
+		return $this->_validators;
+	}
+
+	/**
 	 * Returns the validators applicable to the current {@link scenario}.
 	 * @param string the name of the attribute whose validators should be returned.
 	 * If this is null, the validators for ALL attributes in the model will be returned.
@@ -228,15 +248,15 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	/**
 	 * Creates validator objects based on the specification in {@link rules}.
 	 * This method is mainly used internally.
-	 * @return array validators built based on {@link rules()}.
+	 * @return CList validators built based on {@link rules()}.
 	 */
 	public function createValidators()
 	{
-		$validators=array();
+		$validators=new CList;
 		foreach($this->rules() as $rule)
 		{
 			if(isset($rule[0],$rule[1]))  // attributes, validator name
-				$validators[]=CValidator::createValidator($rule[1],$this,$rule[0],array_slice($rule,2));
+				$validators->add(CValidator::createValidator($rule[1],$this,$rule[0],array_slice($rule,2)));
 			else
 				throw new CException(Yii::t('yii','{class} has an invalid validation rule. The rule must specify attributes to be validated and the validator name.',
 					array('{class}'=>get_class($this))));
@@ -428,6 +448,20 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 			else
 				$this->onUnsafeAttribute($name,$value);
 		}
+	}
+
+	/**
+	 * Unsets the attributes.
+	 * @param array list of attributes to be set null. If this parameter is not given,
+	 * all attributes as specified by {@link attributeNames} will have their values unset.
+	 * @since 1.1.3
+	 */
+	public function unsetAttributes($names=null)
+	{
+		if($names===null)
+			$names=$this->attributeNames();
+		foreach($names as $name)
+			$this->$name=null;
 	}
 
 	/**

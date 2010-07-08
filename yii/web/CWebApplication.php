@@ -22,6 +22,7 @@
  * <li>{@link themeManager}: manages themes.</li>
  * <li>{@link authManager}: manages role-based access control (RBAC).</li>
  * <li>{@link clientScript}: manages client scripts (javascripts and CSS).</li>
+ * <li>{@link widgetFactory}: creates widgets and supports widget skinning.</li>
  * </ul>
  *
  * User requests are resolved as controller-action pairs and additional parameters.
@@ -30,13 +31,13 @@
  * assume {@link defaultController} is requested (which defaults to 'site').
  *
  * Controller class files must reside under the directory {@link getControllerPath controllerPath}
- * (defaults to 'protected/controllers'). The file name is the same as the controller
- * name and the class name is the controller ID appended with 'Controller'.
+ * (defaults to 'protected/controllers'). The file name and the class name must be
+ * the same as the controller ID with the first letter in upper case and appended with 'Controller'.
  * For example, the controller 'article' is defined by the class 'ArticleController'
- * which is in the file 'protected/controller/article.php'.
+ * which is in the file 'protected/controllers/ArticleController.php'.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CWebApplication.php 1775 2010-02-01 20:02:44Z qiang.xue $
+ * @version $Id: CWebApplication.php 2172 2010-06-07 19:56:01Z qiang.xue $
  * @package system.web
  * @since 1.0
  */
@@ -147,6 +148,9 @@ class CWebApplication extends CApplication
 			),
 			'clientScript'=>array(
 				'class'=>'CClientScript',
+			),
+			'widgetFactory'=>array(
+				'class'=>'CWidgetFactory',
 			),
 		);
 

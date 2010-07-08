@@ -21,7 +21,7 @@ Yii::import('zii.widgets.grid.CGridColumn');
  * value will be used by {@link CSort} to render a clickable link in the header cell to trigger the sorting.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDataColumn.php 124 2010-02-04 02:44:56Z qiang.xue $
+ * @version $Id: CDataColumn.php 194 2010-06-25 00:51:58Z qiang.xue $
  * @package zii.widgets.grid
  * @since 1.1
  */
@@ -88,7 +88,7 @@ class CDataColumn extends CGridColumn
 	 */
 	protected function renderFilterCellContent()
 	{
-		if($this->filter!==false && $this->grid->filter!==null && strpos($this->name,'.')===false)
+		if($this->filter!==false && $this->grid->filter!==null && $this->name!==null && strpos($this->name,'.')===false)
 		{
 			if(is_array($this->filter))
 				echo CHtml::activeDropDownList($this->grid->filter, $this->name, $this->filter, array('id'=>false,'prompt'=>''));
@@ -109,6 +109,13 @@ class CDataColumn extends CGridColumn
 	{
 		if($this->grid->enableSorting && $this->sortable && $this->name!==null)
 			echo $this->grid->dataProvider->getSort()->link($this->name,$this->header);
+		else if($this->name!==null && $this->header===null)
+		{
+			if($this->grid->dataProvider instanceof CActiveDataProvider)
+				echo CHtml::encode($this->grid->dataProvider->model->getAttributeLabel($this->name));
+			else
+				echo CHtml::encode($this->name);
+		}
 		else
 			parent::renderHeaderCellContent();
 	}

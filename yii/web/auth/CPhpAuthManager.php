@@ -19,7 +19,7 @@
  * Use {@link CDbAuthManager} for more complex authorization data.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CPhpAuthManager.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CPhpAuthManager.php 2223 2010-06-24 19:56:33Z qiang.xue $
  * @package system.web.auth
  * @since 1.0
  */
@@ -63,60 +63,25 @@ class CPhpAuthManager extends CAuthManager
 	 */
 	public function checkAccess($itemName,$userId,$params=array())
 	{
-		if(!empty($this->defaultRoles) && $this->checkDefaultRoles($itemName,$params))
-			return true;
-
-		// check directly assigned items
-		$names=array();
-		foreach($this->getAuthAssignments($userId) as $assignment)
+		if(!isset($this->_items[$itemName]))
+			return false;
+		$item=$this->_items[$itemName];
+		Yii::trace('Checking permission "'.$item->getName().'"','system.web.auth.CPhpAuthManager');
+		if($this->executeBizRule($item->getBizRule(),$params,$item->getData()))
 		{
-			$item=$this->getAuthItem($assignment->getItemName());
-			Yii::trace('Checking permission "'.($item ? $item->getName() : 'unknown').'"','system.web.auth.CPhpAuthManager');
-			if($item!==null && $this->executeBizRule($assignment->getBizRule(),$params,$assignment->getData())
-				&& $this->executeBizRule($item->getBizRule(),$params,$item->getData()))
-			{
-				if($item->getName()===$itemName)
-					return true;
-				$names[]=$item->getName();
-			}
-		}
-
-		// check all descendant items
-		while($names!==array())
-		{
-			$items=$this->getItemChildren($names);
-			$names=array();
-			foreach($items as $item)
-			{
-				Yii::trace('Checking permission "'.$item->getName().'"','system.web.auth.CPhpAuthManager');
-				if($this->executeBizRule($item->getBizRule(),$params,$item->getData()))
-				{
-					if($item->getName()===$itemName)
-						return true;
-					$names[]=$item->getName();
-				}
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * Checks the access based on the default roles as declared in {@link defaultRoles}.
-	 * @param string the name of the operation that need access check
-	 * @param array name-value pairs that would be passed to biz rules associated
-	 * with the tasks and roles assigned to the user.
-	 * @return boolean whether the operations can be performed by the user according to the default roles.
-	 * @since 1.0.3
-	 */
-	protected function checkDefaultRoles($itemName,$params)
-	{
-		foreach($this->defaultRoles as $role)
-		{
-			Yii::trace('Checking default role "'.$role.'"','system.web.auth.CPhpAuthManager');			
-			$item=$this->getAuthItem($role);
-			if($item!==null && $item->checkAccess($itemName,$params))
+			if(in_array($itemName,$this->defaultRoles))
 				return true;
+			if(isset($this->_assignments[$userId][$itemName]))
+			{
+				$assignment=$this->_assignments[$userId][$itemName];
+				if($this->executeBizRule($assignment->getBizRule(),$params,$assignment->getData()))
+					return true;
+			}
+			foreach($this->_children as $parentName=>$children)
+			{
+				if(isset($children[$itemName]) && $this->checkAccess($parentName,$userId,$params))
+					return true;
+			}
 		}
 		return false;
 	}
@@ -356,7 +321,7 @@ class CPhpAuthManager extends CAuthManager
 	 */
 	public function saveAuthItem($item,$oldName=null)
 	{
-		if(($newName=$item->getName())!==$oldName) // name changed
+		if($oldName!==null && ($newName=$item->getName())!==$oldName) // name changed
 		{
 			if(isset($this->_items[$newName]))
 				throw new CException(Yii::t('yii','Unable to change the item name. The name "{name}" is already used by another item.',array('{name}'=>$newName)));

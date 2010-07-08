@@ -24,7 +24,7 @@
  * the {@link setBasePath basePath}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CAssetManager.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CAssetManager.php 1948 2010-03-22 19:26:01Z qiang.xue $
  * @package system.web
  * @since 1.0
  */
@@ -120,10 +120,15 @@ class CAssetManager extends CApplicationComponent
 	 * Level -1 means publishing all subdirectories and files;
 	 * Level 0 means publishing only the files DIRECTLY under the directory;
 	 * level N means copying those directories that are within N levels.
+	 * @param boolean whether we should copy the asset file or directory even if it is already published before.
+	 * This parameter is set true mainly during development stage when the original
+	 * assets are being constantly changed. The consequence is that the performance
+	 * is degraded, which is not a concern during development, however.
+	 * This parameter has been available since version 1.1.2.
 	 * @return string an absolute URL to the published asset
 	 * @throws CException if the asset to be published does not exist.
 	 */
-	public function publish($path,$hashByName=false,$level=-1)
+	public function publish($path,$hashByName=false,$level=-1,$forceCopy=false)
 	{
 		if(isset($this->_published[$path]))
 			return $this->_published[$path];
@@ -136,7 +141,7 @@ class CAssetManager extends CApplicationComponent
 				$dstDir=$this->getBasePath().DIRECTORY_SEPARATOR.$dir;
 				$dstFile=$dstDir.DIRECTORY_SEPARATOR.$fileName;
 
-				if(@filemtime($dstFile)<@filemtime($src))
+				if(@filemtime($dstFile)<@filemtime($src) || $forceCopy)
 				{
 					if(!is_dir($dstDir))
 					{
@@ -153,7 +158,7 @@ class CAssetManager extends CApplicationComponent
 				$dir=$this->hash($hashByName ? basename($src) : $src);
 				$dstDir=$this->getBasePath().DIRECTORY_SEPARATOR.$dir;
 
-				if(!is_dir($dstDir))
+				if(!is_dir($dstDir) || $forceCopy)
 					CFileHelper::copyDirectory($src,$dstDir,array('exclude'=>array('.svn'),'level'=>$level));
 
 				return $this->_published[$path]=$this->getBaseUrl().'/'.$dir;

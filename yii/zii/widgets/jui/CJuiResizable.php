@@ -2,7 +2,7 @@
 /**
  * CJuiResizable class file.
  *
- * @author Sebastian Thierer <sebas@artfos.com>
+ * @author Sebastian Thierer <sebathi@gmail.com>
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
@@ -36,7 +36,7 @@ Yii::import('zii.widgets.jui.CJuiWidget');
  * for possible options (name-value pairs).
  *
  * @author Sebastian Thierer <sebathi@gmail.com>
- * @version $Id: CJuiResizable.php 143 2010-03-11 13:09:59Z qiang.xue $
+ * @version $Id: CJuiResizable.php 158 2010-03-26 20:34:24Z sebathi $
  * @package zii.widgets.jui
  * @since 1.1
  */

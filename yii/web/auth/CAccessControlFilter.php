@@ -45,7 +45,7 @@
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CAccessControlFilter.php 1782 2010-02-01 21:05:25Z qiang.xue $
+ * @version $Id: CAccessControlFilter.php 2192 2010-06-15 21:43:32Z alexander.makarow $
  * @package system.web.auth
  * @since 1.0
  */
@@ -159,7 +159,7 @@ class CAccessControlFilter extends CFilter
  * CAccessRule represents an access rule that is managed by {@link CAccessControlFilter}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CAccessControlFilter.php 1782 2010-02-01 21:05:25Z qiang.xue $
+ * @version $Id: CAccessControlFilter.php 2192 2010-06-15 21:43:32Z alexander.makarow $
  * @package system.web.auth
  * @since 1.0
  */
@@ -284,7 +284,7 @@ class CAccessRule extends CComponent
 	}
 
 	/**
-	 * @param string the role name
+	 * @param IWebUser the user object
 	 * @return boolean whether the rule applies to the role
 	 */
 	protected function isRoleMatched($user)

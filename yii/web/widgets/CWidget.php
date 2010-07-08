@@ -17,8 +17,10 @@
  *
  * Compared with {@link CController controller}, a widget has neither actions nor filters.
  *
+ * Usage is described at {@link CBaseController} and {@link CBaseController::widget}.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CWidget.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CWidget.php 2145 2010-05-19 21:28:55Z alexander.makarow $
  * @package system.web.widgets
  * @since 1.0
  */
@@ -181,10 +183,16 @@ class CWidget extends CBaseController
 		else
 			$extension='.php';
 		if(strpos($viewName,'.')) // a path alias
-			$viewFile=Yii::getPathOfAlias($viewName).$extension;
+			$viewFile=Yii::getPathOfAlias($viewName);
 		else
-			$viewFile=$this->getViewPath().DIRECTORY_SEPARATOR.$viewName.$extension;
-		return is_file($viewFile) ? Yii::app()->findLocalizedFile($viewFile) : false;
+			$viewFile=$this->getViewPath().DIRECTORY_SEPARATOR.$viewName;
+
+		if(is_file($viewFile.$extension))
+			return Yii::app()->findLocalizedFile($viewFile.$extension);
+		else if($extension!=='.php' && is_file($viewFile.'.php'))
+			return Yii::app()->findLocalizedFile($viewFile.'.php');
+		else
+			return false;
 	}
 
 	/**

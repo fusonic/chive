@@ -12,18 +12,19 @@
 ?>
 <?php echo "<?php\n"; ?>
 
+/**
+ * This is the model class for table "<?php echo $tableName; ?>".
+ *
+ * The followings are the available columns in table '<?php echo $tableName; ?>':
+<?php foreach($columns as $column): ?>
+ * @property <?php echo $column->type.' $'.$column->name."\n"; ?>
+<?php endforeach; ?>
+ */
 class <?php echo $className; ?> extends CActiveRecord
 {
 	/**
-	 * The followings are the available columns in table '<?php echo $tableName; ?>':
-<?php foreach($columns as $column): ?>
-	 * @var <?php echo $column->type.' $'.$column->name."\n"; ?>
-<?php endforeach; ?>
-	 */
-
-	/**
 	 * Returns the static model of the specified AR class.
-	 * @return CActiveRecord the static model class
+	 * @return <?php echo $className; ?> the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

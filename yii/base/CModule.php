@@ -14,7 +14,7 @@
  * CModule mainly manages application components and sub-modules.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CModule.php 1815 2010-02-18 22:01:55Z qiang.xue $
+ * @version $Id: CModule.php 2094 2010-05-05 00:51:49Z qiang.xue $
  * @package system.base
  * @since 1.0.4
  */
@@ -264,6 +264,17 @@ abstract class CModule extends CComponent
 	}
 
 	/**
+	 * Returns a value indicating whether the specified module is installed.
+	 * @param string the module ID
+	 * @return boolean whether the specified module is installed.
+	 * @since 1.1.2
+	 */
+	public function hasModule($id)
+	{
+		return isset($this->_moduleConfig[$id]) || isset($this->_modules[$id]);
+	}
+
+	/**
 	 * @return array the configuration of the currently installed modules (module ID => configuration)
 	 */
 	public function getModules()
@@ -346,7 +357,7 @@ abstract class CModule extends CComponent
 			unset($this->_componentConfig[$id]);
 			if(!isset($config['enabled']) || $config['enabled'])
 			{
-				Yii::trace("Loading \"$id\" application component",'system.web.CModule');
+				Yii::trace("Loading \"$id\" application component",'system.CModule');
 				unset($config['enabled']);
 				$component=Yii::createComponent($config);
 				$component->init();
@@ -370,11 +381,19 @@ abstract class CModule extends CComponent
 	}
 
 	/**
-	 * @return array the currently loaded components (indexed by their IDs)
+	 * Returns the application components.
+	 * @param boolean whether to return the loaded components only. If this is set false,
+	 * then all components specified in the configuration will be returned, whether they are loaded or not.
+	 * Loaded components will be returned as objects, while unloaded components as configuration arrays.
+	 * This parameter has been available since version 1.1.3.
+	 * @return array the application components (indexed by their IDs)
 	 */
-	public function getComponents()
+	public function getComponents($loadedOnly=true)
 	{
-		return $this->_components;
+		if($loadedOnly)
+			return $this->_components;
+		else
+			return array_merge($this->_componentConfig, $this->_components);
 	}
 
 	/**

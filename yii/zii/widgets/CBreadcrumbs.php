@@ -40,7 +40,7 @@
  * Then, in each view script, one only needs to assign the "breadcrumbs" property as needed.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CBreadcrumbs.php 99 2010-01-07 20:55:13Z qiang.xue $
+ * @version $Id: CBreadcrumbs.php 180 2010-05-19 21:01:06Z qiang.xue $
  * @package zii.widgets
  * @since 1.1
  */
@@ -100,7 +100,7 @@ class CBreadcrumbs extends CWidget
 		echo CHtml::openTag($this->tagName,$this->htmlOptions)."\n";
 		$links=array();
 		if($this->homeLink===null)
-			$links[]=CHtml::link('Home',Yii::app()->homeUrl);
+			$links[]=CHtml::link(Yii::t('zii','Home'),Yii::app()->homeUrl);
 		else if($this->homeLink!==false)
 			$links[]=$this->homeLink;
 		foreach($this->links as $label=>$url)

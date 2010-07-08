@@ -16,7 +16,7 @@
  * See {@link CCache} manual for common cache operations that are supported by CXCache.
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: CXCache.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CXCache.php 2062 2010-04-20 19:22:35Z qiang.xue $
  * @package system.caching
  * @since 1.0.1
  */
@@ -91,7 +91,12 @@ class CXCache extends CCache
 	 */
 	public function flush()
 	{
-		return xcache_clear_cache();
+		for($i=0, $max=xcache_count(XC_TYPE_VAR); $i<$max; $i++)
+		{
+			if(xcache_clear_cache(XC_TYPE_VAR, $i)===false)
+				return false;
+		}
+		return true;
 	}
 }
 

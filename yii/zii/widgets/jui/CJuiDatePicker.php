@@ -2,7 +2,7 @@
 /**
  * CJuiDatePicker class file.
  *
- * @author Sebastian Thiere <sebathi@gmail.com>
+ * @author Sebastian Thierer <sebathi@gmail.com>
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
@@ -36,7 +36,7 @@ Yii::import('zii.widgets.jui.CJuiInputWidget');
  * for possible options (name-value pairs).
  *
  * @author Sebastian Thierer <sebathi@gmail.com>
- * @version $Id: CJuiDatePicker.php 135 2010-02-28 16:05:28Z sebathi $
+ * @version $Id: CJuiDatePicker.php 166 2010-05-02 01:57:00Z qiang.xue $
  * @package zii.widgets.jui
  * @since 1.1
  */
@@ -51,7 +51,7 @@ class CJuiDatePicker extends CJuiInputWidget
 	/**
 	 * @var string The i18n Jquery UI script file. It uses scriptUrl property as base url.
 	 */
-	public $i18nScriptFile = 'jquery-ui-i18n.js';
+	public $i18nScriptFile = 'jquery-ui-i18n.min.js';
 
 	/**
 	 * @var array The default options called just one time per request. This options will alter every other CJuiDatePicker instance in the page.
@@ -94,6 +94,6 @@ class CJuiDatePicker extends CJuiInputWidget
 		$cs = Yii::app()->getClientScript();
 		$cs->registerScript(__CLASS__, 	$this->defaultOptions?'jQuery.datepicker.setDefaults('.CJavaScript::encode($this->defaultOptions).');':'');
 		$cs->registerScript(__CLASS__.'#'.$id, $js);
-		
+
 	}
 }

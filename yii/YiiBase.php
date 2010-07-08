@@ -6,7 +6,7 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: YiiBase.php 1903 2010-03-14 04:27:02Z qiang.xue $
+ * @version $Id: YiiBase.php 2246 2010-07-05 01:45:33Z qiang.xue $
  * @package system
  * @since 1.0
  */
@@ -49,7 +49,7 @@ defined('YII_ZII_PATH') or define('YII_ZII_PATH',YII_PATH.DIRECTORY_SEPARATOR.'z
  * you can customize methods of YiiBase.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: YiiBase.php 1903 2010-03-14 04:27:02Z qiang.xue $
+ * @version $Id: YiiBase.php 2246 2010-07-05 01:45:33Z qiang.xue $
  * @package system
  * @since 1.0
  */
@@ -68,7 +68,7 @@ class YiiBase
 	 */
 	public static function getVersion()
 	{
-		return '1.1.1';
+		return '1.1.3';
 	}
 
 	/**
@@ -367,7 +367,7 @@ class YiiBase
 	{
 		if(self::$_logger===null)
 			self::$_logger=new CLogger;
-		if(YII_DEBUG && YII_TRACE_LEVEL>0)
+		if(YII_DEBUG && YII_TRACE_LEVEL>0 && $level!==CLogger::LEVEL_PROFILE)
 		{
 			$traces=debug_backtrace();
 			$count=0;
@@ -472,7 +472,7 @@ class YiiBase
 		if(self::$_app!==null)
 		{
 			if($source===null)
-				$source=$category==='yii'?'coreMessages':'messages';
+				$source=($category==='yii'||$category==='zii')?'coreMessages':'messages';
 			if(($source=self::$_app->getComponent($source))!==null)
 				$message=$source->translate($category,$message,$language);
 		}
@@ -528,6 +528,7 @@ class YiiBase
 		'CEAcceleratorCache' => '/caching/CEAcceleratorCache.php',
 		'CFileCache' => '/caching/CFileCache.php',
 		'CMemCache' => '/caching/CMemCache.php',
+		'CWinCache' => '/caching/CWinCache.php',
 		'CXCache' => '/caching/CXCache.php',
 		'CZendDataCache' => '/caching/CZendDataCache.php',
 		'CCacheDependency' => '/caching/dependencies/CCacheDependency.php',

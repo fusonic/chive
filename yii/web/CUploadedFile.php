@@ -17,7 +17,7 @@
  * {@link tempName}, {@link type}, {@link size} and {@link error}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CUploadedFile.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CUploadedFile.php 2004 2010-04-03 15:58:42Z alexander.makarow $
  * @package system.web
  * @since 1.0
  */
@@ -172,7 +172,7 @@ class CUploadedFile extends CComponent
 			if($deleteTempFile)
 				return move_uploaded_file($this->_tempName,$file);
 			else if(is_uploaded_file($this->_tempName))
-				return file_put_contents($file,file_get_contents($this->_tempName))!==false;
+				return copy($this->_tempName, $file);
 			else
 				return false;
 		}

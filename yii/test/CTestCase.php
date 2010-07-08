@@ -15,7 +15,7 @@ require_once('PHPUnit/Framework/TestCase.php');
  * CTestCase is the base class for all test case classes.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CTestCase.php 1907 2010-03-14 05:14:49Z qiang.xue $
+ * @version $Id: CTestCase.php 1906 2010-03-14 05:14:31Z qiang.xue $
  * @package system.test
  * @since 1.1
  */

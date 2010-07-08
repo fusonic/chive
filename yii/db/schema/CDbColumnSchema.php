@@ -12,7 +12,7 @@
  * CDbColumnSchema class describes the column meta data of a database table.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbColumnSchema.php 1830 2010-02-20 03:07:45Z qiang.xue $
+ * @version $Id: CDbColumnSchema.php 2130 2010-05-13 00:24:11Z qiang.xue $
  * @package system.db.schema
  * @since 1.0
  */
@@ -85,7 +85,7 @@ class CDbColumnSchema extends CComponent
 	 */
 	protected function extractType($dbType)
 	{
-		if(stripos($dbType,'int')!==false)
+		if(stripos($dbType,'int')!==false && stripos($dbType,'unsigned int')===false)
 			$this->type='integer';
 		else if(stripos($dbType,'bool')!==false)
 			$this->type='boolean';

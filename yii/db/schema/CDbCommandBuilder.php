@@ -12,7 +12,7 @@
  * CDbCommandBuilder provides basic methods to create query commands for tables.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCommandBuilder.php 1814 2010-02-18 21:47:00Z qiang.xue $
+ * @version $Id: CDbCommandBuilder.php 2148 2010-05-20 12:22:44Z qiang.xue $
  * @package system.db.schema
  * @since 1.0
  */
@@ -101,7 +101,27 @@ class CDbCommandBuilder extends CComponent
 		if($criteria->alias!='')
 			$alias=$criteria->alias;
 		$alias=$this->_schema->quoteTableName($alias);
-		$sql=($criteria->distinct ? 'SELECT DISTINCT':'SELECT')." COUNT(*) FROM {$table->rawName} $alias";
+
+		if(is_string($criteria->select) && stripos($criteria->select,'count')===0)
+			$sql="SELECT ".$criteria->select;
+		else if(!empty($criteria->group))
+			$sql="SELECT COUNT(DISTINCT {$criteria->group})";
+		else if($criteria->distinct)
+		{
+			if(is_array($table->primaryKey))
+			{
+				$pk=array();
+				foreach($table->primaryKey as $key)
+					$pk[]=$alias.'.'.$key;
+				$pk=implode(', ',$pk);
+			}
+			else
+				$pk=$alias.'.'.$table->primaryKey;
+			$sql="SELECT COUNT(DISTINCT $pk)";
+		}
+		else
+			$sql="SELECT COUNT(*)";
+		$sql.=" FROM {$table->rawName} $alias";
 		$sql=$this->applyJoin($sql,$criteria->join);
 		$sql=$this->applyCondition($sql,$criteria->condition);
 		$command=$this->_connection->createCommand($sql);
@@ -566,6 +586,7 @@ class CDbCommandBuilder extends CComponent
 			$condition=array();
 			foreach($keywords as $keyword)
 			{
+				$keyword='%'.strtr($keyword,array('%'=>'\%', '_'=>'\_')).'%';
 				if($caseSensitive)
 					$condition[]=$prefix.$column->rawName.' LIKE '.$this->_connection->quoteValue('%'.$keyword.'%');
 				else

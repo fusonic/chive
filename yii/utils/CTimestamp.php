@@ -37,15 +37,12 @@
  * the 32-bit signed integer range.
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: CTimestamp.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CTimestamp.php 2201 2010-06-16 19:11:00Z alexander.makarow $
  * @package system.utils
  * @since 1.0
  */
 class CTimestamp
 {
-	private static $_monthNormal=array("",31,28,31,30,31,30,31,31,30,31,30,31);
-	private static $_monthLeaf=array("",31,29,31,30,31,30,31,31,30,31,30,31);
-
 	/**
 	 * Gets day of week, 0 = Sunday,... 6=Saturday.
 	 * Algorithm from PEAR::Date_Calc

@@ -52,7 +52,7 @@
  * {@link CWebApplication::getSession()}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CHttpSession.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CHttpSession.php 2060 2010-04-20 18:47:46Z qiang.xue $
  * @package system.web
  * @since 1.0
  */
@@ -409,6 +409,20 @@ class CHttpSession extends CApplicationComponent implements IteratorAggregate,Ar
 	public function getKeys()
 	{
 		return array_keys($_SESSION);
+	}
+
+	/**
+	 * Returns the session variable value with the session variable name.
+	 * This method is very similar to {@link itemAt} and {@link offsetGet},
+	 * except that it will return $defaultValue if the session variable does not exist.
+	 * @param mixed the session variable name
+	 * @param mixed the default value to be returned when the session variable does not exist.
+	 * @return mixed the session variable value, or $defaultValue if the session variable does not exist.
+	 * @since 1.1.2
+	 */
+	public function get($key,$defaultValue=null)
+	{
+		return isset($_SESSION[$key]) ? $_SESSION[$key] : $defaultValue;
 	}
 
 	/**

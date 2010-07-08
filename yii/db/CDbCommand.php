@@ -29,7 +29,7 @@
  * You may also call {@link prepare} to explicitly prepare an SQL statement.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCommand.php 1880 2010-03-10 21:48:45Z qiang.xue $
+ * @version $Id: CDbCommand.php 2233 2010-06-28 11:59:26Z qiang.xue $
  * @package system.db
  * @since 1.0
  */
@@ -154,7 +154,7 @@ class CDbCommand extends CComponent
 		else
 			$this->_statement->bindParam($name,$value,$dataType,$length);
 		if($this->_connection->enableParamLogging)
-			$this->_params[$name]='['.gettype($value).']';
+			$this->_params[$name]=&$value;
 		return $this;
 	}
 
@@ -198,9 +198,10 @@ class CDbCommand extends CComponent
 	{
 		if($this->_connection->enableParamLogging && ($pars=array_merge($this->_params,$params))!==array())
 		{
+			$p=array();
 			foreach($pars as $name=>$value)
-				$pars[$name]=$name.'='.$value;
-			$par='. Bind with parameter ' .implode(', ',$pars);
+				$p[$name]=$name.'='.$value;
+			$par='. Bind with parameter ' .implode(', ',$p);
 		}
 		else
 			$par='';
@@ -339,9 +340,10 @@ class CDbCommand extends CComponent
 	{
 		if($this->_connection->enableParamLogging && ($pars=array_merge($this->_params,$params))!==array())
 		{
+			$p=array();
 			foreach($pars as $name=>$value)
-				$pars[$name]=$name.'='.$value;
-			$par='. Bind with parameter ' .implode(', ',$pars);
+				$p[$name]=$name.'='.$value;
+			$par='. Bind with parameter ' .implode(', ',$p);
 		}
 		else
 			$par='';

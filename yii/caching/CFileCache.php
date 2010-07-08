@@ -18,7 +18,7 @@
  * See {@link CCache} manual for common cache operations that are supported by CFileCache.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFileCache.php 1832 2010-02-20 03:22:45Z qiang.xue $
+ * @version $Id: CFileCache.php 1942 2010-03-21 00:48:04Z alexander.makarow $
  * @package system.caching
  * @since 1.0.6
  */

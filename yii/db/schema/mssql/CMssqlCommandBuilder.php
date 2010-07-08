@@ -16,7 +16,7 @@
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @author Christophe Boulain <Christophe.Boulain@gmail.com>
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: CMssqlCommandBuilder.php 1907 2010-03-14 05:14:49Z qiang.xue $
+ * @version $Id: CMssqlCommandBuilder.php 1906 2010-03-14 05:14:31Z qiang.xue $
  * @package system.db.schema.mssql
  * @since 1.0.4
  */

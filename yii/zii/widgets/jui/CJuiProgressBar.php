@@ -2,7 +2,7 @@
 /**
  * CJuiProgressBar class file.
  *
- * @author Sebastian Thierer <sebas@artfos.com>
+ * @author Sebastian Thierer <sebathi@gmail.com>
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
@@ -36,7 +36,7 @@ Yii::import('zii.widgets.jui.CJuiWidget');
  * for possible options (name-value pairs).
  *
  * @author Sebastian Thierer <sebathi@gmail.com>
- * @version $Id: CJuiProgressBar.php 127 2010-02-18 14:03:04Z sebathi $
+ * @version $Id: CJuiProgressBar.php 158 2010-03-26 20:34:24Z sebathi $
  * @package zii.widgets.jui
  * @since 1.1
  */

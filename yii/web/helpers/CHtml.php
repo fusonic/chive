@@ -13,12 +13,14 @@
  * CHtml is a static class that provides a collection of helper methods for creating HTML views.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CHtml.php 1863 2010-03-07 13:26:05Z qiang.xue $
+ * @version $Id: CHtml.php 2210 2010-06-17 19:47:26Z qiang.xue $
  * @package system.web.helpers
  * @since 1.0
  */
 class CHtml
 {
+	public static $idPrefix = '';
+	
 	const ID_PREFIX='yt';
 	/**
 	 * @var string the CSS class for displaying error summaries (see {@link errorSummary}).
@@ -53,8 +55,6 @@ class CHtml
 	 * @since 1.0.4
 	 */
 	public static $count=0;
-	
-	public static $idPrefix = '';
 
 	/**
 	 * Encodes special characters into HTML entities.
@@ -292,7 +292,7 @@ class CHtml
 			}
 		}
 		$request=Yii::app()->request;
-		if($request->enableCsrfValidation)
+		if($request->enableCsrfValidation && !strcasecmp($method,'post'))
 			$hiddens[]=self::hiddenField($request->csrfTokenName,$request->getCsrfToken(),array('id'=>false));
 		if($hiddens!==array())
 			$form.="\n".self::tag('div',array('style'=>'display:none'),implode("\n",$hiddens));
@@ -508,6 +508,7 @@ class CHtml
 		{
 			$for = self::$idPrefix . $for;
 		}
+		
 		if($for===false)
 			unset($htmlOptions['for']);
 		else
@@ -615,6 +616,10 @@ class CHtml
 	 * @param boolean whether the check box is checked
 	 * @param array additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
+	 * Since version 1.1.2, a special option named 'uncheckValue' is available that can be used to specify
+	 * the value returned when the radiobutton is not checked. When set, a hidden field is rendered so that
+	 * when the radiobutton is not checked, we can still obtain the posted uncheck value.
+	 * If 'uncheckValue' is not set or set to NULL, the hidden field will not be rendered.
 	 * @return string the generated radio button
 	 * @see clientChange
 	 * @see inputField
@@ -627,7 +632,26 @@ class CHtml
 			unset($htmlOptions['checked']);
 		$value=isset($htmlOptions['value']) ? $htmlOptions['value'] : 1;
 		self::clientChange('click',$htmlOptions);
-		return self::inputField('radio',$name,$value,$htmlOptions);
+
+		if(array_key_exists('uncheckValue',$htmlOptions))
+		{
+			$uncheck=$htmlOptions['uncheckValue'];
+			unset($htmlOptions['uncheckValue']);
+		}
+		else
+			$uncheck=null;
+
+		if(!isset($htmlOptions['id']))
+			$htmlOptions['id']=self::getIdByName($name);
+		else if($htmlOptions['id']===false)
+			unset($htmlOptions['id']);
+
+		$uncheckOptions=isset($htmlOptions['id']) ? array('id'=>self::ID_PREFIX.$htmlOptions['id']) : array();
+
+		$hidden=$uncheck!==null ? self::hiddenField($name,$uncheck,$uncheckOptions) : '';
+
+		// add a hidden field so that if the radio button is not selected, it still submits a value
+		return $hidden . self::inputField('radio',$name,$value,$htmlOptions);
 	}
 
 	/**
@@ -636,6 +660,10 @@ class CHtml
 	 * @param boolean whether the check box is checked
 	 * @param array additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
+	 * Since version 1.1.2, a special option named 'uncheckValue' is available that can be used to specify
+	 * the value returned when the checkbox is not checked. When set, a hidden field is rendered so that
+	 * when the checkbox is not checked, we can still obtain the posted uncheck value.
+	 * If 'uncheckValue' is not set or set to NULL, the hidden field will not be rendered.
 	 * @return string the generated check box
 	 * @see clientChange
 	 * @see inputField
@@ -648,7 +676,26 @@ class CHtml
 			unset($htmlOptions['checked']);
 		$value=isset($htmlOptions['value']) ? $htmlOptions['value'] : 1;
 		self::clientChange('click',$htmlOptions);
-		return self::inputField('checkbox',$name,$value,$htmlOptions);
+
+		if(array_key_exists('uncheckValue',$htmlOptions))
+		{
+			$uncheck=$htmlOptions['uncheckValue'];
+			unset($htmlOptions['uncheckValue']);
+		}
+		else
+			$uncheck=null;
+
+		if(!isset($htmlOptions['id']))
+			$htmlOptions['id']=self::getIdByName($name);
+		else if($htmlOptions['id']===false)
+			unset($htmlOptions['id']);
+
+		$uncheckOptions=isset($htmlOptions['id']) ? array('id'=>self::ID_PREFIX.$htmlOptions['id']) : array();
+
+		$hidden=$uncheck!==null ? self::hiddenField($name,$uncheck,$uncheckOptions) : '';
+
+		// add a hidden field so that if the checkbox  is not selected, it still submits a value
+		return $hidden . self::inputField('checkbox',$name,$value,$htmlOptions);
 	}
 
 	/**
@@ -663,6 +710,7 @@ class CHtml
 	 * attributes are recognized. See {@link clientChange} and {@link tag} for more details.
 	 * In addition, the following options are also supported specifically for dropdown list:
 	 * <ul>
+	 * <li>encode: boolean, specifies whether to encode the values. Defaults to true. This option has been available since version 1.0.5.</li>
 	 * <li>prompt: string, specifies the prompt text shown as the first list option. Its value is empty.</li>
 	 * <li>empty: string, specifies the text corresponding to empty selection. Its value is empty.
 	 * Starting from version 1.0.10, the 'empty' option can also be an array of value-label pairs.
@@ -708,6 +756,7 @@ class CHtml
 	 * attributes are also recognized. See {@link clientChange} and {@link tag} for more details.
 	 * In addition, the following options are also supported specifically for list box:
 	 * <ul>
+	 * <li>encode: boolean, specifies whether to encode the values. Defaults to true. This option has been available since version 1.0.5.</li>
 	 * <li>prompt: string, specifies the prompt text shown as the first list option. Its value is empty.</li>
 	 * <li>empty: string, specifies the text corresponding to empty selection. Its value is empty.
 	 * Starting from version 1.0.10, the 'empty' option can also be an array of value-label pairs.
@@ -820,15 +869,12 @@ class CHtml
 			$name=strtr($name,array('['=>'\\[',']'=>'\\]'));
 			$js=<<<EOD
 jQuery('#$id').click(function() {
-	var checked=this.checked;
-	jQuery("input[name='$name']").each(function() {
-		this.checked=checked;
-	});
+	jQuery("input[name='$name']").attr('checked', this.checked);
 });
-
 jQuery("input[name='$name']").click(function() {
-	jQuery('#$id').attr('checked', jQuery("input[name='$name']").length==jQuery("input[name='$name'][checked=true]").length);
+	jQuery('#$id').attr('checked', !jQuery("input[name='$name']:not(:checked)").length);
 });
+jQuery('#$id').attr('checked', !jQuery("input[name='$name']:not(:checked)").length);
 EOD;
 			$cs=Yii::app()->getClientScript();
 			$cs->registerCoreScript('jquery');
@@ -849,9 +895,9 @@ EOD;
 	 * @param array value-label pairs used to generate the radio button list.
 	 * Note, the values will be automatically HTML-encoded, while the labels will not.
 	 * @param array addtional HTML options. The options will be applied to
-	 * each checkbox input. The following special options are recognized:
+	 * each radio button input. The following special options are recognized:
 	 * <ul>
-	 * <li>template: string, specifies how each checkbox is rendered. Defaults
+	 * <li>template: string, specifies how each radio button is rendered. Defaults
 	 * to "{input} {label}", where "{input}" will be replaced by the generated
 	 * radio button input tag while "{label}" be replaced by the corresponding radio button label.</li>
 	 * <li>separator: string, specifies the string that separates the generated radio buttons.</li>
@@ -1185,7 +1231,8 @@ EOD;
 		self::clientChange('change',$htmlOptions);
 		if($model->hasErrors($attribute))
 			self::addErrorCss($htmlOptions);
-		return self::tag('textarea',$htmlOptions,isset($htmlOptions['encode']) && !$htmlOptions['encode'] ? $model->$attribute : self::encode($model->$attribute));
+		$text=self::resolveValue($model,$attribute);
+		return self::tag('textarea',$htmlOptions,isset($htmlOptions['encode']) && !$htmlOptions['encode'] ? $text : self::encode($text));
 	}
 
 	/**
@@ -1204,7 +1251,8 @@ EOD;
 		self::resolveNameID($model,$attribute,$htmlOptions);
 		// add a hidden field so that if a model only has a file field, we can
 		// still use isset($_POST[$modelClass]) to detect if the input is submitted
-		return self::hiddenField($htmlOptions['name'],'',array('id'=>self::ID_PREFIX.$htmlOptions['id']))
+		$hiddenOptions=isset($htmlOptions['id']) ? array('id'=>self::ID_PREFIX.$htmlOptions['id']) : array();
+		return self::hiddenField($htmlOptions['name'],'',$hiddenOptions)
 			. self::activeInputField('file',$model,$attribute,$htmlOptions);
 	}
 
@@ -1230,7 +1278,7 @@ EOD;
 		self::resolveNameID($model,$attribute,$htmlOptions);
 		if(!isset($htmlOptions['value']))
 			$htmlOptions['value']=1;
-		if(!isset($htmlOptions['checked']) && $model->$attribute==$htmlOptions['value'])
+		if(!isset($htmlOptions['checked']) && self::resolveValue($model,$attribute)==$htmlOptions['value'])
 			$htmlOptions['checked']='checked';
 		self::clientChange('click',$htmlOptions);
 
@@ -1242,7 +1290,8 @@ EOD;
 		else
 			$uncheck='0';
 
-		$hidden=$uncheck!==null ? self::hiddenField($htmlOptions['name'],$uncheck,array('id'=>self::ID_PREFIX.$htmlOptions['id'])) : '';
+		$hiddenOptions=isset($htmlOptions['id']) ? array('id'=>self::ID_PREFIX.$htmlOptions['id']) : array();
+		$hidden=$uncheck!==null ? self::hiddenField($htmlOptions['name'],$uncheck,$hiddenOptions) : '';
 
 		// add a hidden field so that if the radio button is not selected, it still submits a value
 		return $hidden . self::activeInputField('radio',$model,$attribute,$htmlOptions);
@@ -1271,7 +1320,7 @@ EOD;
 		self::resolveNameID($model,$attribute,$htmlOptions);
 		if(!isset($htmlOptions['value']))
 			$htmlOptions['value']=1;
-		if(!isset($htmlOptions['checked']) && $model->$attribute==$htmlOptions['value'])
+		if(!isset($htmlOptions['checked']) && self::resolveValue($model,$attribute)==$htmlOptions['value'])
 			$htmlOptions['checked']='checked';
 		self::clientChange('click',$htmlOptions);
 
@@ -1283,7 +1332,8 @@ EOD;
 		else
 			$uncheck='0';
 
-		$hidden=$uncheck!==null ? self::hiddenField($htmlOptions['name'],$uncheck,array('id'=>self::ID_PREFIX.$htmlOptions['id'])) : '';
+		$hiddenOptions=isset($htmlOptions['id']) ? array('id'=>self::ID_PREFIX.$htmlOptions['id']) : array();
+		$hidden=$uncheck!==null ? self::hiddenField($htmlOptions['name'],$uncheck,$hiddenOptions) : '';
 
 		return $hidden . self::activeInputField('checkbox',$model,$attribute,$htmlOptions);
 	}
@@ -1302,6 +1352,7 @@ EOD;
 	 * attributes are recognized. See {@link clientChange} and {@link tag} for more details.
 	 * In addition, the following options are also supported:
 	 * <ul>
+	 * <li>encode: boolean, specifies whether to encode the values. Defaults to true. This option has been available since version 1.0.5.</li>
 	 * <li>prompt: string, specifies the prompt text shown as the first list option. Its value is empty.</li>
 	 * <li>empty: string, specifies the text corresponding to empty selection. Its value is empty.
 	 * Starting from version 1.0.10, the 'empty' option can also be an array of value-label pairs.
@@ -1325,7 +1376,7 @@ EOD;
 	public static function activeDropDownList($model,$attribute,$data,$htmlOptions=array())
 	{
 		self::resolveNameID($model,$attribute,$htmlOptions);
-		$selection=$model->$attribute;
+		$selection=self::resolveValue($model,$attribute);
 		$options="\n".self::listOptions($selection,$data,$htmlOptions);
 		self::clientChange('change',$htmlOptions);
 		if($model->hasErrors($attribute))
@@ -1353,6 +1404,7 @@ EOD;
 	 * attributes are recognized. See {@link clientChange} and {@link tag} for more details.
 	 * In addition, the following options are also supported:
 	 * <ul>
+	 * <li>encode: boolean, specifies whether to encode the values. Defaults to true. This option has been available since version 1.0.5.</li>
 	 * <li>prompt: string, specifies the prompt text shown as the first list option. Its value is empty.</li>
 	 * <li>empty: string, specifies the text corresponding to empty selection. Its value is empty.
 	 * Starting from version 1.0.10, the 'empty' option can also be an array of value-label pairs.
@@ -1416,13 +1468,14 @@ EOD;
 	public static function activeCheckBoxList($model,$attribute,$data,$htmlOptions=array())
 	{
 		self::resolveNameID($model,$attribute,$htmlOptions);
-		$selection=$model->$attribute;
+		$selection=self::resolveValue($model,$attribute);
 		if($model->hasErrors($attribute))
 			self::addErrorCss($htmlOptions);
 		$name=$htmlOptions['name'];
 		unset($htmlOptions['name']);
 
-		return self::hiddenField($name,'',array('id'=>self::ID_PREFIX.$htmlOptions['id']))
+		$hiddenOptions=isset($htmlOptions['id']) ? array('id'=>self::ID_PREFIX.$htmlOptions['id']) : array();
+		return self::hiddenField($name,'',$hiddenOptions)
 			. self::checkBoxList($name,$selection,$data,$htmlOptions);
 	}
 
@@ -1436,7 +1489,7 @@ EOD;
 	 * @param array value-label pairs used to generate the radio button list.
 	 * Note, the values will be automatically HTML-encoded, while the labels will not.
 	 * @param array addtional HTML options. The options will be applied to
-	 * each checkbox input. The following special options are recognized:
+	 * each radio button input. The following special options are recognized:
 	 * <ul>
 	 * <li>template: string, specifies how each checkbox is rendered. Defaults
 	 * to "{input} {label}", where "{input}" will be replaced by the generated
@@ -1451,13 +1504,14 @@ EOD;
 	public static function activeRadioButtonList($model,$attribute,$data,$htmlOptions=array())
 	{
 		self::resolveNameID($model,$attribute,$htmlOptions);
-		$selection=$model->$attribute;
+		$selection=self::resolveValue($model,$attribute);
 		if($model->hasErrors($attribute))
 			self::addErrorCss($htmlOptions);
 		$name=$htmlOptions['name'];
 		unset($htmlOptions['name']);
 
-		return self::hiddenField($name,'',array('id'=>self::ID_PREFIX.$htmlOptions['id']))
+		$hiddenOptions=isset($htmlOptions['id']) ? array('id'=>self::ID_PREFIX.$htmlOptions['id']) : array();
+		return self::hiddenField($name,'',$hiddenOptions)
 			. self::radioButtonList($name,$selection,$data,$htmlOptions);
 	}
 
@@ -1482,6 +1536,10 @@ EOD;
 	 * @param string a piece of HTML code that appears at the end of the errors
 	 * @param array additional HTML attributes to be rendered in the container div tag.
 	 * This parameter has been available since version 1.0.7.
+	 * A special option named 'firstError' is recognized, which when set true, will
+	 * make the error summary to show only the first error message of each attribute.
+	 * If this is not set or is false, all error messages will be displayed.
+	 * This option has been available since version 1.1.3.
 	 * @return string the error summary. Empty if no errors are found.
 	 * @see CModel::getErrors
 	 * @see errorSummaryCss
@@ -1491,6 +1549,13 @@ EOD;
 		$content='';
 		if(!is_array($model))
 			$model=array($model);
+		if(isset($htmlOptions['firstError']))
+		{
+			$firstError=$htmlOptions['firstError'];
+			unset($htmlOptions['firstError']);
+		}
+		else
+			$firstError=false;
 		foreach($model as $m)
 		{
 			foreach($m->getErrors() as $errors)
@@ -1499,6 +1564,8 @@ EOD;
 				{
 					if($error!='')
 						$content.="<li>$error</li>\n";
+					if($firstError)
+						break;
 				}
 			}
 		}
@@ -1653,10 +1720,27 @@ EOD;
 	protected static function activeInputField($type,$model,$attribute,$htmlOptions)
 	{
 		$htmlOptions['type']=$type;
+		if($type==='text' || $type==='password')
+		{
+			if(!isset($htmlOptions['maxlength']))
+			{
+				foreach($model->getValidators($attribute) as $validator)
+				{
+					if($validator instanceof CStringValidator && $validator->max!==null)
+					{
+						$htmlOptions['maxlength']=$validator->max;
+						break;
+					}
+				}
+			}
+			else if($htmlOptions['maxlength']===false)
+				unset($htmlOptions['maxlength']);
+		}
+
 		if($type==='file')
 			unset($htmlOptions['value']);
 		else if(!isset($htmlOptions['value']))
-			$htmlOptions['value']=$model->$attribute;
+			$htmlOptions['value']=self::resolveValue($model,$attribute);
 		if($model->hasErrors($attribute))
 			self::addErrorCss($htmlOptions);
 		return self::tag('input',$htmlOptions);
@@ -1684,6 +1768,11 @@ EOD;
 	 * </pre>
 	 *     This option has been available since version 1.0.3.
 	 * </li>
+	 * <li>key: string, specifies the name of key attribute of the selection object(s).
+	 * This is used when the selection is represented in terms of objects. In this case,
+	 * the property named by the key option of the objects will be treated as the actual selection value.
+	 * This option defaults to 'primaryKey', meaning using the 'primaryKey' property value of the objects in the selection.
+	 * This option has been available since version 1.1.3.</li>
 	 * </ul>
 	 * @return string the generated list options
 	 */
@@ -1718,6 +1807,18 @@ EOD;
 		else
 			$options=array();
 
+		$key=isset($htmlOptions['key']) ? $htmlOptions['key'] : 'primaryKey';
+		if(is_array($selection))
+		{
+			foreach($selection as $i=>$item)
+			{
+				if(is_object($item))
+					$selection[$i]=$item->$key;
+			}
+		}
+		else if(is_object($selection))
+			$selection=$selection->$key;
+
 		foreach($listData as $key=>$value)
 		{
 			if(is_array($value))
@@ -1739,6 +1840,9 @@ EOD;
 				$content.=self::tag('option',$attributes,$raw?(string)$value : self::encode((string)$value))."\n";
 			}
 		}
+
+		unset($htmlOptions['key']);
+
 		return $content;
 	}
 
@@ -1834,9 +1938,8 @@ EOD;
 	 */
 	public static function resolveNameID($model,&$attribute,&$htmlOptions)
 	{
-		$name=self::resolveName($model,$attribute);
 		if(!isset($htmlOptions['name']))
-			$htmlOptions['name']=$name;
+			$htmlOptions['name']=self::resolveName($model,$attribute);
 		if(!isset($htmlOptions['id']))
 			$htmlOptions['id']=self::getIdByName($htmlOptions['name']);
 		else if($htmlOptions['id']===false)
@@ -1846,7 +1949,7 @@ EOD;
 	/**
 	 * Generates input name for a model attribute.
 	 * Note, the attribute name may be modified after calling this method if the name
-	 * contains square brackets (mainly used in tabular input).
+	 * contains square brackets (mainly used in tabular input) before the real attribute name.
 	 * @param CModel the data model
 	 * @param string the attribute
 	 * @return string the input name
@@ -1854,11 +1957,53 @@ EOD;
 	 */
 	public static function resolveName($model,&$attribute)
 	{
-		if('['===$attribute[0])
-			list($i, $attribute, $index)=array(strtok($attribute, '[]'), strtok('['), strtok(']'));
+		if(($pos=strpos($attribute,'['))!==false)
+		{
+			if($pos!==0)  // e.g. name[a][b]
+				return get_class($model).'['.substr($attribute,0,$pos).']'.substr($attribute,$pos);
+			if(($pos=strrpos($attribute,']'))!==false && $pos!==strlen($attribute)-1)  // e.g. [a][b]name
+			{
+				$sub=substr($attribute,0,$pos+1);
+				$attribute=substr($attribute,$pos+1);
+				return get_class($model).$sub.'['.$attribute.']';
+			}
+			if(preg_match('/\](\w+\[.*)$/',$attribute,$matches))
+			{
+				$name=get_class($model).'['.str_replace(']','][',trim(strtr($attribute,array(']['=>']','['=>']')),']')).']';
+				$attribute=$matches[1];
+				return $name;
+			}
+		}
 		else
-			list($attribute, $index)=array(strtok($attribute, '['), strtok(']'));
-		return get_class($model).(isset($i) ? '['.$i.']' : '').'['.$attribute.']'.(false!==$index ? '['.$index.']' : '');
+			return get_class($model).'['.$attribute.']';
+	}
+
+	/**
+	 * Evaluates the attribute value of the model.
+	 * This method can recognize the attribute name written in array format.
+	 * For example, if the attribute name is 'name[a][b]', the value "$model->name['a']['b']" will be returned.
+	 * @param CModel the data model
+	 * @param string the attribute name
+	 * @return mixed the attribute value
+	 * @since 1.1.3
+	 */
+	public static function resolveValue($model,$attribute)
+	{
+		if(($pos=strpos($attribute,'['))!==false)
+		{
+			$name=substr($attribute,0,$pos);
+			$value=$model->$name;
+			foreach(explode('][',rtrim(substr($attribute,$pos+1),']')) as $id)
+			{
+				if(is_array($value) && isset($value[$id]))
+					$value=$value[$id];
+				else
+					return null;
+			}
+			return $value;
+		}
+		else
+			return $model->$attribute;
 	}
 
 	/**

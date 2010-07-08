@@ -31,12 +31,18 @@
  * has the needed permission for an operation.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CAuthManager.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CAuthManager.php 2162 2010-06-04 13:45:58Z alexander.makarow $
  * @package system.web.auth
  * @since 1.0
  */
 abstract class CAuthManager extends CApplicationComponent implements IAuthManager
 {
+	/**
+	 * @var boolean Enable error reporting for bizRules.	 
+	 * @since 1.1.3
+	 */
+	public $showErrors = false;
+
 	/**
 	 * @var array list of role names that are assigned to all users implicitly.
 	 * These roles do not need to be explicitly assigned to any user.
@@ -138,7 +144,7 @@ abstract class CAuthManager extends CApplicationComponent implements IAuthManage
 	 */
 	public function executeBizRule($bizRule,$params,$data)
 	{
-		return empty($bizRule) || @eval($bizRule)!=0;
+		return $bizRule==='' || $bizRule===null || ($this->showErrors ? eval($bizRule)!=0 : @eval($bizRule)!=0);
 	}
 
 	/**

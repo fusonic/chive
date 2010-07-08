@@ -37,7 +37,7 @@
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDetailView.php 138 2010-03-07 13:23:21Z qiang.xue $
+ * @version $Id: CDetailView.php 184 2010-06-15 17:03:22Z qiang.xue $
  * @package zii.widgets
  * @since 1.1
  */
@@ -79,6 +79,7 @@ class CDetailView extends CWidget
 	 * to the "type" option as described below.</li>
 	 * <li>type: the type of the attribute that determines how the attribute value would be formatted.
 	 * Please see above for possible values.
+	 * <li>cssClass: the CSS class to be used for this item. This option is available since version 1.1.3.</li>
 	 * <li>template: the template used to render the attribute. If this is not specified, {@link itemTemplate}
 	 * will be used instead. For more details on how to set this option, please refer to {@link itemTemplate}.
 	 * This option is available since version 1.1.1.</li>
@@ -179,15 +180,35 @@ class CDetailView extends CWidget
 			}
 
 			$tr=array('{label}'=>'', '{class}'=>$n ? $this->itemCssClass[$i%$n] : '');
+			if(isset($attribute['cssClass']))
+				$tr['{class}']=$attribute['cssClass'].' '.($n ? $tr['{class}'] : '');
 
 			if(isset($attribute['label']))
 				$tr['{label}']=$attribute['label'];
 			else if(isset($attribute['name']))
 			{
 				if($this->data instanceof CModel)
-					$tr['{label}']=$this->data->getAttributeLabel($attribute['name']);
+				{
+					$model=$this->data;
+					if(strpos($attribute['name'],'.')!==false)
+					{
+						$segs=explode('.',$attribute['name']);
+						$name=array_pop($segs);
+						foreach($segs as $seg)
+						{
+							$relations=$model->getMetaData()->relations;
+							if(isset($relations[$seg]))
+								$model=CActiveRecord::model($relations[$seg]->className);
+							else
+								break;
+						}
+					}
+					else
+						$name=$attribute['name'];
+					$tr['{label}']=$model->getAttributeLabel($name);
+				}
 				else
-					$tr['{label}']=$attribute['name'];
+					$tr['{label}']=ucwords(trim(strtolower(str_replace(array('-','_','.'),' ',preg_replace('/(?<![A-Z])[A-Z]/', ' \0', $attribute['name'])))));
 			}
 
 			if(!isset($attribute['type']))

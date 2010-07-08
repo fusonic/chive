@@ -12,7 +12,7 @@
  * CPgsqlColumnSchema class describes the column meta data of a PostgreSQL table.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CPgsqlColumnSchema.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CPgsqlColumnSchema.php 2228 2010-06-25 19:56:58Z qiang.xue $
  * @package system.db.schema.pgsql
  * @since 1.0
  */
@@ -30,7 +30,7 @@ class CPgsqlColumnSchema extends CDbColumnSchema
 			$this->type='boolean';
 		else if(preg_match('/(real|float|double)/',$dbType))
 			$this->type='double';
-		else if(preg_match('/(integer|oid|serial|bigint|smallint)/',$dbType))
+		else if(preg_match('/(integer|oid|serial|smallint)/',$dbType))
 			$this->type='integer';
 		else
 			$this->type='string';
@@ -49,7 +49,7 @@ class CPgsqlColumnSchema extends CDbColumnSchema
 			$this->defaultValue=false;
 		else if(strpos($defaultValue,'nextval')===0)
 			$this->defaultValue=null;
-		else if(preg_match('/\'(.*)\'::/',$defaultValue,$matches))
+		else if(preg_match('/^\'(.*)\'::/',$defaultValue,$matches))
 			$this->defaultValue=$this->typecast(str_replace("''","'",$matches[1]));
 		else if(preg_match('/^-?\d+(\.\d*)?$/',$defaultValue,$matches))
 			$this->defaultValue=$this->typecast($defaultValue);

@@ -14,7 +14,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @author Christophe Boulain <Christophe.Boulain@gmail.com>
- * @version $Id: CMssqlColumnSchema.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CMssqlColumnSchema.php 2047 2010-04-13 01:52:10Z qiang.xue $
  * @package system.db.schema.mssql
  * @since 1.0.4
  */
@@ -26,9 +26,9 @@ class CMssqlColumnSchema extends CDbColumnSchema
 	 */
 	protected function extractType($dbType)
 	{
-		if(strpos($dbType,'bigint')!==false || strpos($dbType,'float')!==false || strpos($dbType,'real')!==false)
+		if(strpos($dbType,'float')!==false || strpos($dbType,'real')!==false)
 			$this->type='double';
-		else if(strpos($dbType,'int')!==false || strpos($dbType,'smallint')!==false || strpos($dbType,'tinyint'))
+		else if(strpos($dbType,'bigint')===false && (strpos($dbType,'int')!==false || strpos($dbType,'smallint')!==false || strpos($dbType,'tinyint')))
 			$this->type='integer';
 		else if(strpos($dbType,'bit')!==false)
 			$this->type='boolean';

@@ -20,7 +20,7 @@ Yii::import('zii.widgets.grid.CGridColumn');
  * and customize the display order of the buttons.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CButtonColumn.php 142 2010-03-10 20:53:52Z qiang.xue $
+ * @version $Id: CButtonColumn.php 179 2010-05-19 18:41:01Z alexander.makarow $
  * @package zii.widgets.grid
  * @since 1.1
  */
@@ -180,7 +180,7 @@ class CButtonColumn extends CGridColumn
 		if($this->deleteButtonImageUrl===null)
 			$this->deleteButtonImageUrl=$this->grid->baseScriptUrl.'/delete.png';
 		if($this->deleteConfirmation===null)
-			$this->deleteConfirmation=Yii::t('zii','Are you sure to delete this item?');
+			$this->deleteConfirmation=Yii::t('zii','Are you sure you want to delete this item?');
 
 		foreach(array('view','update','delete') as $id)
 		{
@@ -191,7 +191,7 @@ class CButtonColumn extends CGridColumn
 				'options'=>$this->{$id.'ButtonOptions'},
 			);
 			if(isset($this->buttons[$id]))
-				$this->buttons[$id]=array_merge($this->buttons[$id],$button);
+				$this->buttons[$id]=array_merge($button,$this->buttons[$id]);
 			else
 				$this->buttons[$id]=$button;
 		}

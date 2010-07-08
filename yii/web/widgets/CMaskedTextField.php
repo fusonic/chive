@@ -17,7 +17,7 @@
  * (see {@link http://digitalbush.com/projects/masked-input-plugin}).
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMaskedTextField.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CMaskedTextField.php 2075 2010-04-29 23:04:21Z alexander.makarow $
  * @package system.web.widgets
  * @since 1.0
  */
@@ -26,9 +26,10 @@ class CMaskedTextField extends CInputWidget
 	/**
 	 * @var string the input mask (e.g. '99/99/9999' for date input). The following characters are predefined:
 	 * <ul>
-	 * <li>a: represents an alpha character (A-Z,a-z)</li>
-	 * <li>9: represents a numeric character (0-9)</li>
+	 * <li>a: represents an alpha character (A-Z,a-z).</li>
+	 * <li>9: represents a numeric character (0-9).</li>
 	 * <li>*: represents an alphanumeric character (A-Z,a-z,0-9).</li>
+	 * <li>?: anything listed after '?' within the mask is considered optional user input.</li>
 	 * </ul>
 	 * Additional characters can be defined by specifying the {@link charMap} property.
 	 */

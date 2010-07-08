@@ -18,7 +18,7 @@
  * for a shortcut usage of CClipWidget.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CClipWidget.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CClipWidget.php 2201 2010-06-16 19:11:00Z alexander.makarow $
  * @package system.web.widgets
  * @since 1.0
  */
@@ -29,8 +29,6 @@ class CClipWidget extends CWidget
 	 * meaning the captured clip will not be displayed.
 	 */
 	public $renderClip=false;
-
-	private $_level;
 
 	/**
 	 * Starts recording a clip.

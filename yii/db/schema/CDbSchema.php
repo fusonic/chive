@@ -12,7 +12,7 @@
  * CDbSchema is the base class for retrieving metadata information.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbSchema.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CDbSchema.php 2224 2010-06-24 20:15:55Z qiang.xue $
  * @package system.db.schema
  * @since 1.0
  */
@@ -59,18 +59,26 @@ abstract class CDbSchema extends CComponent
 	{
 		if(isset($this->_tables[$name]))
 			return $this->_tables[$name];
-		else if(!isset($this->_cacheExclude[$name]) && ($duration=$this->_connection->schemaCachingDuration)>0 && $this->_connection->schemaCacheID!==false && ($cache=Yii::app()->getComponent($this->_connection->schemaCacheID))!==null)
-		{
-			$key='yii:dbschema'.$this->_connection->connectionString.':'.$this->_connection->username.':'.$name;
-			if(($table=$cache->get($key))===false)
-			{
-				$table=$this->createTable($name);
-				$cache->set($key,$table,$duration);
-			}
-			return $this->_tables[$name]=$table;
-		}
 		else
-			return $this->_tables[$name]=$this->createTable($name);
+		{
+			if($this->_connection->tablePrefix!='' && strpos($name,'{{')!==false)
+				$realName=preg_replace('/\{\{(.*?)\}\}/',$this->_connection->tablePrefix.'$1',$name);
+			else
+				$realName=$name;
+			if(!isset($this->_cacheExclude[$name]) && ($duration=$this->_connection->schemaCachingDuration)>0 && $this->_connection->schemaCacheID!==false && ($cache=Yii::app()->getComponent($this->_connection->schemaCacheID))!==null)
+			{
+				$key='yii:dbschema'.$this->_connection->connectionString.':'.$this->_connection->username.':'.$name;
+				if(($table=$cache->get($key))===false)
+				{
+					$table=$this->createTable($realName);
+					if($table!==null)
+						$cache->set($key,$table,$duration);
+				}
+				return $this->_tables[$name]=$table;
+			}
+			else
+				return $this->_tables[$name]=$this->createTable($realName);
+		}
 	}
 
 	/**

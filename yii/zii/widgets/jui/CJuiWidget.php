@@ -14,7 +14,7 @@
  *
  * @author Sebastian Thierer <sebathi@gmail.com>
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CJuiWidget.php 150 2010-03-14 04:12:54Z qiang.xue $
+ * @version $Id: CJuiWidget.php 176 2010-05-06 21:12:32Z qiang.xue $
  * @package zii.widgets.jui
  * @since 1.1
  */

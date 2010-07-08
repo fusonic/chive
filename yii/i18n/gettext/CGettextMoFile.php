@@ -38,7 +38,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CGettextMoFile.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CGettextMoFile.php 2202 2010-06-16 19:52:29Z qiang.xue $
  * @package system.i18n.gettext
  * @since 1.0
  */

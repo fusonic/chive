@@ -32,7 +32,7 @@
  * into the database.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbFixtureManager.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CDbFixtureManager.php 2198 2010-06-16 02:51:21Z qiang.xue $
  * @package system.test
  * @since 1.1
  */
@@ -116,8 +116,11 @@ class CDbFixtureManager extends CApplicationComponent
 			require($initFile);
 		else
 		{
-			foreach($this->getFixtures() as $fixture)
-				$this->loadFixture($fixture);
+			foreach($this->getFixtures() as $tableName=>$fixturePath)
+			{
+				$this->resetTable($tableName);
+				$this->loadFixture($tableName);
+			}
 		}
 		$this->checkIntegrity(true);
 	}
@@ -188,9 +191,10 @@ class CDbFixtureManager extends CApplicationComponent
 	}
 
 	/**
-	 * Returns the names of the tables that have fixture data.
-	 * All fixtures are assumed to be located under {@link basePath}.
-	 * @return array the names of the tables that have fixture data
+	 * Returns the information of the available fixtures.
+	 * This method will search for all PHP files under {@link basePath}.
+	 * If a file's name is the same as a table name, it is considered to be the fixture data for that table.
+	 * @return array the information of the available fixtures (table name => fixture file)
 	 */
 	public function getFixtures()
 	{
@@ -292,6 +296,8 @@ class CDbFixtureManager extends CApplicationComponent
 			{
 				$modelClass=Yii::import($tableName,true);
 				$tableName=CActiveRecord::model($modelClass)->tableName();
+				if(($prefix=$this->getDbConnection()->tablePrefix)!='')
+					$tableName=preg_replace('/{{(.*?)}}/',$prefix.'\1',$tableName);
 			}
 			$this->resetTable($tableName);
 			$rows=$this->loadFixture($tableName);

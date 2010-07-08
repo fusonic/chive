@@ -6,14 +6,14 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: ModelCommand.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: ModelCommand.php 2201 2010-06-16 19:11:00Z alexander.makarow $
  */
 
 /**
  * ModelCommand generates a model class.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: ModelCommand.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: ModelCommand.php 2201 2010-06-16 19:11:00Z alexander.makarow $
  * @package system.cli.commands.shell
  * @since 1.0
  */
@@ -327,6 +327,7 @@ EOD;
 		$unitTestPath=$this->unitTestPath===null?Yii::getPathOfAlias('application.tests.unit'):$this->unitTestPath;
 
 		$list=array();
+		$files=array();
 		foreach ($this->_classes as $tableName=>$className)
 		{
 			$files[$className]=$classFile=$basePath.DIRECTORY_SEPARATOR.$className.'.php';
@@ -383,7 +384,6 @@ EOD;
 	public function generateModel($source,$params)
 	{
 		list($className,$tableName)=$params;
-		$content=file_get_contents($source);
 		$rules=array();
 		$labels=array();
 		$relations=array();

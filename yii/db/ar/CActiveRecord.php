@@ -16,9 +16,11 @@
  * about this class.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 1893 2010-03-13 01:00:47Z qiang.xue $
+ * @version $Id: CActiveRecord.php 2230 2010-06-25 20:16:41Z qiang.xue $
  * @package system.db.ar
  * @since 1.0
+ *
+ * @property array $attributes
  */
 abstract class CActiveRecord extends CModel
 {
@@ -43,6 +45,7 @@ abstract class CActiveRecord extends CModel
 	private $_related=array();					// attribute name => related objects
 	private $_c;								// query criteria (used by finder only)
 	private $_pk;								// old primary key value
+	private $_alias='t';						// the table alias being used for query
 
 
 	/**
@@ -227,11 +230,11 @@ abstract class CActiveRecord extends CModel
 			$exists=isset($this->_related[$name]) || array_key_exists($name,$this->_related);
 			if($exists)
 				$save=$this->_related[$name];
-			unset($this->_related[$name]);
 			$r=array($name=>$params);
 		}
 		else
 			$r=$name;
+		unset($this->_related[$name]);
 
 		$finder=new CActiveFinder($this,$r);
 		$finder->lazyFind($this);
@@ -289,6 +292,16 @@ abstract class CActiveRecord extends CModel
 	}
 
 	/**
+	 * Sets the query criteria for the current model.
+	 * @param CDbCriteria the query criteria
+	 * @since 1.1.3
+	 */
+	public function setDbCriteria($criteria)
+	{
+		$this->_c=$criteria;
+	}
+
+	/**
 	 * Returns the default named scope that should be implicitly applied to all queries for this model.
 	 * Note, default scope only applies to SELECT queries. It is ignored for INSERT, UPDATE and DELETE queries.
 	 * The default implementation simply returns an empty array. You may override this method
@@ -300,6 +313,18 @@ abstract class CActiveRecord extends CModel
 	public function defaultScope()
 	{
 		return array();
+	}
+
+	/**
+	 * Resets all scopes and criterias applied including default scope.
+	 *
+	 * @return CActiveRecord
+	 * @since 1.1.2
+	 */
+	public function resetScope()
+	{
+		$this->_c=new CDbCriteria();
+		return $this;
 	}
 
 	/**
@@ -325,8 +350,8 @@ abstract class CActiveRecord extends CModel
 		else
 		{
 			$model=self::$_models[$className]=new $className(null);
-			$model->attachBehaviors($model->behaviors());
 			$model->_md=new CActiveRecordMetaData($model);
+			$model->attachBehaviors($model->behaviors());
 			return $model;
 		}
 	}
@@ -396,31 +421,32 @@ abstract class CActiveRecord extends CModel
 	 * <li>MANY_MANY: e.g. a member has many skills and a skill belongs to a member.</li>
 	 * </ul>
 	 *
-	 * By declaring these relations, CActiveRecord can bring back related objects
-	 * in either lazy loading or eager loading approach, and you save the effort of
-	 * writing complex JOIN SQL statements.
+	 * Besides the above relation types, a special relation called STAT is also supported
+	 * that can be used to perform statistical query (or aggregational query).
+	 * It retrieves the aggregational information about the related objects, such as the number
+	 * of comments for each post, the average rating for each product, etc.
 	 *
 	 * Each kind of related objects is defined in this method as an array with the following elements:
 	 * <pre>
-	 * 'varName'=>array('relationType', 'className', 'foreignKey', ...additional options)
+	 * 'varName'=>array('relationType', 'className', 'foreign_key', ...additional options)
 	 * </pre>
 	 * where 'varName' refers to the name of the variable/property that the related object(s) can
 	 * be accessed through; 'relationType' refers to the type of the relation, which can be one of the
 	 * following four constants: self::BELONGS_TO, self::HAS_ONE, self::HAS_MANY and self::MANY_MANY;
 	 * 'className' refers to the name of the active record class that the related object(s) is of;
-	 * and 'foreignKey' states the foreign key that relates the two kinds of active record.
+	 * and 'foreign_key' states the foreign key that relates the two kinds of active record.
 	 * Note, for composite foreign keys, they must be listed together, separating with space or comma;
 	 * and for foreign keys used in MANY_MANY relation, the joining table must be declared as well
-	 * (e.g. 'joinTable(fk1, fk2)').
+	 * (e.g. 'join_table(fk1, fk2)').
 	 *
 	 * Additional options may be specified as name-value pairs in the rest array elements:
 	 * <ul>
 	 * <li>'select': string|array, a list of columns to be selected. Defaults to '*', meaning all columns.
-	 *   Column names should be disambiguated if they appear in an expression (e.g. COUNT(??.name) AS name_count).</li>
+	 *   Column names should be disambiguated if they appear in an expression (e.g. COUNT(relationName.name) AS name_count).</li>
 	 * <li>'condition': string, the WHERE clause. Defaults to empty. Note, column references need to
-	 *   be disambiguated with prefix '??.' (e.g. ??.age&gt;20)</li>
+	 *   be disambiguated with prefix 'relationName.' (e.g. relationName.age&gt;20)</li>
 	 * <li>'order': string, the ORDER BY clause. Defaults to empty. Note, column references need to
-	 *   be disambiguated with prefix '??.' (e.g. ??.age DESC)</li>
+	 *   be disambiguated with prefix 'relationName.' (e.g. relationName.age DESC)</li>
 	 * <li>'with': string|array, a list of child related objects that should be loaded together with this object.
 	 *   Note, this is only honored by lazy loading, not eager loading.</li>
 	 * <li>'joinType': type of join. Defaults to 'LEFT OUTER JOIN'.</li>
@@ -441,9 +467,9 @@ abstract class CActiveRecord extends CModel
 	 * The following options are available for certain relations when lazy loading:
 	 * <ul>
 	 * <li>'group': string, the GROUP BY clause. Defaults to empty. Note, column references need to
-	 *   be disambiguated with prefix '??.' (e.g. ??.age). This option only applies to HAS_MANY and MANY_MANY relations.</li>
+	 *   be disambiguated with prefix 'relationName.' (e.g. relationName.age). This option only applies to HAS_MANY and MANY_MANY relations.</li>
 	 * <li>'having': string, the HAVING clause. Defaults to empty. Note, column references need to
-	 *   be disambiguated with prefix '??.' (e.g. ??.age). This option only applies to HAS_MANY and MANY_MANY relations.</li>
+	 *   be disambiguated with prefix 'relationName.' (e.g. relationName.age). This option only applies to HAS_MANY and MANY_MANY relations.</li>
 	 * <li>'limit': limit of the rows to be selected. This option does not apply to BELONGS_TO relation.</li>
 	 * <li>'offset': offset of the rows to be selected. This option does not apply to BELONGS_TO relation.</li>
 	 * </ul>
@@ -451,9 +477,9 @@ abstract class CActiveRecord extends CModel
 	 * Below is an example declaring related objects for 'Post' active record class:
 	 * <pre>
 	 * return array(
-	 *     'author'=>array(self::BELONGS_TO, 'User', 'authorID'),
-	 *     'comments'=>array(self::HAS_MANY, 'Comment', 'postID', 'with'=>'author', 'order'=>'createTime DESC'),
-	 *     'tags'=>array(self::MANY_MANY, 'Tag', 'PostTag(postID, tagID)', 'order'=>'name'),
+	 *     'author'=>array(self::BELONGS_TO, 'User', 'author_id'),
+	 *     'comments'=>array(self::HAS_MANY, 'Comment', 'post_id', 'with'=>'author', 'order'=>'create_time DESC'),
+	 *     'tags'=>array(self::MANY_MANY, 'Tag', 'post_tag(post_id, tag_id)', 'order'=>'name'),
 	 * );
 	 * </pre>
 	 *
@@ -477,7 +503,7 @@ abstract class CActiveRecord extends CModel
 	 *           'condition'=>'status=1',
 	 *     ),
 	 *     'recently'=>array(
-	 *           'order'=>'createTime DESC',
+	 *           'order'=>'create_time DESC',
 	 *           'limit'=>5,
 	 *     ),
 	 * );
@@ -657,7 +683,12 @@ abstract class CActiveRecord extends CModel
 		{
 			$attrs=array();
 			foreach($names as $name)
-				$attrs[$name]=isset($attributes[$name])?$attributes[$name]:null;
+			{
+				if(property_exists($this,$name))
+					$attrs[$name]=$this->$name;
+				else
+					$attrs[$name]=isset($attributes[$name])?$attributes[$name]:null;
+			}
 			return $attrs;
 		}
 		else
@@ -990,8 +1021,8 @@ abstract class CActiveRecord extends CModel
 	/**
 	 * Saves a selected list of attributes.
 	 * Unlike {@link save}, this method only saves the specified attributes
-	 * of an existing row dataset. It thus has better performance.
-	 * Note, this method does neither attribute filtering nor validation.
+	 * of an existing row dataset and does NOT call either {@link beforeSave} or {@link afterSave}.
+	 * Also note that this method does neither attribute filtering nor validation.
 	 * So do not use this method with untrusted data (such as user posted data).
 	 * You may consider the following alternative if you want to do so:
 	 * <pre>
@@ -1067,7 +1098,12 @@ abstract class CActiveRecord extends CModel
 			$this->_attributes=array();
 			$this->_related=array();
 			foreach($this->getMetaData()->columns as $name=>$column)
-				$this->$name=$record->$name;
+			{
+				if(property_exists($this,$name))
+					$this->$name=$record->$name;
+				else
+					$this->_attributes[$name]=$record->$name;
+			}
 			return true;
 		}
 		else
@@ -1119,9 +1155,8 @@ abstract class CActiveRecord extends CModel
 			$this->{$table->primaryKey}=$value;
 		else if(is_array($table->primaryKey))
 		{
-			$values=array();
 			foreach($table->primaryKey as $name)
-				$this->$name=$values[$name];
+				$this->$name=$value[$name];
 		}
 	}
 
@@ -1137,6 +1172,16 @@ abstract class CActiveRecord extends CModel
 	public function getOldPrimaryKey()
 	{
 		return $this->_pk;
+	}
+
+	/**
+	 * Sets the old primary key value.
+	 * @param mixed the old primary key value.
+	 * @since 1.1.3
+	 */
+	public function setOldPrimaryKey($value)
+	{
+		$this->_pk=$value;
 	}
 
 	private function query($criteria,$all=false)
@@ -1172,20 +1217,34 @@ abstract class CActiveRecord extends CModel
 	}
 
 	/**
-	 * Returns the default table alias to be used by the find methods.
-	 * This method will return the 'alias' option if it is set in {@link defaultScope}.
-	 * Otherwise, it will return 't' as the default alias.
+	 * Returns the table alias to be used by the find methods.
+	 * In relational queries, the returned table alias may vary according to
+	 * the corresponding relation declaration. Also, the default table alias
+	 * set by {@link setTableAlias} may be overridden by the applied scopes.
 	 * @param boolean whether to quote the alias name
+	 * @param boolean whether to check if a table alias is defined in the applied scopes so far.
+	 * This parameter must be set false when calling this method in {@link defaultScope}.
+	 * An infinite loop would be formed otherwise.
 	 * @return string the default table alias
 	 * @since 1.1.1
 	 */
-	public function getTableAlias($quote=false)
+	public function getTableAlias($quote=false, $checkScopes=true)
 	{
-		if(($criteria=$this->getDbCriteria(false))!==null && $criteria->alias!='')
+		if($checkScopes && ($criteria=$this->getDbCriteria(false))!==null && $criteria->alias!='')
 			$alias=$criteria->alias;
 		else
-			$alias='t';
+			$alias=$this->_alias;
 		return $quote ? $this->getDbConnection()->getSchema()->quoteTableName($alias) : $alias;
+	}
+
+	/**
+	 * Sets the table alias to be used in queries.
+	 * @param string the table alias to be used in queries. The alias should NOT be quoted.
+	 * @since 1.1.3
+	 */
+	public function setTableAlias($alias)
+	{
+		$this->_alias=$alias;
 	}
 
 	/**
@@ -1295,6 +1354,7 @@ abstract class CActiveRecord extends CModel
 	public function findBySql($sql,$params=array())
 	{
 		Yii::trace(get_class($this).'.findBySql()','system.db.ar.CActiveRecord');
+		$this->beforeFind();
 		$command=$this->getCommandBuilder()->createSqlCommand($sql,$params);
 		return $this->populateRecord($command->queryRow());
 	}
@@ -1308,6 +1368,7 @@ abstract class CActiveRecord extends CModel
 	public function findAllBySql($sql,$params=array())
 	{
 		Yii::trace(get_class($this).'.findAllBySql()','system.db.ar.CActiveRecord');
+		$this->beforeFind();
 		$command=$this->getCommandBuilder()->createSqlCommand($sql,$params);
 		return $this->populateRecords($command->queryAll());
 	}
@@ -1334,6 +1395,8 @@ abstract class CActiveRecord extends CModel
 
 	/**
 	 * Finds the number of rows using the given SQL statement.
+	 * This is equivalent to calling {@link CDbCommand::queryScalar} with the specified
+	 * SQL statement and the parameters.
 	 * @param string the SQL statement
 	 * @param array parameters to be bound to the SQL statement
 	 * @return integer the number of rows using the given SQL statement.
@@ -1383,7 +1446,7 @@ abstract class CActiveRecord extends CModel
 	 * <pre>
 	 * Post::model()->with(array(
 	 *     'author'=>array('select'=>'id, name'),
-	 *     'comments'=>array('condition'=>'approved=1', 'order'=>'createTime'),
+	 *     'comments'=>array('condition'=>'approved=1', 'order'=>'create_time'),
 	 * ))->findAll();
 	 * </pre>
 	 *
@@ -1564,7 +1627,11 @@ abstract class CActiveRecord extends CModel
 	{
 		$records=array();
 		foreach($data as $attributes)
-			$records[]=$this->populateRecord($attributes,$callAfterFind);
+		{
+			$record=$this->populateRecord($attributes,$callAfterFind);
+			if($record!==null)
+				$records[]=$record;
+		}
 		return $records;
 	}
 
@@ -1603,7 +1670,7 @@ abstract class CActiveRecord extends CModel
 /**
  * CBaseActiveRelation is the base class for all active relations.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 1893 2010-03-13 01:00:47Z qiang.xue $
+ * @version $Id: CActiveRecord.php 2230 2010-06-25 20:16:41Z qiang.xue $
  * @package system.db.ar
  * @since 1.0.4
  */
@@ -1624,12 +1691,12 @@ class CBaseActiveRelation extends CComponent
 	/**
 	 * @var mixed list of column names (an array, or a string of names separated by commas) to be selected.
 	 * Do not quote or prefix the column names unless they are used in an expression.
-	 * In that case, you should prefix the column names with '??.'.
+	 * In that case, you should prefix the column names with 'relationName.'.
 	 */
 	public $select='*';
 	/**
 	 * @var string WHERE clause. For {@link CActiveRelation} descendant classes, column names
-	 * referenced in the condition should be disambiguated with prefix '??.'.
+	 * referenced in the condition should be disambiguated with prefix 'relationName.'.
 	 */
 	public $condition='';
 	/**
@@ -1639,17 +1706,23 @@ class CBaseActiveRelation extends CComponent
 	public $params=array();
 	/**
 	 * @var string GROUP BY clause. For {@link CActiveRelation} descendant classes, column names
-	 * referenced in this property should be disambiguated with prefix '??.'.
+	 * referenced in this property should be disambiguated with prefix 'relationName.'.
 	 */
 	public $group='';
 	/**
+	 * @var string how to join with other tables. This refers to the JOIN clause in an SQL statement.
+	 * For example, <code>'LEFT JOIN users ON users.id=authorID'</code>.
+	 * @since 1.1.3
+	 */
+	public $join='';
+	/**
 	 * @var string HAVING clause. For {@link CActiveRelation} descendant classes, column names
-	 * referenced in this property should be disambiguated with prefix '??.'.
+	 * referenced in this property should be disambiguated with prefix 'relationName.'.
 	 */
 	public $having='';
 	/**
 	 * @var string ORDER BY clause. For {@link CActiveRelation} descendant classes, column names
-	 * referenced in this property should be disambiguated with prefix '??.'.
+	 * referenced in this property should be disambiguated with prefix 'relationName.'.
 	 */
 	public $order='';
 
@@ -1672,9 +1745,10 @@ class CBaseActiveRelation extends CComponent
 	/**
 	 * Merges this relation with a criteria specified dynamically.
 	 * @param array the dynamically specified criteria
+	 * @param boolean whether the criteria to be merged is from scopes
 	 * @since 1.0.5
 	 */
-	public function mergeWith($criteria)
+	public function mergeWith($criteria,$fromScope=false)
 	{
 		if(isset($criteria['select']) && $this->select!==$criteria['select'])
 		{
@@ -1715,6 +1789,14 @@ class CBaseActiveRelation extends CComponent
 				$this->group.=', '.$criteria['group'];
 		}
 
+		if(isset($criteria['join']) && $this->join!==$criteria['join'])
+		{
+			if($this->join==='')
+				$this->join=$criteria['join'];
+			else if($criteria['join']!=='')
+				$this->join.=' '.$criteria['join'];
+		}
+
 		if(isset($criteria['having']) && $this->having!==$criteria['having'])
 		{
 			if($this->having==='')
@@ -1729,7 +1811,7 @@ class CBaseActiveRelation extends CComponent
 /**
  * CStatRelation represents a statistical relational query.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 1893 2010-03-13 01:00:47Z qiang.xue $
+ * @version $Id: CActiveRecord.php 2230 2010-06-25 20:16:41Z qiang.xue $
  * @package system.db.ar
  * @since 1.0.4
  */
@@ -1749,11 +1831,12 @@ class CStatRelation extends CBaseActiveRelation
 	/**
 	 * Merges this relation with a criteria specified dynamically.
 	 * @param array the dynamically specified criteria
+	 * @param boolean whether the criteria to be merged is from scopes
 	 * @since 1.0.5
 	 */
-	public function mergeWith($criteria)
+	public function mergeWith($criteria,$fromScope=false)
 	{
-		parent::mergeWith($criteria);
+		parent::mergeWith($criteria,$fromScope);
 
 		if(isset($criteria['defaultValue']))
 			$this->defaultValue=$criteria['defaultValue'];
@@ -1764,7 +1847,7 @@ class CStatRelation extends CBaseActiveRelation
 /**
  * CActiveRelation is the base class for representing active relations that bring back related objects.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 1893 2010-03-13 01:00:47Z qiang.xue $
+ * @version $Id: CActiveRecord.php 2230 2010-06-25 20:16:41Z qiang.xue $
  * @package system.db.ar
  * @since 1.0
  */
@@ -1794,10 +1877,23 @@ class CActiveRelation extends CBaseActiveRelation
 	/**
 	 * Merges this relation with a criteria specified dynamically.
 	 * @param array the dynamically specified criteria
+	 * @param boolean whether the criteria to be merged is from scopes
 	 * @since 1.0.5
 	 */
-	public function mergeWith($criteria)
+	public function mergeWith($criteria,$fromScope=false)
 	{
+		if($fromScope)
+		{
+			if(isset($criteria['condition']) && $this->on!==$criteria['condition'])
+			{
+				if($this->on==='')
+					$this->on=$criteria['condition'];
+				else if($criteria['condition']!=='')
+					$this->on="({$this->on}) AND ({$criteria['condition']})";
+			}
+			unset($criteria['condition']);
+		}
+
 		parent::mergeWith($criteria);
 
 		if(isset($criteria['joinType']))
@@ -1826,7 +1922,7 @@ class CActiveRelation extends CBaseActiveRelation
 /**
  * CBelongsToRelation represents the parameters specifying a BELONGS_TO relation.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 1893 2010-03-13 01:00:47Z qiang.xue $
+ * @version $Id: CActiveRecord.php 2230 2010-06-25 20:16:41Z qiang.xue $
  * @package system.db.ar
  * @since 1.0
  */
@@ -1838,7 +1934,7 @@ class CBelongsToRelation extends CActiveRelation
 /**
  * CHasOneRelation represents the parameters specifying a HAS_ONE relation.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 1893 2010-03-13 01:00:47Z qiang.xue $
+ * @version $Id: CActiveRecord.php 2230 2010-06-25 20:16:41Z qiang.xue $
  * @package system.db.ar
  * @since 1.0
  */
@@ -1850,7 +1946,7 @@ class CHasOneRelation extends CActiveRelation
 /**
  * CHasManyRelation represents the parameters specifying a HAS_MANY relation.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 1893 2010-03-13 01:00:47Z qiang.xue $
+ * @version $Id: CActiveRecord.php 2230 2010-06-25 20:16:41Z qiang.xue $
  * @package system.db.ar
  * @since 1.0
  */
@@ -1881,11 +1977,12 @@ class CHasManyRelation extends CActiveRelation
 	/**
 	 * Merges this relation with a criteria specified dynamically.
 	 * @param array the dynamically specified criteria
+	 * @param boolean whether the criteria to be merged is from scopes
 	 * @since 1.0.5
 	 */
-	public function mergeWith($criteria)
+	public function mergeWith($criteria,$fromScope=false)
 	{
-		parent::mergeWith($criteria);
+		parent::mergeWith($criteria,$fromScope);
 		if(isset($criteria['limit']) && $criteria['limit']>0)
 			$this->limit=$criteria['limit'];
 
@@ -1901,7 +1998,7 @@ class CHasManyRelation extends CActiveRelation
 /**
  * CManyManyRelation represents the parameters specifying a MANY_MANY relation.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 1893 2010-03-13 01:00:47Z qiang.xue $
+ * @version $Id: CActiveRecord.php 2230 2010-06-25 20:16:41Z qiang.xue $
  * @package system.db.ar
  * @since 1.0
  */
@@ -1914,7 +2011,7 @@ class CManyManyRelation extends CHasManyRelation
  * CActiveRecordMetaData represents the meta-data for an Active Record class.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 1893 2010-03-13 01:00:47Z qiang.xue $
+ * @version $Id: CActiveRecord.php 2230 2010-06-25 20:16:41Z qiang.xue $
  * @package system.db.ar
  * @since 1.0
  */
@@ -1964,11 +2061,51 @@ class CActiveRecordMetaData
 
 		foreach($model->relations() as $name=>$config)
 		{
-			if(isset($config[0],$config[1],$config[2]))  // relation class, AR class, FK
-				$this->relations[$name]=new $config[0]($name,$config[1],$config[2],array_slice($config,3));
-			else
-				throw new CDbException(Yii::t('yii','Active record "{class}" has an invalid configuration for relation "{relation}". It must specify the relation type, the related active record class and the foreign key.',
-					array('{class}'=>get_class($model),'{relation}'=>$name)));
+			$this->addRelation($name,$config);
 		}
+	}
+
+	/**
+	 * Adds a relation.
+	 *
+	 * $config is an array with three elements:
+	 * relation type, the related active record class and the foreign key.
+	 *
+	 * @throws CDbException
+	 * @param string $name Name of the relation.
+	 * @param array $config Relation parameters.
+     * @return void
+	 * @since 1.1.2
+	 */
+	public function addRelation($name,$config)
+	{
+		if(isset($config[0],$config[1],$config[2]))  // relation class, AR class, FK
+			$this->relations[$name]=new $config[0]($name,$config[1],$config[2],array_slice($config,3));
+		else
+			throw new CDbException(Yii::t('yii','Active record "{class}" has an invalid configuration for relation "{relation}". It must specify the relation type, the related active record class and the foreign key.', array('{class}'=>get_class($this->_model),'{relation}'=>$name)));
+	}
+
+	/**
+	 * Checks if there is a relation with specified name defined.
+	 *
+	 * @param string $name Name of the relation.
+	 * @return boolean
+	 * @since 1.1.2
+	 */
+	public function hasRelation($name)
+	{
+		return isset($this->relations[$name]);
+	}
+
+	/**
+	 * Deletes a relation with specified name.
+	 *
+	 * @param string $name
+	 * @return void
+	 * @since 1.1.2
+	 */
+	public function removeRelation($name)
+	{
+		unset($this->relations[$name]);
 	}
 }

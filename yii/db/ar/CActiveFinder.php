@@ -15,7 +15,7 @@
  * {@link CActiveRecord}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveFinder.php 1869 2010-03-09 22:02:12Z qiang.xue $
+ * @version $Id: CActiveFinder.php 2231 2010-06-25 21:05:21Z qiang.xue $
  * @package system.db.ar
  * @since 1.0
  */
@@ -86,11 +86,14 @@ class CActiveFinder extends CComponent
 		$this->_joinTree->afterFind();
 
 		if($all)
-			return array_values($this->_joinTree->records);
+			$result = array_values($this->_joinTree->records);
 		else if(count($this->_joinTree->records))
-			return reset($this->_joinTree->records);
+			$result = reset($this->_joinTree->records);
 		else
-			return null;
+			$result = null;
+
+		$this->_joinTree = null;
+		return $result;
 	}
 
 	/**
@@ -255,15 +258,20 @@ class CActiveFinder extends CComponent
 
 			$relation=clone $relation;
 			$model=CActiveRecord::model($relation->className);
+			if($relation instanceof CActiveRelation)
+			{
+				$oldAlias=$model->getTableAlias(false,false);
+				$model->setTableAlias($relation->alias===null?$relation->name:$relation->alias);
+			}
 			if(($scope=$model->defaultScope())!==array())
-				$relation->mergeWith($scope);
+				$relation->mergeWith($scope,true);
 			if(!empty($scopes))
 			{
 				$scs=$model->scopes();
 				foreach($scopes as $scope)
 				{
 					if(isset($scs[$scope]))
-						$relation->mergeWith($scs[$scope]);
+						$relation->mergeWith($scs[$scope],true);
 					else
 						throw new CDbException(Yii::t('yii','Active record class "{class}" does not have a scope named "{scope}".',
 							array('{class}'=>get_class($model), '{scope}'=>$scope)));
@@ -273,6 +281,9 @@ class CActiveFinder extends CComponent
 			// dynamic options
 			if($options!==null)
 				$relation->mergeWith($options);
+
+			if($relation instanceof CActiveRelation)
+				$model->setTableAlias($oldAlias);
 
 			if($relation instanceof CStatRelation)
 				return new CStatElement($this,$relation,$parent);
@@ -301,7 +312,7 @@ class CActiveFinder extends CComponent
  * CJoinElement represents a tree node in the join tree created by {@link CActiveFinder}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveFinder.php 1869 2010-03-09 22:02:12Z qiang.xue $
+ * @version $Id: CActiveFinder.php 2231 2010-06-25 21:05:21Z qiang.xue $
  * @package system.db.ar
  * @since 1.0
  */
@@ -458,6 +469,7 @@ class CJoinElement
 		$query->conditions[]=$child->relation->condition;
 		$query->conditions[]=$child->relation->on;
 		$query->groups[]=$child->relation->group;
+		$query->joins[]=$child->relation->join;
 		$query->havings[]=$child->relation->having;
 		$query->orders[]=$child->relation->order;
 		if(is_array($child->relation->params))
@@ -469,6 +481,7 @@ class CJoinElement
 			$query->offset=$child->relation->offset;
 		}
 
+		$child->beforeFind();
 		$child->applyLazyCondition($query,$baseRecord);
 
 		$this->_joined=true;
@@ -697,6 +710,9 @@ class CJoinElement
 	public function beforeFind()
 	{
 		$this->model->beforeFindInternal();
+
+		foreach($this->children as $child)
+			$child->beforeFind();
 	}
 
 	/**
@@ -709,6 +725,8 @@ class CJoinElement
 			$record->afterFindInternal();
 		foreach($this->children as $child)
 			$child->afterFind();
+
+		$this->children = null;
 	}
 
 	/**
@@ -857,6 +875,7 @@ class CJoinElement
 					$key=substr($name,$pos+1);
 				else
 					$key=$name;
+				$key=trim($key,'\'"`');
 
 				if($key==='*')
 				{
@@ -870,7 +889,7 @@ class CJoinElement
 					$columns[]=$prefix.$schema->quoteColumnName($key).' AS '.$schema->quoteColumnName($this->_columnAliases[$key]);
 					$selected[$this->_columnAliases[$key]]=1;
 				}
-				else if(preg_match('/^(.*?)\s+AS\s+(\w+)$/i',$name,$matches)) // if the column is already aliased
+				else if(preg_match('/^(.*?)\s+AS\s+(\w+)$/im',$name,$matches)) // if the column is already aliased
 				{
 					$alias=$matches[2];
 					if(!isset($this->_columnAliases[$alias]) || $this->_columnAliases[$alias]!==$alias)
@@ -1100,7 +1119,7 @@ class CJoinElement
  * CJoinQuery represents a JOIN SQL statement.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveFinder.php 1869 2010-03-09 22:02:12Z qiang.xue $
+ * @version $Id: CActiveFinder.php 2231 2010-06-25 21:05:21Z qiang.xue $
  * @package system.db.ar
  * @since 1.0
  */
@@ -1193,6 +1212,7 @@ class CJoinQuery
 		$this->conditions[]=$element->relation->condition;
 		$this->orders[]=$element->relation->order;
 		$this->joins[]=$element->getJoinCondition();
+		$this->joins[]=$element->relation->join;
 		$this->groups[]=$element->relation->group;
 		$this->havings[]=$element->relation->having;
 
@@ -1256,7 +1276,7 @@ class CJoinQuery
  * CStatElement represents STAT join element for {@link CActiveFinder}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveFinder.php 1869 2010-03-09 22:02:12Z qiang.xue $
+ * @version $Id: CActiveFinder.php 2231 2010-06-25 21:05:21Z qiang.xue $
  * @package system.db.ar
  * @since 1.0.4
  */
@@ -1338,9 +1358,9 @@ class CStatElement
 
 		$records=$this->_parent->records;
 
-		$where=empty($relation->condition)?'' : ' WHERE ('.$relation->condition.')';
+		$where=empty($relation->condition)?' WHERE ' : ' WHERE ('.$relation->condition.') AND ';
 		$group=empty($relation->group)?'' : ', '.$relation->group;
-		$having=empty($relation->having)?'' : ' AND ('.$relation->having.')';
+		$having=empty($relation->having)?'' : ' HAVING ('.$relation->having.')';
 		$order=empty($relation->order)?'' : ' ORDER BY '.$relation->order;
 
 		$c=$schema->quoteColumnName('c');
@@ -1351,9 +1371,8 @@ class CStatElement
 		{
 			$col=$table->columns[$fks[0]]->rawName;
 			$sql="SELECT $col AS $c, {$relation->select} AS $s FROM {$table->rawName}"
-				.$where
+				.$where.'('.$builder->createInCondition($table,$fks[0],array_keys($records)).')'
 				." GROUP BY $col".$group
-				." HAVING ".$builder->createInCondition($table,$fks[0],array_keys($records))
 				.$having.$order;
 			$command=$builder->getDbConnection()->createCommand($sql);
 			if(is_array($relation->params))
@@ -1379,9 +1398,8 @@ class CStatElement
 				$cols[$name]=$name.' AS '.$schema->quoteColumnName('c'.$n);
 			}
 			$sql='SELECT '.implode(', ',$cols).", {$relation->select} AS $s FROM {$table->rawName}"
-				.$where
+				.$where.'('.$builder->createInCondition($table,$fks,$keys).')'
 				.' GROUP BY '.implode(', ',array_keys($cols)).$group
-				.' HAVING '.$builder->createInCondition($table,$fks,$keys)
 				.$having.$order;
 			$command=$builder->getDbConnection()->createCommand($sql);
 			if(is_array($relation->params))
@@ -1451,7 +1469,6 @@ class CStatElement
 
 		if(!$fkDefined)
 		{
-			die('????');
 			$joinCondition=array();
 			$map=array();
 			foreach($fks as $i=>$fk)

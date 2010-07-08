@@ -6,14 +6,14 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: ControllerCommand.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: ControllerCommand.php 1966 2010-03-26 18:29:12Z qiang.xue $
  */
 
 /**
  * ControllerCommand generates a controller class.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: ControllerCommand.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: ControllerCommand.php 1966 2010-03-26 18:29:12Z qiang.xue $
  * @package system.cli.commands.shell
  * @since 1.0
  */
@@ -98,7 +98,7 @@ EOD;
 		else
 		{
 			$last=substr($controllerID,$pos+1);
-			$last[0]=strtolower($last);
+			$last[0]=strtolower($last[0]);
 			$pos2=strpos($controllerID,'/');
 			$first=substr($controllerID,0,$pos2);
 			$middle=$pos===$pos2?'':substr($controllerID,$pos2+1,$pos-$pos2);

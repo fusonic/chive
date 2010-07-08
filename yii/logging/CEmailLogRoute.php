@@ -16,16 +16,12 @@
  * {@link setSentFrom sentFrom} address.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CEmailLogRoute.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CEmailLogRoute.php 2213 2010-06-18 13:17:30Z qiang.xue $
  * @package system.logging
  * @since 1.0
  */
 class CEmailLogRoute extends CLogRoute
 {
-	/**
-	 * Default email subject.
-	 */
-	const DEFAULT_SUBJECT='Application Log';
 	/**
 	 * @var array list of destination email addresses.
 	 */
@@ -33,11 +29,11 @@ class CEmailLogRoute extends CLogRoute
 	/**
 	 * @var string email subject
 	 */
-	private $_subject='';
+	private $_subject;
 	/**
 	 * @var string email sent from address
 	 */
-	private $_from='';
+	private $_from;
 
 	/**
 	 * Sends log messages to specified email addresses.
@@ -49,8 +45,11 @@ class CEmailLogRoute extends CLogRoute
 		foreach($logs as $log)
 			$message.=$this->formatLogMessage($log[0],$log[1],$log[2],$log[3]);
 		$message=wordwrap($message,70);
+		$subject=$this->getSubject();
+		if($subject===null)
+			$subject=Yii::t('yii','Application Log');
 		foreach($this->getEmails() as $email)
-			$this->sendEmail($email,$this->getSubject(),$message);
+			$this->sendEmail($email,$subject,$message);
 	}
 
 	/**
@@ -61,7 +60,7 @@ class CEmailLogRoute extends CLogRoute
 	 */
 	protected function sendEmail($email,$subject,$message)
 	{
-		if(($from=$this->getSentFrom())!=='')
+		if(($from=$this->getSentFrom())!==null)
 			mail($email,$subject,$message,"From:{$from}\r\n");
 		else
 			mail($email,$subject,$message);

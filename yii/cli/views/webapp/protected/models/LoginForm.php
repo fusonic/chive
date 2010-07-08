@@ -26,7 +26,7 @@ class LoginForm extends CFormModel
 			// rememberMe needs to be a boolean
 			array('rememberMe', 'boolean'),
 			// password needs to be authenticated
-			array('password', 'authenticate'),
+			array('password', 'authenticate', 'skipOnError'=>true),
 		);
 	}
 
@@ -46,22 +46,9 @@ class LoginForm extends CFormModel
 	 */
 	public function authenticate($attribute,$params)
 	{
-		if(!$this->hasErrors())  // we only want to authenticate when no input errors
-		{
-			$this->_identity=new UserIdentity($this->username,$this->password);
-			$this->_identity->authenticate();
-			switch($this->_identity->errorCode)
-			{
-				case UserIdentity::ERROR_USERNAME_INVALID:
-					$this->addError('username','Username is incorrect.');
-					break;
-				case UserIdentity::ERROR_PASSWORD_INVALID:
-					$this->addError('password','Password is incorrect.');
-					break;
-				default:
-					break;
-			}
-		}
+		$this->_identity=new UserIdentity($this->username,$this->password);
+		if(!$this->_identity->authenticate())
+			$this->addError('password','Incorrect username or password.');
 	}
 
 	/**

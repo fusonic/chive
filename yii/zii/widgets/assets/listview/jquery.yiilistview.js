@@ -5,7 +5,7 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: jquery.yiilistview.js 144 2010-03-11 21:28:29Z qiang.xue $
+ * @version $Id: jquery.yiilistview.js 164 2010-04-29 21:03:33Z qiang.xue $
  */
 
 ;(function($) {
@@ -84,8 +84,11 @@
 			type: 'GET',
 			url: $.fn.yiiListView.getUrl(id),
 			success: function(data,status) {
-				$.each(settings.ajaxUpdate, function() {
-					$('#'+this).html($(data).find('#'+this));
+				$.each(settings.ajaxUpdate, function(i,v) {
+					var id='#'+v,
+						$d=$(data)
+						$filtered=$d.filter(id);
+					$(id).html( $filtered.size() ? $filtered : $d.find(id));
 				});
 				if(settings.afterAjaxUpdate != undefined)
 					settings.afterAjaxUpdate(id, data);

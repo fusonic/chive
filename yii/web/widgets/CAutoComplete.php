@@ -14,9 +14,13 @@
  * CAutoComplete is based on the {@link http://plugins.jquery.com/project/autocompletex jQuery Autocomplete}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CAutoComplete.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CAutoComplete.php 2220 2010-06-23 15:56:58Z alexander.makarow $
  * @package system.web.widgets
  * @since 1.0
+ *
+ * @deprecated
+ * CAutoComplete is deprecated since Yii 1.1.3. Consider using CJuiAutoComplete.
+ * There is {@link http://www.learningjquery.com/2010/06/autocomplete-migration-guide a good migration guide from the author of both JavaScript solutions}.
  */
 class CAutoComplete extends CInputWidget
 {
@@ -242,7 +246,7 @@ class CAutoComplete extends CInputWidget
 			$url=CHtml::normalizeUrl($this->url);
 			$data='"'.$url.'"';
 		}
-		$cs->registerScript('Yii.CAutoComplete#'.$id,"jQuery(\"#{$id}\").autocomplete($data,{$options}){$this->methodChain};");
+		$cs->registerScript('Yii.CAutoComplete#'.$id,"jQuery(\"#{$id}\").legacyautocomplete($data,{$options}){$this->methodChain};");
 
 		if($this->cssFile!==false)
 			self::registerCssFile($this->cssFile);

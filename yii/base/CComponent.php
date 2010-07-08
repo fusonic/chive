@@ -83,7 +83,7 @@
  * is attached to.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CComponent.php 1858 2010-03-05 16:47:11Z qiang.xue $
+ * @version $Id: CComponent.php 2190 2010-06-15 20:47:31Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -191,8 +191,17 @@ class CComponent
 			$name=strtolower($name);
 			return isset($this->_e[$name]) && $this->_e[$name]->getCount();
 		}
-		else
-			return false;
+		else if(is_array($this->_m))
+		{
+ 			if(isset($this->_m[$name]))
+ 				return true;
+			foreach($this->_m as $object)
+			{
+				if($object->getEnabled() && (property_exists($object,$name) || $object->canGetProperty($name)))
+					return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -210,6 +219,24 @@ class CComponent
 			$this->$setter(null);
 		else if(strncasecmp($name,'on',2)===0 && method_exists($this,$name))
 			unset($this->_e[strtolower($name)]);
+		else if(is_array($this->_m))
+		{
+			if(isset($this->_m[$name]))
+				$this->detachBehavior($name);
+			else
+			{
+				foreach($this->_m as $object)
+				{
+					if($object->getEnabled())
+					{
+						if(property_exists($object,$name))
+							return $object->$name=null;
+						else if($object->canSetProperty($name))
+							return $object->$setter(null);
+					}
+				}
+			}
+		}
 		else if(method_exists($this,'get'.$name))
 			throw new CException(Yii::t('yii','Property "{class}.{property}" is read only.',
 				array('{class}'=>get_class($this), '{property}'=>$name)));
@@ -234,6 +261,8 @@ class CComponent
 					return call_user_func_array(array($object,$name),$parameters);
 			}
 		}
+		if(class_exists('Closure', false) && $this->$name instanceof Closure)
+			return call_user_func_array($this->$name, $parameters);
 		throw new CException(Yii::t('yii','{class} does not have a method named "{name}".',
 			array('{class}'=>get_class($this), '{name}'=>$name)));
 	}
@@ -605,7 +634,7 @@ class CComponent
  * that are not invoked yet will not be invoked anymore.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CComponent.php 1858 2010-03-05 16:47:11Z qiang.xue $
+ * @version $Id: CComponent.php 2190 2010-06-15 20:47:31Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -650,7 +679,7 @@ class CEvent extends CComponent
  * TextAlign::Right.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CComponent.php 1858 2010-03-05 16:47:11Z qiang.xue $
+ * @version $Id: CComponent.php 2190 2010-06-15 20:47:31Z qiang.xue $
  * @package system.base
  * @since 1.0
  */

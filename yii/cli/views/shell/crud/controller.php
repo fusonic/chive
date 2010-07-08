@@ -12,10 +12,10 @@
 class <?php echo $controllerClass; ?> extends Controller
 {
 	/**
-	 * @var string the default layout for the views. Defaults to 'column2', meaning
+	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
-	public $layout='column2';
+	public $layout='//layouts/column2';
 
 	/**
 	 * @var CActiveRecord the currently loaded data model instance.
@@ -150,6 +150,7 @@ class <?php echo $controllerClass; ?> extends Controller
 	public function actionAdmin()
 	{
 		$model=new <?php echo $modelClass; ?>('search');
+		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['<?php echo $modelClass; ?>']))
 			$model->attributes=$_GET['<?php echo $modelClass; ?>'];
 

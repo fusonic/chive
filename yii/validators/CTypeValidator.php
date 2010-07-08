@@ -16,6 +16,7 @@
  * <li><b>integer</b> A 32-bit signed integer data type.</li>
  * <li><b>float</b> A double-precision floating point number data type.</li>
  * <li><b>string</b> A string data type.</li>
+ * <li><b>array</b> An array value. </li>
  * <li><b>date</b> A date data type.</li>
  * <li><b>time</b> A time data type (available since version 1.0.5).</li>
  * <li><b>datetime</b> A date and time data type (available since version 1.0.5).</li>
@@ -26,7 +27,7 @@
  * value doesn't follow the format, the attribute is considered as invalid.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CTypeValidator.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CTypeValidator.php 1963 2010-03-25 04:00:48Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -34,7 +35,7 @@ class CTypeValidator extends CValidator
 {
 	/**
 	 * @var string the data type that the attribute should be. Defaults to 'string'.
-	 * Valid values include 'string', 'integer', 'float', 'date', 'time' and 'datetime'.
+	 * Valid values include 'string', 'integer', 'float', 'array', 'date', 'time' and 'datetime'.
 	 * Note that 'time' and 'datetime' have been available since version 1.0.5.
 	 */
 	public $type='string';
@@ -86,6 +87,8 @@ class CTypeValidator extends CValidator
 			$valid=CDateTimeParser::parse($value,$this->timeFormat)!==false;
 	    else if($this->type==='datetime')
 			$valid=CDateTimeParser::parse($value,$this->datetimeFormat)!==false;
+		else if($this->type==='array')
+			$valid=is_array($value);
 		else
 			return;
 

@@ -6,7 +6,7 @@
  * {@link fetchKeys} and {@link calculateTotalItemCount}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDataProvider.php 1757 2010-01-28 01:12:13Z qiang.xue $
+ * @version $Id: CDataProvider.php 1916 2010-03-15 15:07:01Z qiang.xue $
  * @package system.web
  * @since 1.1
  */
@@ -40,8 +40,6 @@ abstract class CDataProvider extends CComponent implements IDataProvider
 	 */
 	public function getId()
 	{
-		if($this->_id===null)
-			$this->_id=$this->modelClass;
 		return $this->_id;
 	}
 

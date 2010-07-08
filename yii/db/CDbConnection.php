@@ -79,7 +79,7 @@
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbConnection.php 1848 2010-02-27 05:41:52Z qiang.xue $
+ * @version $Id: CDbConnection.php 2095 2010-05-05 01:03:32Z qiang.xue $
  * @package system.db
  * @since 1.0
  */
@@ -264,8 +264,16 @@ class CDbConnection extends CApplicationComponent
 			}
 			catch(PDOException $e)
 			{
-				throw new CDbException(Yii::t('yii','CDbConnection failed to open the DB connection: {error}',
-					array('{error}'=>$e->getMessage())));
+				if(YII_DEBUG)
+				{
+					throw new CDbException(Yii::t('yii','CDbConnection failed to open the DB connection: {error}',
+						array('{error}'=>$e->getMessage())));
+				}
+				else
+				{
+					Yii::log($e->getMessage(),CLogger::LEVEL_ERROR,'exception.CDbException');
+					throw new CDbException(Yii::t('yii','CDbConnection failed to open the DB connection.'));
+				}
 			}
 		}
 	}

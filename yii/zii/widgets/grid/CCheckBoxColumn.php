@@ -22,7 +22,7 @@ Yii::import('zii.widgets.grid.CGridColumn');
  * {@link value}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCheckBoxColumn.php 144 2010-03-11 21:28:29Z qiang.xue $
+ * @version $Id: CCheckBoxColumn.php 183 2010-06-07 01:44:43Z qiang.xue $
  * @package zii.widgets.grid
  * @since 1.1
  */
@@ -77,7 +77,7 @@ jQuery('#{$this->id}_all').live('click',function() {
 	});
 });
 jQuery("input[name='$name']").live('click', function() {
-	jQuery('#{$this->id}_all').attr('checked', jQuery("input[name='$name']").length==jQuery("input[name='$name'][checked=true]").length);{$one}
+	jQuery('#{$this->id}_all').attr('checked', jQuery("input[name='$name']").length==jQuery("input[name='$name']:checked").length);{$one}
 });
 EOD;
 		Yii::app()->getClientScript()->registerScript(__CLASS__.'#'.$this->id,$js);

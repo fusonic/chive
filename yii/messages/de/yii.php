@@ -13,12 +13,12 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  *
- * @version $Id: yii.php 1901 2010-03-14 03:51:17Z qiang.xue $
+ * @version $Id: yii.php 2244 2010-07-05 01:35:15Z qiang.xue $
  */
 return array (
-  'Column "{column}" does not exist in table "{table}".' => 'In Tabelle "{table}" gibt es keine Spalte "{column}".',
-  'Failed to set unsafe attribute "{attribute}".' => 'Ungesichertes Attribut "{attribute}" konnte nicht gesetzt werden.',
-  'Unknown type "{type}".' => 'Unbekannter Typ "{type}".',
+  'Application Log' => 'Anwendungsprotokoll',
+  'CDbConnection failed to open the DB connection.' => 'CDbConnection konnte die DB-Verbindung nicht aufbauen.',
+  'Failed to initialize the mcrypt module.' => 'Initalisierung des mcrypt-Moduls ist fehlgeschlagen.',
   '"{path}" is not a valid directory.' => '"{path}" ist kein gültiges Verzeichnis.',
   '&lt; Previous' => '&lt; Vorherige',
   '&lt;&lt; First' => '&lt;&lt; Erste',
@@ -72,10 +72,11 @@ return array (
   'CProfileLogRoute.report "{report}" is invalid. Valid values include "summary" and "callstack".' => 'CProfileLogRoute.report "{report}" ist ungültig. Gültige Werte enthalten "summary" und "callstack".',
   'CSecurityManager requires PHP mcrypt extension to be loaded in order to use data encryption feature.' => 'CSecurityManager erfordert, dass die PHP mcrypt Erweiterung geladen wurde, um das Datenverschlüsselungs-Feature nutzen zu können.',
   'CSecurityManager.encryptionKey cannot be empty.' => 'CSecurityManager.encryptionKey darf nicht leer sein.',
-  'CSecurityManager.validation must be either "MD5" or "SHA1".' => 'CSecurityManager.validation muss entweder "MD5" oder "SHA1" sein.',
   'CSecurityManager.validationKey cannot be empty.' => 'CSecurityManager.validationKey darf nicht leer sein.',
   'CTypedList<{type}> can only hold objects of {type} class.' => 'CTypedList<{type}> kann nur Objekte der {type}-Klasse beinhalten.',
   'CUrlManager.UrlFormat must be either "path" or "get".' => 'CUrlManager.UrlFormat muss entweder "path" oder "get" sein.',
+  'CWinCache requires PHP wincache extension to be loaded.' => 'CWinCache erfordert, dass die PHP Wincache Erweiterung geladen wurde.',
+  'CWinCache user cache is disabled. Please set wincache.ucenabled to On in your php.ini.' => 'Anwendercache für CWinCache ist deaktiviert. Bitte setzen Sie in Ihrer php.ini wincache.ucenabled auf On.',
   'CXCache requires PHP XCache extension to be loaded.' => 'CXCache erfordert, dass die PHP XCache Erweiterung geladen wurde.',
   'CZendDataCache requires PHP Zend Data Cache extension to be loaded.' => 'CZendDataCache efordert, dass die PHP Zend Data Cache Erweiterung geladen wurde.',
   'Cannot add "{child}" as a child of "{name}". A loop has been detected.' => 'Kann "{child}" nicht als Kind von "{name}" hinzufügen. Es wurde eine Schleife entdeckt.',
@@ -89,6 +90,7 @@ return array (
   'Event "{class}.{event}" is attached with an invalid handler "{handler}".' => 'Ereignis "{class}.{event}" ist der ungültige Handler "{handler}" zugeordnet.',
   'Event "{class}.{event}" is not defined.' => 'Ereignis "{class}.{event} ist nicht definiert.',
   'Extension path "{path}" does not exist.' => 'Erweiterungs-Pfad "{path}" existiert nicht.',
+  'Failed to set unsafe attribute "{attribute}".' => 'Ungesichertes Attribut "{attribute}" konnte nicht gesetzt werden.',
   'Failed to write the uploaded file "{file}" to disk.' => 'Hochgeladene Datei "{file}" konnte nicht auf die Festplatte gespeichert werden.',
   'File upload was stopped by extension.' => 'Datei-Upload wurde von einer Erweiterung angehalten.',
   'Filter "{filter}" is invalid. Controller "{class}" does have the filter method "filter{filter}".' => 'Filter "{filter}" ist ungültig. Controller "{class}" beinhaltet die Filtermethode "filter{filter}".',
@@ -185,9 +187,9 @@ return array (
   'Unable to resolve the request "{route}".' => 'Konnte den Request "{route}" nicht auflösen.',
   'Unable to write file "{file}".' => 'Datei "{file}" konnte nicht geschrieben werden.',
   'Unknown authorization item "{name}".' => 'Unbekanntes Autorisierungs-Element "{name}"',
+  'Unknown type "{type}".' => 'Unbekannter Typ "{type}".',
   'Unrecognized locale "{locale}".' => 'Unbekanntes Locale "{locale}".',
   'View file "{file}" does not exist.' => 'View-Datei "{file}" existiert nicht.',
-  'Virtual attribute {name} must specify "asc" and "desc" options.' => 'Virtuelles Attribut {name} muss "asc"- und "desc"-Optionen spezifizieren.',
   'Yii application can only be created once.' => 'Eine Yii Applikation kann nur einmal erzeugt werden.',
   'You are not authorized to perform this action.' => 'Sie sind nicht berechtigt, diese Aktion auszuführen.',
   'Your request is not valid.' => 'Ihre Anfrage ist ungültig.',

@@ -11,8 +11,8 @@
  * <pre>
  * $dataProvider=new CActiveDataProvider('Post', array(
  *     'criteria'=>array(
- *         'condition'=>'status=1 AND tags LIKE :tags',
- *         'params'=>array(':tags'=>$_GET['tags']),
+ *         'condition'=>'status=1',
+ *         'order'=>'create_time DESC',
  *         'with'=>array('author'),
  *     ),
  *     'pagination'=>array(
@@ -23,7 +23,7 @@
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveDataProvider.php 1758 2010-01-28 02:19:39Z qiang.xue $
+ * @version $Id: CActiveDataProvider.php 2178 2010-06-10 03:49:18Z qiang.xue $
  * @package system.web
  * @since 1.1
  */
@@ -35,6 +35,13 @@ class CActiveDataProvider extends CDataProvider
 	 */
 	public $modelClass;
 	/**
+	 * @var CActiveRecord the AR finder instance (e.g. <code>Post::model()</code>).
+	 * This property can be set by passing the finder instance as the first parameter
+	 * to the constructor.
+	 * @since 1.1.3
+	 */
+	public $model;
+	/**
 	 * @var string the name of key attribute for {@link modelClass}. If not set,
 	 * it means the primary key of the corresponding database table will be used.
 	 */
@@ -44,14 +51,23 @@ class CActiveDataProvider extends CDataProvider
 
 	/**
 	 * Constructor.
-	 * @param string the model class. This will be assigned to the {@link modelClass} property.
-	 * @param array configuration (name=>value) to be applied to this data provider.
-	 * Any public properties of the data provider can be configured via this parameter
+	 * @param mixed the model class (e.g. 'Post') or the model finder instance
+	 * (e.g. <code>Post::model()</code>, <code>Post::model()->published()</code>).
+	 * @param array configuration (name=>value) to be applied as the initial property values of this class.
 	 */
 	public function __construct($modelClass,$config=array())
 	{
-		$this->modelClass=$modelClass;
-		$this->setId($modelClass);
+		if(is_string($modelClass))
+		{
+			$this->modelClass=$modelClass;
+			$this->model=CActiveRecord::model($this->modelClass);
+		}
+		else if($modelClass instanceof CActiveRecord)
+		{
+			$this->modelClass=get_class($modelClass);
+			$this->model=$modelClass;
+		}
+		$this->setId($this->modelClass);
 		foreach($config as $key=>$value)
 			$this->$key=$value;
 	}
@@ -92,15 +108,19 @@ class CActiveDataProvider extends CDataProvider
 	protected function fetchData()
 	{
 		$criteria=clone $this->getCriteria();
+		$baseCriteria=$this->model->getDbCriteria(false);
 		if(($pagination=$this->getPagination())!==false)
 		{
+			if($baseCriteria!==null)
+				$this->model->setDbCriteria(clone $baseCriteria);
 			$pagination->setItemCount($this->getTotalItemCount());
 			$pagination->applyLimit($criteria);
 		}
 		if(($sort=$this->getSort())!==false)
 			$sort->applyOrder($criteria);
 
-		return CActiveRecord::model($this->modelClass)->findAll($criteria);
+		$this->model->setDbCriteria($baseCriteria);
+		return $this->model->findAll($criteria);
 	}
 
 	/**
@@ -129,6 +149,6 @@ class CActiveDataProvider extends CDataProvider
 	 */
 	protected function calculateTotalItemCount()
 	{
-		return CActiveRecord::model($this->modelClass)->count($this->getCriteria());
+		return $this->model->count($this->getCriteria());
 	}
 }

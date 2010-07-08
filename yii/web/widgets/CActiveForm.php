@@ -18,7 +18,7 @@
  * The 'beginWidget' and 'endWidget' call of CActiveForm widget will render
  * the open and close form tags. Anything in between are rendered as form content
  * (such as input fields, labels). We can call the wrapper methods of CActiveForm
- * to generate these form contents. For example, calling {@link CActiveFinder::textField},
+ * to generate these form contents. For example, calling {@link CActiveForm::textField},
  * which is a wrapper of {@link CHtml::activeTextField}, would generate an input field
  * for a specified model attribute.
  *
@@ -113,7 +113,7 @@
  * you should design your own lightweight AJAX validation.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveForm.php 1803 2010-02-16 12:54:00Z qiang.xue $
+ * @version $Id: CActiveForm.php 2104 2010-05-06 20:52:29Z qiang.xue $
  * @package system.web.widgets
  * @since 1.1.1
  */
@@ -181,11 +181,45 @@ class CActiveForm extends CWidget
 	 * is currently being validated via AJAX. Defaults to 'validating'.</li>
 	 * <li>errorMessageCssClass: string, the CSS class assigned to the error messages returned
 	 * by AJAX validations. Defaults to 'errorMessage'.</li>
+	 * <li>beforeValidate: function, the function that will be invoked before performing ajax-based validation
+	 * triggered by form submission action (available only when validateOnSubmit is set true).
+	 * The expected function signature should be <code>beforeValidate(form) {...}</code>, where 'form' is
+	 * the jquery representation of the form object. If the return value of this function is NOT true, the validation
+	 * will be cancelled.
+	 *
+	 * Note that because this option refers to a js function, you should prefix the value with 'js:' to prevent it
+	 * from being encoded as a string. This option has been available since version 1.1.3.</li>
+	 * <li>afterValidate: function, the function that will be invoked after performing ajax-based validation
+	 * triggered by form submission action (available only when validateOnSubmit is set true).
+	 * The expected function signature should be <code>afterValidate(form, data, hasError) {...}</code>, where 'form' is
+	 * the jquery representation of the form object; 'data' is the JSON response from the server-side validation; 'hasError'
+	 * is a boolean value indicating whether there is any validation error. If the return value of this function is NOT true,
+	 * the normal form submission will be cancelled.
+	 *
+	 * Note that because this option refers to a js function, you should prefix the value with 'js:' to prevent it
+	 * from being encoded as a string. This option has been available since version 1.1.3.</li>
+	 * <li>beforeValidateAttribute: function, the function that will be invoked before performing ajax-based validation
+	 * triggered by a single attribute input change. The expected function signature should be
+	 * <code>beforeValidateAttribute(form, attribute) {...}</code>, where 'form' is the jquery representation of the form object
+	 * and 'attribute' refers to the js options for the triggering attribute (see {@link error}).
+	 * If the return value of this function is NOT true, the validation will be cancelled.
+	 *
+	 * Note that because this option refers to a js function, you should prefix the value with 'js:' to prevent it
+	 * from being encoded as a string. This option has been available since version 1.1.3.</li>
+	 * <li>afterValidateAttribute: function, the function that will be invoked after performing ajax-based validation
+	 * triggered by a single attribute input change. The expected function signature should be
+	 * <code>beforeValidateAttribute(form, attribute, data, hasError) {...}</code>, where 'form' is the jquery
+	 * representation of the form object; 'attribute' refers to the js options for the triggering attribute (see {@link error});
+	 * 'data' is the JSON response from the server-side validation; 'hasError' is a boolean value indicating whether
+	 * there is any validation error.
+	 *
+	 * Note that because this option refers to a js function, you should prefix the value with 'js:' to prevent it
+	 * from being encoded as a string. This option has been available since version 1.1.3.</li>
 	 * </ul>
 	 *
 	 * Some of the above options may be overridden in individual calls of {@link error()}.
 	 * They include: validationDelay, validateOnChange, validateOnType, hideErrorMessage,
-	 * inputContainer, errorCssClass, successCssClass, and validatingCssClass.
+	 * inputContainer, errorCssClass, successCssClass, validatingCssClass, beforeValidateAttribute, afterValidateAttribute.
 	 */
 	public $clientOptions=array();
 	/**
@@ -248,6 +282,8 @@ class CActiveForm extends CWidget
 	 * <li>errorCssClass</li>
 	 * <li>successCssClass</li>
 	 * <li>validatingCssClass</li>
+	 * <li>beforeValidateAttribute</li>
+	 * <li>afterValidateAttribute</li>
 	 * </ul>
 	 * These options override the corresponding options as declared in {@link options} for this
 	 * particular model attribute. For more details about these options, please refer to {@link clientOptions}.
@@ -264,6 +300,7 @@ class CActiveForm extends CWidget
 			return CHtml::error($model,$attribute,$htmlOptions);
 
 		$inputID=isset($htmlOptions['inputID']) ? $htmlOptions['inputID'] : CHtml::activeId($model,$attribute);
+		unset($htmlOptions['inputID']);
 		if(!isset($htmlOptions['id']))
 			$htmlOptions['id']=$inputID.'_em_';
 
@@ -278,6 +315,8 @@ class CActiveForm extends CWidget
 			'errorCssClass',
 			'successCssClass',
 			'validatingCssClass',
+			'beforeValidateAttribute',
+			'afterValidateAttribute',
 		);
 		foreach($optionNames as $name)
 		{

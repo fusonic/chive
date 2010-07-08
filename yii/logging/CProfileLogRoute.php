@@ -21,7 +21,7 @@
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CProfileLogRoute.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CProfileLogRoute.php 2201 2010-06-16 19:11:00Z alexander.makarow $
  * @package system.logging
  * @since 1.0
  */
@@ -92,7 +92,6 @@ class CProfileLogRoute extends CWebLogRoute
 	protected function displayCallstack($logs)
 	{
 		$stack=array();
-		$level=0;
 		$results=array();
 		$n=0;
 		foreach($logs as $log)
