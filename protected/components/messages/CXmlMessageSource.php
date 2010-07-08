@@ -118,7 +118,7 @@ class CXmlMessageSource extends CMessageSource
 		$cacheKey = self::CACHE_KEY_PREFIX . $language . '.' . $category;
 
 		// Try to load messages from cache
-		if(!is_null($cache) && ($data = $cache->get($cacheKey)) !== false)
+		if(!is_null($cache) && ($data = $cache->get($cacheKey)) !== false && !YII_DEBUG)
 		{
 			return $data;
 		}

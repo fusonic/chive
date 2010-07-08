@@ -54,6 +54,7 @@ return array(
 		),
 
 		'request' => array(
+			'class' => 'HttpRequest',
 			'enableCookieValidation' => true,
 		),
 
