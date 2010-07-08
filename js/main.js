@@ -158,10 +158,12 @@ $(document).ready(function()
 	/*
 	 * Change jQuery UI dialog defaults
 	 */
-	$.ui.dialog.defaults.autoOpen = false;
-	$.ui.dialog.defaults.modal = true;
-	$.ui.dialog.defaults.resizable = false;
+	$.ui.dialog.prototype.options.width = 400;
+	$.ui.dialog.prototype.options.autoOpen = false;
+	$.ui.dialog.prototype.options.modal = true;
+	$.ui.dialog.prototype.options.resizable = false;
 
+	
 	/*
 	 * Misc
 	 */
@@ -218,5 +220,3 @@ var lang = {
 	}
 	
 };
-
-$.datepicker.setDefaults($.datepicker.regional['de']);

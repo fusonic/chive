@@ -22,8 +22,8 @@ var themeUrl = '<?php echo Yii::app()->theme->baseUrl; ?>';
 Yii::app()->clientScript->registerCoreScript('jquery');
 
 $scriptFiles = array(
+	'js/jquery/jquery.ui.js',
 	'js/jquery/jquery.autocomplete.js',
-	'js/jquery/jquery-ui-1.7.1.custom.min.js',
 	'js/jquery/jquery.blockUI.js',
 	'js/jquery/jquery.checkboxTable.js',
 	'js/jquery/jquery.editableTable.js',
@@ -75,8 +75,6 @@ foreach($scriptFiles AS $file)
 
 <?php Yii::app()->clientScript->registerScript('userSettings', Yii::app()->user->settings->getJsObject(), CClientScript::POS_HEAD); ?>
 <script type="text/javascript">
-$.ui.dialog.defaults.width = 400;
-
 $(document).ready(function() {
 	sideBar.loadTables(<?php echo json_encode($this->_schema->SCHEMA_NAME); ?>, function() {
 		$('#tableList').setupListFilter($('#tableSearch'));
