@@ -224,7 +224,7 @@ class SiteController extends Controller
 			{
 				$items[] = json_encode(array(
 					'text' => '<span class="icon schema">' . Html::icon('database') . '<span>' . StringUtil::cutText($table->TABLE_SCHEMA, 30) . '</span></span>',
-					'target' => BASEURL . '/schema/' . $table->TABLE_SCHEMA,
+					'target' => Yii::app()->createUrl('schema/' . $table->TABLE_SCHEMA),
 					'plain' => $table->TABLE_SCHEMA,
 				));
 			}
@@ -233,7 +233,7 @@ class SiteController extends Controller
 
 			$items[] = json_encode(array(
 				'text' => '<span class="icon table">' . Html::icon('table') . '<span>' . StringUtil::cutText($table->TABLE_NAME, 30) . '</span></span>',
-				'target' => BASEURL . '/schema/' . $table->TABLE_SCHEMA . '#tables/' . $table->TABLE_NAME . '/browse',
+				'target' => Yii::app()->createUrl('schema/' . $table->TABLE_SCHEMA) . '#tables/' . $table->TABLE_NAME . '/browse',
 				'plain' => $table->TABLE_NAME
 			));
 		}
