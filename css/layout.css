@@ -520,6 +520,12 @@
   	float: right;
   }
   
+  img.icon16
+  {
+	height: 16px;
+  	width: 16px;
+  }
+  
   /*
    * Form elements
    */
