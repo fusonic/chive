@@ -283,7 +283,11 @@ class BrowsePage extends CModel
 						$result = $cmd->execute();
 						$time = round(microtime(true) - $start, 6);
 
-						$response->addNotification('success', Yii::t('core', 'successExecuteQuery'), Yii::t('core', 'affectedRowsQueryTime', array($result,  '{rows}'=>$result, '{time}'=>$time)), $sqlQuery->getQuery());
+						$response->addNotification('success', 
+						Yii::t('core', 'successExecuteQuery'), 
+						Yii::t('core', 'affectedRowsQueryTime', 
+							array($result,  '{rows}'=>$result, '{time}'=>$time)), 
+							$sqlQuery->getQuery());
 
 
 					}

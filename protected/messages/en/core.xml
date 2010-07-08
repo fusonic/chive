@@ -313,4 +313,6 @@
 	<entry id="withSelected">With selected: </entry>
 	<entry id="xDebugExportWarning">XDebug profiling is enabled on this server.&lt;br /&gt;Exporting large databases may crash your system!</entry>
 	<entry id="yes">Yes</entry>
+	<entry id="tableLoadErrorTitle">Could not load table &#xBB;{table}&#xAB;</entry>
+	<entry id="tableLoadErrorMessage">The table &#xBB;{table}&#xAB; could not be loaded. It may has been deleted during another session.</entry>
 </category>
