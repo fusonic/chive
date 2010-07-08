@@ -88,12 +88,7 @@ class Column extends ActiveRecord
 			// On update current_timestamp
 			elseif($attributes['COLUMN_TYPE'] == 'timestamp')
 			{
-				$table = Table::model()->findByPk(array(
-					'TABLE_SCHEMA' => $attributes['TABLE_SCHEMA'],
-					'TABLE_NAME' => $attributes['TABLE_NAME'],
-				));
-				$match = '/^\s+`' . $attributes['COLUMN_NAME'] . '` timestamp.+?on update CURRENT_TIMESTAMP.+?$/im';
-				if(preg_match($match, $table->getShowCreateTable(), $result))
+				if(strtolower($attributes['EXTRA']) == 'on update current_timestamp')
 				{
 					$res->attribute = 'on update current_timestamp';
 				}
@@ -278,15 +273,15 @@ class Column extends ActiveRecord
 
 		if($this->attribute)
 		{
-			if(($this->attribute == 'unsigned' && !DataType::check($this->DATA_TYPE, DataType::SUPPORTS_UNSIGNED))
-				|| $this->attribute == 'unsigned_zerofill' && !DataType::check($this->DATA_TYPE, DataType::SUPPORTS_UNSIGNED_ZEROFILL)
-				|| $this->attribute == 'on update current_timestamp' && !DataType::check($this->DATA_TYPE, DataType::SUPPORTS_ON_UPDATE_CURRENT_TIMESTAMP))
+			if(($this->attribute == 'unsigned' && DataType::check($this->DATA_TYPE, DataType::SUPPORTS_UNSIGNED))
+				|| $this->attribute == 'unsigned_zerofill' && DataType::check($this->DATA_TYPE, DataType::SUPPORTS_UNSIGNED_ZEROFILL)
+				|| $this->attribute == 'on update current_timestamp' && DataType::check($this->DATA_TYPE, DataType::SUPPORTS_ON_UPDATE_CURRENT_TIMESTAMP))
 			{
-				$attribute = '';
+				$attribute = ' ' . $this->attribute;
 			}
 			else
 			{
-				$attribute = ' ' . $this->attribute;
+				$attribute = '';
 			}
 		}
 		else
@@ -296,7 +291,15 @@ class Column extends ActiveRecord
 
 		if(strlen($this->COLUMN_DEFAULT) > 0 && $this->EXTRA != 'auto_increment')
 		{
-			$default = ' DEFAULT ' . self::$db->quoteValue($this->COLUMN_DEFAULT);
+			if($this->DATA_TYPE == 'timestamp' && strtolower($this->COLUMN_DEFAULT) == 'current_timestamp')
+			{
+				$defaultValue = 'CURRENT_TIMESTAMP';
+			}
+			else
+			{
+				$defaultValue = self::$db->quoteValue($this->COLUMN_DEFAULT);
+			}
+			$default = ' DEFAULT ' . $defaultValue;
 		}
 		else if($this->getIsNullable() && $this->EXTRA != 'auto_increment')
 		{
@@ -342,15 +345,8 @@ class Column extends ActiveRecord
 	 */
 	protected function getUpdateSql()
 	{
-		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n";
-		if($this->originalAttributes['COLUMN_NAME'] == $this->COLUMN_NAME)
-		{
-			$sql .= "\t" . 'MODIFY ' . $this->getColumnDefinition() . ';';
-		}
-		else
-		{
-			$sql .= "\t" . 'CHANGE ' . self::$db->quoteColumnName($this->originalAttributes['COLUMN_NAME']) . ' ' . $this->getColumnDefinition() . ';';
-		}
+		$sql = 'ALTER TABLE ' . self::$db->quoteTableName($this->TABLE_NAME) . "\n"
+			. "\t" . 'CHANGE ' . self::$db->quoteColumnName($this->originalAttributes['COLUMN_NAME']) . ' ' . $this->getColumnDefinition() . ';';
 		return $sql;
 	}
 

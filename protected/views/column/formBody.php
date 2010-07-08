@@ -105,7 +105,7 @@
 					'' => Yii::t('core', 'noAttribute'),
 					'unsigned' => Yii::t('core', 'unsigned'),
 					'unsigned zerofill' => Yii::t('core', 'unsignedZerofill'),
-					'on update current timestamp' => Yii::t('core', 'onUpdateCurrentTimestamp'),
+					'on update current_timestamp' => Yii::t('core', 'onUpdateCurrentTimestamp'),
 				), array('template' => '{input} {label}', 'separator' => '|'))); ?>
 			</td>
 			<td colspan="2">
