@@ -131,11 +131,11 @@ class RowController extends Controller
 				
 				if($_POST['insertAndReturn'])
 				{
-					$response->redirectUrl = '#tables/' . $this->table . '/browse';
+					$response->refresh = true;
 				}
 				else
 				{
-					$response->refresh = true;		
+					$response->redirectUrl = '#tables/' . $this->table . '/browse';
 				}
 				
 			}
