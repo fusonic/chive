@@ -295,6 +295,17 @@ class Column extends ActiveRecord
 			{
 				$defaultValue = 'CURRENT_TIMESTAMP';
 			}
+			elseif($this->DATA_TYPE == 'bit')
+			{
+				if(preg_match('/b\'[01]+\'/', $this->COLUMN_DEFAULT))
+				{
+					$defaultValue = $this->COLUMN_DEFAULT;
+				}
+				else
+				{
+					$defaultValue = 'b' . self::$db->quoteValue($this->COLUMN_DEFAULT);
+				}
+			}
 			else
 			{
 				$defaultValue = self::$db->quoteValue($this->COLUMN_DEFAULT);

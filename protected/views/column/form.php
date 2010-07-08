@@ -11,7 +11,7 @@ var isPrimary<?php echo CHtml::$idPrefix; ?> = <?php echo json_encode($column->g
 	row.children('td:eq(2)').html(<?php echo json_encode($column->COLUMN_TYPE); ?>);
 	row.children('td:eq(3)').html('<?php echo ($column->COLLATION_NAME ? '<dfn class="collation" title="' . Collation::getDefinition($column->COLLATION_NAME) . '">' . $column->COLLATION_NAME . '</dfn>' : ''); ?>');
 	row.children('td:eq(4)').html('<?php echo Yii::t('core', ($column->isNullable ? 'yes' : 'no')); ?>');
-	row.children('td:eq(5)').html('<?php echo (!is_null($column->COLUMN_DEFAULT) ? $column->COLUMN_DEFAULT : ($column->isNullable ? '<span class="null">NULL</span>' : '')); ?>');
+	row.children('td:eq(5)').html(<?php echo (!is_null($column->COLUMN_DEFAULT) ? json_encode($column->COLUMN_DEFAULT) : ($column->isNullable ? json_encode('<span class="null">NULL</span>') : '\'\'')); ?>);
 	row.children('td:eq(6)').html('<?php echo $column->EXTRA; ?>');
 	$('#' + idPrefix).parent().slideUp(500, function() {
 		$('#' + idPrefix).parents("tr").remove();
