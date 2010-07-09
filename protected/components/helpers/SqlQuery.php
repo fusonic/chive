@@ -159,6 +159,16 @@ class SqlQuery {
 	{
 		return $this->parsedQuery['table_ref'][0]['table_name'];
 	}
+	
+	public function getTables()
+	{
+		$tables = array();
+		foreach($this->parsedQuery['table_ref'] as $table)
+		{
+			$tables[] = $table['table_name'];
+		}
+		return $tables;
+	}
 
 	private function stripEmptyLines(&$_string)
 	{

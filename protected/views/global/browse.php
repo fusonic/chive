@@ -83,7 +83,7 @@
 		<table class="list <?php if($model->getIsUpdatable()) { ?>addCheckboxes editable<?php } ?>" style="width: auto;" id="browse">
 			<colgroup>
 				<col class="checkbox" />
-				<?php if(isset($type) && $type == 'select') { ?>
+				<?php if(isset($type) && $type == 'select' && $model->singleTableSelect) { ?>
 					<col class="action" />
 					<col class="action" />
 					<col class="action" />
@@ -94,7 +94,7 @@
 			</colgroup>
 			<thead>
 				<tr>
-					<?php if($model->getQueryType() == 'select') { ?>
+					<?php if($model->getQueryType() == 'select' && $model->singleTableSelect) { ?>
 						<th><input type="checkbox" /></th>
 						<th></th>
 						<th></th>
@@ -108,7 +108,7 @@
 			<tbody>
 				<?php foreach($model->getData() AS $row) { ?>
 					<tr>
-						<?php if($model->getQueryType() == 'select') { ?>
+						<?php if($model->getQueryType() == 'select' && $model->singleTableSelect) { ?>
 							<td>
 								<input type="checkbox" name="browse[]" value="row_<?php echo $i; ?>" />
 							</td>
@@ -140,7 +140,7 @@
 						<?php } else { ?>
 							<?php foreach($row AS $key=>$value) { ?>
 								<td class="<?php echo $key; ?>">
-									<?php if(DataType::getInputType($model->getTable()->columns[$key]->dbType) == "file" && $value) { ?>
+									<?php if($model->singleTableSelect && DataType::getInputType($model->getTable()->columns[$key]->dbType) == "file" && $value) { ?>
 										<a href="javascript:void(0);" class="icon" onclick="globalBrowse.download('<?php echo Yii::app()->createUrl('row/download'); ?>', {key: JSON.stringify(keyData[<?php echo $i; ?>]), column: '<?php echo $column; ?>', table: '<?php echo $model->table; ?>', schema: '<?php echo $model->schema; ?>'})">
 											<?php echo Html::icon('save'); ?> 
 											<?php echo Formatter::fileSize(strlen($value)); ?>
@@ -172,7 +172,7 @@
 		</table>
 
 	<div class="buttonContainer">
-		<?php if ($model->getQueryType() == 'select') { ?>
+		<?php if ($model->getQueryType() == 'select' && $model->singleTableSelect) { ?>
 			<div class="withSelected left">
 				<span class="icon">
 					<?php echo Html::icon('arrow_turn_090'); ?>
