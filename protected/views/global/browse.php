@@ -71,7 +71,12 @@
 
 	<div class="list">
 		<div class="buttonContainer">
-			<?php $this->widget('LinkPager',array('pages'=>$model->getPagination())); ?>
+			<?php 
+				if($model->getQueryType() != "explain")
+				{
+					$this->widget('LinkPager',array('pages'=>$model->getPagination()));
+				} 
+			?>
 		</div>
 
 		<?php $i = 0; ?>
@@ -123,27 +128,39 @@
 								</a>
 							</td>
 						<?php } ?>
-						<?php foreach($row AS $key=>$value) { ?>
-							<td class="<?php echo $key; ?>">
-								<?php if(DataType::getInputType($model->getTable()->columns[$key]->dbType) == "file" && $value) { ?>
-									<a href="javascript:void(0);" class="icon" onclick="globalBrowse.download('<?php echo Yii::app()->createUrl('row/download'); ?>', {key: JSON.stringify(keyData[<?php echo $i; ?>]), column: '<?php echo $column; ?>', table: '<?php echo $model->table; ?>', schema: '<?php echo $model->schema; ?>'})">
-										<?php echo Html::icon('save'); ?> 
-										<?php echo Formatter::fileSize(strlen($value)); ?>
-									</a>
-								<?php } elseif($model->table !== null) { ?>
+						
+						<?php  if($model->getQueryType() == "explain") { ?> 
+						
+							<?php foreach($row AS $key => $value)	{ ?>
+								<td class="<?php echo $key; ?>">
 									<span><?php echo is_null($value) ? '<span class="null">NULL</span>' : (Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $model->schema . '.' .  $model->table) ? htmlspecialchars($value) : StringUtil::cutText(htmlspecialchars($value), 100)); ?></span>
-								<?php } else { ?>
-									<span><?php echo is_null($value) ? '<span class="null">NULL</span>' : (Yii::app()->user->settings->get('showFullColumnContent', 'schema.browse', $model->schema) ? htmlspecialchars($value) : StringUtil::cutText(htmlspecialchars($value), 100)); ?></span>
+								</td>
+							<?php } ?>
+						
+						<?php } else { ?>
+							<?php foreach($row AS $key=>$value) { ?>
+								<td class="<?php echo $key; ?>">
+									<?php if(DataType::getInputType($model->getTable()->columns[$key]->dbType) == "file" && $value) { ?>
+										<a href="javascript:void(0);" class="icon" onclick="globalBrowse.download('<?php echo Yii::app()->createUrl('row/download'); ?>', {key: JSON.stringify(keyData[<?php echo $i; ?>]), column: '<?php echo $column; ?>', table: '<?php echo $model->table; ?>', schema: '<?php echo $model->schema; ?>'})">
+											<?php echo Html::icon('save'); ?> 
+											<?php echo Formatter::fileSize(strlen($value)); ?>
+										</a>
+									<?php } elseif($model->table !== null) { ?>
+										<span><?php echo is_null($value) ? '<span class="null">NULL</span>' : (Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $model->schema . '.' .  $model->table) ? htmlspecialchars($value) : StringUtil::cutText(htmlspecialchars($value), 100)); ?></span>
+									<?php } else { ?>
+										<span><?php echo is_null($value) ? '<span class="null">NULL</span>' : (Yii::app()->user->settings->get('showFullColumnContent', 'schema.browse', $model->schema) ? htmlspecialchars($value) : StringUtil::cutText(htmlspecialchars($value), 100)); ?></span>
+									<?php } ?>
+								</td>
+								<?php if($model->getIsUpdatable() && (in_array($key, (array)$model->getTable()->primaryKey) || $model->getTable()->primaryKey === null)) { ?>
+									<?php $keyData[$i][$key] = is_null($value) ? null : $value; ?>
 								<?php } ?>
-							</td>
-							<?php if($model->getIsUpdatable() && (in_array($key, (array)$model->getTable()->primaryKey) || $model->getTable()->primaryKey === null)) { ?>
-								<?php $keyData[$i][$key] = is_null($value) ? null : $value; ?>
 							<?php } ?>
 						<?php } ?>
 					</tr>
 					<?php $i++; ?>
 				<?php } ?>
 			</tbody>
+			<?php if($model->getQueryType() != "explain") { ?>
 			<tfoot>
 				<tr>
 					<th colspan="<?php echo 4 + count($row); ?>">
@@ -151,6 +168,7 @@
 					</th>
 				</tr>
 			</tfoot>
+			<?php } ?>
 		</table>
 
 	<div class="buttonContainer">
@@ -177,7 +195,9 @@
 		<?php } ?>
 	</div>
 	<div class="buttonContainer">
+		<?php if($model->getQueryType() != "explain") { ?>
 		<?php $this->widget('LinkPager',array('pages'=>$model->getPagination())); ?>
+		<?php } ?>
 	</div>
 
 <?php } elseif($model->execute) { ?>

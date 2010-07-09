@@ -147,7 +147,6 @@ class TableController extends Controller
 		$this->render('../global/browse', array(
 			'model' => $browsePage
 		));
-
 	}
 
 	public function actionCreate()

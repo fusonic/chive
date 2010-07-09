@@ -198,6 +198,11 @@ class BrowsePage extends CModel
 					// show create table etc.
 
 				}
+				elseif($type == "explain")
+				{
+					
+				}
+				
 				elseif($type == "analyze" || $type == "optimize" || $type == "repair" || $type == "check")
 				{
 					// Table functions
@@ -221,7 +226,7 @@ class BrowsePage extends CModel
 				{
 					$response->reload = true;
 				}
-
+				
 				$this->executedQueries[] = $sqlQuery->getQuery();
 				$this->originalQueries[] = $sqlQuery->getOriginalQuery();
 
