@@ -89,7 +89,19 @@ class BrowsePage extends CModel
 		
 		$profiling = Yii::app()->user->settings->get('profiling');
 
-		$sqlQuery = new SqlQuery($this->query);
+		try
+		{
+			$sqlQuery = new SqlQuery($this->query);
+		}
+		catch(SQPException $ex)
+		{
+			$response->addNotification('error', 
+				Yii::t('core', 'errorExecuteQuery'), 
+				$ex->getMessage());
+				
+			$this->response = $response;
+			return;
+		}
 			
 		if(!$this->query)
 		{
@@ -120,8 +132,18 @@ class BrowsePage extends CModel
 			$i = 1;
 			foreach($queries AS $query)
 			{
+				try
+				{
+					$sqlQuery = new SqlQuery($query);
+				}
+				catch(SQPException $ex)
+				{
+					$response->addNotification('error', 
+						Yii::t('core', 'errorExecuteQuery'), 
+						$ex->getMessage());
+					break;
+				}
 				
-				$sqlQuery = new SqlQuery($query);
 				$type = $sqlQuery->getType();
 
 				// Get table from query if table is not specified by URL

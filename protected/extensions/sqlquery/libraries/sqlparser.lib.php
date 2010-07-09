@@ -134,11 +134,13 @@ if (! defined('PMA_MINIMUM_COMMON')) {
     function PMA_SQP_throwError($message, $sql)
     {
         global $SQP_errorString;
-        $SQP_errorString = '<p>'.$GLOBALS['strSQLParserUserError'] . '</p>' . "\n"
+        $SQP_errorString = '<p>There seems to be an error in your SQL query.</p>' . "\n"
             . '<pre>' . "\n"
             . 'ERROR: ' . $message . "\n"
             . 'SQL: ' . htmlspecialchars($sql) .  "\n"
             . '</pre>' . "\n";
+            
+        throw new SQPException($SQP_errorString);
 
     } // end of the "PMA_SQP_throwError()" function
 
@@ -340,7 +342,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                     $pos    = $GLOBALS['PMA_strpos'](' ' . $sql, $quotetype, $oldpos + 1) - 1;
                     // ($pos === FALSE)
                     if ($pos < 0) {
-                        $debugstr = $GLOBALS['strSQPBugUnclosedQuote'] . ' @ ' . $startquotepos. "\n"
+                        $debugstr = 'Unclosed quote @ ' . $startquotepos. "\n"
                                   . 'STR: ' . htmlspecialchars($quotetype);
                         PMA_SQP_throwError($debugstr, $sql);
                         return $sql_array;
@@ -491,7 +493,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                             $is_float_digit = TRUE;
                             continue;
                         } else {
-                            $debugstr = $GLOBALS['strSQPBugInvalidIdentifer'] . ' @ ' . ($count1+1) . "\n"
+                            $debugstr = 'Invalid Identifer @ ' . ($count1+1) . "\n"
                                       . 'STR: ' . htmlspecialchars(PMA_substr($sql, $count1, $count2 - $count1));
                             PMA_SQP_throwError($debugstr, $sql);
                             return $sql_array;
@@ -608,7 +610,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                      */
 
                     } elseif ($last != '~') {
-                        $debugstr =  $GLOBALS['strSQPBugUnknownPunctuation'] . ' @ ' . ($count1+1) . "\n"
+                        $debugstr =  'Unknown Punctuation String @ ' . ($count1+1) . "\n"
                                   . 'STR: ' . htmlspecialchars($punct_data);
                         PMA_SQP_throwError($debugstr, $sql);
                         return $sql_array;
