@@ -146,11 +146,7 @@ class BrowsePage extends CModel
 				
 				$type = $sqlQuery->getType();
 
-				// Get table from query if table is not specified by URL
-				if(!$this->table)
-				{
-					$this->table = $sqlQuery->getTable();
-				}
+				$this->table = $sqlQuery->getTable();
 				
 				$this->tables = $sqlQuery->getTables();
 				$this->singleTableSelect = count($this->tables) == 1;

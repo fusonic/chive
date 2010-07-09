@@ -136,6 +136,7 @@ class TableController extends Controller
 	{
 		$browsePage = new BrowsePage();
 
+		
 		$browsePage->schema = $this->schema;
 		$browsePage->table = $this->table;
 		$browsePage->db = $this->db;
@@ -143,6 +144,8 @@ class TableController extends Controller
 		$browsePage->formTarget = 'schema/' . $this->schema . '/tables/' . $this->table . '/browse';
 
 		$browsePage->run();
+		
+		$this->table = $browsePage->table;
 		
 		$this->render('../global/browse', array(
 			'model' => $browsePage
