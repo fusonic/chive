@@ -157,7 +157,11 @@ class SqlQuery {
 	
 	public function getTable() 
 	{
-		return $this->parsedQuery['table_ref'][0]['table_name'];
+		if($this->parsedQuery != null && is_array($this->parsedQuery['table_ref']) && count($this->parsedQuery['table_ref']) > 0)
+		{
+			return $this->parsedQuery['table_ref'][0]['table_name'];
+		}
+		return null;
 	}
 	
 	public function getTables()
