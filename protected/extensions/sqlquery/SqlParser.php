@@ -12,6 +12,10 @@ require_once('common.lib.php');
 require_once('sqlparser.data.php');
 require_once('sqlparser.lib.php');
 
+class SQPException extends Exception
+{
+}
+
 class SqlParser
 {
 	public static function parsePMA($_sql)

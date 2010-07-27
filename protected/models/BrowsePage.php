@@ -56,9 +56,11 @@ class BrowsePage extends CModel
 	public $db;
 	public $schema = null;
 	public $table = null;
+	public $tables = array();
 	public $route;
 	public $formTarget = '';
-
+	public $singleTableSelect = true;
+	
 	/*
 	 * Settings
 	 */
@@ -87,7 +89,19 @@ class BrowsePage extends CModel
 		
 		$profiling = Yii::app()->user->settings->get('profiling');
 
-		$sqlQuery = new SqlQuery($this->query);
+		try
+		{
+			$sqlQuery = new SqlQuery($this->query);
+		}
+		catch(SQPException $ex)
+		{
+			$response->addNotification('error', 
+				Yii::t('core', 'errorExecuteQuery'), 
+				$ex->getMessage());
+				
+			$this->response = $response;
+			return;
+		}
 			
 		if(!$this->query)
 		{
@@ -118,17 +132,25 @@ class BrowsePage extends CModel
 			$i = 1;
 			foreach($queries AS $query)
 			{
-				
-				$sqlQuery = new SqlQuery($query);
-				$type = $sqlQuery->getType();
-
-				// Get table from query if table is not specified by URL
-				if(!$this->table)
+				try
 				{
-					$this->table = $sqlQuery->getTable();
+					$sqlQuery = new SqlQuery($query);
+				}
+				catch(SQPException $ex)
+				{
+					$response->addNotification('error', 
+						Yii::t('core', 'errorExecuteQuery'), 
+						$ex->getMessage());
+					break;
 				}
 				
+				$type = $sqlQuery->getType();
 
+				$this->table = $sqlQuery->getTable();
+				
+				$this->tables = $sqlQuery->getTables();
+				$this->singleTableSelect = count($this->tables) == 1;
+				
 				// SELECT
 				if($type == "select")
 				{
@@ -198,6 +220,11 @@ class BrowsePage extends CModel
 					// show create table etc.
 
 				}
+				elseif($type == "explain")
+				{
+					
+				}
+				
 				elseif($type == "analyze" || $type == "optimize" || $type == "repair" || $type == "check")
 				{
 					// Table functions
@@ -221,7 +248,7 @@ class BrowsePage extends CModel
 				{
 					$response->reload = true;
 				}
-
+				
 				$this->executedQueries[] = $sqlQuery->getQuery();
 				$this->originalQueries[] = $sqlQuery->getOriginalQuery();
 
@@ -387,6 +414,35 @@ class BrowsePage extends CModel
 	public function getTable()
 	{
 		return $this->db->getSchema($this->schema)->getTable($this->table);
+	}
+	
+	public function getTables()
+	{
+		$tables = array();
+		
+		foreach($this->tables as $table)
+		{
+			$tables[] = $this->db->getSchema($this->schema)->getTable($table);	
+		}
+		
+		return $tables;
+	}
+	
+	public function getColumn($key)
+	{
+		$tables = $this->getTables();
+		foreach($tables as $table)
+		{
+			foreach($table->columns as $index => $column)
+			{
+				if($key == $index)
+				{
+					return $column;
+				}
+			}
+		}
+		
+		return null;
 	}
 
 	public function getQueryType()
