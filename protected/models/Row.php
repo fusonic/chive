@@ -189,10 +189,10 @@ class Row extends CActiveRecord
 
 	public function insert() 
 	{	
-		$table = Table::model()->with("columns")->findByPk(array(
+		$table = Table::model()->findByPk(array(
 			'TABLE_NAME' => self::$table,
 			'TABLE_SCHEMA' => self::$schema,
-		));	
+		));
 		$attributesCount = count($this->getAttributes());
 		$sql = 'INSERT INTO ' . self::$db->quoteTableName(self::$table) . ' (';
 
