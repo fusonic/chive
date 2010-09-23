@@ -34,7 +34,7 @@
  * {@link CApplication::getSecurityManager()}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CSecurityManager.php 2168 2010-06-05 18:15:18Z qiang.xue $
+ * @version $Id: CSecurityManager.php 2278 2010-07-21 14:08:46Z qiang.xue $
  * @package system.base
  * @since 1.0
  */

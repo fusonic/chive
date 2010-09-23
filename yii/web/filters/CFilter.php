@@ -19,7 +19,7 @@
  * before the action, and {@link postFilter()} for filtering logic after the action.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFilter.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CFilter.php 2377 2010-08-30 16:11:20Z qiang.xue $
  * @package system.web.filters
  * @since 1.0
  */
@@ -41,6 +41,17 @@ class CFilter extends CComponent implements IFilter
 			$filterChain->run();
 			$this->postFilter($filterChain);
 		}
+	}
+
+	/**
+	 * Initializes the filter.
+	 * This method is invoked after the filter properties are initialized
+	 * and before {@link preFilter} is called.
+	 * You may override this method to include some initialization logic.
+	 * @since 1.1.4
+	 */
+	public function init()
+	{
 	}
 
 	/**

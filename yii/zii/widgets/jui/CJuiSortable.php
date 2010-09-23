@@ -40,7 +40,7 @@ Yii::import('zii.widgets.jui.CJuiWidget');
  * start of the js code definition and Yii will use this string as js code.
  *
  * @author Sebastian Thierer <sebathi@gmail.com>
- * @version $Id: CJuiSortable.php 158 2010-03-26 20:34:24Z sebathi $
+ * @version $Id: CJuiSortable.php 2326 2010-08-20 17:02:07Z qiang.xue $
  * @package zii.widgets.jui
  * @since 1.1
  */

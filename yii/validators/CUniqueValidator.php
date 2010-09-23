@@ -12,7 +12,7 @@
  * CUniqueValidator validates that the attribute value is unique in the corresponding database table.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CUniqueValidator.php 2188 2010-06-15 17:20:35Z qiang.xue $
+ * @version $Id: CUniqueValidator.php 2376 2010-08-30 15:03:40Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -105,7 +105,7 @@ class CUniqueValidator extends CValidator
 				if($column->isPrimaryKey)  // primary key is modified and not unique
 					$exists=$object->getOldPrimaryKey()!=$object->getPrimaryKey();
 				else // non-primary key, need to exclude the current record based on PK
-					$exists=$objects[0]->getPrimaryKey()!=$object->getPrimaryKey();
+					$exists=$objects[0]->getPrimaryKey()!=$object->getOldPrimaryKey();
 			}
 			else
 				$exists=$n>1;

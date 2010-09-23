@@ -38,7 +38,7 @@ Yii::import('zii.widgets.jui.CJuiWidget');
  * for possible options (name-value pairs).
  *
  * @author Sebastian Thierer <sebathi@gmail.com>
- * @version $Id: CJuiTabs.php 158 2010-03-26 20:34:24Z sebathi $
+ * @version $Id: CJuiTabs.php 2342 2010-08-25 17:43:03Z qiang.xue $
  * @package zii.widgets.jui
  * @since 1.1
  */
@@ -113,5 +113,16 @@ class CJuiTabs extends CJuiWidget
 
 		$options=empty($this->options) ? '' : CJavaScript::encode($this->options);
 		Yii::app()->getClientScript()->registerScript(__CLASS__.'#'.$id,"jQuery('#{$id}').tabs($options);");
+	}
+
+	/**
+	 * Registers the core script files.
+	 * This method overrides the parent implementation by registering the cookie plugin when cookie option is used.
+	 */
+	protected function registerCoreScripts()
+	{
+		parent::registerCoreScripts();
+		if(isset($this->options['cookie']))
+			Yii::app()->getClientScript()->registerCoreScript('cookie');
 	}
 }

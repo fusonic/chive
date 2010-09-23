@@ -17,7 +17,7 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: yiilite.php 2246 2010-07-05 01:45:33Z qiang.xue $
+ * @version $Id: yiilite.php 2428 2010-09-05 13:05:24Z qiang.xue $
  * @since 1.0
  */
 
@@ -39,7 +39,7 @@ class YiiBase
 	private static $_logger;
 	public static function getVersion()
 	{
-		return '1.1.3';
+		return '1.1.4';
 	}
 	public static function createWebApplication($config=null)
 	{
@@ -128,7 +128,10 @@ class YiiBase
 			{
 				if($forceInclude)
 				{
-					require($path.'.php');
+					if(is_file($path.'.php'))
+						require($path.'.php');
+					else
+						throw new CException(Yii::t('yii','Alias "{alias}" is invalid. Make sure it points to an existing PHP file.',array('{alias}'=>$alias)));
 					self::$_imports[$alias]=$className;
 				}
 				else
@@ -391,6 +394,7 @@ class YiiBase
 		'CUrlValidator' => '/validators/CUrlValidator.php',
 		'CValidator' => '/validators/CValidator.php',
 		'CActiveDataProvider' => '/web/CActiveDataProvider.php',
+		'CArrayDataProvider' => '/web/CArrayDataProvider.php',
 		'CAssetManager' => '/web/CAssetManager.php',
 		'CBaseController' => '/web/CBaseController.php',
 		'CCacheHttpSession' => '/web/CCacheHttpSession.php',
@@ -407,6 +411,7 @@ class YiiBase
 		'COutputEvent' => '/web/COutputEvent.php',
 		'CPagination' => '/web/CPagination.php',
 		'CSort' => '/web/CSort.php',
+		'CSqlDataProvider' => '/web/CSqlDataProvider.php',
 		'CTheme' => '/web/CTheme.php',
 		'CThemeManager' => '/web/CThemeManager.php',
 		'CUploadedFile' => '/web/CUploadedFile.php',
@@ -2146,7 +2151,7 @@ class CHttpRequest extends CApplicationComponent
 	{
 		if($this->_pathInfo===null)
 		{
-			$requestUri=$this->getRequestUri();
+			$requestUri=urldecode($this->getRequestUri());
 			$scriptUrl=$this->getScriptUrl();
 			$baseUrl=$this->getBaseUrl();
 			if(strpos($requestUri,$scriptUrl)===0)
@@ -2385,8 +2390,8 @@ class CCookieCollection extends CMap
 			$sm=Yii::app()->getSecurityManager();
 			foreach($_COOKIE as $name=>$value)
 			{
-				if(($value=$sm->validateData($value))!==false)
-					$cookies[$name]=new CHttpCookie($name,$value);
+				if(is_string($value) && ($value=$sm->validateData($value))!==false)
+					$cookies[$name]=new CHttpCookie($name,@unserialize($value));
 			}
 		}
 		else
@@ -2421,7 +2426,7 @@ class CCookieCollection extends CMap
 	{
 		$value=$cookie->value;
 		if($this->_request->enableCookieValidation)
-			$value=Yii::app()->getSecurityManager()->hashData($value);
+			$value=Yii::app()->getSecurityManager()->hashData(serialize($value));
 		if(version_compare(PHP_VERSION,'5.2.0','>='))
 			setcookie($cookie->name,$value,$cookie->expire,$cookie->path,$cookie->domain,$cookie->secure,$cookie->httpOnly);
 		else
@@ -2474,6 +2479,11 @@ class CUrlManager extends CApplicationComponent
 			$this->_rules[]=$this->createUrlRule($route,$pattern);
 		if(isset($cache))
 			$cache->set(self::CACHE_KEY,array($this->_rules,$hash));
+	}
+	public function addRules($rules)
+	{
+		foreach($rules as $pattern=>$route)
+			$this->_rules[]=$this->createUrlRule($route,$pattern);
 	}
 	protected function createUrlRule($route,$pattern)
 	{
@@ -2538,7 +2548,7 @@ class CUrlManager extends CApplicationComponent
 	{
 		if($this->getUrlFormat()===self::PATH_FORMAT)
 		{
-			$rawPathInfo=urldecode($request->getPathInfo());
+			$rawPathInfo=$request->getPathInfo();
 			$pathInfo=$this->removeUrlSuffix($rawPathInfo,$this->urlSuffix);
 			foreach($this->_rules as $rule)
 			{
@@ -2719,10 +2729,13 @@ class CUrlRule extends CComponent
 		}
 		foreach($this->defaultParams as $key=>$value)
 		{
-			if(isset($params[$key]) && $params[$key]==$value)
-				unset($params[$key]);
-			else
-				return false;
+			if(isset($params[$key]))
+			{
+				if($params[$key]==$value)
+					unset($params[$key]);
+				else
+					return false;
+			}
 		}
 		foreach($this->params as $key=>$value)
 			if(!isset($params[$key]))
@@ -3395,8 +3408,26 @@ class CInlineAction extends CAction
 {
 	public function run()
 	{
-		$method='action'.$this->getId();
-		$this->getController()->$method();
+		$controller=$this->getController();
+		$methodName='action'.$this->getId();
+		$method=new ReflectionMethod($controller,$methodName);
+		if(($n=$method->getNumberOfParameters())>0)
+		{
+			$params=array();
+			foreach($method->getParameters() as $i=>$param)
+			{
+				$name=$param->getName();
+				if(isset($_GET[$name]))
+					$params[]=$_GET[$name];
+				else if($param->isDefaultValueAvailable())
+					$params[]=$param->getDefaultValue();
+				else
+					throw new CHttpException(400,Yii::t('yii','Your request is invalid.'));
+			}
+			$method->invokeArgs($controller,$params);
+		}
+		else
+			$controller->$methodName();
 	}
 }
 class CWebUser extends CApplicationComponent implements IWebUser
@@ -4234,12 +4265,17 @@ class CHtml
 		}
 		else
 			$uncheck=null;
-		if(!isset($htmlOptions['id']))
-			$htmlOptions['id']=self::getIdByName($name);
-		else if($htmlOptions['id']===false)
-			unset($htmlOptions['id']);
-		$uncheckOptions=isset($htmlOptions['id']) ? array('id'=>self::ID_PREFIX.$htmlOptions['id']) : array();
-		$hidden=$uncheck!==null ? self::hiddenField($name,$uncheck,$uncheckOptions) : '';
+		if($uncheck!==null)
+		{
+			// add a hidden field so that if the radio button is not selected, it still submits a value
+			if(isset($htmlOptions['id']) && $htmlOptions['id']!==false)
+				$uncheckOptions=array('id'=>self::ID_PREFIX.$htmlOptions['id']);
+			else
+				$uncheckOptions=array();
+			$hidden=self::hiddenField($name,$uncheck,$uncheckOptions);
+		}
+		else
+			$hidden='';
 		// add a hidden field so that if the radio button is not selected, it still submits a value
 		return $hidden . self::inputField('radio',$name,$value,$htmlOptions);
 	}
@@ -4258,12 +4294,17 @@ class CHtml
 		}
 		else
 			$uncheck=null;
-		if(!isset($htmlOptions['id']))
-			$htmlOptions['id']=self::getIdByName($name);
-		else if($htmlOptions['id']===false)
-			unset($htmlOptions['id']);
-		$uncheckOptions=isset($htmlOptions['id']) ? array('id'=>self::ID_PREFIX.$htmlOptions['id']) : array();
-		$hidden=$uncheck!==null ? self::hiddenField($name,$uncheck,$uncheckOptions) : '';
+		if($uncheck!==null)
+		{
+			// add a hidden field so that if the radio button is not selected, it still submits a value
+			if(isset($htmlOptions['id']) && $htmlOptions['id']!==false)
+				$uncheckOptions=array('id'=>self::ID_PREFIX.$htmlOptions['id']);
+			else
+				$uncheckOptions=array();
+			$hidden=self::hiddenField($name,$uncheck,$uncheckOptions);
+		}
+		else
+			$hidden='';
 		// add a hidden field so that if the checkbox  is not selected, it still submits a value
 		return $hidden . self::inputField('checkbox',$name,$value,$htmlOptions);
 	}
@@ -4384,6 +4425,7 @@ EOD;
 	public static function ajaxSubmitButton($label,$url,$ajaxOptions=array(),$htmlOptions=array())
 	{
 		$ajaxOptions['type']='POST';
+		$htmlOptions['type']='submit';
 		return self::ajaxButton($label,$url,$ajaxOptions,$htmlOptions);
 	}
 	public static function ajax($options)
@@ -4835,7 +4877,7 @@ EOD;
 				$handler="return $confirm;";
 		}
 		if($live)
-			$cs->registerScript('Yii.CHtml.#'.$id,"jQuery('#$id').live('$event',function(){{$handler}});");
+			$cs->registerScript('Yii.CHtml.#'.$id,"jQuery('body').delegate('#$id','$event',function(){{$handler}});");
 		else
 			$cs->registerScript('Yii.CHtml.#'.$id,"jQuery('#$id').$event(function(){{$handler}});");
 		unset($htmlOptions['params'],$htmlOptions['submit'],$htmlOptions['ajax'],$htmlOptions['confirm'],$htmlOptions['return'],$htmlOptions['csrf']);
@@ -5247,7 +5289,7 @@ class CClientScript extends CApplicationComponent
 		if(isset($this->scripts[self::POS_READY]))
 		{
 			if($fullPage)
-				$scripts[]="jQuery(document).ready(function() {\n".implode("\n",$this->scripts[self::POS_READY])."\n});";
+				$scripts[]="jQuery(function($) {\n".implode("\n",$this->scripts[self::POS_READY])."\n});";
 			else
 				$scripts[]=implode("\n",$this->scripts[self::POS_READY]);
 		}
@@ -5565,10 +5607,10 @@ class CFilterChain extends CList
 				{
 					$matched=preg_match("/\b{$actionID}\b/i",substr($filter,$pos+1))>0;
 					if(($filter[$pos]==='+')===$matched)
-						$chain->add(CInlineFilter::create($controller,trim(substr($filter,0,$pos))));
+						$filter=CInlineFilter::create($controller,trim(substr($filter,0,$pos)));
 				}
 				else
-					$chain->add(CInlineFilter::create($controller,$filter));
+					$filter=CInlineFilter::create($controller,$filter);
 			}
 			else if(is_array($filter))  // array('path.to.class [+|- action1, action2]','param1'=>'value1',...)
 			{
@@ -5585,10 +5627,13 @@ class CFilterChain extends CList
 						continue;
 				}
 				$filter['class']=$filterClass;
-				$chain->add(Yii::createComponent($filter));
+				$filter=Yii::createComponent($filter);
 			}
-			else
+			if(is_object($filter))
+			{
+				$filter->init();
 				$chain->add($filter);
+			}
 		}
 		return $chain;
 	}
@@ -5619,6 +5664,9 @@ class CFilter extends CComponent implements IFilter
 			$filterChain->run();
 			$this->postFilter($filterChain);
 		}
+	}
+	public function init()
+	{
 	}
 	protected function preFilter($filterChain)
 	{
@@ -5971,7 +6019,7 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 		{
 			if(isset($attributes[$name]))
 				$this->$name=$value;
-			else
+			else if($safeOnly)
 				$this->onUnsafeAttribute($name,$value);
 		}
 	}
@@ -6001,7 +6049,7 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 		$unsafe=array();
 		foreach($this->getValidators() as $validator)
 		{
-			if($validator instanceof CUnsafeValidator)
+			if(!$validator->safe)
 			{
 				foreach($validator->attributes as $name)
 					$unsafe[]=$name;
@@ -6249,6 +6297,29 @@ abstract class CActiveRecord extends CModel
 	public function attributeNames()
 	{
 		return array_keys($this->getMetaData()->columns);
+	}
+	public function getAttributeLabel($attribute)
+	{
+		$labels=$this->attributeLabels();
+		if(isset($labels[$attribute]))
+			return $labels[$attribute];
+		else if(strpos($attribute,'.')!==false)
+		{
+			$segs=explode('.',$attribute);
+			$name=array_pop($segs);
+			$model=$this;
+			foreach($segs as $seg)
+			{
+				$relations=$model->getMetaData()->relations;
+				if(isset($relations[$seg]))
+					$model=CActiveRecord::model($relations[$seg]->className);
+				else
+					break;
+			}
+			return $model->getAttributeLabel($name);
+		}
+		else
+			return $this->generateAttributeLabel($attribute);
 	}
 	public function getDbConnection()
 	{
@@ -6592,17 +6663,20 @@ abstract class CActiveRecord extends CModel
 	}
 	private function query($criteria,$all=false)
 	{
+        $this->beforeFind();
 		$this->applyScopes($criteria);
 		if(empty($criteria->with))
 		{
 			if(!$all)
 				$criteria->limit=1;
-			$this->beforeFind();
 			$command=$this->getCommandBuilder()->createFindCommand($this->getTableSchema(),$criteria);
 			return $all ? $this->populateRecords($command->queryAll()) : $this->populateRecord($command->queryRow());
 		}
 		else
-			return $this->with($criteria->with)->query($criteria,$all);
+		{
+			$finder=new CActiveFinder($this,$criteria->with);
+			return $finder->query($criteria,$all);
+		}
 	}
 	public function applyScopes(&$criteria)
 	{
@@ -6662,14 +6736,32 @@ abstract class CActiveRecord extends CModel
 	public function findBySql($sql,$params=array())
 	{
 		$this->beforeFind();
-		$command=$this->getCommandBuilder()->createSqlCommand($sql,$params);
-		return $this->populateRecord($command->queryRow());
+		if(($criteria=$this->getDbCriteria(false))!==null && !empty($criteria->with))
+		{
+			$this->_c=null;
+			$finder=new CActiveFinder($this,$criteria->with);
+			return $finder->findBySql($sql,$params);
+		}
+		else
+		{
+			$command=$this->getCommandBuilder()->createSqlCommand($sql,$params);
+			return $this->populateRecord($command->queryRow());
+		}
 	}
 	public function findAllBySql($sql,$params=array())
 	{
 		$this->beforeFind();
-		$command=$this->getCommandBuilder()->createSqlCommand($sql,$params);
-		return $this->populateRecords($command->queryAll());
+		if(($criteria=$this->getDbCriteria(false))!==null && !empty($criteria->with))
+		{
+			$this->_c=null;
+			$finder=new CActiveFinder($this,$criteria->with);
+			return $finder->findAllBySql($sql,$params);
+		}
+		else
+		{
+			$command=$this->getCommandBuilder()->createSqlCommand($sql,$params);
+			return $this->populateRecords($command->queryAll());
+		}
 	}
 	public function count($condition='',$params=array())
 	{
@@ -6679,7 +6771,24 @@ abstract class CActiveRecord extends CModel
 		if(empty($criteria->with))
 			return $builder->createCountCommand($this->getTableSchema(),$criteria)->queryScalar();
 		else
-			return $this->with($criteria->with)->count($criteria);
+		{
+			$finder=new CActiveFinder($this,$criteria->with);
+			return $finder->count($criteria);
+		}
+	}
+	public function countByAttributes($attributes,$condition='',$params=array())
+	{
+		$prefix=$this->getTableAlias(true).'.';
+		$builder=$this->getCommandBuilder();
+		$criteria=$builder->createColumnCriteria($this->getTableSchema(),$attributes,$condition,$params,$prefix);
+		$this->applyScopes($criteria);
+		if(empty($criteria->with))
+			return $builder->createCountCommand($this->getTableSchema(),$criteria)->queryScalar();
+		else
+		{
+			$finder=new CActiveFinder($this,$criteria->with);
+			return $finder->count($criteria);
+		}
 	}
 	public function countBySql($sql,$params=array())
 	{
@@ -6702,10 +6811,15 @@ abstract class CActiveRecord extends CModel
 			$with=func_get_args();
 			if(is_array($with[0]))  // the parameter is given as an array
 				$with=$with[0];
-			return new CActiveFinder($this,$with);
+			if(!empty($with))
+				$this->getDbCriteria()->mergeWith(array('with'=>$with));
 		}
-		else
-			return $this;
+		return $this;
+	}
+	public function together()
+	{
+		$this->getDbCriteria()->together=true;
+		return $this;
 	}
 	public function updateByPk($pk,$attributes,$condition='',$params=array())
 	{
@@ -6819,6 +6933,8 @@ class CBaseActiveRelation extends CComponent
 	}
 	public function mergeWith($criteria,$fromScope=false)
 	{
+		if($criteria instanceof CDbCriteria)
+			$criteria=$criteria->toArray();
 		if(isset($criteria['select']) && $this->select!==$criteria['select'])
 		{
 			if($this->select==='*')
@@ -6875,6 +6991,8 @@ class CStatRelation extends CBaseActiveRelation
 	public $defaultValue=0;
 	public function mergeWith($criteria,$fromScope=false)
 	{
+		if($criteria instanceof CDbCriteria)
+			$criteria=$criteria->toArray();
 		parent::mergeWith($criteria,$fromScope);
 		if(isset($criteria['defaultValue']))
 			$this->defaultValue=$criteria['defaultValue'];
@@ -6888,6 +7006,8 @@ class CActiveRelation extends CBaseActiveRelation
 	public $with=array();
 	public function mergeWith($criteria,$fromScope=false)
 	{
+		if($criteria instanceof CDbCriteria)
+			$criteria=$criteria->toArray();
 		if($fromScope)
 		{
 			if(isset($criteria['condition']) && $this->on!==$criteria['condition'])
@@ -6913,7 +7033,7 @@ class CActiveRelation extends CBaseActiveRelation
 			$this->with=$criteria['with'];
 		if(isset($criteria['alias']))
 			$this->alias=$criteria['alias'];
-		if(isset($criteria['together']))
+		if(array_key_exists('together',$criteria))
 			$this->together=$criteria['together'];
 	}
 }
@@ -6927,10 +7047,12 @@ class CHasManyRelation extends CActiveRelation
 {
 	public $limit=-1;
 	public $offset=-1;
-	public $together=true;
+	public $together;
 	public $index;
 	public function mergeWith($criteria,$fromScope=false)
 	{
+		if($criteria instanceof CDbCriteria)
+			$criteria=$criteria->toArray();
 		parent::mergeWith($criteria,$fromScope);
 		if(isset($criteria['limit']) && $criteria['limit']>0)
 			$this->limit=$criteria['limit'];
@@ -7059,12 +7181,12 @@ class CDbConnection extends CApplicationComponent
 				if(YII_DEBUG)
 				{
 					throw new CDbException(Yii::t('yii','CDbConnection failed to open the DB connection: {error}',
-						array('{error}'=>$e->getMessage())));
+						array('{error}'=>$e->getMessage())),(int)$e->getCode(),$e->errorInfo);
 				}
 				else
 				{
 					Yii::log($e->getMessage(),CLogger::LEVEL_ERROR,'exception.CDbException');
-					throw new CDbException(Yii::t('yii','CDbConnection failed to open the DB connection.'));
+					throw new CDbException(Yii::t('yii','CDbConnection failed to open the DB connection.'),(int)$e->getCode(),$e->errorInfo);
 				}
 			}
 		}
@@ -7094,7 +7216,8 @@ class CDbConnection extends CApplicationComponent
 			$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES,true);
 		if($this->charset!==null)
 		{
-			if(strcasecmp($pdo->getAttribute(PDO::ATTR_DRIVER_NAME),'sqlite'))
+			$driver=strtolower($pdo->getAttribute(PDO::ATTR_DRIVER_NAME));
+			if(!in_array($driver,array('sqlite','mssql','dblib','sqlsrv')))
 				$pdo->exec('SET NAMES '.$pdo->quote($this->charset));
 		}
 		if($this->initSQLs!==null)
@@ -7154,6 +7277,7 @@ class CDbConnection extends CApplicationComponent
 					return $this->_schema=new CSqliteSchema($this);
 				case 'mssql': // Mssql driver on windows hosts
 				case 'dblib': // dblib drivers on linux (and maybe others os) hosts
+				case 'sqlsrv':
 					return $this->_schema=new CMssqlSchema($this);
 				case 'oci':  // Oracle driver
 					return $this->_schema=new COciSchema($this);
@@ -7440,7 +7564,6 @@ class CSqliteSchema extends CDbSchema
 	}
 	protected function createTable($name)
 	{
-		$db=$this->getDbConnection();
 		$table=new CDbTableSchema;
 		$table->name=$name;
 		$table->rawName=$this->quoteTableName($name);
@@ -7566,8 +7689,9 @@ class CDbCommand extends CComponent
 			catch(Exception $e)
 			{
 				Yii::log('Error in preparing SQL: '.$this->getText(),CLogger::LEVEL_ERROR,'system.db.CDbCommand');
+                $errorInfo = $e instanceof PDOException ? $e->errorInfo : null;
 				throw new CDbException(Yii::t('yii','CDbCommand failed to prepare the SQL statement: {error}',
-					array('{error}'=>$e->getMessage())));
+					array('{error}'=>$e->getMessage())),(int)$e->getCode(),$errorInfo);
 			}
 		}
 	}
@@ -7615,7 +7739,10 @@ class CDbCommand extends CComponent
 			if($this->_connection->enableProfiling)
 				Yii::beginProfile('system.db.CDbCommand.execute('.$this->getText().')','system.db.CDbCommand.execute');
 			$this->prepare();
-			$this->_statement->execute($params===array() ? null : $params);
+			if($params===array())
+				$this->_statement->execute();
+			else
+				$this->_statement->execute($params);
 			$n=$this->_statement->rowCount();
 			if($this->_connection->enableProfiling)
 				Yii::endProfile('system.db.CDbCommand.execute('.$this->getText().')','system.db.CDbCommand.execute');
@@ -7626,8 +7753,9 @@ class CDbCommand extends CComponent
 			if($this->_connection->enableProfiling)
 				Yii::endProfile('system.db.CDbCommand.execute('.$this->getText().')','system.db.CDbCommand.execute');
 			Yii::log('Error in executing SQL: '.$this->getText().$par,CLogger::LEVEL_ERROR,'system.db.CDbCommand');
+            $errorInfo = $e instanceof PDOException ? $e->errorInfo : null;
 			throw new CDbException(Yii::t('yii','CDbCommand failed to execute the SQL statement: {error}',
-				array('{error}'=>$e->getMessage())));
+				array('{error}'=>$e->getMessage())),(int)$e->getCode(),$errorInfo);
 		}
 	}
 	public function query($params=array())
@@ -7670,7 +7798,10 @@ class CDbCommand extends CComponent
 			if($this->_connection->enableProfiling)
 				Yii::beginProfile('system.db.CDbCommand.query('.$this->getText().')','system.db.CDbCommand.query');
 			$this->prepare();
-			$this->_statement->execute($params===array() ? null : $params);
+			if($params===array())
+				$this->_statement->execute();
+			else
+				$this->_statement->execute($params);
 			if($method==='')
 				$result=new CDbDataReader($this);
 			else
@@ -7687,8 +7818,9 @@ class CDbCommand extends CComponent
 			if($this->_connection->enableProfiling)
 				Yii::endProfile('system.db.CDbCommand.query('.$this->getText().')','system.db.CDbCommand.query');
 			Yii::log('Error in querying SQL: '.$this->getText().$par,CLogger::LEVEL_ERROR,'system.db.CDbCommand');
+            $errorInfo = $e instanceof PDOException ? $e->errorInfo : null;
 			throw new CDbException(Yii::t('yii','CDbCommand failed to execute the SQL statement: {error}',
-				array('{error}'=>$e->getMessage())));
+				array('{error}'=>$e->getMessage())),(int)$e->getCode(),$errorInfo);
 		}
 	}
 }
@@ -7790,6 +7922,7 @@ abstract class CValidator extends CComponent
 	public $message;
 	public $skipOnError=false;
 	public $on;
+	public $safe=true;
 	abstract protected function validateAttribute($object,$attribute);
 	public static function createValidator($name,$object,$attributes,$params)
 	{

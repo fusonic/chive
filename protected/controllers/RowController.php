@@ -314,7 +314,6 @@ class RowController extends Controller
 
 	public function actionEdit() 
 	{
-		
 		$attributes = json_decode(Yii::app()->getRequest()->getParam('attributes'), true);
 		
 		$row = Row::model()->findByAttributes($attributes);

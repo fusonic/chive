@@ -48,7 +48,7 @@ Yii::import('CHtml',true);
  * {@link CApplication::getErrorHandler()}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CErrorHandler.php 2201 2010-06-16 19:11:00Z alexander.makarow $
+ * @version $Id: CErrorHandler.php 2426 2010-09-05 12:51:26Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -140,6 +140,7 @@ class CErrorHandler extends CApplicationComponent
 			$this->_error=$data=array(
 				'code'=>($exception instanceof CHttpException)?$exception->statusCode:500,
 				'type'=>get_class($exception),
+				'errorCode'=>$exception->getCode(),
 				'message'=>$exception->getMessage(),
 				'file'=>$fileName,
 				'line'=>$errorLine,
@@ -213,7 +214,7 @@ class CErrorHandler extends CApplicationComponent
 	protected function getExactTrace($exception)
 	{
 		$traces=$exception->getTrace();
-		
+
 		foreach($traces as $trace)
 		{
 			// property access exception

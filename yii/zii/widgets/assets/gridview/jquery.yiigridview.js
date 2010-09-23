@@ -5,7 +5,7 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: jquery.yiigridview.js 188 2010-06-17 15:49:00Z qiang.xue $
+ * @version $Id: jquery.yiigridview.js 208 2010-08-06 20:03:22Z qiang.xue $
  */
 
 ;(function($) {
@@ -40,8 +40,7 @@
 			}
 
 			var inputSelector='#'+id+' .'+settings.filterClass+' input, '+'#'+id+' .'+settings.filterClass+' select';
-			// temporary fix for the bug of supporting live change in IE
-			$(inputSelector).live($.browser.msie ? 'click keyup' : 'change', function(){
+			$('body').delegate(inputSelector, 'change', function(){
 				var data = $.param($(inputSelector));
 				$.fn.yiiGridView.update(id, {data: data});
 			});

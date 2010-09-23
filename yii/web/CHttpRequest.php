@@ -22,7 +22,7 @@
  * accessed via {@link CWebApplication::getRequest()}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CHttpRequest.php 2171 2010-06-07 17:58:21Z qiang.xue $
+ * @version $Id: CHttpRequest.php 2278 2010-07-21 14:08:46Z qiang.xue $
  * @package system.web
  * @since 1.0
  */
@@ -313,13 +313,16 @@ class CHttpRequest extends CApplicationComponent
 	 * This refers to the part that is after the entry script and before the question mark.
 	 * The starting and ending slashes are stripped off.
 	 * @return string part of the request URL that is after the entry script and before the question mark.
+	 * Note, the returned pathinfo is decoded starting from 1.1.4.
+	 * Prior to 1.1.4, whether it is decoded or not depends on the server configuration
+	 * (in most cases it is not decoded).
 	 * @throws CException if the request URI cannot be determined due to improper server configuration
 	 */
 	public function getPathInfo()
 	{
 		if($this->_pathInfo===null)
 		{
-			$requestUri=$this->getRequestUri();
+			$requestUri=urldecode($this->getRequestUri());
 			$scriptUrl=$this->getScriptUrl();
 			$baseUrl=$this->getBaseUrl();
 			if(strpos($requestUri,$scriptUrl)===0)
@@ -721,7 +724,7 @@ class CHttpRequest extends CApplicationComponent
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CHttpRequest.php 2171 2010-06-07 17:58:21Z qiang.xue $
+ * @version $Id: CHttpRequest.php 2278 2010-07-21 14:08:46Z qiang.xue $
  * @package system.web
  * @since 1.0
  */
@@ -760,8 +763,8 @@ class CCookieCollection extends CMap
 			$sm=Yii::app()->getSecurityManager();
 			foreach($_COOKIE as $name=>$value)
 			{
-				if(($value=$sm->validateData($value))!==false)
-					$cookies[$name]=new CHttpCookie($name,$value);
+				if(is_string($value) && ($value=$sm->validateData($value))!==false)
+					$cookies[$name]=new CHttpCookie($name,@unserialize($value));
 			}
 		}
 		else
@@ -818,7 +821,7 @@ class CCookieCollection extends CMap
 	{
 		$value=$cookie->value;
 		if($this->_request->enableCookieValidation)
-			$value=Yii::app()->getSecurityManager()->hashData($value);
+			$value=Yii::app()->getSecurityManager()->hashData(serialize($value));
 		if(version_compare(PHP_VERSION,'5.2.0','>='))
 			setcookie($cookie->name,$value,$cookie->expire,$cookie->path,$cookie->domain,$cookie->secure,$cookie->httpOnly);
 		else

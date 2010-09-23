@@ -15,7 +15,7 @@
  * CFilterChain executes the filter list by {@link run()}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFilterChain.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CFilterChain.php 2377 2010-08-30 16:11:20Z qiang.xue $
  * @package system.web.filters
  * @since 1.0
  */
@@ -66,10 +66,10 @@ class CFilterChain extends CList
 				{
 					$matched=preg_match("/\b{$actionID}\b/i",substr($filter,$pos+1))>0;
 					if(($filter[$pos]==='+')===$matched)
-						$chain->add(CInlineFilter::create($controller,trim(substr($filter,0,$pos))));
+						$filter=CInlineFilter::create($controller,trim(substr($filter,0,$pos)));
 				}
 				else
-					$chain->add(CInlineFilter::create($controller,$filter));
+					$filter=CInlineFilter::create($controller,$filter);
 			}
 			else if(is_array($filter))  // array('path.to.class [+|- action1, action2]','param1'=>'value1',...)
 			{
@@ -86,10 +86,14 @@ class CFilterChain extends CList
 						continue;
 				}
 				$filter['class']=$filterClass;
-				$chain->add(Yii::createComponent($filter));
+				$filter=Yii::createComponent($filter);
 			}
-			else
+
+			if(is_object($filter))
+			{
+				$filter->init();
 				$chain->add($filter);
+			}
 		}
 		return $chain;
 	}

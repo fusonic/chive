@@ -12,7 +12,7 @@
  * CMysqlColumnSchema class describes the column meta data of a MySQL table.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMysqlColumnSchema.php 2130 2010-05-13 00:24:11Z qiang.xue $
+ * @version $Id: CMysqlColumnSchema.php 2298 2010-08-02 15:31:37Z qiang.xue $
  * @package system.db.schema.mysql
  * @since 1.0
  */
@@ -30,7 +30,7 @@ class CMysqlColumnSchema extends CDbColumnSchema
 			$this->type='double';
 		else if(strpos($dbType,'bool')!==false)
 			$this->type='boolean';
-		else if(strpos($dbType,'bigint')===false && strpos($dbType,'unsigned int')===false && (strpos($dbType,'int')!==false || strpos($dbType,'bit')!==false))
+		else if(strpos($dbType,'int')===0 && strpos($dbType,'unsigned')===false || preg_match('/(bit|tinyint|smallint|mediumint)/',$dbType))
 			$this->type='integer';
 		else
 			$this->type='string';

@@ -6,14 +6,14 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: ShellCommand.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: ShellCommand.php 2330 2010-08-24 19:29:13Z qiang.xue $
  */
 
 /**
  * ShellCommand executes the specified Web application and provides a shell for interaction.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: ShellCommand.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: ShellCommand.php 2330 2010-08-24 19:29:13Z qiang.xue $
  * @package system.cli.commands
  * @since 1.0
  */
@@ -130,10 +130,13 @@ EOD;
 		if(($_path_=@getenv('YIIC_SHELL_COMMAND_PATH'))!==false)
 			$_runner_->addCommands($_path_);
 		$_commands_=$_runner_->commands;
+		$log=Yii::app()->log;
 
 		while(($_line_=$this->readline("\n>> "))!==false)
 		{
 			$_line_=trim($_line_);
+			if($_line_==='exit')
+				return;
 			try
 			{
 				$_args_=preg_split('/[\s,]+/',rtrim($_line_,';'),-1,PREG_SPLIT_NO_EMPTY);

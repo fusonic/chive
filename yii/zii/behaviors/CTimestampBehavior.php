@@ -36,7 +36,7 @@
  * you may specify a custom value to use instead via {@link timestampExpression}
  * 
  * @author Jonah Turnquist <poppitypop@gmail.com>
- * @version $Id: CTimestampBehavior.php 99 2010-01-07 20:55:13Z qiang.xue $
+ * @version $Id: CTimestampBehavior.php 2326 2010-08-20 17:02:07Z qiang.xue $
  * @package zii.behaviors
  * @since 1.1
  */

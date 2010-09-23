@@ -14,7 +14,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @author Christophe Boulain <Christophe.Boulain@gmail.com>
- * @version $Id: CMssqlSchema.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CMssqlSchema.php 2397 2010-08-31 17:59:52Z qiang.xue $
  * @package system.db.schema.mssql
  * @since 1.0.4
  */
@@ -238,8 +238,7 @@ EOD;
 			$c->isForeignKey=isset($table->foreignKeys[$c->name]);
 			$table->columns[$c->name]=$c;
 			if ($column['IsIdentity']==1 && $table->sequenceName===null)
-				$table->sequenceName='';
-
+				$table->sequenceName=$table->name;
 		}
 		return true;
 	}
@@ -281,7 +280,7 @@ EOD;
 			$schema=self::DEFAULT_SCHEMA;
 		$sql=<<<EOD
 SELECT TABLE_NAME, TABLE_SCHEMA FROM [INFORMATION_SCHEMA].[TABLES]
-WHERE TABLE_TYPE='BASE TABLE' AND TABLE_SCHEMA=:schema
+WHERE TABLE_SCHEMA=:schema
 EOD;
 		$command=$this->getDbConnection()->createCommand($sql);
 		$command->bindParam(":schema", $schema);

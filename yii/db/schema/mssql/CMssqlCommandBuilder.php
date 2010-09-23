@@ -16,26 +16,12 @@
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @author Christophe Boulain <Christophe.Boulain@gmail.com>
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: CMssqlCommandBuilder.php 1906 2010-03-14 05:14:31Z qiang.xue $
+ * @version $Id: CMssqlCommandBuilder.php 2387 2010-08-30 21:41:43Z qiang.xue $
  * @package system.db.schema.mssql
  * @since 1.0.4
  */
 class CMssqlCommandBuilder extends CDbCommandBuilder
 {
-   	/**
-	 * Returns the last insertion ID for the specified table.
-	 * Override parent implemantation since PDO mssql driver does not provide this method
-	 * @param CDbTableSchema the table metadata
-	 * @return mixed last insertion id. Null is returned if no sequence name.
-	 */
-	public function getLastInsertID($table)
-	{
-		if($table->sequenceName!==null)
-			return $this->getDbConnection()->createCommand('SELECT SCOPE_IDENTITY()')->queryScalar();
-		else
-			return null;
-	}
-
 	/**
 	 * Creates a COUNT(*) command for a single table.
 	 * Override parent implementation to remove the order clause of criteria if it exists

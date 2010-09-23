@@ -79,7 +79,7 @@
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbConnection.php 2095 2010-05-05 01:03:32Z qiang.xue $
+ * @version $Id: CDbConnection.php 2397 2010-08-31 17:59:52Z qiang.xue $
  * @package system.db
  * @since 1.0
  */
@@ -267,12 +267,12 @@ class CDbConnection extends CApplicationComponent
 				if(YII_DEBUG)
 				{
 					throw new CDbException(Yii::t('yii','CDbConnection failed to open the DB connection: {error}',
-						array('{error}'=>$e->getMessage())));
+						array('{error}'=>$e->getMessage())),(int)$e->getCode(),$e->errorInfo);
 				}
 				else
 				{
 					Yii::log($e->getMessage(),CLogger::LEVEL_ERROR,'exception.CDbException');
-					throw new CDbException(Yii::t('yii','CDbConnection failed to open the DB connection.'));
+					throw new CDbException(Yii::t('yii','CDbConnection failed to open the DB connection.'),(int)$e->getCode(),$e->errorInfo);
 				}
 			}
 		}
@@ -323,7 +323,8 @@ class CDbConnection extends CApplicationComponent
 			$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES,true);
 		if($this->charset!==null)
 		{
-			if(strcasecmp($pdo->getAttribute(PDO::ATTR_DRIVER_NAME),'sqlite'))
+			$driver=strtolower($pdo->getAttribute(PDO::ATTR_DRIVER_NAME));
+			if(!in_array($driver,array('sqlite','mssql','dblib','sqlsrv')))
 				$pdo->exec('SET NAMES '.$pdo->quote($this->charset));
 		}
 		if($this->initSQLs!==null)
@@ -409,6 +410,7 @@ class CDbConnection extends CApplicationComponent
 					return $this->_schema=new CSqliteSchema($this);
 				case 'mssql': // Mssql driver on windows hosts
 				case 'dblib': // dblib drivers on linux (and maybe others os) hosts
+				case 'sqlsrv':
 					return $this->_schema=new CMssqlSchema($this);
 				case 'oci':  // Oracle driver
 					return $this->_schema=new COciSchema($this);

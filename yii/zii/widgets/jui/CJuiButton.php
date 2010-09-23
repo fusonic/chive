@@ -43,7 +43,7 @@ Yii::import('zii.widgets.jui.CJuiInputWidget');
  * for possible options (name-value pairs).
  *
  * @author Sebastian Thierer <sebathi@gmail.com>
- * @version $Id: CJuiButton.php 174 2010-05-06 14:51:15Z qiang.xue $
+ * @version $Id: CJuiButton.php 2326 2010-08-20 17:02:07Z qiang.xue $
  * @package zii.widgets.jui
  * @since 1.1.3
  */

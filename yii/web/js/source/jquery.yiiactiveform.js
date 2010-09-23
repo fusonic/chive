@@ -5,7 +5,7 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: jquery.yiiactiveform.js 2096 2010-05-05 04:21:30Z qiang.xue $
+ * @version $Id: jquery.yiiactiveform.js 2394 2010-08-31 11:41:23Z qiang.xue $
  * @since 1.1.1
  */
 
@@ -38,6 +38,7 @@
 			});
 			$(this).data('settings', settings);
 
+			var submitting=false;  // whether it is waiting for ajax submission result
 			var validate = function(attribute, forceValidate) {
 				if (forceValidate)
 					attribute.status = 2;
@@ -55,6 +56,8 @@
 				}
 
 				settings.timer = setTimeout(function(){
+					if(submitting)
+						return;
 					if(attribute.beforeValidateAttribute==undefined || attribute.beforeValidateAttribute($form, attribute)) {
 						$.each(settings.attributes, function(){
 							if (this.status == 2) {
@@ -102,6 +105,10 @@
 				$form.submit(function(){
 					if (validated)
 						return true;
+					if(settings.timer!=undefined) {
+						clearTimeout(settings.timer);
+					}
+					submitting=true;
 					if(settings.beforeValidate==undefined || settings.beforeValidate($form)) {
 						$.fn.yiiactiveform.validate($form, function(data){
 							var hasError = false;
@@ -118,13 +125,20 @@
 										$button.click();
 									else  // no submit button in the form
 										$form.submit();
+									return false;
 								}
 							}
+							submitting=false;
 						});
+					}
+					else {
+						submitting=false;
 					}
 					return false;
 				});
 			}
+			if(settings.focus != undefined && !window.location.hash)
+				$(settings.focus).focus();
 		});
 	};
 
@@ -232,7 +246,7 @@
 	$.fn.yiiactiveform.defaults = {
 		ajaxVar: 'ajax',
 		validationUrl: undefined,
-		validationDelay: 100,
+		validationDelay: 200,
 		validateOnSubmit : false,
 		validateOnChange : true,
 		validateOnType : false,
@@ -254,7 +268,8 @@
 		 *     errorID : 'error-tag-id',
 		 *     value : undefined,
 		 *     status : 0,  // 0: empty, not entered before,  1: validated, 2: pending validation, 3: validating
-		 *     validationDelay: 100,
+		 *     focus : undefined,  // jquery selector that indicates which element to receive input focus initially
+		 *     validationDelay: 200,
 		 *     validateOnChange : true,
 		 *     validateOnType : false,
 		 *     hideErrorMessage : false,

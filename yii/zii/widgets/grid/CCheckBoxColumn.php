@@ -22,7 +22,7 @@ Yii::import('zii.widgets.grid.CGridColumn');
  * {@link value}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCheckBoxColumn.php 183 2010-06-07 01:44:43Z qiang.xue $
+ * @version $Id: CCheckBoxColumn.php 2399 2010-09-01 12:56:08Z qiang.xue $
  * @package zii.widgets.grid
  * @since 1.1
  */
@@ -41,6 +41,14 @@ class CCheckBoxColumn extends CGridColumn
 	 * and <code>$this</code> the column object.
 	 */
 	public $value;
+	/**
+	 * @var string a PHP expression that will be evaluated for every data cell and whose result will
+	 * determine if checkbox for each data cell is checked. In this expression, the variable
+	 * <code>$row</code> the row number (zero-based); <code>$data</code> the data model for the row;
+	 * and <code>$this</code> the column object.
+	 * @since 1.1.4
+	 */
+	public $checked;
 	/**
 	 * @var array the HTML options for the data cell tags.
 	 */
@@ -64,7 +72,11 @@ class CCheckBoxColumn extends CGridColumn
 	 */
 	public function init()
 	{
-		$name="{$this->id}\\[\\]";
+		$name=isset($this->checkBoxHtmlOptions['name']) ? $this->checkBoxHtmlOptions['name'] : $this->id;
+		if(substr($name,-2)!=='[]')
+			$name.='[]';
+		$this->checkBoxHtmlOptions['name']=$name;
+		$name=strtr($name,array('['=>"\\[",']'=>"\\]"));
 		if($this->grid->selectableRows==1)
 			$one="\n\tjQuery(\"input:not(#\"+$(this).attr('id')+\")[name='$name']\").attr('checked',false);";
 		else
@@ -109,9 +121,16 @@ EOD;
 			$value=CHtml::value($data,$this->name);
 		else
 			$value=$this->grid->dataProvider->keys[$row];
+
+		$checked = false;
+		if($this->checked!==null)
+			$checked=$this->evaluateExpression($this->checked,array('data'=>$data,'row'=>$row));
+
 		$options=$this->checkBoxHtmlOptions;
+		$name=$options['name'];
+		unset($options['name']);
 		$options['value']=$value;
 		$options['id']=$this->id.'_'.$row;
-		echo CHtml::checkBox($this->id.'[]',false,$options);
+		echo CHtml::checkBox($name,$checked,$options);
 	}
 }

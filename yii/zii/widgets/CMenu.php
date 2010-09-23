@@ -33,7 +33,7 @@
  *
  * @author Jonah Turnquist <poppitypop@gmail.com>
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMenu.php 185 2010-06-16 20:56:20Z qiang.xue $
+ * @version $Id: CMenu.php 2326 2010-08-20 17:02:07Z qiang.xue $
  * @package zii.widgets
  * @since 1.1
  */
@@ -104,6 +104,27 @@ class CMenu extends CWidget
 	 * @var array HTML attributes for the submenu's container tag.
 	 */
 	public $submenuHtmlOptions=array();
+	/**
+	 * @var string the HTML element name that will be used to wrap the label of all menu links.
+	 * For example, if this property is set as 'span', a menu item may be rendered as
+	 * &lt;li&gt;&lt;a href="url"&gt;&lt;span&gt;label&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+	 * This is useful when implementing menu items using the sliding window technique.
+	 * Defaults to null, meaning no wrapper tag will be generated.
+	 * @since 1.1.4
+	 */
+	public $linkLabelWrapper;
+	/**
+	 * @var string the CSS class that will be assigned to the first item in the main menu or each submenu.
+	 * Defaults to null, meaning no such CSS class will be assigned.
+	 * @since 1.1.4
+	 */
+	public $firstItemCssClass;
+	/**
+	 * @var string the CSS class that will be assigned to the last item in the main menu or each submenu.
+	 * Defaults to null, meaning no such CSS class will be assigned.
+	 * @since 1.1.4
+	 */
+	public $lastItemCssClass;
 
 	/**
 	 * Initializes the menu widget.
@@ -146,11 +167,33 @@ class CMenu extends CWidget
 	 */
 	protected function renderMenuRecursive($items)
 	{
+		$count=0;
+		$n=count($items);
 		foreach($items as $item)
 		{
-			echo CHtml::openTag('li', isset($item['itemOptions']) ? $item['itemOptions'] : array());
+			$count++;
+			$options=isset($item['itemOptions']) ? $item['itemOptions'] : array();
+			$class=array();
+			if($item['active'] && $this->activeCssClass!='')
+				$class[]=$this->activeCssClass;
+			if($count===1 && $this->firstItemCssClass!='')
+				$class[]=$this->firstItemCssClass;
+			if($count===$n && $this->lastItemCssClass!='')
+				$class[]=$this->lastItemCssClass;
+			if($class!==array())
+			{
+				if(empty($options['class']))
+					$options['class']=implode(' ',$class);
+				else
+					$options['class'].=' '.implode(' ',$class);
+			}
+			echo CHtml::openTag('li', $options);
+
 			if(isset($item['url']))
-				$menu=CHtml::link($item['label'],$item['url'],isset($item['linkOptions']) ? $item['linkOptions'] : array());
+			{
+				$label=$this->linkLabelWrapper===null ? $item['label'] : '<'.$this->linkLabelWrapper.'>'.$item['label'].'</'.$this->linkLabelWrapper.'>';
+				$menu=CHtml::link($label,$item['url'],isset($item['linkOptions']) ? $item['linkOptions'] : array());
+			}
 			else
 				$menu=CHtml::tag('span',isset($item['linkOptions']) ? $item['linkOptions'] : array(), $item['label']);
 			if(isset($this->itemTemplate) || isset($item['template']))
@@ -204,13 +247,6 @@ class CMenu extends CWidget
 			}
 			else if($item['active'])
 				$active=true;
-			if($items[$i]['active'] && $this->activeCssClass!='')
-			{
-				if(isset($item['itemOptions']['class']))
-					$items[$i]['itemOptions']['class'].=' '.$this->activeCssClass;
-				else
-					$items[$i]['itemOptions']['class']=$this->activeCssClass;
-			}
 		}
 		return array_values($items);
 	}

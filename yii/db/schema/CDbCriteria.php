@@ -12,11 +12,11 @@
  * CDbCriteria represents a query criteria, such as conditions, ordering by, limit/offset.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCriteria.php 2222 2010-06-24 19:00:27Z qiang.xue $
+ * @version $Id: CDbCriteria.php 2413 2010-09-02 02:19:56Z qiang.xue $
  * @package system.db.schema
  * @since 1.0
  */
-class CDbCriteria
+class CDbCriteria extends CComponent
 {
 	const PARAM_PREFIX=':ycp';
 	/**
@@ -95,6 +95,22 @@ class CDbCriteria
 	 * @var string the alias name of the table. If not set, it means the alias is 't'.
 	 */
 	public $alias;
+	/**
+	 * @var boolean whether the foreign tables should be joined with the primary table in a single SQL.
+	 * This property is only used in relational AR queries.
+	 *
+	 * When this property is set true, only a single SQL will be executed for a relational AR query,
+	 * even if the primary table is limited and the relationship between a foreign table and the primary
+	 * table is many-to-one.
+	 *
+	 * When this property is set false, a SQL statement will be executed for each HAS_MANY relation.
+	 *
+	 * When this property is not set, if the primary table is limited, a SQL statement will be executed for each HAS_MANY relation.
+	 * Otherwise, a single SQL statement will be executed for all.
+	 *
+	 * @since 1.1.4
+	 */
+	public $together;
 
 	/**
 	 * Constructor.
@@ -315,7 +331,7 @@ class CDbCriteria
 		else
 			$value="$value";
 
-		if(preg_match('/^\s*(<>|<=|>=|<|>|=)?\s*(.*?)\s*$/',$value,$matches))
+		if(preg_match('/^(?:\s*(<>|<=|>=|<|>|=))?(.*)$/',$value,$matches))
 		{
 			$value=$matches[2];
 			$op=$matches[1];
@@ -460,6 +476,9 @@ class CDbCriteria
 		if($criteria->distinct>0)
 			$this->distinct=$criteria->distinct;
 
+		if($criteria->together!==null)
+			$this->together=$criteria->together;
+
 		if(empty($this->with))
 			$this->with=$criteria->with;
 		else if(!empty($criteria->with))
@@ -473,7 +492,7 @@ class CDbCriteria
 	public function toArray()
 	{
 		$result=array();
-		foreach(array('select', 'condition', 'params', 'limit', 'offset', 'order', 'group', 'join', 'having', 'distinct', 'with', 'alias') as $name)
+		foreach(array('select', 'condition', 'params', 'limit', 'offset', 'order', 'group', 'join', 'having', 'distinct', 'with', 'alias', 'together') as $name)
 			$result[$name]=$this->$name;
 		return $result;
 	}

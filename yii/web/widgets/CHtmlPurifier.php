@@ -8,8 +8,11 @@
  * @license http://www.yiiframework.com/license/
  */
 
-require_once(Yii::getPathOfAlias('system.vendors.htmlpurifier').DIRECTORY_SEPARATOR.'HTMLPurifier.standalone.php');
-HTMLPurifier_Bootstrap::registerAutoload();
+if(!class_exists('HTMLPurifier_Bootstrap',false))
+{
+	require_once(Yii::getPathOfAlias('system.vendors.htmlpurifier').DIRECTORY_SEPARATOR.'HTMLPurifier.standalone.php');
+	HTMLPurifier_Bootstrap::registerAutoload();
+}
 
 /**
  * CHtmlPurifier is wrapper of {@link http://htmlpurifier.org HTML Purifier}.
@@ -24,8 +27,23 @@ HTMLPurifier_Bootstrap::registerAutoload();
  * You should consider either caching the purification result or purifying the user input
  * before saving to database.
  *
+ * Usage as a class:
+ * <pre>
+ * $p = new CHtmlPurifier();
+ * $p->options = array('URI.AllowedSchemes'=>array(
+ *   'http' => true,
+ *   'https' => true,
+ * ));
+ * $text = $p->purify($text);
+ * </pre>
+ *
+ * Usage as validation rule:
+ * <pre>
+ * array('text','filter','filter'=>array($obj=new CHtmlPurifier(),'purify')),
+ * </pre>
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CHtmlPurifier.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CHtmlPurifier.php 2344 2010-08-28 04:05:49Z qiang.xue $
  * @package system.web.widgets
  * @since 1.0
  */

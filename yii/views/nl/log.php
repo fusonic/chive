@@ -6,7 +6,7 @@
     <tr style="background-color: #ccc;">
         <th style="width:120px">Tijd</th>
         <th>Niveau</th>
-        <th>Categore</th>
+        <th>Categorie</th>
         <th>Bericht</th>
     </tr>
 <?php

@@ -58,7 +58,7 @@
  * For object-based filters, the '+' and '-' operators are following the class name.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CController.php 2237 2010-07-02 16:10:48Z qiang.xue $
+ * @version $Id: CController.php 2419 2010-09-03 09:08:49Z mdomba $
  * @package system.web
  * @since 1.0
  */
@@ -978,7 +978,7 @@ class CController extends CBaseController
 	}
 
 	/**
-	 * @return whether the caching stack is empty. If not empty, it means currently there are
+	 * @return boolean whether the caching stack is empty. If not empty, it means currently there are
 	 * some output cache in effect. Note, the return result of this method may change when it is
 	 * called in different output regions, depending on the partition of output caches.
 	 * @since 1.0.5
