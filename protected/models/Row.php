@@ -57,13 +57,17 @@ class Row extends CActiveRecord
 	 * @see CActiveRecord::instantiate()
 	 */
 	public function instantiate($attributes)
-	{	
-		SqlUtil::FixRow($attributes);
-		
+	{
 		$res = parent::instantiate($attributes);
 		$res->originalAttributes = $attributes;
 
 		return $res;
+	}
+	
+	public function populateRecord($attributes,$callAfterFind=true)
+	{
+		SqlUtil::FixRow($attributes);
+		return parent::populateRecord($attributes, $callAfterFind);
 	}
 
 	/**
