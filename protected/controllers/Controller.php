@@ -95,7 +95,7 @@ class Controller extends CController
 	{
 		if($route{0} == '#')
 		{
-			if(($query = CUrlManager::createPathInfo($params, '=', $ampersand)) !== '')
+			if(($query = Yii::app()->getUrlManager()->createPathInfo($params, '=', $ampersand)) !== '')
 			{
 				return $route . '?' . $query;
 			}

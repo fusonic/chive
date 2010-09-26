@@ -27,7 +27,7 @@
  * the validator name being "sticky".
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCodeModel.php 2023 2010-04-07 00:41:20Z qiang.xue $
+ * @version $Id: CCodeModel.php 2416 2010-09-02 14:56:54Z qiang.xue $
  * @package system.gii
  * @since 1.1.2
  */
@@ -108,6 +108,16 @@ abstract class CCodeModel extends CFormModel
 					$this->addError('template', "Unable to find the required code template file '$template'.");
 			}
 		}
+	}
+
+	/**
+	 * Checks if the named class exists (in a case sensitive manner).
+	 * @param string class name to be checked
+	 * @return boolean whether the class exists
+	 */
+	public function classExists($name)
+	{
+		return class_exists($name,false) && in_array($name, get_declared_classes());
 	}
 
 	/**
@@ -350,5 +360,18 @@ abstract class CCodeModel extends CFormModel
 	{
 		$result=trim(strtolower(str_replace('_',' ',preg_replace('/(?<![A-Z])[A-Z]/', ' \0', $name))));
 		return $ucwords ? ucwords($result) : $result;
+	}
+
+	/**
+	 * Converts a class name into a variable name with the first letter in lower case.
+	 * This method is provided because lcfirst() PHP function is only available for PHP 5.3+.
+	 * @param string the class name
+	 * @return string the variable name converted from the class name
+	 * @since 1.1.4
+	 */
+	public function class2var($name)
+	{
+		$name[0]=strtolower($name[0]);
+		return $name;
 	}
 }

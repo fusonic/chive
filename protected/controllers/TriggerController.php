@@ -85,7 +85,6 @@ class TriggerController extends Controller
 				. 'END';
 		}
 
-		CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3);
 		$this->render('form', array(
 			'trigger' => $trigger,
 			'query' => $query,
@@ -175,8 +174,7 @@ class TriggerController extends Controller
 			$query = 'DROP TRIGGER ' . $this->db->quoteTableName($trigger->TRIGGER_NAME) . self::$delimiter . "\n"
 				. $trigger->getCreateTrigger();
 		}
-
-		CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3);
+		
 		$this->render('form', array(
 			'trigger' => $trigger,
 			'query' => $query,

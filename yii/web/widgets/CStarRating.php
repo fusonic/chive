@@ -24,7 +24,7 @@
  * CStarRating allows customization of its appearance. It also supports empty rating as well as read-only rating.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CStarRating.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CStarRating.php 2251 2010-07-08 21:26:48Z qiang.xue $
  * @package system.web.widgets
  * @since 1.0
  */
@@ -157,9 +157,14 @@ class CStarRating extends CInputWidget
 	{
 		$inputCount=(int)(($this->maxRating-$this->minRating)/$this->ratingStepSize+1);
 		$starSplit=(int)($inputCount/$this->starCount);
-		$attr=$this->attribute;
-		CHtml::resolveName($this->model,$attr);
-		$selection=$this->hasModel() ? $this->model->$attr : $this->value;
+		if($this->hasModel())
+		{
+			$attr=$this->attribute;
+			CHtml::resolveName($this->model,$attr);
+			$selection=$this->model->$attr;
+		}
+		else
+			$selection=$this->value;
 		$options=$starSplit>1 ? array('class'=>"{split:{$starSplit}}") : array();
 		for($value=$this->minRating, $i=0;$i<$inputCount; ++$i, $value+=$this->ratingStepSize)
 		{

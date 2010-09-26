@@ -14,7 +14,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @author Christophe Boulain <Christophe.Boulain@gmail.com>
- * @version $Id: CMssqlColumnSchema.php 2047 2010-04-13 01:52:10Z qiang.xue $
+ * @version $Id: CMssqlColumnSchema.php 2380 2010-08-30 16:28:10Z qiang.xue $
  * @package system.db.schema.mssql
  * @since 1.0.4
  */
@@ -51,5 +51,18 @@ class CMssqlColumnSchema extends CDbColumnSchema
 	 */
 	protected function extractLimit($dbType)
 	{
+	}
+
+	/**
+	 * Converts the input value to the type that this column is of.
+	 * @param mixed input value
+	 * @return mixed converted value
+	 */
+	public function typecast($value)
+	{
+		if($this->type==='boolean')
+			return $value ? 1 : 0;
+		else
+			return parent::typecast($value);
 	}
 }

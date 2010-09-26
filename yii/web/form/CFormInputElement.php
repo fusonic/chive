@@ -35,7 +35,7 @@
  * generating the input or initial values of the widget properties.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFormInputElement.php 1896 2010-03-13 14:11:24Z qiang.xue $
+ * @version $Id: CFormInputElement.php 2411 2010-09-01 20:21:57Z qiang.xue $
  * @package system.web.form
  * @since 1.1
  */
@@ -61,7 +61,7 @@ class CFormInputElement extends CFormElement
 	/**
 	 * @var string the type of this input. This can be a widget class name, a path alias of a widget class name,
 	 * or a input type alias (text, hidden, password, textarea, file, radio, checkbox, listbox, dropdownlist, checkboxlist, or radiolist).
-	 * If a widget class, it must extend from {@link CInputWidget}.
+	 * If a widget class, it must extend from {@link CInputWidget} or (@link CJuiInputWidget).
 	 */
 	public $type;
 	/**
@@ -150,7 +150,7 @@ class CFormInputElement extends CFormElement
 			'{label}'=>$this->renderLabel(),
 			'{input}'=>$this->renderInput(),
 			'{hint}'=>$this->renderHint(),
-			'{error}'=>$this->renderError(),
+			'{error}'=>$this->getParent()->showErrorSummary ? '' : $this->renderError(),
 		);
 		return strtr($this->layout,$output);
 	}

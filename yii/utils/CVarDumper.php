@@ -20,7 +20,7 @@
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CVarDumper.php 2100 2010-05-05 21:39:14Z qiang.xue $
+ * @version $Id: CVarDumper.php 2407 2010-09-01 18:05:24Z qiang.xue $
  * @package system.utils
  * @since 1.0
  */
@@ -80,7 +80,7 @@ class CVarDumper
 				self::$_output.="$var";
 				break;
 			case 'string':
-				self::$_output.="'$var'";
+				self::$_output.="'".addslashes($var)."'";
 				break;
 			case 'resource':
 				self::$_output.='{resource}';

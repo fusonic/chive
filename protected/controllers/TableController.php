@@ -236,8 +236,6 @@ class TableController extends Controller
 			'order' => 'COLLATION_NAME',
 			'select' => 'COLLATION_NAME, CHARACTER_SET_NAME AS collationGroup'
 			));
-
-		CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3);
 		
 		$data = array(
 			'table' => $table,
@@ -474,8 +472,7 @@ class TableController extends Controller
 			'order' => 'COLLATION_NAME',
 			'select'=>'COLLATION_NAME, CHARACTER_SET_NAME AS collationGroup'
 			));
-
-			CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3);
+			
 			$this->render('form', array(
 				'table' => $table,
 				'collations' => $collations,

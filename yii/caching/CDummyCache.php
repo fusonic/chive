@@ -11,10 +11,13 @@
 /**
  * CDummyCache is a placeholder cache component.
  *
- * CDummyCache does not do/cache anything. It is used as the default 'cache' application component.
+ * CDummyCache does not cache anything. It is provided so that one can always configure
+ * a 'cache' application component and he does not need to check if Yii::app()->cache is null or not.
+ * By replacing CDummyCache with some other cache component, one can quickly switch from
+ * non-caching mode to caching mode.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDummyCache.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CDummyCache.php 2327 2010-08-20 17:06:54Z qiang.xue $
  * @package system.caching
  * @since 1.0
  */

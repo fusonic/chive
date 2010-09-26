@@ -101,7 +101,12 @@
 						<th></th>
 					<?php } ?>
 					<?php foreach ($model->getColumns ()AS $column) { ?>
-						<th><?php echo ($model->getQueryType() == 'select' ? $model->getSort()->link($column) : $column); ?></th>
+						<th>
+							<?php echo ($model->getQueryType() == 'select' ? $model->getSort()->link($column) : $column); ?>
+							<a href="javascript:void(0);" class="icon" onclick="globalBrowse.editRow(<?php echo $i; ?>);">
+									<?php echo Html::icon('search', 16, false, 'core.edit'); ?>
+								</a>
+						</th>
 					<?php } ?>
 				</tr>
 			</thead>

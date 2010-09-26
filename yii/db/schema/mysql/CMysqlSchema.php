@@ -12,15 +12,12 @@
  * CMysqlSchema is the class for retrieving metadata information from a MySQL database (version 4.1.x and 5.x).
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMysqlSchema.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CMysqlSchema.php 2262 2010-07-14 21:47:16Z qiang.xue $
  * @package system.db.schema.mysql
  * @since 1.0
  */
 class CMysqlSchema extends CDbSchema
 {
-	private $_tableNames;
-	private $_schemaNames;
-
 	/**
 	 * Quotes a table name for use in a query.
 	 * @param string table name
@@ -202,7 +199,6 @@ class CMysqlSchema extends CDbSchema
 			if(preg_match_all($regexp,$sql,$matches,PREG_SET_ORDER))
 				break;
 		}
-		$foreign = array();
 		foreach($matches as $match)
 		{
 			$keys=array_map('trim',explode(',',str_replace('`','',$match[1])));

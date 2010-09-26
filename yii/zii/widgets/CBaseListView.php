@@ -14,7 +14,7 @@
  * CBaseListView implements the common features needed by a view wiget for rendering multiple models.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CBaseListView.php 196 2010-06-28 21:44:54Z qiang.xue $
+ * @version $Id: CBaseListView.php 2326 2010-08-20 17:02:07Z qiang.xue $
  * @package zii.widgets
  * @since 1.1
  */

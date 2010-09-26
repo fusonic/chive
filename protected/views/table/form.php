@@ -1,6 +1,6 @@
 <?php if(!$table->isNewRecord && $isSubmitted) { ?>
 	<script type="text/javascript">
-	var idPrefix = '<?php echo CHtml::$idPrefix; ?>';
+	var idPrefix = '<?php echo CHtml::ID_PREFIX; ?>';
 	var row = $('#' + idPrefix).parents("tr").prev();
 	row.attr('id', 'tables_<?php echo $table->TABLE_NAME; ?>');
 	row.children('td:eq(1)').children('a').html('<?php echo $table->TABLE_NAME; ?>').attr('href', '#tables/<?php echo $table->TABLE_NAME; ?>/structure');
@@ -20,7 +20,7 @@
 	</script>
 <?php } ?>
 
-<?php echo CHtml::form('', 'post', array('id' => CHtml::$idPrefix)); ?>
+<?php echo CHtml::form('', 'post', array('id' => CHtml::ID_PREFIX)); ?>
 	<h1>
 		<?php echo Yii::t('core', ($table->isNewRecord ? 'addTable' : 'editTable')); ?>
 	</h1>
@@ -109,8 +109,8 @@
 </form>
 
 <script type="text/javascript">
-tableForm.create('<?php echo CHtml::$idPrefix; ?>');
+tableForm.create('<?php echo CHtml::ID_PREFIX; ?>');
 <?php if($table->isNewRecord) { ?>
-	columnForm.create('<?php echo CHtml::$idPrefix; ?>');
+	columnForm.create('<?php echo CHtml::ID_PREFIX; ?>');
 <?php } ?>
 </script>

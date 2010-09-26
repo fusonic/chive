@@ -14,7 +14,7 @@
  * Note, this validator should only be used with string-typed attributes.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CStringValidator.php 1882 2010-03-10 22:35:58Z qiang.xue $
+ * @version $Id: CStringValidator.php 2340 2010-08-25 13:38:05Z mdomba $
  * @package system.validators
  * @since 1.0
  */
@@ -33,11 +33,11 @@ class CStringValidator extends CValidator
 	 */
 	public $is;
 	/**
-	 * @var string user-defined error message used when the value is too long.
+	 * @var string user-defined error message used when the value is too short.
 	 */
 	public $tooShort;
 	/**
-	 * @var string user-defined error message used when the value is too short.
+	 * @var string user-defined error message used when the value is too long.
 	 */
 	public $tooLong;
 	/**

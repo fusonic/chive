@@ -1,11 +1,11 @@
 <script type="text/javascript">
 	$(document).ready(function() {
-		$('#attributes_<?php echo CHtml::$idPrefix; ?>').val('<?php echo json_encode($attributes); ?>');
+		$('#attributes_<?php echo CHtml::ID_PREFIX; ?>').val('<?php echo json_encode($attributes); ?>');
 	});
 </script>
 
-<?php echo CHtml::form('', 'post', array('id' => CHtml::$idPrefix)); ?>
-	<input type="hidden" name="attributes" value="" id="attributes_<?php echo CHtml::$idPrefix; ?>" />
+<?php echo CHtml::form('', 'post', array('id' => CHtml::ID_PREFIX)); ?>
+	<input type="hidden" name="attributes" value="" id="attributes_<?php echo CHtml::ID_PREFIX; ?>" />
 	<input type="hidden" name="schema" value="<?php echo $this->schema; ?>" />
 	<input type="hidden" name="table" value="<?php echo $this->table; ?>" />
 	<h1>

@@ -1,6 +1,6 @@
 <?php if($isSubmitted) { ?>
 	<script type="text/javascript">
-	var idPrefix = '<?php echo CHtml::$idPrefix; ?>';
+	var idPrefix = '<?php echo CHtml::ID_PREFIX; ?>';
 	var row = $('#' + idPrefix).closest("tr").prev();
 	<?php if($foreignKey->isNewRecord) { ?>
 		row.find('img.icon_relation').addClass('disabled');
@@ -14,7 +14,7 @@
 	</script>
 <?php } ?>
 
-<?php echo CHtml::form('', 'post', array('id' => CHtml::$idPrefix)); ?>
+<?php echo CHtml::form('', 'post', array('id' => CHtml::ID_PREFIX)); ?>
 	<h1>
 		<?php echo Yii::t('core', 'editRelation'); ?>
 	</h1>
@@ -56,5 +56,5 @@
 </form>
 
 <script type="text/javascript">
-foreignKeyForm.create('<?php echo CHtml::$idPrefix; ?>');
+foreignKeyForm.create('<?php echo CHtml::ID_PREFIX; ?>');
 </script>

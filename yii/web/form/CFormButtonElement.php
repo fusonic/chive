@@ -31,7 +31,7 @@
  * generating the button or initial values of the widget properties.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFormButtonElement.php 1820 2010-02-19 03:03:01Z qiang.xue $
+ * @version $Id: CFormButtonElement.php 2312 2010-08-09 14:28:17Z alexander.makarow $
  * @package system.web.form
  * @since 1.1
  */
@@ -105,7 +105,7 @@ class CFormButtonElement extends CFormElement
 			}
 			else if($method==='htmlButton')
 			{
-				$attributes['type']=$this->type==='submitButton' ? 'submit' : ($this->type==='resetButton' ? 'reset' : 'button');
+				$attributes['type']=$this->type==='htmlSubmit' ? 'submit' : ($this->type==='htmlReset' ? 'reset' : 'button');
 				$attributes['name']=$this->name;
 			}
 			else

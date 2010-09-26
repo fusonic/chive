@@ -6,7 +6,7 @@
  * {@link fetchKeys} and {@link calculateTotalItemCount}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDataProvider.php 1916 2010-03-15 15:07:01Z qiang.xue $
+ * @version $Id: CDataProvider.php 2317 2010-08-12 17:24:06Z qiang.xue $
  * @package system.web
  * @since 1.1
  */
@@ -59,7 +59,8 @@ abstract class CDataProvider extends CComponent implements IDataProvider
 		if($this->_pagination===null)
 		{
 			$this->_pagination=new CPagination;
-			$this->_pagination->pageVar=$this->getId().'_page';
+			if(($id=$this->getId())!='')
+				$this->_pagination->pageVar=$id.'_page';
 		}
 		return $this->_pagination;
 	}
@@ -88,7 +89,8 @@ abstract class CDataProvider extends CComponent implements IDataProvider
 		if($this->_sort===null)
 		{
 			$this->_sort=new CSort;
-			$this->_sort->sortVar=$this->getId().'_sort';
+			if(($id=$this->getId())!='')
+				$this->_sort->sortVar=$id.'_sort';
 		}
 		return $this->_sort;
 	}

@@ -22,7 +22,7 @@
 				<?php echo CHtml::activeDropDownList($column, 'dataType', Column::getDataTypes()); ?>
 			</td>
 		</tr>
-		<tr id="<?php echo CHtml::$idPrefix; ?>settingSize">
+		<tr id="<?php echo CHtml::ID_PREFIX; ?>settingSize">
 			<td>
 				<?php echo CHtml::activeLabel($column, 'size'); ?>
 			</td>
@@ -30,7 +30,7 @@
 				<?php echo CHtml::activeTextField($column, 'size'); ?>
 			</td>
 		</tr>
-		<tr id="<?php echo CHtml::$idPrefix; ?>settingScale">
+		<tr id="<?php echo CHtml::ID_PREFIX; ?>settingScale">
 			<td>
 				<?php echo CHtml::activeLabel($column, 'scale'); ?>
 			</td>
@@ -38,7 +38,7 @@
 				<?php echo CHtml::activeTextField($column, 'scale'); ?>
 			</td>
 		</tr>
-		<tr id="<?php echo CHtml::$idPrefix; ?>settingValues">
+		<tr id="<?php echo CHtml::ID_PREFIX; ?>settingValues">
 			<td>
 				<?php echo CHtml::activeLabel($column, 'values'); ?>
 			</td>
@@ -49,7 +49,7 @@
 				</div>
 			</td>
 		</tr>
-		<tr id="<?php echo CHtml::$idPrefix; ?>settingCollation">
+		<tr id="<?php echo CHtml::ID_PREFIX; ?>settingCollation">
 			<td>
 				<?php echo CHtml::activeLabel($column, 'COLLATION_NAME'); ?>
 			</td>
@@ -57,13 +57,13 @@
 				<?php echo CHtml::activeDropDownList($column, 'COLLATION_NAME', CHtml::listData($collations, 'COLLATION_NAME', 'COLLATION_NAME', 'collationGroup')); ?>
 			</td>
 		</tr>
-		<tr id="<?php echo CHtml::$idPrefix; ?>settingDefault">
+		<tr id="<?php echo CHtml::ID_PREFIX; ?>settingDefault">
 			<td>
 				<?php echo CHtml::activeLabel($column, 'COLUMN_DEFAULT'); ?>
 			</td>
 			<td colspan="2">
 				<?php echo CHtml::activeTextField($column, 'COLUMN_DEFAULT'); ?>
-				<div class="small" id="<?php echo CHtml::$idPrefix; ?>settingDefaultNullHint">
+				<div class="small" id="<?php echo CHtml::ID_PREFIX; ?>settingDefaultNullHint">
 					<?php echo Yii::t('core', 'leaveEmptyForNull'); ?>
 				</div>
 			</td>
@@ -111,7 +111,7 @@
 			<td colspan="2">
 				<?php echo $radio_options[0]; ?>
 				<!---
-				<?php echo CHtml::activeRadioButton($column, 'attribute', array('value' => '', 'id' => CHtml::$idPrefix . 'Column_attribute_')); ?>
+				<?php echo CHtml::activeRadioButton($column, 'attribute', array('value' => '', 'id' => CHtml::ID_PREFIX . 'Column_attribute_')); ?>
 				<?php echo CHtml::label(Yii::t('core', 'noAttribute'), 'Column_attribute_', array('style' => 'font-style: italic')); ?>
 				--->
 			</td>
@@ -121,14 +121,14 @@
 			<td>
 				<?php echo $radio_options[1]; ?>
 				<!---
-				<?php echo CHtml::activeRadioButton($column, 'attribute', array('value' => 'unsigned', 'id' => CHtml::$idPrefix . 'Column_attribute_unsigned')); ?>
+				<?php echo CHtml::activeRadioButton($column, 'attribute', array('value' => 'unsigned', 'id' => CHtml::ID_PREFIX . 'Column_attribute_unsigned')); ?>
 				<?php echo CHtml::label(Yii::t('core', 'unsigned'), 'Column_attribute_unsigned'); ?>
 				--->
 			</td>
 			<td>
 				<?php echo $radio_options[2]; ?>
 				<!---
-				<?php echo CHtml::activeRadioButton($column, 'attribute', array('value' => 'unsigned zerofill', 'id' => CHtml::$idPrefix . 'Column_attribute_unsignedzerofill')); ?>
+				<?php echo CHtml::activeRadioButton($column, 'attribute', array('value' => 'unsigned zerofill', 'id' => CHtml::ID_PREFIX . 'Column_attribute_unsignedzerofill')); ?>
 				<?php echo CHtml::label(Yii::t('core', 'unsignedZerofill'), 'Column_attribute_unsignedzerofill'); ?>
 				--->
 			</td>
@@ -138,13 +138,13 @@
 			<td colspan="2">
 				<?php echo $radio_options[3]; ?>
 				<!---
-				<?php echo CHtml::activeRadioButton($column, 'attribute', array('value' => 'on update current_timestamp', 'id' => CHtml::$idPrefix . 'Column_attribute_on_update_current_timestamp')); ?>
+				<?php echo CHtml::activeRadioButton($column, 'attribute', array('value' => 'on update current_timestamp', 'id' => CHtml::ID_PREFIX . 'Column_attribute_on_update_current_timestamp')); ?>
 				<?php echo CHtml::label(Yii::t('core', 'onUpdateCurrentTimestamp'), 'Column_attribute_on_update_current_timestamp'); ?>
 				--->
 			</td>
 		</tr>
 		<?php if($column->isNewRecord) { ?>
-			<tr id="<?php echo CHtml::$idPrefix; ?>settingSize">
+			<tr id="<?php echo CHtml::ID_PREFIX; ?>settingSize">
 				<td>
 					<?php echo Yii::t('core', 'createIndex'); ?>
 				</td>
@@ -157,7 +157,7 @@
 					<?php echo CHtml::label(Yii::t('core', 'index'), 'createIndex'); ?>
 				</td>
 			</tr>
-			<tr id="<?php echo CHtml::$idPrefix; ?>settingScale">
+			<tr id="<?php echo CHtml::ID_PREFIX; ?>settingScale">
 				<td />
 				<td>
 					<?php echo CHtml::checkBox('createIndexUnique', isset($_POST['createIndexUnique'])); ?>

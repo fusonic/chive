@@ -17,7 +17,7 @@
  * component. It is this DB connection that is used to perform the query.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCacheDependency.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CDbCacheDependency.php 2300 2010-08-03 01:45:21Z qiang.xue $
  * @package system.caching.dependencies
  * @since 1.0
  */
@@ -32,6 +32,11 @@ class CDbCacheDependency extends CCacheDependency
 	 * Note, the SQL statement should return back a single value.
 	 */
 	public $sql;
+	/**
+	 * @var array parameters (name=>value) to be bound to the SQL statement specified by {@link sql}.
+	 * @since 1.1.4
+	 */
+	public $params;
 
 	private $_db;
 
@@ -62,7 +67,15 @@ class CDbCacheDependency extends CCacheDependency
 	protected function generateDependentData()
 	{
 		if($this->sql!==null)
-			return $this->getDbConnection()->createCommand($this->sql)->queryScalar();
+		{
+			$command=$this->getDbConnection()->createCommand($this->sql);
+			if(is_array($this->params))
+			{
+				foreach($this->params as $name=>$value)
+					$command->bindValue($name,$value);
+			}
+			return $command->queryRow();
+		}
 		else
 			throw new CException(Yii::t('yii','CDbCacheDependency.sql cannot be empty.'));
 	}

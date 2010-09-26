@@ -84,8 +84,7 @@ class RoutineController extends Controller
 				. '-- Definition end' . "\n"
 				. 'END';
 		}
-
-		CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3);
+		
 		$this->render('form', array(
 			'routine' => $routine,
 			'query' => $query,
@@ -189,7 +188,6 @@ class RoutineController extends Controller
 				. $routine->getCreateRoutine();
 		}
 
-		CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3);
 		$this->render('form', array(
 			'routine' => $routine,
 			'type' => $type,

@@ -18,12 +18,19 @@
  * A concrete class must implement {@link loadMessages} or override {@link translateMessage}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMessageSource.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CMessageSource.php 2290 2010-07-30 16:55:26Z qiang.xue $
  * @package system.i18n
  * @since 1.0
  */
 abstract class CMessageSource extends CApplicationComponent
 {
+	/**
+	 * @var boolean whether to force message translation when the source and target languages are the same.
+	 * Defaults to false, meaning translation is only performed when source and target languages are different.
+	 * @since 1.1.4
+	 */
+	public $forceTranslation=false;
+
 	private $_language;
 	private $_messages=array();
 
@@ -73,7 +80,7 @@ abstract class CMessageSource extends CApplicationComponent
 	{
 		if($language===null)
 			$language=Yii::app()->getLanguage();
-		if($language!==$this->getLanguage())
+		if($this->forceTranslation || $language!==$this->getLanguage())
 			return $this->translateMessage($category,$message,$language);
 		else
 			return $message;
@@ -123,7 +130,7 @@ abstract class CMessageSource extends CApplicationComponent
  * CMissingTranslationEvent represents the parameter for the {@link CMessageSource::onMissingTranslation onMissingTranslation} event.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMessageSource.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CMessageSource.php 2290 2010-07-30 16:55:26Z qiang.xue $
  * @package system.i18n
  * @since 1.0
  */

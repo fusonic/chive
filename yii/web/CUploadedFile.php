@@ -17,7 +17,7 @@
  * {@link tempName}, {@link type}, {@link size} and {@link error}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CUploadedFile.php 2004 2010-04-03 15:58:42Z alexander.makarow $
+ * @version $Id: CUploadedFile.php 2409 2010-09-01 18:59:13Z qiang.xue $
  * @package system.web
  * @since 1.0
  */
@@ -93,6 +93,16 @@ class CUploadedFile extends CComponent
 			if(0===strncmp($key, $name, $len) && self::$_files[$key]->getError()!=UPLOAD_ERR_NO_FILE)
 				$results[] = self::$_files[$key];
 		return $results;
+	}
+
+	/**
+	 * Cleans up the loaded CUploadedFile instances.
+	 * This method is mainly used by test scripts to set up a fixture.
+	 * @since 1.1.4
+	 */
+	public static function reset()
+	{
+		self::$_files=null;
 	}
 
 	/**

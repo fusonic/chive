@@ -113,7 +113,6 @@ class ViewController extends TableController
 				. '-- Definition end';
 		}
 
-		CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3);
 		$this->render('form', array(
 			'view' => $view,
 			'query' => $query,
@@ -203,7 +202,6 @@ class ViewController extends TableController
 			$query = $view->getAlterView();
 		}
 
-		CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3);
 		$this->render('form', array(
 			'view' => $view,
 			'query' => $query,

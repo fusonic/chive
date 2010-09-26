@@ -314,7 +314,6 @@ class RowController extends Controller
 
 	public function actionEdit() 
 	{
-		
 		$attributes = json_decode(Yii::app()->getRequest()->getParam('attributes'), true);
 		
 		$row = Row::model()->findByAttributes($attributes);
@@ -370,8 +369,6 @@ class RowController extends Controller
 			$response->send();
 			
 		}
-		
-		CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3);
 		
 		$data = array(
 			'row' => $row,

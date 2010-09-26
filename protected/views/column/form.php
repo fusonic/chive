@@ -1,10 +1,10 @@
 <script type="text/javascript">
-var isPrimary<?php echo CHtml::$idPrefix; ?> = <?php echo json_encode($column->getIsPartOfPrimaryKey()); ?>;
+var isPrimary<?php echo CHtml::ID_PREFIX; ?> = <?php echo json_encode($column->getIsPartOfPrimaryKey()); ?>;
 </script>
 
 <?php if(!$column->isNewRecord && $isSubmitted) { ?>
 	<script type="text/javascript">
-	var idPrefix = '<?php echo CHtml::$idPrefix; ?>';
+	var idPrefix = '<?php echo CHtml::ID_PREFIX; ?>';
 	var row = $('#' + idPrefix).closest("tr").prev();
 	row.attr('id', 'columns_<?php echo $column->COLUMN_NAME; ?>');
 	row.children('td:eq(1)').html('<?php echo $column->COLUMN_NAME; ?>');
@@ -20,7 +20,7 @@ var isPrimary<?php echo CHtml::$idPrefix; ?> = <?php echo json_encode($column->g
 	</script>
 <?php } ?>
 
-<?php echo CHtml::form('', 'post', array('id' => CHtml::$idPrefix)); ?>
+<?php echo CHtml::form('', 'post', array('id' => CHtml::ID_PREFIX)); ?>
 	<h1>
 		<?php echo Yii::t('core', ($column->isNewRecord ? 'addColumn' : 'editColumn')); ?>
 	</h1>
@@ -29,5 +29,5 @@ var isPrimary<?php echo CHtml::$idPrefix; ?> = <?php echo json_encode($column->g
 </form>
 
 <script type="text/javascript">
-columnForm.create('<?php echo CHtml::$idPrefix; ?>');
+columnForm.create('<?php echo CHtml::ID_PREFIX; ?>');
 </script>

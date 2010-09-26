@@ -127,7 +127,7 @@ class ModelCode extends CCodeModel
 	public function validateBaseClass($attribute,$params)
 	{
 		$class=@Yii::import($this->baseClass,true);
-		if(!is_string($class) || !class_exists($class,false))
+		if(!is_string($class) || !$this->classExists($class))
 			$this->addError('baseClass', "Class '{$this->baseClass}' does not exist or has syntax error.");
 		else if($class!=='CActiveRecord' && !is_subclass_of($class,'CActiveRecord'))
 			$this->addError('baseClass', "'{$this->model}' must extend from CActiveRecord.");
@@ -242,8 +242,8 @@ class ModelCode extends CCodeModel
 				$pks=$table->primaryKey;
 				$fks=$table->foreignKeys;
 
-				$table0=$fks[$pks[1]][0];
-				$table1=$fks[$pks[0]][0];
+				$table0=$fks[$pks[0]][0];
+				$table1=$fks[$pks[1]][0];
 				$className0=$this->generateClassName($table0);
 				$className1=$this->generateClassName($table1);
 
@@ -253,7 +253,7 @@ class ModelCode extends CCodeModel
 				$relations[$className0][$relationName]="array(self::MANY_MANY, '$className1', '$unprefixedTableName($pks[0], $pks[1])')";
 
 				$relationName=$this->generateRelationName($table1, $table0, true);
-				$relations[$className1][$relationName]="array(self::MANY_MANY, '$className0', '$unprefixedTableName($pks[0], $pks[1])')";
+				$relations[$className1][$relationName]="array(self::MANY_MANY, '$className0', '$unprefixedTableName($pks[1], $pks[0])')";
 			}
 			else
 			{

@@ -44,6 +44,7 @@
  * &lt;?php $form = $this->beginWidget('CActiveForm', array(
  *     'id'=>'user-form',
  *     'enableAjaxValidation'=>true,
+ *     'focus'=>array($model,firstName),
  * )); ?&gt;
  *
  * &lt;?php echo $form-&gt;errorSummary($model); ?&gt;
@@ -113,14 +114,14 @@
  * you should design your own lightweight AJAX validation.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveForm.php 2104 2010-05-06 20:52:29Z qiang.xue $
+ * @version $Id: CActiveForm.php 2394 2010-08-31 11:41:23Z qiang.xue $
  * @package system.web.widgets
  * @since 1.1.1
  */
 class CActiveForm extends CWidget
 {
 	/**
-	 * @var mixed the form action URL (see {@link normalizeUrl} for details about this parameter.)
+	 * @var mixed the form action URL (see {@link CHtml::normalizeUrl} for details about this parameter).
 	 * If not set, the current page URL is used.
 	 */
 	public $action='';
@@ -157,7 +158,7 @@ class CActiveForm extends CWidget
 	 * delayed after an input is changed. A value 0 means the validation will be triggered immediately
 	 * when an input is changed. A value greater than 0 means changing several inputs may only
 	 * trigger a single validation if they happen fast enough, which may help reduce the server load.
-	 * Defaults to 100 (0.1 second).</li>
+	 * Defaults to 200 (0.2 second).</li>
 	 * <li>validateOnSubmit: boolean, whether to perform AJAX validation when the form is being submitted.
 	 * If there are any validation errors, the form submission will be stopped.
 	 * Defaults to false.</li>
@@ -224,9 +225,42 @@ class CActiveForm extends CWidget
 	public $clientOptions=array();
 	/**
 	 * @var boolean whether to enable data validation via AJAX. Defaults to false.
-	 * When this property is set true, you should
-	 */
+	 * When this property is set true, you should respond to the AJAX validation request on the server side as shown below:
+	 * <pre>
+	 * public function actionCreate()
+	 * {
+	 *     $model=new User;
+	 *     if(isset($_POST['ajax']) && $_POST['ajax']==='user-form')
+	 *     {
+	 *         echo CActiveForm::validate($model);
+	 *         Yii::app()->end();
+	 *     }
+	 *     ......
+	 * }
+	 * </pre>
+ 	 */
 	public $enableAjaxValidation=false;
+
+	/**
+	 * @var mixed form element to get initial input focus on page load
+	 *
+	 * Defaults to null meaning no input field has a focus.
+	 * If set as array, first element should be model and second element should be the attribute.
+	 * If set as string any jQuery selector can be used
+	 *
+	 * Example - set input focus on page load to:
+	 * <ul>
+	 * <li>'focus'=>array($model,'username') - $model->username input filed</li>
+	 * <li>'focus'=>'#'.CHtml::activeId($model,'username') - $model->username input field</li>
+	 * <li>'focus'=>'#LoginForm_username' - input field with ID LoginForm_username</li>
+	 * <li>'focus'=>'input[type="text"]:first' - first input element of type text</li>
+	 * <li>'focus'=>'input:visible:enabled:first' - first visible and enabled input element</li>
+	 * <li>'focus'=>'input:text[value=""]:first' - first empty input</li>
+	 * </ul>
+	 *
+	 * @since 1.1.4
+	 */
+	public $focus;
 
 	private $_attributes=array();
 	private $_summary;
@@ -253,12 +287,23 @@ class CActiveForm extends CWidget
 		echo CHtml::endForm();
 		if(!$this->enableAjaxValidation || empty($this->_attributes))
 			return;
+
 		$options=$this->clientOptions;
 		if(isset($this->clientOptions['validationUrl']) && is_array($this->clientOptions['validationUrl']))
 			$options['validationUrl']=CHtml::normalizeUrl($this->clientOptions['validationUrl']);
+
 		$options['attributes']=array_values($this->_attributes);
+
 		if($this->_summary!==null)
 			$options['summaryID']=$this->_summary;
+
+		if($this->focus!==null) {
+			if(is_array($this->focus))
+				$options['focus']="#".CHtml::activeId($this->focus[0],$this->focus[1]);
+			else
+				$options['focus']=$this->focus;
+		}
+
 		$options=CJavaScript::encode($options);
 		Yii::app()->clientScript->registerCoreScript('yiiactiveform');
 		$id=$this->id;
@@ -289,7 +334,7 @@ class CActiveForm extends CWidget
 	 * particular model attribute. For more details about these options, please refer to {@link clientOptions}.
 	 * Note that these options are only used when {@link enableAjaxValidation} is set true.
 	 * @param boolean whether to enable AJAX validation for the specified attribute.
-	 * Note that in order toe enable AJAX validation, both {@link enableAjaxValidation} and this parameter
+	 * Note that in order to enable AJAX validation, both {@link enableAjaxValidation} and this parameter
 	 * must be true.
 	 * @return string the validation result (error display or success message).
 	 * @see CHtml::error

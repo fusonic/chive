@@ -19,7 +19,7 @@
  * and {@link renderFooterCellContent} to customize how these cells are rendered.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CGridColumn.php 114 2010-01-20 02:24:05Z qiang.xue $
+ * @version $Id: CGridColumn.php 2326 2010-08-20 17:02:07Z qiang.xue $
  * @package zii.widgets.grid
  * @since 1.1
  */

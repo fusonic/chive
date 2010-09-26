@@ -56,7 +56,7 @@ class Row extends CActiveRecord
 	/**
 	 * @see CActiveRecord::instantiate()
 	 */
-	public function instantiate(&$attributes)
+	public function instantiate($attributes)
 	{	
 		SqlUtil::FixRow($attributes);
 		
@@ -187,7 +187,7 @@ class Row extends CActiveRecord
 		return self::$db;
 	}
 
-	public function insert() 
+	public function insert($attributes=null) 
 	{	
 		$table = Table::model()->findByPk(array(
 			'TABLE_NAME' => self::$table,
@@ -280,7 +280,7 @@ class Row extends CActiveRecord
 		return $value;
 	}
 	
-	public function update()
+	public function update($attributes = null)
 	{
 		if($this->getIsNewRecord())
 		{
@@ -478,5 +478,4 @@ class Row extends CActiveRecord
 		
 		return false;
 	}
-
 }

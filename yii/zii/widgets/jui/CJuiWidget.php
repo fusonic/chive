@@ -14,7 +14,7 @@
  *
  * @author Sebastian Thierer <sebathi@gmail.com>
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CJuiWidget.php 176 2010-05-06 21:12:32Z qiang.xue $
+ * @version $Id: CJuiWidget.php 2381 2010-08-30 17:51:29Z qiang.xue $
  * @package zii.widgets.jui
  * @since 1.1
  */
@@ -94,12 +94,11 @@ abstract class CJuiWidget extends CWidget
 	{
 		if($this->scriptUrl===null || $this->themeUrl===null)
 		{
-			$basePath=Yii::getPathOfAlias('zii.vendors.jui');
-			$baseUrl=Yii::app()->getAssetManager()->publish($basePath);
+			$cs=Yii::app()->getClientScript();
 			if($this->scriptUrl===null)
-				$this->scriptUrl=$baseUrl.'/js';
+				$this->scriptUrl=$cs->getCoreScriptUrl().'/jui/js';
 			if($this->themeUrl===null)
-				$this->themeUrl=$baseUrl.'/css';
+				$this->themeUrl=$cs->getCoreScriptUrl().'/jui/css';
 		}
 	}
 

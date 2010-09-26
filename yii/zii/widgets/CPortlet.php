@@ -28,7 +28,7 @@
  * to further customize the decorative display of a portlet (e.g. adding min/max buttons).
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CPortlet.php 104 2010-01-09 20:46:58Z qiang.xue $
+ * @version $Id: CPortlet.php 2326 2010-08-20 17:02:07Z qiang.xue $
  * @package zii.widgets
  * @since 1.1
  */
@@ -60,6 +60,13 @@ class CPortlet extends CWidget
 	 * @var string the CSS class for the content container tag. Defaults to 'portlet-content'.
 	 */
 	public $contentCssClass='portlet-content';
+	/**
+	 * @var boolean whether to hide the portlet when the body content is empty. Defaults to true.
+	 * @since 1.1.4
+	 */
+	public $hideOnEmpty=true;
+
+	private $_openTag;
 
 	/**
 	 * Initializes the widget.
@@ -68,10 +75,16 @@ class CPortlet extends CWidget
 	 */
 	public function init()
 	{
+		ob_start();
+		ob_implicit_flush(false);
+
 		$this->htmlOptions['id']=$this->getId();
 		echo CHtml::openTag($this->tagName,$this->htmlOptions)."\n";
 		$this->renderDecoration();
 		echo "<div class=\"{$this->contentCssClass}\">\n";
+
+		$this->_openTag=ob_get_contents();
+		ob_clean();
 	}
 
 	/**
@@ -80,6 +93,11 @@ class CPortlet extends CWidget
 	public function run()
 	{
 		$this->renderContent();
+		$content=ob_get_clean();
+		if($this->hideOnEmpty && trim($content)==='')
+			return;
+		echo $this->_openTag;
+		echo $content;
 		echo "</div>\n";
 		echo CHtml::closeTag($this->tagName);
 	}

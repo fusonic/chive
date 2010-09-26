@@ -126,7 +126,6 @@ class ColumnController extends Controller
 			'select'=>'COLLATION_NAME, CHARACTER_SET_NAME AS collationGroup'
 		));
 
-		CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3);
 		$data = array(
 			'column' => $column,
 			'table' => $table,
@@ -160,7 +159,6 @@ class ColumnController extends Controller
 			'select'=>'COLLATION_NAME, CHARACTER_SET_NAME AS collationGroup'
 		));
 
-		CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3);
 		$data = array(
 			'column' => $column,
 			'collations' => $collations,

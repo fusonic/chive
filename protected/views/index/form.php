@@ -1,6 +1,4 @@
-<?php CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3); ?>
-
-<?php echo CHtml::form('', 'post', array('id' => CHtml::$idPrefix)); ?>
+<?php echo CHtml::form('', 'post', array('id' => CHtml::ID_PREFIX)); ?>
 	<h1>
 		<?php echo Yii::t('core', ($index->isNewRecord ? 'addIndex' : 'editIndex')); ?>
 	</h1>
@@ -33,7 +31,7 @@
 					<?php echo Yii::t('core', 'columns'); ?>
 				</td>
 				<td colspan="2">
-					<table class="formList" id="<?php echo CHtml::$idPrefix; ?>columns">
+					<table class="formList" id="<?php echo CHtml::ID_PREFIX; ?>columns">
 						<colgroup>
 							<col />
 							<col style="width: 50px" />
@@ -69,7 +67,7 @@
 										</a>
 									</td>
 									<td>
-										<a href="javascript:void(0)" onclick="indexForm.removeColumn('<?php echo CHtml::$idPrefix; ?>', this)" class="icon">
+										<a href="javascript:void(0)" onclick="indexForm.removeColumn('<?php echo CHtml::ID_PREFIX; ?>', this)" class="icon">
 											<?php echo Html::icon('delete', 16, false, 'core.remove'); ?>
 										</a>
 									</td>
@@ -92,5 +90,5 @@
 </form>
 
 <script type="text/javascript">
-indexForm.create('<?php echo CHtml::$idPrefix; ?>');
+indexForm.create('<?php echo CHtml::ID_PREFIX; ?>');
 </script>

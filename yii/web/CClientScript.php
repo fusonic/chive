@@ -12,7 +12,7 @@
  * CClientScript manages JavaScript and CSS stylesheets for views.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CClientScript.php 2165 2010-06-05 13:38:20Z qiang.xue $
+ * @version $Id: CClientScript.php 2406 2010-09-01 15:47:06Z mdomba $
  * @package system.web
  * @since 1.0
  */
@@ -318,7 +318,7 @@ class CClientScript extends CApplicationComponent
 		if(isset($this->scripts[self::POS_READY]))
 		{
 			if($fullPage)
-				$scripts[]="jQuery(document).ready(function() {\n".implode("\n",$this->scripts[self::POS_READY])."\n});";
+				$scripts[]="jQuery(function($) {\n".implode("\n",$this->scripts[self::POS_READY])."\n});";
 			else
 				$scripts[]=implode("\n",$this->scripts[self::POS_READY]);
 		}

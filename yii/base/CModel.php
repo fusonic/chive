@@ -15,7 +15,7 @@
  * CModel defines the basic framework for data models that need to be validated.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CModel.php 2203 2010-06-16 20:50:57Z qiang.xue $
+ * @version $Id: CModel.php 2365 2010-08-29 14:10:01Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -445,7 +445,7 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 		{
 			if(isset($attributes[$name]))
 				$this->$name=$value;
-			else
+			else if($safeOnly)
 				$this->onUnsafeAttribute($name,$value);
 		}
 	}
@@ -522,7 +522,7 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 		$unsafe=array();
 		foreach($this->getValidators() as $validator)
 		{
-			if($validator instanceof CUnsafeValidator)
+			if(!$validator->safe)
 			{
 				foreach($validator->attributes as $name)
 					$unsafe[]=$name;

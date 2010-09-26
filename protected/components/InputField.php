@@ -73,7 +73,7 @@ class InputField extends CWidget
 			case 'file':
 				echo '<script type="text/javascript">
 					$(document).ready(function() {
-						$("# echo CHtml::$idPrefix; ?>").submit(function() {
+						$("# echo CHtml::ID_PREFIX; ?>").submit(function() {
 							alert("ok1");
 							
 						});

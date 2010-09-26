@@ -50,7 +50,7 @@ Yii::import('zii.widgets.CBaseListView');
  * By doing so, a list of hyperlinks that can sort the data will be displayed.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CListView.php 123 2010-02-02 21:09:35Z qiang.xue $
+ * @version $Id: CListView.php 2326 2010-08-20 17:02:07Z qiang.xue $
  * @package zii.widgets
  * @since 1.1
  */
@@ -139,6 +139,11 @@ class CListView extends CBaseListView
 	 * CSS file. If this is set false, you are responsible to explicitly include the necessary CSS file in your page.
 	 */
 	public $cssFile;
+	/**
+	 * @var string the HTML tag name for the container of all data item display. Defaults to 'div'.
+	 * @since 1.1.4
+	 */
+	public $itemsTagName='div';
 
 	/**
 	 * Initializes the list view.
@@ -200,7 +205,7 @@ class CListView extends CBaseListView
 	 */
 	public function renderItems()
 	{
-		echo CHtml::openTag('div',array('class'=>$this->itemsCssClass))."\n";
+		echo CHtml::openTag($this->itemsTagName,array('class'=>$this->itemsCssClass))."\n";
 		$data=$this->dataProvider->getData();
 		if(count($data)>0)
 		{
@@ -217,7 +222,7 @@ class CListView extends CBaseListView
 		}
 		else
 			$this->renderEmptyText();
-		echo CHtml::closeTag('div');
+		echo CHtml::closeTag($this->itemsTagName);
 	}
 
 	/**

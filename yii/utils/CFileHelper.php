@@ -12,7 +12,7 @@
  * CFileHelper provides a set of helper methods for common file system operations.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFileHelper.php 2199 2010-06-16 16:23:21Z qiang.xue $
+ * @version $Id: CFileHelper.php 2410 2010-09-01 19:04:35Z qiang.xue $
  * @package system.utils
  * @since 1.0
  */
@@ -204,26 +204,29 @@ class CFileHelper
 	 * <ol>
 	 * <li>finfo</li>
 	 * <li>mime_content_type</li>
-	 * <li>{@link getMimeTypeByExtension}</li>
+	 * <li>{@link getMimeTypeByExtension}, when $checkExtension is set true.</li>
 	 * </ol>
 	 * @param string the file name.
 	 * @param string name of a magic database file, usually something like /path/to/magic.mime.
 	 * This will be passed as the second parameter to {@link http://php.net/manual/en/function.finfo-open.php finfo_open}.
 	 * This parameter has been available since version 1.1.3.
+	 * @param boolean whether to check the file extension in case the MIME type cannot be determined
+	 * based on finfo and mim_content_type. Defaults to true. This parameter has been available since version 1.1.4.
 	 * @return string the MIME type. Null is returned if the MIME type cannot be determined.
 	 */
-	public static function getMimeType($file,$magicFile=null)
+	public static function getMimeType($file,$magicFile=null,$checkExtension=true)
 	{
 		if(function_exists('finfo_open'))
 		{
-			if(($info=finfo_open(FILEINFO_MIME_TYPE,$magicFile)) && ($result=finfo_file($info,$file))!==false)
+			$info=$magicFile===null ? finfo_open(FILEINFO_MIME_TYPE) : finfo_open(FILEINFO_MIME_TYPE,$magicFile);
+			if($info && ($result=finfo_file($info,$file))!==false)
 				return $result;
 		}
 
 		if(function_exists('mime_content_type') && ($result=mime_content_type($file))!==false)
 			return $result;
 
-		return self::getMimeTypeByExtension($file);
+		return $checkExtension ? self::getMimeTypeByExtension($file) : null;
 	}
 
 	/**

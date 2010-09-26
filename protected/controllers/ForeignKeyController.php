@@ -82,8 +82,6 @@ class ForeignKeyController extends Controller
 			}
 		}
 
-		CHtml::$idPrefix = 'r' . substr(md5(microtime()), 0, 3);
-
 		// Column data
 		$columns = array('' => '');
 		$tables = Table::model()->findAllByAttributes(array(
