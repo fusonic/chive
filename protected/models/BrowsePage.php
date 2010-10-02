@@ -149,6 +149,7 @@ class BrowsePage extends CModel
 				$this->table = $sqlQuery->getTable();
 				
 				$this->tables = $sqlQuery->getTables();
+
 				$this->singleTableSelect = count($this->tables) == 1;
 				
 				// SELECT
@@ -206,6 +207,9 @@ class BrowsePage extends CModel
 
 					$this->start = (int)$offset;
 					
+				/*$pages->postVars = $sort->postVars = array(
+						'query' => $sqlQuery->getOriginalQuery()
+					);*/
 				}
 				
 				// OTHER
@@ -252,10 +256,6 @@ class BrowsePage extends CModel
 				$this->executedQueries[] = $sqlQuery->getQuery();
 				$this->originalQueries[] = $sqlQuery->getOriginalQuery();
 
-				$pages->postVars = 
-				$sort->postVars = array(
-					'query' => $sqlQuery->getOriginalQuery()
-				);
 				
 				// Prepare query for execution
 				$cmd = $this->db->createCommand($sqlQuery->getQuery());
@@ -269,7 +269,7 @@ class BrowsePage extends CModel
 						// Fetch data
 						$data = $cmd->queryAll();
 						SqlUtil::FixTable($data);
-
+						
 						if($type == 'select')
 						{
 							$total = (int)$this->db->createCommand('SELECT FOUND_ROWS()')->queryScalar();
@@ -385,6 +385,15 @@ class BrowsePage extends CModel
 		if(isset($columns))
 		{
 			$this->columns = $columns;
+			foreach($this->columns as $column)
+			{
+				if($this->getColumn($column) == null)
+				{
+					$this->singleTableSelect = false;
+					break;
+				}
+			}
+		
 		}
 		if(isset($data))
 		{

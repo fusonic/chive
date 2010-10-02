@@ -45,7 +45,7 @@ class DbException extends CDbException {
 			$this->number = $number;
 			$this->text = $text;
 		}
-		parent::__construct();
+		parent::__construct($this->text);
 	}
 
 	/**

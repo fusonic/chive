@@ -80,7 +80,7 @@
 		</div>
 
 		<?php $i = 0; ?>
-		<table class="list <?php if($model->getIsUpdatable()) { ?>addCheckboxes editable<?php } ?>" style="width: auto;" id="browse">
+		<table class="list <?php if($model->getIsUpdatable()) { ?>addCheckboxes editable<?php } ?>" style="width: auto; min-width: 200px;" id="browse">
 			<colgroup>
 				<col class="checkbox" />
 				<?php if(isset($type) && $type == 'select' && $model->singleTableSelect) { ?>
