@@ -303,7 +303,7 @@ class TableController extends Controller
 			{
 				$operator = $operators[$_POST['operator'][$column]];
 
-				if($value)
+				if(strlen($value)>0)
 				{
 					$criteria->condition .= ($i>0 ? ' AND ' : ' ') . $this->db->quoteColumnName($column) . ' ' . $operator . ' ' . $this->db->quoteValue($value);
 
