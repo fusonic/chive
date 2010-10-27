@@ -28,7 +28,7 @@ return CMap::mergeArray(
 			// Database settings
 			'db' => array(
 				'class' => 'CDbConnection',
-				'connectionString' => 'mysql:host=192.168.10.171;dbname=information_schema',
+				'connectionString' => 'mysql:host=localhost;dbname=information_schema',
 				'username' => 'root',
 				'charset' => 'utf8',
 				'autoConnect' => false,

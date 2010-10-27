@@ -24,7 +24,7 @@
 class ChiveTestCase extends CTestCase
 {
 	
-	const DB_HOST = '192.168.10.171';
+	const DB_HOST = 'localhost';
 	const DB_USER = 'root';
 	const DB_PASSWORD = '';
 	const DB_NAME = 'chive_fixed';
