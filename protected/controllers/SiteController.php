@@ -111,7 +111,7 @@ class SiteController extends Controller
 			$languages[] = array(
 				'label' => Yii::t('language', $full),
 				'icon' => 'images/language/' . $full . '.png',
-				'url' => Yii::app()->request->baseUrl . '/site/changeLanguage/' . $full,
+				'url' => Yii::app()->createUrl('/site/changeLanguage/' . $full),
 				'htmlOptions' => array('class'=>'icon'),
 			);
 		}
