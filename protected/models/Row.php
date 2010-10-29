@@ -119,7 +119,10 @@ class Row extends CActiveRecord
 			$values = array();
 			foreach($table->columns AS $column)
 			{
-				$values[$column->name] = $this->getAttribute($column->name);					
+				if(DataType::getInputType($column->dbType) != "file")
+				{
+					$values[$column->name] = $this->getAttribute($column->name);
+				}					
 			}
 			return $values;
 		}
@@ -149,7 +152,10 @@ class Row extends CActiveRecord
 			$values = array();
 			foreach($table->columns AS $column)
 			{
-				$values[$column->name] = $this->originalAttributes[$column->name];					
+				if(DataType::getInputType($column->dbType) != "file")
+				{
+					$values[$column->name] = $this->originalAttributes[$column->name];
+				}			
 			}
 			return $values;
 		}
