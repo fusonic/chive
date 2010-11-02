@@ -264,6 +264,7 @@ class BrowsePage extends CModel
 					{
 						// Fetch data
 						$data = $cmd->queryAll();
+						
 						SqlUtil::FixTable($data);
 						
 						if($type == 'select')
