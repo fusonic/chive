@@ -207,9 +207,6 @@ class BrowsePage extends CModel
 
 					$this->start = (int)$offset;
 					
-				/*$pages->postVars = $sort->postVars = array(
-						'query' => $sqlQuery->getOriginalQuery()
-					);*/
 				}
 				
 				// OTHER
@@ -246,7 +243,6 @@ class BrowsePage extends CModel
 				{
 					$response->reload = true;
 
-					//$name = $sqlQuery->getTable();
 				}
 				elseif($type == "drop")
 				{
@@ -268,6 +264,7 @@ class BrowsePage extends CModel
 					{
 						// Fetch data
 						$data = $cmd->queryAll();
+						
 						SqlUtil::FixTable($data);
 						
 						if($type == 'select')
@@ -484,6 +481,38 @@ class BrowsePage extends CModel
 		return $this->total;
 	}
 	
+	public function getKeyData()
+	{
+		$keyData = array();
+		
+		$i = 0;
+		foreach($this->getData() as $row)
+		{
+			foreach($row as $key => $value)
+			{
+				if($this->getIsUpdatable() 
+					&& (!$this->hasPrimaryKey() || $this->isPrimaryKey($key))
+					&& DataType::getInputType($this->getTable()->columns[$key]->dbType) != "file") 
+				{
+					$keyData[$i][$key] = is_null($value) ? null : $value;
+				}
+			}
+			$i++;
+		}
+		
+		return $keyData;
+	}
+	
+	private function isPrimaryKey($key)
+	{
+		return in_array($key, (array)$this->getTable()->primaryKey);
+	}
+	
+	public function hasPrimaryKey()
+	{
+		return $this->getTable()->primaryKey !== null;
+	}
+		
 	public function getIsUpdatable()
 	{
 		if($this->isUpdatable === null)

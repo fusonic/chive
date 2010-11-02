@@ -66,7 +66,19 @@ class Row extends CActiveRecord
 	
 	public function populateRecord($attributes,$callAfterFind=true)
 	{
-		SqlUtil::FixRow($attributes);
+		$table = $this->getMetaData()->tableSchema;
+		
+		foreach($table->columns AS $column)
+		{
+			if(DataType::getInputType($column->dbType) != "file")
+			{
+				if(isset($attributes[$column->name]))
+				{
+					SqlUtil::FixValue($attributes[$column->name]);
+				}				
+			}
+		}
+		
 		return parent::populateRecord($attributes, $callAfterFind);
 	}
 
@@ -119,7 +131,10 @@ class Row extends CActiveRecord
 			$values = array();
 			foreach($table->columns AS $column)
 			{
-				$values[$column->name] = $this->getAttribute($column->name);					
+				if(DataType::getInputType($column->dbType) != "file")
+				{
+					$values[$column->name] = $this->getAttribute($column->name);
+				}					
 			}
 			return $values;
 		}
@@ -149,7 +164,10 @@ class Row extends CActiveRecord
 			$values = array();
 			foreach($table->columns AS $column)
 			{
-				$values[$column->name] = $this->originalAttributes[$column->name];					
+				if(DataType::getInputType($column->dbType) != "file")
+				{
+					$values[$column->name] = $this->originalAttributes[$column->name];
+				}			
 			}
 			return $values;
 		}

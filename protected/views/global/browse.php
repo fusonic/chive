@@ -143,19 +143,20 @@
 							<?php foreach($row AS $key=>$value) { ?>
 								<td class="<?php echo $key; ?>">
 									<?php if($model->singleTableSelect && DataType::getInputType($model->getTable()->columns[$key]->dbType) == "file" && $value) { ?>
-										<a href="javascript:void(0);" class="icon" onclick="globalBrowse.download('<?php echo Yii::app()->createUrl('row/download'); ?>', {key: JSON.stringify(keyData[<?php echo $i; ?>]), column: '<?php echo $column; ?>', table: '<?php echo $model->table; ?>', schema: '<?php echo $model->schema; ?>'})">
+										<?php if($model->hasPrimaryKey()) { ?>
+										<a href="javascript:void(0);" class="icon" onclick="globalBrowse.download('<?php echo Yii::app()->createUrl('row/download'); ?>', {key: JSON.stringify(keyData[<?php echo $i; ?>]), column: '<?php echo $key; ?>', table: '<?php echo $model->table; ?>', schema: '<?php echo $model->schema; ?>'})">
 											<?php echo Html::icon('save'); ?> 
 											<?php echo Formatter::fileSize(strlen($value)); ?>
 										</a>
+										<?php } else { ?>
+											<?php echo Formatter::fileSize(strlen($value)); ?>
+										<?php }?>
 									<?php } elseif($model->table !== null) { ?>
 										<span><?php echo is_null($value) ? '<span class="null">NULL</span>' : (Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $model->schema . '.' .  $model->table) ? htmlspecialchars($value) : StringUtil::cutText(htmlspecialchars($value), 100)); ?></span>
 									<?php } else { ?>
 										<span><?php echo is_null($value) ? '<span class="null">NULL</span>' : (Yii::app()->user->settings->get('showFullColumnContent', 'schema.browse', $model->schema) ? htmlspecialchars($value) : StringUtil::cutText(htmlspecialchars($value), 100)); ?></span>
 									<?php } ?>
 								</td>
-								<?php if($model->getIsUpdatable() && (in_array($key, (array)$model->getTable()->primaryKey) || $model->getTable()->primaryKey === null)) { ?>
-									<?php $keyData[$i][$key] = is_null($value) ? null : $value; ?>
-								<?php } ?>
 							<?php } ?>
 						<?php } ?>
 					</tr>
@@ -189,7 +190,9 @@
 					<span><?php echo Yii::t('core', 'export'); ?></span>
 				</a>
 			</div>
-			<?php if ($keyData) { ?>
+			<?php $keyData = $model->getKeyData(); 
+				  if (count($keyData) > 0) 
+				  { ?>
 				<script type="text/javascript">
 					var keyData = <?php echo json_encode($keyData); ?>;
 				</script>

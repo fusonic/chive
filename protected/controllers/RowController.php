@@ -189,7 +189,6 @@ class RowController extends Controller
 			$response->refresh = true;
 		}
 
-		// NULL
 		if($isNull)
 		{
 			$newValue = null;
@@ -220,21 +219,6 @@ class RowController extends Controller
 				'isNull' => $isNull,
 				'visibleValue' => $visibleValue
 			));
-
-			// @todo (rponudic) check which method should be used here
-			// Refresh the page if the row could not be found in database anymore
-			/* 
-			$rows = Row::model()->findAllByAttributes($attributes);
-			$row = $rows[0];
-			
-			if($rows === null || count($rows) > 1 || $row === null || $row->getAttribute($column) != $newValue) {
-				$response->refresh = true;
-
-				
-				$response->addNotification('warning', 'type does not match');
-			}
-			
-			*/
 			
 			$cmd = new CDbCommand($this->db, 'SHOW WARNINGS');
 			$warnings = $cmd->queryAll(true);
@@ -332,9 +316,13 @@ class RowController extends Controller
 				} 
 				
 				// FILE
-				elseif(isset($_FILES['Row']['name'][$name]))
+				elseif(isset($_FILES['Row']['name'][$name]) && strlen($_FILES['Row']['name'][$name]) > 0)
 				{
 					$value = file_get_contents($_FILES['Row']['tmp_name'][$name]);
+				}
+				else if (strlen($value) == 0)
+				{
+					continue;
 				}
 				
 				$options = Yii::app()->getRequest()->getParam($name);
@@ -398,14 +386,24 @@ class RowController extends Controller
 			$finfo = new finfo(FILEINFO_MIME);
 			$mimeType = $finfo->buffer($content);
 			
-			#header('Content-Type: ' . $mimeType);
+			header('Content-Type: ' . $mimeType);
 			
 			// Try finding correct extension
-			preg_match('/\/(\w+)/i', $mimeType, $extension);
+			preg_match('/\/([a-zA-Z_\-0-9]+)/i', $mimeType, $extension);
 			
 			if(isset($extension[1]))
 			{
-				$filename .= "." . $extension[1];
+				$ext = $extension[1];
+				if($ext == "x-gzip")
+				{
+					$ext = "tar.gz";
+				}
+				elseif($ext == "x-tar")
+				{
+					$ext = "tar";
+				}
+				
+				$filename .= "." . $ext;
 			}
 			
 		}
