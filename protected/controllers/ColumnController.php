@@ -126,6 +126,7 @@ class ColumnController extends Controller
 			'select'=>'COLLATION_NAME, CHARACTER_SET_NAME AS collationGroup'
 		));
 
+		CHtml::generateRandomIdPrefix();
 		$data = array(
 			'column' => $column,
 			'table' => $table,
@@ -159,6 +160,7 @@ class ColumnController extends Controller
 			'select'=>'COLLATION_NAME, CHARACTER_SET_NAME AS collationGroup'
 		));
 
+		CHtml::generateRandomIdPrefix();
 		$data = array(
 			'column' => $column,
 			'collations' => $collations,

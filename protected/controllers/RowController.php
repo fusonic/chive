@@ -358,6 +358,8 @@ class RowController extends Controller
 			
 		}
 		
+		CHtml::generateRandomIdPrefix();
+		
 		$data = array(
 			'row' => $row,
 			'functions' => Row::$functions,

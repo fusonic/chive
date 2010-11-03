@@ -19,7 +19,7 @@
  */
 class CHtml
 {
-	const ID_PREFIX='yt';
+	public static $idPrefix='yt';
 	/**
 	 * @var string the CSS class for displaying error summaries (see {@link errorSummary}).
 	 */
@@ -64,6 +64,11 @@ class CHtml
 	public static function encode($text)
 	{
 		return htmlspecialchars($text,ENT_QUOTES,Yii::app()->charset);
+	}
+	
+	public static function generateRandomIdPrefix()
+	{
+		self::$idPrefix = 'r' . substr(md5(microtime()), 0, 3);
 	}
 
 	/**
@@ -396,7 +401,7 @@ class CHtml
 	public static function button($label='button',$htmlOptions=array())
 	{
 		if(!isset($htmlOptions['name']))
-			$htmlOptions['name']=self::ID_PREFIX.self::$count++;
+			$htmlOptions['name']=self::$idPrefix.self::$count++;
 		if(!isset($htmlOptions['type']))
 			$htmlOptions['type']='button';
 		if(!isset($htmlOptions['value']))
@@ -420,7 +425,7 @@ class CHtml
 	public static function htmlButton($label='button',$htmlOptions=array())
 	{
 		if(!isset($htmlOptions['name']))
-			$htmlOptions['name']=self::ID_PREFIX.self::$count++;
+			$htmlOptions['name']=self::$idPrefix.self::$count++;
 		if(!isset($htmlOptions['type']))
 			$htmlOptions['type']='button';
 		self::clientChange('click',$htmlOptions);
@@ -502,6 +507,11 @@ class CHtml
 	 */
 	public static function label($label,$for,$htmlOptions=array())
 	{
+		if(substr($for, 0, strlen(self::$idPrefix)) != self::$idPrefix)
+		{
+			$for = self::$idPrefix . $for;
+		}
+		
 		if($for===false)
 			unset($htmlOptions['for']);
 		else
@@ -638,7 +648,7 @@ class CHtml
 		{
 			// add a hidden field so that if the radio button is not selected, it still submits a value
 			if(isset($htmlOptions['id']) && $htmlOptions['id']!==false)
-				$uncheckOptions=array('id'=>self::ID_PREFIX.$htmlOptions['id']);
+				$uncheckOptions=array('id'=>self::$idPrefix.$htmlOptions['id']);
 			else
 				$uncheckOptions=array();
 			$hidden=self::hiddenField($name,$uncheck,$uncheckOptions);
@@ -685,7 +695,7 @@ class CHtml
 		{
 			// add a hidden field so that if the radio button is not selected, it still submits a value
 			if(isset($htmlOptions['id']) && $htmlOptions['id']!==false)
-				$uncheckOptions=array('id'=>self::ID_PREFIX.$htmlOptions['id']);
+				$uncheckOptions=array('id'=>self::$idPrefix.$htmlOptions['id']);
 			else
 				$uncheckOptions=array();
 			$hidden=self::hiddenField($name,$uncheck,$uncheckOptions);
@@ -1251,7 +1261,7 @@ EOD;
 		self::resolveNameID($model,$attribute,$htmlOptions);
 		// add a hidden field so that if a model only has a file field, we can
 		// still use isset($_POST[$modelClass]) to detect if the input is submitted
-		$hiddenOptions=isset($htmlOptions['id']) ? array('id'=>self::ID_PREFIX.$htmlOptions['id']) : array();
+		$hiddenOptions=isset($htmlOptions['id']) ? array('id'=>self::$idPrefix.$htmlOptions['id']) : array();
 		return self::hiddenField($htmlOptions['name'],'',$hiddenOptions)
 			. self::activeInputField('file',$model,$attribute,$htmlOptions);
 	}
@@ -1290,7 +1300,7 @@ EOD;
 		else
 			$uncheck='0';
 
-		$hiddenOptions=isset($htmlOptions['id']) ? array('id'=>self::ID_PREFIX.$htmlOptions['id']) : array();
+		$hiddenOptions=isset($htmlOptions['id']) ? array('id'=>self::$idPrefix.$htmlOptions['id']) : array();
 		$hidden=$uncheck!==null ? self::hiddenField($htmlOptions['name'],$uncheck,$hiddenOptions) : '';
 
 		// add a hidden field so that if the radio button is not selected, it still submits a value
@@ -1332,7 +1342,7 @@ EOD;
 		else
 			$uncheck='0';
 
-		$hiddenOptions=isset($htmlOptions['id']) ? array('id'=>self::ID_PREFIX.$htmlOptions['id']) : array();
+		$hiddenOptions=isset($htmlOptions['id']) ? array('id'=>self::$idPrefix.$htmlOptions['id']) : array();
 		$hidden=$uncheck!==null ? self::hiddenField($htmlOptions['name'],$uncheck,$hiddenOptions) : '';
 
 		return $hidden . self::activeInputField('checkbox',$model,$attribute,$htmlOptions);
@@ -1474,7 +1484,7 @@ EOD;
 		$name=$htmlOptions['name'];
 		unset($htmlOptions['name']);
 
-		$hiddenOptions=isset($htmlOptions['id']) ? array('id'=>self::ID_PREFIX.$htmlOptions['id']) : array();
+		$hiddenOptions=isset($htmlOptions['id']) ? array('id'=>self::$idPrefix.$htmlOptions['id']) : array();
 		return self::hiddenField($name,'',$hiddenOptions)
 			. self::checkBoxList($name,$selection,$data,$htmlOptions);
 	}
@@ -1510,7 +1520,7 @@ EOD;
 		$name=$htmlOptions['name'];
 		unset($htmlOptions['name']);
 
-		$hiddenOptions=isset($htmlOptions['id']) ? array('id'=>self::ID_PREFIX.$htmlOptions['id']) : array();
+		$hiddenOptions=isset($htmlOptions['id']) ? array('id'=>self::$idPrefix.$htmlOptions['id']) : array();
 		return self::hiddenField($name,'',$hiddenOptions)
 			. self::radioButtonList($name,$selection,$data,$htmlOptions);
 	}
@@ -1676,7 +1686,7 @@ EOD;
 	 */
 	public static function getIdByName($name)
 	{
-		return str_replace(array('[]', '][', '[', ']'), array('', '_', '_', ''), $name);
+		return self::$idPrefix . str_replace(array('[]', '][', '[', ']'), array('', '_', '_', ''), $name);
 	}
 
 	/**
@@ -1886,7 +1896,7 @@ EOD;
 		if(isset($htmlOptions['id']))
 			$id=$htmlOptions['id'];
 		else
-			$id=$htmlOptions['id']=isset($htmlOptions['name'])?$htmlOptions['name']:self::ID_PREFIX.self::$count++;
+			$id=$htmlOptions['id']=isset($htmlOptions['name'])?$htmlOptions['name']:self::$idPrefix.self::$count++;
 
 		$cs=Yii::app()->getClientScript();
 		$cs->registerCoreScript('jquery');

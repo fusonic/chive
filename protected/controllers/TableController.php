@@ -236,6 +236,8 @@ class TableController extends Controller
 			'order' => 'COLLATION_NAME',
 			'select' => 'COLLATION_NAME, CHARACTER_SET_NAME AS collationGroup'
 			));
+
+		CHtml::generateRandomIdPrefix();
 		
 		$data = array(
 			'table' => $table,
@@ -472,7 +474,8 @@ class TableController extends Controller
 			'order' => 'COLLATION_NAME',
 			'select'=>'COLLATION_NAME, CHARACTER_SET_NAME AS collationGroup'
 			));
-			
+
+			CHtml::generateRandomIdPrefix();
 			$this->render('form', array(
 				'table' => $table,
 				'collations' => $collations,
