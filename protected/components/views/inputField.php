@@ -25,7 +25,7 @@ switch($type) {
 	case 'file':
 		echo '<script type="text/javascript">
 			$(document).ready(function() {
-				$("#<?php echo CHtml::ID_PREFIX; ?>").submit(function() {
+				$("#<?php echo CHtml::$idPrefix; ?>").submit(function() {
 					alert("ok1");
 					
 				});

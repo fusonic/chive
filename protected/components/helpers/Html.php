@@ -100,7 +100,7 @@ class Html
 	{
 		if($submit)
 		{
-			$submitButton = '<a href="javascript:void(0)" onclick="$(\'#' . CHtml::ID_PREFIX . '\').submit()" class="icon button primary">'
+			$submitButton = '<a href="javascript:void(0)" onclick="$(\'#' . CHtml::$idPrefix . '\').submit()" class="icon button primary">'
 					. Html::icon('save')
 					. '<span>' . Yii::t('core', 'save') . '</span>'
 				. '</a>'
@@ -113,7 +113,7 @@ class Html
 
 		if($cancel)
 		{
-			$cancelButton = '<a href="javascript:void(0)" onclick="$(\'#' . CHtml::ID_PREFIX . '\').slideUp(500, function() { $(this).parents(\'tr\').remove(); })" class="icon button">'
+			$cancelButton = '<a href="javascript:void(0)" onclick="$(\'#' . CHtml::$idPrefix . '\').slideUp(500, function() { $(this).parents(\'tr\').remove(); })" class="icon button">'
 					. Html::icon('delete')
 					. '<span>' . Yii::t('core', 'cancel') . '</span>'
 				. '</a>';

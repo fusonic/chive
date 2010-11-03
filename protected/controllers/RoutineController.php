@@ -84,7 +84,8 @@ class RoutineController extends Controller
 				. '-- Definition end' . "\n"
 				. 'END';
 		}
-		
+
+		CHtml::generateRandomIdPrefix();
 		$this->render('form', array(
 			'routine' => $routine,
 			'query' => $query,
@@ -188,6 +189,7 @@ class RoutineController extends Controller
 				. $routine->getCreateRoutine();
 		}
 
+		CHtml::generateRandomIdPrefix();
 		$this->render('form', array(
 			'routine' => $routine,
 			'type' => $type,

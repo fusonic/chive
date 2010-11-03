@@ -1,4 +1,6 @@
-<?php echo CHtml::form('', 'post', array('id' => CHtml::ID_PREFIX)); ?>
+<?php CHtml::generateRandomIdPrefix(); ?>
+
+<?php echo CHtml::form('', 'post', array('id' => CHtml::$idPrefix)); ?>
 	<h1>
 		<?php echo Yii::t('core', ($schema->isNewRecord ? 'addSchemaSpecificPrivileges' : 'editSchemaSpecificPrivileges')); ?>
 	</h1>
@@ -48,11 +50,11 @@
 		</fieldset>
 	</div>
 	<div class="buttonContainer">
-		<a href="javascript:void(0)" onclick="$('#<?php echo CHtml::ID_PREFIX; ?>').submit()" class="icon button">
+		<a href="javascript:void(0)" onclick="$('#<?php echo CHtml::$idPrefix; ?>').submit()" class="icon button">
 			<?php echo Html::icon('save'); ?>
 			<span><?php echo Yii::t('core', 'save'); ?></span>
 		</a>
-		<a href="javascript:void(0)" onclick="$('#<?php echo CHtml::ID_PREFIX; ?>').slideUp(500, function() { $(this).parents('tr').remove(); })" class="icon button">
+		<a href="javascript:void(0)" onclick="$('#<?php echo CHtml::$idPrefix; ?>').slideUp(500, function() { $(this).parents('tr').remove(); })" class="icon button">
 			<?php echo Html::icon('delete'); ?>
 			<span><?php echo Yii::t('core', 'cancel'); ?></span>
 		</a>

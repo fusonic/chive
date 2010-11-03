@@ -1,8 +1,9 @@
+<?php CHtml::generateRandomIdPrefix(); ?>
 <script type="text/javascript">
-var idPrefix = '<?php echo CHtml::ID_PREFIX; ?>';
+var idPrefix = '<?php echo CHtml::$idPrefix; ?>';
 </script>
 
-<?php echo CHtml::form('', 'post', array('id' => CHtml::ID_PREFIX)); ?>
+<?php echo CHtml::form('', 'post', array('id' => CHtml::$idPrefix)); ?>
 	<h1>
 		<?php echo Yii::t('core', ($user->isNewRecord ? 'addUser' : 'editUser')); ?>
 	</h1>
@@ -21,7 +22,7 @@ var idPrefix = '<?php echo CHtml::ID_PREFIX; ?>';
 				</td>
 				<td colspan="3">
 					<?php echo CHtml::activeTextField($user, 'User'); ?>
-					<a href="javascript:void(0)" onclick="$('#<?php echo CHtml::ID_PREFIX; ?>User_User').val('')" class="button">
+					<a href="javascript:void(0)" onclick="$('#<?php echo CHtml::$idPrefix; ?>User_User').val('')" class="button">
 						<span><?php echo Yii::t('core', 'anyUser'); ?></span>
 					</a>
 				</td>
@@ -32,7 +33,7 @@ var idPrefix = '<?php echo CHtml::ID_PREFIX; ?>';
 				</td>
 				<td colspan="3">
 					<?php echo CHtml::activeTextField($user, 'Host'); ?>
-					<a href="javascript:void(0)" onclick="$('#<?php echo CHtml::ID_PREFIX; ?>User_Host').val('%')" class="button">
+					<a href="javascript:void(0)" onclick="$('#<?php echo CHtml::$idPrefix; ?>User_Host').val('%')" class="button">
 						<span><?php echo Yii::t('core', 'anyHost'); ?></span>
 					</a>
 				</td>

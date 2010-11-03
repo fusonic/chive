@@ -113,6 +113,7 @@ class ViewController extends TableController
 				. '-- Definition end';
 		}
 
+		CHtml::generateRandomIdPrefix();
 		$this->render('form', array(
 			'view' => $view,
 			'query' => $query,
@@ -202,6 +203,7 @@ class ViewController extends TableController
 			$query = $view->getAlterView();
 		}
 
+		CHtml::generateRandomIdPrefix();
 		$this->render('form', array(
 			'view' => $view,
 			'query' => $query,
