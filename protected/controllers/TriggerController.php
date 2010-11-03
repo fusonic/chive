@@ -85,6 +85,7 @@ class TriggerController extends Controller
 				. 'END';
 		}
 
+		CHtml::generateRandomIdPrefix();
 		$this->render('form', array(
 			'trigger' => $trigger,
 			'query' => $query,
@@ -174,7 +175,8 @@ class TriggerController extends Controller
 			$query = 'DROP TRIGGER ' . $this->db->quoteTableName($trigger->TRIGGER_NAME) . self::$delimiter . "\n"
 				. $trigger->getCreateTrigger();
 		}
-		
+
+		CHtml::generateRandomIdPrefix();
 		$this->render('form', array(
 			'trigger' => $trigger,
 			'query' => $query,
