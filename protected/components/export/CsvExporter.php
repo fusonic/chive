@@ -28,11 +28,10 @@ class CsvExporter implements IExporter
 	private $mode;
 	private $schema;
 	private $settings = array(
-		'addDropObject' => true,		// Adds DROP TABLE statement
-		'addIfNotExists' => true,		// Adds IF NOT EXISTS to CREATE TABLE statement
-		'completeInserts' => true,		// Adds column names to insert statement
-		'ignoreInserts' => false,		// Adds IGNORE to insert statement (INSERT IGNORE ...)
-		'insertCommand' => 'INSERT',	// Specifies the command for data (INSERT/REPLACE)
+		'fieldTerminator' => ';',
+		'fieldEncloseString' => '"',
+		'fieldEscapeString' => '\\',
+		'fieldsFirstRow' => true,
 		'rowsPerInsert' => 1000,		// Specifies the number of rows per INSERT statement
 	);
 	private $stepCount;
@@ -52,7 +51,25 @@ class CsvExporter implements IExporter
 	 */
 	public function getSettingsView()
 	{
-		return 'CSV export settings go here ...';
+		$r = '';
+
+		// Structure
+		$r .= '<fieldset>';
+		$r .= CHtml::label(Yii::t('core', 'terminateFieldsBy'), 'Export_settings_CsvExporter_fieldTerminator'). ' ';
+		$r .= " " . CHtml::textField("Export[settings][CsvExporter][fieldTerminator]", $this->settings["fieldTerminator"]) . '<br />';
+		
+		$r .= CHtml::label(Yii::t('core', 'encloseFieldsBy'), 'Export_settings_CsvExporter_fieldEncloseString'). ' ';
+		$r .= " " . CHtml::textField("Export[settings][CsvExporter][fieldEncloseString]", $this->settings["fieldEncloseString"]) . '<br />';
+		
+		$r .= CHtml::label(Yii::t('core', 'escapeFieldsBy'), 'Export_settings_CsvExporter_fieldEscapeString'). ' ';
+		$r .= " " . CHtml::textField("Export[settings][CsvExporter][fieldEscapeString]", $this->settings["fieldEscapeString"]) . '<br />';
+		
+		$r .= CHtml::checkBox('Export[settings][CsvExporter][fieldsFirstRow]', $this->settings['fieldsFirstRow']) . ' ';
+		$r .= CHtml::label(Yii::t('core', 'fieldNamesInFirstRow'), 'Export_settings_CsvExporter_fieldsFirstRow') . '<br />';
+		
+		$r .= '</fieldset>';
+
+		return $r;
 	}
 
 	/**

@@ -59,7 +59,7 @@ var globalExport = {
 		$('#exporterSettings>div:first').show();
 		
 		// Setup click handlers for checkboxes
-		$('#exporterType>input').click(function() {
+		$('#exporterType>fieldset>input').click(function() {
 			$('#exporterSettings>div').hide();
 			$('#exporterSettings_' + this.value).show();
 		});
