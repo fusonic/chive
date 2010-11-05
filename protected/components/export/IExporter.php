@@ -54,11 +54,20 @@ interface IExporter
 	public function getStepCount();
 
 	/**
-	 * Sets the items to export (e.g. tables, schemata, rows).
+	 * Sets the items to export (e.g. tables, schemata).
 	 *
 	 * @param	array				items to export
 	 */
 	public function setItems(array $items);
+	
+	/**
+	 * 
+	 * Sets the rows to export.
+	 * @param array $rows
+	 * @param string $table
+	 * @param string $schema
+	 */
+	public function setRows(array $rows, $table = null, $schema = null);
 
 	/**
 	 * Runs the specified exporting step.

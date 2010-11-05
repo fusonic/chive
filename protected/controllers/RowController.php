@@ -420,12 +420,17 @@ class RowController extends Controller
 	 */
 	public function actionExport()
 	{
-		
-		$rows = json_decode($_POST['data'], true);
+		if(isset($_POST['data']))
+		{
+			$rows = json_decode($_POST['data'], true);
+		}
+		else
+		{
+			$rows = json_decode($_POST['Export']['rows'], true);
+		}
 		
 		$exportPage = new ExportPage('rows', $this->schema, $this->table);
 		$exportPage->setRows($rows);
-		//$exportPage->setSelectedObjects(array('t:' . $this->table));
 		$exportPage->run();
 		
 		$this->render('../global/export', array(
