@@ -947,6 +947,24 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
+msgid "Could not load table »{table}«"
+msgstr ""
+
+msgid "The table »{table}« could not be loaded. It may has been deleted during another session."
+msgstr ""
+
+msgid "Separate fields by"
+msgstr ""
+
+msgid "Enclose fields by"
+msgstr ""
+
+msgid "Escape text delimiter with"
+msgstr ""
+
+msgid "Field names in first row"
+msgstr ""
+
 msgid "Numeric"
 msgstr ""
 
