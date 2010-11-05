@@ -74,19 +74,19 @@ class CsvExporter implements IExporter
 
 		// Structure
 		$r .= '<fieldset>';
-		$r .= CHtml::label(Yii::t('core', 'terminateFieldsBy'), 'Export_settings_CsvExporter_fieldTerminator'). ' ';
+		$r .= CHtml::label(Yii::t('core', 'separateFieldsBy'), 'Export_settings_CsvExporter_fieldTerminator'). ' ';
 		$r .= " " . CHtml::textField("Export[settings][CsvExporter][fieldTerminator]", $this->settings["fieldTerminator"]) . '<br />';
 		
 		$r .= CHtml::label(Yii::t('core', 'encloseFieldsBy'), 'Export_settings_CsvExporter_fieldEncloseString'). ' ';
 		$r .= " " . CHtml::textField("Export[settings][CsvExporter][fieldEncloseString]", $this->settings["fieldEncloseString"]) . '<br />';
 		
-		$r .= CHtml::label(Yii::t('core', 'escapeFieldsBy'), 'Export_settings_CsvExporter_fieldEscapeString'). ' ';
+		$r .= CHtml::label(Yii::t('core', 'escapeFieldTextDelimiterWith'), 'Export_settings_CsvExporter_fieldEscapeString'). ' ';
 		$r .= " " . CHtml::textField("Export[settings][CsvExporter][fieldEscapeString]", $this->settings["fieldEscapeString"]) . '<br />';
 		
 		$r .= CHtml::checkBox('Export[settings][CsvExporter][fieldsFirstRow]', $this->settings['fieldsFirstRow']) . ' ';
 		$r .= CHtml::label(Yii::t('core', 'fieldNamesInFirstRow'), 'Export_settings_CsvExporter_fieldsFirstRow') . '<br />';
 		
-		$r .= CHtml::checkBox('Export[settings][SqlExporter][hexBlobs]', $this->settings['hexBlobs']) . ' ';
+		$r .= CHtml::checkBox('Export[settings][CsvExporter][hexBlobs]', $this->settings['hexBlobs']) . ' ';
 		$r .= CHtml::label(Yii::t('core', 'useHexForBlob'), 'Export_settings_SqlExporter_hexBlobs') . '<br />';
 		
 		$r .= '</fieldset>';
