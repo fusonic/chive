@@ -47,6 +47,22 @@ class CsvExporter implements IExporter
 	public function __construct($mode)
 	{
 		$this->mode = $mode;
+
+		// Reload settings from request
+		if($r = @$_REQUEST['Export']['settings']['CsvExporter'])
+		{
+			foreach($this->settings AS $key => $value)
+			{
+				if(is_bool($this->settings[$key]))
+				{
+					$this->settings[$key] = isset($r[$key]);
+				}
+				elseif(isset($r[$key]))
+				{
+					$this->settings[$key] = $r[$key];
+				}
+			}
+		}
 	}
 
 	/**
