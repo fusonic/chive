@@ -113,7 +113,7 @@ class ExportPage extends CModel
 		$exporter->calculateStepCount();
 
 		// If it was not an ajax request, we have to serve the file for download
-		if(false && !Yii::app()->getRequest()->isAjaxRequest)
+		if(!Yii::app()->getRequest()->isAjaxRequest)
 		{
 			if($this->compression == 'gzip' && function_exists('gzencode'))
 			{
