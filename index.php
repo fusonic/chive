@@ -1,4 +1,4 @@
-<?php
+<?phpp
 
 // Some dirty debugging methods
 function pre($_value) { echo "<pre>"; print_r($_value); echo "</pre>"; }
