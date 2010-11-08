@@ -252,10 +252,13 @@ class BrowsePage extends CModel
 				$this->executedQueries[] = $sqlQuery->getQuery();
 				$this->originalQueries[] = $sqlQuery->getOriginalQuery();
 
-				$pages->postVars = 
-				$sort->postVars = array(
-					'query' => $sqlQuery->getOriginalQuery()
-				);
+				if($type == "select")
+				{
+					$pages->postVars = 
+					$sort->postVars = array(
+						'query' => $sqlQuery->getOriginalQuery()
+					);
+				}
 				
 				// Prepare query for execution
 				$cmd = $this->db->createCommand($sqlQuery->getQuery());
