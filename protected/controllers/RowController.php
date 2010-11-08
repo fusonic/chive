@@ -351,6 +351,7 @@ class RowController extends Controller
 			}
 			catch(DbException $ex) 
 			{
+				$response->refresh = true;
 				$response->addNotification('error', Yii::t('core', 'updatingRowFailed'), $ex->getText(), $ex->getSql());
 			}
 			
