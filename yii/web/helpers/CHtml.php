@@ -19,7 +19,7 @@
  */
 class CHtml
 {
-	public static $idPrefix='yt';
+	public static $idPrefix='';
 	/**
 	 * @var string the CSS class for displaying error summaries (see {@link errorSummary}).
 	 */

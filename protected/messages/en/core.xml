@@ -315,4 +315,8 @@
 	<entry id="yes">Yes</entry>
 	<entry id="tableLoadErrorTitle">Could not load table &#xBB;{table}&#xAB;</entry>
 	<entry id="tableLoadErrorMessage">The table &#xBB;{table}&#xAB; could not be loaded. It may has been deleted during another session.</entry>
+	<entry id="separateFieldsBy">Separate fields by</entry>
+	<entry id="encloseFieldsBy">Enclose fields by</entry>
+	<entry id="escapeFieldTextDelimiterWith">Escape text delimiter with</entry>
+	<entry id="fieldNamesInFirstRow">Field names in first row</entry>
 </category>
