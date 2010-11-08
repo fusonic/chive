@@ -26,7 +26,7 @@
   <entry id="ajaxRequestFailed">AJAX Anfrage fehlgeschlagen</entry>
   <entry id="ajaxRequestFailedText">Klicken Sie &lt;a href=\</entry>
   <entry id="amountRoutines">1#{amount} Routine|n&gt;1#{amount} Routinen</entry>
-  <entry id="amountTables">1#{amount} Tabelle|n&gt;1#{amount} Tabellen</entry>
+  <entry id="amountTables">1#{amount}  Tabelle|n&gt;1#{amount}  Tabellen</entry>
   <entry id="amountViews">1#{amount} Sicht|n&gt;1#{amount} Sichten</entry>
   <entry id="attribute">Attribut</entry>
   <entry id="authenticationFailed">Es konnte keine Verbindung hergestellt werden:&lt;br /&gt;{message}</entry>
