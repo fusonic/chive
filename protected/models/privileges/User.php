@@ -262,11 +262,15 @@ class User extends ActiveRecord
 		$privileges = $this->getGlobalPrivileges();
 		$canGrant = array_search('GRANT', $privileges);
 
-		return 'GRANT ' . implode(', ', array_diff($privileges, array('GRANT'))) . "\n"
+		$sql = array();
+		$sql[] = 'GRANT ' . implode(', ', array_diff($privileges, array('GRANT'))) . "\n"
 			. "\tON *.*\n"
 			. "\tTO " . self::$db->quoteValue($this->User) . '@' . self::$db->quoteValue($this->Host)
 			. ($this->plainPassword !== null ? "\n\tIDENTIFIED BY " . self::$db->quoteValue($this->plainPassword) : '')
 			. ($canGrant ? "\n\tWITH GRANT OPTION" : '') . ';';
+			
+		$sql[] = 'FLUSH PRIVILEGES';
+		return $sql;
 	}
 
 	/**
@@ -297,9 +301,8 @@ class User extends ActiveRecord
 			. "\tON *.*\n"
 			. "\tFROM " . self::$db->quoteValue($this->User) . '@' . self::$db->quoteValue($this->Host) . ';';
 
-		// Grant new privileges
-		$sql[] = $this->getInsertSql();
-
+		$sql = array_merge($sql, $this->getInsertSql());
+		
 		return $sql;
 	}
 
@@ -308,7 +311,9 @@ class User extends ActiveRecord
 	 */
 	protected function getDeleteSql()
 	{
-		return 'DROP USER ' . self::$db->quoteValue($this->User) . '@' . self::$db->quoteValue($this->Host) . ';';
+		$sql = array('DROP USER ' . self::$db->quoteValue($this->User) . '@' . self::$db->quoteValue($this->Host) . ';');
+		$sql[] = 'FLUSH PRIVILEGES';
+		return $sql;
 	}
 
 	public function getDbConnection()

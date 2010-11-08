@@ -52,7 +52,7 @@ class PrivilegesController extends Controller
 		$this->schema = trim($request->getParam('schema'));
 
 		parent::__construct($id, $module);
-		$this->connectDb();
+		$this->connectDb(null);
 	}
 
 	/**
@@ -60,7 +60,7 @@ class PrivilegesController extends Controller
 	 *
 	 * @return	CDbConnection
 	 */
-	protected function connectDb()
+	protected function connectDb($schema)
 	{
 		// Connect to database
 		$this->db = new CDbConnection('mysql:host=' . Yii::app()->user->host . ';dbname=mysql',
