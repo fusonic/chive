@@ -22,7 +22,7 @@
    * Tab menu
    */
 
-  ul.tabMenu li {
+ ul.tabMenu li {
 	font-size: 120%;
 	margin-right: 10px;
 	background: #DFDFDF url('../images/tab-bg.png') repeat-x top left;
@@ -32,14 +32,18 @@
 	-webkit-border-bottom-right-radius: 5px;
 	border: solid 1px #C0C0C0;
 	border-top: none;
-  }
+ }
   
-  ul.tabMenu li>a {
+ul.tabMenu li a.icon span {
+	text-decoration: none;
+}
+   
+ ul.tabMenu li>a {
 	padding: 3px 10px 5px 10px;
-  }
-  
-  ul.tabMenu li.active,
-  ul.tabMenu li:hover {
-  	background-color: #d4e73f;
-  	background-position: bottom left;
-  }
+ }
+ 
+ ul.tabMenu li.active,
+ ul.tabMenu li:hover {
+	background-color: #d4e73f;
+	background-position: bottom left;
+ }
