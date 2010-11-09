@@ -5,9 +5,9 @@
 <?php if($model->showInput) { ?>
 
 	<?php echo CHtml::form(Yii::app()->createUrl($model->formTarget), 'post', array('id' => 'queryForm')); ?>
-	<table style="width: 100%;">
+	<table style="width: 100%;" id="browseTable">
 		<tr>
-			<td style="width: 80%;">
+			<td id="browseTable_ColLeft">
 				<?php $this->widget("SqlEditor", array(
 					    'id' => 'query',
 						'autogrow' => true,
@@ -26,7 +26,7 @@
 					</a>
 				</div>
 			</td>
-			<td style="vertical-align: top; padding: 2px 5px;">
+			<td style="vertical-align: top; padding: 2px 5px;" id="browseTable_ColRight">
 				<a class="icon button" href="javascript:void(0);" onclick="Profiling.toggle();">
 					<?php if( Yii::app()->user->settings->get('profiling')) {?>
 						<?php echo Html::icon('square_green', 16, false, null, array('id' => 'profiling_indicator')); ?>

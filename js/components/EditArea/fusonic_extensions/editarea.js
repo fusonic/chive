@@ -16,6 +16,12 @@ function setupEditAreaAutoGrow(_id){
     // getting the minheight, saved in the textarea's style attribute
     var minHeight = parseInt($('#' + _id).css('min-height'));
     
+    var browseTable = document.getElementById("browseTable");
+    var colLeft = document.getElementById("browseTable_ColLeft");
+    var colRight = document.getElementById("browseTable_ColRight");
+    
+    frame.style.width = browseTable.offsetWidth - colRight.offsetWidth + "px";
+    
     // setting maxheight of the iframe
     $('#frame_' + _id).css('max-height', maxHeight);
     
