@@ -118,9 +118,12 @@ class StorageEngineTest extends CTestCase
 			$se = StorageEngine::model()->findAllByAttributes(array(
 				'Engine' => $engine	
 			));
-
+			
+			if(count($se) == 0)
+				continue;
+				
 			$se = $se[0];
-
+			
 			$this->assertType('StorageEngine', $se);
 			$this->assertType('string', $se->Comment);
 			$this->assertType('string', $se->Support);
@@ -150,6 +153,9 @@ class StorageEngineTest extends CTestCase
 			$se = StorageEngine::model()->findAllByAttributes(array(
 				'Engine' => $db	
 			));
+			
+			if(count($se) == 0)
+				continue;
 
 			$this->assertFalse($se[0]->getSupportsChecksum());
 			$this->assertFalse($se[0]->getSupportsPackKeys());

@@ -107,16 +107,17 @@ class IndexTest extends ChiveTestCase
 			'TABLE_SCHEMA' => 'indextest',
 			'TABLE_NAME' => 'table1',
 		));
-
+		
 		// Delete key
-		$res = $table->indices[0]->delete();
+		$index = $table->indices[0];
+		$res = $index->delete();
 
 		// Check result
 		$this->assertEquals(false, $res);
 
 		// Set throwExceptions and try again
-		$table->indices[0]->throwExceptions = true;
-		$table->indices[0]->delete();
+		$index->throwExceptions = true;
+		$index->delete();
 	}
 
 	/**

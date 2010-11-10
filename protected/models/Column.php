@@ -274,7 +274,7 @@ class Column extends ActiveRecord
 		if($this->attribute)
 		{
 			if(($this->attribute == 'unsigned' && DataType::check($this->DATA_TYPE, DataType::SUPPORTS_UNSIGNED))
-				|| $this->attribute == 'unsigned_zerofill' && DataType::check($this->DATA_TYPE, DataType::SUPPORTS_UNSIGNED_ZEROFILL)
+				|| $this->attribute == 'unsigned zerofill' && DataType::check($this->DATA_TYPE, DataType::SUPPORTS_UNSIGNED_ZEROFILL)
 				|| $this->attribute == 'on update current_timestamp' && DataType::check($this->DATA_TYPE, DataType::SUPPORTS_ON_UPDATE_CURRENT_TIMESTAMP))
 			{
 				$attribute = ' ' . $this->attribute;

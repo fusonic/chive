@@ -484,10 +484,7 @@ class ColumnTest extends ChiveTestCase
 			    'TABLE_NAME' => 'test',
 			    'COLUMN_NAME' => $col->COLUMN_NAME,
 			);
-
-			// Load column definition
-			$col = Column::model()->findByPk($pk);
-
+				
 			$this->assertEquals('unsigned zerofill',$col->attribute);
 			$this->assertEquals('float',$col->getDataType());
 			$this->assertEquals(10,$col->size);
@@ -558,7 +555,7 @@ class ColumnTest extends ChiveTestCase
 			//col1 has no ColumnDefault
 			if($c == 0)
 			{
-				$this->assertNull($this->COLUMN_DEFAULT);
+				$this->assertNull($col->COLUMN_DEFAULT);
 			}
 			else
 			{
