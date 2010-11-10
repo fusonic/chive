@@ -48,7 +48,7 @@ class I18NImportCommand extends CConsoleCommand
 		}
 		
 		// Now try to load translations
-		require_once('PEAR/File_Gettext/Gettext/PO.php');
+		require_once('File/Gettext/PO.php');
 		$test = new File_Gettext_PO('../../translation/protected/messages/_translation/' . $lang . '.po');
 		$test->load();
 		$data = $test->toArray();
@@ -103,7 +103,7 @@ class I18NImportCommand extends CConsoleCommand
 			$dom = dom_import_simplexml($xmlNew)->ownerDocument;
 			$dom->formatOutput = true;
 			
-			file_put_contents('messages/' . strtolower($targetLang) . '/' . $file . '.xml', $dom->saveXML());
+			var_dump(file_put_contents('messages/' . strtolower($targetLang) . '/' . $file . '.xml', $dom->saveXML()));
 		}
 	}
 	
