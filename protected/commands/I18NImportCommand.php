@@ -1,5 +1,6 @@
 <?php
 
+
 class I18NImportCommand extends CConsoleCommand
 {
 	
@@ -34,7 +35,7 @@ class I18NImportCommand extends CConsoleCommand
 		
 		// Create an empty array for all texts
 		$stringKeys = array();
-		
+				
 		// Go through all files
 		foreach($files as $file)
 		{
@@ -47,14 +48,28 @@ class I18NImportCommand extends CConsoleCommand
 			}
 		}
 		
+		//
+		// This is a quick dirty hack because Gettext_PDO does can't handle escaped field delimiters.
+		// So i replace all espaced delimiters with -!!- and reverse it afterwards.
+		//
+		$old = file_get_contents('../../translation/protected/messages/_translation/' . $lang . '.po');
+		$replaced = str_replace('\"', '-!!-', $old);
+		file_put_contents('../../translation/protected/messages/_translation/' . $lang . '.po', $replaced);
+		
 		// Now try to load translations
 		require_once('File/Gettext/PO.php');
 		$test = new File_Gettext_PO('../../translation/protected/messages/_translation/' . $lang . '.po');
 		$test->load();
 		$data = $test->toArray();
 		$strings = array();
+		
+		file_put_contents('../../translation/protected/messages/_translation/' . $lang . '.po', $old);
+		
 		foreach($data['strings'] as $key => $value)
 		{
+			$key = str_replace('-!!-', '"', $key);
+			$value = str_replace('-!!-', '"', $value);
+			
 			$pos = array_search($key, $stringKeys);
 			
 			if($pos > -1)
@@ -96,8 +111,11 @@ class I18NImportCommand extends CConsoleCommand
 			
 			foreach($xml->entry as $entry)
 			{
-				$entry2 = $xmlNew->addChild('entry', $strings[(string)$entry]);
-				$entry2->addAttribute('id', $entry['id']);
+				if(isset($strings[(string)$entry]))
+				{
+					$entry2 = $xmlNew->addChild('entry', $strings[(string)$entry]);
+					$entry2->addAttribute('id', $entry['id']);
+				}
 			}
 			
 			$dom = dom_import_simplexml($xmlNew)->ownerDocument;

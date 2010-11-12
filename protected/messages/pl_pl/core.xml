@@ -7,11 +7,11 @@
   <entry id="actions">Akcje</entry>
   <entry id="addBookmark">Dodaj zak&#x142;adk&#x119;</entry>
   <entry id="addColumn">Dodaj kolumn&#x119;</entry>
-  <entry id="addDropObject">Dodaj &lt;code class=\</entry>
+  <entry id="addDropObject">Dodaj &lt;code class="literal"&gt;DROP [TABLE|VIEW|PROCEDURE|FUNCTION]&lt;/code&gt;</entry>
   <entry id="addFirstColumn">Dodaj pierwsz&#x105; kolumn&#x119;</entry>
   <entry id="addFulltextIndex">Dodaj indeks FULLTEXT</entry>
   <entry id="addFunction">Dodaj funkcj&#x119;</entry>
-  <entry id="addIfNotExists">Dodaj &lt;code class=\</entry>
+  <entry id="addIfNotExists">Dodaj &lt;code class="literal"&gt;IF NOT EXISTS&lt;/code&gt;</entry>
   <entry id="addIndex">Dodaj indeks</entry>
   <entry id="addPrimaryKey">Dodaj indeks PRIMARY</entry>
   <entry id="addProcedure">Dodaj procedur&#x119;</entry>
@@ -24,7 +24,7 @@
   <entry id="addView">Dodaj widok</entry>
   <entry id="affectedRowsQueryTime">0#Nie zmieniono rekord&#xF3;w. Wykonanie zapytania zaj&#x119;&#x142;o {time} sekund.|1#{rows} rekord zmieniony. Wykonanie zapytania zaj&#x119;&#x142;o {time} sekund.|n&gt;1#{rows} zmienionych rekord&#xF3;w. Wykonanie zapytania zaj&#x119;&#x142;o {time} sekund.</entry>
   <entry id="ajaxRequestFailed">&#x17B;&#x105;danie AJAX nie powiod&#x142;o si&#x119;.</entry>
-  <entry id="ajaxRequestFailedText">Kliknij &lt;a href=\</entry>
+  <entry id="ajaxRequestFailedText">Kliknij &lt;a href="javascript:void(0)" onclick="reload()"&gt;tutaj&lt;/a&gt; aby prze&#x142;adowa&#x107; stron&#x119;.</entry>
   <entry id="amountRoutines">1#{amount} procedura|n&gt;1#{amount} procedur</entry>
   <entry id="amountTables">1#{amount}  tabela|n&gt;1#{amount}  tabele</entry>
   <entry id="amountViews">1#{amount} widok|n&gt;1#{amount} widoki</entry>
@@ -46,7 +46,7 @@
   <entry id="columns">Kolumny</entry>
   <entry id="command">Polecenie</entry>
   <entry id="comment">Komentarz</entry>
-  <entry id="compressionWillBeAutomaticallyDetected">Kompresja importowanych plik&#xF3;w zostanie wykryta automatycznie (&lt;code class=\</entry>
+  <entry id="compressionWillBeAutomaticallyDetected">Kompresja importowanych plik&#xF3;w zostanie wykryta automatycznie (&lt;code class="literal"&gt;[NONE|GZIP|BZIP2]&lt;/code&gt;)</entry>
   <entry id="confirm">Zatwierd&#x17A;</entry>
   <entry id="create">Utw&#xF3;rz</entry>
   <entry id="createIndex">Stw&#xF3;rz indeks</entry>
@@ -163,7 +163,7 @@
   <entry id="last">Ostatni</entry>
   <entry id="lastCheckDate">Data ostatniego sprawdzenia</entry>
   <entry id="lastUpdateDate">Data ostatniej aktualizacji</entry>
-  <entry id="leaveEmptyForNull">Pozostaw puste do u&#x17C;ycia &lt;span class=\</entry>
+  <entry id="leaveEmptyForNull">Pozostaw puste do u&#x17C;ycia &lt;span class="null"&gt;NULL&lt;/&gt;.</entry>
   <entry id="loading">Wczytywanie</entry>
   <entry id="login">Zaloguj</entry>
   <entry id="logout">Wyloguj</entry>
@@ -214,7 +214,7 @@
   <entry id="routine">Procedura</entry>
   <entry id="routines">Procedury</entry>
   <entry id="rows">Rekordy</entry>
-  <entry id="rowsPerInsert">Wierszy na &lt;code class=\</entry>
+  <entry id="rowsPerInsert">Wierszy na &lt;code class="literal"&gt;[INSERT|REPLACE]&lt;/code&gt;</entry>
   <entry id="save">Zapisz</entry>
   <entry id="schema">Baza danych</entry>
   <entry id="schemaSpecificPrivileges">Przywileje dla bazy danych</entry>
@@ -233,7 +233,7 @@
   <entry id="spaceUsage">Wykorzystanie miejsca</entry>
   <entry id="softwareInformation">Informacje o oprogramowaniu</entry>
   <entry id="sql">SQL</entry>
-  <entry id="sqlErrorOccured">Wyst&#x105;pi&#x142; b&#x142;ad SQL numer {errno}: &lt;span class=\</entry>
+  <entry id="sqlErrorOccured">Wyst&#x105;pi&#x142; b&#x142;ad SQL numer {errno}: &lt;span class="sql"&gt;{errmsg}&lt;/span&gt;</entry>
   <entry id="status">Status</entry>
   <entry id="storageEngine">Silnik przechowywania</entry>
   <entry id="storageEngines">Silniki przechowywania</entry>
@@ -298,10 +298,10 @@
   <entry id="updatable">Aktualizowalne</entry>
   <entry id="usage">U&#x17C;ycie</entry>
   <entry id="useCompleteInserts">Pe&#x142;ne dodania</entry>
-  <entry id="useDelayedInserts">U&#x17C;yj &lt;code class=\</entry>
+  <entry id="useDelayedInserts">U&#x17C;yj &lt;code class="literal"&gt;[INSERT|REPLACE] DELAYED&lt;/code&gt;</entry>
   <entry id="usedLibraries">U&#x17C;yte biblioteki</entry>
-  <entry id="useHexForBlob">U&#x17C;yj liczb szesnastkowych dla typu &lt;code class=\</entry>
-  <entry id="useInsertIgnore">U&#x17C;yj &lt;code class=\</entry>
+  <entry id="useHexForBlob">U&#x17C;yj liczb szesnastkowych dla typu &lt;code class="literal"&gt;BLOB&lt;/code&gt;</entry>
+  <entry id="useInsertIgnore">U&#x17C;yj &lt;code class="literal"&gt;[INSERT|REPLACE] IGNORE&lt;/code&gt;</entry>
   <entry id="user">U&#x17C;ytkownik</entry>
   <entry id="username">Nazwa u&#x17C;ytkownika</entry>
   <entry id="value">Warto&#x15B;&#x107;</entry>

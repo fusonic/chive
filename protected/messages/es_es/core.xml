@@ -7,11 +7,11 @@
   <entry id="actions">Acciones</entry>
   <entry id="addBookmark">A&#xF1;adir marcador</entry>
   <entry id="addColumn">A&#xF1;adir columna</entry>
-  <entry id="addDropObject">A&#xF1;adir &lt;code class=\</entry>
+  <entry id="addDropObject">A&#xF1;adir &lt;code class="literal"&gt;DROP [TABLE|VIEW|PROCEDURE|FUNCTION]&lt;/code&gt;</entry>
   <entry id="addFirstColumn">A&#xF1;adir primera columna</entry>
   <entry id="addFulltextIndex">A&#xF1;adir &#xED;ndice fulltext</entry>
   <entry id="addFunction">A&#xF1;adir funci&#xF3;n</entry>
-  <entry id="addIfNotExists">A&#xF1;adir  &lt;code class=\</entry>
+  <entry id="addIfNotExists">A&#xF1;adir  &lt;code class="literal"&gt;IF NOT EXISTS&lt;/code&gt;</entry>
   <entry id="addIndex">A&#xF1;adir &#xED;ndice</entry>
   <entry id="addPrimaryKey">A&#xF1;adir clave primaria</entry>
   <entry id="addProcedure">A&#xF1;adir procedimiento</entry>
@@ -24,7 +24,7 @@
   <entry id="addView">A&#xF1;adir vista</entry>
   <entry id="affectedRowsQueryTime">0#Ninguna fila afectada. Tiempo de consulta: {time} segundos.|1#{rows} fila modificada. Tiempo de consulta: {time} segundos.|n&gt;1#{rows} filas modificadas. Tiempo de consulta: {time} segundos.</entry>
   <entry id="ajaxRequestFailed">Fall&#xF3; la petici&#xF3;n por Ajax</entry>
-  <entry id="ajaxRequestFailedText">Pulse &lt;a href=\</entry>
+  <entry id="ajaxRequestFailedText">Pulse &lt;a href="javascript:void(0)" onclick="reload()"&gt;aqu&#xED;&lt;/a&gt; para recargar el sitio.</entry>
   <entry id="amountRoutines">1#{amount}  rutina|n&gt;1#{amount}  rutinas</entry>
   <entry id="amountTables">1#{amount} tabla|n&gt;1#{amount} tablas</entry>
   <entry id="amountViews">1#{amount}  vista|n&gt;1#{amount}  vistas</entry>
@@ -46,7 +46,7 @@
   <entry id="columns">Columnas</entry>
   <entry id="command">Orden</entry>
   <entry id="comment">Comentario</entry>
-  <entry id="compressionWillBeAutomaticallyDetected">El tipo de compresi&#xF3;n del archivo se detectar&#xE1; autom&#xE1;tica de entre las siguientes &lt;code class=\</entry>
+  <entry id="compressionWillBeAutomaticallyDetected">El tipo de compresi&#xF3;n del archivo se detectar&#xE1; autom&#xE1;tica de entre las siguientes &lt;code class="literal"&gt;[Ninguna|GZIP|BZIP2]&lt;/code&gt;</entry>
   <entry id="confirm">Confirmar</entry>
   <entry id="create">Crear</entry>
   <entry id="createIndex">Crear &#xED;ndice</entry>
@@ -163,7 +163,7 @@
   <entry id="last">&#xDA;ltimo</entry>
   <entry id="lastCheckDate">Fecha de &#xFA;ltima comprobaci&#xF3;n</entry>
   <entry id="lastUpdateDate">Fecha de &#xFA;ltima actualizaci&#xF3;n</entry>
-  <entry id="leaveEmptyForNull">D&#xE9;jelo vac&#xED;o para usar &lt;span class=\</entry>
+  <entry id="leaveEmptyForNull">D&#xE9;jelo vac&#xED;o para usar &lt;span class="null"&gt;NULL&lt;/&gt;.</entry>
   <entry id="loading">Cargando</entry>
   <entry id="login">Iniciar sesi&#xF3;n</entry>
   <entry id="logout">Cerrar Sesi&#xF3;n</entry>
@@ -214,7 +214,7 @@
   <entry id="routine">Rutina</entry>
   <entry id="routines">Rutinas</entry>
   <entry id="rows">Filas</entry>
-  <entry id="rowsPerInsert">Filas por &lt;code class=\</entry>
+  <entry id="rowsPerInsert">Filas por &lt;code class="literal"&gt;[INSERT|REPLACE]&lt;/code&gt;</entry>
   <entry id="save">Guardar</entry>
   <entry id="schema">Esquema</entry>
   <entry id="schemaSpecificPrivileges">Privilegios espec&#xED;ficos por esquema</entry>
@@ -233,7 +233,7 @@
   <entry id="spaceUsage">Uso de espacio</entry>
   <entry id="softwareInformation">Informaci&#xF3;n de software</entry>
   <entry id="sql">SQL</entry>
-  <entry id="sqlErrorOccured">Ha ocurrido un error de SQL ({errno}): &lt;span class=\</entry>
+  <entry id="sqlErrorOccured">Ha ocurrido un error de SQL ({errno}): &lt;span class="sql"&gt;{errmsg}&lt;/span&gt;</entry>
   <entry id="status">Estado</entry>
   <entry id="storageEngine">Motor de almacenamiento</entry>
   <entry id="storageEngines">Motores de almacenamiento</entry>
@@ -298,10 +298,10 @@
   <entry id="updatable">Modificaci&#xF3;n</entry>
   <entry id="usage">Uso</entry>
   <entry id="useCompleteInserts">Inserciones completas</entry>
-  <entry id="useDelayedInserts">Usar &lt;code class=\</entry>
+  <entry id="useDelayedInserts">Usar &lt;code class="literal"&gt;[INSERT|REPLACE] DELAYED&lt;/code&gt;</entry>
   <entry id="usedLibraries">Bibliotecas usadas</entry>
-  <entry id="useHexForBlob">Usar hexadecimal para campos &lt;code class=\</entry>
-  <entry id="useInsertIgnore">Usar &lt;code class=\</entry>
+  <entry id="useHexForBlob">Usar hexadecimal para campos &lt;code class="literal"&gt;BLOB&lt;/code&gt;</entry>
+  <entry id="useInsertIgnore">Usar &lt;code class="literal"&gt;[INSERT|REPLACE] IGNORE&lt;/code&gt;</entry>
   <entry id="user">Usuario</entry>
   <entry id="username">Nombre de usuario</entry>
   <entry id="value">Valor</entry>

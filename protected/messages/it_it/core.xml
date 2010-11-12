@@ -7,11 +7,11 @@
   <entry id="actions">Azioni</entry>
   <entry id="addBookmark">Aggiungi segnalibro</entry>
   <entry id="addColumn">Aggiungi colonna</entry>
-  <entry id="addDropObject">Aggiungi &lt;code class=\</entry>
+  <entry id="addDropObject">Aggiungi &lt;code class="literal"&gt;DROP [TABLE|VIEW|PROCEDURE|FUNCTION]&lt;/code&gt;</entry>
   <entry id="addFirstColumn">Aggiungi prima colonna</entry>
   <entry id="addFulltextIndex">Aggiungi indice fulltext</entry>
   <entry id="addFunction">Aggiungi funzione</entry>
-  <entry id="addIfNotExists">Aggiungi &lt;code class=\</entry>
+  <entry id="addIfNotExists">Aggiungi &lt;code class="literal"&gt;IF NOT EXISTS&lt;/code&gt;</entry>
   <entry id="addIndex">Aggiungi indice</entry>
   <entry id="addPrimaryKey">Aggiungi chiave primaria</entry>
   <entry id="addProcedure">Aggiungi procedura</entry>
@@ -24,7 +24,7 @@
   <entry id="addView">Aggiungi vista</entry>
   <entry id="affectedRowsQueryTime">0#Nessuna riga coinvolta. La query ha impiegato {time} secondi.|1#{rows} riga coinvolta. La query ha impiegato {time} secondi.|n&gt;1#{rows} righe coinvolte. La query ha impiegato {time} secondi.</entry>
   <entry id="ajaxRequestFailed">Richiesta ad Ajax fallita</entry>
-  <entry id="ajaxRequestFailedText">Clicca &lt;a href=\</entry>
+  <entry id="ajaxRequestFailedText">Clicca &lt;a href="javascript:void(0)" onclick="reload()"&gt;qui&lt;/a&gt; per ricaricare la pagina.</entry>
   <entry id="amountRoutines">1#{amount}  Routine|n&gt;1#{amount}  Routines</entry>
   <entry id="amountTables">1#{amount} Tabella|n&gt;1#{amount} Tabelle</entry>
   <entry id="amountViews">1#{amount}  Vista|n&gt;1#{amount}  Viste</entry>
@@ -46,7 +46,7 @@
   <entry id="columns">Colonne</entry>
   <entry id="command">Comando</entry>
   <entry id="comment">Commento</entry>
-  <entry id="compressionWillBeAutomaticallyDetected">Il formato di compressione del file verr&#xE0; selezionato automaticamente tra: &lt;code class=\</entry>
+  <entry id="compressionWillBeAutomaticallyDetected">Il formato di compressione del file verr&#xE0; selezionato automaticamente tra: &lt;code class="literal"&gt;[NONE|GZIP|BZIP2]&lt;/code&gt;</entry>
   <entry id="confirm">Conferma</entry>
   <entry id="create">Crea</entry>
   <entry id="createIndex">Crea indice</entry>
@@ -163,7 +163,7 @@
   <entry id="last">Ultimo</entry>
   <entry id="lastCheckDate">Data ultimo controllo</entry>
   <entry id="lastUpdateDate">Data ultimo aggiornamento</entry>
-  <entry id="leaveEmptyForNull">Lasciare vuoto per usare &lt;span class=\</entry>
+  <entry id="leaveEmptyForNull">Lasciare vuoto per usare &lt;span class="null"&gt;NULL&lt;/&gt;.</entry>
   <entry id="loading">In caricamento</entry>
   <entry id="login">Login</entry>
   <entry id="logout">Esci</entry>
@@ -214,7 +214,7 @@
   <entry id="routine">Routine</entry>
   <entry id="routines">Routines</entry>
   <entry id="rows">Righe</entry>
-  <entry id="rowsPerInsert">Righe per &lt;code class=\</entry>
+  <entry id="rowsPerInsert">Righe per &lt;code class="literal"&gt;[INSERT|REPLACE]&lt;/code&gt;</entry>
   <entry id="save">Salva</entry>
   <entry id="schema">Database</entry>
   <entry id="schemaSpecificPrivileges">Permessi specifici per il database</entry>
@@ -224,7 +224,7 @@
   <entry id="serverInformation">Informazioni sul server</entry>
   <entry id="setNull">Imposta a NULL</entry>
   <entry id="settings">Impostazioni</entry>
-  <entry id="show">Dump del display</entry>
+  <entry id="show">Mostra dump</entry>
   <entry id="showDetails">Visualizza dettagli</entry>
   <entry id="showFullColumnContent">Visualizza il contenuto completo della colonna</entry>
   <entry id="showingRowsOfRows">Visualizzazione righe {start} - {end} ({total} total)</entry>
@@ -233,7 +233,7 @@
   <entry id="spaceUsage">Spazio utilizzato</entry>
   <entry id="softwareInformation">Informazioni sul software</entry>
   <entry id="sql">SQL</entry>
-  <entry id="sqlErrorOccured">Rilevato un errore SQL ({errno}): &lt;span class=\</entry>
+  <entry id="sqlErrorOccured">Rilevato un errore SQL ({errno}): &lt;span class="sql"&gt;{errmsg}&lt;/span&gt;</entry>
   <entry id="status">Stato</entry>
   <entry id="storageEngine">Motore di memorizzazione</entry>
   <entry id="storageEngines">Motori di memorizzazione</entry>
@@ -298,10 +298,10 @@
   <entry id="updatable">Aggiornabile</entry>
   <entry id="usage">Utilizzo</entry>
   <entry id="useCompleteInserts">Completa inserimenti</entry>
-  <entry id="useDelayedInserts">Utilizza &lt;code class=\</entry>
+  <entry id="useDelayedInserts">Utilizza &lt;code class="literal"&gt;[INSERT|REPLACE] DELAYED&lt;/code&gt;</entry>
   <entry id="usedLibraries">Librerie utilizzate</entry>
-  <entry id="useHexForBlob">Utilizza valori esadecimali per &lt;code class=\</entry>
-  <entry id="useInsertIgnore">Utilizza &lt;code class=\</entry>
+  <entry id="useHexForBlob">Utilizza valori esadecimali per &lt;code class="literal"&gt;BLOB&lt;/code&gt;</entry>
+  <entry id="useInsertIgnore">Utilizza &lt;code class="literal"&gt;[INSERT|REPLACE] IGNORE&lt;/code&gt;</entry>
   <entry id="user">Utente</entry>
   <entry id="username">Username</entry>
   <entry id="value">Valore</entry>

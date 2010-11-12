@@ -7,11 +7,11 @@
   <entry id="actions">Aktionen</entry>
   <entry id="addBookmark">Lesezeichen hinzuf&#xFC;gen</entry>
   <entry id="addColumn">Spalte hinzuf&#xFC;gen</entry>
-  <entry id="addDropObject">Hinzuf&#xFC;gen: &lt;code class=\</entry>
+  <entry id="addDropObject">Hinzuf&#xFC;gen: &lt;code class="literal"&gt;DROP [TABLE|VIEW|PROCEDURE|FUNCTION]&lt;/code&gt;</entry>
   <entry id="addFirstColumn">Erste Spalte hinzuf&#xFC;gen</entry>
   <entry id="addFulltextIndex">Volltext-Index hinzuf&#xFC;gen</entry>
   <entry id="addFunction">Funktion hinzuf&#xFC;gen</entry>
-  <entry id="addIfNotExists">Hinzuf&#xFC;gen: &lt;code class=\</entry>
+  <entry id="addIfNotExists">Hinzuf&#xFC;gen: &lt;code class="literal"&gt;IF NOT EXISTS&lt;/code&gt;</entry>
   <entry id="addIndex">Index hinzuf&#xFC;gen</entry>
   <entry id="addPrimaryKey">Prim&#xE4;rschl&#xFC;ssel hinzuf&#xFC;gen</entry>
   <entry id="addProcedure">Prozedur hinzuf&#xFC;gen</entry>
@@ -24,9 +24,9 @@
   <entry id="addView">Ansicht hinzuf&#xFC;gen</entry>
   <entry id="affectedRowsQueryTime">0#Keine Zeilen betroffen. Abfrage dauerte {time} Sekunden.|1#{rows} Zeile betroffen. Abfrage dauerte {time} Sekunden.|n&gt;1#{rows} Zeilen betroffen. Abfrage dauerte {time} Sekunden.</entry>
   <entry id="ajaxRequestFailed">AJAX Anfrage fehlgeschlagen</entry>
-  <entry id="ajaxRequestFailedText">Klicken Sie &lt;a href=\</entry>
+  <entry id="ajaxRequestFailedText">Klicken Sie &lt;a href="javascript:void(0)" onclick="reload()"&gt;hier&lt;/a&gt; um die Seite neu zu laden.</entry>
   <entry id="amountRoutines">1#{amount} Routine|n&gt;1#{amount} Routinen</entry>
-  <entry id="amountTables">1#{amount}  Tabelle|n&gt;1#{amount}  Tabellen</entry>
+  <entry id="amountTables">1#{amount} Tabelle|n&gt;1#{amount} Tabellen</entry>
   <entry id="amountViews">1#{amount} Sicht|n&gt;1#{amount} Sichten</entry>
   <entry id="attribute">Attribut</entry>
   <entry id="authenticationFailed">Es konnte keine Verbindung hergestellt werden:&lt;br /&gt;{message}</entry>
@@ -46,7 +46,7 @@
   <entry id="columns">Spalten</entry>
   <entry id="command">Befehl</entry>
   <entry id="comment">Kommentar</entry>
-  <entry id="compressionWillBeAutomaticallyDetected">Die Kompression der hochgeladenen Datei wird automatisch erkannt aus: &lt;code class=\</entry>
+  <entry id="compressionWillBeAutomaticallyDetected">Die Kompression der hochgeladenen Datei wird automatisch erkannt aus: &lt;code class="literal"&gt;[NONE|GZIP|BZIP2]&lt;/code&gt;</entry>
   <entry id="confirm">Best&#xE4;tigen</entry>
   <entry id="create">Erstellen</entry>
   <entry id="createIndex">Index erstellen</entry>
@@ -112,7 +112,7 @@
   <entry id="enterNameForNewIndex">Geben Sie einen Namen f&#xFC;r den neuen Index ein:</entry>
   <entry id="enterNameForNewUniqueKey">Geben Sie einen Namen f&#xFC;r den neuen Unique-Key ein:</entry>
   <entry id="enterOneValuePerLine">Geben Sie einen Wert pro Zeile ein.</entry>
-  <entry id="enterSchemaOrTable">Schema oder Tabelle eingeben ...</entry>
+  <entry id="enterSchemaOrTable">Schema oder Tabelle ...</entry>
   <entry id="entriesPerPage">Eintr&#xE4;ge pro Seite</entry>
   <entry id="error">Fehler</entry>
   <entry id="errorAlterIndex">Editeren des Index &#xBB;{index}&#xAB; fehlgeschlagen</entry>
@@ -163,7 +163,7 @@
   <entry id="last">Ende</entry>
   <entry id="lastCheckDate">Letzte &#xDC;berpr&#xFC;fung</entry>
   <entry id="lastUpdateDate">Letzte &#xC4;nderung</entry>
-  <entry id="leaveEmptyForNull">Leer lassen um &lt;span class=\</entry>
+  <entry id="leaveEmptyForNull">Leer lassen um &lt;span class="null"&gt;NULL&lt;/span&gt; zu verwenden.</entry>
   <entry id="loading">Lade</entry>
   <entry id="login">Anmelden</entry>
   <entry id="logout">Abmelden</entry>
@@ -188,7 +188,7 @@
   <entry id="noTables">Keine sichtbaren Tabellen in diesem Schema.</entry>
   <entry id="notice">Hinweis</entry>
   <entry id="noTriggers">Keine sichtbaren Trigger in dieser Tabelle.</entry>
-  <entry id="noViews">Keine sichtbaren Sichten in diesem Schema.</entry>
+  <entry id="noViews">Keine sichtbaren Ansichten in diesem Schema.</entry>
   <entry id="null">Null</entry>
   <entry id="off">Deaktiviert</entry>
   <entry id="ok">OK</entry>
@@ -214,7 +214,7 @@
   <entry id="routine">Routine</entry>
   <entry id="routines">Routinen</entry>
   <entry id="rows">Zeilen</entry>
-  <entry id="rowsPerInsert">Zeilen pro &lt;code class=\</entry>
+  <entry id="rowsPerInsert">Zeilen pro &lt;code class="literal"&gt;[INSERT|REPLACE]&lt;/code&gt;</entry>
   <entry id="save">Speichern</entry>
   <entry id="schema">Schema</entry>
   <entry id="schemaSpecificPrivileges">Schema-spezifische Rechte</entry>
@@ -233,10 +233,10 @@
   <entry id="spaceUsage">Platzverbrauch</entry>
   <entry id="softwareInformation">Software-Informationen</entry>
   <entry id="sql">SQL</entry>
-  <entry id="sqlErrorOccured">Es ist ein SQL-Fehler aufgetreten ({errno}): &lt;span class=\</entry>
+  <entry id="sqlErrorOccured">Es ist ein SQL-Fehler aufgetreten ({errno}): &lt;span class="sql"&gt;{errmsg}&lt;/span&gt;</entry>
   <entry id="status">Status</entry>
   <entry id="storageEngine">Speicher Engine</entry>
-  <entry id="storageEngines">Speicher Engines</entry>
+  <entry id="storageEngines">Speicher-Engines</entry>
   <entry id="structure">Struktur</entry>
   <entry id="success">Erfolg</entry>
   <entry id="successAddBookmark">Lesezeichen &#xBB;{name}&#xAB; gespeichert</entry>
@@ -298,10 +298,10 @@
   <entry id="updatable">Bearbeitbar</entry>
   <entry id="usage">Verwendung</entry>
   <entry id="useCompleteInserts">Vollst&#xE4;ndige Inserts</entry>
-  <entry id="useDelayedInserts">&lt;code class=\</entry>
+  <entry id="useDelayedInserts">&lt;code class="literal"&gt;[INSERT|REPLACE] DELAYED&lt;/code&gt; verwenden</entry>
   <entry id="usedLibraries">Verwendete Bibliotheken</entry>
-  <entry id="useHexForBlob">Hexadezimal-Darstellung f&#xFC;r &lt;code class=\</entry>
-  <entry id="useInsertIgnore">&lt;code class=\</entry>
+  <entry id="useHexForBlob">Hexadezimal-Darstellung f&#xFC;r &lt;code class="literal"&gt;BLOB&lt;/code&gt;</entry>
+  <entry id="useInsertIgnore">&lt;code class="literal"&gt;[INSERT|REPLACE] IGNORE&lt;/code&gt; verwenden</entry>
   <entry id="user">Benutzer</entry>
   <entry id="username">Benutzername</entry>
   <entry id="value">Wert</entry>
@@ -310,7 +310,7 @@
   <entry id="views">Ansichten</entry>
   <entry id="warning">Warnung</entry>
   <entry id="webserver">Webserver</entry>
-  <entry id="withSelected">Selektierte: </entry>
+  <entry id="withSelected">Markierte Datens&#xE4;tze </entry>
   <entry id="xDebugExportWarning">XDebug Profiling ist auf diesem Server aktiviert.&lt;br /&gt;&#xD;
 Der Export gro&#xDF;er Datenbanken k&#xF6;nnte das System zum Absturz bringen!</entry>
   <entry id="yes">Ja</entry>
