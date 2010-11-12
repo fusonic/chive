@@ -313,4 +313,10 @@
   <entry id="withSelected">Z zaznaczonych: </entry>
   <entry id="xDebugExportWarning">Modu&#x142; XDebug jest w&#x142;&#x105;czone na serwerze.&lt;br /&gt;Eksportowanie du&#x17C;ych baz danych mo&#x17C;e spowodowa&#x107; powa&#x17C;n&#x105; awari&#x119;!</entry>
   <entry id="yes">Tak</entry>
+  <entry id="tableLoadErrorTitle"></entry>
+  <entry id="tableLoadErrorMessage"></entry>
+  <entry id="separateFieldsBy"></entry>
+  <entry id="encloseFieldsBy"></entry>
+  <entry id="escapeFieldTextDelimiterWith"></entry>
+  <entry id="fieldNamesInFirstRow"></entry>
 </category>

@@ -314,4 +314,10 @@
   <entry id="xDebugExportWarning">XDebug Profiling ist auf diesem Server aktiviert.&lt;br /&gt;&#xD;
 Der Export gro&#xDF;er Datenbanken k&#xF6;nnte das System zum Absturz bringen!</entry>
   <entry id="yes">Ja</entry>
+  <entry id="tableLoadErrorTitle">Tabelle &#xBB;{table}&#xAB; kann nicht geladen werden.</entry>
+  <entry id="tableLoadErrorMessage">Die Tabelle &#xBB;{table}&#xAB; konnte nicht geladen werden. M&#xF6;glicherweise wurde sie in einer anderen Sitzung gel&#xF6;scht.</entry>
+  <entry id="separateFieldsBy">Trenne Felder mit</entry>
+  <entry id="encloseFieldsBy">Begrenze Felder mit</entry>
+  <entry id="escapeFieldTextDelimiterWith">Maskiere Feldbegrenzer mit</entry>
+  <entry id="fieldNamesInFirstRow">Feldnamen in erster Zeile einf&#xFC;gen</entry>
 </category>

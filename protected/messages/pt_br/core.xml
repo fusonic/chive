@@ -313,4 +313,10 @@
   <entry id="withSelected">Com selecionados: </entry>
   <entry id="xDebugExportWarning">Sistema de an&#xE1;lise XDebug est&#xE1; habilitado neste servidor.&lt;br /&gt;Exportar grandes bases de dados pode travar o seu sistema!</entry>
   <entry id="yes">Sim</entry>
+  <entry id="tableLoadErrorTitle"></entry>
+  <entry id="tableLoadErrorMessage"></entry>
+  <entry id="separateFieldsBy"></entry>
+  <entry id="encloseFieldsBy"></entry>
+  <entry id="escapeFieldTextDelimiterWith"></entry>
+  <entry id="fieldNamesInFirstRow"></entry>
 </category>

@@ -313,4 +313,10 @@
   <entry id="withSelected">Con los seleccionados: </entry>
   <entry id="xDebugExportWarning">El perfilado de XDebug est&#xE1; activado en este servidor.&lt;br /&gt;Exportar grandes bases de datos puede reventar su sistema.</entry>
   <entry id="yes">S&#xED;</entry>
+  <entry id="tableLoadErrorTitle"></entry>
+  <entry id="tableLoadErrorMessage"></entry>
+  <entry id="separateFieldsBy"></entry>
+  <entry id="encloseFieldsBy"></entry>
+  <entry id="escapeFieldTextDelimiterWith"></entry>
+  <entry id="fieldNamesInFirstRow"></entry>
 </category>

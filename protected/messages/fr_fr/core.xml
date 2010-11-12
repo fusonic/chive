@@ -313,4 +313,10 @@
   <entry id="withSelected">Pour la s&#xE9;lection : </entry>
   <entry id="xDebugExportWarning">Le profilage XDebug est actif sur ce serveur.&lt;br /&gt;L'export de grosses bases de donn&#xE9;es peut rendre votre syst&#xE8;me instable.</entry>
   <entry id="yes">Oui</entry>
+  <entry id="tableLoadErrorTitle"></entry>
+  <entry id="tableLoadErrorMessage"></entry>
+  <entry id="separateFieldsBy"></entry>
+  <entry id="encloseFieldsBy"></entry>
+  <entry id="escapeFieldTextDelimiterWith"></entry>
+  <entry id="fieldNamesInFirstRow"></entry>
 </category>

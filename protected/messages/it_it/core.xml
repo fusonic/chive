@@ -313,4 +313,10 @@
   <entry id="withSelected">Selezionati: </entry>
   <entry id="xDebugExportWarning">XDebug &#xE8; abilitato in questo server.&lt;br /&gt;Esportando database di grosse dimensioni si potrebbero verificare crash del sistema!</entry>
   <entry id="yes">Si</entry>
+  <entry id="tableLoadErrorTitle"></entry>
+  <entry id="tableLoadErrorMessage"></entry>
+  <entry id="separateFieldsBy"></entry>
+  <entry id="encloseFieldsBy"></entry>
+  <entry id="escapeFieldTextDelimiterWith"></entry>
+  <entry id="fieldNamesInFirstRow"></entry>
 </category>
