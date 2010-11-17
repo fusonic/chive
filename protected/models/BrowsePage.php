@@ -525,8 +525,9 @@ class BrowsePage extends CModel
 		if($this->isUpdatable === null)
 		{
 			$this->isUpdatable = false;	
-			
-			if(in_array($this->schema, $this->nonEditableSchemas) || !$this->loadTable()->getIsUpdatable())
+
+			$table = $this->loadTable();
+			if(in_array($this->schema, $this->nonEditableSchemas) || ($table == null || !$table->getIsUpdatable()))
 			{
 				$this->isUpdatable = false;
 				return $this->isUpdatable;
@@ -570,7 +571,7 @@ class BrowsePage extends CModel
 	 */
 	public function loadTable()
 	{
-		if(is_null($this->_table))
+		if(is_null($this->_table) && !is_null($this->table))
 		{
 			$pk = array(
 				'TABLE_SCHEMA' => $this->schema,
