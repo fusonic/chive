@@ -108,7 +108,8 @@ class ImportPage extends CModel
 			
 			$this->file = 'protected/runtime/' . $_FILES['file']['name'] . "_" . time();
 			$this->fileSize = $_FILES['file']['size'];
-			$this->mimeType = $_FILES['type'];
+			
+			$this->mimeType = $_FILES['file']['type'];
 			
 			move_uploaded_file($_FILES['file']['tmp_name'], $this->file);
 
@@ -131,7 +132,7 @@ class ImportPage extends CModel
 			$this->view = 'postprocessing';
 			$this->file = $_GET['file'];
 			$this->fileSize = $_GET['fileSize'];
-			$this->mimeType = $_GET['mimeType'];
+			$this->mimeType = $_GET['type'];
 			$this->position = $_GET['position'];
 			$this->totalExecutedQueries = $_GET['totalExecutedQueries'];
 
