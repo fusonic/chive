@@ -40,9 +40,19 @@ class Html
 		}
 		else
 		{
+			if(Yii::app()->getUrlManager()->showScriptName)
+			{
+				$scriptUrl = basename($_SERVER['SCRIPT_NAME']);
+				if(strpos($_SERVER['REQUEST_URI'], $scriptUrl) === false && strpos($target, $scriptUrl) === false)
+				{
+					$target = $scriptUrl . "/" . $target;
+				}
+			}
+			
 			$htmloptions['href'] = '#' . $target;
 			$htmloptions['onclick'] = 'chive.goto("' . $target . '"); return false;';
 		}
+		
 		return CHtml::tag('a', $htmloptions, $content, $close);
 	}
 

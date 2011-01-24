@@ -80,7 +80,7 @@ $(document).ready(function() {
 			<a class="icon button" href="<?php echo BASEURL; ?>">
 				<img src="<?php echo BASEURL; ?>/images/logo.png" alt="Chive" height="22" style="position: relative; top: 6px;" />
 			</a>
-			<a href="#schemata" class="icon button">
+			<a href="<?php Yii::app()->createUrl("schemata") ?>" class="icon button">
 				<?php echo Html::icon('server'); ?>
 				<span><?php echo Yii::app()->user->host; ?></span>
 			</a>
