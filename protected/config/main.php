@@ -54,7 +54,7 @@ return array(
 		),
 
 		'request' => array(
-			'class' => 'HttpRequest',
+			'class' => 'ChiveHttpRequest',
 			'enableCookieValidation' => true,
 		),
 

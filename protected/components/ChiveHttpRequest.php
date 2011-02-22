@@ -21,7 +21,7 @@
  */
 
 
-class HttpRequest extends CHttpRequest
+class ChiveHttpRequest extends CHttpRequest
 {
 	
 	/**
