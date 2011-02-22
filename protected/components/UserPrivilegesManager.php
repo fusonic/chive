@@ -82,7 +82,7 @@ class UserPrivilegesManager
 		{
 			if(!isset($this->column[$priv['TABLE_SCHEMA'] . '.' . $priv['TABLE_NAME'] . '.' . $priv['COLUMN_NAME']]))
 			{
-				$this->column[$priv['TABLE_SCHEMA']] . '.' . $priv['TABLE_NAME'] . '.' . $priv['COLUMN_NAME'] = array();
+				$this->column[$priv['TABLE_SCHEMA'] . '.' . $priv['TABLE_NAME'] . '.' . $priv['COLUMN_NAME']] = array();
 			}
 			$this->column[$priv['TABLE_SCHEMA'] . '.' . $priv['TABLE_NAME'] . '.' . $priv['COLUMN_NAME']][] = $priv['PRIVILEGE_TYPE'];
 		}
