@@ -10,7 +10,7 @@
 	$('#' + idPrefix).parent().slideUp(500, function() {
 		$('#' + idPrefix).parents("tr").remove();
 	});
-	Notification.add('success', '<?php echo Yii::t('core', 'successEditRelation', array('{col}' => $foreignKey->COLUMN_NAME)); ?>', null, <?php echo json_encode($sql); ?>);
+	Notification.add('success', '<?php echo Yii::t('core', 'successEditRelation', array('{col}' => $foreignKey->COLUMN_NAME)); ?>', null, <?php echo CJSON::encode($sql); ?>);
 	</script>
 <?php } ?>
 

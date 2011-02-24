@@ -47,7 +47,7 @@
 
 				<?php echo CHtml::hiddenField('Export[action]', ''); ?>
 				<?php echo CHtml::hiddenField('Export[compression]', ''); ?>
-				<?php echo CHtml::hiddenField('Export[rows]', json_encode($model->getRows())); ?>
+				<?php echo CHtml::hiddenField('Export[rows]', CJSON::encode($model->getRows())); ?>
 			</div>
 		</div>
 	<?php echo CHtml::endForm(); ?>

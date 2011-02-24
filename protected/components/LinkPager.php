@@ -165,7 +165,7 @@ class LinkPager extends CLinkPager
 			{
 				if(self::$generateJsPageSize)
 				{
-					$data = json_encode($this->getPages()->postVars);
+					$data = CJSON::encode($this->getPages()->postVars);
 
 					$script = '
 						function setPageSize(_pageSize) {
@@ -237,7 +237,7 @@ class LinkPager extends CLinkPager
 			if(self::$generateJsPage)
 			{
 
-				$data = json_encode($postVars);
+				$data = CJSON::encode($postVars);
 
 				$script = '
 					function navigateToPage(_page) {

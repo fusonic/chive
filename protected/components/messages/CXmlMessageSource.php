@@ -101,7 +101,7 @@ class CXmlMessageSource extends CMessageSource
 				$data = $this->loadMessages($package, $language);
 				foreach($data AS $key => $value)
 				{
-					$code .= 'lang.' . $package . '["' . $key . '"] = ' . json_encode($value) . ';' . "\n";
+					$code .= 'lang.' . $package . '["' . $key . '"] = ' . CJSON::encode($value) . ';' . "\n";
 				}
 			}
 			file_put_contents($assetPath . DIRECTORY_SEPARATOR . $language . '.js', $code);

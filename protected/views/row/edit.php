@@ -1,6 +1,6 @@
 <script type="text/javascript">
 	$(document).ready(function() {
-		$('#attributes_<?php echo CHtml::$idPrefix; ?>').val('<?php echo json_encode($attributes); ?>');
+		$('#attributes_<?php echo CHtml::$idPrefix; ?>').val('<?php echo CJSON::encode($attributes); ?>');
 	});
 </script>
 

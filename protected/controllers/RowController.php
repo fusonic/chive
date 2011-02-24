@@ -150,7 +150,7 @@ class RowController extends Controller
 		}
 		elseif(isset($_POST['attributes']))
 		{
-			$attributes = json_decode($_POST['attributes'], true);
+			$attributes = CJSON::decode($_POST['attributes'], true);
 			$fromRow = Row::model()->findByAttributes($attributes);
 			$row->attributes = $fromRow->attributes;
 		}
@@ -175,7 +175,7 @@ class RowController extends Controller
 		$newValue = Yii::app()->getRequest()->getParam('value');
 		$column = Yii::app()->getRequest()->getParam('column');
 		$isNull = Yii::app()->getRequest()->getParam('isNull');
-		$attributes = json_decode(Yii::app()->getRequest()->getParam('attributes'), true);
+		$attributes = CJSON::decode(Yii::app()->getRequest()->getParam('attributes'), true);
 		
 		$rows = Row::model()->findAllByAttributes($attributes);
 		$row = $rows[0];
@@ -251,7 +251,7 @@ class RowController extends Controller
 
 		$response = new AjaxResponse();
 
-		$data = json_decode($_POST['data'], true);
+		$data = CJSON::decode($_POST['data'], true);
 		
 		$sql = "";
 		
@@ -278,7 +278,7 @@ class RowController extends Controller
 	public function actionInput()
 	{
 		
-		$attributes = json_decode(Yii::app()->getRequest()->getParam('attributes'), true);
+		$attributes = CJSON::decode(Yii::app()->getRequest()->getParam('attributes'), true);
 		$column = Yii::app()->getRequest()->getParam('column');
 		$oldValue = Yii::app()->getRequest()->getParam('oldValue');
 		$rowIndex = Yii::app()->getRequest()->getParam('rowIndex');
@@ -298,7 +298,7 @@ class RowController extends Controller
 
 	public function actionEdit() 
 	{
-		$attributes = json_decode(Yii::app()->getRequest()->getParam('attributes'), true);
+		$attributes = CJSON::decode(Yii::app()->getRequest()->getParam('attributes'), true);
 		
 		$row = Row::model()->findByAttributes($attributes);
 
@@ -376,7 +376,7 @@ class RowController extends Controller
 	
 	public function actionDownload()
 	{
-		$key = json_decode(Yii::app()->getRequest()->getParam('key'), true);
+		$key = CJSON::decode(Yii::app()->getRequest()->getParam('key'), true);
 		$column = Yii::app()->getRequest()->getParam('column');
 
 		$content = Row::model()->findByAttributes($key)->getAttribute($column);
@@ -423,11 +423,11 @@ class RowController extends Controller
 	{
 		if(isset($_POST['data']))
 		{
-			$rows = json_decode($_POST['data'], true);
+			$rows = CJSON::decode($_POST['data'], true);
 		}
 		else
 		{
-			$rows = json_decode($_POST['Export']['rows'], true);
+			$rows = CJSON::decode($_POST['Export']['rows'], true);
 		}
 		
 		$exportPage = new ExportPage('rows', $this->schema, $this->table);

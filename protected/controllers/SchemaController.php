@@ -110,7 +110,7 @@ class SchemaController extends Controller
 				);
 			}
 
-			Yii::app()->end(json_encode($tables));
+			Yii::app()->end(CJSON::encode($tables));
 		}
 		else
 		{
@@ -172,7 +172,7 @@ class SchemaController extends Controller
 				);
 			}
 
-			Yii::app()->end(json_encode($views));
+			Yii::app()->end(CJSON::encode($views));
 		}
 		else
 		{
@@ -392,7 +392,7 @@ class SchemaController extends Controller
 				$schemata[] = $schema->SCHEMA_NAME;
 			}
 
-			Yii::app()->end(json_encode($schemata));
+			Yii::app()->end(CJSON::encode($schemata));
 		}
 		// Show the page
 		else

@@ -194,7 +194,7 @@
 				  if (count($keyData) > 0) 
 				  { ?>
 				<script type="text/javascript">
-					var keyData = <?php echo json_encode($keyData); ?>;
+					var keyData = <?php echo CJSON::encode($keyData); ?>;
 				</script>
 			<?php } ?>
 		<?php } ?>

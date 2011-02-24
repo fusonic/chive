@@ -102,7 +102,7 @@ class Sort extends CSort
 		{
 			if(self::$generateJs)
 			{
-				$data = json_encode($this->postVars);
+				$data = CJSON::encode($this->postVars);
 				$script = '
 					function setSort(_field, _direction) {
 					

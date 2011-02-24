@@ -53,7 +53,7 @@ class InformationController extends Controller
 	 */
 	public function actionKillProcess()
 	{
-		$ids = json_decode(Yii::app()->getRequest()->getParam('ids'));
+		$ids = CJSON::decode(Yii::app()->getRequest()->getParam('ids'));
 
 		$response = new AjaxResponse();
 		$response->refresh = true;

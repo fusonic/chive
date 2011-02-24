@@ -7,7 +7,7 @@
 	<?php echo CHtml::hiddenField('schema', $this->schema); ?>
 	<?php echo CHtml::hiddenField('table', $this->table); ?>
 	<?php echo CHtml::hiddenField('column', $column->name); ?>
-	<?php echo CHtml::hiddenField('attributes', json_encode($attributes)); ?>
+	<?php echo CHtml::hiddenField('attributes', CJSON::encode($attributes)); ?>
 	<?php echo CHtml::hiddenField('isNull', 0, array('id' => 'isNull')); ?>
 
 	<?php $this->widget('InputField', array('row' => $row, 'column'=>$column, 'htmlOptions' => array(
@@ -39,7 +39,7 @@
 		});
 
 		function reset() {
-			$('#form_<?php echo $id; ?>').parent().html(<?php echo json_encode($oldValue); ?>);
+			$('#form_<?php echo $id; ?>').parent().html(<?php echo CJSON::encode($oldValue); ?>);
 			editing = false;
 		}
 

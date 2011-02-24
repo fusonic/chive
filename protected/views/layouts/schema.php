@@ -76,11 +76,11 @@ foreach($scriptFiles AS $file)
 <?php Yii::app()->clientScript->registerScript('userSettings', Yii::app()->user->settings->getJsObject(), CClientScript::POS_HEAD); ?>
 <script type="text/javascript">
 $(document).ready(function() {
-	sideBar.loadTables(<?php echo json_encode($this->_schema->SCHEMA_NAME); ?>, function() {
+	sideBar.loadTables(<?php echo CJSON::encode($this->_schema->SCHEMA_NAME); ?>, function() {
 		$('#tableList').setupListFilter($('#tableSearch'));
 		$('#bookmarkList').setupListFilter($('#bookmarkSearch'));
 	});
-	sideBar.loadViews(<?php echo json_encode($this->_schema->SCHEMA_NAME); ?>, function() {
+	sideBar.loadViews(<?php echo CJSON::encode($this->_schema->SCHEMA_NAME); ?>, function() {
 		$('#viewList').setupListFilter($('#viewSearch'));
 	});
 });

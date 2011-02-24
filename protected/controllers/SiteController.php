@@ -222,7 +222,7 @@ class SiteController extends Controller
 		{
 			if($table->TABLE_SCHEMA != $lastSchemaName)
 			{
-				$items[] = json_encode(array(
+				$items[] = CJSON::encode(array(
 					'text' => '<span class="icon schema">' . Html::icon('database') . '<span>' . StringUtil::cutText($table->TABLE_SCHEMA, 30) . '</span></span>',
 					'target' => Yii::app()->createUrl('schema/' . $table->TABLE_SCHEMA),
 					'plain' => $table->TABLE_SCHEMA,
@@ -231,7 +231,7 @@ class SiteController extends Controller
 
 			$lastSchemaName = $table->TABLE_SCHEMA;
 
-			$items[] = json_encode(array(
+			$items[] = CJSON::encode(array(
 				'text' => '<span class="icon table">' . Html::icon('table') . '<span>' . StringUtil::cutText($table->TABLE_NAME, 30) . '</span></span>',
 				'target' => Yii::app()->createUrl('schema/' . $table->TABLE_SCHEMA) . '#tables/' . $table->TABLE_NAME . '/browse',
 				'plain' => $table->TABLE_NAME
