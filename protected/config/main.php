@@ -49,6 +49,7 @@ return array(
 	'components' => array(
 	
 		'session' => array(
+			'class' => 'ChiveHttpSession',
 			'sessionName' => 'chiveSession',
 			'savePath' => 'protected/runtime/sessions',
 		),
