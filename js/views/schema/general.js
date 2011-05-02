@@ -25,6 +25,7 @@ var schemaGeneral = {
 	{
 		var ulObj = $('#dropSchemaDialog ul');
 		
+		ulObj.find('li').remove();
 		ulObj.append("<li>"+schema+"</li>")
 		
 		$('#dropSchemaDialog').dialog('open');
@@ -45,7 +46,7 @@ var schemaGeneral = {
 		{
 			// Do truncate request
 			$.post(baseUrl + '/schemata/drop', {
-				schema: schema
+				schemata: schema
 			}, function() {
 				window.location.href = baseUrl;
 			});
