@@ -1,7 +1,7 @@
 <?php
 
 // Some dirty debugging methods
-function pre($_value) { echo "<pre>"; print_r($_value); echo "</pre>"; }
+function pre($_value) { if($_value === null || $_value === false || $_value === true) { var_dump($_value); } else { echo "<pre>"; print_r($_value); echo "</pre>";	}}
 function predie($_value) { pre($_value); Yii::app()->end(); }
 
 // Yii debug mode
