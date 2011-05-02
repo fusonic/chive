@@ -1,4 +1,4 @@
-<h2>Welcome, <?php echo Yii::app()->user->name; ?>!</h2>
+<h2><?php echo Yii::t('core', 'Welcome'); ?>, <?php echo Yii::app()->user->name; ?>!</h2>
 
 
 <table class="list" style="float: left; width: 49%;">
