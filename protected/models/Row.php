@@ -289,7 +289,7 @@ class Row extends CActiveRecord
 		}
 		
 	}
-	
+		
 	public function getAttribute($name)
 	{
 		$value = parent::getAttribute($name);
@@ -315,6 +315,11 @@ class Row extends CActiveRecord
 
 		$sql = '';
 		
+		$table = Table::model()->findByPk(array(
+			'TABLE_NAME' => self::$table,
+			'TABLE_SCHEMA' => self::$schema,
+		));
+			
 		// Check if there has been changed any attribute
 		$changedAttributes = array();
 		foreach($this->originalAttributes AS $column=>$value)
@@ -336,6 +341,8 @@ class Row extends CActiveRecord
 				
 			foreach($changedAttributes AS $column=>$value)
 			{
+				$columnInfo = $this->getColumnInfo($table, $column);
+				
 				$function = $this->getFunction($column);
 				
 				$sql .= "\t" . self::$db->quoteColumnName($column) . ' = ';
@@ -352,9 +359,13 @@ class Row extends CActiveRecord
 				{
 					$sql .= self::$db->quoteValue(implode(",", $value));
 				}
-				elseif(StringUtil::isInt($value))
+				elseif($columnInfo->DATA_TYPE == "int")
 				{
 					$sql .= (int)$value;				
+				}
+				elseif($columnInfo->DATA_TYPE == "bit")
+				{
+					$sql .= (int)$value;	
 				}
 				else
 				{
@@ -463,7 +474,18 @@ class Row extends CActiveRecord
 	}
 
 
-	
+	private function getColumnInfo($table, $columnName)
+	{
+		foreach($table->columns as $columnInfo)
+		{
+			if($columnInfo->COLUMN_NAME == $columnName)
+			{
+				return $columnInfo;
+			}
+		}
+		
+		return null;
+	}
 	
 	public function setFunction($_attribute, $_function)
 	{
