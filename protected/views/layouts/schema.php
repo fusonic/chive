@@ -112,7 +112,7 @@ $(document).ready(function() {
 			</a>
 		</div>
 		<div id="headerRight">
-			<input type="text" id="globalSearch" value="<?php echo Yii::t('core', 'enterSchemaOrTable'); ?>" style="color: #AAA; margin-right: 5px;" onclick="this.value = '';" />
+			<input type="text" id="globalSearch" value="<?php echo Yii::t('core', 'enterSchemaOrTable'); ?>" onclick="this.value = '';" class="search" />
 			<a class="icon button" href="javascript:chive.refresh();">
 				<?php echo Html::icon('refresh', 16, false, 'core.refresh'); ?>
 			</a>
@@ -154,7 +154,7 @@ $(document).ready(function() {
 					</a>
 				</li>
 			</ul>
-			
+
 			<div class="noEntries">
 				<?php echo Yii::t('core', 'noTables'); ?>
 			</div>
@@ -181,11 +181,11 @@ $(document).ready(function() {
 					</a>
 				</li>
 			</ul>
-			
+
 			<div class="noEntries">
 				<?php echo Yii::t('core', 'noViews'); ?>
 			</div>
-			
+
 		</div>
   		<div class="sidebarHeader">
 			<a class="icon">

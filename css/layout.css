@@ -578,4 +578,11 @@
   	background: transparent url('../images/icons/fugue/control_small_090.png') 100% 50% no-repeat;
   }  
   
+  #globalSearch
+  {
+  	color: #aaa;
+  	margin-right: 5px;
+  	text-indent: 18px;
+  }
+  
 }

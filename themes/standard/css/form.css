@@ -78,8 +78,10 @@
 	 * Search field
 	 */	
 	input.search {
-		background: url(../../../images/icons/fugue/16/search.png) 2px 3px no-repeat !important;
-		text-indent: 22px;
+		background-image: url(../../../images/icons/fugue/16/search.png);
+		background-position: 2px 50%;
+		background-repeat: no-repeat;
+		text-indent: 18px;
 	}
 	
 	/*
