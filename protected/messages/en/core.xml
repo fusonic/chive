@@ -132,6 +132,7 @@
 	<entry id="errorRenameIndex">Renaming index &#xBB;{index}&#xAB; failed</entry>
 	<entry id="errorTruncateTable">Truncating table &#xBB;{table}&#xAB; failed</entry>
 	<entry id="errorUpdateRow">Updating row failed</entry>
+	<entry id="errorUploadingFile">An error occured while uploading the file</entry>
 	<entry id="event">Event</entry>
 	<entry id="execute">Execute</entry>
 	<entry id="executedQueries">Executed queries</entry>

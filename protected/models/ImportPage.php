@@ -43,6 +43,7 @@ class ImportPage extends CModel
 	public $table;
 	public $db;
 	public $formTarget;
+	public $fileUploadError = false;
 	
 	public $partialImport = false;
 	public $fromCharacterSet = 'utf-8';
@@ -99,31 +100,36 @@ class ImportPage extends CModel
 	 */
 	public function run()
 	{
-		
 		// Form got submitted
 		if(isset($_POST['Import']))
 		{
-
-			$this->view = 'form';
-			
-			$this->file = 'protected/runtime/' . $_FILES['file']['name'] . "_" . time();
-			$this->fileSize = $_FILES['file']['size'];
-			
-			$this->mimeType = $_FILES['file']['type'];
-			
-			move_uploaded_file($_FILES['file']['tmp_name'], $this->file);
-
-			if($this->partialImport)
+			// Check if file was valid
+			if($_FILES['file']['error'] == UPLOAD_ERR_OK)
 			{
-				// Redirect to postprocessing
-				$this->view = 'submit';
+				$this->view = 'form';
+				$this->file = 'protected/runtime/' . $_FILES['file']['name'] . "_" . time();
+				$this->fileSize = $_FILES['file']['size'];
+				
+				$this->mimeType = $_FILES['file']['type'];
+				
+				move_uploaded_file($_FILES['file']['tmp_name'], $this->file);
+	
+				if($this->partialImport)
+				{
+					// Redirect to postprocessing
+					$this->view = 'submit';
+				}
+				else
+				{
+					// Run import in one step
+					$this->runImport();
+				}
 			}
 			else
 			{
-				// Run import in one step
-				$this->runImport();
+				$this->view = 'form';
+				$this->fileUploadError = true;
 			}
-			
 		}
 		
 		// Import file via postprocessing

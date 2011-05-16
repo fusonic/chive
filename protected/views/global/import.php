@@ -1,6 +1,8 @@
 <?php if($model->view == 'form') { ?>
 
 	<?php echo CHtml::form($model->formTarget, 'post', array('id' => 'Import')); ?>
+		<?php echo CHtml::hiddenField("MAX_FILE_SIZE", ConfigUtil::getMaxUploadSize() - 1000); ?>
+		<?php echo CHtml::hiddenField("Import", "true"); ?>
 		<fieldset>
 			<legend><?php echo Yii::t('core', 'importFile'); ?></legend>
 			<?php echo CHtml::fileField('file', '', array()); ?>&nbsp;
@@ -22,7 +24,6 @@
 				<?php echo Html::icon('import'); ?>
 				<span><?php echo Yii::t('core', 'import'); ?></span> 
 			</a> 
-			<input type="hidden" name="Import" value="true" />
 		</div>
 	<?php echo CHtml::endForm(); ?>
 	
@@ -31,6 +32,12 @@
 			globalImport.setup();
 		}, 500);
 	</script>
+	
+	<?php if($model->fileUploadError) { ?>
+		<script type="text/javascript">
+		Notification.add('error', lang.get('core', 'errorUploadingFile'));
+		</script>
+	<?php } ?>
 
 <?php } elseif($model->view == 'submit') { ?>
 
