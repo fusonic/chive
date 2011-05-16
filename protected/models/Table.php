@@ -208,6 +208,24 @@ class Table extends ActiveRecord
 		}
 		return false;
 	}
+	
+	/**
+	 * Returns wether this table has an auto increment column.
+	 * 
+	 * @return	bool				True, if table has an auto increment column. False if not.
+	 */
+	public function getHasAutoIncrementColumn()
+	{
+		foreach($this->columns as $column)
+		{
+			if($column->EXTRA == "auto_increment")
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
 
 	/**
 	 * Returns the result of SHOW CREATE TABLE.

@@ -26,6 +26,10 @@ class RowController extends Controller
 	public $schema;
 	public $table;
 	public $view;
+	
+	/**
+	 * @var Table
+	 */
 	public $_table;
 
 	/**
@@ -127,7 +131,20 @@ class RowController extends Controller
 			try 
 			{
 				$sql = $row->insert();
-				$response->addNotification('success', Yii::t('core', 'successInsertRow'), null, $sql);
+				
+				// Try to find last inserted id if this table has an auto increment value
+				if($this->_table->getHasAutoIncrementColumn())
+				{
+					$notification = Yii::t('core', 'successInsertRowWithIdX', array(
+						"{id}" => $this->db->getLastInsertID(),
+					));	
+				}
+				else
+				{
+					$notification = Yii::t('core', 'successInsertRow');
+				}
+				
+				$response->addNotification('success', $notification, null, $sql);
 				
 				if($_POST['insertAndReturn'])
 				{

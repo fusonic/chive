@@ -22,6 +22,9 @@
 class Controller extends CController
 {
 
+	/**
+	 * @var CDbConnection
+	 */
 	protected $db;
 	protected $request;
 

@@ -273,6 +273,7 @@
 	<entry id="successExecuteQuery">Executed query</entry>
 	<entry id="successImportFile">Imported file</entry>
 	<entry id="successInsertRow">Inserted row</entry>
+	<entry id="successInsertRowWithIdX">Inserted row with ID &#xBB;{id}&#xAB;</entry>
 	<entry id="successKillProcess">Killed process #{id}</entry>
 	<entry id="successMoveColumn">Moved column &#xBB;{col}&#xAB;</entry>
 	<entry id="successRenameIndex">Renamed index to &#xBB;{index}&#xAB;</entry>
