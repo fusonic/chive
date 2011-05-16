@@ -142,4 +142,5 @@
 setTimeout(function() {
 	schemaList.setup();
 }, 500);
+breadCrumb.set([]);
 </script>
