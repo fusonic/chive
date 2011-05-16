@@ -106,7 +106,7 @@
 					<?php echo Html::icon('login', 16, false, 'core.login'); ?>
 					<span><?php echo Yii::t('core', 'login'); ?></span>
 				</a>
-				<input type="submit" value="<?php echo Yii::t('core', 'login'); ?>" style="display: none" />
+				<?php echo CHtml::submitButton(Yii::t('core', 'login'), array("style" => "width: 0px; height: 0px; opacity: 0")); ?>
 			</div>
 
 			<?php echo CHtml::closeTag('form'); ?>
