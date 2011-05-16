@@ -563,5 +563,19 @@
   	width: 340px;
   }
   
+  table.list > thead > tr > th > a
+  {
+  	padding-right: 10px;
+  }
+  
+  table.list > thead > tr > th > a.asc
+  {
+  	background: transparent url('../images/icons/fugue/control_small_270.png') 100% 50% no-repeat;
+  }
+  
+  table.list > thead > tr > th > a.desc
+  {
+  	background: transparent url('../images/icons/fugue/control_small_090.png') 100% 50% no-repeat;
+  }  
   
 }
