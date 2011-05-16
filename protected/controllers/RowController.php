@@ -169,7 +169,14 @@ class RowController extends Controller
 		{
 			$attributes = CJSON::decode($_POST['attributes'], true);
 			$fromRow = Row::model()->findByAttributes($attributes);
-			$row->attributes = $fromRow->attributes;
+			
+			foreach($this->_table->columns as $column)
+			{
+				if($column->EXTRA != "auto_increment")
+				{
+					$row->{$column->COLUMN_NAME} = $fromRow->{$column->COLUMN_NAME};
+				}
+			}
 		}
 		
 		$data = array(
