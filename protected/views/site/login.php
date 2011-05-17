@@ -76,7 +76,7 @@
 						</span>
 					</div>
 					<div class="right">
-						<?php echo CHtml::activeTextField($form, 'host', array('class'=>'text')); ?>
+						<?php echo CHtml::activeTextField($form, 'host', array('class'=>'text', 'name' => 'host')); ?>
 					</div>
 				</div>
 				<div class="item row2">
@@ -86,7 +86,7 @@
 						</span>
 					</div>
 					<div class="right">
-						<?php echo CHtml::activeTextField($form,'username', array('class'=>'text')) ?>
+						<?php echo CHtml::activeTextField($form,'username', array('class'=>'text', 'name' => 'username')) ?>
 					</div>
 				</div>
 				<div class="item row1">
@@ -96,7 +96,7 @@
 						</span>
 					</div>
 					<div class="right">
-						<?php echo CHtml::activePasswordField($form, 'password', array('class' => 'text', 'value' => '')); ?>
+						<?php echo CHtml::activePasswordField($form, 'password', array('class' => 'text', 'value' => '', 'name' => 'password')); ?>
 					</div>
 				</div>
 			</div>

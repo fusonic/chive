@@ -142,9 +142,25 @@ class SiteController extends Controller
 
 		$form = new LoginForm();
 		// collect user input data
-		if(isset($_POST['LoginForm']))
+		$request = Yii::app()->getRequest();
+		if($request->isPostRequest || ($request->getQuery("host") !== null && $request->getQuery("username") !== null))
 		{
-			$form->attributes = $_POST['LoginForm'];
+			if($request->isPostRequest)
+			{
+				$form->attributes = array(
+					"host" => $request->getPost("host"),
+					"username" => $request->getPost("username"),
+					"password" => $request->getPost("password"),
+				);
+			}
+			else
+			{
+				$form->attributes = array(
+					"host" => $request->getQuery("host"),
+					"username" => $request->getQuery("username"),
+					"password" => ($request->getQuery("password") !== null ? $request->getQuery("password") : ""),
+				);
+			}
 			// validate user input and redirect to previous page if valid
 			if($form->validate())
 			{
