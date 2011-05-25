@@ -99,7 +99,7 @@ class AjaxResponse
 	 */
 	public function send()
 	{
-		Yii::app()->end($this);
+		Yii::app()->endJson($this);
 	}
 
 	/**
@@ -121,5 +121,4 @@ class AjaxResponse
 		return CJSON::encode($data);
 
 	}
-
 }

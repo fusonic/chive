@@ -135,10 +135,10 @@ class BookmarkController extends Controller
 		catch (Exception $ex)
 		{
 			$response->addNotification('error', $ex->getMessage(), $bookmark['query'], array('isSticky'=>true));
-			Yii::app()->end($response);
+			Yii::app()->endJson($response);
 		}
 
-		Yii::app()->end($response);
+		Yii::app()->endJson($response);
 	}
 
 }

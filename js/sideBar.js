@@ -38,7 +38,6 @@ var sideBar = {
 			sideBar: true
 		}, function(data) {
 			
-			var data = JSON.parse(data);
 			var template = contentUl.children('li.template');
 			var templateHtml = template.html();
 			var html = '';
@@ -90,7 +89,6 @@ var sideBar = {
 			sideBar: true
 		}, function(data) {
 			
-			var data = JSON.parse(data);
 			var template = contentUl.children('li.template');
 			var templateHtml = template.html();
 			var html = '';
@@ -149,7 +147,6 @@ var sideBar = {
 			sideBar: true
 		}, function(data) {
 			
-			var data = JSON.parse(data);
 			var template = contentUl.children('li.template');
 			var templateHtml = template.html();
 			var html = '';

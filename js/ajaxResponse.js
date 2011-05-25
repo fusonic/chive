@@ -5,13 +5,7 @@ var AjaxResponse = {
 		if(!data)
 		{
 			return;
-		} 
-			
-		try 
-		{
-			data = JSON.parse(data);
 		}
-		catch(err) {}
 		
 		if(!$.isPlainObject(data))
 		{

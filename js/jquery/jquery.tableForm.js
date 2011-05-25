@@ -89,15 +89,14 @@
 					$(this).parent().block({css: null, overlayCss: null, message: null});
 				});
 				forms.ajaxForm({
-					success: function(responseText, statusText) {
+					success: function(response, statusText) {
 						try 
 						{
-							JSON.parse(responseText);
-							AjaxResponse.handle(responseText, statusText);
+							AjaxResponse.handle(response, statusText);
 						}
 						catch(ex) 
 						{
-							divObj.html(responseText);
+							divObj.html(response);
 							setAjaxForms();	
 						}
 					}

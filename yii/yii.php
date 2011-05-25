@@ -12,6 +12,7 @@
  */
 
 require(dirname(__FILE__).'/YiiBase.php');
+require(dirname(__FILE__).'/../protected/components/ChiveWebApplication.php');
 
 /**
  * Yii is a helper class serving common framework functionalities.
@@ -24,6 +25,15 @@ require(dirname(__FILE__).'/YiiBase.php');
  * @package system
  * @since 1.0
  */
+
+
+/**
+  * @method ChiveWebApplication app
+ */
 class Yii extends YiiBase
 {
+	public static function createWebApplication($config=null)
+	{
+		return self::createApplication('ChiveWebApplication',$config);		
+	}
 }

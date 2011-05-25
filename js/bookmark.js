@@ -120,7 +120,6 @@ $(document).ready(function() {
 							name:		$('#newBookmarkName').get(0).value
 				}, function(response) {
 					
-					response = JSON.parse(response);
 					data = response.data;
 					
 					if(data)

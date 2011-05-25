@@ -253,8 +253,8 @@ var tableStructure = {
 				'schema': schema,
 				'table': table,
 				'column': ids
-			}, function(responseText) {
-				AjaxResponse.handle(responseText);
+			}, function(response) {
+				AjaxResponse.handle(response);
 				for(var i = 0; i < ids.length; i++)
 				{
 					$('#columns_' + ids[i]).remove();
@@ -303,8 +303,7 @@ var tableStructure = {
 			// Do request
 			$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/indexAction/drop', {
 				index: tableStructure.dropIndexName
-			}, function(responseText) {
-				var response = JSON.parse(responseText);
+			}, function(response) {
 				AjaxResponse.handle(response);
 				if(response.data.success)
 				{
@@ -335,8 +334,7 @@ var tableStructure = {
 			// Do request
 			$.post(baseUrl + '/schema/' + schema + '/tables/' + table + '/triggerAction/drop', {
 				trigger: tableStructure.dropTriggerName
-			}, function(responseText) {
-				var response = JSON.parse(responseText);
+			}, function(response) {
 				AjaxResponse.handle(response);
 				if(response.data.success)
 				{
