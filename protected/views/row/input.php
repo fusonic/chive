@@ -22,17 +22,16 @@
 			success:	function(response) {
 
 							editing = false;
-							responseObj = JSON.parse(response);
 
-							if(responseObj.data.error) {
+							if(response.data.error) {
 								reset();
 								AjaxResponse.handle(response);
 								return false;
 							}
 
 							
-							$('#input_<?php echo $id; ?>').parent().parent().parent().html(responseObj.data.visibleValue);
-							keyData[rowIndex] = responseObj.data.identifier;
+							$('#input_<?php echo $id; ?>').parent().parent().parent().html(response.data.visibleValue);
+							keyData[rowIndex] = response.data.identifier;
 							AjaxResponse.handle(response);
 
 						}

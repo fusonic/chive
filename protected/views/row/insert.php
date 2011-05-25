@@ -17,9 +17,8 @@
 
 <script type="text/javascript">
 	$('form').ajaxForm({
-		success: function(responseText) {
-			JSON.parse(responseText);
-			AjaxResponse.handle(responseText);
+		success: function(response) {
+			AjaxResponse.handle(response);
 		}
 	});
 </script>
