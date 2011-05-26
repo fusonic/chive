@@ -222,7 +222,7 @@ class IndexController extends Controller
 	private function getColumnsFromRequest()
 	{
 		$columns = array();
-		foreach((array)$_POST['columns'] AS $column)
+		foreach((array)Yii::app()->request->getPost('columns') AS $column)
 		{
 			$col = new IndexColumn();
 			$col->COLUMN_NAME = $column;
