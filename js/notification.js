@@ -23,11 +23,13 @@ var Notification = {
 	// Add column
 	add: function(type, header, message, code, options)
 	{
-		$('<div class="notification" style="display: none">' + 
+		var icon = type == "ajaxerror" ? "error" : type;
+	
+		var div = $('<div class="notification" style="display: none">' + 
 			'<div class="notification-body">' +
 				'<div class="notification-header">' +
 					'<span class="icon">' +
-						'<img class="icon" src="' + iconPath + '/16/' + type + '.png" />' +
+						'<img class="icon" src="' + iconPath + '/16/' + icon + '.png" />' +
 						'<span>' + header + '</span>' +
 					'</span>' +
 				'</div>' +
@@ -39,8 +41,10 @@ var Notification = {
 		'</div>' +
 		'<div class="notification-bottom"></div>' +
 		(code ? '<a class="code" href="#code" onclick="$(this).parent().find(\'textarea\').toggle(500); return false;" />' : '') +
-		'</div>')
-		.mouseover(function() {
+		'</div>');
+		
+		
+		div.mouseover(function() {
 			clearTimeout($(this).data('timeout'));
 			clearInterval($(this).data('interval'));
 		})
@@ -79,6 +83,9 @@ var Notification = {
 			$(this).removeClass('not-sticky');
 		});
 		
+		if(type == "ajaxerror") 
+		{
+			div.find("textarea").toggle(500);
+		}
 	}
-	
 };
