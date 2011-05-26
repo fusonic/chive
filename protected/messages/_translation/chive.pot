@@ -404,6 +404,9 @@ msgstr ""
 msgid "Updating row failed"
 msgstr ""
 
+msgid "An error occured while uploading the file"
+msgstr ""
+
 msgid "Event"
 msgstr ""
 
@@ -825,6 +828,9 @@ msgid "Imported file"
 msgstr ""
 
 msgid "Inserted row"
+msgstr ""
+
+msgid "Inserted row with ID »{id}«"
 msgstr ""
 
 msgid "Killed process #{id}"
