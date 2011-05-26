@@ -90,11 +90,7 @@
 				});
 				forms.ajaxForm({
 					success: function(response, statusText) {
-						try 
-						{
-							AjaxResponse.handle(response, statusText);
-						}
-						catch(ex) 
+						if(!AjaxResponse.handle(response, statusText))
 						{
 							divObj.html(response);
 							setAjaxForms();	
