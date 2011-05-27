@@ -54,7 +54,7 @@ class BookmarkController extends Controller
 
 		if($exists)
 		{
-			$response->addNotification('error', Yii::t('core', 'errorBookmarkWithThisNameAlreadyExists'));
+			$response->addNotification('error', Yii::t('core', 'errorBookmarkWithThisNameAlreadyExists', array("{name}" => $name)));
 			$response->send();
 		}
 

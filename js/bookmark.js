@@ -125,6 +125,7 @@ $(document).ready(function() {
 					if(data)
 					{
 						Bookmark.addToList(data.id, data.schema, data.name, data.query);
+						$('#newBookmarkName').get(0).value = "";
 					}
 						
 					AjaxResponse.handle(response);
