@@ -103,10 +103,10 @@ $(document).ready(function() {
   <div class="ui-layout-north">
 	<div id="header">
 		<div id="headerLeft">
-			<a class="icon button" href="<?php echo BASEURL; ?>">
+			<a class="icon button" href="<?php echo Yii::app()->getBaseUrl(true); ?>">
 				<img src="<?php echo BASEURL; ?>/images/logo.png" alt="Chive" height="22" style="position: relative; top: 6px;" />
 			</a>
-			<a href="<?php echo Yii::app()->urlManager->baseUrl . '#schemata'; ?>" class="icon button">
+			<a href="<?php echo Yii::app()->getBaseUrl(true) . '#schemata'; ?>" class="icon button">
 				<?php echo Html::icon('server'); ?>
 				<span><?php echo Yii::app()->user->host; ?></span>
 			</a>
