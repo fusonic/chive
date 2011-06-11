@@ -289,10 +289,22 @@ class SqlExporter implements IExporter
 		}
 
 		// Find all tables
-		$tables = Table::model()->findAll('TABLE_NAME IN (' . implode(',', $tableNames) . ') '
-			. 'AND TABLE_SCHEMA = ' . Yii::app()->db->quoteValue($this->schema));
+		$allTables = Table::model()->findAll('TABLE_SCHEMA = ' . Yii::app()->db->quoteValue($this->schema));
 
-		foreach($tables AS $table)
+		if(count($tables) > 0)
+		{
+			$filteredTables = array_filter($allTables, function($table) use($tables) {
+				
+				return in_array($table->TABLE_NAME, $tables); 
+				
+			});
+		}
+		else
+		{
+			$filteredTables = $allTables;	
+		}
+		
+		foreach($filteredTables AS $table)
 		{
 			
 			if($this->settings['exportStructure'])
