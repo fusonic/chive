@@ -351,6 +351,10 @@ class Row extends CActiveRecord
 				{
 					$sql .= self::$functions[$function] . '(' . ($value === null ? 'NULL' : self::$db->quoteValue($value))  . ')';
 				}
+				elseif($columnInfo->IS_NULLABLE === "YES" && is_null($value))
+				{
+					$sql .= 'NULL';
+				}
 				elseif($this->isHex($column))
 				{
 					$sql .= $value;
