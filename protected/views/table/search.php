@@ -51,6 +51,13 @@ $('#searchForm').ajaxForm({
 	}
 });
 
+$('#searchForm').keydown(function(e) {
+	if(e.which == 13)
+	{
+		$(this).submit();
+	}	
+});
+
 $('table.list input:first').focus();
 
 </script>
