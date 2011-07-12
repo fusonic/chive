@@ -88,6 +88,8 @@ class ExportPage extends CModel
 		// Initialize exporter
 		$exporterName = $_POST['Export']['exporter'];
 		$exporter = new $exporterName($this->mode);
+		
+		$extension = strtolower($exporter->getTitle());
 
 		if(isset($_POST['Export']['objects']))
 		{
@@ -130,10 +132,12 @@ class ExportPage extends CModel
 				$mimeType = 'text/plain';
 				$filenameSuffix = '';
 			}
+			
+			$filename = $this->schema . "_" . date("Y_m_d");
 
 			// Send headers
 			header('Content-type: ' . $mimeType);
-			header('Content-disposition: attachment; filename="Dump.sql' . $filenameSuffix . '"');
+			header('Content-disposition: attachment; filename="' . $filename . "." . $extension . $filenameSuffix . '"');
 
 			// Set handlers
 			if($this->compression == 'gzip' && function_exists('gzencode'))
