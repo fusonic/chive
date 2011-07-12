@@ -154,6 +154,8 @@ class RoutineController extends Controller
 
 		if(isset($_POST['query']))
 		{
+			$currentRoutine = $routine->getCreateRoutine();
+			
 			$query = $_POST['query'];
 			try
 			{
@@ -181,6 +183,8 @@ class RoutineController extends Controller
 			{
 				$errorInfo = $cmd->getPdoStatement()->errorInfo();
 				$routine->addError(null, Yii::t('core', 'sqlErrorOccured', array('{errno}' => $errorInfo[1], '{errmsg}' => $errorInfo[2])));
+				
+				$this->restoreCurrentRoutine($currentRoutine);
 			}
 		}
 		else
@@ -196,5 +200,18 @@ class RoutineController extends Controller
 			'query' => $query,
 		));
 	}
-
+	
+	private function restoreCurrentRoutine($currentRoutine)
+	{
+		try
+		{
+			$cmd = $this->db->createCommand($currentRoutine);
+			$cmd->prepare();
+			$cmd->execute();
+		}
+		catch(CDbException $ex)
+		{
+			// Silently catch this exception because it is a restore function and must not run under all circumstances.
+		}
+	}
 }

@@ -170,7 +170,7 @@ class SqlSplitter
 					($char == $delimiter{0} &&
 						(strlen($delimiter) == 1 ||
 						$nextChar == $delimiter{1}))
-					|| ($i == $chars && $this->ignoreLastQuery == false && count($this->queries) == 0)
+					|| ($i == $chars && $this->ignoreLastQuery == false)
 				)
 			)
 			{
