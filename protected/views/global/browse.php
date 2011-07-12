@@ -213,4 +213,5 @@
 <script type="text/javascript">
 	globalBrowse.setup();
 	AjaxResponse.handle(<?php echo $model->getResponse(); ?>);
+	globalPost = { query: <?php echo CJSON::encode($model->getOriginalQueries()); ?> };
 </script>

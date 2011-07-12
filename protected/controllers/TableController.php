@@ -151,7 +151,7 @@ class TableController extends Controller
 			'model' => $browsePage
 		));
 	}
-
+	
 	public function actionCreate()
 	{
 		$this->layout = false;
@@ -294,11 +294,10 @@ class TableController extends Controller
 		$row = new Row();
 
 		$commandBuilder = $this->db->getCommandBuilder();
-
+		
 		if(isset($_POST['Row']))
 		{
-
-			$criteria = new CDbCriteria;
+			$criteria = new CDbCriteria();
 
 			$i = 0;
 			foreach($_POST['Row'] AS $column=>$value)
@@ -319,7 +318,16 @@ class TableController extends Controller
 				}
 
 			}
-
+			
+			$query = $this->db->getCommandBuilder()->createFindCommand($this->table, $criteria)->getText();
+		}
+		elseif(isset($_POST['query']))
+		{
+			$query = $_POST['query'];
+		}
+		
+		if(isset($query))
+		{
 			$browsePage = new BrowsePage();
 
 			$browsePage->schema = $this->schema;
@@ -328,14 +336,13 @@ class TableController extends Controller
 			$browsePage->route = 'schema/' . $this->schema . '/tables/' . $this->table . '/browse';
 			$browsePage->formTarget = 'schema/' . $this->schema . '/tables/' . $this->table . '/sql';
 			$browsePage->execute = true;
-			$browsePage->query = $this->db->getCommandBuilder()->createFindCommand($this->table, $criteria)->getText();
+			$browsePage->query = $query;
 
 			$browsePage->run();
 
 			$this->render('../global/browse', array(
 				'model' => $browsePage
-			));
-
+			));	
 		}
 		else
 		{
