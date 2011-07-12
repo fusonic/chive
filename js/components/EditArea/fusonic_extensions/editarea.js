@@ -9,7 +9,7 @@ function setupEditAreaAutoGrow(_id){
     
     // select the iframe
     var frame = $('#frame_' + _id).get(0);
-   
+    
     // getting the maxheight, saved in the textarea's style attribute
     var maxHeight = parseInt($('#' + _id).css('max-height'));
     
@@ -89,6 +89,12 @@ function setupEditAreaAutoGrow(_id){
             frame.contentWindow.document.attachEvent('onkeyup', autoGrowHandler, true);
         }
     
+    frame.contentWindow.document.addEventListener('keyup', function(e)
+		{
+			if(e.ctrlKey && e.which == 13) {
+ 				$("#queryForm").submit();
+			}
+		}, true);
 }
 
 /**

@@ -121,6 +121,11 @@ var globalBrowse = {
 			}
 		});
 		
+		$('#query').keypress(function(e) {
+			if(e.ctrlKey && e.which == 13) {
+				$('#queryForm').submit();
+			}
+		});
 	},
 	
 	download: function(_url, _data) 
