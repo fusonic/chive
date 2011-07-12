@@ -23,13 +23,23 @@ var globalImport = {
 	setup: function()
 	{
 		$('#Import').ajaxForm({
+		
+			// We can't handle json here, see: http://jquery.malsup.com/form/#file-upload
+			dataType: 'text',
 			success: 	function(responseText)
 			{
-				AjaxResponse.handle(responseText);
-				$('div.ui-layout-center').html(responseText);
+				try
+				{
+					var json = JSON.parse(responseText);
+					AjaxResponse.handle(json);
+				}
+				catch(ex)
+				{
+					$('div.ui-layout-center').html(responseText);					
+				}
+				
 				init();
 			}
 		});
 	}
-	
 };

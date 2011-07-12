@@ -413,8 +413,9 @@ class ImportPage extends CModel
 		}
 		
 		$response->addNotification('success', Yii::t('core','successImportFile'), Yii::t('core', 'executedQueries') . ":" . count($queries));
-		$response->send();
 		
+		// We cannot output json here, see: http://jquery.malsup.com/form/#file-upload
+		Yii::app()->end($response);		
 	}
 	
 	public function getPosition()
