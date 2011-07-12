@@ -10,6 +10,13 @@ defined('YII_DEBUG') or define('YII_DEBUG', true);
 // Load Yii
 require('yii/yii.php');
 
+if(!date_default_timezone_get())
+{
+	// Set a fallback timezone if the current php.ini does not contain a default timezone setting.
+	// If the environment is setup correctly, we won't override the timezone.
+	date_default_timezone_set("UTC");
+}
+
 // Create web application
 $app = Yii::createWebApplication('protected/config/main.php');
 
