@@ -244,9 +244,6 @@ class SchemaController extends Controller
 		));
 	}
 
-	/**
-	 * @todo(rponudic): Finish
-	 */
 	public function actionSql($_query = false, $_execute = true) {
 
 		$query = Yii::app()->getRequest()->getParam('query');
@@ -455,7 +452,6 @@ class SchemaController extends Controller
 
 	/**
 	 * Bookmark actions
-	 * @todo(mburtscher): Is this already finished???
 	 */
 	public function actionShowBookmark()
 	{
@@ -494,9 +490,6 @@ class SchemaController extends Controller
 		));
 	}
 
-	/**
-	 * @todo(mburtscher): What's going on here?
-	 */
 	public function actionImport()
 	{
 
