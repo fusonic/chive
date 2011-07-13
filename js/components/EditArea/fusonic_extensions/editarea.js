@@ -88,13 +88,26 @@ function setupEditAreaAutoGrow(_id){
         if (document.attachEvent) {
             frame.contentWindow.document.attachEvent('onkeyup', autoGrowHandler, true);
         }
+        
+    var ctrlClicked = false;
+    var textarea = $(frame.contentWindow.document.getElementById("textarea"));
     
-    frame.contentWindow.document.addEventListener('keyup', function(e)
-		{
-			if(e.ctrlKey && e.which == 13) {
- 				$("#queryForm").submit();
-			}
-		}, true);
+    textarea.keydown(function(e) {
+    	
+    	if(e.which == 17) {
+    		ctrlClicked = true;
+    	}
+    	else if(e.ctrlKey && e.which == 13 && ctrlClicked) {
+    	
+    		e.preventDefault();
+        	e.stopPropagation();
+    		$("#queryForm").submit();
+		}
+    });
+    
+    $('#queryForm').submit(function() {
+    	textarea.select();
+	});
 }
 
 /**

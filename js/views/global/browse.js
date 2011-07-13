@@ -121,9 +121,22 @@ var globalBrowse = {
 			}
 		});
 		
-		$('#query').keypress(function(e) {
-			if(e.ctrlKey && e.which == 13) {
-				$('#queryForm').submit();
+		$('#queryForm').submit(function() {
+			$('#query').select();
+		});
+		
+		var ctrlClicked = false;
+		
+		$('#query').keydown(function(e) {
+			
+			if(e.which == 17) {
+	    		ctrlClicked = true;
+	    	}
+	    	else if(e.ctrlKey && e.which == 13 && ctrlClicked) {
+	    	
+	    		e.preventDefault();
+	        	e.stopPropagation();
+	    		$("#queryForm").submit();
 			}
 		});
 	},
