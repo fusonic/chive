@@ -4,5 +4,6 @@ assets/*
 .buildpath
 .project
 .settings
+.idea
 protected/runtime/user-config/*
 protected/extensions/sqlquery_old
