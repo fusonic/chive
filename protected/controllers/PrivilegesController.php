@@ -236,6 +236,9 @@ class PrivilegesController extends Controller
 					Yii::t('core', 'successUpdateUser', array('{user}' => $user->User, '{host}' => $user->Host)),
 					null,
 					$sql);
+
+				$this->logoutIfPasswordChanged($user);
+
 				$response->refresh = true;
 				$response->send();
 			}
@@ -244,6 +247,15 @@ class PrivilegesController extends Controller
 		$this->render('userForm', array(
 			'user' => $user,
 		));
+	}
+
+	public function logoutIfPasswordChanged($user)
+	{
+		if(Yii::app()->user->name == $user->User
+			   && isset($_POST['User']["plainPassword"]))
+		{
+			Yii::app()->user->logout();
+		}
 	}
 
 	public function actionCreateSchema()
