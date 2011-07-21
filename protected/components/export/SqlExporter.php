@@ -293,11 +293,14 @@ class SqlExporter implements IExporter
 
 		if(count($tables) > 0)
 		{
-			$filteredTables = array_filter($allTables, function($table) use($tables) {
-				
-				return in_array($table->TABLE_NAME, $tables); 
-				
-			});
+			$filteredTables = array();
+			foreach($allTables as $table)
+			{
+				if(in_array($table->TABLE_NAME, $tables))
+				{
+					$filteredTables[] = $table;
+				}
+			}
 		}
 		else
 		{
