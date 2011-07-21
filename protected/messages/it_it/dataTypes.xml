@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <category id="dataTypes">
   <entry id="numeric">Numerico</entry>
   <entry id="strings">Stringhe</entry>

@@ -1,6 +1,6 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <category id="dataTypes">
-  <entry id="numeric">Num&#xE9;rico</entry>
+  <entry id="numeric">Numérico</entry>
   <entry id="strings">Cadenas</entry>
   <entry id="dateAndTime">Fecha y hora</entry>
 </category>

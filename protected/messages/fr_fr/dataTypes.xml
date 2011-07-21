@@ -1,6 +1,6 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <category id="dataTypes">
-  <entry id="numeric">Num&#xE9;rique</entry>
-  <entry id="strings">Cha&#xEE;nes</entry>
+  <entry id="numeric">Numérique</entry>
+  <entry id="strings">Chaînes de caractères</entry>
   <entry id="dateAndTime">Date et heure</entry>
 </category>

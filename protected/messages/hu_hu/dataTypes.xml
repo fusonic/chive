@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<category id="dataTypes">
+  <entry id="numeric">Szám</entry>
+  <entry id="strings">Szöveg</entry>
+  <entry id="dateAndTime">Dátum és idő</entry>
+</category>

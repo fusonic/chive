@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<category id="dataTypes">
+  <entry id="numeric">Числовое</entry>
+  <entry id="strings">Строки</entry>
+  <entry id="dateAndTime">Дата и время</entry>
+</category>

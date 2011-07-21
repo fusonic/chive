@@ -100,19 +100,18 @@ class I18NImportCommand extends CConsoleCommand
 		{
 			$targetLang = $lang;
 		}
-		
-		@mkdir('messages/' . strtolower($targetLang));
 
 		$finishedTranslated = array(
-			"pt_br",
-			"en_gb",
-			"fr_fr",
-			"it_it",
-			"ru_ru",
-			"uk_uk",
-			"pl_pl",
-			"es_es");
+			"pt_br", "en_gb", "fr_fr", "it_it", "ru_ru", "uk_uk", "pl_pl", "es_es", "hu_hu"
+		);
 
+		if(!in_array($targetLang, $finishedTranslated))
+		{
+			return;
+		}
+
+		@mkdir('messages/' . strtolower($targetLang));
+		
 		// Translate
 		foreach($files as $file)
 		{
