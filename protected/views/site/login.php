@@ -96,7 +96,7 @@
 						</span>
 					</div>
 					<div class="right">
-						<?php echo CHtml::activePasswordField($form, 'password', array('class' => 'text', 'value' => '', 'name' => 'password')); ?>
+						<?php echo CHtml::activePasswordField($form, 'password', array('class' => 'text', 'value' => '', 'name' => 'password', 'autocomplete' => "off")); ?>
 					</div>
 				</div>
 			</div>
