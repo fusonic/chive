@@ -219,7 +219,7 @@ class LinkPager extends CLinkPager
 
 	protected function getPostVars()
 	{
-		$this->getPages() instanceof Pagination ? $this->getPages()->postVars : null;
+		return $this->getPages() instanceof Pagination ? $this->getPages()->postVars : null;
 	}
 
 	/**
