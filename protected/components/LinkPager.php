@@ -161,11 +161,11 @@ class LinkPager extends CLinkPager
 			{
 				$content .= '&nbsp;' . $size . '&nbsp;';
 			}
-			elseif($this->getPages()->postVars !== null)
+			elseif($this->getPostVars() !== null)
 			{
 				if(self::$generateJsPageSize)
 				{
-					$data = CJSON::encode($this->getPages()->postVars);
+					$data = CJSON::encode($this->getPostVars());
 
 					$script = '
 						function setPageSize(_pageSize) {
@@ -217,6 +217,11 @@ class LinkPager extends CLinkPager
 		return $this->getPages()->createPageUrl($this->getController(), $page, $pageSize);
 	}
 
+	protected function getPostVars()
+	{
+		$this->getPages() instanceof Pagination ? $this->getPages()->postVars : null;
+	}
+
 	/**
 	 * @see		CLinkPager::createPageButton()
 	 */
@@ -225,7 +230,7 @@ class LinkPager extends CLinkPager
 		if($hidden || $selected)
 			$class.=' '.($hidden ? self::CSS_HIDDEN_PAGE : self::CSS_SELECTED_PAGE);
 
-		$postVars = $this->getPages()->postVars;
+		$postVars = $this->getPostVars();
 
 		if($postVars === null)
 		{

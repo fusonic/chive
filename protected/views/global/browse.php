@@ -72,7 +72,7 @@
 	<div class="list">
 		<div class="buttonContainer">
 			<?php 
-				if($model->getQueryType() != "explain")
+				if($model->getQueryType() != "explain" && $model->getPagination() != null)
 				{
 					$this->widget('LinkPager',array('pages'=>$model->getPagination()));
 				} 
@@ -163,7 +163,7 @@
 					<?php $i++; ?>
 				<?php } ?>
 			</tbody>
-			<?php if($model->getQueryType() != "explain") { ?>
+			<?php if($model->getQueryType() != "explain" && $model->getPagination() != null) { ?>
 			<tfoot>
 				<tr>
 					<th colspan="<?php echo 4 + count($row); ?>">
@@ -200,7 +200,7 @@
 		<?php } ?>
 	</div>
 	<div class="buttonContainer">
-		<?php if($model->getQueryType() != "explain") { ?>
+		<?php if($model->getQueryType() != "explain" && $model->getPagination() != null) { ?>
 		<?php $this->widget('LinkPager',array('pages'=>$model->getPagination())); ?>
 		<?php } ?>
 	</div>

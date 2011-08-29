@@ -161,6 +161,18 @@ class SqlQuery {
 		{
 			return $this->parsedQuery['table_ref'][0]['table_name'];
 		}
+		else
+		{
+			$maintenanceCommands = array("optimize", "analyze", "repair", "check");
+			$pattern = "/[optimize|analyze|repair|check] TABLE `(.*?)`/i";
+			$query = $this->parsedQuery['unsorted_query'];
+
+			if(preg_match($pattern, $query, $matches))
+			{
+				return $matches[1];
+			}
+		}
+
 		return null;
 	}
 	
