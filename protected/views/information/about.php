@@ -203,4 +203,11 @@
 
 <script type="text/javascript">
 	informationGeneral.setup();
+	breadCrumb.set([
+		{
+			icon: 'info',
+			href: 'javascript:chive.goto(\'information/about\')',
+			text: '<?php echo Yii::t('core', 'about'); ?>'
+		}
+	]);
 </script>
