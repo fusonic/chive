@@ -100,7 +100,7 @@ class ExportPage extends CModel
 		elseif(isset($_POST['Export']['rows']))
 		{
 			// Load rows and assign to exporter
-			$rowAttributes = CJSON::decode($_POST['Export']['rows'], true);
+			$rowAttributes = (array)CJSON::decode($_POST['Export']['rows'], true);
 			$rows = array();
 
 			foreach($rowAttributes AS $row)
