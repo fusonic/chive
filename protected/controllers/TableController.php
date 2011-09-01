@@ -144,8 +144,11 @@ class TableController extends Controller
 		$browsePage->formTarget = 'schema/' . $this->schema . '/tables/' . $this->table . '/browse';
 
 		$browsePage->run();
-		
-		$this->table = $browsePage->table;
+
+		if($browsePage->table !== null)
+		{
+			$this->table = $browsePage->table;
+		}
 		
 		$this->render('../global/browse', array(
 			'model' => $browsePage
