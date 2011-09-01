@@ -125,7 +125,7 @@
 								</a>
 							</td>
 							<td class="action">
-								<a href="javascript:void(0);" class="icon" onclick="globalBrowse.insertAsNewRow(<?php echo $i; ?>);">
+								<a href="javascript:void(0);" class="icon" onclick="globalBrowse.insertAsNewRow(<?php echo $i; ?>, '<?php echo $model->table; ?>')">
 									<?php echo Html::icon('insert', 16, false, 'core.insert'); ?>
 								</a>
 							</td>

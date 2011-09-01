@@ -64,15 +64,12 @@ var globalBrowse = {
 		
 	},
 	
-	insertAsNewRow: function(rowIndex) 
+	insertAsNewRow: function(rowIndex, table)
 	{
-		$.post(baseUrl + '/row/insert', {
-			attributes: 	JSON.stringify(keyData[rowIndex]),
-			schema: 		schema,
+		chive.goto('tables/' + table + '/insert', {
+			attributes:	 JSON.stringify(keyData[rowIndex]),
+			schema:		 schema,
 			table:			table
-		}, function(responseText) {
-			$('div.ui-layout-center').html(responseText);
-			init();
 		});
 	},
 	
