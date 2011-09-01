@@ -180,7 +180,7 @@ class SqlQuery {
 	{
 		$tables = array();
 
-		if(!isset($this->parsedQuery['unsorted_query']))
+		if(!isset($this->parsedQuery['table_ref']))
 		{
 			return $tables;
 		}
@@ -202,7 +202,7 @@ class SqlQuery {
 	 */
 	public function getType()
 	{
-		return isset($this->parsedQuery['querytype']) ? $this->parsedQuery['querytype'] : null;
+		return isset($this->parsedQuery['querytype']) ? strtolower($this->parsedQuery['querytype']) : null;
 	}
 
 	public function getLimit()
@@ -272,5 +272,3 @@ class SqlQuery {
 
 
 }
-
-?>
