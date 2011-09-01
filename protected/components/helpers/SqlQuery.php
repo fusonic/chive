@@ -161,7 +161,7 @@ class SqlQuery {
 		{
 			return $this->parsedQuery['table_ref'][0]['table_name'];
 		}
-		else
+		else if(isset($this->parsedQuery['unsorted_query']))
 		{
 			$maintenanceCommands = array("optimize", "analyze", "repair", "check");
 			$pattern = "/[optimize|analyze|repair|check] TABLE `(.*?)`/i";
@@ -179,6 +179,12 @@ class SqlQuery {
 	public function getTables()
 	{
 		$tables = array();
+
+		if(!isset($this->parsedQuery['unsorted_query']))
+		{
+			return $tables;
+		}
+
 		foreach($this->parsedQuery['table_ref'] as $table)
 		{
 			$tables[] = $table['table_name'];
@@ -196,7 +202,7 @@ class SqlQuery {
 	 */
 	public function getType()
 	{
-		return strtolower($this->parsedQuery['querytype']);
+		return isset($this->parsedQuery['querytype']) ? $this->parsedQuery['querytype'] : null;
 	}
 
 	public function getLimit()
