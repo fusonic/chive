@@ -109,9 +109,15 @@ var chive = {
 	/*
 	 * Loads the specified page.
 	 */
-	goto: function(location)
+	goto: function(location, postValues)
 	{
-		globalPost = {};
+		if(postValues) {
+			globalPost = postValues;
+		}
+		else {
+			globalPost = {};
+		}
+		
 		window.location.hash = location;
 		chive.currentLocation = window.location.href;
 		chive.refresh();

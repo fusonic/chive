@@ -54,6 +54,26 @@ var schemaTables = {
 		}
 		
 	},
+
+	runTableOperation: function(operationType)
+	{
+		var ids = schemaTables.getSelectedIds();
+
+		if (ids.length == 0)
+			return;
+
+		var querystring = operationType + " TABLE ";
+		var first = true;
+		$.each(ids, function(index, value) {
+			if (!first) {
+				querystring += ",";
+			}
+			querystring += "`" + value + "`";
+			first = false;
+		});
+
+		chive.goto("sql", { query: querystring });
+	},
 	
 	// Truncate table
 	truncateTable: function(table)
@@ -140,5 +160,4 @@ var schemaTables = {
 			buttons: buttons		
 		});
 	}
-	
 };

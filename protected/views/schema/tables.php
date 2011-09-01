@@ -179,6 +179,27 @@
 					<span><?php echo Yii::t('core', 'truncate'); ?></span>
 				</span>
 			<?php } ?>
+
+			<a href="javascript:void(0)" onclick="schemaTables.runTableOperation('OPTIMIZE')" class="icon button">
+					<?php echo Html::icon('accordion', 16); ?>
+				<span><?php echo Yii::t('core', 'optimize'); ?></span>
+			</a>
+
+			<a href="javascript:void(0)" onclick="schemaTables.runTableOperation('CHECK')" class="icon button">
+					<?php echo Html::icon('engine', 16); ?>
+				<span><?php echo Yii::t('core', 'check'); ?></span>
+			</a>
+
+			<a href="javascript:void(0)" onclick="schemaTables.runTableOperation('ANALYZE')" class="icon button">
+					<?php echo Html::icon('chart', 16); ?>
+				<span><?php echo Yii::t('core', 'analyze'); ?></span>
+			</a>
+
+			<a href="javascript:void(0)" onclick="schemaTables.runTableOperation('REPAIR')" class="icon button">
+					<?php echo Html::icon('operation', 16); ?>
+				<span><?php echo Yii::t('core', 'repair'); ?></span>
+			</a>
+
 		</div>
 		<div class="right">
 			<a href="javascript:void(0)" class="icon button" onclick="schemaTables.addTable()">

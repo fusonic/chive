@@ -321,4 +321,8 @@
 	<entry id="encloseFieldsBy">Enclose fields by</entry>
 	<entry id="escapeFieldTextDelimiterWith">Escape text delimiter with</entry>
 	<entry id="fieldNamesInFirstRow">Field names in first row</entry>
+	<entry id="optimize">Optimize</entry>
+	<entry id="check">Check</entry>
+	<entry id="analyze">Analyze</entry>
+	<entry id="repair">Repair</entry>
 </category>
