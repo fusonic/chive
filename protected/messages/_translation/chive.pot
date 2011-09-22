@@ -971,6 +971,18 @@ msgstr ""
 msgid "Field names in first row"
 msgstr ""
 
+msgid "Optimize"
+msgstr ""
+
+msgid "Check"
+msgstr ""
+
+msgid "Analyze"
+msgstr ""
+
+msgid "Repair"
+msgstr ""
+
 msgid "Numeric"
 msgstr ""
 
