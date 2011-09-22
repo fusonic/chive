@@ -1,4 +1,4 @@
-<table class="list" style="width: auto;">
+<table class="list">
 	<colgroup>
 		<col style="width: 100px;" />
 		<col class="type" />
