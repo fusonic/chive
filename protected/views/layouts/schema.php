@@ -142,6 +142,9 @@ $(document).ready(function() {
 			<ul class="list icon nowrap" id="tableList">
 				<li class="nowrap template">
 					<div class="listIconContainer">
+						<?php echo Html::ajaxLink('tables/#tableName#/search', array('class' => 'icon')); ?>
+							<?php echo Html::icon('search', 16, false, 'core.search'); ?>
+						</a>
 						<?php echo Html::ajaxLink('tables/#tableName#/insert', array('class' => 'icon')); ?>
 							<?php echo Html::icon('add', 16, false, 'core.insertNewRow'); ?>
 						</a>
