@@ -23,6 +23,7 @@
 	<entry id="addUser">Add user</entry>
 	<entry id="addView">Add view</entry>
 	<entry id="affectedRowsQueryTime">0#No rows affected. Query took {time} seconds.|1#{rows} row affected. Query took {time} seconds.|n&gt;1#{rows} rows affected. Query took {time} seconds.</entry>
+	<entry id="foundRowsQueryTime">{rows} total rows. Query took {time} seconds.</entry>
 	<entry id="ajaxRequestFailed">Ajax request failed</entry>
 	<entry id="ajaxRequestFailedText">Click &lt;a href="javascript:void(0)" onclick="reload()"&gt;here&lt;/a&gt; to reload site.</entry>
 	<entry id="amountRoutines">1#{amount}  Routine|n&gt;1#{amount}  Routines</entry>

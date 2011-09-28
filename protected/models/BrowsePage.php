@@ -118,7 +118,6 @@ class BrowsePage extends CModel
 				$cmd = $this->db->createCommand('SET PROFILING = 1');
 				
 				$cmd->execute();
-						
 			}
 
 			$splitter = new SqlSplitter($this->query);
@@ -270,7 +269,9 @@ class BrowsePage extends CModel
 					try
 					{
 						// Fetch data
+						$start = microtime(true);
 						$data = $cmd->queryAll();
+						$time = round(microtime(true) - $start, 6);
 						
 						SqlUtil::FixTable($data);
 						
@@ -368,9 +369,16 @@ class BrowsePage extends CModel
 
 					$response->addNotification('info', Yii::t('core', 'profilingResultsSortedByExecutionTime'), $results, null);
 				}
+			}
+			else if (isset($total) && isset($time))
+			{
+				$response->addNotification('success',
+						Yii::t('core', 'successExecuteQuery'),
+						Yii::t('core', 'foundRowsQueryTime',
+							array(null,  '{rows}'=>$total, '{time}'=> $time)),
+							$sqlQuery->getQuery());
 
 			}
-
 		}
 		
 		// Assign local variables to class properties
