@@ -314,7 +314,7 @@ class RowController extends Controller
 			'column' => $column,
 			'row' => $row,
 			'attributes' => $attributes,
-			'oldValue' => str_replace("\n", "", $oldValue),				// @todo (rponudic) double-check if this is the solution!?
+			'oldValue' => str_replace("\n", "", $oldValue),
 			'rowIndex' => $rowIndex,
 		));
 

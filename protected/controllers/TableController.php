@@ -268,6 +268,11 @@ class TableController extends Controller
 
 		$browsePage->run();
 
+		if($browsePage->table !== null)
+		{
+			$this->table = $browsePage->table;
+		}
+
 		$this->render('../global/browse', array(
 			'model' => $browsePage
 		));
