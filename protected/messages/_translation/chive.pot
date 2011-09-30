@@ -77,6 +77,9 @@ msgstr ""
 msgid "0#No rows affected. Query took {time} seconds.|1#{rows} row affected. Query took {time} seconds.|n>1#{rows} rows affected. Query took {time} seconds."
 msgstr ""
 
+msgid "{rows} total rows. Query took {time} seconds."
+msgstr ""
+
 msgid "Ajax request failed"
 msgstr ""
 
