@@ -229,7 +229,7 @@ return array(
 	// application-level parameters
 	'params' => array(
 		'iconPack' => 'fugue',
-		'version' => '0.5.1',
+		'version' => '1.0.0 RC1',
 	),
 
 	// There is no source language ...
