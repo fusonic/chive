@@ -68,6 +68,7 @@
 
 		<div id="login-form">
 			<?php echo CHtml::form(); ?>
+			<?php echo CHtml::activeHiddenField($form, "redirectUrl", array("name" => "redirectUrl", "id" => "redirectUrl")); ?>
 			<div class="formItems non-floated" style="text-align: left;">
 				<div class="item row1">
 					<div class="left">
@@ -136,5 +137,10 @@
 <script type="text/javascript">
 $(function() {
 	$('#LoginForm_username').focus();
+
+	if($('#redirectUrl').val() == "")
+	{
+		$('#redirectUrl').val(location.href);
+	}
 });
 </script>

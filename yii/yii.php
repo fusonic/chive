@@ -26,12 +26,16 @@ require(dirname(__FILE__).'/../protected/components/ChiveWebApplication.php');
  * @since 1.0
  */
 
-
 /**
-  * @method ChiveWebApplication app
+ * @method ChiveWebApplication app
  */
 class Yii extends YiiBase
 {
+	/**
+	 * @static
+	 * @param array $config
+	 * @return ChiveWebApplication
+	 */
 	public static function createWebApplication($config=null)
 	{
 		return self::createApplication('ChiveWebApplication',$config);		

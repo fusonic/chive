@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @property ChiveHttpRequest request
+ */
 class ChiveWebApplication extends CWebApplication
 {
 	/**

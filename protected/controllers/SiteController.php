@@ -150,21 +150,31 @@ class SiteController extends Controller
 				$form->attributes = array(
 					"host" => $request->getPost("host"),
 					"username" => $request->getPost("username"),
-					"password" => $request->getPost("password"),
+					"password" => $request->getPost("password")
 				);
+
+				$form->redirectUrl = $request->getPost("redirectUrl");
 			}
 			else
 			{
 				$form->attributes = array(
 					"host" => $request->getQuery("host"),
 					"username" => $request->getQuery("username"),
-					"password" => ($request->getQuery("password") !== null ? $request->getQuery("password") : ""),
+					"password" => ($request->getQuery("password") !== null ? $request->getQuery("password") : "")
 				);
 			}
 			// validate user input and redirect to previous page if valid
 			if($form->validate())
 			{
-				$this->redirect(Yii::app()->homeUrl);
+				$redirectUrl = $request->getPost("redirectUrl");
+				if($redirectUrl !== null)
+				{
+					$this->redirect($redirectUrl);
+				}
+				else
+				{
+					$this->redirect(Yii::app()->homeUrl);
+				}
 			}
 		}
 

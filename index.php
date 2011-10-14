@@ -47,7 +47,7 @@ elseif(!preg_match('/^(' . implode('|', $validPaths) . ')/i', Yii::app()->urlMan
 	}
 	else
 	{
-		$app->request->redirect(Yii::app()->createUrl('site/login'));
+		$app->catchAllRequest = array('site/login');
 	}
 }
 

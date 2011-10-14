@@ -28,6 +28,7 @@ class LoginForm extends CFormModel
 	public $password;
 	public $rememberMe;
 	public $host = 'localhost';
+	public $redirectUrl;
 
 	/**
 	 * @see		CFormModel::rules();
