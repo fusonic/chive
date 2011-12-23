@@ -23,6 +23,7 @@
   <entry id="addUser">Új felhasználó</entry>
   <entry id="addView">Új nézet</entry>
   <entry id="affectedRowsQueryTime">0#Egyetlen rekord sem érintett. A lekérdezés {time} másodpercig tartott.|1#{rows} rekord érintett. A lekérdezés {time} másodpercig tartott.|n&gt;1#{rows} rekord érintett. A lekérdezés {time} másodpercig tartott.</entry>
+  <entry id="foundRowsQueryTime"/>
   <entry id="ajaxRequestFailed">Ajax lekérdezés sikertelen</entry>
   <entry id="ajaxRequestFailedText">Kattintson &lt;a href="javascript:void(0)" onclick="reload()"&gt;ide&lt;/a&gt; az oldal újratöltéséhez.</entry>
   <entry id="amountRoutines">1#{amount}  rutin|n&gt;1#{amount}  rutin</entry>
@@ -321,4 +322,8 @@
   <entry id="encloseFieldsBy"/>
   <entry id="escapeFieldTextDelimiterWith"/>
   <entry id="fieldNamesInFirstRow"/>
+  <entry id="optimize"/>
+  <entry id="check"/>
+  <entry id="analyze"/>
+  <entry id="repair"/>
 </category>

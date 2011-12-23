@@ -23,6 +23,7 @@
   <entry id="addUser">Añadir usuario</entry>
   <entry id="addView">Añadir vista</entry>
   <entry id="affectedRowsQueryTime">0#Ninguna fila afectada. Tiempo de consulta: {time} segundos.|1#{rows} fila modificada. Tiempo de consulta: {time} segundos.|n&gt;1#{rows} filas modificadas. Tiempo de consulta: {time} segundos.</entry>
+  <entry id="foundRowsQueryTime">{rows} filas e total. La consulta tomó {time} segundos.</entry>
   <entry id="ajaxRequestFailed">Falló la petición por Ajax</entry>
   <entry id="ajaxRequestFailedText">Pulse &lt;a href="javascript:void(0)" onclick="reload()"&gt;aquí&lt;/a&gt; para recargar el sitio.</entry>
   <entry id="amountRoutines">1#{amount}  rutina|n&gt;1#{amount}  rutinas</entry>
@@ -274,7 +275,7 @@
   <entry id="successExecuteQuery">Consulta ejecutada</entry>
   <entry id="successImportFile">Archivo importado</entry>
   <entry id="successInsertRow">Fila insertada</entry>
-  <entry id="successInsertRowWithIdX"/>
+  <entry id="successInsertRowWithIdX">Fila insertada con ID »{id}«</entry>
   <entry id="successKillProcess">Proceso {id} matado</entry>
   <entry id="successMoveColumn">Columna «{col}» movida</entry>
   <entry id="successRenameIndex">Índice renombrado a «{index}»</entry>
@@ -321,4 +322,8 @@
   <entry id="encloseFieldsBy">Agrupar campos por</entry>
   <entry id="escapeFieldTextDelimiterWith">Escapar delimitador de texto con</entry>
   <entry id="fieldNamesInFirstRow">Nombres de los campos en la primera fila</entry>
+  <entry id="optimize">Optimizar</entry>
+  <entry id="check">Comprobar</entry>
+  <entry id="analyze">Analizar</entry>
+  <entry id="repair">Reparar</entry>
 </category>

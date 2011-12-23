@@ -23,6 +23,7 @@
   <entry id="addUser">Ajouter un utilisateur</entry>
   <entry id="addView">Ajouter une vue</entry>
   <entry id="affectedRowsQueryTime">0#Aucun enregistrement affecté. La requête a pris {time} secondes.|1#{rows} enregistrement affecté. La requête a pris {time} secondes.|n&gt;1#{rows} enregistrements affectés. La requête a pris {time} secondes</entry>
+  <entry id="foundRowsQueryTime">{rows} lignes au total. La requête a pris {time} seconde(s).</entry>
   <entry id="ajaxRequestFailed">Requête Ajax échouée</entry>
   <entry id="ajaxRequestFailedText">Cliquez &lt;a href="javascript:void(0)" onclick="reload()"&gt;ici&lt;/a&gt; pour recharger le site.</entry>
   <entry id="amountRoutines">1#{amount} Routine|n&gt;1#{amount} Routines</entry>
@@ -321,4 +322,8 @@
   <entry id="encloseFieldsBy">Délimiter les champs par</entry>
   <entry id="escapeFieldTextDelimiterWith">Échapper les délimiteurs par</entry>
   <entry id="fieldNamesInFirstRow">Noms des champs dans la première colonne</entry>
+  <entry id="optimize">Optimiser</entry>
+  <entry id="check">Vérifier</entry>
+  <entry id="analyze">Analyser</entry>
+  <entry id="repair">Réparer</entry>
 </category>

@@ -23,6 +23,7 @@
   <entry id="addUser">Додати користувача</entry>
   <entry id="addView">Додати вигляд</entry>
   <entry id="affectedRowsQueryTime">0#Немає змінених рядків. Запит забрав {time} сек.|1#{rows} рядок змінено. Запит забрав {time} сек.|2#{rows} рядки змінено. Запит забрав {time} сек.|3#{rows} рядки змінено. Запит забрав {time} сек.|4#{rows} рядки змінено. Запит забрав {time} сек.|n&gt;4#{rows} рядків змінено. Запит забрав {time} сек.</entry>
+  <entry id="foundRowsQueryTime">Рядків: {rows}. Час виконання {time} сек.</entry>
   <entry id="ajaxRequestFailed">Помилка ajax-запиту</entry>
   <entry id="ajaxRequestFailedText">Натисніть &lt;a href="javascript:void(0)" onclick="reload()"&gt;тут&lt;/a&gt;, щоб оновити сторінку.</entry>
   <entry id="amountRoutines">1#{amount} процедура|n&gt;1#Процедур: {amount}</entry>
@@ -57,7 +58,7 @@
   <entry id="delayKeyWrite">Відкладене оновлення ключів</entry>
   <entry id="delete">Видалити</entry>
   <entry id="deleteBookmark">Видалити закладку</entry>
-  <entry id="deleteRows">Видалити рядкі</entry>
+  <entry id="deleteRows">Видалити рядки</entry>
   <entry id="doYouReallyWantToDeleteBookmark">Ви дійсно бажаєте видалити закладку?</entry>
   <entry id="doYouReallyWantToDeleteSelectedRows">Ви дійсно бажаєте видалити обрані рядки?</entry>
   <entry id="doYouReallyWantToDropColumns">Ви дійсно бажаєте знищити обрані стовпці?</entry>
@@ -132,7 +133,7 @@
   <entry id="errorRenameIndex">Помилка при перейменуванні індекса »{index}«</entry>
   <entry id="errorTruncateTable">Помилка при спустошенні таблиці »{table}«</entry>
   <entry id="errorUpdateRow">Помилка при оновленні рядка</entry>
-  <entry id="errorUploadingFile"/>
+  <entry id="errorUploadingFile">Виникла помилка при завантаженні файлу</entry>
   <entry id="event">Подія</entry>
   <entry id="execute">Виконати</entry>
   <entry id="executedQueries">Виконані запити</entry>
@@ -274,7 +275,7 @@
   <entry id="successExecuteQuery">Запит виконано</entry>
   <entry id="successImportFile">Файл імпортовано</entry>
   <entry id="successInsertRow">Рядок вставлено</entry>
-  <entry id="successInsertRowWithIdX"/>
+  <entry id="successInsertRowWithIdX">Додано рядок з ID »{id}«</entry>
   <entry id="successKillProcess">Процес #{id} знищено</entry>
   <entry id="successMoveColumn">Стовпець »{col}« пересунуто</entry>
   <entry id="successRenameIndex">Індекс перейменовано на »{index}«</entry>
@@ -321,4 +322,8 @@
   <entry id="encloseFieldsBy">Заключати назви полів у</entry>
   <entry id="escapeFieldTextDelimiterWith">Екранувати текстовий розділитель символом</entry>
   <entry id="fieldNamesInFirstRow">Імена полів у першому рядку</entry>
+  <entry id="optimize">Оптимізувати</entry>
+  <entry id="check">Перевірити</entry>
+  <entry id="analyze">Аналізувати</entry>
+  <entry id="repair">Відновити</entry>
 </category>

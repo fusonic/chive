@@ -102,7 +102,7 @@ class I18NImportCommand extends CConsoleCommand
 		}
 
 		$finishedTranslated = array(
-			"pt_br", "en_gb", "fr_fr", "it_it", "ru_ru", "uk_uk", "pl_pl", "es_es", "hu_hu"
+			"pt_br", "en_gb", "fr_fr", "it_it", "ru_ru", "uk_uk", "pl_pl", "es_es", "hu_hu", "ro_ro", "nl_nl", "sw_sw"
 		);
 
 		if(!in_array($targetLang, $finishedTranslated))

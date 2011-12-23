@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<category id="dataTypes">
+  <entry id="numeric">Nambari</entry>
+  <entry id="strings">Tungo</entry>
+  <entry id="dateAndTime">Tarehe na Saa</entry>
+</category>

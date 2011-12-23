@@ -23,6 +23,7 @@
   <entry id="addUser">Aggiungi utente</entry>
   <entry id="addView">Aggiungi vista</entry>
   <entry id="affectedRowsQueryTime">0#Nessuna riga coinvolta. La query ha impiegato {time} secondi.|1#{rows} riga coinvolta. La query ha impiegato {time} secondi.|n&gt;1#{rows} righe coinvolte. La query ha impiegato {time} secondi.</entry>
+  <entry id="foundRowsQueryTime">{rows} righe totali. La query ha impiegato {time} secondi.</entry>
   <entry id="ajaxRequestFailed">Richiesta ad Ajax fallita</entry>
   <entry id="ajaxRequestFailedText">Clicca &lt;a href="javascript:void(0)" onclick="reload()"&gt;qui&lt;/a&gt; per ricaricare la pagina.</entry>
   <entry id="amountRoutines">1#{amount}  Routine|n&gt;1#{amount}  Routines</entry>
@@ -132,7 +133,7 @@
   <entry id="errorRenameIndex">Rinomina indice »{index}« fallito</entry>
   <entry id="errorTruncateTable">troncamento tabella »{table}« fallito</entry>
   <entry id="errorUpdateRow">Aggiornamento riga fallito</entry>
-  <entry id="errorUploadingFile"/>
+  <entry id="errorUploadingFile">Errore durante il caricamento del file</entry>
   <entry id="event">Evento</entry>
   <entry id="execute">Esegui</entry>
   <entry id="executedQueries">Query eseguite</entry>
@@ -274,7 +275,7 @@
   <entry id="successExecuteQuery">Query eseguita</entry>
   <entry id="successImportFile">File importato</entry>
   <entry id="successInsertRow">Riga inserita</entry>
-  <entry id="successInsertRowWithIdX"/>
+  <entry id="successInsertRowWithIdX">Riga inserita con il ID »{id}«</entry>
   <entry id="successKillProcess">Arrestato processo #{id}</entry>
   <entry id="successMoveColumn">Colonna »{col}« spostata</entry>
   <entry id="successRenameIndex">Indice rinominato in »{index}«</entry>
@@ -321,4 +322,8 @@
   <entry id="encloseFieldsBy">Racchiudi i campi da</entry>
   <entry id="escapeFieldTextDelimiterWith">Escape del delimitatore di testo con</entry>
   <entry id="fieldNamesInFirstRow">Nomi dei campi sulla prima riga</entry>
+  <entry id="optimize">Ottimizza</entry>
+  <entry id="check"/>
+  <entry id="analyze">Analizza</entry>
+  <entry id="repair">Ripara</entry>
 </category>

@@ -23,6 +23,7 @@
   <entry id="addUser">Добавить пользователя</entry>
   <entry id="addView">Добавить представление</entry>
   <entry id="affectedRowsQueryTime">0#Нет измененных строк. Запрос занял {time} сек.|1#{rows} строка изменена. Запрос занял {time} сек.|n&gt;1#Строк изменено: {rows}. Запрос занял {time} сек.</entry>
+  <entry id="foundRowsQueryTime"/>
   <entry id="ajaxRequestFailed">Ошибка Ajax запроса</entry>
   <entry id="ajaxRequestFailedText">Нажмите &lt;a href="javascript:void(0)" onclick="reload()"&gt;здесь&lt;/a&gt;, чтобы обновить страницу.</entry>
   <entry id="amountRoutines">1#{amount} хранимая процедура|n&gt;1#Хранимых процедур: {amount}</entry>
@@ -321,4 +322,8 @@
   <entry id="encloseFieldsBy">Заключать названия полей в</entry>
   <entry id="escapeFieldTextDelimiterWith">Экранировать строковый разделитель символом</entry>
   <entry id="fieldNamesInFirstRow">Имена полей в первой строке</entry>
+  <entry id="optimize"/>
+  <entry id="check"/>
+  <entry id="analyze"/>
+  <entry id="repair"/>
 </category>

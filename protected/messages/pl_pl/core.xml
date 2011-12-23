@@ -23,6 +23,7 @@
   <entry id="addUser">Dodaj użytkownika</entry>
   <entry id="addView">Dodaj widok</entry>
   <entry id="affectedRowsQueryTime">0#Nie zmieniono rekordów. Wykonanie zapytania zajęło {time} sekund.|1#{rows} rekord zmieniony. Wykonanie zapytania zajęło {time} sekund.|n&gt;1#{rows} zmienionych rekordów. Wykonanie zapytania zajęło {time} sekund.</entry>
+  <entry id="foundRowsQueryTime"/>
   <entry id="ajaxRequestFailed">Żądanie AJAX nie powiodło się.</entry>
   <entry id="ajaxRequestFailedText">Kliknij &lt;a href="javascript:void(0)" onclick="reload()"&gt;tutaj&lt;/a&gt; aby przeładować stronę.</entry>
   <entry id="amountRoutines">1#{amount} procedura|n&gt;1#{amount} procedur</entry>
@@ -321,4 +322,8 @@
   <entry id="encloseFieldsBy">Otocz pola znakiem</entry>
   <entry id="escapeFieldTextDelimiterWith">Znaki specjalne poprzedź</entry>
   <entry id="fieldNamesInFirstRow">Umieść nazwy pól w pierwszej linii pliku</entry>
+  <entry id="optimize"/>
+  <entry id="check"/>
+  <entry id="analyze"/>
+  <entry id="repair"/>
 </category>

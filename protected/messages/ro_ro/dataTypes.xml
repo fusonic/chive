@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<category id="dataTypes">
+  <entry id="numeric">Numeric</entry>
+  <entry id="strings">Şiruri</entry>
+  <entry id="dateAndTime">Data și ora</entry>
+</category>
