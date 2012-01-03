@@ -7,3 +7,4 @@ assets/*
 .idea
 protected/runtime/user-config/*
 protected/extensions/sqlquery_old
+archiveExport.sh
