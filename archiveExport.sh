@@ -14,6 +14,7 @@ cd /tmp/$VERSION/
 sudo touch chive/index_changed.php
 sudo cat chive/index.php | sed "s/'YII_DEBUG', true/'YII_DEBUG', false/" >> chive/index_changed.php
 sudo rm chive/index.php
+sudo rm chive/archiveExport.sh
 sudo mv chive/index_changed.php chive/index.php
 
 sudo tar czf chive_$1.tar.gz chive
