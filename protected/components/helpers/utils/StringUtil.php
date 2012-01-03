@@ -124,4 +124,39 @@ class StringUtil
 		return $return;
 	}
 
+	/**
+	 *
+	 * Returns a boolean indicating if $string contains $needle.
+	 * @param string $string	The haystack
+	 * @param string $needle	The needle
+	 * @return bool
+	 */
+	public static function contains($string, $needle)
+	{
+		return !(strpos($string, $needle) === false);
+	}
+
+	/**
+	 *
+	 * Returns a boolean indicating if the given $string starts with $needle.
+	 * @param string $string
+	 * @param string $needle
+	 * @return bool
+	 */
+	public static function startsWith($string, $needle)
+	{
+		return strpos($string, $needle) === 0;
+	}
+
+	/**
+	 *
+	 * Returns a boolean indicating if the given $string ends with $needle.
+	 * @param string $string
+	 * @param string $needle
+	 * @return bool
+	 */
+	public static function endsWith($string, $needle)
+	{
+		return substr($string, -strlen($needle)) === $needle;
+	}
 }

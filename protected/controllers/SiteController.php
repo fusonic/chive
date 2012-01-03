@@ -167,7 +167,7 @@ class SiteController extends Controller
 			if($form->validate())
 			{
 				$redirectUrl = $request->getPost("redirectUrl");
-				if($redirectUrl !== null)
+				if($redirectUrl !== null && !StringUtil::endsWith($redirectUrl, "site/login"))
 				{
 					$this->redirect($redirectUrl);
 				}
