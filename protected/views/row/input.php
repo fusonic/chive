@@ -18,7 +18,7 @@
 
 	<script type="text/javascript">
 
-		$('#form_<? echo $id; ?>').ajaxForm({
+		$('#form_<?php echo $id; ?>').ajaxForm({
 			success:	function(response) {
 
 							editing = false;
