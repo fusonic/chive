@@ -225,7 +225,7 @@ class RowController extends Controller
 			
 			$showFullColumnContent = Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $this->schema . '.' . $this->table);
 			
-			$visibleValue = $row->getAttribute($column);
+			$visibleValue = CHtml::encode($row->getAttribute($column));
 			
 			if($isNull)
 			{
