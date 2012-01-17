@@ -51,7 +51,7 @@ var sideBar = {
 				for(var i = 0; i < data.length; i++)
 				{
 					html += '<li class="nowrap">' + templateHtml
-						.replace(/#schemaName#/g, data[i]) + '</li>';
+						.replace(/#schemaName#/g, $('<div/>').text(data[i]).html()) + '</li>';
 				}
 				
 				contentUl.append(html);
@@ -102,7 +102,7 @@ var sideBar = {
 				for(var i = 0; i < data.length; i++)
 				{
 					var newHtml = '<li class="nowrap">' + templateHtml
-						.replace(/#tableName#/g, data[i].tableName)
+						.replace(/#tableName#/g, $('<div/>').text(data[i].tableName).html())
 						.replace(/#rowCount#/g, data[i].rowCount)
 						.replace(/#rowCountText#/g, data[i].rowCountText) + '</li>';
 					if(data[i].rowCount == 0)
@@ -160,7 +160,7 @@ var sideBar = {
 				for(var i = 0; i < data.length; i++)
 				{
 					var newHtml = '<li class="nowrap">' + templateHtml
-						.replace(/#viewName#/g, data[i].viewName) + '</li>';
+						.replace(/#viewName#/g, $('<div/>').text(data[i].viewName).html()) + '</li>';
 					html += newHtml;
 				}
 				

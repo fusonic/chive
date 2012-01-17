@@ -102,7 +102,7 @@
 					<?php } ?>
 					<?php foreach ($model->getColumns ()AS $column) { ?>
 						<th>
-							<?php echo ($model->getQueryType() == 'select' ? $model->getSort()->link($column) : $column); ?>
+							<?php echo ($model->getQueryType() == 'select' ? $model->getSort()->link(CHtml::encode($column)) : CHtml::encode($column)); ?>
 						</th>
 					<?php } ?>
 				</tr>

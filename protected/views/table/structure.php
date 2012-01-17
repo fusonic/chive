@@ -56,15 +56,15 @@
 				</tr>
 			<?php } ?>
 			<?php foreach($table->columns AS $column) { ?>
-				<tr id="columns_<?php echo $column->COLUMN_NAME; ?>">
+				<tr id="columns_<?php echo CHtml::encode($column->COLUMN_NAME); ?>">
 					<td>
-						<input type="checkbox" name="columns[]" value="<?php echo $column->COLUMN_NAME; ?>" />
+						<input type="checkbox" name="columns[]" value="<?php echo CHtml::encode($column->COLUMN_NAME); ?>" />
 					</td>
 					<td>
 						<?php if($column->getIsPartOfPrimaryKey($indicesRaw)): ?>
-							<span class="primaryKey"><?php echo $column->COLUMN_NAME; ?></span>
+							<span class="primaryKey"><?php echo CHtml::encode($column->COLUMN_NAME); ?></span>
 						<?php else: ?>
-							<?php echo $column->COLUMN_NAME; ?>
+							<?php echo CHtml::encode($column->COLUMN_NAME); ?>
 						<?php endif; ?>
 					</td>
 					<td>
@@ -162,7 +162,7 @@
 					<?php if(is_array($foreignKeys)) { ?>
 						<td>
 							<a href="javascript:void(0)" onclick="tableStructure.editRelation($(this).closest('tr').attr('id').substr(8))" class="icon">
-								<?php if(in_array($column->COLUMN_NAME, $foreignKeys)) { ?>
+								<?php if(in_array(CHtml::encode($column->COLUMN_NAME), $foreignKeys)) { ?>
 									<?php echo Html::icon('relation', 16, false, 'core.relation'); ?>
 								<?php } else { ?>
 									<?php echo Html::icon('relation', 16, true, 'core.relation'); ?>
@@ -298,8 +298,8 @@
 								<td>
 									<ul>
 										<?php foreach($index->columns AS $column) { ?>
-											<li id="indices_<?php echo $index->INDEX_NAME; ?>_<?php echo $column->COLUMN_NAME; ?>">
-												<?php echo $column->COLUMN_NAME; ?>
+											<li id="indices_<?php echo $index->INDEX_NAME; ?>_<?php echo CHtml::encode($column->COLUMN_NAME); ?>">
+												<?php echo CHtml::encode($column->COLUMN_NAME); ?>
 												<?php if(!is_null($column->SUB_PART)) { ?>
 													(<?php echo $column->SUB_PART; ?>)
 												<?php } ?>

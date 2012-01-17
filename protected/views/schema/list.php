@@ -49,12 +49,12 @@
 
 			<?php $canDrop = false; ?>
 			<?php foreach($schemaList as $n => $model) { ?>
-				<tr id="schemata_<?php echo $model->SCHEMA_NAME; ?>">
+				<tr id="schemata_<?php echo CHtml::encode($model->SCHEMA_NAME); ?>">
 					<td>
-						<input type="checkbox" name="schemata[]" value="<?php echo $model->SCHEMA_NAME; ?>" />
+						<input type="checkbox" name="schemata[]" value="<?php echo CHtml::encode($model->SCHEMA_NAME); ?>" />
 					</td>
 					<td>
-						<?php echo CHtml::link($model->SCHEMA_NAME, Yii::app()->createUrl('schema/' . $model->SCHEMA_NAME)); ?>
+						<?php echo CHtml::link(CHtml::encode($model->SCHEMA_NAME), Yii::app()->createUrl('schema/' . urlencode($model->SCHEMA_NAME))); ?>
 					</td>
 					<td class="count">
 						<?php echo $model->tableCount; ?>
@@ -69,7 +69,7 @@
 					</td>
 					<td>
 						<?php if(Yii::app()->user->privileges->checkSchema($model->SCHEMA_NAME, 'ALTER')) { ?>
-							<a href="javascript:void(0)" onclick="schemaList.editSchema('<?php echo $model->SCHEMA_NAME; ?>')" class="icon">
+							<a href="javascript:void(0)" onclick="schemaList.editSchema('<?php echo CHtml::encode($model->SCHEMA_NAME); ?>')" class="icon">
 								<?php echo Html::icon('edit', 16, false, 'core.edit'); ?>
 							</a>
 						<?php } else { ?>
@@ -79,7 +79,7 @@
 					<td>
 						<?php if(Yii::app()->user->privileges->checkSchema($model->SCHEMA_NAME, 'DROP')) { ?>
 							<?php $canDrop = true; ?>
-							<a href="javascript:void(0)" onclick="schemaList.dropSchema('<?php echo $model->SCHEMA_NAME; ?>')" class="icon">
+							<a href="javascript:void(0)" onclick="schemaList.dropSchema('<?php echo CHtml::encode($model->SCHEMA_NAME); ?>')" class="icon">
 								<?php echo Html::icon('delete', 16, false, 'core.drop'); ?>
 							</a>
 						<?php } else { ?>

@@ -59,32 +59,34 @@
 				</tr>
 			<?php } ?>
 			<?php foreach($schema->tables AS $table) { ?>
-				<tr id="tables_<?php echo $table->TABLE_NAME; ?>">
+				<?php $tableNameHtml = CHtml::encode($table->TABLE_NAME); ?>
+				<?php $tableNameUrlEnc = urlencode($table->TABLE_NAME); ?>
+				<tr id="tables_<?php echo $tableNameHtml; ?>">
 					<td>
-						<input type="checkbox" name="tables[]" value="<?php echo $table->TABLE_NAME; ?>" />
+						<input type="checkbox" name="tables[]" value="<?php echo $tableNameHtml; ?>" />
 					</td>
 					<td>
-						<?php echo Html::ajaxLink('tables/' . $table->TABLE_NAME . '/structure'); ?>
-							<?php echo $table->TABLE_NAME; ?>
+						<?php echo Html::ajaxLink('tables/' . $tableNameUrlEnc . '/structure'); ?>
+							<?php echo $tableNameHtml; ?>
 						</a>
 					</td>
 					<td>
-						<?php echo Html::ajaxLink('tables/' . $table->TABLE_NAME . '/browse', array('class' => 'icon')); ?>
+						<?php echo Html::ajaxLink('tables/' . $tableNameUrlEnc . '/browse', array('class' => 'icon')); ?>
 							<?php echo Html::icon('browse', 16, false, 'core.browse'); ?>
 						</a>
 					</td>
 					<td>
-						<?php echo Html::ajaxLink('tables/' . $table->TABLE_NAME . '/structure', array('class' => 'icon')); ?>
+						<?php echo Html::ajaxLink('tables/' . $tableNameUrlEnc . '/structure', array('class' => 'icon')); ?>
 							<?php echo Html::icon('structure', 16, false, 'core.structure'); ?>
 						</a>
 					</td>
 					<td>
-						<?php echo Html::ajaxLink('tables/' . $table->TABLE_NAME . '/search', array('class' => 'icon')); ?>
+						<?php echo Html::ajaxLink('tables/' . $tableNameUrlEnc . '/search', array('class' => 'icon')); ?>
 							<?php echo Html::icon('search', 16, false, 'core.search'); ?>
 						</a>
 					</td>
 					<td>
-						<?php echo Html::ajaxLink('tables/' . $table->TABLE_NAME . '/insert', array('class' => 'icon')); ?>
+						<?php echo Html::ajaxLink('tables/' . $tableNameUrlEnc . '/insert', array('class' => 'icon')); ?>
 							<?php echo Html::icon('insert', 16, false, 'core.insert'); ?>
 						</a>
 					</td>

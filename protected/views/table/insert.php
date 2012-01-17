@@ -23,15 +23,16 @@
 	<tbody>
 		<?php foreach($row->getMetaData()->tableSchema->columns AS $column) { ?>
 			<tr>
-				<td style="font-weight: bold;"><?php echo $column->name; ?></td>
+				<?php $columnName = CHtml::encode($column->name); ?>
+				<td style="font-weight: bold;"><?php echo $columnName; ?></td>
 				<td><?php echo $column->dbType; ?></td>
-				<td><?php echo CHtml::dropDownList($column->name . '[function]','',$functions); ?></td>
+				<td><?php echo CHtml::dropDownList($columnName . '[function]','',$functions); ?></td>
 				<td class="center">
-					<?php echo ($column->allowNull ? CHtml::checkBox($column->name.'[null]', true) : ''); ?>
+					<?php echo ($column->allowNull ? CHtml::checkBox($columnName.'[null]', true) : ''); ?>
 				</td>
 				<td>
 					<?php $this->widget('InputField', array('row' => $row, 'column'=>$column, 'htmlOptions'=>array(
-						'onfocus' => '$("#'.$column->name.'_null").attr("checked", "").change();',
+						'onfocus' => '$("#'.$columnName.'_null").attr("checked", "").change();',
 					))); ?>
 				</td>
 			</tr>

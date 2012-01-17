@@ -22,7 +22,7 @@
 		<?php $tabIndex = 10; ?>
 		<?php foreach($row->getMetaData()->tableSchema->columns AS $column) { ?>
 			<tr>
-				<td><?php echo $column->name; ?></td>
+				<td><?php echo CHtml::encode($column->name); ?></td>
 				<td><?php echo $column->dbType; ?></td>
 				<td><?php echo CHtml::dropDownList('operator['.$column->name.']','', $operators); ?></td>
 				<td>
