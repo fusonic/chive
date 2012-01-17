@@ -56,6 +56,16 @@ class Html
 		return CHtml::tag('a', $htmloptions, $content, $close);
 	}
 
+	public static function getBaseUrlWithScriptName($absolute = true)
+	{
+		$url = Yii::app()->getBaseUrl($absolute);
+		if(Yii::app()->getUrlManager()->showScriptName)
+		{
+			$url = $url . "/" . basename($_SERVER['SCRIPT_NAME']);
+		}
+		return $url;
+	}
+
 	/**
 	 * Creates an image tag that points to an icon in the choosen icon pack.
 	 *
