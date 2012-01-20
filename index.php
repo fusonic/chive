@@ -19,6 +19,7 @@ if(!date_default_timezone_get())
 
 // Create web application
 $app = Yii::createWebApplication('protected/config/main.php');
+$app->getSession()->setCookieParams(array('path' => $app->getBaseUrl(false)));
 
 // Define constants
 define('BASEURL', Yii::app()->baseUrl);
