@@ -278,8 +278,7 @@ class CsvExporter implements IExporter
 			$i++;
 		}
 		$columns = implode($this->settings['fieldTerminator'], $columns);
-							
-		$insert = $columns;
+
 		// Find all rows
 		$sql = 'SELECT * FROM ' . Yii::app()->db->quoteTableName($this->schema) . '.' . Yii::app()->db->quoteTableName($table->TABLE_NAME);
 		$statement = $pdo->query($sql);
@@ -296,7 +295,7 @@ class CsvExporter implements IExporter
 		{
 			if($i == 0 && $this->settings['fieldsFirstRow'])
 			{
-				echo $insert;
+				echo $columns;
 			}
 			
 			SqlUtil::FixRow($row);
@@ -356,7 +355,7 @@ class CsvExporter implements IExporter
 			}
 			$i++;
 		}
-		$columns = ' (' . implode(', ', $columns) . ')';
+		$columns = implode($this->settings['fieldTerminator'], $columns);
 		
 		$insert = "";
 
@@ -373,6 +372,10 @@ class CsvExporter implements IExporter
 		
 		foreach($this->rows AS $row)
 		{
+			if($i == 0 && $this->settings['fieldsFirstRow'])
+			{
+				echo $columns;
+			}
 			
 			$attributes = $row->getAttributes();
 			SqlUtil::FixRow($attributes);
