@@ -32,6 +32,10 @@
 			<td><?php echo Yii::t('core', 'webserver'); ?></td>
 			<td><?php echo $_SERVER['SERVER_SOFTWARE']; ?></td>
 		</tr>
+		<tr>
+			<td><?php echo Yii::t('core', 'chiveVersion'); ?></td>
+			<td><?php echo Yii::app()->params->version; ?></td>
+		</tr>
 	</tbody>
 </table>
 
