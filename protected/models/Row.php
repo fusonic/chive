@@ -256,7 +256,10 @@ class Row extends CActiveRecord
 			{
 				$sql .= (int)$value;				
 			}
-
+			elseif($column->DATA_TYPE == "int")
+			{
+				$sql .= (int)$value;
+			}
 			// DEFAULT
 			else
 			{
