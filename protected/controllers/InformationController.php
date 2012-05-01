@@ -80,7 +80,7 @@ class InformationController extends Controller
 
 		}
 
-		$response->send();
+		$this->sendJSON($response);
 	}
 
 	/**

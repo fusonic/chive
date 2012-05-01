@@ -59,16 +59,13 @@ class CXmlMessageSource extends CMessageSource
 
 		// Load date of last change
 		$maxFiletime = null;
-		$files = glob($this->basePath.DIRECTORY_SEPARATOR.'en'.DIRECTORY_SEPARATOR.'*.xml');
 		$packages = array();
-		foreach($files AS $file)
+		$files = CFileHelper::findFiles($this->basePath . DIRECTORY_SEPARATOR . 'en');
+		foreach($files as $file)
 		{
-			$packages[] = substr(basename($file), 0, strlen(basename($file)) - 4);
-			$time = filemtime($file);
-			if($time > $maxFiletime)
-			{
-				$maxFiletime = $time;
-			}
+			$basename = basename($file);
+			$packages[] = substr($basename, 0, strpos($basename, '.'));
+			$maxFiletime = max($maxFiletime, filemtime($file));
 		}
 
 		// Get asset manager
@@ -139,9 +136,19 @@ class CXmlMessageSource extends CMessageSource
 
 		// Try to load messages from file
 		$messageFile = $this->basePath . DIRECTORY_SEPARATOR . $language . DIRECTORY_SEPARATOR . $category . '.xml';
+		$content = null;
 		if(is_file($messageFile))
 		{
-			$xml = simplexml_load_file($messageFile);
+			$content = file_get_contents($messageFile);
+		}
+		elseif(is_file($messageFile . ".gz"))
+		{
+			$content = gzuncompress(file_get_contents($messageFile . ".gz"));
+		}
+
+		if($content)
+		{
+			$xml = simplexml_load_string($content);
 
 			foreach($xml AS $entry) 
 			{

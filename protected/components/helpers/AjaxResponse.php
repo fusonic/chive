@@ -95,14 +95,6 @@ class AjaxResponse
 	}
 
 	/**
-	 * Sends the response to the client and ends the application.
-	 */
-	public function send()
-	{
-		Yii::app()->endJson($this);
-	}
-
-	/**
 	 * Returns the JSON representation of the response.
 	 *
 	 * @return	string

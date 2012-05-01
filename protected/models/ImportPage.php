@@ -122,7 +122,7 @@ class ImportPage extends CModel
 				else
 				{
 					// Run import in one step
-					$this->runImport();
+					return $this->runImport();
 				}
 			}
 			else
@@ -142,7 +142,7 @@ class ImportPage extends CModel
 			$this->position = $_GET['position'];
 			$this->totalExecutedQueries = $_GET['totalExecutedQueries'];
 
-			$this->runPostProcessing();
+			return $this->runPostProcessing();
 			
 		}
 		
@@ -344,8 +344,8 @@ class ImportPage extends CModel
 		);
 		
 		$response->addData(null, $data);
-		$response->send();
-		
+
+		return $response;
 	}
 	
 	public function runImport()
@@ -405,7 +405,7 @@ class ImportPage extends CModel
 					$response->addData('error', true);
 					$response->refresh = true;
 					@unlink($this->file);
-					$response->send();
+					return $response;
 				}
 				
 			}

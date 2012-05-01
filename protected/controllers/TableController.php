@@ -68,7 +68,7 @@ class TableController extends Controller
 				Yii::t("core", "tableLoadErrorTitle", array("{table}" => $this->table)),
 				Yii::t("core", "tableLoadErrorMessage", array("{table}" => $this->table))); 
 			$response->executeJavaScript("sideBar.loadTables(schema)");
-			$response->send();
+			$this->sendJSON($response);
 		}
 		
 		// Constraints
@@ -231,7 +231,7 @@ class TableController extends Controller
 					}
 				}
 
-				$response->send();
+				$this->sendJSON($response);
 			}
 		}
 
@@ -404,7 +404,7 @@ class TableController extends Controller
 			implode("\n", $truncatedSqls));
 		}
 
-		$response->send();
+		$this->sendJSON($response);
 	}
 
 	/**
@@ -458,7 +458,7 @@ class TableController extends Controller
 			}
 		}
 
-		$response->send();
+		$this->sendJSON($response);
 	}
 
 	/**
@@ -525,11 +525,18 @@ class TableController extends Controller
 		$importPage->schema = $this->schema;
 		$importPage->formTarget = Yii::app()->urlManager->baseUrl . '/schema/' . $this->schema . '/tables/' . $this->table . '/import';
 
-		$importPage->run();
+		$res = $importPage->run();
 
-		$this->render('../global/import', array(
-			'model' => $importPage,
-		));
+		if($res instanceof AjaxResponse)
+		{
+			$this->sendJSON($res);
+		}
+		else
+		{
+			$this->render('../global/import', array(
+				'model' => $importPage,
+			));
+		}
 	}
 
 	/**

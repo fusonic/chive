@@ -105,7 +105,64 @@ var chive = {
 			});
 
 	},
-	
+
+	initAce: function(config)
+	{
+		var editor = ace.edit(config.id + '_editor');
+		var session = editor.getSession();
+		var div = $('#' + config.id + '_editor');
+		var container = $('#' + config.id + '_container');
+
+		// Set SQL edit mode
+		var sqlMode = require("ace/mode/sql").Mode;
+		session.setMode(new sqlMode());
+
+		// Set theme and layout
+		editor.setTheme("ace/theme/chive");
+		editor.setShowPrintMargin(false);
+		editor.setFontSize("16px");
+
+		// Value
+		var textArea = $('#' + config.id);
+		session.setValue(textArea.val());
+		session.on('change', function() {
+			textArea.val(session.getValue());
+		});
+
+		// Set resizing to container width
+		var containerWidth = container.width();
+		window.setInterval(function() {
+			if(container.width() != containerWidth)
+			{
+				containerWidth = container.width();
+				editor.resize();
+			}
+		}, 100);
+
+		// Set autogrow
+		if(config.autogrow)
+		{
+			var minHeight = config.height;
+			var maxHeight = 300;
+			session.on('change', function() {
+				var lines = session.getValue().split("\n").length;
+
+				var calculatedHeight = lines * 18 + 20;
+				if(calculatedHeight > maxHeight)
+				{
+					calculatedHeight = maxHeight;
+				}
+				else if(calculatedHeight < minHeight)
+				{
+					calculatedHeight = minHeight;
+				}
+
+				div.height(calculatedHeight);
+				editor.resize();
+			});
+		}
+	},
+
 	/*
 	 * Loads the specified page.
 	 */

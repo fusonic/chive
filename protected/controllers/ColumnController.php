@@ -117,7 +117,7 @@ class ColumnController extends Controller
 					}
 				}
 
-				$response->send();
+				$this->sendJSON($response);
 			}
 		}
 
@@ -197,7 +197,7 @@ class ColumnController extends Controller
 				$ex->getSql());
 			$response->refresh = true;
 		}
-		$response->send();
+		$this->sendJSON($response);
 	}
 
 	public function actionDrop()
@@ -240,7 +240,7 @@ class ColumnController extends Controller
 				implode("\n", $droppedSqls));
 		}
 
-		$response->send();
+		$this->sendJSON($response);
 	}
 
 }

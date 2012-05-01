@@ -19,7 +19,7 @@
  * You should have received a copy of the GNU General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
-class Controller extends CController
+abstract class Controller extends CController
 {
 
 	/**
@@ -111,6 +111,26 @@ class Controller extends CController
 		{
 			return parent::createUrl($route, $params, $ampersand);
 		}
+	}
+
+	protected function sendJSON($data)
+	{
+		if($data instanceof AjaxResponse)
+		{
+			$content = $data->__toString();
+		}
+		elseif(!is_string($data))
+		{
+			$content = CJSON::encode($data);
+		}
+		else
+		{
+			$content = $data;
+		}
+		
+		header("Content-type: application/json");
+		echo $content;
+		Yii::app()->end();
 	}
 
 }

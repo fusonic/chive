@@ -19,37 +19,13 @@
  * You should have received a copy of the GNU General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
-class SqlEditor extends EditArea
+
+class PharAssetManager extends CAssetManager
 {
+    public function init()
+    {
+        $this->setBaseUrl(Yii::app()->request->baseUrl . "/index.php/" . self::DEFAULT_BASEPATH);
 
-	public $width = "";
-	public $height = "100px";
-	public $autogrow = false;
-
-	/**
-	 * Executes the widget.
-	 * This method registers all needed client scripts and renders
-	 * the text field.
-	 */
-	public function run()
-	{
-
-		if(false)
-		{
-			list($name, $id) = $this->resolveNameID();
-			$this->htmlOptions['id'] = $id;
-			$this->htmlOptions['style'] = ($this->width ? "width: " . $this->width . ";" : "") . "height: " . $this->height;
-	
-			echo CHtml::textArea($name, $this->value, $this->htmlOptions);
-			
-		}
-		else
-		{
-			
-			parent::run();
-			
-		}
-
-	}
-
+        parent::init();
+    }
 }

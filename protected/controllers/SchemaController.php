@@ -110,7 +110,7 @@ class SchemaController extends Controller
 				);
 			}
 
-			Yii::app()->endJson(CJSON::encode($tables));
+			$this->sendJSON($tables);
 		}
 		else
 		{
@@ -172,7 +172,7 @@ class SchemaController extends Controller
 				);
 			}
 
-			Yii::app()->endJson(CJSON::encode($views));
+			$this->sendJSON($views);
 		}
 		else
 		{
@@ -283,7 +283,7 @@ class SchemaController extends Controller
 					$sql);
 				$response->refresh = true;
 				$response->executeJavaScript('sideBar.loadSchemata()');
-				$response->send();
+				$this->sendJSON($response);
 			}
 		}
 
@@ -371,7 +371,7 @@ class SchemaController extends Controller
 				implode("\n", $droppedSqls));
 		}
 
-		$response->send();
+		$this->sendJSON($response);
 	}
 
 	/**
@@ -389,7 +389,7 @@ class SchemaController extends Controller
 				$schemata[] = $schema->SCHEMA_NAME;
 			}
 
-			Yii::app()->endJson(CJSON::encode($schemata));
+			$this->sendJSON($schemata);
 		}
 		// Show the page
 		else
@@ -498,18 +498,20 @@ class SchemaController extends Controller
 		$importPage->schema = $this->schema;
 		$importPage->formTarget = Yii::app()->urlManager->baseUrl . '/schema/' . $this->schema . '/import';
 
-		$importPage->run();
+		$res = $importPage->run();
 
-		// Disable layout for postprocessing
-		#if($importPage->partialImport || isset($_GET['position']))
-		#{
+		if($res instanceof AjaxResponse)
+		{
+			$this->sendJSON($res);
+		}
+		else
+		{
 			$this->layout = '_schema';
-		#}
 
-		$this->render('../global/import', array(
-			'model' => $importPage,
-		));
-
+			$this->render('../global/import', array(
+				'model' => $importPage,
+			));
+		}
 	}
 
 }

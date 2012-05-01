@@ -26,10 +26,8 @@
 	font-size: 120%;
 	margin-right: 10px;
 	background: #DFDFDF url('../images/tab-bg.png') repeat-x top left;
-	-moz-border-radius-bottomleft: 5px;
-	-moz-border-radius-bottomright: 5px;
-	-webkit-border-bottom-left-radius: 5px;
-	-webkit-border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
 	border: solid 1px #C0C0C0;
 	border-top: none;
  }
@@ -46,4 +44,25 @@ ul.tabMenu li a.icon span {
  ul.tabMenu li:hover {
 	background-color: #d4e73f;
 	background-position: bottom left;
+ }
+
+ div.editor > div
+ {
+	 border: solid 1px #C0C0C0;
+	 border-radius: 5px;
+	 position: relative;
+	 width: 100%;
+	 min-height: 100px;
+	 display: block;
+ }
+
+ div.editor div.ace_gutter
+ {
+ 	border-top-left-radius: 5px;
+ 	border-bottom-left-radius: 5px;
+ }
+
+ div.editor > textarea
+ {
+ 	display: none;
  }

@@ -98,7 +98,7 @@ class ViewController extends TableController
 					$query);
 				$response->refresh = true;
 				$response->executeJavaScript('sideBar.loadViews(schema);');
-				$response->send();
+				$this->sendJSON($response);
 			}
 			catch(CDbException $ex)
 			{
@@ -161,7 +161,7 @@ class ViewController extends TableController
 				implode("\n", $droppedSqls));
 		}
 
-		$response->send();
+		$this->sendJSON($response);
 	}
 
 	/**
@@ -190,7 +190,7 @@ class ViewController extends TableController
 					null,
 					$query);
 				$response->refresh = true;
-				$response->send();
+				$this->sendJSON($response);
 			}
 			catch(CDbException $ex)
 			{

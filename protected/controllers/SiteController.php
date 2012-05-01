@@ -95,25 +95,25 @@ class SiteController extends Controller
 		$this->layout = "login";
 
 		// Languages
-		$availableLanguages = glob('protected/messages/??_??');
-		$currentLanguage = Yii::app()->getLanguage();
+        $languages = array();
+        $files = opendir(Yii::app()->basePath . DIRECTORY_SEPARATOR . 'messages');
+        while($file = readdir($files))
+        {
+            if(preg_match("/^\w\w_\w\w$/", $file))
+            {
+                $languages[] = array(
+                    'label' => Yii::t('language', $file),
+                    'icon' => 'images/language/' . $file . '.png',
+                    'url' => Yii::app()->createUrl('/site/changeLanguage/' . $file),
+                    'htmlOptions' => array('class'=>'icon'),
+                );
+            }
+        }
 
+		$currentLanguage = Yii::app()->getLanguage();
 		if(strlen($currentLanguage) == 2)
 		{
 			$currentLanguage .= '_' . $currentLanguage;
-		}
-
-		$languages = array();
-		foreach($availableLanguages AS $key => $language) 
-		{
-			$full = basename($language);
-
-			$languages[] = array(
-				'label' => Yii::t('language', $full),
-				'icon' => 'images/language/' . $full . '.png',
-				'url' => Yii::app()->createUrl('/site/changeLanguage/' . $full),
-				'htmlOptions' => array('class'=>'icon'),
-			);
 		}
 
 		$availableThemes = Yii::app()->getThemeManager()->getThemeNames();

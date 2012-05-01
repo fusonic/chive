@@ -188,7 +188,7 @@ class PrivilegesController extends Controller
 				implode("\n", $droppedSqls));
 		}
 
-		$response->send();
+		$this->sendJSON($response);
 	}
 
 	/**
@@ -208,7 +208,7 @@ class PrivilegesController extends Controller
 					null,
 					$sql);
 				$response->refresh = true;
-				$response->send();
+				$this->sendJSON($response);
 			}
 		}
 
@@ -240,7 +240,7 @@ class PrivilegesController extends Controller
 				$this->logoutIfPasswordChanged($user);
 
 				$response->refresh = true;
-				$response->send();
+				$this->sendJSON($response);
 			}
 		}
 
@@ -274,7 +274,7 @@ class PrivilegesController extends Controller
 					null/*,
 					$sql*/);
 				$response->refresh = true;
-				$response->send();
+				$this->sendJSON($response);
 			}
 		}
 
@@ -321,7 +321,7 @@ class PrivilegesController extends Controller
 					null/*,
 					$sql*/);
 				$response->refresh = true;
-				$response->send();
+				$this->sendJSON($response);
 			}
 		}
 
@@ -375,7 +375,7 @@ class PrivilegesController extends Controller
 				implode("\n", $droppedSqls)*/);
 		}
 
-		$response->send();
+		$this->sendJSON($response);
 	}
 
 }

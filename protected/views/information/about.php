@@ -80,13 +80,13 @@
 		</tr>
 		<tr class="odd">
 			<td>
-				<a href="http://www.cdolivet.com/index.php?page=editArea" class="icon">
+				<a href="http://ace.ajax.org" class="icon">
 					<?php echo Html::icon('globe'); ?>
-					<span>EditArea 0.8.2</span>
+					<span>Ace - Ajax.org Cloud9 Editor</span>
 				</a>
 			</td>
-			<td>EditArea is a free javascript editor for source code. This editor is designed to edit souce code files in a textarea. The main goal is to allow text formatting, search and replace and real-time syntax highlight.</td>
-			<td>LGPL, BSD, Apache</td>
+			<td>Ace is a standalone code editor written in JavaScript. Our goal is to create a web based code editor that matches and extends the features, usability and performance of existing native editors such as TextMate, Vim or Eclipse. It can be easily embedded in any web page and JavaScript application. Ace is developed as the primary editor for Cloud9 IDE and the successor of the Mozilla Skywriter (Bespin) Project.</td>
+			<td>MPL, LGPL, GPL</td>
 		</tr>
 		<tr class="even">
 			<td>

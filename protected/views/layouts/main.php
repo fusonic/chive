@@ -53,7 +53,7 @@ $scriptFiles = array(
 	'js/views/privileges/users.js',
 	'js/views/privileges/userSchemata.js',
 	'js/views/privileges/userForm.js',
-   	'assets/lang_js/' . Yii::app()->getLanguage() . '.js',
+   	(CAP_ENABLED ? 'index.php/' : '') . 'assets/lang_js/' . Yii::app()->getLanguage() . '.js',
 );
 foreach($scriptFiles AS $file)
 {

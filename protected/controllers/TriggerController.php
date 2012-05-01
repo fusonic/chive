@@ -66,7 +66,7 @@ class TriggerController extends Controller
 					null,
 					$query);
 				$response->refresh = true;
-				$response->send();
+				$this->sendJSON($response);
 			}
 			catch(CDbException $ex)
 			{
@@ -122,7 +122,7 @@ class TriggerController extends Controller
 				$ex->getSql());
 			$response->addData('success', false);
 		}
-		$response->send();
+		$this->sendJSON($response);
 	}
 
 	/**
@@ -162,7 +162,7 @@ class TriggerController extends Controller
 					null,
 					$query);
 				$response->refresh = true;
-				$response->send();
+				$this->sendJSON($response);
 			}
 			catch(CDbException $ex)
 			{

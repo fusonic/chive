@@ -67,7 +67,7 @@ class RoutineController extends Controller
 					null,
 					$query);
 				$response->refresh = true;
-				$response->send();
+				$this->sendJSON($response);
 			}
 			catch(CDbException $ex)
 			{
@@ -133,7 +133,7 @@ class RoutineController extends Controller
 				implode("\n", $droppedSqls));
 		}
 
-		$response->send();
+		$this->sendJSON($response);
 	}
 
 	/**
@@ -177,7 +177,7 @@ class RoutineController extends Controller
 					null,
 					$query);
 				$response->refresh = true;
-				$response->send();
+				$this->sendJSON($response);
 			}
 			catch(CDbException $ex)
 			{

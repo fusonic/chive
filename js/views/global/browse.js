@@ -112,9 +112,16 @@ var globalBrowse = {
 		$('#queryForm').ajaxForm({
 			success: 	function(responseText)
 			{
-				AjaxResponse.handle(responseText);
-				$('div.ui-layout-center').html(responseText);
-				init();
+				if (!AjaxResponse.handle(responseText)) {
+					var content = document.getElementById('content');
+					response = '<div style="display: none">Thank\'s to InternetExplorer 8 which requires this dirty hack ...</div>' + responseText;
+					content.innerHTML = responseText;
+					var scripts = content.getElementsByTagName('script');
+					for (var i = 0; i < scripts.length; i++) {
+						$.globalEval(scripts[i].innerHTML);
+					}
+					init();
+				}
 			}
 		});
 		

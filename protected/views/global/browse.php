@@ -8,13 +8,12 @@
 	<table style="width: 100%;" id="browseTable">
 		<tr>
 			<td id="browseTable_ColLeft">
-				<?php $this->widget("SqlEditor", array(
+				<?php $this->widget('AceEditor', array(
 					    'id' => 'query',
-						'autogrow' => true,
 					   	'htmlOptions' => array('name' => 'query'),
 						'value' => $model->getOriginalQueries(),
+						'autogrow' => true,
 					)); ?>
-				<?php /*<textarea name="query" style="width: 99%; height: 90px;" id="query"><?php echo $model->getOriginalQueries(); ?></textarea> */ ?>
 				<div class="buttons">
 					<a href="javascript:void(0);" onclick="$('#queryForm').submit();" class="icon button primary">
 						<?php echo Html::icon('execute', 16, false, 'core.execute'); ?>
@@ -26,7 +25,7 @@
 					</a>
 				</div>
 			</td>
-			<td style="vertical-align: top; padding: 2px 5px;" id="browseTable_ColRight">
+			<td style="vertical-align: top; padding: 2px 5px; width: 300px" id="browseTable_ColRight">
 				<a class="icon button" href="javascript:void(0);" onclick="Profiling.toggle();">
 					<?php if( Yii::app()->user->settings->get('profiling')) {?>
 						<?php echo Html::icon('square_green', 16, false, null, array('id' => 'profiling_indicator')); ?>
@@ -49,15 +48,6 @@
 						<?php echo Html::icon('square_red'); ?>
 					<?php } ?>
 					<span><?php echo Yii::t('core', 'showFullColumnContent'); ?></span>
-				</a>
-				<br/><br/>
-				<a id="aToggleEditor" class="icon button" href="javascript:void(0);" onclick="toggleEditor('query','aToggleEditor');">
-					<?php if( Yii::app()->user->settings->get('sqlEditorOn') == '1') {?>
-						<?php echo Html::icon('square_green'); ?>
-					<?php } else { ?>
-						<?php echo Html::icon('square_red'); ?>
-					<?php } ?>
-					<span><?php echo Yii::t('core', 'toggleEditor'); ?></span>
 				</a>
 			</td>
 		</tr>

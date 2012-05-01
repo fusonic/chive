@@ -55,7 +55,7 @@ class BookmarkController extends Controller
 		if($exists)
 		{
 			$response->addNotification('error', Yii::t('core', 'errorBookmarkWithThisNameAlreadyExists', array("{name}" => $name)));
-			$response->send();
+			$this->sendJSON($response);
 		}
 
 		if($oldValue && !is_array($oldValue))
@@ -83,7 +83,7 @@ class BookmarkController extends Controller
 			'query' => $query,
 		));
 
-		$response->send();
+		$this->sendJSON($response);
 	}
 
 	/**
@@ -110,7 +110,7 @@ class BookmarkController extends Controller
 		Yii::app()->user->settings->saveSettings();
 
 		$response->addNotification('success', Yii::t('core', 'successDeleteBookmark', array('{name}'=>$name)));
-		$response->send();
+		$this->sendJSON($response);
 
 	}
 
@@ -135,10 +135,9 @@ class BookmarkController extends Controller
 		catch (Exception $ex)
 		{
 			$response->addNotification('error', $ex->getMessage(), $bookmark['query'], array('isSticky'=>true));
-			Yii::app()->endJson($response);
 		}
 
-		Yii::app()->endJson($response);
+		$this->sendJSON($response);
 	}
 
 }

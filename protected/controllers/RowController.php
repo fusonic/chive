@@ -162,7 +162,7 @@ class RowController extends Controller
 				$response->addNotification('error', Yii::t('core', 'errorInsertRow'), $ex->getText(), $ex->getSql());
 			}
 			
-			$response->send();
+			$this->sendJSON($response);
 		
 		}
 		elseif(isset($_POST['attributes']))
@@ -266,7 +266,7 @@ class RowController extends Controller
 			$response->addData(null, array('error'=>true));
 		}
 
-		$response->send();
+		$this->sendJSON($response);
 
 	}
 
@@ -296,7 +296,7 @@ class RowController extends Controller
 		$response->refresh = true;
 		$response->addNotification('success', Yii::t('core', 'successDeleteRows', array(count($data), '{rowCount}' => count($data))), null, $sql);
 
-		$response->send();
+		$this->sendJSON($response);
 	}
 
 	public function actionInput()
@@ -379,7 +379,7 @@ class RowController extends Controller
 				$response->addNotification('error', Yii::t('core', 'updatingRowFailed'), $ex->getText(), $ex->getSql());
 			}
 			
-			$response->send();
+			$this->sendJSON($response);
 			
 		}
 		

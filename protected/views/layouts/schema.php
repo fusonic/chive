@@ -45,7 +45,10 @@ $scriptFiles = array(
 	'js/dataType.js',
 	'js/notification.js',
 	'js/profiling.js',
-	'js/storageEngine.js',
+	'js/storageEngine.js', 
+	'js/ace/ace.js',
+	'js/ace/mode-sql.js',
+	'js/ace/theme-chive-uncompressed.js',
 	'js/views/column/form.js',
 	'js/views/foreignKey/form.js',
 	'js/views/index/form.js',
@@ -62,9 +65,7 @@ $scriptFiles = array(
 	'js/views/global/import.js',
 	'js/views/table/structure.js',
 	'js/views/view/general.js',
-	'js/components/EditArea/edit_area_full.js',
-    'js/components/EditArea/fusonic_extensions/editarea.js',
-	'assets/lang_js/' . Yii::app()->getLanguage() . '.js',
+	(CAP_ENABLED ? 'index.php/' : '') . 'assets/lang_js/' . Yii::app()->getLanguage() . '.js',
 );
 
 foreach($scriptFiles AS $file)

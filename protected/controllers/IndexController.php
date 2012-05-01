@@ -77,7 +77,7 @@ class IndexController extends Controller
 					null,
 					$sql);
 				$response->refresh = true;
-				$response->send();
+				$this->sendJSON($response);
 			}
 		}
 
@@ -125,7 +125,7 @@ class IndexController extends Controller
 				$ex->getText(),
 				$ex->getSql());
 		}
-		$response->send();
+		$this->sendJSON($response);
 	}
 
 	public function actionUpdate()
@@ -162,7 +162,7 @@ class IndexController extends Controller
 					null,
 					$sql);
 				$response->refresh = true;
-				$response->send();
+				$this->sendJSON($response);
 			}
 		}
 
@@ -204,7 +204,7 @@ class IndexController extends Controller
 				$ex->getSql());
 			$response->addData('success', false);
 		}
-		$response->send();
+		$this->sendJSON($response);
 	}
 
 	private function getColumnSelect(Table $table)
