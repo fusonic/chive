@@ -32,7 +32,7 @@ class Html
 	 * @param	bool						close tag
 	 * @return	string
 	 */
-	public static function ajaxLink($target, array $htmloptions = array(), $content = null, $close = false)
+ 	public static function ajaxLink($target, array $htmloptions = array(), $content = null, $close = false)
 	{
 		if(strpos(strtolower($target), 'javascript:') === 0)
 		{
@@ -45,11 +45,15 @@ class Html
 				$scriptUrl = basename($_SERVER['SCRIPT_NAME']);
 				if(strpos($_SERVER['REQUEST_URI'], $scriptUrl) === false && strpos($target, $scriptUrl) === false)
 				{
-					$target = $scriptUrl . "/" . $target;
+					$target = $scriptUrl . "#" . $target;
 				}
 			}
+            else
+            {
+                $target = "#" . $target;
+            }
 			
-			$htmloptions['href'] = '#' . $target;
+			$htmloptions['href'] = $target;
 			$htmloptions['onclick'] = 'chive.goto("' . $target . '"); return false;';
 		}
 		

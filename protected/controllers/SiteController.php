@@ -69,6 +69,15 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
+        if(Yii::app()->getUrlManager()->showScriptName)
+        {
+            $scriptUrl = basename($_SERVER['SCRIPT_NAME']);
+            if(strpos($_SERVER['REQUEST_URI'], $scriptUrl) === false)
+            {
+                header("location: index.php");
+            }
+        }
+
 		$entries = array();
 
 		if(ConfigUtil::getUrlFopen())
