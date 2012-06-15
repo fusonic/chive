@@ -46,8 +46,7 @@
 	 * Buttons
 	 */
 	.button {
-		-moz-border-radius: 5px;
-		-webkit-border-radius: 5px;
+		border-radius: 5px;
 		border: 1px solid #BBB;
 		padding: 5px 10px;
 		background: url('../images/forms/button-bg.png') repeat-x;
