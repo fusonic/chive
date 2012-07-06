@@ -4,8 +4,13 @@
 function pre($_value) { if($_value === null || $_value === false || $_value === true) { var_dump($_value); } else { echo "<pre>"; print_r($_value); echo "</pre>";	}}
 function predie($_value) { pre($_value); Yii::app()->end(); }
 
+if (!defined('__DIR__'))
+{
+    define('__DIR__', dirname(__FILE__));
+}
+
 // Yii debug mode
-define('YII_DEBUG', true);
+defined('YII_DEBUG') or define('YII_DEBUG', true);
 
 // Chive phar mode
 define('CAP_ENABLED', strpos(__FILE__, "phar://") === 0);
