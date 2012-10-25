@@ -27,7 +27,7 @@ if(CAP_ENABLED)
 // Load Yii
 require('yii/yii.php');
 
-if(!date_default_timezone_get())
+if(!ini_get('date.timezone'))
 {
 	// Set a fallback timezone if the current php.ini does not contain a default timezone setting.
 	// If the environment is setup correctly, we won't override the timezone.
