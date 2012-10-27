@@ -232,7 +232,7 @@ return array(
 	// application-level parameters
 	'params' => array(
 		'iconPack' => 'fugue',
-		'version' => '1.1',
+		'version' => '1.2',
 	),
 
 	// There is no source language ...
