@@ -22,7 +22,7 @@
 	<tr>
 		<?php $columnName = CHtml::encode($column->name); ?>
 		<td style="font-weight: bold;"><?php echo $columnName; ?></td>
-		<td><?php echo $column->dbType; ?></td>
+		<td><?php echo strlen($column->dbType) > 50 ? substr($column->dbType, 0, 50) . "..." : $column->dbType ?></td>
 		<td>
 			<?php if(!in_array(DataType::getBaseType($column->dbType), array('set', 'enum')))
 		{ ?>

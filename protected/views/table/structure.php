@@ -68,7 +68,7 @@
 						<?php endif; ?>
 					</td>
 					<td>
-						<?php echo $column->COLUMN_TYPE; ?>
+                        <?php echo strlen($column->COLUMN_TYPE) > 50 ? substr($column->COLUMN_TYPE, 0, 50) . "..." : $column->COLUMN_TYPE ?>
 					</td>
 					<td>
 						<?php if(!is_null($column->COLLATION_NAME)) { ?>

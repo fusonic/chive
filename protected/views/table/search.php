@@ -23,7 +23,7 @@
 		<?php foreach($row->getMetaData()->tableSchema->columns AS $column) { ?>
 			<tr>
 				<td><?php echo CHtml::encode($column->name); ?></td>
-				<td><?php echo $column->dbType; ?></td>
+				<td><?php echo strlen($column->dbType) > 50 ? substr($column->dbType, 0, 50) . "..." : $column->dbType ?></td>
 				<td><?php echo CHtml::dropDownList('operator['.$column->name.']','', $operators); ?></td>
 				<td>
 					<?php #echo CHtml::activeTextField($row, $column->name, array('class'=>'text', 'tabIndex'=>$tabIndex)); ?>
