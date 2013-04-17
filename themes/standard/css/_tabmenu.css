@@ -1,6 +1,6 @@
 /*
  * Chive - web based MySQL database management
- * Copyright (C) 2010 Fusonic GmbH
+ * Copyright (C) 2012 Fusonic GmbH
  *
  * This file is part of Chive.
  *
@@ -18,14 +18,32 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-@media screen, projection
+ul.tabMenu > li
 {
-  
-  code.literal
-  {
-  	color: #026789;
-  	font-family: monospace, fixed;
-	font-weight: bold;
-  }
-  
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	font-size: 120%;
+	margin-right: 10px;
+	border: solid 1px #C0C0C0;
+	border-top: none;
+}
+
+ul.tabMenu a > span
+{
+	text-decoration: none;
+}
+
+ul.tabMenu a
+{
+	padding: 3px 10px 5px 10px;
+	text-align: center;
+}
+
+div.tabMenu
+{
+	position: fixed;
+	top: 42px;
+	z-index: 1000;
+	height: 50px;
+	background: transparent url('../../../images/tabs-bg.png') top right no-repeat
 }

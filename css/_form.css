@@ -1,0 +1,31 @@
+div.buttonContainer
+{
+	clear: both;
+	overflow: hidden;
+}
+
+div.buttonContainer div.left
+{
+	float: left;
+}
+
+div.buttonContainer div.right
+{
+	float: right;
+}
+
+div.buttons
+{
+	clear: both;
+	float: none;
+}
+
+input[type="text"], input[type="password"]
+{
+	max-width: 99%;
+}
+
+input.text.tiny
+{
+	width: 25%;
+}

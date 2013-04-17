@@ -1,0 +1,72 @@
+div.notification
+{
+	background-image: linear-gradient(top, rgba(100, 100, 100, 0.8) 0%, rgba(50, 50, 50, 0.8) 100%);
+	background-image: -o-linear-gradient(top, rgba(100, 100, 100, 0.8) 0%, rgba(50, 50, 50, 0.8) 100%);
+	background-image: -moz-linear-gradient(top, rgba(100, 100, 100, 0.8) 0%, rgba(50, 50, 50, 0.8) 100%);
+	background-image: -webkit-linear-gradient(top, rgba(100, 100, 100, 0.8) 0%, rgba(50, 50, 50, 0.8) 100%);
+	background-image: -ms-linear-gradient(top, rgba(100, 100, 100, 0.8) 0%, rgba(50, 50, 50, 0.8) 100%);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgba(100, 100, 100, 0.8)), color-stop(1, rgba(50, 50, 50, 0.8)));
+}
+
+.button,
+ul.tabMenu > li,
+ul.yiiPager > li,
+fieldset,
+#login-form
+{
+	background-color: #EEE;
+	background-image: linear-gradient(top, #FFFFFF 0%, #EEEEEE 100%);
+	background-image: -o-linear-gradient(top, #FFFFFF 0%, #EEEEEE 100%);
+	background-image: -moz-linear-gradient(top, #FFFFFF 0%, #EEEEEE 100%);
+	background-image: -webkit-linear-gradient(top, #FFFFFF 0%, #EEEEEE 100%);
+	background-image: -ms-linear-gradient(top, #FFFFFF 0%, #EEEEEE 100%);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #FFFFFF), color-stop(1, #EEEEEE));
+}
+
+.button.primary,
+ul.tabMenu > li:hover,
+ul.tabMenu > li.active,
+table.list > tfoot,
+table.list > thead
+{
+	background-color: #DDD;
+	background-image: linear-gradient(top, #FFFFFF 0%, #DDDDDD 100%);
+	background-image: -o-linear-gradient(top, #FFFFFF 0%, #DDDDDD 100%);
+	background-image: -moz-linear-gradient(top, #FFFFFF 0%, #DDDDDD 100%);
+	background-image: -webkit-linear-gradient(top, #FFFFFF 0%, #DDDDDD 100%);
+	background-image: -ms-linear-gradient(top, #FFFFFF 0%, #DDDDDD 100%);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #FFFFFF), color-stop(1, #DDDDDD));
+}
+
+ul.yiiPager > li.selected
+{
+	background-color: #808080;
+	background-image: linear-gradient(top, #888888 0%, #CCCCCC 100%);
+	background-image: -o-linear-gradient(top, #888888 0%, #CCCCCC 100%);
+	background-image: -moz-linear-gradient(top, #888888 0%, #CCCCCC 100%);
+	background-image: -webkit-linear-gradient(top, #888888 0%, #CCCCCC 100%);
+	background-image: -ms-linear-gradient(top, #888888 0%, #CCCCCC 100%);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #888888), color-stop(1, #CCCCCC));
+}
+
+#header
+{
+	background-color: #497CAE;
+	background-image: linear-gradient(top, #3B679E 0%, #5E99C4 100%);
+	background-image: -o-linear-gradient(top, #3B679E 0%, #5E99C4 100%);
+	background-image: -moz-linear-gradient(top, #3B679E 0%, #5E99C4 100%);
+	background-image: -webkit-linear-gradient(top, #3B679E 0%, #5E99C4 100%);
+	background-image: -ms-linear-gradient(top, #3B679E 0%, #5E99C4 100%);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #3B679E), color-stop(1, #5E99C4));
+}
+
+div.sidebarHeader.ui-state-active
+{
+	background-color: #E6F0A3;
+	background-image: linear-gradient(top, #E6F0A3 0%, #D2E63B 50%, #C3D825 50%, #DBEF41 100%);
+	background-image: -o-linear-gradient(top, #E6F0A3 0%, #D2E63B 50%, #C3D825 50%, #DBEF41 100%);
+	background-image: -moz-linear-gradient(top, #E6F0A3 0%, #D2E63B 50%, #C3D825 50%, #DBEF41 100%);
+	background-image: -webkit-linear-gradient(top, #E6F0A3 0%, #D2E63B 50%, #C3D825 50%, #DBEF41 100%);
+	background-image: -ms-linear-gradient(top, #E6F0A3 0%, #D2E63B 50%, #C3D825 50%, #DBEF41 100%);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #E6F0A3), color-stop(0.5, #D2E63B), color-stop(0.5, #C3D825), color-stop(1, #DBEF41));
+}

@@ -38,12 +38,12 @@ var breadCrumb = {
 		// Create new breadCrumbs
 		for(var i = 0; i < data.length; i++)
 		{			
-			var html = '<a href="' + data[i].href + '"' + (data[i].icon ? ' class="icon button dynamicCrumb"' : '') + '>';
+			var html = '<a href="' + data[i].href + '"' + (data[i].icon ? ' class="icon button dynamicCrumb"' : '') + '> ';
 			
 			// Add icon
 			if(data[i].icon)
 			{
-				html += '<img src="' + iconPath + '/16/' + data[i].icon + '.png" class="icon icon16 icon_' + data[i].icon + '" width="16" height="16" />';
+				html += '<img src="' + iconPath + '/16/' + data[i].icon + '.png" class="icon icon16 icon_' + data[i].icon + '" width="16" height="16" /> ';
 			}
 			
 			// Text

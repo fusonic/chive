@@ -93,15 +93,15 @@ var chive = {
 			.ajaxStart(function() {
 				if(this.loadingIndicator)
 				{
-					$('#loading').css({'background-image': 'url(' + basePath + '/images/loading4.gif)'}).fadeIn();
+					$('#loading').removeClass('finished').fadeIn();
 				}
 			})
 			.ajaxStop(function() {
-				$('#loading').css({'background-image': 'url(' + basePath + '/images/loading5.gif)'}).fadeOut();
+				$('#loading').addClass('finished').fadeOut();
 			})
 			.ajaxError(function(error, xhr) {
 				Notification.add('ajaxerror', lang.get('core', 'ajaxRequestFailed'), lang.get('core', 'ajaxRequestFailedText'), xhr.responseText);
-				$('#loading').css({'background-image': 'url(' + basePath + '/images/loading5.gif)'}).fadeOut();
+				$('#loading').addClass('finished').fadeOut();
 			});
 
 	},

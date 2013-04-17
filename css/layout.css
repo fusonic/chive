@@ -1,4 +1,30 @@
-@media screen, projection 
+/* Header START */
+
+#header
+{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+}
+
+#headerLeft
+{
+	float: left;
+	position: relative;
+}
+
+#headerRight
+{
+	float: right;
+	position: relative;
+	text-align: right;
+}
+
+/* Header END */
+
+
+@media screen, projection
 {
 
  /**
@@ -124,45 +150,6 @@
   table.list > thead > tr:first-child th {
   	font-weight: bold;
   }
-
- /**
-  * ------------------------------------------------------------------------------------------------- #
-  *
-  * Forms | Formulare
-  *
-  * (en) Generic classes for form design definition
-  * (de) Generische Klassen für Gestaltungsvorschriften für Tabellen
-  *
-  * @section content-forms
-  */
-
-  div.formItems.non-floated div.item {
-  	margin-bottom: 10px;
-  } 
-   
-  div.formItems.non-floated div.item div.left, div.formItems.non-floated div.item div.right {
-  	float: none;
-	margin-bottom: 3px;
-  }
-  
-  div.formItems div.item {
-  	clear: both;
-	float: none;
-	padding: 3px;
-  }
-  
-  div.formItems div.left {
-  	width: 140px;
-	float: left;
-  }
-  
-  div.formItems div.item.short div.left {
-  	width: 80px;
-  }
-  
-  div.formItems div.right {
-	float: left;
-  }
   
   input.text, input.password {
   	width: 98%;
@@ -214,23 +201,6 @@
   }
   
   /*
-   * Header
-   */
-  
-  #header ul, #header ul li {
-  	list-style-type: none;
-	text-align: center;
-  }
-  
-  /*
-   * Sidebar (accordion)
-   */
-  
-  div.sidebarContent {
-  	padding: 3px;
-  }
-  
-  /*
    * Loading - indicator
    */
   
@@ -247,250 +217,12 @@
 	width: 112px;
 	height: 20px;
   }
-  
-  /*
-   * Login form
-   */
-  
-  #login {
-	margin: 7em auto; 
-	width: 320px;
-  }
-  
-  #loginform {
-	padding: 10px;
-  }
-  
-  /*
-   * Language select
-   */
-  
-  #languageSelect {
-  	position: absolute;
-	top: 40px;
-	right: 0px;
-	width: 172px;
-  }
-  
-  #themeSelect {
-  	position: absolute;
-	top: 40px;
-	right: 172px;
-	width: 172px;
-  }
-  
-  ul.dropDown li a {
-  	display: block;
-  	line-height: 20px;
-  	height: 20px;
-	padding: 5px 20px;
-  }
-  
-  div.errorSummary ul, div.errorSummary ul li {
-  	list-style-type: none;
-	margin: 0px;
-  }
-  
-  div.errorMessage {
-  	background: url(../images/icons/del_10.png) no-repeat 5px 5px;
-	padding: 3px 0px 0px 20px;
-	color: #CCC;
-	font-weight: bold;
-  }
-  
-  div.errorSummary {
-  	padding: 10px;
-  	border: 1px solid #FF0000;
-  	background: #FFFFFF;
-  	-moz-border-radius: 5px;
-  	margin-bottom: 10px;
-  }
-  
-  ul.select, ul.select li {
-  	list-style-type: none;
-  }
 
   .nowrap {
   	white-space: nowrap;
   }
   
-  /*
-   * List 
-   */
-  
-  ul.list {
-  	margin: 0.5em 0 0 0.3em;
-  }
-  
-  ul.list li {
-  	list-style-type: none;
-  	height: 20px;
-  	padding: 2px 0px;
-  	position: relative;
-  }
-  
-  ul.list li a img {
-  	position: relative;
-	top: 2px;
-  }
-  
-  div.listIconContainer {
-  	float: right;
-  	position: relative;
-  	z-index: 10;
-  	display: none;
-  }
-  
-  ul.list li:hover div.listIconContainer {
-  	display: block;
-  }
 
-  /*
-   * Tab menu
-   */
-
-  ul.tabMenu {
-	position: relative;
-  }
-  
-  ul.tabMenu li {
-  	list-style-type: none;
-	float: left;
-	font-size: 120%;
-  }
-  
-  ul.tabMenu li a {
-  	display: block;
-	text-align: center;
-  }
-  
-  /*
-   * CodePress
-   */
-  
-  iframe.codepress {
-  	margin-bottom: 10px;
-  }
-  
-  /*
-   * Breadcrumb
-   */
-  
-  ul.breadCrumb {
-  	margin: 5px;
-  }
-  
-  ul.breadCrumb li {
-  	float: left;
-	margin: 0px 5px 0px 0px;
-	padding: 3px 5px;
-	height: 24px;
-	line-height: 20px;
-	-moz-border-radius: 4px;
-  }
-  
-  ul.breadCrumb li a img 
-  {
-  	top: 4px !important;
-  }
-  
-  ul.breadCrum li img 
-  {
-  	cursor: pointer;
-  }
-  
-  ul.breadCrumb li span 
-  {
-  	top: -2px !important;
-  }
-  
-  
-  /*
-   * Purr (notifications)
-   */
-  
-  #purr-container {
-  	position: fixed;
-	bottom: 10px;
-	right: 0px;
-	z-index: 99999999 !important;
-  }
-  
-  .notification {
-  	position: relative;
-	width: 500px;
-  }
-  
-  .notification-body {
-  	min-height: 50px;
-	padding: 22px 22px 0px 22px;
-	background: url(../themes/standard/images/notification/top.png);
-	color: #F9F9F9;
-  }
-  
-  .notification-body textarea {
-  	background-color: transparent;
-	color: #f9f9f9;
-	height: 150px;
-	font-size: 0.8em;
-	margin-top: 5px;
-  }
-  
-  .notification-body a {
-  	color: #f9f9f9;
-  	text-decoration: underline;
-  }
-  
-  .notification-header {
-  	font-weight: bold;
-	margin-bottom: 5px;
-  }
-  
-  .notification-bottom {
-  	background: url(../themes/standard/images/notification/bottom.png);
-	height: 17px;
-  }
-  
-  .notification .close {
-    position: absolute;
-    top: 18px; 
-    right: 18px; 
-    width: 16px; 
-    height: 16px; 
-    background: url(../images/icons/fugue/16/delete.png) no-repeat 0 0px;
-  }
-  
-  .notification .sticky {
-    position: absolute;
-    top: 18px; 
-    right: 38px; 
-    width: 16px; 
-    height: 16px; 
-    background: url(../images/icons/fugue/16/pin_up.png) no-repeat 0 0px;
-  }
-  
-  .notification .code {
-    position: absolute;
-    top: 18px; 
-    right: 58px; 
-    width: 16px; 
-    height: 16px; 
-    background: url(../images/icons/fugue/16/sql.png) no-repeat 0 0px;
-  }
-  
-  .notification.not-sticky .sticky
-  {
-  	 background: url(../images/icons/fugue/16/pin.png) no-repeat 0 0px !important;
-  }
-    
-  /*
-   * Pagination
-   */	
-  ul.yiiPager .first, ul.yiiPager .last 
-  {
-  	display: inline !important;
-  }
-  
   /*
    * Icons
    */
@@ -527,13 +259,6 @@
   }
   
   /*
-   * Form elements
-   */
-  select {
-  	min-width: 120px;
-  }
-  
-  /*
    * Global search (autosuggest)
    */
   div.ac_results {
@@ -557,26 +282,7 @@
   	padding-left: 15px;
   }
   
-  #headerRight
-  {
-  	text-align: right;
-  	width: 370px;
-  }
-  
-  table.list > thead > tr > th > a
-  {
-  	padding-right: 10px;
-  }
-  
-  table.list > thead > tr > th > a.asc
-  {
-  	background: transparent url('../images/icons/fugue/control_small_270.png') 100% 50% no-repeat;
-  }
-  
-  table.list > thead > tr > th > a.desc
-  {
-  	background: transparent url('../images/icons/fugue/control_small_090.png') 100% 50% no-repeat;
-  }  
+
   
   #globalSearch
   {

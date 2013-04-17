@@ -18,266 +18,110 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-@import "component.css";
-@import "icon.css";
-@import "list.css";
-@import "form.css";
-@import "pagination.css";
-@import "code.css";
-@import "../jquery-ui/start.css";
+@import '../jquery-ui/start.css';
+@import '_gradients.css';
+@import '_notifications.css';
+@import '_pagination.css';
+@import '_list.css';
+@import '_tabmenu.css';
+@import '_login.css';
+@import '_sidebar.css';
+@import '_form.css';
+@import '_icon.css';
+@import '_text.css';
+@import '_search.css';
 
-@media screen, projection
+/* General START */
+
+html
 {
+	margin: 0px;
+}
 
-  html { margin: 0px; }
+body
+{
+	background: #F8F8F8;
+}
 
-  /*
-   * Body
-   */
-  body { background: #F8F8F8; }
+#content-inner
+{
+	padding-top: 30px;
+}
 
-
-  /*
-   * Header
-   */
-
-  #header {
-    color: #000;
-    background: #3B5998;
-	height: 40px;
+#loading
+{
 	position: absolute;
-	top: 0px; 
-	left: 0px;
-	width: 100%;
-  }
-  
-  #headerLeft {
-   	float: left;
-	position: relative;
+	top: 45px;
+	z-index: 9999999 !important;
+	right: 20px;
+	background: url("../images/loading4.gif") no-repeat;
+	width: 112px;
+	line-height: 20px;
+	font-weight: bold;
+	color: #fff;
+	text-align: center;
+}
+
+#loading.finished
+{
+	background: url("../images/loading5.gif") no-repeat;
+}
+
+div.blockUI
+{
+	background: #EFEFEF url('../../../images/loading_big.gif') no-repeat center center !important;
+	opacity: 0.6;
+}
+
+hr
+{
+	color: #fff;
+	background: transparent;
+	margin: 0 0 0.5em 0;
+	padding: 0 0 0.5em 0;
+	border: 0;
+	border-bottom: 1px #eee solid;
+}
+
+/* General END */
+
+
+/* Header START */
+
+#header
+{
+	color: #000;
+	height: 40px;
+}
+
+#headerLeft
+{
 	top: 2px;
 	padding-left: 5px;
-  }
-  
-  #headerRight {
-  	float: right;
-	position: relative;
-	top: 8px;
-  }
-
-  /*------------------------------------------------------------------------------------------------------*/
-
-  /**
-   * (en) Styling of layout specific elements
-   * (de) Gestaltung layoutabhängiger Elemente
-   */
-
-  #header h1 {
-    font-weight:bold;
-    font-size:2.5em;
-    letter-spacing:-2px;
-    line-height:65%;
-    color:#000;
-  }
-
-  #topnav a { color: #999; font-weight: normal; background:transparent; text-decoration:none; }
-  #topnav a:focus,
-  #topnav a:hover,
-  #topnav a:active { text-decoration:underline; background-color: transparent; }
-
-  #footer a { color: #999; background:transparent; font-weight: bold; }
-  #footer a:focus,
-  #footer a:hover,
-  #footer a:active {color: #4D87C7; background-color: transparent; text-decoration:underline; }
-  
-  /*------------------------------------------------------------------------------------------------------*/
-
-  /**
-   * (en) Styling of content elements
-   * (de) Gestaltung Inhaltselemente
-   */
-  
-  /* TreeView */
-  ul.treeview, ul.treeview li {list-style-type: none;}
-  ul.treeview li a {position: relative; top: -2px;}
-  
-  ul.treeview li, ul.treeview li.last {
-  	background: url(../../../images/icons/fugue/16/database.png) no-repeat;
-  }  
-  
-  ul.treeview li.closed {
-  	font-weight: bold;
-  }
-  
-  ul.treeview li.closed li {
-  	font-weight: normal;
-  }
-
-  /*
-   * Lists
-   */
-  
-  ul.list li:hover {
-  	background: #EFEFEF;
-  }
-  
-  ul.list li:hover div.listIconContainer {
-  	background: #EFEFEF;
-  }
-  
-  .listFilterSelected {
-  	font-weight: bold;
-  }
-
-  div.sidebarHeader {
-	font-size: 130%;
-  }
-  
-  #login-form {
-  	padding: 10px;
-  	background: #FFF;
-	border: 1px solid #CCC;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-  }
-  
-  #login-logo {
-	 padding: 10px; 
-  	text-align: center;
-  }
-  
-  select {
-  	border: solid 1px #CCC;
-	padding: 2px;
-  }
-  
-  #login div.formItems.non-floated div.left {
-	color: #777;
-	font-size: 1.2em;
-  }
-  
-  #login input 
-  {
-  	font-size: 18px;
-  	padding: 3px;
-  }
-  
-  dfn {
-  	cursor: help;
-  }
-  
-  div.errorSummary {
-  	color: #D00;
-  }
-  
-  span.sql, div.sql, p.sql {
-  	font-family: monospace,fixed;
-  }
-  
-  div.errorSummary span.sql {
-  	font-size: 80%;
-  }
-  
-  span.null {
-  	font-style: italic;
-  }
-  
-  span.primaryKey {
-  	border-bottom: dotted 1px;
-  }
-  
-  div.small {
-  	color: #808080;
-	font-size: 0.9em;
-  }
-  
-  div.blockUI {
-  	background: #EFEFEF url('../../../images/loading_big.gif') no-repeat center center !important;
-	opacity: 0.6;
-  }
-  
-  
-  .ui-dialog-content ul
-  {
-  margin-top:5px;
-  overflow:auto;
-    max-height:200px;
-  }
-  
-  .ui-dialog-content li
-  {
-  position:relative;
-
-  margin-left:15px;
-  list-style-type:disc; 
-  }
-  
-  
-	/*
-	 * Breadcrumb
-	 */
-	ul.breadCrumb li {
-		background: url('../images/breadcrumb/bg.png') top right;
-		text-align: left !important;
-	} 
-	
-	ul.breadCrumb li:hover {
-		background: #ffd900;
-	} 
-	
-	ul.breadCrumb li>a
-	{
-		padding: 0px 5px;
-	}  
-	
-	table.profiling td  {
-		padding: 2px;
-	}
-	
-	table.profiling td.state {
-		min-width: 100px;
-		font-weight: bold;
-		padding-right: 20px;
-	} 
-  
-  
-	/*
-	 * Menu
-	 */
-  
-	#sideBar div.sidebarHeader img.loading
-	{
-		display: none;
-		margin-top: -8px;
-		position: absolute;
-		right: 5px;
-		top: 50%;
-	}
-	
-	#sideBar ul>li.template
-	{
-		display: none;
-	}
-	
-	div.tabMenu
-	{
-		position: fixed; 
-		top: 42px; 
-		z-index: 1000; 
-		height: 50px; 
-		background: transparent url('../../../images/tabs-bg.png') top right no-repeat
-	}
-	
-	#content-inner
-	{
-		padding-top: 30px;
-	}
-	
-	#sideBar div.noEntries
-	{
-		padding: 50px;
-		font-style: italic;
-		text-align: center;
-		color: #808080;
-	}
-  
 }
+
+#headerRight
+{
+	top: 8px;
+}
+
+/* Header END */
+
+
+/* Dialogs START */
+
+.ui-dialog-content ul
+{
+	margin-top: 5px;
+	overflow: auto;
+	max-height: 200px;
+}
+
+.ui-dialog-content li
+{
+	position: relative;
+	margin-left: 15px;
+	list-style-type: disc;
+}
+
+/* Dialogs END */

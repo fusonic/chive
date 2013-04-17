@@ -1,0 +1,78 @@
+dfn {
+    cursor: help;
+}
+
+h2
+{
+	font-size: 200%;
+}
+
+h3
+{
+	font-size: 150%;
+}
+
+h4
+{
+	font-size: 133.33%;
+}
+
+h5, h6
+{
+	font-size: 116.67%;
+}
+
+p
+{
+	line-height: 1.5em;
+	margin: 0 0 1em 0;
+}
+
+strong, b
+{
+	font-weight: bold;
+}
+
+em, i
+{
+	font-style: italic;
+}
+
+code, kbd, tt, samp, var
+{
+	font-size: 100%;
+}
+
+pre
+{
+	line-height: 1.5em;
+	font-size: 90%;
+}
+
+kbd, samp, var
+{
+	color: #666;
+}
+
+var
+{
+	font-style: italic;
+}
+
+acronym, abbr
+{
+	border-bottom: 1px #aaa dotted;
+	font-variant: small-caps;
+	letter-spacing: .07em;
+	cursor: help;
+}
+
+sub, sup
+{
+	font-size: 91.6667%;
+}
+
+.nowrap, .nowrap *
+{
+	white-space: nowrap;
+}

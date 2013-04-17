@@ -1,0 +1,43 @@
+ul.list li a.icon span
+{
+	text-decoration: none;
+}
+
+ul.list li a.icon:hover span
+{
+	text-decoration: underline;
+}
+
+img.icon.disabled
+{
+	opacity: 0.2;
+}
+
+img.icon_arrow_move
+{
+	cursor: move;
+}
+
+a.icon
+{
+	text-decoration: none !important;
+	overflow: hidden;
+}
+
+a.icon > span
+{
+	text-decoration: underline;
+}
+
+a.icon:hover > span
+{
+	text-decoration: none;
+}
+
+span.icon > img.icon,
+a.icon > img.icon
+{
+	border: none;
+	position: relative;
+	top: 3px;
+}

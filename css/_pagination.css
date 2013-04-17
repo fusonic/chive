@@ -1,0 +1,10 @@
+ul.yiiPager li
+{
+	float: left;
+}
+
+ul.yiiPager li > a,
+ul.yiiPager li > span
+{
+	display: inline-block;
+}

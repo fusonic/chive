@@ -1,0 +1,27 @@
+div.ac_results
+{
+	z-index: 99999999;
+	background: #EFEFEF;
+	border: 1px solid #777;
+}
+
+li.ac_over
+{
+	background: #CCC;
+}
+
+div.ac_results ul li
+{
+	padding: 2px;
+}
+
+div.ac_results ul span.table
+{
+	padding-left: 15px;
+}
+
+#globalSearch
+{
+	color: #aaa;
+	margin-right: 5px;
+}

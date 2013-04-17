@@ -1,0 +1,15 @@
+ul.tabMenu
+{
+	position: relative;
+}
+
+ul.tabMenu li
+{
+	list-style-type: none;
+	float: left;
+}
+
+ul.tabMenu li a
+{
+	display: block;
+}

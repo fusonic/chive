@@ -1,0 +1,40 @@
+#sideBar div.noEntries
+{
+	padding: 50px;
+	font-style: italic;
+	text-align: center;
+	color: #808080;
+}
+
+div.sidebarContent
+{
+	padding: 3px;
+}
+
+div.sidebarHeader
+{
+	border-radius: 0px;
+	font-size: 130%;
+}
+
+ul.list li
+{
+	list-style-type: none;
+	height: 20px;
+	padding: 2px 0px;
+}
+
+ul.list > li:hover
+{
+	background: #EFEFEF;
+}
+
+ul.list li a img
+{
+	top: 2px;
+}
+
+.listFilterSelected
+{
+	font-weight: bold;
+}

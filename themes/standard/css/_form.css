@@ -1,0 +1,197 @@
+/*
+ * Chive - web based MySQL database management
+ * Copyright (C) 2010 Fusonic GmbH
+ *
+ * This file is part of Chive.
+ *
+ * Chive is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * Chive is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/* General START */
+
+fieldset
+{
+	border-radius: 5px;
+	border: 1px solid #CCCCCC;
+	padding: 5px 10px;
+	margin-bottom: 10px;
+}
+
+fieldset > legend
+{
+	margin-left: -2px;
+}
+
+/* General END */
+
+
+/* Button START */
+
+.button
+{
+	padding: 5px 8px 5px 10px;
+	margin-right: 5px;
+	cursor: pointer;
+	border-radius: 5px;
+	border: 1px solid #CCCCCC;
+}
+
+.button.primary
+{
+	padding: 7px 15px;
+}
+
+div.buttonContainer
+{
+	padding: 10px 0px;
+}
+
+div.buttonContainer div.right .button
+{
+	margin-right: 0px;
+	margin-left: 5px;
+}
+
+div.buttons
+{
+	text-align: center;
+	margin: 10px 0px;
+}
+
+a.button span
+{
+	text-decoration: none !important;
+}
+
+.button:hover
+{
+	border-color: #999;
+}
+
+/* Button END */
+
+
+/* Fields START */
+
+input,
+textarea,
+select
+{
+	border: 1px solid #CCCCCC;
+	background-color: #F7F7F7;
+	color: #333;
+	padding: 4px 0px 4px 4px;
+}
+
+input[disabled],
+textarea[disabled]
+{
+	opacity: 0.5;
+}
+
+input[type='submit']
+{
+	font-weight: bold;
+	border-radius: 5px;
+}
+
+input.search
+{
+	background-image: url(../../../images/icons/fugue/16/search.png);
+	background-position: 2px 50%;
+	background-repeat: no-repeat;
+	text-indent: 18px;
+}
+
+/* Fields END */
+
+
+/* Table START */
+
+table.form col.col1,
+table.form col.col2
+{
+	width: 100px;
+}
+
+table.form col.col3
+{
+	width: 150px;
+}
+
+table.form td
+{
+	padding: 5px 0px;
+}
+
+/* Table END */
+
+
+/* Errors START */
+
+div.errorSummary
+{
+	border: 2px solid #C00;
+	padding: 10px;
+	margin: 0 0 20px 0;
+	background: #FFF;
+	font-size: 0.9em;
+	color: #D00;
+}
+
+div.errorSummary p
+{
+	margin: 0;
+	padding: 5px;
+}
+
+div.errorSummary ul
+{
+	margin: 0;
+	padding: 0 0 0 0px;
+	list-style-type: none;
+}
+
+div.errorSummary span.sql
+{
+	font-size: 80%;
+}
+
+/* Errors END */
+
+
+/* Editor START */
+
+div.editor > div
+{
+	border: solid 1px #C0C0C0;
+	border-radius: 5px;
+	position: relative;
+	width: 100%;
+	min-height: 100px;
+	display: block;
+}
+
+div.editor div.ace_gutter
+{
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+
+div.editor > textarea
+{
+	display: none;
+}
+
+/* Editor END */

@@ -1,0 +1,47 @@
+#login
+{
+	margin: 41px auto;
+	border-top: 1px solid #BBB;
+	padding-top: 50px;
+}
+
+#login label
+{
+	color: #777;
+	font-size: 1.2em;
+	display: block;
+}
+
+#login input
+{
+	font-size: 18px;
+	padding: 3px;
+	width: 98%;
+}
+
+#login-form
+{
+	border-radius: 5px;
+	border: 1px solid #CCCCCC;
+	padding: 10px;
+	width: 320px;
+	margin: 0px auto;
+}
+
+#login-logo
+{
+	padding: 10px;
+	text-align: center;
+}
+
+#login div.field
+{
+	padding: 10px 2px;
+}
+
+#login div.errorSummary
+{
+	width: 320px;
+	margin: 10px auto;
+	border-radius: 5px;
+}

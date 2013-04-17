@@ -1,2 +1,93 @@
-@IMPORT url('reset.css');
-@IMPORT url('layout.css');
+@import 'reset.css';
+@import '_notifications.css';
+@import '_pagination.css';
+@import '_list.css';
+@import '_sidebar.css';
+@import '_tabmenu.css';
+@import '_icon.css';
+@import '_form.css';
+@import '_text.css';
+
+/* General START */
+
+div.ui-layout-west
+{
+	padding: 0px !important;
+	overflow: hidden !important;
+	text-align: left;
+	margin-top: 30px;
+	padding-top: 10px;
+}
+
+div.ui-layout-north
+{
+	border: none !important;
+	overflow: hidden !important;
+}
+
+div.ui-layout-center
+{
+	text-align: left;
+	margin-top: 30px;
+	padding-top: 10px;
+}
+
+div.clear
+{
+	clear: both;
+}
+
+/* General END */
+
+
+/* Header START */
+
+#header
+{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+}
+
+#headerLeft
+{
+	float: left;
+	position: relative;
+}
+
+#headerRight
+{
+	float: right;
+	position: relative;
+	text-align: right;
+}
+
+/* Header END */
+
+
+/* Tables START */
+
+table
+{
+	width: auto;
+	border-collapse: collapse;
+	margin-bottom: 0em;
+}
+
+table caption
+{
+	font-variant: small-caps;
+}
+
+table.full
+{
+	width: 100%;
+}
+
+table.fixed
+{
+	table-layout: fixed;
+}
+
+/* Tables END */

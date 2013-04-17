@@ -1,0 +1,36 @@
+ul.yiiPager > li
+{
+	font-weight: bold;
+	border: 1px solid #CCC;
+	border-right: none;
+}
+
+ul.yiiPager > li > a,
+ul.yiiPager > li > span
+{
+	color: #777;
+	padding: 3px 8px;
+}
+
+ul.yiiPager > li.hidden a
+{
+	color: #CCC;
+}
+
+ul.yiiPager > li.selected a
+{
+	color: #F8F8F8;	
+}
+
+ul.yiiPager > li.first-element
+{
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+
+ul.yiiPager > li.last-element
+{
+	border-right: 1px solid #CCC;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+}

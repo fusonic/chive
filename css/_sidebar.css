@@ -1,0 +1,46 @@
+div.sidebarHeader img.loading
+{
+	display: none;
+	margin-top: -8px;
+	position: absolute;
+	right: 5px;
+	top: 50%;
+}
+
+div.sidebarContent ul > li.template
+{
+	display: none;
+}
+
+ul.list
+{
+	margin: 0.5em 0 0 0.3em;
+}
+
+ul.list li
+{
+	position: relative;
+}
+
+ul.list li a img
+{
+	position: relative;
+}
+
+div.listIconContainer
+{
+	float: right;
+	position: relative;
+	z-index: 10;
+	display: none;
+}
+
+ul.list li:hover div.listIconContainer
+{
+	display: block;
+}
+
+#sideBar input
+{
+	width: 98%;
+}
