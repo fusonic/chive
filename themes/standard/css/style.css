@@ -105,6 +105,12 @@ hr
 	top: 8px;
 }
 
+/* Fixes a bug where the last header button is cut by the screen edge. */
+#headerRight:after
+{
+    content: '\00a0';
+}
+
 /* Header END */
 
 

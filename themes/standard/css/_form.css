@@ -38,11 +38,11 @@ fieldset > legend
 
 /* Button START */
 
-.button
+.button,
+#headerRight input
 {
 	padding: 5px 8px 5px 10px;
 	margin-right: 5px;
-	cursor: pointer;
 	border-radius: 5px;
 	border: 1px solid #CCCCCC;
 }
