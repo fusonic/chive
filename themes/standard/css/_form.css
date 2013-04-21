@@ -84,7 +84,8 @@ a.button span
 
 /* Fields START */
 
-input,
+input[type="text"],
+input[type="password"]
 textarea,
 select
 {
