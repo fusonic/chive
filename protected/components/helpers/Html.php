@@ -54,7 +54,7 @@ class Html
             }
 			
 			$htmloptions['href'] = $target;
-			$htmloptions['onclick'] = 'if(event.button == 0) { chive.goto("' . $target . '"); return false; }';
+			$htmloptions['onmouseup'] = 'if(event.button == 0) { chive.goto("' . $target . '"); return false; }';
 		}
 		
 		return CHtml::tag('a', $htmloptions, $content, $close);
