@@ -20,12 +20,33 @@
 
 ul.tabMenu > li
 {
-	border-bottom-left-radius: 5px;
-	border-bottom-right-radius: 5px;
 	font-size: 120%;
-	margin-right: 10px;
 	border: solid 1px #C0C0C0;
+    border-right: none;
 	border-top: none;
+}
+
+ul.tabMenu > li:first-child
+{
+    border-bottom-left-radius: 5px;
+}
+
+ul.tabMenu > li:last-child
+{
+    border-right: solid 1px #C0C0C0;
+    border-bottom-right-radius: 5px;
+}
+
+ul.tabMenu > li.active
+{
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-right: solid 1px #C0C0C0;
+}
+
+ul.tabMenu > li.active + li
+{
+    border-left: none;
 }
 
 ul.tabMenu a > span
@@ -35,8 +56,14 @@ ul.tabMenu a > span
 
 ul.tabMenu a
 {
-	padding: 3px 10px 5px 10px;
+	padding: 6px 10px 5px 10px;
 	text-align: center;
+}
+
+ul.tabMenu > li.active > a
+{
+    padding-top: 8px;
+    padding-bottom: 7px;
 }
 
 div.tabMenu

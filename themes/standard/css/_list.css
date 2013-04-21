@@ -61,12 +61,6 @@ div.withSelected img.icon_arrow_turn_090
 	top: 0px !important;
 }
 
-div.withSelected > a,
-div.withSelected > span
-{
-	margin: 0px 5px;
-}
-
 /* General END */
 
 

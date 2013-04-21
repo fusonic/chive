@@ -96,13 +96,13 @@ hr
 
 #headerLeft
 {
-	top: 2px;
+	top: 6px;
 	padding-left: 5px;
 }
 
 #headerRight
 {
-	top: 8px;
+	top: 6px;
 }
 
 /* Fixes a bug where the last header button is cut by the screen edge. */

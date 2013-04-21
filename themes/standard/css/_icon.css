@@ -38,6 +38,11 @@ img.icon_arrow_move
 	cursor: move;
 }
 
+.icon > img.icon
+{
+    vertical-align: text-top;
+}
+
 a.icon
 {
 	text-decoration: none !important;
@@ -52,12 +57,4 @@ a.icon > span
 a.icon:hover > span
 {
 	text-decoration: none;
-}
-
-span.icon > img.icon,
-a.icon > img.icon
-{
-	border: none;
-	position: relative;
-	top: 3px;
 }

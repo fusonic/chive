@@ -105,7 +105,7 @@ $(document).ready(function() {
 	<div id="header">
 		<div id="headerLeft">
 			<a class="icon button" href="<?php echo Yii::app()->getBaseUrl(true); ?>">
-				<img src="<?php echo BASEURL; ?>/images/logo.png" alt="Chive" height="22" style="position: relative; top: 6px;" />
+                <img src="<?php echo BASEURL; ?>/images/logo.png" alt="Chive" class="icon" />
 			</a>
 			<a href="<?php echo Html::getBaseUrlWithScriptName() . '#schemata'; ?>" class="icon button">
 				<?php echo Html::icon('server'); ?>

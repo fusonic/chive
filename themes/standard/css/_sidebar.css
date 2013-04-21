@@ -37,21 +37,30 @@ div.sidebarHeader
 	font-size: 130%;
 }
 
+.sidebarHeader > .ui-icon
+{
+    position: relative;
+    top: 50% !important;
+}
+
+.sidebarHeader > a > span
+{
+    position: relative;
+    top: 3px !important;
+}
+
 ul.list li
 {
 	list-style-type: none;
 	height: 20px;
 	padding: 2px 0px;
+    vertical-align: middle;
+    line-height: 18px;
 }
 
 ul.list > li:hover
 {
 	background: #EFEFEF;
-}
-
-ul.list li a img
-{
-	top: 2px;
 }
 
 .listFilterSelected

@@ -37,16 +37,6 @@ ul.list
 	margin: 0.5em 0 0 0.3em;
 }
 
-ul.list li
-{
-	position: relative;
-}
-
-ul.list li a img
-{
-	position: relative;
-}
-
 div.listIconContainer
 {
 	float: right;

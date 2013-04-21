@@ -42,9 +42,13 @@ fieldset > legend
 #headerRight input
 {
 	padding: 5px 8px 5px 10px;
-	margin-right: 5px;
+	margin-right: 2px;
 	border-radius: 5px;
 	border: 1px solid #CCCCCC;
+    display: inline-block;
+    line-height: 16px;
+    vertical-align: middle;
+    text-decoration: none;
 }
 
 .button.primary
@@ -74,18 +78,13 @@ a.button span
 	text-decoration: none !important;
 }
 
-.button:hover
-{
-	border-color: #999;
-}
-
 /* Button END */
 
 
 /* Fields START */
 
 input[type="text"],
-input[type="password"]
+input[type="password"],
 textarea,
 select
 {
@@ -196,3 +195,12 @@ div.editor > textarea
 }
 
 /* Editor END */
+
+input.hidden
+{
+    width: 0px;
+    height: 0px;
+    border: none;
+    padding: 0px !important;
+    opacity: 0;
+}

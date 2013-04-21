@@ -78,11 +78,11 @@ $(document).ready(function() {
 	<div id="header">
 		<div id="headerLeft">
 			<a class="icon button" href="<?php echo BASEURL; ?>">
-				<img src="<?php echo BASEURL; ?>/images/logo.png" alt="Chive" height="22" style="position: relative; top: 6px;" />
+				<img src="<?php echo BASEURL; ?>/images/logo.png" alt="Chive" class="icon" />
 			</a>
 			<?php echo Html::ajaxLink('schemata', array('class' => 'icon button')); ?>
 				<?php echo Html::icon('server'); ?>
-				<span><?php echo Yii::app()->user->host; ?></span>
+				<?php echo Yii::app()->user->host; ?>
 			</a>
 		</div>
 		<div id="headerRight">
