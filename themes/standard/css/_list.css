@@ -1,0 +1,252 @@
+/*
+ * Chive - web based MySQL database management
+ * Copyright (C) 2010 Fusonic GmbH
+ *
+ * This file is part of Chive.
+ *
+ * Chive is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * Chive is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/* General START */
+
+div.list
+{
+	margin-bottom: 10px;
+}
+
+table.list
+{
+	border: 1px solid #CCC;
+	border-radius: 5px;
+	border-collapse: separate;
+	border-spacing: 0;
+	width: 100%;
+}
+
+table.list td,
+table.list th
+{
+	padding: 7px 5px;
+}
+
+table.list td.nodecoration,
+table.list th.nodecoration
+{
+	background: none;
+}
+
+table.list td.count
+{
+	text-align: right;
+}
+
+div.withSelected
+{
+	margin-left: 7px;
+}
+
+div.withSelected img.icon_arrow_turn_090
+{
+	top: 0px !important;
+}
+
+/* General END */
+
+
+/* Columns START */
+
+col.action,
+col.checkbox
+{
+	width: 16px;
+}
+
+col.type
+{
+	width: 160px;
+}
+
+col.collation
+{
+	width: 140px;
+}
+
+col.null
+{
+	width: 50px;
+}
+
+col.filesize
+{
+	width: 90px;
+}
+
+col.engine
+{
+	width: 100px;
+}
+
+col.operator
+{
+	width: 120px;
+}
+
+col.count
+{
+	width: 100px;
+}
+
+/* Columns END */
+
+
+/* Header/Footer START */
+
+table.list > thead,
+table.list > thead a,
+table.list > tfoot > tr > th
+{
+	color: #333;
+	font-weight: bold !important;
+}
+
+table.list > thead > tr > th:first-child
+{
+	border-top-left-radius: 5px;
+}
+
+table.list > thead > tr > th:last-child
+{
+	border-top-right-radius: 5px;
+}
+
+table.list > tfoot > tr > th:first-child
+{
+	border-bottom-left-radius: 5px;
+}
+
+table.list > tfoot > tr > th:last-child
+{
+	border-bottom-right-radius: 5px;
+}
+
+/* Header/Footer END */
+
+
+/* Body START */
+
+table.list > tbody > tr
+{
+	background-color: #F0F0F0;
+}
+
+table.list > tbody > tr.odd
+{
+	background-color: #E0E0E0;
+}
+
+table.list > tbody > tr.selected
+{
+	background-color: #E3EE93;
+}
+
+table.list.selectable > tbody > tr:hover
+{
+	background-color: #D3E73B;
+}
+
+table.list td.noEntries
+{
+	text-align: center;
+	font-style: italic;
+	padding: 10px 5px;
+}
+
+/* Body END */
+
+
+/* Form/Info START */
+
+table.list > tbody > tr.form > td,
+table.list > tbody > tr.info > td
+{
+	padding: 0px;
+}
+
+table.list div.form
+{
+	border: solid 4px #D3E73B;
+	background: #e8edc2;
+	padding: 5px;
+}
+
+table.list div.info
+{
+	border: solid 4px #3B5998;
+	background: #D6DDEB;
+	padding: 5px;
+}
+
+table.list div.form h1,
+table.list div.info h1
+{
+	font-size: 110%;
+	font-weight: bold;
+}
+
+table.list.editable form,
+table.list.editable info
+{
+	border: none;
+	background: none;
+	padding: 0px;
+}
+
+/* Form/Info END */
+
+
+/* Form-List START */
+
+table.formList
+{
+	width: 100%;
+}
+
+table.formList th
+{
+	font-style: italic;
+	font-weight: normal;
+}
+
+table.formList td,
+table.formList th
+{
+	padding: 2px 0px;
+}
+
+table.formList thead
+{
+	border-bottom: solid 2px #D3E73B;
+}
+
+table.formList tfoot
+{
+	border-top: solid 2px #D3E73B;
+}
+
+table.formList input.indexSize
+{
+	width: 40px;
+}
+
+/* Form-List END */

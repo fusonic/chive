@@ -1,2 +1,113 @@
-@IMPORT url('reset.css');
-@IMPORT url('layout.css');
+/*
+ * Chive - web based MySQL database management
+ * Copyright (C) 2012 Fusonic GmbH
+ *
+ * This file is part of Chive.
+ *
+ * Chive is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * Chive is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+@import 'reset.css';
+@import '_notifications.css';
+@import '_pagination.css';
+@import '_list.css';
+@import '_sidebar.css';
+@import '_tabmenu.css';
+@import '_icon.css';
+@import '_form.css';
+@import '_text.css';
+
+/* General START */
+
+div.ui-layout-west
+{
+	padding: 0px !important;
+	overflow: hidden !important;
+	text-align: left;
+	margin-top: 30px;
+	padding-top: 10px;
+}
+
+div.ui-layout-north
+{
+	border: none !important;
+	overflow: hidden !important;
+}
+
+div.ui-layout-center
+{
+	text-align: left;
+	margin-top: 30px;
+	padding-top: 10px;
+}
+
+div.clear
+{
+	clear: both;
+}
+
+/* General END */
+
+
+/* Header START */
+
+#header
+{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+}
+
+#headerLeft
+{
+	float: left;
+	position: relative;
+}
+
+#headerRight
+{
+	float: right;
+	position: relative;
+	text-align: right;
+}
+
+/* Header END */
+
+
+/* Tables START */
+
+table
+{
+	width: auto;
+	border-collapse: collapse;
+	margin-bottom: 0em;
+}
+
+table caption
+{
+	font-variant: small-caps;
+}
+
+table.full
+{
+	width: 100%;
+}
+
+table.fixed
+{
+	table-layout: fixed;
+}
+
+/* Tables END */

@@ -69,37 +69,17 @@
 		<div id="login-form">
 			<?php echo CHtml::form(); ?>
 			<?php echo CHtml::activeHiddenField($form, "redirectUrl", array("name" => "redirectUrl", "id" => "redirectUrl")); ?>
-			<div class="formItems non-floated" style="text-align: left;">
-				<div class="item row1">
-					<div class="left">
-						<span class="icon">
-							<?php echo CHtml::activeLabel($form,'host'); ?>
-						</span>
-					</div>
-					<div class="right">
-						<?php echo CHtml::activeTextField($form, 'host', array('class'=>'text', 'name' => 'host')); ?>
-					</div>
-				</div>
-				<div class="item row2">
-					<div class="left" style="float: none;">
-						<span class="icon">
-							<?php echo CHtml::activeLabel($form,'username'); ?>
-						</span>
-					</div>
-					<div class="right">
-						<?php echo CHtml::activeTextField($form,'username', array('class'=>'text', 'name' => 'username')) ?>
-					</div>
-				</div>
-				<div class="item row1">
-					<div class="left">
-						<span class="icon">
-							<?php echo CHtml::activeLabel($form, 'password'); ?>
-						</span>
-					</div>
-					<div class="right">
-						<?php echo CHtml::activePasswordField($form, 'password', array('class' => 'text', 'value' => '', 'name' => 'password', 'autocomplete' => "off")); ?>
-					</div>
-				</div>
+			<div class="field">
+				<?php echo CHtml::activeLabel($form, 'host'); ?>
+				<?php echo CHtml::activeTextField($form, 'host', array('class' => 'text', 'name' => 'host')); ?>
+			</div>
+			<div class="field">
+				<?php echo CHtml::activeLabel($form, 'username'); ?>
+				<?php echo CHtml::activeTextField($form, 'username', array('class' => 'text', 'name' => 'username')) ?>
+			</div>
+			<div class="field">
+				<?php echo CHtml::activeLabel($form, 'password'); ?>
+				<?php echo CHtml::activePasswordField($form, 'password', array('class' => 'text', 'value' => '', 'name' => 'password', 'autocomplete' => "off")); ?>
 			</div>
 
 			<div class="buttons">
@@ -107,7 +87,7 @@
 					<?php echo Html::icon('login', 16, false, 'core.login'); ?>
 					<span><?php echo Yii::t('core', 'login'); ?></span>
 				</a>
-				<?php echo CHtml::submitButton(Yii::t('core', 'login'), array("style" => "width: 0px; height: 0px; opacity: 0")); ?>
+				<?php echo CHtml::submitButton(Yii::t('core', 'login'), array("class" => "hidden")); ?>
 			</div>
 
 			<?php echo CHtml::closeTag('form'); ?>

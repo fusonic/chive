@@ -1,0 +1,67 @@
+/*
+ * Chive - web based MySQL database management
+ * Copyright (C) 2012 Fusonic GmbH
+ *
+ * This file is part of Chive.
+ *
+ * Chive is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * Chive is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#login
+{
+	margin: 41px auto;
+	border-top: 1px solid #BBB;
+	padding-top: 50px;
+}
+
+#login label
+{
+	color: #777;
+	font-size: 1.2em;
+	display: block;
+}
+
+#login input
+{
+	font-size: 18px;
+	padding: 3px;
+	width: 98%;
+}
+
+#login-form
+{
+	border-radius: 5px;
+	border: 1px solid #CCCCCC;
+	padding: 10px;
+	width: 320px;
+	margin: 0px auto;
+}
+
+#login-logo
+{
+	padding: 10px;
+	text-align: center;
+}
+
+#login div.field
+{
+	padding: 10px 2px;
+}
+
+#login div.errorSummary
+{
+	width: 320px;
+	margin: 10px auto;
+	border-radius: 5px;
+}

@@ -1,0 +1,67 @@
+/*
+ * Chive - web based MySQL database management
+ * Copyright (C) 2012 Fusonic GmbH
+ *
+ * This file is part of Chive.
+ *
+ * Chive is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * Chive is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#purr-container
+{
+	position: fixed;
+	bottom: 10px;
+	right: 30px;
+	z-index: 99999999 !important;
+}
+
+.notification
+{
+	min-height: 50px;
+	position: relative;
+	width: 500px;
+}
+
+.notification > .close,
+.notification > .sticky,
+.notification > .code
+{
+	position: absolute;
+	top: 5px;
+	width: 16px;
+	height: 16px;
+}
+
+.notification > .close
+{
+	right: 5px;
+	background: url(../images/icons/fugue/16/delete.png) no-repeat 0px 0px;
+}
+
+.notification > .sticky
+{
+	right: 25px;
+	background: url(../images/icons/fugue/16/pin_up.png) no-repeat 0px 0px;
+}
+
+.notification > .code
+{
+	right: 45px;
+	background: url(../images/icons/fugue/16/sql.png) no-repeat 0px 0px;
+}
+
+.notification.not-sticky > .sticky
+{
+	background: url(../images/icons/fugue/16/pin.png) no-repeat 0px 0px !important;
+}

@@ -1,6 +1,6 @@
 /*
  * Chive - web based MySQL database management
- * Copyright (C) 2010 Fusonic GmbH
+ * Copyright (C) 2012 Fusonic GmbH
  *
  * This file is part of Chive.
  *
@@ -18,14 +18,57 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-@media screen, projection
+body
 {
-  
-  code.literal
-  {
-  	color: #026789;
-  	font-family: monospace, fixed;
+	color: #444;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 80.00%;
+}
+
+span.null
+{
+	font-style: italic;
+}
+
+span.primaryKey
+{
+	border-bottom: dotted 1px;
+}
+
+div.small
+{
+	color: #808080;
+	font-size: 0.9em;
+}
+
+code.literal
+{
+	color: #026789;
+	font-family: monospace, fixed;
 	font-weight: bold;
-  }
-  
+}
+
+span.sql, div.sql, p.sql
+{
+	font-family: monospace, fixed;
+}
+
+a
+{
+	color: #000;
+	background: transparent;
+	text-decoration: none;
+}
+
+a:visited
+{
+	color: #000;
+}
+
+a:focus,
+a:hover,
+a:active
+{
+	color: #000;
+	text-decoration: underline;
 }

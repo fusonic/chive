@@ -78,24 +78,24 @@ $(document).ready(function() {
 	<div id="header">
 		<div id="headerLeft">
 			<a class="icon button" href="<?php echo BASEURL; ?>">
-				<img src="<?php echo BASEURL; ?>/images/logo.png" alt="Chive" height="22" style="position: relative; top: 6px;" />
+				<img src="<?php echo BASEURL; ?>/images/logo.png" alt="Chive" class="icon" />
 			</a>
 			<?php echo Html::ajaxLink('schemata', array('class' => 'icon button')); ?>
 				<?php echo Html::icon('server'); ?>
-				<span><?php echo Yii::app()->user->host; ?></span>
+				<?php echo Yii::app()->user->host; ?>
 			</a>
 		</div>
 		<div id="headerRight">
-			<input type="text" id="globalSearch" value="<?php echo Yii::t('core', 'enterSchemaOrTable'); ?>" onclick="this.value = '';" class="search" />
+			<input type="text" id="globalSearch" value="" placeholder="<?php echo Yii::t('core', 'enterSchemaOrTable'); ?>" class="search" />
 			<a class="icon button" href="javascript:chive.refresh();">
 				<?php echo Html::icon('refresh', 16, false, 'core.refresh'); ?>
 			</a>
 			<a class="icon button" href="https://bugs.launchpad.net/chive/+filebug" target="_blank">
 				<?php echo Html::icon('ticket', 16, false, 'core.reportABug'); ?>
 			</a>
-			<a class="icon button" href="<?php echo Yii::app()->urlManager->baseUrl; ?>/site/logout">
-				<?php echo Html::icon('logout', 16, false, 'core.logout'); ?>
-			</a>
+            <a class="icon button" href="<?php echo Yii::app()->urlManager->baseUrl; ?>/site/logout">
+                <?php echo Html::icon('logout', 16, false, 'core.logout'); ?>
+            </a>
 		</div>
 	</div>
 </div>
