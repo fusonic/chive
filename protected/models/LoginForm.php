@@ -23,11 +23,12 @@
 
 class LoginForm extends CFormModel
 {
-	
+
 	public $username;
 	public $password;
 	public $rememberMe;
 	public $host = 'localhost';
+	public $port = '3306';
 	public $redirectUrl;
 
 	/**
@@ -40,6 +41,8 @@ class LoginForm extends CFormModel
 			array('username, host', 'required'),
 			// password needs to be authenticated
 			array('password', 'authenticate'),
+			// port must be empty or integer
+			array('port', 'numerical', 'integerOnly' => true, 'min' => 1, 'max' => 65535),
 		);
 	}
 
@@ -75,5 +78,5 @@ class LoginForm extends CFormModel
 			}
 		}
 	}
-	
+
 }
