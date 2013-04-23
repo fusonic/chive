@@ -203,6 +203,7 @@
   <entry id="packKeys">Запакувати ключі</entry>
   <entry id="partialImportDescription">Дозволити припинення процесу імпорта, якщо час імпорта близький до ліміту.</entry>
   <entry id="password">Пароль</entry>
+  <entry id="port">Порт</entry>
   <entry id="primaryKey">Первинний ключ</entry>
   <entry id="privileges">Привілеї</entry>
   <entry id="processes">Процеси</entry>
