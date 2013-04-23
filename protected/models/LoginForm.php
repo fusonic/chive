@@ -53,6 +53,7 @@ class LoginForm extends CFormModel
 	{
 		return array(
 			'host'=>Yii::t('core','host'),
+			'port'=>Yii::t('core','port'),
 			'username'=>Yii::t('core','username'),
 			'password'=>Yii::t('core','password'),
 		);
@@ -66,7 +67,7 @@ class LoginForm extends CFormModel
 	{
 		if(!$this->hasErrors())
 		{
-			$identity = new UserIdentity($this->username,$this->password, $this->host);
+			$identity = new UserIdentity($this->username,$this->password, $this->host, $this->port);
 
 			if($identity->authenticate())
 			{
