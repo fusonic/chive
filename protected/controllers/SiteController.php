@@ -83,7 +83,7 @@ class SiteController extends Controller
 		if(ConfigUtil::getUrlFopen())
 		{
 			$xml = @simplexml_load_file('http://feeds.launchpad.net/chive/announcements.atom');
-			
+
 			if($xml != null)
 			{
 				$entries = $xml->entry;
@@ -158,6 +158,7 @@ class SiteController extends Controller
 			{
 				$form->attributes = array(
 					"host" => $request->getPost("host"),
+					"port" => $request->getPost("port"),
 					"username" => $request->getPost("username"),
 					"password" => $request->getPost("password")
 				);
@@ -168,6 +169,7 @@ class SiteController extends Controller
 			{
 				$form->attributes = array(
 					"host" => $request->getQuery("host"),
+					"port" => $request->getPost("port"),
 					"username" => $request->getQuery("username"),
 					"password" => ($request->getQuery("password") !== null ? $request->getQuery("password") : "")
 				);
