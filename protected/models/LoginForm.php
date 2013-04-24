@@ -39,10 +39,20 @@ class LoginForm extends CFormModel
 		return array(
 			// username and password are required
 			array('username, host', 'required'),
+			// port number must be empty or a 16 bit unsigned integer
+			array('port', 'numerical',
+				'allowEmpty' => true,
+				'integerOnly' => true,
+				'min' => 1,
+				'max' => 65535
+			),
+			// set default MySQL port if nothing specified
+			array('port', 'default',
+				'setOnEmpty' => true,
+				'value' => 3306
+			),
 			// password needs to be authenticated
 			array('password', 'authenticate'),
-			// port must be empty or integer
-			array('port', 'numerical', 'integerOnly' => true, 'min' => 1, 'max' => 65535),
 		);
 	}
 
