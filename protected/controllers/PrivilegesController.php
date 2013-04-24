@@ -63,9 +63,8 @@ class PrivilegesController extends Controller
 	protected function connectDb($schema)
 	{
 		// Connect to database
-		$this->db = new CDbConnection('mysql:host=' . Yii::app()->user->host . ';dbname=mysql',
-			Yii::app()->user->name,
-			Yii::app()->user->password);
+		$connectionString = 'mysql:host=' . Yii::app()->user->host . ';port=' . Yii::app()->user->port . ';dbname=mysql';
+		$this->db = new CDbConnection($connectionString, Yii::app()->user->name, Yii::app()->user->password);
 
 		$this->db->charset = 'utf8';
 		$this->db->emulatePrepare = true;

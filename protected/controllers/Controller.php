@@ -47,7 +47,8 @@ abstract class Controller extends CController
 		}
 
 		// Connect to database
-		$this->db = new CDbConnection('mysql:host=' . Yii::app()->user->host . ';dbname=' . $schema . '; charset=utf8',
+		$connectionString = 'mysql:host=' . Yii::app()->user->host . ';port=' . Yii::app()->user->port . ';dbname=' . $schema . '; charset=utf8';
+		$this->db = new CDbConnection($connectionString,
 			utf8_decode(Yii::app()->user->name),
 			utf8_decode(Yii::app()->user->password));
 		$this->db->setAttribute(PDO::MYSQL_ATTR_INIT_COMMAND, 'SET NAMES \'utf8\'');
@@ -127,7 +128,7 @@ abstract class Controller extends CController
 		{
 			$content = $data;
 		}
-		
+
 		header("Content-type: application/json");
 		echo $content;
 		Yii::app()->end();

@@ -50,7 +50,7 @@ $validPaths = array(
 
 if(!$app->user->isGuest)
 {
-	$app->db->connectionString = 'mysql:host=' . $app->user->host . ';dbname=information_schema';
+	$app->db->connectionString = 'mysql:host=' . $app->user->host . ';port=' . $app->user->port . ';dbname=information_schema';
 	$app->db->username= $app->user->name;
     $app->db->password= $app->user->password;
     $app->db->autoConnect = true;
