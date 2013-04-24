@@ -25,17 +25,22 @@ class UserIdentity extends CUserIdentity
 	 * @var string host
 	 */
 	public $host;
+	/**
+	 * @var int port
+	 */
+	public $port;
 
 	/**
 	 * Constructor.
 	 * @param string username
 	 * @param string password
 	 */
-	public function __construct($username,$password,$host)
+	public function __construct($username,$password,$host,$port)
 	{
 		$this->username=$username;
 		$this->password=$password;
 		$this->host=$host;
+		$this->port=$port;
 	}
 
 	/*
@@ -51,7 +56,7 @@ class UserIdentity extends CUserIdentity
 		$db->username = $this->username;
 		$db->password = $this->password;
 		$db->emulatePrepare = true;
-		$db->connectionString = 'mysql:host=' . $this->host . ';dbname=information_schema';
+		$db->connectionString = 'mysql:host=' . $this->host . ';dbname=information_schema;port=' . $this->port;
 
 		try {
 
@@ -66,6 +71,7 @@ class UserIdentity extends CUserIdentity
 			$this->setState('settings', new UserSettingsManager($this->host, $this->username));
 			$this->setState('privileges', new UserPrivilegesManager($this->host, $this->username));
 			$this->setState("host", $this->host);
+			$this->setState("port", $this->port);
 
 		}
 		catch (CDbException $ex)
