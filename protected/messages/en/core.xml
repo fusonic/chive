@@ -203,6 +203,7 @@
 	<entry id="packKeys">Pack keys</entry>
 	<entry id="partialImportDescription">Allow interrupt of import in case script detects it is close to time limit.</entry>
 	<entry id="password">Password</entry>
+	<entry id="port">Port</entry>
 	<entry id="primaryKey">Primary key</entry>
 	<entry id="privileges">Privileges</entry>
 	<entry id="processes">Processes</entry>

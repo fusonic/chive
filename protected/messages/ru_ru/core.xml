@@ -203,6 +203,7 @@
   <entry id="packKeys">Упаковать ключи</entry>
   <entry id="partialImportDescription">Разрешить прерывание процесса импорта, если время импорта близко к предельно допустимому.</entry>
   <entry id="password">Пароль</entry>
+  <entry id="port">Порт</entry>
   <entry id="primaryKey">Первичный ключ</entry>
   <entry id="privileges">Привилегии</entry>
   <entry id="processes">Процессы</entry>

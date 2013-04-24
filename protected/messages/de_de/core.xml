@@ -201,6 +201,7 @@
   <entry id="packKeys">Pack keys</entry>
   <entry id="partialImportDescription">Skriptunterbrechung bei Erreichen des Ausf&#xFC;hrungszeitlimits zulassen.</entry>
   <entry id="password">Passwort</entry>
+  <entry id="port">Port</entry>
   <entry id="primaryKey">Prim&#xE4;rschl&#xFC;ssel</entry>
   <entry id="privileges">Rechte</entry>
   <entry id="processes">Prozesse</entry>
