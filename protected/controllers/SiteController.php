@@ -108,7 +108,7 @@ class SiteController extends Controller
         $files = opendir(Yii::app()->basePath . DIRECTORY_SEPARATOR . 'messages');
         while($file = readdir($files))
         {
-            if(preg_match("/^\w\w_\w\w$/", $file))
+            if(preg_match("/^\w\w(_\w\w)?$/", $file))
             {
                 $languages[] = array(
                     'label' => Yii::t('language', $file),
