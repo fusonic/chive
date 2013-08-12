@@ -227,6 +227,9 @@ class StorageEngine extends SqlModel
 	 */
 	public static function check($engine, $property)
 	{
+		if($engine === null)
+            		return false;
+            
 		return self::$engines[self::getFormattedName($engine)][$property];
 	}
 
