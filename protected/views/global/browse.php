@@ -19,7 +19,10 @@
 						<?php echo Html::icon('execute', 16, false, 'core.execute'); ?>
 						<span><?php echo Yii::t('core', 'execute'); ?></span>
 					</a>
-					<a class="icon button" href="javascript:void(0);" onclick="Bookmark.add('<?php echo $model->schema; ?>', (editAreaLoader ? editAreaLoader.getValue('query') : $('#query').val()));">
+					<a class="icon button" href="javascript:void(0);" onclick="Bookmark.add('<?php echo $model->schema; ?>', (typeof editAreaLoader == 'undefined'
+                        ? $('#query').val()
+                        : editAreaLoader.getValue('query') )
+                        );">
 						<?php echo Html::icon('bookmark_add'); ?>
 						<span><?php echo Yii::t('core', 'bookmark'); ?></span>
 					</a>
