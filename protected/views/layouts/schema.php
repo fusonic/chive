@@ -84,6 +84,9 @@ $(document).ready(function() {
 	sideBar.loadViews(<?php echo CJSON::encode($this->_schema->SCHEMA_NAME); ?>, function() {
 		$('#viewList').setupListFilter($('#viewSearch'));
 	});
+	sideBar.loadRoutines(<?php echo CJSON::encode($this->_schema->SCHEMA_NAME); ?>, function() {
+		$('#routineList').setupListFilter($('#routineSearch'));
+	});		
 });
 </script>
 </head>
@@ -191,6 +194,33 @@ $(document).ready(function() {
 			</div>
 
 		</div>
+  		<div class="sidebarHeader">
+			<a class="icon" href="javascript:void(0)">
+				<?php echo Html::icon('routine', 24, false, 'core.routines'); ?>
+				<span><?php echo Yii::t('core', 'routines'); ?></span>
+			</a>
+			<img class="loading" src="<?php echo BASEURL; ?>/images/loading.gif" alt="<?php echo Yii::t('core', 'loading'); ?>..." />
+		</div>
+		<div class="sidebarContent">
+
+			<input type="text" id="routineSearch" class="search text" />
+
+			<ul class="list icon nowrap" id="routineList">
+				<li class="nowrap template">
+					<?php echo Html::ajaxLink('routines/', array('class' => 'icon')); ?>
+						<?php echo Html::icon('browse', 16, false); ?>
+					</a>
+					<?php echo Html::ajaxLink('routines/', array('class' => 'icon')); ?>
+						<span>#routineName#</span>
+					</a>
+				</li>
+			</ul>
+
+			<div class="noEntries">
+				<?php echo Yii::t('core', 'noRoutines'); ?>
+			</div>
+
+		</div>				
   		<div class="sidebarHeader">
 			<a class="icon">
 				<?php echo Html::icon('bookmark', 24, false, 'core.bookmarks'); ?>

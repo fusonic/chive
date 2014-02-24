@@ -218,30 +218,44 @@ class SchemaController extends Controller
 			':schema' => $this->schema,
 		);
 
-		// Pagination
-		$pages = new Pagination(Routine::model()->count($criteria));
-		$pages->setupPageSize('pageSize', 'schema.routines');
-		$pages->applyLimit($criteria);
-		$pages->route = '#routines';
+		if($this->request->getParam('sideBar'))
+		{
+			$routines = array();
 
-		// Sort
-		$sort = new CSort('View');
-		$sort->attributes = array(
-			'ROUTINE_NAME' => 'name',
-		);
-		$sort->route = '#routines';
-		$sort->applyOrder($criteria);
+			foreach(Routine::model()->findAll($criteria) AS $routine)
+			{
+				$routines[] = array(
+					'routineName' => $routine->ROUTINE_NAME,
+				);
+			}
 
-		// Load data
-		$schema->routines = Routine::model()->findAll($criteria);
+			$this->sendJSON($routines);
+		} else {
+			// Pagination
+			$pages = new Pagination(Routine::model()->count($criteria));
+			$pages->setupPageSize('pageSize', 'schema.routines');
+			$pages->applyLimit($criteria);
+			$pages->route = '#routines';
 
-		// Render
-		$this->render('routines', array(
-			'schema' => $schema,
-			'routineCount' => count($schema->routines),
-			'pages' => $pages,
-			'sort' => $sort,
-		));
+			// Sort
+			$sort = new CSort('View');
+			$sort->attributes = array(
+				'ROUTINE_NAME' => 'name',
+			);
+			$sort->route = '#routines';
+			$sort->applyOrder($criteria);
+
+			// Load data
+			$schema->routines = Routine::model()->findAll($criteria);
+
+			// Render
+			$this->render('routines', array(
+				'schema' => $schema,
+				'routineCount' => count($schema->routines),
+				'pages' => $pages,
+				'sort' => $sort,
+			));
+		}	
 	}
 
 	public function actionSql($_query = false, $_execute = true) {

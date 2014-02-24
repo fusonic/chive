@@ -184,6 +184,58 @@ var sideBar = {
 			// Hide loading icon
 			loadingIcon.hide();
 		});
-	}
+	},
+
+	loadRoutines: function(schema, callback)
+	{
+		var loadingIcon = $('div.sidebarHeader.routineList img.loading');
+		var contentUl = $('#sideBar #routineList');
+		
+		// Setup loading icon
+		loadingIcon.show();
+
+		// Do AJAX request
+		$.post(baseUrl + '/schema/' + schema + '/routines', {
+			sideBar: true
+		}, function(data) {
+			
+			var template = contentUl.children('li.template');
+			var templateHtml = template.html();
+			var html = '';
+			
+			// Remove all existing nodes
+			contentUl.empty().append(template);
+			
+			if(data.length > 0)
+			{
+				// Append all nodes
+				for(var i = 0; i < data.length; i++)
+				{
+					var newHtml = '<li class="nowrap">' + templateHtml
+						.replace(/#routineName#/g, $('<div/>').text(data[i].routineName).html()) + '</li>';
+					html += newHtml;
+				}
+				
+				contentUl.append(html);
+				$('#sideBar #routineList').parent().children('div.noEntries').hide();
+			}
+			else
+			{
+				$('#sideBar #routineList').parent().children('div.noEntries').show();
+			}
+			
+			// Callback
+			if($.isFunction(callback))
+			{
+				callback();
+			}
+			
+			// Reload list filter
+			contentUl.reloadListFilter();
+			
+			// Hide loading icon
+			loadingIcon.hide();
+		});
+	}		
 	
 };
