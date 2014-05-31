@@ -38,20 +38,31 @@
 					<span><?php echo Yii::t('core', 'profiling'); ?></span>
 				</a>
 				<br/><br/>
-				<a class="icon button" href="javascript:void(0);" onclick="$.post(baseUrl + '/ajaxSettings/toggle', {
-						name: 'showFullColumnContent',
-						scope: 'schema.table.browse',
-						object: '<?php echo $model->schema; ?>.<?php echo $model->table; ?>'
-					}, function() {
-						chive.refresh();
-					});">
-					<?php if( Yii::app()->user->settings->get('showFullColumnContent', 'schema.table.browse', $model->schema . '.' .  $model->table)) {?>
-						<?php echo Html::icon('square_green'); ?>
-					<?php } else { ?>
-						<?php echo Html::icon('square_red'); ?>
-					<?php } ?>
-					<span><?php echo Yii::t('core', 'showFullColumnContent'); ?></span>
-				</a>
+
+                <?php if ($model->table !== null) {
+                    // define correct full column content setting
+                    // based on current table/db selected
+                    $fullColumnContentScope = 'schema.table.browse';
+                    $fullColumnContentObject = $model->schema . '.' .$model->table;
+                } else {
+                    $fullColumnContentScope = 'schema.browse';
+                    $fullColumnContentObject = $model->schema;
+                }?>
+
+                <a class="icon button" href="javascript:void(0);" onclick="$.post(baseUrl + '/ajaxSettings/toggle', {
+                        name: 'showFullColumnContent',
+                        scope: '<?php echo $fullColumnContentScope; ?>',
+                        object: '<?php echo $fullColumnContentObject; ?>'
+                    }, function() {
+                        chive.refresh();
+                    });">
+                    <?php if( Yii::app()->user->settings->get('showFullColumnContent', $fullColumnContentScope, $fullColumnContentObject)) {?>
+                        <?php echo Html::icon('square_green'); ?>
+                    <?php } else { ?>
+                        <?php echo Html::icon('square_red'); ?>
+                    <?php } ?>
+                    <span><?php echo Yii::t('core', 'showFullColumnContent'); ?></span>
+                </a>
 			</td>
 		</tr>
 	</table>
