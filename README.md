@@ -11,7 +11,6 @@ Rebuilding chive on top of these state of-the-art technologies available today, 
 The source code of chive will still be available public, but we will no longer respond to pull requests and issues.
 
 I want to thank all of our users which used chive and or supported it by providing pull-requests, translations and other utilities around it.
---------------
 
 
 Original Readme:
