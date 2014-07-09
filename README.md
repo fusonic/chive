@@ -4,9 +4,9 @@ When chive was build back in 2009, we were very dissatisfied with the existing t
 
 Since 2009 a lot has changed. First, phpmyadmin, supports all of the features out of the box now, which have made chive unique back in 2009.
 
-Second, lots of new javascript and css frameworks have been born (e.x. AngularJS, Boostrap, ...) and symphony has become the leading php framework. Chive was build on Yii-Framework 1.4 + Jquery with custom CSS. This stack does not full-fill the requirements for a modern state of the art, maintainable codebase you would expect in 2014.
+Second, lots of new javascript and css frameworks have been born (e.x. AngularJS, Boostrap, ...) and symphony has become the leading php framework. Chive was build on Yii-Framework 1.4 + Jquery with custom CSS. This stack does not fullfill the requirements for a modern state of the art, maintainable codebase you would expect in 2014.
 
-Rebuilding chive on top of these state of-the-art technologies available today, would require a vast amount of work. Unfortunately we can no longer fund further development nor supporting the existing codebase.
+Rebuilding chive on top of these state of-the-art technologies available today, would require a vast amount of work. Unfortunately we can no longer fund further development nor continue supporting the existing codebase.
 
 The source code of chive will still be available public, but we will no longer respond to pull requests and issues.
 
