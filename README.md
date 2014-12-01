@@ -1,4 +1,4 @@
-Announcement (July 2014): Chive is no longer actively developed nor maintained
+Announcement (July 2014): Chive is no longer actively developed / maintained
 =====
 When chive was build back in 2009, we were very dissatisfied with the existing tools available. One of the most important features of chive was the ability to inline-edit mysqldata and to quickly search through the list of tables in a nice and fast gui. Another goal was to provide a database tool which is build on a well architectured codebase. This was 2009 and chive was a really nice replacement for the good old phpmyadmin.
 
