@@ -29,6 +29,7 @@
   <entry id="amountRoutines">1#{amount} хранимая процедура|n&gt;1#Хранимых процедур: {amount}</entry>
   <entry id="amountTables">1#{amount} Таблица|n&gt;1#Таблиц: {amount}</entry>
   <entry id="amountViews">1#{amount} Представление|n&gt;1#Представлений: {amount}</entry>
+  <entry id="analyze">Анализировать</entry>
   <entry id="attribute">Атрибут</entry>
   <entry id="authenticationFailed">Не удалось установить соединение:&lt;br/&gt;{message}</entry>
   <entry id="averageRowLength">Средняя длина строки</entry>
@@ -40,6 +41,7 @@
   <entry id="cancel">Отмена</entry>
   <entry id="cardinality">Размерность</entry>
   <entry id="characterSet">1#Кодовая страница|n&gt;1#Кодовые страницы</entry>
+  <entry id="check">Проверить</entry>
   <entry id="checksum">Контрольная сумма</entry>
   <entry id="chooseLanguage">Выбрать язык</entry>
   <entry id="chooseTheme">Выбрать тему</entry>
@@ -198,6 +200,7 @@
   <entry id="onUpdateCurrentTimestamp">При обновлении устанавливать current_timestamp</entry>
   <entry id="operations">Операции</entry>
   <entry id="operator">Оператор</entry>
+  <entry id="optimize">Оптимизировать</entry>
   <entry id="options">Опции</entry>
   <entry id="overhead">Накладные расходы</entry>
   <entry id="packKeys">Упаковать ключи</entry>
@@ -213,6 +216,7 @@
   <entry id="query">Запрос</entry>
   <entry id="refresh">Обновить</entry>
   <entry id="relation">Отношение</entry>
+  <entry id="repair">Исправить</entry>
   <entry id="reportABug">Сообщить об ошибке</entry>
   <entry id="routine">Процедура</entry>
   <entry id="routines">Процедуры</entry>
@@ -323,8 +327,4 @@
   <entry id="encloseFieldsBy">Заключать названия полей в</entry>
   <entry id="escapeFieldTextDelimiterWith">Экранировать строковый разделитель символом</entry>
   <entry id="fieldNamesInFirstRow">Имена полей в первой строке</entry>
-  <entry id="optimize"/>
-  <entry id="check"/>
-  <entry id="analyze"/>
-  <entry id="repair"/>
 </category>
