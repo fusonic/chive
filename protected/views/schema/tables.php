@@ -143,7 +143,7 @@
 		<tfoot>
 			<tr>
 				<th><input type="checkbox" /></th>
-				<th colspan="8"><?php echo Yii::t('core', 'amountTables', array($tableCount, '{amount} '=> $tableCount)); ?></th>
+				<th colspan="8"><?php echo Yii::t('core', 'amountTables', array($tableCount, '{amount}' => $tableCount)); ?></th>
 				<th><?php echo $totalRowCount; ?></th>
 				<th></th>
 				<th></th>
