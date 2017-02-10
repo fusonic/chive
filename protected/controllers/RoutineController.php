@@ -67,6 +67,7 @@ class RoutineController extends Controller
 					null,
 					$query);
 				$response->refresh = true;
+				$response->executeJavaScript('sideBar.loadRoutines(schema);');
 				$this->sendJSON($response);
 			}
 			catch(CDbException $ex)
@@ -100,6 +101,7 @@ class RoutineController extends Controller
 	{
 		$response = new AjaxResponse();
 		$response->refresh = true;
+		$response->executeJavaScript('sideBar.loadRoutines(schema);');
 		$routines = (array)$_POST['routines'];
 		$droppedRoutines = $droppedSqls = array();
 
@@ -177,6 +179,7 @@ class RoutineController extends Controller
 					null,
 					$query);
 				$response->refresh = true;
+				$response->executeJavaScript('sideBar.loadRoutines(schema);');
 				$this->sendJSON($response);
 			}
 			catch(CDbException $ex)
